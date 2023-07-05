@@ -37,14 +37,22 @@
                             </div>
                         </li>
                         <li class="list-inline-item">
+                            @php
+                                $flags=(object)[
+                                    'en'=>'us',
+                                    'ar'=>'eg'
+                                    ];
+                                $local_code=LaravelLocalization::getCurrentLocale();
+                           @endphp
                             <div class="languagebar">
                                 <div class="dropdown">
-                                  <a class="dropdown-toggle" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag flag-icon-us flag-icon-squared"></i></a>
+                                  <a class="dropdown-toggle" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag flag-icon-{{ $flags->$local_code }} flag-icon-squared"></i>&nbsp;{{ LaravelLocalization::getCurrentLocaleNative() }}</a>
                                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">
-                                    <a class="dropdown-item" href="#"><i class="flag flag-icon-us flag-icon-squared"></i>English</a>
-                                    <a class="dropdown-item" href="#"><i class="flag flag-icon-cn flag-icon-squared"></i>Chinese</a>
-                                    <a class="dropdown-item" href="#"><i class="flag flag-icon-ru flag-icon-squared"></i>Russian</a>
-                                    <a class="dropdown-item" href="#"><i class="flag flag-icon-es flag-icon-squared"></i>Spanish</a>
+                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                        <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                            <i class="flag flag-icon-{{$flags->$localeCode}} flag-icon-squared"></i>{{ $properties['native'] }}
+                                        </a>
+                                    @endforeach
                                   </div>
                                 </div>
                             </div>                                   
@@ -100,7 +108,7 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
               <ul class="horizontal-menu">
                 <li class="scroll dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>Dashboard</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>{{__('lang.dashboard')}}</span></a>
                     <ul class="dropdown-menu">
                         <li><a href="index.html"><i class="mdi mdi-circle"></i>Social Media</a></li>
                         <li><a href="dashboard-ecommerce.html"><i class="mdi mdi-circle"></i>eCommerce</a></li>
@@ -108,7 +116,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>Products</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="Products"><span>{{__('lang.products')}}</span></a>
                     <ul class="dropdown-menu">
                         <li><a href="https://themesbox.in/admin-templates/theta/html/light-vertical/index.html"><i class="mdi mdi-circle"></i>Light - Vertical</a></li> 
                         <li><a href="#"><i class="mdi mdi-circle"></i>Light - Horizontal</a></li>
@@ -117,7 +125,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="apps"><span>Stock</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="stock"><span>{{__('lang.stock')}}</span></a>
                     <ul class="dropdown-menu">
                         <li><a href="apps-calender.html"><i class="mdi mdi-circle"></i>Calender</a></li>
                         <li><a href="apps-chat.html"><i class="mdi mdi-circle"></i>Chat</a></li>
@@ -134,7 +142,7 @@
                     </ul>
                 </li>                            
                 <li class="dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="components"><span>Cashier</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="cashier"><span>{{__('lang.cashier')}}</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-circle"></i><span>Forms</span></a>
@@ -205,7 +213,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>Returns</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="returns"><span>{{__('lang.returns')}}</span></a>
                     <ul class="dropdown-menu">
                         <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown" ><i class="mdi mdi-circle"></i>eCommerce</a>
@@ -254,11 +262,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>Employees</span></a></li>
-                <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="widgets"><span>Customers</span></a></li>
-                <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>Suppliers</span></a></li>
+                <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="employees"><span>{{__('lang.employees')}}</span></a></li>
+                <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="customers"><span>{{__('lang.customers')}}</span></a></li>
+                <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="suppliers"><span>{{__('lang.suppliers')}}</span></a></li>
                 <li class="dropdown menu-item-has-mega-menu">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/settings.png')}}" class="img-fluid" alt="basic"><span>Settings</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/settings.png')}}" class="img-fluid" alt="settings"><span>{{__('lang.settings')}}</span></a>
                     <div class="mega-menu dropdown-menu">
                         <ul class="mega-menu-row" role="menu">
                             <li class="mega-menu-col col-md-3">
@@ -301,7 +309,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced"><span>Reports</span></a>
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="reports"><span>{{__('lang.reports')}}</span></a>
                     <ul class="dropdown-menu">
                         <li><a href="advanced-ui-kits-image-crop.html"><i class="mdi mdi-circle"></i>Image Crop</a></li>  
                         <li><a href="advanced-ui-kits-jquery-confirm.html"><i class="mdi mdi-circle"></i>jQuery Confirm</a></li>
