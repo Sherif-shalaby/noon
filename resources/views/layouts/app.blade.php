@@ -102,7 +102,7 @@
                             <div class="media-body">
                                 <h5 class="action-title">Payment Success !!!</h5>
                                 <p class="my-3">We have received your payment toward ad Account : 9876543210. Your Ad is Running.</p>
-                                <p><span class="badge badge-danger-inverse">INFO</span><span class="badge badge-info-inverse">STATUS</span><span class="timing">Today, 09:39 PM</span></p>                            
+                                <p><span class="badge badge-danger-inverse">INFO</span><span class="badge badge-info-inverse">STATUS</span><span class="timing">Today, 09:39 PM</span></p>
                             </div>
                         </li>
                         <li class="media">
@@ -110,7 +110,7 @@
                             <div class="media-body">
                                 <h5 class="action-title">Nobita Applied for Leave.</h5>
                                 <p class="my-3">Nobita applied for leave due to personal reasons on 22nd Feb.</p>
-                                <p><span class="badge badge-success">APPROVE</span><span class="badge badge-danger">REJECT</span><span class="timing">Yesterday, 05:25 PM</span></p>                            
+                                <p><span class="badge badge-success">APPROVE</span><span class="badge badge-danger">REJECT</span><span class="timing">Yesterday, 05:25 PM</span></p>
                             </div>
                         </li>
                         <li class="media">
@@ -118,7 +118,7 @@
                             <div class="media-body">
                                 <h5 class="action-title">Alert</h5>
                                 <p class="my-3">There has been new Log in fron your account at Melbourne. Mark it safe or report.</p>
-                                <p><i class="feather icon-check text-success mr-3"></i><a href="#" class="text-muted">Report Now</a><span class="timing">5 Jan 2019, 02:13 PM</span></p>                            
+                                <p><i class="feather icon-check text-success mr-3"></i><a href="#" class="text-muted">Report Now</a><span class="timing">5 Jan 2019, 02:13 PM</span></p>
                             </div>
                         </li>
                         <li class="media">
@@ -162,7 +162,7 @@
                                             <img src="{{asset('images/svg-icon/close.svg')}}" class="img-fluid menu-hamburger-close" alt="close">
                                         </a>
                                      </div>
-                                </li>                                
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -171,8 +171,12 @@
             <!-- Start Topbar -->
             @include('layouts.partials.header')
             <!-- End Navigationbar -->
-        
-            <!-- Start Contentbar -->    
+
+            <!-- Start Breadcrumbbar -->
+            @yield('breadcrumbbar')
+            <!-- end Breadcrumbbar -->
+
+            <!-- Start Contentbar -->
             @yield('content')
             <!-- End Contentbar -->
             <!-- Start Footerbar -->
@@ -182,7 +186,7 @@
         <!-- End Rightbar -->
     </div>
     <!-- End Containerbar -->
-    <!-- Start js -->        
+    <!-- Start js -->
     @include('layouts.partials.javascript')
     <!-- End js -->
 </body>
