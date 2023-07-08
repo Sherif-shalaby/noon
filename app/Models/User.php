@@ -49,7 +49,7 @@ class User extends Authenticatable
             'dashboard' => __('lang.dashboard'),
             'product_module' => __('lang.product_module'),
             'stock' => __('lang.stock'),
-            'sale' => __('lang.sale'),
+            'cashier' => __('lang.sale'),
             'return' => __('lang.return'),
             'employee_module' => __('lang.employee_module'),
             'customer_module' => __('lang.customer_module'),

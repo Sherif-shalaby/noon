@@ -31,8 +31,6 @@ class System extends Model
             return null;
         }
     }
-    // protected $table = 'systems';
-    // public $timestamps = true;
-    // protected $fillable = array('key', 'vale', 'date_and_time','created_by');
+
 
 }
