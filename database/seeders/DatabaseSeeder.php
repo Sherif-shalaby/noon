@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             'updated_at' => Carbon::now()
         ];
 
-        $user = User::updateOrCreate(['id'=>1],$user_data);
+        User::updateOrCreate(['id'=>1],$user_data);
 
         $employee_data = [
             'id'=>1,
@@ -73,6 +73,11 @@ class DatabaseSeeder extends Seeder
 
         Employee::updateOrCreate(['id'=>2],$employee_data);
 
+        $modules = User::modulePermissionArray();
+        $module_settings = [];
+        foreach ($modules as $key => $value) {
+            $module_settings[$key] = 1;
+        }
 
         $system_data=
         [
@@ -93,7 +98,9 @@ class DatabaseSeeder extends Seeder
             ['id'=>9,'key' => 'show_the_window_printing_prompt', 'value' => '1', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>10,'key' => 'currency', 'value' => '119', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>11,'key' => 'numbers_length_after_dot', 'value' => '2', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-        ];
+            ['id'=>12,'key' => 'module_settings', 'value' => json_encode($module_settings), 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+
+            ];
         foreach ($system_data as $item) {
             System::updateOrCreate(['id' => $item['id']],$item);
         }

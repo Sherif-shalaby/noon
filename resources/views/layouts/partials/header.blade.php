@@ -109,12 +109,12 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
               <ul class="horizontal-menu">
 
-                  @if( !empty($module_settings['dashboard']) )
+                  @if(!empty($module_settings['dashboard']) )
                       <li class="scroll">
                           <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>{{__('lang.dashboard')}}</span></a>
                       </li>
                   @endif
-                  @if( !empty($module_settings['product_module']) )
+                  @if(!empty($module_settings['product_module']) )
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.products')}}</span></a>
                           <ul class="dropdown-menu">
@@ -125,7 +125,7 @@
                         </ul>
                       </li>
                  @endif
-                  @if(!empty($module_settings['stock']))
+                  @if(!empty($module_settings['stock_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.stock')}}</span></a>
                           <ul class="dropdown-menu">
@@ -144,7 +144,7 @@
                           </ul>
                       </li>
                   @endif
-                  @if(!empty($module_settings['cashier']))
+                  @if(!empty($module_settings['cashier_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="components"><span>{{__('lang.cashier')}}</span></a>
                           <ul class="dropdown-menu">
@@ -217,7 +217,7 @@
                           </ul>
                       </li>
                   @endif
-                  @if(!empty($module_settings['return']))
+                  @if(!empty($module_settings['return_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
                           <ul class="dropdown-menu">
@@ -278,7 +278,7 @@
                   @if(!empty($module_settings['supplier_module']))
                       <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                   @endif
-                  @if(!empty($module_settings['settings']))
+                  @if(!empty($module_settings['settings_module']))
                       <li class="dropdown menu-item-has-mega-menu">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/settings.png')}}" class="img-fluid" alt="basic"><span>{{__('lang.settings')}}</span></a>
                           <div class="mega-menu dropdown-menu">
@@ -304,7 +304,7 @@
                           </div>
                       </li>
                   @endif
-                  @if(!empty($module_settings['Reports']))
+                  @if(!empty($module_settings['reports_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced"><span>{{__('lang.reports')}}</span></a>
                           <ul class="dropdown-menu">
