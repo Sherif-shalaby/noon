@@ -1,3 +1,4 @@
+
 <div class="topbar">
     <!-- Start container-fluid -->
     <div class="container-fluid">
@@ -100,16 +101,11 @@
             <div class="collapse navbar-collapse" id="navbar-menu">
               <ul class="horizontal-menu">
                   @if( !empty($module_settings['dashboard']) )
-                      <li class="scroll dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>Dashboard</span></a>
-                          <ul class="dropdown-menu">
-                            <li><a href="index.html"><i class="mdi mdi-circle"></i>Social Media</a></li>
-                            <li><a href="dashboard-ecommerce.html"><i class="mdi mdi-circle"></i>eCommerce</a></li>
-                            <li><a href="dashboard-analytics.html"><i class="mdi mdi-circle"></i>Analytics</a></li>
-                        </ul>
+                      <li class="scroll">
+                          <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>Dashboard</span></a>
                       </li>
-                 @endif
-                 @if( !empty($module_settings['product_module']) )
+                  @endif
+                  @if( !empty($module_settings['product_module']) )
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>Products</span></a>
                           <ul class="dropdown-menu">
@@ -299,7 +295,7 @@
                           </div>
                       </li>
                   @endif
-                  @if(!empty($module_settings['']))
+                  @if(!empty($module_settings['Reports']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced"><span>Reports</span></a>
                           <ul class="dropdown-menu">
