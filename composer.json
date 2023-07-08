@@ -12,7 +12,8 @@
         "laravel/tinker": "^2.7",
 
         "laravelcollective/html": "^6.4",
-        "mcamara/laravel-localization": "^1.8"
+        "mcamara/laravel-localization": "^1.8",
+      "ext-mysql_xdevapi": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

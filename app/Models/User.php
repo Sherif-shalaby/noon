@@ -47,15 +47,15 @@ class User extends Authenticatable
     {
         return [
             'dashboard' => __('lang.dashboard'),
-            'product_module' => __('lang.product_module'),
-            'stock' => __('lang.stock'),
-            'cashier' => __('lang.sale'),
-            'return' => __('lang.return'),
-            'employee_module' => __('lang.employee_module'),
-            'customer_module' => __('lang.customer_module'),
-            'supplier_module' => __('lang.supplier_module'),
-            'reports' => __('lang.reports'),
-            'settings' => __('lang.settings'),
+            'product_module' => __('lang.products_module'),
+            'stock_module' => __('lang.stock_module'),
+            'cashier_module' => __('lang.cashier_module'),
+            'return_module' => __('lang.returns_module'),
+            'employee_module' => __('lang.employees_module'),
+            'customer_module' => __('lang.customers'),
+            'supplier_module' => __('lang.suppliers'),
+            'settings_module' => __('lang.settings'),
+            'reports_module' => __('lang.reports'),
         ];
     }
 }

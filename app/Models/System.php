@@ -14,9 +14,6 @@ class System extends Model
     protected $table = 'systems';
     public $timestamps = true;
 
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
     protected $fillable = array('key', 'value', 'date_and_time', 'created_by', 'deleted_by', 'updated_by');
 
 
