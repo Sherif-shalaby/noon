@@ -41,4 +41,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public static function modulePermissionArray()
+    {
+        return [
+            'dashboard' => __('lang.dashboard'),
+            'product_module' => __('lang.product_module'),
+            'stock' => __('lang.stock'),
+            'sale' => __('lang.sale'),
+            'return' => __('lang.return'),
+            'employee_module' => __('lang.employee_module'),
+            'customer_module' => __('lang.customer_module'),
+            'supplier_module' => __('lang.supplier_module'),
+            'reports' => __('lang.reports'),
+            'settings' => __('lang.settings'),
+        ];
+    }
 }
