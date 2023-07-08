@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
 class System extends Model
 {
     use HasFactory;
@@ -30,4 +31,8 @@ class System extends Model
             return null;
         }
     }
+    protected $table = 'systems';
+    public $timestamps = true;
+    protected $fillable = array('key', 'vale', 'date_and_time','created_by');
+
 }
