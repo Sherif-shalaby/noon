@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class System extends Model
 {
     use HasFactory;
 
+
     protected $table = 'systems';
     public $timestamps = true;
+
 
     protected $fillable = array('key', 'value', 'date_and_time', 'created_by', 'deleted_by', 'updated_by');
 
@@ -28,5 +29,6 @@ class System extends Model
             return null;
         }
     }
+
 
 }
