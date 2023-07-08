@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCustomersTable extends Migration {
 
@@ -14,7 +15,7 @@ class CreateCustomersTable extends Migration {
 			$table->string('address')->nullable();
 			$table->string('phone')->nullable();
 			$table->decimal('deposit_balance', 10,2)->nullable();
-			$table->decimal('added_balance', 10,2)->nullable();
+			$table->decimal('added_balance', 10,2)->nullable()->default(0);
 			$table->softDeletes();
 			$table->timestamps();
 			$table->integer('created_by')->nullable();

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateEmployeesTable extends Migration {
 
@@ -9,7 +10,7 @@ class CreateEmployeesTable extends Migration {
 	{
 		Schema::create('employees', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('user_id')->unsigned();
+			$table->unsignedBigInteger('user_id');
 			$table->integer('store_id')->unsigned()->nullable();
 			$table->integer('updated_by')->nullable();
 			$table->string('pass_string')->nullable();
