@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class System extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'systems';
     public $timestamps = true;
 
-    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     protected $fillable = array('key', 'value', 'date_and_time', 'created_by', 'deleted_by', 'updated_by');
@@ -31,8 +31,8 @@ class System extends Model
             return null;
         }
     }
-    protected $table = 'systems';
-    public $timestamps = true;
-    protected $fillable = array('key', 'vale', 'date_and_time','created_by');
+    // protected $table = 'systems';
+    // public $timestamps = true;
+    // protected $fillable = array('key', 'vale', 'date_and_time','created_by');
 
 }
