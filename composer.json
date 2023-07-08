@@ -11,7 +11,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
 
-        "laravelcollective/html": "^6.4"
+        "laravelcollective/html": "^6.4",
         "mcamara/laravel-localization": "^1.8"
     },
     "require-dev": {
