@@ -24,25 +24,13 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::resource('class', 'ClassController');
-    Route::resource('category', 'CategoryController');
-    Route::resource('product', 'ProductController');
-    Route::resource('brand', 'BrandController');
-    Route::resource('currency', 'CurrencyController');
-    Route::resource('store', 'StoreController');
-    Route::resource('productstore', 'ProductStoreController');
-    Route::resource('customer', 'CustomerController');
-    Route::resource('customertype', 'CustomerTypeController');
-    Route::resource('customerbalanceadjustments', 'CustomerBalanceAdjustmentsController');
-    Route::resource('employee', 'EmployeeController');
-    Route::resource('jobtype', 'JobTypeController');
-    Route::resource('exchangerates', 'ExchangeRatesController');
-    Route::resource('productdiscount', 'ProductDiscountController');
-
+    
     Route::post('/logout', function () {
         Auth::logout();
         return redirect('/login');
     });
+    Route::get('settings/modules', [App\Http\Controllers\SettingController::class, 'getModuleSettings'])->name('getModules');
+    Route::post('settings/modules', [App\Http\Controllers\SettingController::class, 'updateModuleSettings'])->name('updateModule');
 });
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

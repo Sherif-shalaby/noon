@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class CreateForeignKeys extends Migration {
 
@@ -64,7 +65,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('restrict');
 		});
 		Schema::table('employees', function(Blueprint $table) {
-			$table->foreign('user_id')->references('id')->on('classes')
+			$table->foreign('user_id')->references('id')->on('users')
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
