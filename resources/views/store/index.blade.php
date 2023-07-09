@@ -31,7 +31,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="store_table" class="table dataTable">
+                        <table id="datatable-buttons" class="table dataTable">
                             <thead>
                             <tr>
                                 <th>@lang('lang.name')</th>
@@ -50,13 +50,13 @@
                                     <td>{{$store->email}}</td>
                                     <td>{{$store->manager_name}}</td>
                                     <td>{{$store->manager_mobile_number}}</td>
-                                    <td>
+                                    <td class="no-print">
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                            <button class="btn btn-default btn-sm dropdown-toggle"
                                                     data-toggle="dropdown" aria-haspopup="true"
                                                     aria-expanded="false">@lang('lang.action')
-                                                <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
+{{--                                                <span class="caret"></span>--}}
+{{--                                                <span class="sr-only">Toggle Dropdown</span>--}}
                                             </button>
                                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
                                             </ul>
