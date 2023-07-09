@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -23,19 +24,21 @@ Route::get('/', function () {
     }
 });
 Route::group(['middleware' => ['auth']], function () {
+    Route::resource('brands', App\Http\Controllers\BrandController::class);
 
 
-Route::resource('brands', App\Http\Controllers\BrandController::class);
+    Route::get('settings/modules', [App\Http\Controllers\SettingController::class, 'getModuleSettings'])->name('getModules');
+    Route::post('settings/modules', [App\Http\Controllers\SettingController::class, 'updateModuleSettings'])->name('updateModule');
 
-Route::get('settings/modules', [App\Http\Controllers\SettingController::class, 'getModuleSettings'])->name('getModules');
-Route::post('settings/modules', [App\Http\Controllers\SettingController::class, 'updateModuleSettings'])->name('updateModule');
 
-    
     Route::post('/logout', function () {
         Auth::logout();
         return redirect('/login');
     });
-   
+
+    //الاقسام 
+    Route::resource('categories', CategoryController::class)->except(['index','show']);
+    Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
 });
 
 

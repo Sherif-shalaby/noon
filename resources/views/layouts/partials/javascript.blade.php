@@ -25,7 +25,7 @@
 <script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
 <!-- Core js -->
 <script src="{{asset('js/core.js')}}"></script> --}}
-        
+
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
@@ -58,12 +58,12 @@
 <script>
       @if (session('status'))
                 new PNotify( {
-                    title: 'Completed Successfully !', text: '{{ session('status.msg') }}', 
+                    title: 'Completed Successfully !', text: '{{ session('status.msg') }}',
                     @if (session('status.success') == '1')
                         type: "success"
                     @else
                         type:"Error"
-                    @endif 
+                    @endif
                 });
         @endif
     if($('.error-msg').text().length>0){
