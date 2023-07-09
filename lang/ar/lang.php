@@ -13,3 +13,4 @@ return [
     'reports'=>'التقارير',
     'categories'=>'الاقسام',
 ];
+

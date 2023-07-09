@@ -74,7 +74,13 @@
                                             <ul class="list-inline mb-0">
                                                 <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/user.svg')}}" class="img-fluid" alt="user"></a></li>
                                                 <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/email.svg')}}" class="img-fluid" alt="email"></a></li>
-                                                <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/logout.svg')}}" class="img-fluid" alt="logout"></a></li>
+                                                <li class="list-inline-item">
+                                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="profile-icon"><img src="{{asset('images/svg-icon/logout.svg')}}" class="img-fluid" alt="logout"></a>
+                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                        style="display: none;">
+                                                        @csrf
+                                                    </form>
+                                                </li>
                                             </ul>
                                         </div>
                                       </div>
@@ -296,6 +302,7 @@
                                   <li class="mega-menu-col col-md-3">
                                       <ul class="sub-menu">
                                           <li><a href="{{route('getModules')}}"><i class="mdi mdi-circle"></i>@lang('lang.modules')</a></li>
+                                          <li><a href="{{route('brands.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.brands')</a></li>
 
                                       </ul>
                                   </li>
