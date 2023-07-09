@@ -35,8 +35,14 @@ return [
     'manager_name' => 'اسم المدير',
     'manager_mobile_number' => 'رقم هاتف المدير',
     'details' => 'التفاصيل',
+    'brands'=>'العلامات التجارية',
+    'add_brand_name'=>'اضافة علامة التجارية',
+    'brand_name'=>'اسم العلامة التجارية',
+    'update'=>'تعديل',
+
 
 
 
 
 ];
+

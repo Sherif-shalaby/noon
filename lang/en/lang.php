@@ -35,6 +35,12 @@ return [
     'manager_name' => 'Manager Name',
     'manager_mobile_number' => 'Manager Mobile Number',
     'details' => 'Details',
+    'brands'=>'Brands',
+    'brand_name'=>'Brand Name',
+    'add_brand_name'=>'Add Brand',
+    'update'=>'Update',
 
 
 ];
+
+
