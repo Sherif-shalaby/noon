@@ -140,6 +140,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // PermissionTableSeeder::class,
             CurrenciesTableSeeder::class,
+            CategorySeeder::class,
         ]);
     }
 }

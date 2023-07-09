@@ -111,9 +111,19 @@
 
                   @if(!empty($module_settings['dashboard']) )
                       <li class="scroll">
-                          <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>{{__('lang.dashboard')}}</span></a>
+                          <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard">
+                            <span>{{__('lang.dashboard')}}</span>
+                          </a>
                       </li>
                   @endif
+                  {{-- @if(!empty($module_settings['dashboard']) ) --}}
+                      <li class="scroll">
+                          <a href="{{url('/')}}">
+                            <img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard">
+                            <span>{{__('lang.categories')}}</span>
+                          </a>
+                      </li>
+                  {{-- @endif --}}
                   @if(!empty($module_settings['product_module']) )
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.products')}}</span></a>

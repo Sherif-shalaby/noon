@@ -10,5 +10,6 @@ return [
     'customers'=>'العملاء',
     'suppliers'=>'الموردين',
     'settings'=>'الاعدادت',
-    'reports'=>'التقارير'
+    'reports'=>'التقارير',
+    'categories'=>'الاقسام',
 ];

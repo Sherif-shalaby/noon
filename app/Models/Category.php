@@ -7,23 +7,31 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-
     protected $table = 'categories';
-    public $timestamps = true;
-
-    use SoftDeletes;
-
-    protected $dates = ['deleted_at'];
-    protected $fillable = array('name', 'description');
-
-    public function class()
+    protected $fillable=['name','parent_id'];
+    public function subCategories()
     {
-        return $this->belongsTo('Class\Class', 'class_id');
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
-    public function products()
+    public static function parents()
     {
-        return $this->hasMany('Product\Product');
+        return self::whereNull('parent_id')->get();
     }
+    // public $timestamps = true;
+
+    // use SoftDeletes;
+    // protected $dates = ['deleted_at'];
+    // protected $fillable = array('name', 'description');
+
+    // public function class()
+    // {
+    //     return $this->belongsTo('Class\Class', 'class_id');
+    // }
+
+    // public function products()
+    // {
+    //     return $this->hasMany('Product\Product');
+    // }
 
 }
