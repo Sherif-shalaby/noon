@@ -7,7 +7,7 @@
                 <h4 class="page-title">@lang('lang.modules')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">@lang('lang.home')</a></li>
+                        <li class="breadcrumb-item"><a href="index.html">@lang('lang.dashboard')</a></li>
                         <li class="breadcrumb-item"><a href="#">@lang('lang.settings')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.modules')</li>
                     </ol>

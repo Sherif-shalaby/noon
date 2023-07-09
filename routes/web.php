@@ -19,5 +19,7 @@ Route::get('/', function () {
 
 Route::get('settings/modules', [App\Http\Controllers\SettingController::class, 'getModuleSettings'])->name('getModules');
 Route::post('settings/modules', [App\Http\Controllers\SettingController::class, 'updateModuleSettings'])->name('updateModule');
+Route::resource('store',App\Http\Controllers\StoreController::class);
+
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

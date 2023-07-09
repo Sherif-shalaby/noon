@@ -286,7 +286,7 @@
                                   <li class="mega-menu-col col-md-3">
                                       <ul class="sub-menu">
                                           <li><a href="{{route('getModules')}}"><i class="mdi mdi-circle"></i>@lang('lang.modules')</a></li>
-
+                                          <li><a href="{{route('store.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stores')</a></li>
                                       </ul>
                                   </li>
                                   {{--                            <li class="mega-menu-col col-md-3">--}}
