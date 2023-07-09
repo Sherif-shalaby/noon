@@ -7,6 +7,7 @@ return [
     'action' => 'Action',
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong',
+    'created_by' => 'Created by',
     'dashboard' =>'Dashboard',
     'products' =>'Products',
     'stock' =>'Stock',

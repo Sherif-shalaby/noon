@@ -51,7 +51,7 @@ class StoreController extends Controller
       ]);
       try {
           $data = $request->except('_token', 'quick_add');
-//          $data['created_by'] = Auth::user()->id;
+          $data['created_by'] = Auth::user()->id;
           Store::create($data);
           $output = [
               'success' => true,

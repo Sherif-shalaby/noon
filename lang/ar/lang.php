@@ -7,6 +7,7 @@ return [
     'delete' => 'حذف',
     'success' => 'تم بنجاح',
     'something_went_wrong' => 'هناك خطأ!',
+    'created_by' => 'أُنشئت بواسطة',
     'dashboard'=>'نظرة عامه',
     'products'=>'المنتجات',
     'stock'=>'المخزن',

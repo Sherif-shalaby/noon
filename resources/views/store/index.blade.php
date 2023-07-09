@@ -26,17 +26,6 @@
     <div class="container-fluid">
         <div class="col-md-12  no-print">
             <div class="card mt-3">
-                @if(session('status'))
-                    @if(session('status')['success'])
-                        <div class="alert alert-success" id="alert">
-                            {{ session('status')['msg'] }}
-                        </div>
-                    @else
-                        <div class="alert alert-danger" id="alert">
-                            {{ session('status')['msg'] }}
-                        </div>
-                    @endif
-                @endif
                 <div class="card-header d-flex align-items-center">
                     <h4 class="print-title">@lang('lang.stores')</h4>
                 </div>
@@ -69,30 +58,11 @@
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
-                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                user="menu">
-                                                @can('settings.store.create_and_edit')
-                                                    <li>
-
-                                                        <a data-href="{{action('StoreController@edit', $store->id)}}"
-                                                           data-container=".view_modal" class="btn btn-modal"><i
-                                                                class="dripicons-document-edit"></i> @lang('lang.edit')</a>
-                                                    </li>
-                                                    <li class="divider"></li>
-                                                @endcan
-                                                @can('settings.store.delete')
-                                                    <li>
-                                                        <a data-href="{{action('StoreController@destroy', $store->id)}}"
-                                                           data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
-                                                           class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                            @lang('lang.delete')</a>
-                                                    </li>
-                                                @endcan
+                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
                                             </ul>
                                         </div>
                                     </td>
                                 </tr>
-
                             @endforeach
                             </tbody>
                         </table>
@@ -154,9 +124,5 @@
 @endsection
 
 @section('javascript')
-    <script>
-        setTimeout(function() {
-            $('#alert').fadeOut('fast');
-        }, 3000);
-    </script>
+
 @endsection
