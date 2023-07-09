@@ -30,7 +30,7 @@
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/dashboard (1).png')}}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title font-18 text-center">__{{('lang.dashboard')}}</h5>
+                        <h5 class="card-title font-18 text-center">{{__('lang.dashboard')}}</h5>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/dairy-products.png')}}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title font-18 text-center">__{{('lang.products')}}</h5>
+                        <h5 class="card-title font-18 text-center">{{__('lang.products')}}</h5>
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/warehouse.png')}}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title font-18 text-center">__{{('lang.stock')}}</h5>
+                        <h5 class="card-title font-18 text-center">{{__('lang.stock')}}</h5>
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/cash-machine.png')}}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title font-18 text-center">__{{('lang.cashier')}}</h5>
+                        <h5 class="card-title font-18 text-center">{{__('lang.cashier')}}</h5>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/return.png')}}" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title font-18 text-center">__{{('lang.return')}}</h5>
+                        <h5 class="card-title font-18 text-center">{{__('lang.returns')}}</h5>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
             <div class="card p-3">
                 <img class="card-img-top" src="{{asset('images/dashboard-icon/employment.png')}}" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title font-18 text-center">__{{('lang.employee')}}</h5>
+                    <h5 class="card-title font-18 text-center">{{__('lang.employees')}}</h5>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
             <div class="card p-3">
                 <img class="card-img-top" src="{{asset('images/dashboard-icon/customer-satisfaction.png')}}" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title font-18 text-center">__{{('lang.customers')}}</h5>
+                    <h5 class="card-title font-18 text-center">{{__('lang.customers')}}</h5>
                 </div>
             </div>
         </div>
@@ -91,7 +91,7 @@
             <div class="card p-3">
                 <img class="card-img-top" src="{{asset('images/dashboard-icon/inventory.png')}}" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title font-18 text-center">__{{('lang.suppliers')}}</h5>
+                    <h5 class="card-title font-18 text-center">{{__('lang.suppliers')}}</h5>
                 </div>
             </div>
         </div>
@@ -99,7 +99,7 @@
             <div class="card p-3">
                 <img class="card-img-top" src="{{asset('images/dashboard-icon/settings.png')}}" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title font-18 text-center">__{{('lang.settings')}}</h5>
+                    <h5 class="card-title font-18 text-center">{{__('lang.settings')}}</h5>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
             <div class="card p-3">
                 <img class="card-img-top" src="{{asset('images/dashboard-icon/report.png')}}" alt="Card image cap">
                 <div class="card-body">
-                    <h5 class="card-title font-18 text-center">__{{('lang.reports')}}</h5>
+                    <h5 class="card-title font-18 text-center">{{__('lang.reports')}}</h5>
                 </div>
             </div>
         </div>
