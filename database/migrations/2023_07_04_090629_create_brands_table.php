@@ -14,7 +14,7 @@ class CreateBrandsTable extends Migration {
 			$table->softDeletes();
 			$table->string('name');
 			$table->integer('created_by')->nullable();
-			$table->integer('edited_by');
+			$table->integer('edited_by')->nullable();
 			$table->integer('deleted_by')->nullable();
 		});
 	}
