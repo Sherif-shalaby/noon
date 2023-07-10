@@ -3,7 +3,7 @@
 @push('css')
 <style>
 
-   
+
 </style>
 @endpush
 @section('breadcrumbbar')
@@ -66,9 +66,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="">
+                                        <div class="form-group">
                                             <label for="parent_id">@lang('categories.parent')</label>
-                                            <select name="parent_id" class=" select2">
+                                            <select name="parent_id" class=" form-control select2">
                                                 <option value="" selected disabled readonly>---{{ __('select') }}---</option>
                                                 @forelse($cats as $cat)
                                                     <option value="{{ $cat->id }}"

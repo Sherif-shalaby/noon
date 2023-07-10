@@ -36,8 +36,8 @@ Route::group(['middleware' => ['auth']], function () {
         return redirect('/login');
     });
 
-    //الاقسام 
-    Route::resource('categories', CategoryController::class)->except(['index','show']);
+    //الاقسام
+    Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
 });
 
