@@ -40,7 +40,7 @@ class CategoryRequest extends FormRequest
                     'name' => 'required|max:255|unique:categories,id,'.$this->route()->parameter('id'),
                     'status' => 'required',
                     'parent_id' => 'nullable',
-                    'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
+                    'cover' => 'nullable',
                 ];
             }
             default: break;

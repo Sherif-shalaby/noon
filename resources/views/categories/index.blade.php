@@ -41,11 +41,14 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>@lang('categories.cover')</th>
                                             <th>@lang('categories.categorie_name')</th>
                                             <th>@lang('categories.parent')</th>
                                             <th>@lang('categories.sub_categories')</th>
                                             <th>@lang('categories.status')</th>
                                             <th>@lang('categories.created_at')</th>
+                                            <th>@lang('added_by')</th>
+                                            <th>@lang('updated_by')</th>
                                             <th>@lang('categories.action')</th>
                                         </tr>
                                     </thead>
@@ -53,6 +56,7 @@
                                         @foreach ($categories as $index=>$categorie)
                                             <tr>
                                                 <td>{{ $index+1 }}</td>
+                                                <td><img src="{{$categorie->imagepath}}" style="width: 50px; height: 50px;" alt="{{ $categorie->name }}" ></td>
                                                 <td>{{ $categorie->name }}</td>
                                                 <td>{{ $categorie->parentName()}}</td>
                                                 <td>
@@ -61,6 +65,8 @@
                                                 </td>
                                                 <td>{{ __($categorie->status())}}</td>
                                                 <td>{{ $categorie->created_at() }}</td>
+                                                <td>{{ $categorie->employee?->name }}</td>
+                                                <td>{{ $categorie->last_employee?->name }}</td>
                                                 <td>
                                                     @include('categories.action')
                                                 </td>
