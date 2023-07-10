@@ -56,8 +56,6 @@ class CategoryController extends Controller
             $input['name']        = $request->name;
             $input['status']      = $request->status;
             $input['parent_id']   = $request->parent_id;
-            $input['user_id']     = auth()->user()->id;
-            $input['last_update'] = auth()->user()->id;
             if ($request->file('cover')) {
                 $input['cover'] = store_file($request->file('cover'), 'categories');
             }
@@ -100,7 +98,6 @@ class CategoryController extends Controller
         $input['name'] = $request->name;
         $input['status'] = $request->status;
         $input['parent_id'] = $request->parent_id;
-        $input['last_update'] = auth()->user()->id;
         if ($request->file('cover')) {
             if ($category->cover != 'categorys/LOGO.png') {
                 delete_file($category->getRawOriginal('cover'));

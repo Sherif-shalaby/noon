@@ -64,7 +64,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="parent_id">@lang('categories.parent')</label>
-                                            <select name="parent_id" class="form-control select2" required id="my-select">
+                                            <select name="parent_id" class="form-control select2"  id="my-select">
                                                 <option value="" selected disabled readonly>---{{ __('select') }}---</option>
                                                 @forelse($cats as $cat)
                                                     <option value="{{ $cat->id }}"

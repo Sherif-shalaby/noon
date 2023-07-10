@@ -65,8 +65,31 @@
                                                 </td>
                                                 <td>{{ __($categorie->status())}}</td>
                                                 <td>{{ $categorie->created_at() }}</td>
-                                                <td>{{ $categorie->employee?->name }}</td>
-                                                <td>{{ $categorie->last_employee?->name }}</td>
+                                                {{-- <td>{{ $categorie->employee?->name }}</td> --}}
+                                                <td>
+                                                    {{-- {{ $categorie->last_employee?->name }} --}}
+                                                    @if ($categorie->user_id  > 0 and $categorie->user_id != null)
+                                                        {{ $categorie->created_at->diffForHumans() }} <br>
+                                                        {{ $categorie->created_at->format('Y-m-d') }}
+                                                        ({{ $categorie->created_at->format('h:i') }})
+                                                        {{ ($categorie->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                                        {{ $categorie->employee?->name }}
+                                                    @else
+                                                        لايوجد تحديث
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{-- {{ $categorie->last_employee?->name }} --}}
+                                                    @if ($categorie->last_update  > 0 and $categorie->last_update != null)
+                                                        {{ $categorie->updated_at->diffForHumans() }} <br>
+                                                        {{ $categorie->updated_at->format('Y-m-d') }}
+                                                        ({{ $categorie->updated_at->format('h:i') }})
+                                                        {{ ($categorie->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                                        {{ $categorie->last_employee?->name }}
+                                                    @else
+                                                        لايوجد تحديث
+                                                    @endif
+                                                </td>
                                                 <td>
                                                     @include('categories.action')
                                                 </td>
