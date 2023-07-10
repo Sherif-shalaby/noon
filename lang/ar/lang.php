@@ -18,6 +18,7 @@ return [
     'suppliers'=>'الموردين',
     'settings'=>'الاعدادت',
     'reports'=>'التقارير',
+    'categories'=>'الاقسام',
     'modules' => 'إظهار/إخفاء أقسام البرنامج',
     'product_module' =>'المنتجات',
     'stock_module' =>'المخزون',
@@ -40,10 +41,6 @@ return [
     'add_brand_name'=>'اضافة علامة التجارية',
     'brand_name'=>'اسم العلامة التجارية',
     'update'=>'تعديل',
-
-
-
-
 
 ];
 

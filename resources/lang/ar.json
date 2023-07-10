@@ -1,0 +1,25 @@
+{
+    "Search": "بحث",
+    "Searchname": "بحث بالاسم",
+    "Add": "اضافه",
+    "Edit": "تعديل",
+    "Delete": "حذف",
+    "Show": "عرض",
+    "Active": "مفعل",
+    "Inactive": "غير مفعل",
+    "select": "اختر",
+    "Ascending": "تنازلى",
+    "Descending": "تصاعدى",
+    "ID": "مسلسل",
+    "Name": "اسم القسم",
+    "Created_at": "تاريخ الانشاء",
+    "added_by": "مدخل البيان",
+    "updated_by": "اخر تحديث",
+    "crop": "قص",
+    "cancel": "الغاء",
+    "Back": "رجوع"
+
+
+
+}
+

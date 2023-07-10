@@ -117,9 +117,13 @@
 
                   @if(!empty($module_settings['dashboard']) )
                       <li class="scroll">
-                          <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard"><span>{{__('lang.dashboard')}}</span></a>
+                          <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard">
+                            <span>{{__('lang.dashboard')}}</span>
+                          </a>
                       </li>
                   @endif
+                  {{-- @if(!empty($module_settings['dashboard']) ) --}}
+
                   @if(!empty($module_settings['product_module']) )
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.products')}}</span></a>
@@ -294,7 +298,7 @@
                                           <li><a href="{{route('getModules')}}"><i class="mdi mdi-circle"></i>@lang('lang.modules')</a></li>
                                           <li><a href="{{route('store.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stores')</a></li>
                                           <li><a href="{{route('brands.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.brands')</a></li>
-
+                                          <li><a href="{{route('sub-categories', 'category')}}"><i class="mdi mdi-circle"></i>@lang('categories.categories')</a></li>
                                       </ul>
                                   </li>
                                   {{--                            <li class="mega-menu-col col-md-3">--}}
