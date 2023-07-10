@@ -11,11 +11,15 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        {{-- <li class="breadcrumb-item"><a href="#">categories</a></li> --}}
+                        <li class="breadcrumb-item"><a href="{{route('sub-categories', 'category')}}">@lang('categories.categories')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('categories.add_categorie_name')</li>
                     </ol>
                 </div>
             </div>
+            <a href="{{route('sub-categories', 'category')}}" class="btn btn-info">
+                <i class="fa fa-arrow-left"></i>
+                @lang('Back')
+            </a>
         </div>
     </div>
 @endsection
