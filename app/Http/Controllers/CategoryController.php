@@ -16,7 +16,8 @@ class CategoryController extends Controller
         // $categories = Category::latest()->paginate(10);
         $categories=Category::
             when(\request()->keyword != null, function ($query) {
-                $query->where('name', 'like', '%' . \request()->keyword . '%');
+                $query->where('name', 'like', '%' . \request()->keyword . '%')
+                ->orWhere('translation->name->'.App::getLocale(), 'like', '%' . \request()->keyword . '%');
             })
             ->when(\request()->status != null, function ($query) {
                 $query->whereStatus(\request()->status)??'';
