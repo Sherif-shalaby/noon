@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -87,7 +91,8 @@ class SettingController extends Controller
         //
     }
 
-    public function getModuleSettings()
+    //          get show and hide module
+    public function getModuleSettings(): Factory|View|Application
     {
         $modules = User::modulePermissionArray();
         $module_settings = System::getProperty('module_settings') ? json_decode(System::getProperty('module_settings'), true) : [];
@@ -97,7 +102,9 @@ class SettingController extends Controller
             'module_settings',
         ));
     }
-    public function updateModuleSettings(Request $request)
+
+    //          update show and hide module
+    public function updateModuleSettings(Request $request): RedirectResponse
     {
         $module_settings = $request->module_settings;
 

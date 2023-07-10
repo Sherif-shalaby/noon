@@ -25,17 +25,13 @@ Route::get('/', function () {
 });
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', App\Http\Controllers\BrandController::class);
-
-
     Route::get('settings/modules', [App\Http\Controllers\SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [App\Http\Controllers\SettingController::class, 'updateModuleSettings'])->name('updateModule');
-
-
+    Route::resource('store',App\Http\Controllers\StoreController::class);
     Route::post('/logout', function () {
         Auth::logout();
         return redirect('/login');
     });
-
     //الاقسام
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
