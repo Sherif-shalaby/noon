@@ -46,7 +46,7 @@
                                             <th>@lang('categories.parent')</th>
                                             <th>@lang('categories.sub_categories')</th>
                                             <th>@lang('categories.status')</th>
-                                            <th>@lang('categories.created_at')</th>
+                                            {{-- <th>@lang('categories.created_at')</th> --}}
                                             <th>@lang('added_by')</th>
                                             <th>@lang('updated_by')</th>
                                             <th>@lang('categories.action')</th>
@@ -64,7 +64,7 @@
                                                         {{ $categorie->subCategories->count() }}</a>
                                                 </td>
                                                 <td>{{ __($categorie->status())}}</td>
-                                                <td>{{ $categorie->created_at() }}</td>
+                                                {{-- <td>{{ $categorie->created_at() }}</td> --}}
                                                 {{-- <td>{{ $categorie->employee?->name }}</td> --}}
                                                 <td>
                                                     {{-- {{ $categorie->last_employee?->name }} --}}
@@ -87,7 +87,7 @@
                                                         {{ ($categorie->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
                                                         {{ $categorie->last_employee?->name }}
                                                     @else
-                                                        لايوجد تحديث
+                                                       {{ __('no_update') }}
                                                     @endif
                                                 </td>
                                                 <td>
