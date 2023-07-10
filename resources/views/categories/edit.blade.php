@@ -103,7 +103,7 @@
                                             <label>@lang('categories.cover')</label>
                                             <div class="dropzone" id="my-dropzone">
                                                 <div class="dz-message" data-dz-message>
-                                                    {{-- <span>@lang('categories.drop_file_here_to_upload')</span> --}}
+                                                    <img src="{{$category->imagepath}}" style="width: 150px;"  >
                                                 </div>
                                                 {{-- <input name="file" type="file" class="dz-message" /> --}}
                                             </div>
