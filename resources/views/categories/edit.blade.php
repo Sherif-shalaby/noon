@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @section('title', __('categories.edit_categorie'))
 @push('css')
+<style>
 
+   
+</style>
 @endpush
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
@@ -11,12 +14,13 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('sub-categories', 'category')}}">@lang('categories.categories')</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('sub-categories', 'category') }}">@lang('categories.categories')</a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('categories.edit_categorie')</li>
                     </ol>
                 </div>
             </div>
-            <a href="{{route('sub-categories', 'category')}}" class="btn btn-info">
+            <a href="{{ route('sub-categories', 'category') }}" class="btn btn-info">
                 <i class="fa fa-arrow-left"></i>
                 @lang('Back')
             </a>
@@ -41,16 +45,15 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name">@lang('categories.categorie_name')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                            <div class="select_body d-flex justify-content-between align-items-center">
                                                 <input type="text" class="form-control" placeholder="@lang('categories.categorie_name')"
                                                     name="name" value="{{ old('name', $category->name) }}">
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                                <button  class="btn btn-primary btn-sm ml-2"
-                                                    type="button" data-toggle="collapse"
-                                                    data-target="#translation_table_category" aria-expanded="false"
-                                                    aria-controls="collapseExample">
+                                                <button class="btn btn-primary btn-sm ml-2" type="button"
+                                                    data-toggle="collapse" data-target="#translation_table_category"
+                                                    aria-expanded="false" aria-controls="collapseExample">
                                                     {{ __('categories.addtranslations') }}
                                                 </button>
                                             </div>
@@ -63,11 +66,10 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="">
                                             <label for="parent_id">@lang('categories.parent')</label>
-                                            <select name="parent_id" class="form-control select2">
-                                                <option value="" selected disabled readonly>---{{ __('select') }}---
-                                                </option>
+                                            <select name="parent_id" class=" select2">
+                                                <option value="" selected disabled readonly>---{{ __('select') }}---</option>
                                                 @forelse($cats as $cat)
                                                     <option value="{{ $cat->id }}"
                                                         {{ old('parent_id', $category->parent_id) == $cat->id ? 'selected' : null }}>
@@ -103,7 +105,7 @@
                                             <label>@lang('categories.cover')</label>
                                             <div class="dropzone" id="my-dropzone">
                                                 <div class="dz-message" data-dz-message>
-                                                    <img src="{{$category->imagepath}}" style="width: 150px;"  >
+                                                    <img src="{{ $category->imagepath }}" style="width: 150px;">
                                                 </div>
                                                 {{-- <input name="file" type="file" class="dz-message" /> --}}
                                             </div>
@@ -135,7 +137,5 @@
     </div>
 @endsection
 @push('js')
-
     <script src="{{ asset('js/category_edit.js') }}"></script>
-
 @endpush
