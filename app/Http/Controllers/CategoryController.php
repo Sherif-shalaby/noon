@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\App;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\CategoryupdateRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -34,25 +35,25 @@ class CategoryController extends Controller
         return view('categories.create', compact('cats'));
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|max:255|unique:categories,id',
-                'status' => 'required',
-                'parent_id' => 'nullable',
-                'cover' => 'nullable',
-            ],
-            [
-                'name.required' => __('categories.categoryNameRequired'),
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json(['status' => $validator->errors()->first()],[],[
-                'name.required' => __('categories.categoryNameRequired')
-            ]);
-        }
+        // $validator = Validator::make(
+        //     $request->all(),
+        //     [
+        //         'name' => 'required|max:255|unique:categories,id',
+        //         'status' => 'required',
+        //         'parent_id' => 'nullable',
+        //         'cover' => 'nullable',
+        //     ],
+        //     [
+        //         'name.required' => __('categories.categoryNameRequired'),
+        //     ]
+        // );
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => $validator->errors()->first()],[],[
+        //         'name.required' => __('categories.categoryNameRequired')
+        //     ]);
+        // }
             $input['name']        = $request->name;
             $input['status']      = $request->status;
             $input['parent_id']   = $request->parent_id;
@@ -78,23 +79,23 @@ class CategoryController extends Controller
         return view('categories.edit', compact('category', 'cats'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(CategoryupdateRequest $request, Category $category)
     {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|max:255|unique:categories,id,'.$category->id,
-                'status' => 'required',
-                'parent_id' => 'nullable',
-                'cover' => 'nullable',
-            ],
-            [
-                'name.required' => __('categories.categoryNameRequired'),
-            ]
-        );
-        if ($validator->fails()) {
-            return response()->json(['status' => $validator->errors()->first()]);
-        }
+        // $validator = Validator::make(
+        //     $request->all(),
+        //     [
+        //         'name' => 'required|max:255|unique:categories,id,'.$category->id,
+        //         'status' => 'required',
+        //         'parent_id' => 'nullable',
+        //         'cover' => 'nullable',
+        //     ],
+        //     [
+        //         'name.required' => __('categories.categoryNameRequired'),
+        //     ]
+        // );
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => $validator->errors()->first()]);
+        // }
         $input['name'] = $request->name;
         $input['status'] = $request->status;
         $input['parent_id'] = $request->parent_id;

@@ -14,13 +14,13 @@ return [
     'edit_categorie'=>'Edit Categeroy',
     'data_no_found'=>'Data No Found',
     'drop_file_here_to_upload'=>'Drop File Here To Upload',
-    'categoryNameRequired'=>'Category Name Required',
     'cover'=>'Cover',
     'updatesuccess'=>'Updated Successfully',
     'addsuccess'=>'Created Successfully',
     'addtranslations'=>'Add Translations',
     'crop_image_before_upload'=>'Crop Image Before Upload',
-
+    'categoryNameRequired'=>'Category Name Required',
+    'categoryNameUnique'=>'Category Name Used Before',
 
 ];
 
