@@ -75,7 +75,7 @@
                                                         {{ ($categorie->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
                                                         {{ $categorie->employee?->name }}
                                                     @else
-                                                        لايوجد تحديث
+                                                    {{ __('no_update') }}
                                                     @endif
                                                 </td>
                                                 <td>
