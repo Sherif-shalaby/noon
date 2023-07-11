@@ -39,3 +39,8 @@
     }
 </style>
 
+<style>
+    #name-error{
+        color:red;
+    }
+</style>

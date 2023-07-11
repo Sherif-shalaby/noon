@@ -23,6 +23,7 @@
 
 
 <script type="text/javascript" src="{{asset('js/jquery-validation/jquery.validate.min.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/jquery-validation/localization/messages_'. app()->getLocale() .'.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/cropperjs/cropper.min.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/dropzone.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script>
