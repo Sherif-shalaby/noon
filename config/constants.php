@@ -11,9 +11,13 @@ return [
 
     'langs' => [
         'en' => ['full_name' => 'English', 'short_name' => 'English'],
-//        'fr' => ['full_name' => 'French - Français', 'short_name' => 'French'],
+        'fr' => ['full_name' => 'French - Français', 'short_name' => 'French'],
         'ar' => ['full_name' => 'Arabic - العَرَبِيَّة', 'short_name' => 'Arabic'],
-        // 'tr' => ['full_name' => 'Turkish - Türkçe', 'short_name' => 'Turkish'],
+        'tr' => ['full_name' => 'Turkish - Türkçe', 'short_name' => 'Turkish'],
+        'nl' => ['full_name' => 'Dutch - Dutch', 'short_name' => 'Dutch'],
+        'ur' => ['full_name' => 'Urud - اردو', 'short_name' => 'Urud'],
+        'hi' => ['full_name' => 'Hindi - हिंदी', 'short_name' => 'Hindi'],
+        'fa' => ['full_name' => 'Persian - فارسی', 'short_name' => 'Persian'],
     ],
     'langs_rtl' => ['ar'],
     'non_utf8_languages' => ['ar', 'hi', 'ps'],

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\System;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +25,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $logo = System::getProperty('logo');
+        $site_title = System::getProperty('site_title');
+        if (Auth::check()) {
+            return view('home.index',compact('logo','site_title'));
+        } else {
+            return redirect('/login');
+        }
     }
 }

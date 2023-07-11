@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
             $module_settings = !empty($module_settings) ? json_decode($module_settings, true) : [];
             view()->share('module_settings' , $module_settings);
         }
+        $settings = System::pluck('value', 'key');
+        view()->share('settings' , $settings);
 
     }
 }

@@ -12,7 +12,7 @@ class CreateBrandsTable extends Migration {
 			$table->increments('id');
 			$table->timestamps();
 			$table->softDeletes();
-			$table->string('name');
+			$table->string('name')->unique();
 			$table->integer('created_by')->nullable();
 			$table->integer('edited_by')->nullable();
 			$table->integer('deleted_by')->nullable();

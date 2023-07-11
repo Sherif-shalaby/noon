@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BrandRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +36,13 @@ class BrandController extends Controller
    *
    * @return Response
    */
-  public function store(Request $request)
+  public function store(BrandRequest $request)
   {
-        $this->validate(
-          $request,
-          ['name' => ['required','unique:brands,name,NULL,id,deleted_at,NULL', 'max:255']]
-      );
+    //     $this->validate(
+    //       $request,
+    //       ['name' => ['required','unique:brands,name,NULL,id,deleted_at,NULL', 'max:255']
+    //       ]
+    //   );
 
       try {
           $data = $request->except('_token');

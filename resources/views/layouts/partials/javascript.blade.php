@@ -1,5 +1,3 @@
-
-
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/modernizr.min.js')}}"></script>
@@ -29,6 +27,7 @@
 <script type="text/javascript" src="{{asset('js/dropzone.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script>
+<script src="{{asset('js/summernote.min.js')}}" referrerpolicy="origin"></script>
 <script>
     $('.select2').select2({
         // 'width': '100%',
@@ -48,7 +47,7 @@
                     @if (session('status.success') == '1')
                         type: "success"
                     @else
-                        type:"Error"
+                        type:"error"
                     @endif
                 });
         @endif
@@ -164,4 +163,6 @@
                 },
             });
         });
+        
 </script>
+@stack('javascripts')

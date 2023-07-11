@@ -4,7 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\SettingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,18 +15,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    if (Auth::check()) {
-        return view('home.index');
-    } else {
-        return redirect('/login');
-    }
-});
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', App\Http\Controllers\BrandController::class);
-    Route::get('settings/modules', [App\Http\Controllers\SettingController::class, 'getModuleSettings'])->name('getModules');
-    Route::post('settings/modules', [App\Http\Controllers\SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
+    Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
+    Route::post('settings/remove-image/{type}', [SettingController::class,'removeImage']);
+    Route::resource('settings', SettingController::class);
     Route::resource('store',App\Http\Controllers\StoreController::class);
     Route::post('/logout', function () {
         Auth::logout();
@@ -42,4 +37,4 @@ Route::group(['middleware' => ['auth']], function () {
 
 Auth::routes();
 
-// Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
