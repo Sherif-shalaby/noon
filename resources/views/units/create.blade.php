@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form" action="{{ route('units.store') }}" method="POST">
+            <form class="form" action="{{ route('units.store') }}" method="POST" id="unit-form">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group ">
@@ -49,3 +49,7 @@
         </div>
     </div>
 </div>
+@push('js')
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\UnitRequest','#unit-form'); !!}
+@endpush

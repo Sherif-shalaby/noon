@@ -18,7 +18,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('units.update',$unit->id) }}" method="POST">
+            <form action="{{ route('units.update',$unit->id) }}" method="POST" id="unit-edit-form">
                 <div class="modal-body">
                     @csrf
                     @method('PUT')
@@ -62,3 +62,7 @@
     </div>
 </div>
 {{-- end modal edit --}}
+@push('js')
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\UnitupdateRequest','#unit-edit-form'); !!}
+@endpush

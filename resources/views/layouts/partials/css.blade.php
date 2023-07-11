@@ -30,16 +30,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script type="text/javascript" src="{{asset('js/toastr/toastr.min.js')}}"></script>
-<style>
-    .error{
-        color: red;
-    /* position: absolute; */
-    /* top: 70px; */
-    }
-</style>
+
 
 <style>
-    #name-error{
+    .error-help-block{
         color:red;
     }
 </style>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UnitRequest;
+use App\Http\Requests\UnitupdateRequest;
 use App\Models\Unit;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -14,17 +16,7 @@ class UnitController extends Controller
         $units = Unit::latest()->paginate(10);
         return view('units.index', compact('units'));
     }
-    public function store(Request $request){
-        $this->validate(
-            $request,
-            [
-                'name' => ['required', 'unique:units,name', 'max:255'],
-                'base_unit_multiplier' => ['nullable', 'numeric']
-            ],[],
-            [
-                'base_unit_multiplier.numeric'=>__('units.base_unit_multiplier_num')
-            ]
-        );
+    public function store(UnitRequest $request){
         try {
             $input['name'] = $request->name;
             $input['slug'] = Str::slug($request->name);
@@ -49,18 +41,7 @@ class UnitController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
-    public function update(Request $request, Unit $unit){
-        $this->validate(
-            $request,
-            [
-                'name' => 'required|max:255|unique:units,name,'.$unit->id,
-                'base_unit_multiplier' => ['nullable', 'numeric']
-            ],[],
-            [
-                'base_unit_multiplier.numeric'=>__('units.base_unit_multiplier_num')
-            ]
-        );
-
+    public function update(UnitupdateRequest $request, Unit $unit){
         try {
             $input['name'] = $request->name;
             $input['slug'] = Str::slug($request->name);

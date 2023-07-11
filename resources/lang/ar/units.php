@@ -8,6 +8,8 @@ return [
     'editunit'=>'تعديل وحده',
     'base_unit_multiplier'=>'مرات',
     'base_unit_multiplier_num'=>'هذا الحقل يجب ان يكون رقم',
+    'unitNameRequired'=>'اسم الوحده مطلوب',
+    'unitNameUnique'=>'اسم الوحده مستحدم من قبل',
 
 
 ];
