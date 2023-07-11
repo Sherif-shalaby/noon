@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Traits\EmployeeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\EmployeeTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
-    use HasFactory, EmployeeTrait;
+    use HasFactory, EmployeeTrait,SoftDeletes;
     protected $table = 'categories';
     // protected $fillable=['name','parent_id','cover','status'];
     protected $guarded = [];
@@ -60,12 +60,12 @@ class Category extends Model
     {
         return self::whereNull('parent_id')->get();
     }
-    public function employee()
+    public function createBy()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function last_employee()
+    public function updateBy()
     {
         return $this->belongsTo(User::class, 'last_update');
     }

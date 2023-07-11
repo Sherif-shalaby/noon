@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SizeController;
+use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +38,12 @@ Route::group(['middleware' => ['auth']], function () {
     //الاقسام
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
+    // colors
+    Route::resource('colors', ColorController::class)->except(['show']);
+    // sizes
+    Route::resource('sizes', SizeController::class)->except(['show']);
+    // units
+    Route::resource('units', UnitController::class)->except(['show']);
 });
 
 
