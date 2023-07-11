@@ -19,4 +19,22 @@ return [
     'delete'=>'Delete',
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong!',
+
+    'brands'=>'Brands',
+    'brand_name'=>'Brand Name',
+    'add_brand_name'=>'Add Brand',
+    'update'=>'Update',
+
+    'general_settings'=>'General Settings',
+    'developed_by'=>'Developed By',
+    'site_title'=>'Site Title',
+    'time_format'=>'Time Format',
+    'language'=>'Language',
+    'currency'=>'Currency',
+    'invoice_lang'=>'Invoice Lang',
+    'watsapp_numbers'=>'Watsapp Number',
+    'letter_header'=>'Letter Header',
+    'letter_footer'=>'Letter Footer',
+    'logo'=>'Logo',
+    'help_page_content'=>'Help Page Content',
 ];

@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="{{asset('js/cropperjs/cropper.min.css') }}">
 <link rel="stylesheet" href="{{asset('css/style2.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('js/select/select2.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/crop/crop.css') }}">
 {{-- <script src="{{asset('js/jquery.min.js')}}"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>

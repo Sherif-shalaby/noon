@@ -1885,9 +1885,9 @@ STYLE SWITCHER FOR DEMO
 }
 
 .btn-default {
-    color: color-yiq(#ced4da);
+    color:#0a0a0a;
     background-color: #ced4da;
-    border-color: #7c5cc4;
+    border-color: #f6f5f7;
 }
 
 .btn-default:hover {

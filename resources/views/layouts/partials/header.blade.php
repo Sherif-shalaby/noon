@@ -10,7 +10,7 @@
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
                             <div class="logobar">
-                                <a href="index.html" class="logo logo-large"><img src="{{asset('images/logo.svg')}}" class="img-fluid" alt="logo"></a>
+                                <a href="{{url('/')}}" class=""><img src="{{asset('/uploads/'.$settings['logo'])}}" width="45" height="45" class="img-fluid" alt="logo"></a>
                             </div>
                         </li>
                         <li class="list-inline-item">
@@ -299,9 +299,11 @@
                                           <li><a href="{{route('store.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stores')</a></li>
                                           <li><a href="{{route('brands.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.brands')</a></li>
                                           <li><a href="{{route('sub-categories', 'category')}}"><i class="mdi mdi-circle"></i>@lang('categories.categories')</a></li>
+                                          <li><a href="{{route('settings.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.general_settings')</a></li>
                                           <li><a href="{{route('colors.index')}}"><i class="mdi mdi-circle"></i>@lang('colors.colors')</a></li>
                                           <li><a href="{{route('sizes.index')}}"><i class="mdi mdi-circle"></i>@lang('sizes.sizes')</a></li>
                                           <li><a href="{{route('units.index')}}"><i class="mdi mdi-circle"></i>@lang('units.units')</a></li>
+
 
                                       </ul>
                                   </li>
