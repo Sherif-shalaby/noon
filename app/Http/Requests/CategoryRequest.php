@@ -11,7 +11,7 @@ class CategoryRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,36 +21,43 @@ class CategoryRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        switch ($this->method()) {
-            case 'POST':
-            {
-                return [
-                    'name' => 'required|max:255|unique:categories',
-                    'status' => 'required',
-                    'parent_id' => 'nullable',
-                    'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
-                ];
-            }
-            case 'PUT':
-            case 'PATCH':
-            {
-                return [
-                    'name' => 'required|max:255|unique:categories,id,'.$this->route()->parameter('id'),
-                    'status' => 'required',
-                    'parent_id' => 'nullable',
-                    'cover' => 'nullable',
-                ];
-            }
-            default: break;
-        }
+        return [
+            'name' => 'required|max:255|unique:categories',
+            'status' => 'required',
+            'parent_id' => 'nullable',
+            'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
+        ];
+        // switch ($this->method()) {
+        //     case 'POST':
+        //     {
+        //         return [
+        //             'name' => 'required|max:255|unique:categories',
+        //             'status' => 'required',
+        //             'parent_id' => 'nullable',
+        //             'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
+        //         ];
+        //     }
+        //     case 'PUT':
+        //     case 'PATCH':
+        //     {
+        //         return [
+        //             'name' => 'required|max:255|unique:categories,id,'.$this->route()->parameter('id'),
+        //             'status' => 'required',
+        //             'parent_id' => 'nullable',
+        //             'cover' => 'nullable',
+        //         ];
+        //     }
+        //     default: break;
+        // }
     }
 
     public function messages()
     {
         return [
         'name.required'=>__('categories.categoryNameRequired'),
+        'name.unique'=>__('categories.categoryNameUnique'),
 
 
 

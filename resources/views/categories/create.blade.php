@@ -64,7 +64,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="parent_id">@lang('categories.parent')</label>
-                                            <select name="parent_id" class="form-control select2" required id="my-select">
+                                            <select name="parent_id" class="form-control select2"  id="my-select">
                                                 <option value="" selected disabled readonly>---{{ __('select') }}---</option>
                                                 @forelse($cats as $cat)
                                                     <option value="{{ $cat->id }}"
@@ -120,8 +120,7 @@
     </div>
 @endsection
 @push('js')
-
 <script src="{{ asset('js/category.js') }}"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> --}}
-
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#product-form'); !!}
 @endpush
