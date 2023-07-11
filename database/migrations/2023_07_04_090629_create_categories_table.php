@@ -17,11 +17,7 @@ class CreateCategoriesTable extends Migration {
             $table->longText('translation')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('last_update')->nullable()->constrained('users', 'id')->cascadeOnDelete();
-			// $table->json('translations')->nullable();
-			// $table->text('description');
-			// $table->integer('parent_id')->unsigned()->nullable();
-			// $table->integer('class_id')->unsigned()->nullable();
-			// $table->softDeletes();
+			$table->softDeletes();
 			$table->timestamps();
 		});
 	}
