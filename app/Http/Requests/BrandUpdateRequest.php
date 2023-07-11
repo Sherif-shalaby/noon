@@ -11,11 +11,11 @@ class BrandUpdateRequest extends FormRequest
      *
      * @return bool
      */
+
     public function authorize()
     {
-        return false;
+        return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -23,8 +23,18 @@ class BrandUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        // return [
+        //     'name' => 'required|max:255|unique:brands,name,'.$this->brand,
+        // ];
         return [
-            //
+            'name' => 'required|max:255',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required'=>$this->brand,
+            'name.unique'=>__('lang.NameUnique'),
         ];
     }
 }

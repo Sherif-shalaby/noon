@@ -89,7 +89,7 @@ fileHeaderInput.addEventListener("change", () => {
                     '<i style="font-size: 20px;" class="fas fa-trash"></i>';
                 deleteBtn.addEventListener("click", () => {
                     swal({
-                        title: '{{ __("Are you sure?") }}',
+                        title: 'هل تريد الاستمرار ؟',
                         text: "{{ __('You wont be able to delete!') }}",
                         icon: "warning",
                         showCancelButton: true,
@@ -259,7 +259,7 @@ fileFooterInput.addEventListener("change", () => {
                     '<i style="font-size: 20px;" class="fas fa-trash"></i>';
                 deleteBtn.addEventListener("click", () => {
                     swal({
-                        title: '{{ __("Are you sure?") }}',
+                        title: 'هل تريد الاستمرار ؟',
                         text: "{{ __('You wont be able to delete!') }}",
                         icon: "warning",
                         showCancelButton: true,
@@ -421,7 +421,7 @@ fileLogoInput.addEventListener("change", () => {
                     '<i style="font-size: 20px;" class="fas fa-trash"></i>';
                 deleteBtn.addEventListener("click", () => {
                     swal({
-                        title: '{{ __("Are you sure?") }}',
+                        title: 'هل تريد الاستمرار ؟',
                         text: "{{ __('You wont be able to delete!') }}",
                         icon: "warning",
                         showCancelButton: true,

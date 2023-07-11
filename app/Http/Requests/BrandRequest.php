@@ -30,8 +30,8 @@ class BrandRequest extends FormRequest
     public function messages()
     {
         return [
-        'name.required'=>__('categories.categoryNameRequired'),
-        'name.unique'=>__('categories.categoryNameUnique'),
+        'name.required'=>__('lang.NameRequired'),
+        'name.unique'=>__('lang.NameUnique'),
         ];
     }
 }

@@ -4,16 +4,17 @@
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editBrandModalLabel">Add Brand</h5>
+                <h5 class="modal-title" id="editBrandModalLabel">Edit Brand</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => ['brands.update',$brand->id],'method'=>'put']) !!}
+            {!! Form::open(['route' => ['brands.update',$brand->id],'method'=>'put','id'=>'brand-update-form' ]) !!}
                     @csrf
                     @method('PUT')
             <div class="modal-body">
                 <div class="form-group">
+                    <input type="hidden" name="id" value="{{$brand->id}}"/>
                     {!! Form::label('name', __( 'lang.brand_name' ) . ':*') !!}
                     {!! Form::text('name', $brand->name, ['class' => 'form-control', 'placeholder' => __( 'lang.brand_name' ), 'required'
                     ]);
@@ -31,3 +32,7 @@
         </div>
     </div>
 </div>
+{!! JsValidator::formRequest('App\Http\Requests\BrandUpdateRequest','#brand-update-form'); !!}
+
+{{-- <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script> --}}
+
