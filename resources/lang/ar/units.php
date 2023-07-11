@@ -6,7 +6,8 @@ return [
     'unitname'=>'اسم الوحده',
     'addunit'=>'اضافه وحده',
     'editunit'=>'تعديل وحده',
-
+    'base_unit_multiplier'=>'مرات',
+    'base_unit_multiplier_num'=>'هذا الحقل يجب ان يكون رقم',
 
 
 ];

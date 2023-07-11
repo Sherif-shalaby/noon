@@ -17,11 +17,18 @@ class UnitController extends Controller
     public function store(Request $request){
         $this->validate(
             $request,
-            ['name' => ['required', 'unique:units,name', 'max:255']]
+            [
+                'name' => ['required', 'unique:units,name', 'max:255'],
+                'base_unit_multiplier' => ['nullable', 'numeric']
+            ],[],
+            [
+                'base_unit_multiplier.numeric'=>__('units.base_unit_multiplier_num')
+            ]
         );
         try {
             $input['name'] = $request->name;
             $input['slug'] = Str::slug($request->name);
+            $input['base_unit_multiplier'] = $request->base_unit_multiplier?? 1;
             if(!empty($request->translations))
             {
                 $input['translation']= $request->translations;
@@ -45,12 +52,19 @@ class UnitController extends Controller
     public function update(Request $request, Unit $unit){
         $this->validate(
             $request,
-            ['name' => ['required', 'unique:units,name,' . $unit->id, 'max:255']],
+            [
+                'name' => 'required|max:255|unique:units,name,'.$unit->id,
+                'base_unit_multiplier' => ['nullable', 'numeric']
+            ],[],
+            [
+                'base_unit_multiplier.numeric'=>__('units.base_unit_multiplier_num')
+            ]
         );
 
         try {
             $input['name'] = $request->name;
             $input['slug'] = Str::slug($request->name);
+            $input['base_unit_multiplier'] = $request->base_unit_multiplier?? 1;
             if(!empty($request->translations))
             {
                 $input['translation']= $request->translations;
