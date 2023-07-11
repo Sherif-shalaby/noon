@@ -46,7 +46,6 @@
                                             <th>@lang('categories.parent')</th>
                                             <th>@lang('categories.sub_categories')</th>
                                             <th>@lang('categories.status')</th>
-                                            {{-- <th>@lang('categories.created_at')</th> --}}
                                             <th>@lang('added_by')</th>
                                             <th>@lang('updated_by')</th>
                                             <th>@lang('categories.action')</th>
@@ -64,28 +63,24 @@
                                                         {{ $categorie->subCategories->count() }}</a>
                                                 </td>
                                                 <td>{{ __($categorie->status())}}</td>
-                                                {{-- <td>{{ $categorie->created_at() }}</td> --}}
-                                                {{-- <td>{{ $categorie->employee?->name }}</td> --}}
                                                 <td>
-                                                    {{-- {{ $categorie->last_employee?->name }} --}}
                                                     @if ($categorie->user_id  > 0 and $categorie->user_id != null)
                                                         {{ $categorie->created_at->diffForHumans() }} <br>
                                                         {{ $categorie->created_at->format('Y-m-d') }}
                                                         ({{ $categorie->created_at->format('h:i') }})
                                                         {{ ($categorie->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
-                                                        {{ $categorie->employee?->name }}
+                                                        {{ $categorie->createBy?->name }}
                                                     @else
                                                     {{ __('no_update') }}
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{-- {{ $categorie->last_employee?->name }} --}}
                                                     @if ($categorie->last_update  > 0 and $categorie->last_update != null)
                                                         {{ $categorie->updated_at->diffForHumans() }} <br>
                                                         {{ $categorie->updated_at->format('Y-m-d') }}
                                                         ({{ $categorie->updated_at->format('h:i') }})
                                                         {{ ($categorie->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
-                                                        {{ $categorie->last_employee?->name }}
+                                                        {{ $categorie->updateBy?->name }}
                                                     @else
                                                        {{ __('no_update') }}
                                                     @endif
