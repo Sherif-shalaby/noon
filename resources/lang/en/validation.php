@@ -179,6 +179,9 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        "base_unit_multiplier" => "Times of",
+        "name" => "Name",
+    ],
 
 ];
