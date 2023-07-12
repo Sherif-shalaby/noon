@@ -20,6 +20,7 @@ use App\Http\Controllers\SettingController;
 */
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', App\Http\Controllers\BrandController::class);
+    Route::resource('store', App\Http\Controllers\StoreController::class);
 
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
