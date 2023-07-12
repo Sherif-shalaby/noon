@@ -82,8 +82,8 @@ return [
     |
     */
 
-    'locale' => 'en',
-
+    'locale' => 'ar',
+    'locales' => ['ar', 'en'],
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -185,6 +185,8 @@ return [
         /*
          * Package Service Providers...
          */
+        Collective\Html\HtmlServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -210,6 +212,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ])->toArray(),
 
 ];
