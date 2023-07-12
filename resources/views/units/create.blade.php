@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form" action="{{ route('units.store') }}" method="POST">
+            <form class="form" action="{{ route('units.store') }}" method="POST" id="unit-form">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group ">
@@ -20,7 +20,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                             <button class="btn btn-primary btn-sm ml-2" type="button"
-                                data-toggle="collapse" data-target="#translation_table_category"
+                                data-toggle="collapse" data-target="#translation_table_unit"
                                 aria-expanded="false" aria-controls="collapseExample">
                                 {{ __('categories.addtranslations') }}
                             </button>
@@ -28,8 +28,17 @@
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',
                             'translations' => [],
-                            'type' => 'category',
+                            'type' => 'unit',
                         ])
+                    </div>
+                    <div class="form-group">
+                        <label for="base_unit_multiplier">@lang('units.base_unit_multiplier')</label>
+                        <input type="number"  class="form-control" step="0.01" min="0"
+                                placeholder="@lang('units.base_unit_multiplier') 0.00" name="base_unit_multiplier"
+                                value="{{ old('base_unit_multiplier') }}">
+                        @error('base_unit_multiplier')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -40,3 +49,7 @@
         </div>
     </div>
 </div>
+@push('js')
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\UnitRequest','#unit-form'); !!}
+@endpush

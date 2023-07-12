@@ -32,6 +32,7 @@
                         <h5 class="card-title">@lang('colors.colors')</h5>
                     </div>
                     <div class="card-body">
+                        @if (@isset($colors) && !@empty($colors) && count($colors) > 0 )
                         <div class="table-responsive">
                             <table  class="table table-striped table-bordered">
                                 <thead>
@@ -87,6 +88,11 @@
                                 </tr>
                             </tfoot>
                         </div>
+                        @else
+                        <div class="alert alert-danger">
+                            {{ __('categories.data_no_found') }}
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

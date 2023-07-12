@@ -6,7 +6,10 @@ return [
     'unitname'=>'Unit Name',
     'addunit'=>'Add Unit',
     'editunit'=>'Edit Unit',
-
+    'base_unit_multiplier'=>'Times of',
+    'base_unit_multiplier_num'=>'this field must be number',
+    'unitNameRequired'=>'unit name required',
+    'unitNameUnique'=>'unit name is used before',
 
 
 ];

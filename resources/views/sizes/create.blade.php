@@ -20,7 +20,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                             <button class="btn btn-primary btn-sm ml-2" type="button"
-                                data-toggle="collapse" data-target="#translation_table_category"
+                                data-toggle="collapse" data-target="#translation_table_size"
                                 aria-expanded="false" aria-controls="collapseExample">
                                 {{ __('categories.addtranslations') }}
                             </button>
@@ -28,7 +28,7 @@
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',
                             'translations' => [],
-                            'type' => 'category',
+                            'type' => 'size',
                         ])
                     </div>
                 </div>

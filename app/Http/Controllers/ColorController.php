@@ -19,7 +19,7 @@ class ColorController extends Controller
     {
         $this->validate(
             $request,
-            ['name' => ['required', 'unique:colors,name', 'max:255']]
+            ['name' => ['required','string','unique:colors,name', 'max:255']]
         );
         try {
             $input['name'] = $request->name;
