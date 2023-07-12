@@ -78,5 +78,10 @@ return [
     'logo'=>'شعار',
     'help_page_content'=>'محتوى صفحة المساعدة',
     'developed_by'=>'طور بواسطة',
+    'NameRequired'=>'برجاء ادخال الاسم',
+    'NameUnique'=>'الاسم موجود من قبل',
+    'add_logo'=>'اضافة شعار',
+    'add_footer'=>'اضافة تذييل الرسالة',
+    'add_header_letter'=>' اضافة رأس الرسالة',
 ];
 

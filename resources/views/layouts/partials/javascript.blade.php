@@ -52,9 +52,9 @@
                     @endif
                 });
         @endif
-    if($('.error-msg').text().length>0){
-        $('#exampleStandardModal').modal('show');
-    }
+    // if($('.error-msg').text().length>0){
+    //     $('#exampleStandardModal').modal('show');
+    // }
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

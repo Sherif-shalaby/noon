@@ -37,4 +37,9 @@ return [
     'letter_footer'=>'Letter Footer',
     'logo'=>'Logo',
     'help_page_content'=>'Help Page Content',
+    'NameRequired'=>'Name Is Required',
+    'NameUnique'=>'Name Is Exist',
+    'add_logo'=>'Add Logo',
+    'add_footer'=>'Add Footer',
+    'add_header_letter'=>'Add Header Letter',
 ];

@@ -21,7 +21,7 @@
 @endsection
 @section('content')
     <!-- Start row -->
-    <div class="row">
+    <div class="row d-flex justify-content-center">
         <!-- Start col -->
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
@@ -33,19 +33,19 @@
                 <div class="row">
 
                     <div class="col-md-3">
-                        {!! Form::label('site_title', __('lang.site_title'), []) !!}
+                        {!! Form::label('site_title', __('lang.site_title'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('site_title', !empty($settings['site_title']) ? $settings['site_title'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3 hide">
-                        {!! Form::label('developed_by', __('lang.developed_by'), []) !!}
+                        {!! Form::label('developed_by', __('lang.developed_by'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('developed_by', !empty($settings['developed_by']) ? $settings['developed_by'] : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('time_format', __('lang.time_format'), []) !!}
+                        {!! Form::label('time_format', __('lang.time_format'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select(
                             'time_format',
                             ['12' => '12 hours', '24' => '24 hours'],
@@ -54,19 +54,19 @@
                         ) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('language', __('lang.language'), []) !!}
+                        {!! Form::label('language', __('lang.language'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select('language', $languages, !empty($settings['language']) ? $settings['language'] : null, [
                             'class' => 'form-control select2',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('currency', __('lang.currency'), []) !!}
+                        {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
                             'class' => 'form-control select2',
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), []) !!}
+                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select(
                             'invoice_lang',
                             $languages + ['ar_and_en' => 'Arabic and English'],
@@ -75,20 +75,23 @@
                         ) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers')) !!}
+                        {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'),['class'=>'h5 pt-3']) !!}
                         {!! Form::text('watsapp_numbers', !empty($settings['watsapp_numbers']) ? $settings['watsapp_numbers'] : null, [
                             'class' => 'form-control'
                         ]) !!}
                     </div>
                     <br>
                     <hr>
-                    <div class="col-md-12">
+                    <div class="col-md-12 pt-5">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="projectinput2"> {{ __('lang.letter_header') }}</label>
+                                    
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12">
+                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex"> {{ __('lang.letter_header') }}</label>
+                                            </div>
                                             <div class="col-5">
                                                 <div class="mt-3">
                                                     <div class="row">
@@ -134,11 +137,14 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 pt-5">
                                 <div class="form-group">
-                                    <label for="projectinput2"> {{ __('lang.letter_footer') }}</label>
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12 p3 justify-content-center d-flex">
+                                            <label for="projectinput2" class='h5'> {{ __('lang.letter_footer') }}</label>
+
+                                            </div>
                                             <div class="col-5">
                                                 <div class="mt-3">
                                                     <div class="row">
@@ -183,11 +189,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 pt-5">
                                 <div class="form-group">
-                                    <label for="projectinput2"> {{ __('lang.logo') }}</label>
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12 p3 justify-content-center d-flex">
+                                                <label for="projectinput2" class='h5'> {{ __('lang.logo') }}</label>
+                                            </div>
                                             <div class="col-5">
                                                 <div class="mt-3">
                                                     <div class="row">
@@ -216,7 +224,7 @@
                                                             <img src="{{ asset('uploads/' . $settings['logo']) }}"
                                                                 id="img_logo_footer" alt="">
                                                             <button type="button"
-                                                                class="btn btn-xs btn-danger delete-btn remove_image"
+                                                                class="btn btn-xs btn-danger delete-btn remove_image "
                                                                 data-type="logo"><i style="font-size: 25px;"
                                                                     class="fa fa-trash"></i></button>
                                                             <span class="btn btn-xs btn-primary  crop-btn"
@@ -236,9 +244,10 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-1"></div>
+                                <div class="col-md-10">
                                 <div class="form-group">
-                                    {!! Form::label('help_page_content', __('lang.help_page_content'), []) !!}
+                                    {!! Form::label('help_page_content', __('lang.help_page_content'), ['class'=>'h5 pt-5']) !!}
                                     {!! Form::textarea(
                                         'help_page_content',
                                         !empty($settings['help_page_content']) ? $settings['help_page_content'] : null,
