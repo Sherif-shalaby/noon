@@ -141,6 +141,8 @@ class DatabaseSeeder extends Seeder
             // PermissionTableSeeder::class,
             CurrenciesTableSeeder::class,
             CategorySeeder::class,
+            ColorSeeder::class,
+            SizeSeeder::class,
         ]);
     }
 }
