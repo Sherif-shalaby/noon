@@ -18,6 +18,7 @@ return [
     'suppliers'=>'الموردين',
     'settings'=>'الاعدادت',
     'reports'=>'التقارير',
+    'categories'=>'الاقسام',
     'modules' => 'إظهار/إخفاء أقسام البرنامج',
     'product_module' =>'المنتجات',
     'stock_module' =>'المخزون',
@@ -72,10 +73,6 @@ return [
     'thursday' => 'الخميس',
     'friday' => 'الجمعة',
     'saturday' => 'السبت',
-
-
-
-
 
 ];
 

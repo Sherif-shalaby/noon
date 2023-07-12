@@ -10,6 +10,7 @@
     <title>@yield('title')</title>
     <!-- Fevicon -->
     @include('layouts.partials.css')
+    @stack('css')
     <!-- End css -->
 </head>
 <body class="horizontal-layout">
@@ -189,6 +190,7 @@
     <!-- Start js -->
     @include('layouts.partials.javascript')
     @yield('javascript')
+    @stack('js')
     <!-- End js -->
 </body>
 

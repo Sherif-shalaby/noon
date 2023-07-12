@@ -9,31 +9,31 @@ class CreateForeignKeys extends Migration {
 
 	public function up()
 	{
-		Schema::table('categories', function(Blueprint $table) {
-			$table->foreign('parent_id')->references('id')->on('categories')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
-		Schema::table('categories', function(Blueprint $table) {
-			$table->foreign('class_id')->references('id')->on('classes')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->foreign('class_id')->references('id')->on('classes')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->foreign('category_id')->references('id')->on('categories')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->foreign('subcategory_id')->references('id')->on('categories')
-						->onDelete('restrict')
-						->onUpdate('restrict');
-		});
+		// Schema::table('categories', function(Blueprint $table) {
+		// 	$table->foreign('parent_id')->references('id')->on('categories')
+		// 				->onDelete('restrict')
+		// 				->onUpdate('restrict');
+		// });
+		// Schema::table('categories', function(Blueprint $table) {
+		// 	$table->foreign('class_id')->references('id')->on('classes')
+		// 				->onDelete('restrict')
+		// 				->onUpdate('restrict');
+		// });
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->foreign('class_id')->references('id')->on('classes')
+		// 				->onDelete('restrict')
+		// 				->onUpdate('restrict');
+		// });
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->foreign('category_id')->references('id')->on('categories')
+		// 				->onDelete('restrict')
+		// 				->onUpdate('restrict');
+		// });
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->foreign('subcategory_id')->references('id')->on('categories')
+		// 				->onDelete('restrict')
+		// 				->onUpdate('restrict');
+		// });
 		Schema::table('products', function(Blueprint $table) {
 			$table->foreign('brand_id')->references('id')->on('brands')
 						->onDelete('restrict')

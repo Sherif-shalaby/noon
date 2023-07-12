@@ -5,8 +5,8 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
         "ext-mysql_xdevapi": "*",
+        "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
@@ -17,7 +17,10 @@
         "nesbot/carbon": "^2.68",
         "spatie/laravel-permission": "^5.10",
         "yajra/laravel-datatables": "9.0",
-        "yajra/laravel-datatables-oracle": "10.0"
+        "yajra/laravel-datatables-oracle": "10.0",
+        "proengsoft/laravel-jsvalidation": "^4.8",
+        "spatie/laravel-permission": "^5.10"
+
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -33,7 +36,7 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },"files": ["app/helper.php"]
     },
     "autoload-dev": {
         "psr-4": {

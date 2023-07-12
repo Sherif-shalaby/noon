@@ -1,4 +1,3 @@
-{{-- <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
 <script src="{{asset('js/modernizr.min.js')}}"></script>
@@ -6,15 +5,13 @@
 <script src="{{asset('js/jquery.slimscroll.js')}}"></script>
 <script src="{{asset('js/horizontal-menu.js')}}"></script>
 <!-- Switchery js -->
-<script src="{{asset('plugins/switchery/switchery.min.js')}}"></script>
- <!-- Model js -->
- <script src="{{asset('js/custom/custom-model.js')}}"></script>
+{{-- <script src="{{asset('plugins/switchery/switchery.min.js')}}"></script> --}}
 <!-- Datatable js -->
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.buttons.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/jszip.min.js')}}"></script>
+{{-- <script src="{{asset('plugins/datatables/jszip.min.js')}}"></script> --}}
 <script src="{{asset('plugins/datatables/pdfmake.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/vfs_fonts.js')}}"></script>
 <script src="{{asset('plugins/datatables/buttons.html5.min.js')}}"></script>
@@ -23,6 +20,7 @@
 <script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 <script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
+
 <!-- Core js -->
 <script src="{{asset('js/core.js')}}"></script> --}}
 
@@ -50,11 +48,27 @@
 <script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 <script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+
+<script type="text/javascript" src="{{asset('js/jquery-validation/jquery.validate.min.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/jquery-validation/localization/messages_'. app()->getLocale() .'.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/cropperjs/cropper.min.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/dropzone.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script>
+<script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script>
+<script src="{{asset('js/summernote.min.js')}}" referrerpolicy="origin"></script>
+<script>
+    $('.select2').select2({
+        // 'width': '100%',
+    });
+</script>
+
+
 <!-- Pnotify js -->
 <script src="{{asset('plugins/pnotify/js/pnotify.custom.min.js')}}"></script>
 <script src="{{asset('js/custom/custom-pnotify.js')}}"></script>>
 <!-- Core js -->
-<script src="{{asset('js/core.js')}}"></script>
+{{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
       @if (session('status'))
                 new PNotify( {
@@ -66,9 +80,9 @@
                     @endif
                 });
         @endif
-    if($('.error-msg').text().length>0){
-        $('#exampleStandardModal').modal('show');
-    }
+    // if($('.error-msg').text().length>0){
+    //     $('#exampleStandardModal').modal('show');
+    // }
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,4 +191,9 @@
                 },
             });
         });
+
 </script>
+
+</script>
+@stack('javascripts')
+

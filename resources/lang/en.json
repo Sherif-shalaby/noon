@@ -1,0 +1,28 @@
+{
+    "Search": "search",
+    "Searchname": "search by name",
+    "Add": "Add",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Show": "Show",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "select": "select",
+    "Ascending": "Ascending",
+    "Descending": "Descending",
+    "ID": "ID",
+    "Name": "Name",
+    "Created_at": "Created at",
+    "added_by": "added by",
+    "updated_by": "updated by",
+    "crop": "crop",
+    "cancel": "cancel",
+    "Back": "Back",
+    "am": "AM",
+    "pm": "pm",
+    "no_update": "no update",
+    "save": "Save",
+    "action": "Actions"
+
+}
+

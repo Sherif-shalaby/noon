@@ -33519,8 +33519,8 @@ input[type=range]:focus {
   position: relative;
 }
 .note-editor .btn-default {
-  background-color: transparent;
-  border-color: transparent;
+  background-color: #d5cfcf;
+  border-color: #a9a3a3;
 }
 .note-editor .btn-group-sm > .btn, .note-editor .btn-sm {
   padding: 8px 12px;

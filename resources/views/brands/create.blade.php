@@ -8,7 +8,7 @@
                 <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => 'brands.store', 'method' => 'post', 'files' => true ]) !!}
+            {!! Form::open(['route' => 'brands.store', 'method' => 'post', 'files' => true,'id'=>'brand-form' ]) !!}
             <div class="modal-body">
                 <div class="form-group">
                 {{-- <input type="text" class="form-control" id="validationServer02" placeholder="Brand Name" value="" required> --}}
