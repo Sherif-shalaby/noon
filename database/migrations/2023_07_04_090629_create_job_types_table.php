@@ -14,9 +14,9 @@ class CreateJobTypesTable extends Migration {
 			$table->softDeletes();
 			$table->string('title');
 			$table->date('date_of_creation')->nullable();
-			$table->integer('created_by')->nullable();
-			$table->integer('deleted_by')->nullable();
-			$table->integer('updated_by')->nullable();
+			$table->BigInteger('created_by')->nullable()->unsigned();
+			$table->BigInteger('deleted_by')->nullable()->unsigned();
+			$table->BigInteger('updated_by')->nullable()->unsigned();
 		});
 	}
 

@@ -16,11 +16,12 @@ $(document).ready(function() {
     var table = $('#datatable-buttons').DataTable({
         lengthChange: false,
         responsive: true,
-        buttons: ['copy', 'csv', 'excel', 'pdf',
+        buttons:
+            ['copy', 'csv', 'excel', 'pdf',
             {
             extend: 'print',
             exportOptions: {
-                columns: [ -1, ':visible' ]
+                columns: ":visible:not(.notexport)"
             }
         }]
     });
