@@ -83,5 +83,15 @@ return [
     'add_logo'=>'اضافة شعار',
     'add_footer'=>'اضافة تذييل الرسالة',
     'add_header_letter'=>' اضافة رأس الرسالة',
+
+    'products'=>'المواد',
+    'add_products'=>'اضافة منتج',
+    'class'=>'فئة',
+    'category'=>'قسم رئيسى',
+    'subcategory'=>'قسم فرعى',
+    'brand'=>'غلامة تجارية',
+    'product_name'=>'اسم المادة',
+    'product_code'=>'كود المادة',
+    'please_select'=>'برجاء التحديد',
 ];
 

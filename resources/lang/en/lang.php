@@ -44,4 +44,14 @@ return [
     'add_logo'=>'Add Logo',
     'add_footer'=>'Add Footer',
     'add_header_letter'=>'Add Header Letter',
+
+    'products'=>'Products',
+    'add_products'=>'Add Products',
+    'class'=>'Class',
+    'category'=>'Category',
+    'subcategory'=>'Sub Category',
+    'brand'=>'Brand',
+    'product_name'=>'Product Name',
+    'product_code'=>'Product Code',
+    'please_select'=>'Please Select',
 ];

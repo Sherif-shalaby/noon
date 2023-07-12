@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use PhpParser\Builder\Class_;
 
 class ProductController extends Controller 
 {
@@ -14,7 +17,7 @@ class ProductController extends Controller
    */
   public function index()
   {
-    
+    return view('products.index');
   }
 
   /**
@@ -24,7 +27,10 @@ class ProductController extends Controller
    */
   public function create()
   {
-    
+      // $classes=Class::orderBy('created_at', 'desc')->pluck('id','name');
+      $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+      $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+      return view('products.create',compact('categories','brands'));
   }
 
   /**
