@@ -69,6 +69,10 @@ class Category extends Model
     {
         return $this->belongsTo(User::class, 'last_update');
     }
+    public function products()
+    {
+        return $this->belongsToMany('App\Models\Product', 'product_stores');
+    }
     // public $timestamps = true;
 
     // use SoftDeletes;

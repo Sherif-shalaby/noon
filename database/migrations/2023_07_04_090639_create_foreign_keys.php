@@ -49,6 +49,16 @@ class CreateForeignKeys extends Migration {
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
+		Schema::table('product_subcategories', function(Blueprint $table) {
+			$table->foreign('product_id')->references('id')->on('products')
+						->onDelete('restrict')
+						->onUpdate('restrict');
+		});
+		Schema::table('product_subcategories', function(Blueprint $table) {
+			$table->foreign('category_id')->references('id')->on('categories')
+						->onDelete('restrict')
+						->onUpdate('restrict');
+		});
 		Schema::table('customers', function(Blueprint $table) {
 			$table->foreign('customer_type_id')->references('id')->on('customer_types')
 						->onDelete('restrict')
@@ -94,7 +104,7 @@ class CreateForeignKeys extends Migration {
 						->onDelete('restrict')
 						->onUpdate('restrict');
 		});
-		Schema::table('product_discounts', function(Blueprint $table) {
+		Schema::table('product_prices', function(Blueprint $table) {
 			$table->foreign('product_id')->references('id')->on('products')
 						->onDelete('restrict')
 						->onUpdate('restrict');
@@ -127,6 +137,12 @@ class CreateForeignKeys extends Migration {
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->dropForeign('product_stores_store_id_foreign');
 		});
+		Schema::table('product_subcategories', function(Blueprint $table) {
+			$table->dropForeign('product_subcategories_product_id_foreign');
+		});
+		Schema::table('product_subcategories', function(Blueprint $table) {
+			$table->dropForeign('product_subcategories_category_id_foreign');
+		});
 		Schema::table('customers', function(Blueprint $table) {
 			$table->dropForeign('customers_customer_type_id_foreign');
 		});
@@ -154,7 +170,7 @@ class CreateForeignKeys extends Migration {
 		Schema::table('exchange_rates', function(Blueprint $table) {
 			$table->dropForeign('exchange_rates_default_currency_id_foreign');
 		});
-		Schema::table('product_discounts', function(Blueprint $table) {
+		Schema::table('product_prices', function(Blueprint $table) {
 			$table->dropForeign('product_discounts_product_id_foreign');
 		});
 	}

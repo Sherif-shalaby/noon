@@ -97,7 +97,7 @@ fileHeaderInput.addEventListener("change", () => {
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
-                        if (result.isConfirmed) {
+                        if (result) {
                             swal(
                                 "Deleted!",
                                 '{{ __("Your Image has been deleted.") }}',
@@ -267,7 +267,7 @@ fileFooterInput.addEventListener("change", () => {
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
-                        if (result.isConfirmed) {
+                        if (result) {
                             swal(
                                 "Deleted!",
                                 '{{ __("Your Image has been deleted.") }}',
@@ -429,7 +429,7 @@ fileLogoInput.addEventListener("change", () => {
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
-                        if (result.isConfirmed) {
+                        if (result) {
                             swal(
                                 "Deleted!",
                                 '{{ __("Your Image has been deleted.") }}',

@@ -165,4 +165,23 @@ class CategoryController extends Controller
 
         return view('categories.index', compact('categories'));
     }
+    public function getSubcategories($id){
+        $categories=[];
+        $categories = Category::where('parent_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
+        $categories_dp = $this->createDropdownHtml($categories, __('lang.please_select'));
+
+        return $categories_dp;
+    }
+    public function createDropdownHtml($array, $append_text = null)
+    {
+        $html = '';
+        if (!empty($append_text)) {
+            $html = '<option value="">' . $append_text . '</option>';
+        }
+        foreach ($array as $key => $value) {
+            $html .= '<option value="' . $key . '">' . $value . '</option>';
+        }
+
+        return $html;
+    }
 }
