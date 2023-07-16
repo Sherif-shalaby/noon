@@ -110,17 +110,14 @@
                                             </div>
                                         @endforeach
                                     </div>
-{{--
                                     <div class="row mt-4">
-                                        <!-- Button trigger modal -->
+                                        <!-- Button salary modal -->
                                         <button type="button" style="margin-left: 15px;" class="btn btn-primary"
                                                 data-toggle="modal" data-target="#salary_details">
                                             @lang('lang.salary_details')
                                         </button>
-
                                         @include('employees.partials.salary_details')
                                     </div>
---}}
                                     <br>
                                     <br>
                                     <div class="row">
@@ -192,6 +189,7 @@
 
 @endsection
 @section('javascript')
+
     <script>
         $( document ).ready(function() {
             $('.checked_all').change(function() {

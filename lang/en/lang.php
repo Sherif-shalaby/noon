@@ -18,7 +18,6 @@ return [
     'suppliers' =>'Suppliers',
     'settings' =>'Settings',
     'reports' =>'Reports',
-
     'stores' => 'Stores',
     'add_store' => 'Add Store',
     'name' => 'Name',

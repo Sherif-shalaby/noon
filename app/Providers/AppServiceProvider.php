@@ -32,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
 
             $module_settings = !empty($module_settings) ? json_decode($module_settings, true) : [];
             view()->share('module_settings' , $module_settings);
+            $settings = System::pluck('value', 'key');
+            view()->share('settings' , $settings);
         }
 
         Blade::directive('format_date', function ($date = null) {
@@ -41,6 +43,13 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
+
+        //Blade directive to format number into required format.
+        Blade::directive('num_format', function ($expression) {
+            $currency_precision =2;
+            return "number_format($expression,  $currency_precision, '.', ',')";
+        });
+
         $settings = System::pluck('value', 'key');
         view()->share('settings' , $settings);
 

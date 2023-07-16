@@ -42,9 +42,16 @@
                                 <th>@lang('lang.email')</th>
                                 <th>@lang('lang.phone_number')</th>
                                 <th>@lang('lang.job_title')</th>
+                                <th class="sum">@lang('lang.wage')</th>
+{{--                                <th>@lang('lang.annual_leave_balance')</th>--}}
                                 <th>@lang('lang.age')</th>
                                 <th>@lang('lang.date_of_start_working')</th>
                                 <th>@lang('lang.stores')</th>
+{{--                                <th>@lang('lang.current_status')</th>--}}
+                                <th>@lang('lang.pos')</th>
+                                <th>@lang('lang.commission')</th>
+                                <th>@lang('lang.total_paid')</th>
+                                <th>@lang('lang.pending')</th>
                                 <th class="notexport">@lang('lang.action')</th>
                             </tr>
                             </thead>
@@ -52,7 +59,13 @@
 
                                 @foreach($employees as $key => $employee)
                                     <tr>
-                                        <td></td>
+                                        <td>
+                                            @if (!empty($employee->photo))
+                                                <img src="{{"/uploads/". $employee->photo}}" alt="photo" width="50" height="50">
+                                            @else
+                                                <img src="{{"/uploads/". session('logo')}}" alt="photo" width="50" height="50">
+                                            @endif
+                                        </td>
                                         <td>
                                             {{$employee->user()->get()[0]->name}}
                                         </td>
@@ -66,6 +79,10 @@
                                             {{$employee->job_type()->get()[0]->title}}
                                         </td>
                                         <td>
+                                            {{$employee->fixed_wage_value}}
+                                        </td>
+{{--                                        <td></td>--}}
+                                        <td>
                                             {{\Carbon\Carbon::parse($employee->date_of_birth)->diff(\Carbon\Carbon::now())->format('%y')}}
                                         </td>
                                         <td>
@@ -77,6 +94,108 @@
                                             @endforeach
                                         </td>
                                         <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                     aria-haspopup="true" aria-expanded="false">
+                                                 @lang('lang.action')
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">';
+                                                <li>
+                                                    <a href="{{route('employees.show', $employee->id)}}"
+                                                       class="btn"><i
+                                                            class="fa fa-eye"></i>
+                                                         @lang('lang.view') </a>
+                                                </li>
+                                                <li class="divider"></li>
+
+                                                <li>
+                                                    <a href="{{route('employees.edit', $employee->id)}}"
+                                                       class="btn edit_employee"><i
+                                                            class="fa fa-pencil-square-o"></i>
+                                                        @lang('lang.edit')</a>
+                                                </li>
+                                               <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{route('employees.destroy', $employee->id)}}"
+{{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}"--}}
+                                                       class="btn delete_item text-red delete_item"><i
+                                                            class="fa fa-trash"></i>
+                                                        @lang('lang.delete')</a>
+                                                </li>
+
+{{--                                               <li class="divider"></li>--}}
+{{--                                               <li>--}}
+{{--                                                    <a data-href="{{action('EmployeeController@toggleActive', $employee->id)}}"--}}
+{{--                                                       class="btn toggle-active"><i--}}
+{{--                                                            class="fa fa-ban"></i>';--}}
+{{--                                                        @if ($row->is_active) --}}
+{{--                                                            @lang('lang.suspend');--}}
+{{--                                                        @else --}}
+{{--                                                            @lang('lang.reactivate');--}}
+{{--                                                        @endif--}}
+{{--                                                        --}}
+{{--                                                    </a>--}}
+{{--                                                </li>--}}
+{{--                                                --}}
+{{--                                                <li class="divider"></li>--}}
+{{--                                                <li>--}}
+{{--                                                    <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}"--}}
+{{--                                                       class="btn"><i--}}
+{{--                                                            class="fa fa-paper-plane"></i>--}}
+{{--                                                        @lang('lang.send_credentials') </a>--}}
+{{--                                                </li>--}}
+{{--                                                --}}
+{{--                                                <li class="divider"></li>--}}
+{{--                                             <li>--}}
+{{--                                                    <a href="{{action('SmsController@create', ['employee_id' => $employee->id])}}"--}}
+{{--                                                       class="btn"><i--}}
+{{--                                                            class="fa fa-comments-o"></i>--}}
+{{--                                                        @lang('lang.send_sms')</a>--}}
+{{--                                                </li>--}}
+{{--                                                --}}
+{{--                                               <li class="divider"></li>'--}}
+{{--                                               <li>--}}
+{{--                                                    <a href="{{action('EmailController@create', ['employee_id' => $employee->id])}}"--}}
+{{--                                                       class="btn"><i--}}
+{{--                                                            class="fa fa-envelope "></i>--}}
+{{--                                                        @lang('lang.send_email') '</a>--}}
+{{--                                                </li>--}}
+
+{{--                                                {{$due = $this->transactionUtil->calculateEmployeeCommissionPayments($row->id)['total_due'];}}--}}
+{{--                                               --}}
+{{--                                                <li class="divider"></li>--}}
+{{--                                                @if ($due > 0) --}}
+{{--                                                <li>--}}
+{{--                                                    <a href="{{action('WagesAndCompensationController@create', ['employee_id' => $employee->id, 'payment_type' => 'commission']}})"--}}
+{{--                                                       class="btn"><i--}}
+{{--                                                            class="fa fa-money "></i>--}}
+{{--                                                        @lang('lang.pay')</a>--}}
+{{--                                                </li>--}}
+{{--                                                @endif--}}
+{{--                                                <li class="divider"></li>--}}
+{{--                                                <li>--}}
+{{--                                                    <a class="btn btn-modal"--}}
+{{--                                                       data-href="{{action('LeaveController@create', ['employee_id' => $employee->id])}}"--}}
+{{--                                                       data-container=".view_modal">--}}
+{{--                                                        <i class="fa fa-sign-out"></i> @lang('lang.leave')--}}
+{{--                                                    </a>--}}
+{{--                                                </li>--}}
+{{--                                                --}}
+{{--                                                <li class="divider"></li>--}}
+{{--                                                <li>--}}
+{{--                                                    <a class="btn btn-modal"--}}
+{{--                                                       data-href="' . action('ForfeitLeaveController@create', ['employee_id' => $row->id]) . '"--}}
+{{--                                                       data-container=".view_modal">--}}
+{{--                                                        <i class="fa fa-ban"></i> @lang('lang.forfeit_leave')--}}
+{{--                                                    </a>--}}
+{{--                                                </li>--}}
+                                            </ul>
+                                        </td>
+
                                     </tr>
                                 @endforeach
                             </tbody>

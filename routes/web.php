@@ -8,6 +8,7 @@ use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +32,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('settings/remove-image/{type}', [SettingController::class,'removeImage']);
     Route::resource('settings', SettingController::class);
     //الاقسام
+    Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
     // colors
@@ -39,6 +41,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('sizes', SizeController::class)->except(['show']);
     // units
     Route::resource('units', UnitController::class)->except(['show']);
+    Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
+
+    Route::resource('products', ProductController::class);
+  
     Route::post('/logout', function () {
         Auth::logout();
         return redirect('/login');

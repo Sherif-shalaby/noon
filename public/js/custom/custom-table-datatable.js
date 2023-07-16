@@ -23,7 +23,7 @@ $(document).ready(function() {
             exportOptions: {
                 columns: ":visible:not(.notexport)"
             }
-        }]
+        }],
     });
     table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
 

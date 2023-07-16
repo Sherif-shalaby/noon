@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', __('lang.general_settings'))
 @push('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
@@ -63,6 +62,12 @@
                         {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
                             'class' => 'form-control select2',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
+                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">

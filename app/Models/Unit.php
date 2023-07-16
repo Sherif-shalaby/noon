@@ -24,6 +24,10 @@ class Unit extends Model
         }
         return $value;
     }
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
     public function createBy()
     {
         return $this->belongsTo(User::class, 'user_id');
