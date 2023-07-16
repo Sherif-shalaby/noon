@@ -65,6 +65,12 @@
                         ]) !!}
                     </div>
                     <div class="col-md-3">
+                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
                         {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select(
                             'invoice_lang',
