@@ -18,20 +18,13 @@ return [
     'suppliers' =>'Suppliers',
     'settings' =>'Settings',
     'reports' =>'Reports',
-    'modules' => 'Show/Hide Modules',
-    'product_module' =>'Products',
-    'stock_module' =>'Stock',
-    'cashier_module' =>'Cashier',
-    'return_module' =>'Returns',
-    'employee_module' =>'Employees',
-    'customer_module' =>'Customers',
-    'supplier_module' =>'Suppliers',
-    'settings_module' =>'Settings',
-    'reports_module' =>'Reports',
+
     'stores' => 'Stores',
     'add_store' => 'Add Store',
     'name' => 'Name',
     'email' => 'Email',
+    'password' => 'Password',
+    'confirm_password' => 'Confirm Password',
     'phone_number' => 'Phone Number',
     'manager_name' => 'Manager Name',
     'manager_mobile_number' => 'Manager Mobile Number',
@@ -40,6 +33,7 @@ return [
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
     'update'=>'Update',
+
 
 
 ];

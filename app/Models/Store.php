@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Store extends Model 
+class Store extends Model
 {
 
     protected $table = 'stores';
@@ -28,6 +28,11 @@ class Store extends Model
     public function exchange_rate()
     {
         return $this->hasMany('App\Models\ExchangeRates');
+    }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class, 'employee_stores');
     }
 
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Employee extends Model 
+class Employee extends Model
 {
 
     protected $table = 'employees';
@@ -18,12 +18,53 @@ class Employee extends Model
 
     public function job_type()
     {
-        return $this->belongsTo('JobType', 'job_type_id');
+        return $this->belongsTo(JobType::class, 'job_type_id');
     }
 
-    public function store()
+    public function stores()
     {
-        return $this->belongsTo('Store\Store', 'store_id');
+        return $this->belongsToMany(Store::class, 'employee_stores');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
+    public static function getWeekDays(){
+        return [
+            'sunday' => __('lang.sunday'),
+            'monday' => __('lang.monday'),
+            'tuesday' => __('lang.tuesday'),
+            'wednesday' => __('lang.wednesday'),
+            'thursday' => __('lang.thursday'),
+            'friday' => __('lang.friday'),
+            'saturday' => __('lang.saturday'),
+        ];
+    }
+    public static function paymentCycle()
+    {
+        return [
+            'daily' => 'Daily',
+            'weekly' => 'Weekly',
+            'monthly' => 'Monthly'
+        ];
+    }
+    public static function commissionType()
+    {
+        return [
+            'sales' => 'Sales',
+            'profit' => 'Profit'
+        ];
+    }
+    public static function commissionCalculationPeriod()
+    {
+        return [
+            'daily' => 'Daily',
+            'weekly' => 'Weekly',
+            'one_month' => 'One Month',
+            'three_month' => 'Three Month',
+            'six_month' => 'Six Month',
+            'one_year' => 'One Year',
+        ];
+    }
 }
