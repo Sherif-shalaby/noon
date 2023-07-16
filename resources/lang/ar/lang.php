@@ -116,6 +116,7 @@ return [
     'subcategories_name'=>'الاقسام الفرعية',
     'image'=>'الصورة',
     'sku'=>'الكود',
-    'currency_change'=>'تغيير العملة الى'
+    'currency_change'=>'تغيير العملة الى',
+    'dollar_exchange'=>'سعر صرف الدولار',
 ];
 

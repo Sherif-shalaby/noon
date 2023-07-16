@@ -213,8 +213,8 @@
                                         <thead>
                                         <tr>
                                             {{-- <th style="width: 20%;">@lang('lang.discount_type')</th> --}}
-                                            {{-- <th style="width: 15%;">@lang('lang.price')</th> --}}
                                             <th style="width: 10%;">@lang('lang.price_category')</th>
+                                            <th style="width: 15%;">@lang('lang.price')</th>
                                             <th style="width: 5%;"></th>
                                             <th style="width: 20%;">@lang('lang.price_start_date')</th>
                                             <th style="width: 20%;">@lang('lang.price_end_date')</th>

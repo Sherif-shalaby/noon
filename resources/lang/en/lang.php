@@ -75,5 +75,6 @@ return [
     'subcategories_name'=>'subcategories',
     'image'=>'image',
     'sku'=>'sku',
-    'currency_change'=>'Currency Change'
+    'currency_change'=>'Currency Change',
+    'dollar_exchange'=>'Dollar Exchange',
 ];

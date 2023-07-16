@@ -6,6 +6,9 @@
             {!! Form::text('price_category['.$row_id.']', $price->price_category, ['class' => 'clear_input_form form-control','maxlength'=>"4" , 'pattern'=>"\d{2}"]) !!}
         </td>
         <td>
+            {!! Form::text('price['.$row_id.']',  @num_format($price->price), ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.price')]) !!}
+        </td>
+        <td>
             <span class="i-checks">
                 <input id="is_price_permenant" name="is_price_permenant[{{$row_id}}]" type="checkbox" @if($price->is_price_permenant) checked @endif class="form-control">
                 <label for="is_price_permenant"><strong>
@@ -29,6 +32,9 @@
 <tr>
     <td>
         {!! Form::text('price_category['.$row_id.']', $price_product->price_category , ['class' => 'clear_input_form form-control', 'maxlength'=>"4" , 'pattern'=>"\d{2}"]) !!}
+    </td>
+    <td>
+        {!! Form::text('price['.$row_id.']', @num_format($discount_product->price) , ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.price')]) !!}
     </td>
     <td>
         <span class="i-checks">
@@ -56,6 +62,9 @@
     <tr>
         <td>
             {!! Form::text('price_category['.$row_id.']', !empty($recent_product) ? $recent_product->price_category : null, ['class' => 'clear_input_form form-control', 'maxlength'=>"4"]) !!}
+        </td>
+        <td>
+            {!! Form::text('price['.$row_id.']', !empty($recent_product) ? @num_format($recent_product->price) : null, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.price')]) !!}
         </td>
         <td>
             <span class="i-checks d-flex justify-content-center">

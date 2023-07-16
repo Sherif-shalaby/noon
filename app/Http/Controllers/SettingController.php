@@ -168,8 +168,8 @@ class SettingController extends Controller
                 ['value' => $request->currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
-                ['key' => 'currency_change'],
-                ['value' => $request->currency_change, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['key' => 'dollar_exchange'],
+                ['value' => $request->dollar_exchange, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             if (!empty($request->currency)) {
                 $currency = Currency::find($request->currency);

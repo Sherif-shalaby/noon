@@ -14,7 +14,7 @@ class CreateProductPricesTable extends Migration {
 			$table->softDeletes();
 			$table->integer('product_id')->unsigned();
 			// $table->string('price_type')->nullable();
-			// $table->string('price')->nullable();
+			$table->decimal('price',10,2)->nullable();
 			$table->string('price_start_date')->nullable();
 			$table->string('price_end_date')->nullable();
 			$table->text('price_customer_types')->nullable();

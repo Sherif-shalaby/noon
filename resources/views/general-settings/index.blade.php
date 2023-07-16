@@ -65,9 +65,9 @@
                         ]) !!}
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('currency_change', __('lang.currency_change'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('currency_change', $currencies, !empty($settings['currency_change']) ? $settings['currency_change'] : null, [
-                            'class' => 'form-control select2',
+                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
                     <div class="col-md-3">

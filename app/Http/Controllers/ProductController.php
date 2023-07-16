@@ -105,6 +105,7 @@ class ProductController extends Controller
         $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
+            'price' => $request->price[$index_price],
             'price_category' => $request->price_category[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
             'price_customer_types' => $request->get('price_customer_types_'.$index_price),
