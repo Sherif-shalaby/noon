@@ -11,11 +11,10 @@ class CreateEmployeesTable extends Migration {
 		Schema::create('employees', function(Blueprint $table) {
 			$table->increments('id');
 			$table->unsignedBigInteger('user_id');
-			$table->integer('store_id')->unsigned()->nullable();
 			$table->integer('updated_by')->nullable();
 			$table->string('pass_string')->nullable();
 			$table->string('employee_name');
-			$table->date('date_of_start_working');
+			$table->date('date_of_start_working')->nullable();
 			$table->integer('job_type_id')->unsigned()->nullable();
 			$table->string('mobile')->nullable();
 			$table->date('date_of_birth')->nullable();
@@ -37,6 +36,12 @@ class CreateEmployeesTable extends Migration {
 			$table->string('working_day_per_weak')->nullable();
 			$table->string('check_in')->nullable();
 			$table->string('check_out')->nullable();
+            $table->integer('number_of_days_any_leave_added')->nullable();
+            $table->string('working_day_per_week')->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users')
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
 		});
 	}
 

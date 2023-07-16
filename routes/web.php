@@ -21,16 +21,16 @@ use App\Http\Controllers\ProductController;
 */
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', App\Http\Controllers\BrandController::class);
+    Route::resource('store', App\Http\Controllers\StoreController::class);
+
+    Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
+    Route::resource('employees',App\Http\Controllers\EmployeeController::class);
+
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
     Route::post('settings/remove-image/{type}', [SettingController::class,'removeImage']);
     Route::resource('settings', SettingController::class);
-    Route::resource('store',App\Http\Controllers\StoreController::class);
-    Route::post('/logout', function () {
-        Auth::logout();
-        return redirect('/login');
-    });
     //الاقسام
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
@@ -40,7 +40,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('sizes', SizeController::class)->except(['show']);
     // units
     Route::resource('units', UnitController::class)->except(['show']);
+   
     Route::resource('products', ProductController::class);
+  
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect('/login');
+    });
 });
 
 
