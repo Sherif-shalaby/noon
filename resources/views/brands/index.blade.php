@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.dashboard'))
+@section('title', __('lang.brands'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
        <div class="row align-items-center">
