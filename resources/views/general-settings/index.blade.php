@@ -65,6 +65,12 @@
                         ]) !!}
                     </div>
                     <div class="col-md-3">
+                        {!! Form::label('currency_change', __('lang.currency_change'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select('currency_change', $currencies, !empty($settings['currency_change']) ? $settings['currency_change'] : null, [
+                            'class' => 'form-control select2',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
                         {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select(
                             'invoice_lang',

@@ -21,9 +21,5 @@ class Class extends Model
         return $this->hasMany('Category\Category');
     }
 
-    public function products()
-    {
-        return $this->hasMany('Class\Class');
-    }
 
 }

@@ -18,17 +18,16 @@ class Store extends Model
 
     public function products()
     {
-        return $this->belongsToMany('Product\Product', 'product_stores');
+        return $this->belongsToMany('App\Models\Product', 'product_stores');
     }
-
     public function customer_balance_adjustments()
     {
-        return $this->hasMany('CustomerBalanceAdjustments\CustomerBalanceAdjustments');
+        return $this->hasMany('App\Models\CustomerBalanceAdjustments');
     }
 
     public function exchange_rate()
     {
-        return $this->hasMany('ExchangeRates\ExchangeRates');
+        return $this->hasMany('App\Models\ExchangeRates');
     }
 
 }

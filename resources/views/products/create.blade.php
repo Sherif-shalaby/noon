@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('title', __('lang.add_products'))
+@push('css')
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+@endpush
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
        <div class="row align-items-center">
@@ -29,89 +32,298 @@
                 ]) !!}
                 <div class="row">
                     <div class="col-md-3">
-                        {!! Form::label('class', __('lang.class'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select(
-                            'class_id',
-                            [],null,
-                            ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
-                        ) !!}
-                    </div>
-                    <div class="col-md-3">
                         {!! Form::label('category', __('lang.category'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select(
-                            'category_id',
-                            $categories,null,
-                            ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
-                        ) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'category_id',
+                                $categories,null,
+                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
+                            ) !!}
+                            <button class="btn btn-primary btn-sm ml-2" type="button"
+                            data-toggle="collapse" data-target="#translation_table_category"
+                            aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        @error('category_id')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select(
-                            'subcategory_id',
-                            $categories,null,
-                            ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
-                        ) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'subcategory_id[]',
+                                $categories,[],
+                                ['class' => 'js-example-placeholder-multiple js-states form-control select2 subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select')]
+                            ) !!}
+                            <button class="btn btn-primary btn-sm ml-2" type="button"
+                            data-toggle="collapse" data-target="#translation_table_category"
+                            aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select(
-                            'brand_id',
-                            $brands,null,
-                            ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
-                        ) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'brand_id',
+                                $brands,null,
+                                ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
+                            ) !!}
+                            <button class="btn btn-primary btn-sm ml-2" type="button"
+                            data-toggle="collapse" data-target="#translation_table_category"
+                            aria-expanded="false" aria-controls="collapseExample">
+                            <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
+                  
+                    <div class="col-md-3">
+                        {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'store_id[]',
+                                $stores,[],
+                                ['class' => 'js-example-placeholder-multiple js-states form-control select2','multiple'=>"multiple",'placeholder'=> __('lang.please_select')]
+                            ) !!}
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 
+                        </div>
+                    </div>
 
                     <div class="col-md-3">
                         {!! Form::label('name', __('lang.product_name'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::text('product_name', null, [
-                                'class' => 'form-control',
+                            {!! Form::text('name', null, [
+                                'class' => 'form-control required',
                             ]) !!}
                             <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
+                            data-toggle="collapse" data-target="#translation_table_product"
                             aria-expanded="false" aria-controls="collapseExample">
                             <i class="fas fa-globe"></i>
                         </button>
                          </div>
+                         @error('name')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
                          @include('layouts.translation_inputs', [
                             'attribute' => 'name',
                             'translations' => [],
-                            'type' => 'category',
+                            'type' => 'product',
                         ])
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
                         {!! Form::text('sku',  null, [
-                            'class' => 'form-control','placeholder'=>__('product_code')
+                            'class' => 'form-control'
                         ]) !!}
                     </div>
 
+                    {{-- sizes --}}
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 pt-5 ">
+                                <h5 class="text-primary">{{__('lang.product_dimensions')}}</h5>
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('height', __('lang.height'),['class'=>'h5 pt-3']) !!}
+                                {!! Form::text('height', 0, [
+                                    'class' => 'form-control height'
+                                ]) !!}
+                                <br>
+                                @error('height')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
+                            
 
-                    {{-- <div class="col-md-3">
-                        {!! Form::label('language', __('lang.language'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('language', $languages, !empty($settings['language']) ? $settings['language'] : null, [
-                            'class' => 'form-control select2',
-                        ]) !!}
+                            <div class="col-md-3">
+                                {!! Form::label('length', __('lang.length'),['class'=>'h5 pt-3']) !!}
+                                {!! Form::text('length', 0, [
+                                    'class' => 'form-control length'
+                                ]) !!}
+                                <br>
+                                @error('length')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                {!! Form::label('width', __('lang.width'),['class'=>'h5 pt-3']) !!}
+                                {!! Form::text('width', 0, [
+                                    'class' => 'form-control width'
+                                ]) !!}
+                                <br>
+                                @error('width')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('size', __('lang.size'),['class'=>'h5 pt-3']) !!}
+                                {!! Form::text('size', 0, [
+                                    'class' => 'form-control size'
+                                ]) !!}
+                                <br>
+                                @error('size')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
-                            'class' => 'form-control select2',
-                        ]) !!}
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                {!! Form::label('unit', __('lang.unit'), ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'unit_id',
+                                        $units,null,
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
+                                    ) !!}
+                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('weight', __('lang.weight'),['class'=>'h5 pt-3']) !!}
+                                {!! Form::text('weight', 0, [
+                                    'class' => 'form-control'
+                                ]) !!}
+                                <br>
+                                @error('weight')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select(
-                            'invoice_lang',
-                            $languages + ['ar_and_en' => 'Arabic and English'],
-                            !empty($settings['invoice_lang']) ? $settings['invoice_lang'] : null,
-                            ['class' => 'form-control select2'],
-                        ) !!}
-                    </div> --}}
+                    {{-- sizes --}}
+                    {{-- add prices --}}
+                    <div class="col-md-12">
+                        <div class="container-fluid pt-5">
+                            <div class="row ">
+                                <div class="col-md-12 pt-5">
+                                    <h4 class="text-primary">{{__('lang.add_prices_for_different_users')}}</h4>
+                                </div>
+                                <div class="col-md-12 ">
+                                    <table class="table table-bordered" id="consumption_table_price">
+                                        <thead>
+                                        <tr>
+                                            {{-- <th style="width: 20%;">@lang('lang.discount_type')</th> --}}
+                                            {{-- <th style="width: 15%;">@lang('lang.price')</th> --}}
+                                            <th style="width: 10%;">@lang('lang.price_category')</th>
+                                            <th style="width: 5%;"></th>
+                                            <th style="width: 20%;">@lang('lang.price_start_date')</th>
+                                            <th style="width: 20%;">@lang('lang.price_end_date')</th>
+                                            <th style="width: 20%;">@lang('lang.customer_type') <i class="dripicons-question" data-toggle="tooltip"
+                                                                                                title="@lang('lang.discount_customer_info')"></i></th>
+                                            <th style="width: 5%;"><button class="btn btn-xs btn-primary add_price_row"
+                                                                        type="button"><i class="fa fa-plus"></i></button></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{-- @include('product.partial.raw_discount', ['row_id' => 0]) --}}
+                                        </tbody>
+                                    </table>
+                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- add prices --}}
+
+                    {{-- crop image --}}
+                    <div class="col-md-12 pt-5">
+                        <div class="row">
+                            <div class="col-md-12 pt-5">
+                                <div class="form-group">
+                                    <div class="container-fluid mt-3">
+                                        <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12 p3 text-center">
+                                                <label for="projectinput2" class='h5'> {{ __('lang.product_image') }}</label>
+                                            </div>
+                                            <div class="col-5">
+                                                <div class="mt-3">
+                                                    <div class="row">
+                                                        <div class="col-10 offset-1">
+                                                            <div class="variants">
+                                                                <div class='file file--upload w-100'>
+                                                                    <div class="file-input">
+                                                                        <input type="file" name="file-input"
+                                                                            id="file-input-image"
+                                                                            class="file-input__input" />
+                                                                        <label class="file-input__label"
+                                                                            for="file-input-image">
+                                                                            <i class="fas fa-cloud-upload-alt"></i>&nbsp;
+                                                                            <span>{{__('lang.upload_image')}}</span></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 offset-1">
+                                                <div class="preview-image-container">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="cropped_images"></div>
+                    {{-- crop image --}}    
+
+                    {{-- product description --}}
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="container-fluid">
+                                <div class="form-group">
+                                    <label for="details" class="h5 pt-5">{{__('lang.product_details')}}&nbsp; <button class="btn btn-primary btn-sm ml-2" type="button"
+                                        data-toggle="collapse" data-target="#translation_details_product"
+                                        aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fas fa-globe"></i>
+                                    </button></label>
+                                   
+                                    {!! Form::textarea(
+                                        'details',
+                                         null,
+                                        ['class' => 'form-control', 'id' => 'product_details'],
+                                    ) !!}
+                                      @include('layouts.translation_textarea', [
+                                        'attribute' => 'details',
+                                        'translations' => [],
+                                        'type' => 'product',
+                                    ])
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                    </div>
+                    {!! Form::close() !!}
+                    </div>
+                    @include('products.crop-image-modal')
                 </div>
             </div>
         </div>
     </div>
+    @include('store.create')
+    @include('units.create')
+    @include('brands.create')
 @endsection
+@push('javascripts')
+<link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+<script src="{{asset('js/product/product.js')}}" ></script>
+<script src="{{asset('css/crop/crop-image.js')}}" ></script>
+@endpush

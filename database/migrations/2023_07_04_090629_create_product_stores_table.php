@@ -14,10 +14,10 @@ class CreateProductStoresTable extends Migration {
 			$table->integer('store_id')->unsigned();
 			$table->double('quantity_available')->nullable();
 			$table->double('quantity_expired')->nullable();
-			$table->string('deleted_by')->nullable();
 			$table->double('block_quantity')->nullable();
-			$table->integer('created_by')->nullable();
-			$table->integer('updated_by')->nullable();
+			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
 			$table->timestamps();
 			$table->softDeletes();
 		});

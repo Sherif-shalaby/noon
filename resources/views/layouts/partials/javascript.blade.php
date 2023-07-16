@@ -20,7 +20,7 @@
 <script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 <script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
-
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 
 <script type="text/javascript" src="{{asset('js/jquery-validation/jquery.validate.min.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/jquery-validation/localization/messages_'. app()->getLocale() .'.js') }}"></script>
