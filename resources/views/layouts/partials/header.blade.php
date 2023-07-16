@@ -128,7 +128,7 @@
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.products')}}</span></a>
                           <ul class="dropdown-menu">
-                            <li><a href="https://themesbox.in/admin-templates/theta/html/light-vertical/index.html"><i class="mdi mdi-circle"></i>Light - Vertical</a></li>
+                            <li><a href="{{route('products.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.products')}}</a></li>
                             <li><a href="#"><i class="mdi mdi-circle"></i>Light - Horizontal</a></li>
                             <li><a href="https://themesbox.in/admin-templates/theta/html/dark-vertical/index.html"><i class="mdi mdi-circle"></i>Dark - Vertical</a></li>
                             <li><a href="https://themesbox.in/admin-templates/theta/html/dark-horizontal/index.html"><i class="mdi mdi-circle"></i>Dark - Horizontal</a></li>

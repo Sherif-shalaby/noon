@@ -90,5 +90,14 @@ return [
     'thursday' => 'الخميس',
     'friday' => 'الجمعة',
     'saturday' => 'السبت',
+    'products'=>'المواد',
+    'add_products'=>'اضافة منتج',
+    'class'=>'فئة',
+    'category'=>'قسم رئيسى',
+    'subcategory'=>'قسم فرعى',
+    'brand'=>'غلامة تجارية',
+    'product_name'=>'اسم المادة',
+    'product_code'=>'كود المادة',
+    'please_select'=>'برجاء التحديد',
 ];
 

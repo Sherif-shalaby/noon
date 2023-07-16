@@ -8,6 +8,7 @@ use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +40,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('sizes', SizeController::class)->except(['show']);
     // units
     Route::resource('units', UnitController::class)->except(['show']);
+   
+    Route::resource('products', ProductController::class);
+  
     Route::post('/logout', function () {
         Auth::logout();
         return redirect('/login');

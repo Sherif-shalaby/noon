@@ -76,5 +76,13 @@ return [
     'supplier_module' =>'Suppliers',
     'settings_module' =>'Settings',
     'reports_module' =>'Reports',
-
+    'products'=>'Products',
+    'add_products'=>'Add Products',
+    'class'=>'Class',
+    'category'=>'Category',
+    'subcategory'=>'Sub Category',
+    'brand'=>'Brand',
+    'product_name'=>'Product Name',
+    'product_code'=>'Product Code',
+    'please_select'=>'Please Select',
 ];
