@@ -8,9 +8,21 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Utils\Util;
 class BrandController extends Controller 
 {
+    protected $Util;
 
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
   /**
    * Display a listing of the resource.
    *
@@ -51,6 +63,7 @@ class BrandController extends Controller
           $brand = Brand::create($data);
           $output = [
               'success' => true,
+              'id' => $brand->id,
               'msg' => __('lang.success')
           ];
       } catch (\Exception $e) {
@@ -60,6 +73,9 @@ class BrandController extends Controller
               'msg' => __('lang.something_went_wrong')
           ];
       }
+      if ($request->quick_add) {
+        return $output;
+        }
       return redirect()->back()->with('status', $output);
 
   }
@@ -145,7 +161,12 @@ class BrandController extends Controller
     return $output;
   }
   
-  
+  public function getDropdown()
+    {
+        $brands = Brand::orderBy('name', 'asc')->pluck('name', 'id');
+        $brands_dp = $this->Util->createDropdownHtml($brands, __('lang.please_select'));
+        return $brands_dp;
+    }
 }
 
 ?>

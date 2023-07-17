@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleStandardModal">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBrandModal">
                         @lang('lang.add_brand_name')
                       </button>
                 </div>
@@ -92,7 +92,3 @@
         <!-- End Rightbar -->
     </div>
 @endsection
-@push('js')
-<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\BrandRequest','#brand-form'); !!}
-@endpush

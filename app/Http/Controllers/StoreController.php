@@ -11,10 +11,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use App\Utils\Util;
 class StoreController extends Controller
 {
+    protected $Util;
 
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
   /**
    * Display a listing of the resource.
    *
@@ -43,7 +54,7 @@ class StoreController extends Controller
    *
    * @return RedirectResponse
    */
-  public function store(Request $request): RedirectResponse
+  public function store(Request $request)
   {
 //      dd($request);
       $request->validate([
@@ -52,9 +63,10 @@ class StoreController extends Controller
       try {
           $data = $request->except('_token', 'quick_add');
           $data['created_by'] = Auth::user()->id;
-          Store::create($data);
+          $store=Store::create($data);
           $output = [
               'success' => true,
+              'id'=>$store->id,
               'msg' => __('lang.success')
           ];
 
@@ -66,7 +78,9 @@ class StoreController extends Controller
               'msg' => __('lang.something_went_wrong')
           ];
       }
-
+      if ($request->quick_add) {
+        return $output;
+      }
       return redirect()->back()->with('status', $output);
 
   }
@@ -114,7 +128,12 @@ class StoreController extends Controller
   {
 
   }
-
+    public function getDropdown()
+    {
+        $stores =Store::orderBy('name', 'asc')->pluck('name', 'id');
+        $stores_dp = $this->Util->createDropdownHtml($stores, __('lang.please_select'));
+        return $stores_dp;
+    }
 }
 
 ?>

@@ -29,6 +29,7 @@
 <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script>
 <script src="{{asset('js/summernote.min.js')}}" referrerpolicy="origin"></script>
+<script type="text/javascript" src="{{asset('js/submitform/submit-form.js') }}"></script>
 <script>
     $('.select2').select2({
         // 'width': '100%',
@@ -105,7 +106,7 @@
                         //                     'Correct Password!',
                         //                     'success'
                         //                 );
-
+alert(href)
                                         $.ajax({
                                             method: 'DELETE',
                                             url: href,
