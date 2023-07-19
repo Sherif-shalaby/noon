@@ -59,7 +59,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">@lang('lang.save')</button>
-                <button type="button" class="btn btn-secondary salary_cancel" data-dismiss="modal">@lang('lang.cancel')</button>
+                <button type="button" class="btn btn-secondary salary_cancel" data-dismiss="modal">@lang('lang.close')</button>
             </div>
         </div>
     </div>

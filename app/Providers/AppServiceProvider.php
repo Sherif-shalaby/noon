@@ -59,6 +59,13 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
+
+        //Blade directive to format number into required format.
+        Blade::directive('num_format', function ($expression) {
+            $currency_precision =2;
+            return "number_format($expression,  $currency_precision, '.', ',')";
+        });
+
         $settings = System::pluck('value', 'key');
         view()->share('settings' , $settings);
 
