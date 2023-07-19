@@ -69,6 +69,10 @@
                                     <th>@lang('lang.unit')</th>
                                     <th>@lang('lang.weight')</th>
                                     <th>@lang('lang.stores')</th>
+                                    <th>@lang('lang.brand')</th>
+                                    <th>@lang('lang.discount')</th>
+                                    <th>@lang('added_by')</th>
+                                    <th>@lang('updated_by')</th>
                                     <th>@lang('lang.action')</th>
                                 </tr>
                                 </thead>
@@ -95,6 +99,34 @@
                                         @foreach($product->stores as $store)
                                         {{$store->name}}<br>
                                         @endforeach
+                                    </td>
+                                    <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                    <td>
+                                        @foreach($product->product_prices as $price)
+                                        {{$price->price_category." : ".$price->price}} <br>
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        @if ($product->created_by  > 0 and $product->created_by != null)
+                                            {{ $product->created_at->diffForHumans() }} <br>
+                                            {{ $product->created_at->format('Y-m-d') }}
+                                            ({{ $product->created_at->format('h:i') }})
+                                            {{ ($product->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                            {{ $product->createBy?->name }}
+                                        @else
+                                        {{ __('no_update') }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($product->edited_by  > 0 and $product->edited_by != null)
+                                            {{ $product->updated_at->diffForHumans() }} <br>
+                                            {{ $product->updated_at->format('Y-m-d') }}
+                                            ({{ $product->updated_at->format('h:i') }})
+                                            {{ ($product->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                            {{ $product->updateBy?->name }}
+                                        @else
+                                           {{ __('no_update') }}
+                                        @endif
                                     </td>
                                     <td>
                                         <div class="btn-group">

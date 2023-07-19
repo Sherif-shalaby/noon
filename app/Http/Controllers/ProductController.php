@@ -137,24 +137,24 @@ class ProductController extends Controller
             $index_prices=array_keys($request->price_category);
         }
     }
-
-
-    foreach ($index_prices as $index_price){
-        $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
+    foreach ($index_prices as $index_price){   
+    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
             'price' => $request->price[$index_price],
             'price_category' => $request->price_category[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types_'.$index_price),
+            'price_customer_types' => $request->get('price_customer_types'.$index_price),
             // 'price_customers' => $price_customers,
             'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
             'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
             'created_by' => Auth::user()->id,
         ];
-
         ProductPrice::create($data_des);
     }
+
+
+
     $output = [
         'success' => true,
         'msg' => __('lang.success')
@@ -256,7 +256,7 @@ class ProductController extends Controller
         'details' => $request->details,
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
-        'created_by' => Auth::user()->id,
+        'edited_by' => Auth::user()->id,
     ];
     $product = Product::find($id);
     $product->update($product_data);
@@ -287,40 +287,27 @@ class ProductController extends Controller
 
 
     $index_prices=[];
-    $index_prices_olds=[];
-    if($request->has('price')){
-        if(count($request->price)>0){
-            $index_prices=array_keys($request->price);
-            if($request->price_ids != null ){
-                $index_prices_olds=array_keys($request->price_ids);
-                $product->product_prices()->whereNotIn('id',$request->price_ids)->delete();
-            }else{
-                $product->product_prices()->delete();
-            }
-            
+    $product->product_prices()->delete();
+   $index_prices=[];
+    if($request->has('price_category')){
+        if(count($request->price_category)>0){
+            $index_prices=array_keys($request->price_category);
         }
     }
-
-    // return $index_prices;
-    foreach ($index_prices as $index_price){
-        $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
+    foreach ($index_prices as $index_price){   
+    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
             'price' => $request->price[$index_price],
             'price_category' => $request->price_category[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types_'.$index_price),
+            'price_customer_types' => $request->get('price_customer_types'.$index_price),
+            // 'price_customers' => $price_customers,
             'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
             'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
             'created_by' => Auth::user()->id,
         ];
-        // return $index_price;
-        if(in_array($index_price,$index_prices_olds)){
-            ProductPrice::where('id',$request->price_ids[$index_price])->update($data_des);
-        }else{
-            // dd($index_price,$index_prices_olds);
-            ProductPrice::create($data_des);
-        }
+        ProductPrice::create($data_des);
     }
     $output = [
         'success' => true,
@@ -345,7 +332,14 @@ class ProductController extends Controller
   public function destroy($id)
   {
     try {
-        Product::find($id)->delete();
+        $product=Product::find($id);
+        $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
+        if(File::exists($image_path)) {
+            File::delete($image_path);
+        }
+        $product->deleted_by = Auth::user()->id;
+        $product->save();
+        $product->delete();
         $output = [
             'success' => true,
             'msg' => __('lang.success')

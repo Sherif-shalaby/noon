@@ -25,11 +25,11 @@ class CreateProductsTable extends Migration {
 			$table->decimal('size', 10,2)->nullable()->default(0);
 			$table->decimal('weight', 10,2)->nullable();
 			$table->boolean('active')->default(1);
-			$table->integer('created_by')->nullable();
-			$table->integer('edited_by')->nullable();
-			$table->integer('deleted_by')->nullable();
-			$table->softDeletes();
 			$table->integer('brand_id')->unsigned()->nullable();
+			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('edited_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+			$table->softDeletes();
 			$table->timestamps();
 		});
 	}

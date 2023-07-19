@@ -32,7 +32,6 @@
                 ]) !!}
                 <div class="row">
                     <div class="col-md-3">
-                        {{$product->brand_id}}
                         {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
                             {!! Form::select(
@@ -50,13 +49,10 @@
                             {!! Form::select(
                                 'category_id',
                                 $categories,$product->category_id,
-                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
+                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId']
                             ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
+                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
+
                         </div>
                         @error('category_id')
                             <label class="text-danger error-msg">{{ $message }}</label>
@@ -69,13 +65,9 @@
                             {!! Form::select(
                                 'subcategory_id[]',
                                 $categories,$selected_subcategories,
-                                ['class' => 'js-example-placeholder-multiple js-states form-control select2 subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select')]
+                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'id'=>'subCategoryId']
                             ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
+                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                   
@@ -86,7 +78,7 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,$selected_stores,
-                                ['class' => 'js-example-placeholder-multiple js-states form-control select2','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'store_id']
+                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'id'=>'store_id']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 
@@ -111,7 +103,7 @@
                          @include('layouts.translation_inputs', [
                             'attribute' => 'name',
                             'translations' => $product->translations,
-                            // 'type' => 'product',
+                            'type' => 'product',
                         ])
                     </div>
                     <div class="col-md-3">
@@ -228,15 +220,14 @@
                                             @if(!empty($product->product_prices))
                                                 @foreach($product->product_prices as $price)
                                                     @include('products.product_raw_price', [
-                                                    'row_id' => $loop->index,
+                                                    'row_id' => $loop->index +0,
                                                     'price'=>$price,
                                                     ])
                                                 @endforeach
                                             @endif
-                                        {{-- @include('product.partial.raw_discount', ['row_id' => 0]) --}}
                                         </tbody>
                                     </table>
-                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">
+                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="{{count($product->product_prices)}}">
                                 </div>
                             </div>
                         </div>
@@ -320,7 +311,7 @@
                                       @include('layouts.translation_textarea', [
                                         'attribute' => 'details',
                                         'translations' =>$product->details_translations,
-                                        
+                                        'type' => 'product',
                                     ])
                                 </div>
                                 </div>
@@ -341,6 +332,7 @@
     @include('store.create',['quick_add'=>$quick_add])
     @include('units.create',['quick_add'=>$quick_add])
     @include('brands.create',['quick_add'=>$quick_add])
+    @include('categories.create_modal',['quick_add'=>$quick_add])
 @endsection
 @push('javascripts')
 <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">

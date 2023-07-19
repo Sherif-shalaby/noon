@@ -50,6 +50,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        // return $request->quick_add;
         // $validator = Validator::make(
         //     $request->all(),
         //     [
@@ -79,7 +80,16 @@ class CategoryController extends Controller
             }else{
                 $input['translation']=[];
             }
-            Category::create($input);
+            $category=Category::create($input);
+
+            if ($request->quick_add) {
+                $output = [
+                    'success' => true,
+                    'id' => $category->id,
+                    'msg' => __('lang.success')
+                ];
+                return $output;
+            }
             return response()->json(['status' => __('categories.addsuccess')]);
 
     }
@@ -185,5 +195,10 @@ class CategoryController extends Controller
 
         return $categories_dp;
     }
-  
+    public function getDropdown()
+    {
+        $units = Category::orderBy('name', 'asc')->pluck('name', 'id');
+        $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
+        return $units_dp;
+    }
 }

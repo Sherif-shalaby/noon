@@ -42,13 +42,15 @@
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
                                         <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>@lang('lang.brand_name')</th>
                                             <th>@lang('lang.action')</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($brands as $brand)
+                                        @foreach($brands as $index=>$brand)
                                         <tr>
+                                            <td>{{ $index+1 }}</td>
                                             <td>{{$brand->name}}</td>
                                             <td>
                                                 <div class="btn-group">

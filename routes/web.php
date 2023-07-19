@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
         return redirect('/login');
     });
     //الاقسام
+    Route::get('categories/get-dropdown', [CategoryController::class,'getDropdown']);
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');

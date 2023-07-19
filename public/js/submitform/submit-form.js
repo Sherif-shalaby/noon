@@ -113,3 +113,50 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
     });
 });
 //store form
+
+//category form
+var select_category=0;
+$(".openCategoryModal").click(function (e){
+    select_category=$(this).data('select_category');
+});
+$("#create-category-btn").click(function (e){
+    e.preventDefault();
+    setTimeout(()=>{
+        $("#category-form").submit();
+    },500)
+});
+$(document).on("submit", "#category-form", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result.success) {
+                swal("Success", result.msg, "success");
+                $("#createCategoryModal").modal("hide");
+                var category_id = result.id;
+                $.ajax({
+                    method: "get",
+                    url: "/categories/get-dropdown",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        if(select_category=="1"){
+                            $("#categoryId").empty().append(data_html);
+                            $("#categoryId").val(category_id).change();
+                        }else{
+                            $("#subCategoryId").empty().append(data_html);
+                            $("#subCategoryId").val(category_id).change();
+                        }
+                    },
+                });
+            } else {
+                swal("Error", result.msg, "error");
+            }
+        },
+    });
+});
+//category form

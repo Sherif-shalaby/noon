@@ -32,39 +32,6 @@
                 ]) !!}
                 <div class="row">
                     <div class="col-md-3">
-                        {!! Form::label('category', __('lang.category'), ['class'=>'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::select(
-                                'category_id',
-                                $categories,null,
-                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
-                            ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                        @error('category_id')
-                            <label class="text-danger error-msg">{{ $message }}</label>
-                        @enderror
-                    </div>
-                    <div class="col-md-3">
-                        {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::select(
-                                'subcategory_id[]',
-                                $categories,[],
-                                ['class' => 'js-example-placeholder-multiple js-states form-control select2 subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select')]
-                            ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
                             {!! Form::select(
@@ -76,6 +43,32 @@
 
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        {!! Form::label('category', __('lang.category'), ['class'=>'h5 pt-3']) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'category_id',
+                                $categories,null,
+                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId']
+                            ) !!}
+                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
+                        </div>
+                        @error('category_id')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="col-md-3">
+                        {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'subcategory_id[]',
+                                $categories,[],
+                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'subCategoryId']
+                            ) !!}
+                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                    
                   
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
@@ -83,7 +76,7 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,[],
-                                ['class' => 'js-example-placeholder-multiple js-states form-control select2','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'store_id']
+                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'store_id']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 
@@ -317,6 +310,7 @@
     @include('store.create',['quick_add'=>$quick_add])
     @include('units.create',['quick_add'=>$quick_add])
     @include('brands.create',['quick_add'=>$quick_add])
+    @include('categories.create_modal',['quick_add'=>$quick_add])
 @endsection
 @push('javascripts')
 <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
