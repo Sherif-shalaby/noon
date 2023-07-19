@@ -280,7 +280,13 @@
                       </li>
                   @endif
                   @if(!empty($module_settings['employee_module']))
-                      <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.employees')}}</span></a></li>
+                         <li class="dropdown">
+                             <a href=""><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.employees')}}</span></a>
+                              <ul class="dropdown-menu">
+                                  <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
+                                  <li><a href="{{route('employees.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
+                              </ul>
+                          </li>
                   @endif
                   @if(!empty($module_settings['customer_module']))
                    <li class="dropdown">

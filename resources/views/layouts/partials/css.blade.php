@@ -4,7 +4,7 @@
 <!-- Start css -->
 <!-- Switchery css -->
 {{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
-{{-- <link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet"> --}}
+<link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
 <!-- DataTables css -->
 <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{asset('plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
@@ -19,7 +19,6 @@
 
 <!-- Responsive Datatable css -->
 <link href="{{asset('plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" href="{{asset('js/toastr/toastr.min.css')}}" id="theme-stylesheet" type="text/css">
 <link rel="stylesheet" href="{{asset('css/sweetalert2.min.css')}}">
 <link rel="stylesheet" href="{{asset('css/style.default.css')}}" id="theme-stylesheet" type="text/css">
 <link rel="stylesheet" href="{{asset('css/dropzone.css')}}">

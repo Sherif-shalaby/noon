@@ -189,6 +189,7 @@
     <!-- End Containerbar -->
     <!-- Start js -->
     @include('layouts.partials.javascript')
+    @yield('javascript')
     @stack('js')
     <!-- End js -->
 </body>

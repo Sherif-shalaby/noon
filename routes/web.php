@@ -25,7 +25,10 @@ use App\Http\Controllers\StoreController;
 */
 Route::group(['middleware' => ['auth']], function () {
     Route::get('brands/get-dropdown', [BrandController::class,'getDropdown']);
-    Route::resource('brands', BrandController::class);
+    Route::resource('brands', App\Http\Controllers\BrandController::class);
+    Route::resource('store', App\Http\Controllers\StoreController::class);
+    Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
+    Route::resource('employees',App\Http\Controllers\EmployeeController::class);
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
@@ -50,6 +53,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('units/get-dropdown', [UnitController::class,'getDropdown']);
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
+
     Route::resource('products', ProductController::class);
     //customers
     Route::resource('customers', CustomerController::class);
