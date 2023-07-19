@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\System;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -65,9 +64,6 @@ class AppServiceProvider extends ServiceProvider
             $currency_precision =2;
             return "number_format($expression,  $currency_precision, '.', ',')";
         });
-
-        $settings = System::pluck('value', 'key');
-        view()->share('settings' , $settings);
 
     }
 }

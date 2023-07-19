@@ -13,7 +13,7 @@ class CreateProductsTable extends Migration {
 			$table->string('name');
 			$table->text('translations')->nullable();
 			$table->string('sku')->nullable();
-			$table->integer('category_id')->unsigned()->nullable();
+			$table->unsignedBigInteger('category_id')->nullable();
 			// $table->text('subcategory_id')->nullable();
 			$table->text('image')->nullable();
 			$table->unsignedBigInteger('unit_id')->unsigned()->nullable();

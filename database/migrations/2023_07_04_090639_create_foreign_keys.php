@@ -24,11 +24,11 @@ class CreateForeignKeys extends Migration {
 		// 				->onDelete('cascade')
 		// 				->onUpdate('cascade');
 		// });
-		// Schema::table('products', function(Blueprint $table) {
-		// 	$table->foreign('category_id')->references('id')->on('categories')
-		// 				->onDelete('cascade')
-		// 				->onUpdate('cascade');
-		// });
+		Schema::table('products', function(Blueprint $table) {
+			$table->foreign('category_id')->references('id')->on('categories')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
 		// Schema::table('products', function(Blueprint $table) {
 		// 	$table->foreign('subcategory_id')->references('id')->on('categories')
 		// 				->onDelete('cascade')
@@ -85,11 +85,6 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('cascade');
 		});
 		Schema::table('employees', function(Blueprint $table) {
-			$table->foreign('store_id')->references('id')->on('stores')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
-		Schema::table('employees', function(Blueprint $table) {
 			$table->foreign('job_type_id')->references('id')->on('job_types')
 						->onDelete('cascade')
 						->onUpdate('cascade');
@@ -121,18 +116,18 @@ class CreateForeignKeys extends Migration {
 		Schema::table('categories', function(Blueprint $table) {
 			$table->dropForeign('categories_parent_id_foreign');
 		});
-		Schema::table('categories', function(Blueprint $table) {
-			$table->dropForeign('categories_class_id_foreign');
-		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->dropForeign('products_class_id_foreign');
-		});
+		// Schema::table('categories', function(Blueprint $table) {
+		// 	$table->dropForeign('categories_class_id_foreign');
+		// });
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->dropForeign('products_class_id_foreign');
+		// });
 		Schema::table('products', function(Blueprint $table) {
 			$table->dropForeign('products_category_id_foreign');
 		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->dropForeign('products_subcategory_id_foreign');
-		});
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->dropForeign('products_subcategory_id_foreign');
+		// });
 		Schema::table('products', function(Blueprint $table) {
 			$table->dropForeign('products_brand_id_foreign');
 		});
@@ -162,9 +157,6 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('employees', function(Blueprint $table) {
 			$table->dropForeign('employees_user_id_foreign');
-		});
-		Schema::table('employees', function(Blueprint $table) {
-			$table->dropForeign('employees_store_id_foreign');
 		});
 		Schema::table('employees', function(Blueprint $table) {
 			$table->dropForeign('employees_job_type_id_foreign');
