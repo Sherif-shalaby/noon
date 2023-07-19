@@ -81,4 +81,5 @@ return [
     'add_brand'=>'Add Brand',
     'add_category'=>'Add Category',
     'discount'=>'Discount',
+    'customer_types'=>'Customer Types',
 ];

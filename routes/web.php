@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\StoreController;
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +51,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::resource('products', ProductController::class);
+    //customers
+    Route::resource('customers', CustomerController::class);
+    Route::resource('customertypes', CustomerTypeController::class);
 });
 
 

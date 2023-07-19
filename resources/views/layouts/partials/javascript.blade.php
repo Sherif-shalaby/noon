@@ -39,7 +39,7 @@
 
 <!-- Pnotify js -->
 <script src="{{asset('plugins/pnotify/js/pnotify.custom.min.js')}}"></script>
-<script src="{{asset('js/custom/custom-pnotify.js')}}"></script>>
+<script src="{{asset('js/custom/custom-pnotify.js')}}"></script>
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
