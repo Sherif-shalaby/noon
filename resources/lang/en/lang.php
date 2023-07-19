@@ -110,5 +110,9 @@ return [
     'sku'=>'sku',
     'currency_change'=>'Currency Change',
     'dollar_exchange'=>'Dollar Exchange',
-];
+    'edit_products'=>'Edit Products',
+    'add_brand'=>'Add Brand',
+    'add_category'=>'Add Category',
+    'discount'=>'Discount',
 
+];

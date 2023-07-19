@@ -10,7 +10,7 @@ fileImageInput.addEventListener("change", () => {
     previewImageContainer.innerHTML = "";
     let files = Array.from(fileImageInput.files);
     for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+        var file = files[i];
         let fileType = file.type.slice(file.type.indexOf("/") + 1);
         let FileAccept = [
             "jpg",
@@ -24,18 +24,18 @@ fileImageInput.addEventListener("change", () => {
         ];
         // if (file.type.match('image.*')) {
         if (FileAccept.includes(fileType)) {
-            const reader = new FileReader();
+            var reader = new FileReader();
             reader.addEventListener("load", () => {
-                const preview = document.createElement("div");
+                var preview = document.createElement("div");
                 preview.classList.add("preview");
-                const img = document.createElement("img");
-                const actions = document.createElement("div");
+                var img = document.createElement("img");
+                var actions = document.createElement("div");
                 actions.classList.add("action_div");
                 img.src = reader.result;
                 preview.appendChild(img);
                 preview.appendChild(actions);
-                const container = document.createElement("div");
-                const deleteBtn = document.createElement("span");
+                var container = document.createElement("div");
+                var deleteBtn = document.createElement("span");
                 deleteBtn.classList.add("delete-btn");
                 deleteBtn.innerHTML =
                     '<i style="font-size: 20px;" class="fas fa-trash"></i>';
@@ -90,7 +90,7 @@ fileImageInput.addEventListener("change", () => {
 });
 function launchImageCropTool(img) {
     // Set up Croppie options
-    const croppieOptions = {
+    var croppieOptions = {
         viewport: {
             width: 200,
             height: 200,
@@ -143,7 +143,7 @@ function launchImageCropTool(img) {
 
 function getImages() {
     setTimeout(() => {
-        const container = document.querySelectorAll(".preview-image-container");
+        var container = document.querySelectorAll(".preview-image-container");
         let images = [];
         $("#cropped_images").empty();
         for (let i = 0; i < container[0].children.length; i++) {

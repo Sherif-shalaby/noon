@@ -15,9 +15,10 @@ class Product extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = array('name','translations', 'sku','store_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width', 'active','created_by');
+    protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by');
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
+                        
                         // 'store_id'=>'array',
     ];
     public function getNameAttribute($value)
@@ -34,7 +35,7 @@ class Product extends Model
     {
         if (!is_null($this->details_translations)) {
             if (isset($this->details_translations['details'][app()->getLocale()])) {
-                return $this->details_translations['Details'][app()->getLocale()];
+                return $this->details_translations['details'][app()->getLocale()];
             }
             return $value;
         }
@@ -67,5 +68,22 @@ class Product extends Model
     public function subcategories()
     {
         return $this->belongsToMany('App\Models\Category', 'product_subcategories');
+    }
+    public function product_prices()
+    {
+        return $this->hasMany('App\Models\ProductPrice');
+    }
+    public function createBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updateBy()
+    {
+        return $this->belongsTo(User::class, 'edited_by');
+    }
+    public function deleteBy()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 }

@@ -124,5 +124,9 @@ return [
     'sku'=>'الكود',
     'currency_change'=>'تغيير العملة الى',
     'dollar_exchange'=>'سعر صرف الدولار',
+    'edit_products'=>'تعديل المنتج',
+    'add_brand'=>'اضافة علامة تجارية',
+    'add_category'=>'اضافة قسم',
+    'discount'=>'خصم',
 ];
 

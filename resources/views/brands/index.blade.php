@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleStandardModal">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBrandModal">
                         @lang('lang.add_brand_name')
                       </button>
                 </div>
@@ -42,13 +42,15 @@
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
                                         <thead>
                                         <tr>
+                                            <th>#</th>
                                             <th>@lang('lang.brand_name')</th>
                                             <th>@lang('lang.action')</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach($brands as $brand)
+                                        @foreach($brands as $index=>$brand)
                                         <tr>
+                                            <td>{{ $index+1 }}</td>
                                             <td>{{$brand->name}}</td>
                                             <td>
                                                 <div class="btn-group">
@@ -92,7 +94,3 @@
         <!-- End Rightbar -->
     </div>
 @endsection
-@push('js')
-<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\BrandRequest','#brand-form'); !!}
-@endpush

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.add_products'))
+@section('title', __('lang.edit_products'))
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
@@ -7,12 +7,12 @@
     <div class="breadcrumbbar">
        <div class="row align-items-center">
             <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.add_products')</h4>
+                <h4 class="page-title">@lang('lang.edit_products')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
                         <li class="breadcrumb-item"><a href="{{route('products.index')}}">@lang('lang.products')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.add_products')</li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.edit_products')</li>
                     </ol>
                 </div>
             </div>
@@ -26,8 +26,8 @@
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
                 {!! Form::open([
-                    'route' => 'products.store',
-                    'method' => 'post',
+                    'route' => ['products.update',$product->id],
+                    'method' => 'put',
                     'enctype' => 'multipart/form-data',
                 ]) !!}
                 <div class="row">
@@ -36,7 +36,7 @@
                         <div class="d-flex justify-content-center">
                             {!! Form::select(
                                 'brand_id',
-                                $brands,null,
+                                $brands,$product->brand_id,
                                 ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'id'=>'brand_id']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
@@ -48,10 +48,11 @@
                         <div class="d-flex justify-content-center">
                             {!! Form::select(
                                 'category_id',
-                                $categories,null,
+                                $categories,$product->category_id,
                                 ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
+
                         </div>
                         @error('category_id')
                             <label class="text-danger error-msg">{{ $message }}</label>
@@ -60,23 +61,24 @@
                     <div class="col-md-3">
                         {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
+                            @php $selected_subcategories=$product->subcategories->pluck('id'); @endphp
                             {!! Form::select(
                                 'subcategory_id[]',
-                                $categories,[],
-                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'subCategoryId']
+                                $categories,$selected_subcategories,
+                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'id'=>'subCategoryId']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
-                    
                   
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
+                            @php $selected_stores=$product->stores->pluck('id'); @endphp
                             {!! Form::select(
                                 'store_id[]',
-                                $stores,[],
-                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'store_id']
+                                $stores,$selected_stores,
+                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'id'=>'store_id']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 
@@ -86,7 +88,7 @@
                     <div class="col-md-3">
                         {!! Form::label('name', __('lang.product_name'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::text('name', null, [
+                            {!! Form::text('name', $product->name, [
                                 'class' => 'form-control required',
                             ]) !!}
                             <button class="btn btn-primary btn-sm ml-2" type="button"
@@ -100,13 +102,13 @@
                         @enderror
                          @include('layouts.translation_inputs', [
                             'attribute' => 'name',
-                            'translations' => [],
+                            'translations' => $product->translations,
                             'type' => 'product',
                         ])
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-                        {!! Form::text('sku',  null, [
+                        {!! Form::text('sku',  $product->sku, [
                             'class' => 'form-control'
                         ]) !!}
                     </div>
@@ -119,7 +121,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('height', __('lang.height'),['class'=>'h5 pt-3']) !!}
-                                {!! Form::text('height', 0, [
+                                {!! Form::text('height', $product->height, [
                                     'class' => 'form-control height'
                                 ]) !!}
                                 <br>
@@ -132,7 +134,7 @@
 
                             <div class="col-md-3">
                                 {!! Form::label('length', __('lang.length'),['class'=>'h5 pt-3']) !!}
-                                {!! Form::text('length', 0, [
+                                {!! Form::text('length', $product->length, [
                                     'class' => 'form-control length'
                                 ]) !!}
                                 <br>
@@ -143,7 +145,7 @@
 
                             <div class="col-md-3">
                                 {!! Form::label('width', __('lang.width'),['class'=>'h5 pt-3']) !!}
-                                {!! Form::text('width', 0, [
+                                {!! Form::text('width', $product->width, [
                                     'class' => 'form-control width'
                                 ]) !!}
                                 <br>
@@ -153,7 +155,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('size', __('lang.size'),['class'=>'h5 pt-3']) !!}
-                                {!! Form::text('size', 0, [
+                                {!! Form::text('size', $product->size, [
                                     'class' => 'form-control size'
                                 ]) !!}
                                 <br>
@@ -170,7 +172,7 @@
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select(
                                         'unit_id',
-                                        $units,null,
+                                        $units,$product->unit_id,
                                         ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'id'=>'unit_id']
                                     ) !!}
                                  <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
@@ -180,7 +182,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('weight', __('lang.weight'),['class'=>'h5 pt-3']) !!}
-                                {!! Form::text('weight', 0, [
+                                {!! Form::text('weight', $product->weight, [
                                     'class' => 'form-control'
                                 ]) !!}
                                 <br>
@@ -215,10 +217,17 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{-- @include('product.partial.raw_discount', ['row_id' => 0]) --}}
+                                            @if(!empty($product->product_prices))
+                                                @foreach($product->product_prices as $price)
+                                                    @include('products.product_raw_price', [
+                                                    'row_id' => $loop->index +0,
+                                                    'price'=>$price,
+                                                    ])
+                                                @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
-                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">
+                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="{{count($product->product_prices)}}">
                                 </div>
                             </div>
                         </div>
@@ -258,6 +267,20 @@
                                             </div>
                                             <div class="col-4 offset-1">
                                                 <div class="preview-image-container">
+                                                    @if (!empty($product->image))
+                                                    <div class="preview">
+                                                        <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                            id="image_footer" alt="">
+                                                        <button type="button"
+                                                            class="btn btn-xs btn-danger delete-btn remove_image "
+                                                            data-type="image"><i style="font-size: 25px;"
+                                                                class="fa fa-trash"></i></button>
+                                                        <span class="btn btn-xs btn-primary  crop-btn"
+                                                            id="crop-image-btn" data-toggle="modal"
+                                                            data-target="#imageModal"><i style="font-size: 25px;"
+                                                                class="fas fa-crop"></i></span>
+                                                    </div>
+                                                @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -280,15 +303,14 @@
                                         aria-expanded="false" aria-controls="collapseExample">
                                         <i class="fas fa-globe"></i>
                                     </button></label>
-                                   
                                     {!! Form::textarea(
                                         'details',
-                                         null,
+                                        $product->details,
                                         ['class' => 'form-control', 'id' => 'product_details'],
                                     ) !!}
                                       @include('layouts.translation_textarea', [
                                         'attribute' => 'details',
-                                        'translations' => [],
+                                        'translations' =>$product->details_translations,
                                         'type' => 'product',
                                     ])
                                 </div>
@@ -317,4 +339,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 <script src="{{asset('js/product/product.js')}}" ></script>
 <script src="{{asset('css/crop/crop-image.js')}}" ></script>
+<script>
+// edit Case
+@if (!empty($product->image) && isset($product->image))
+    document.getElementById("crop-image-btn").addEventListener('click', () => {
+        console.log(("#imageModal"))
+        setTimeout(() => {
+            launchImageCropTool(document.getElementById("image_footer"));
+        }, 500);
+    });
+    let deleteImageBtn = document.getElementById("deleteBtn");
+    if (deleteImageBtn) {
+        deleteImageBtn.getElementById("deleteBtn").addEventListener('click', () => {
+            if (window.confirm('Are you sure you want to delete this image?')) {
+                $("#preview").remove();
+            }
+        });
+    }
+@endif
+</script>
 @endpush

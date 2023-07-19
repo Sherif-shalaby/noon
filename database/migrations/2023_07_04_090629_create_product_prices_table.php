@@ -10,8 +10,6 @@ class CreateProductPricesTable extends Migration {
 	{
 		Schema::create('product_prices', function(Blueprint $table) {
 			$table->increments('id');
-			$table->timestamps();
-			$table->softDeletes();
 			$table->integer('product_id')->unsigned();
 			// $table->string('price_type')->nullable();
 			$table->decimal('price',10,2)->nullable();
@@ -24,6 +22,7 @@ class CreateProductPricesTable extends Migration {
 			$table->integer('created_by');
 			$table->integer('updated_by')->nullable();
 			$table->integer('deleted_by')->nullable();
+			$table->timestamps();
 		});
 	}
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Blade;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +28,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //Blade directive to format number into required format.
+        Blade::directive('num_format', function ($expression) {
+            $currency_precision =2;
+            return "number_format($expression,  $currency_precision, '.', ',')";
+        });
+
+        //Blade directive to convert.
+        Blade::directive('format_date', function ($date = null) {
+            if (!empty($date)) {
+                return "Carbon\Carbon::createFromTimestamp(strtotime($date))->format('m/d/Y')";
+            } else {
+                return null;
+            }
+        });
         Paginator::useBootstrap();
         if(Schema::hasTable('systems')){
             $module_settings = System::getProperty('module_settings');

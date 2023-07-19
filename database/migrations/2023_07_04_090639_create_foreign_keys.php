@@ -11,103 +11,108 @@ class CreateForeignKeys extends Migration {
 	{
 		// Schema::table('categories', function(Blueprint $table) {
 		// 	$table->foreign('parent_id')->references('id')->on('categories')
-		// 				->onDelete('restrict')
-		// 				->onUpdate('restrict');
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
 		// });
 		// Schema::table('categories', function(Blueprint $table) {
 		// 	$table->foreign('class_id')->references('id')->on('classes')
-		// 				->onDelete('restrict')
-		// 				->onUpdate('restrict');
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
 		// });
 		// Schema::table('products', function(Blueprint $table) {
 		// 	$table->foreign('class_id')->references('id')->on('classes')
-		// 				->onDelete('restrict')
-		// 				->onUpdate('restrict');
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
 		// });
 		// Schema::table('products', function(Blueprint $table) {
 		// 	$table->foreign('category_id')->references('id')->on('categories')
-		// 				->onDelete('restrict')
-		// 				->onUpdate('restrict');
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
 		// });
 		// Schema::table('products', function(Blueprint $table) {
 		// 	$table->foreign('subcategory_id')->references('id')->on('categories')
-		// 				->onDelete('restrict')
-		// 				->onUpdate('restrict');
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
 		// });
 		Schema::table('products', function(Blueprint $table) {
 			$table->foreign('brand_id')->references('id')->on('brands')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->foreign('unit_id')->references('id')->on('units')
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->foreign('product_id')->references('id')->on('products')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->foreign('store_id')->references('id')->on('stores')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('product_subcategories', function(Blueprint $table) {
 			$table->foreign('product_id')->references('id')->on('products')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('product_subcategories', function(Blueprint $table) {
 			$table->foreign('category_id')->references('id')->on('categories')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('customers', function(Blueprint $table) {
 			$table->foreign('customer_type_id')->references('id')->on('customer_types')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('customer_balance_adjustments', function(Blueprint $table) {
 			$table->foreign('customer_id')->references('id')->on('customers')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('customer_balance_adjustments', function(Blueprint $table) {
 			$table->foreign('store_id')->references('id')->on('stores')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('employees', function(Blueprint $table) {
 			$table->foreign('user_id')->references('id')->on('users')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('employees', function(Blueprint $table) {
 			$table->foreign('store_id')->references('id')->on('stores')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('employees', function(Blueprint $table) {
 			$table->foreign('job_type_id')->references('id')->on('job_types')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('exchange_rates', function(Blueprint $table) {
 			$table->foreign('store_id')->references('id')->on('stores')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('exchange_rates', function(Blueprint $table) {
 			$table->foreign('receved_currency_id')->references('id')->on('currencies')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('exchange_rates', function(Blueprint $table) {
 			$table->foreign('default_currency_id')->references('id')->on('currencies')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 		Schema::table('product_prices', function(Blueprint $table) {
 			$table->foreign('product_id')->references('id')->on('products')
-						->onDelete('restrict')
-						->onUpdate('restrict');
+						->onDelete('cascade')
+						->onUpdate('cascade');
 		});
 	}
 
@@ -130,6 +135,9 @@ class CreateForeignKeys extends Migration {
 		});
 		Schema::table('products', function(Blueprint $table) {
 			$table->dropForeign('products_brand_id_foreign');
+		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->dropForeign('products_unit_id_foreign');
 		});
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->dropForeign('product_stores_product_id_foreign');

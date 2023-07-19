@@ -57,10 +57,11 @@
 <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script>
 <script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script>
 <script src="{{asset('js/summernote.min.js')}}" referrerpolicy="origin"></script>
+<script type="text/javascript" src="{{asset('js/submitform/submit-form.js') }}"></script>
+<script src="{{asset('js/jquery-ui.min.js') }}" ></script>
+<script src="{{ asset('js/lang/'.app()->getLocale().'.js') }}"></script>
 <script>
-    $('.select2').select2({
-        // 'width': '100%',
-    });
+   
 </script>
 
 
@@ -133,7 +134,6 @@
                         //                     'Correct Password!',
                         //                     'success'
                         //                 );
-
                                         $.ajax({
                                             method: 'DELETE',
                                             url: href,
@@ -191,7 +191,26 @@
                 },
             });
         });
-
+        $(document).ready(function(){
+            $('table.editTogle')
+                .find("tr")
+                .each(function () {
+                    if($(this).find('input.translations').val()){
+                        $('table.editTogle').removeClass('collapse')
+                        return;
+                    }
+            });
+            $('table.editTextareaTogle')
+                .find("tr")
+                .each(function () {
+                    if($(this).find('textarea.translations').val()){
+                        $('table.editTextareaTogle').removeClass('collapse')
+                        return;
+                    }
+            });
+        });
+        $('.select2').select2({
+        });
 </script>
 
 </script>

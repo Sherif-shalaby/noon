@@ -8,9 +8,22 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use App\Utils\Util;
 
 class CategoryController extends Controller
 {
+    protected $Util;
+
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
 
       public function index()
       {
@@ -37,6 +50,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        // return $request->quick_add;
         // $validator = Validator::make(
         //     $request->all(),
         //     [
@@ -66,7 +80,16 @@ class CategoryController extends Controller
             }else{
                 $input['translation']=[];
             }
-            Category::create($input);
+            $category=Category::create($input);
+
+            if ($request->quick_add) {
+                $output = [
+                    'success' => true,
+                    'id' => $category->id,
+                    'msg' => __('lang.success')
+                ];
+                return $output;
+            }
             return response()->json(['status' => __('categories.addsuccess')]);
 
     }
@@ -168,20 +191,14 @@ class CategoryController extends Controller
     public function getSubcategories($id){
         $categories=[];
         $categories = Category::where('parent_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
-        $categories_dp = $this->createDropdownHtml($categories, __('lang.please_select'));
+        $categories_dp = $this->Util->createDropdownHtml($categories, __('lang.please_select'));
 
         return $categories_dp;
     }
-    public function createDropdownHtml($array, $append_text = null)
+    public function getDropdown()
     {
-        $html = '';
-        if (!empty($append_text)) {
-            $html = '<option value="">' . $append_text . '</option>';
-        }
-        foreach ($array as $key => $value) {
-            $html .= '<option value="' . $key . '">' . $value . '</option>';
-        }
-
-        return $html;
+        $units = Category::orderBy('name', 'asc')->pluck('name', 'id');
+        $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
+        return $units_dp;
     }
 }
