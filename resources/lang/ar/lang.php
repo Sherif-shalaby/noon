@@ -145,5 +145,6 @@ return [
     'add_brand'=>'اضافة علامة تجارية',
     'add_category'=>'اضافة قسم',
     'discount'=>'خصم',
+    'customer_types'=>'أنواع العملاء',
 ];
 

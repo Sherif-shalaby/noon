@@ -14,9 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->boolean('fixed_wage')->default('0');
-            $table->decimal('fixed_wage_value')->default('0');
-            $table->string('photo')->nullable();
+          
         });
     }
 

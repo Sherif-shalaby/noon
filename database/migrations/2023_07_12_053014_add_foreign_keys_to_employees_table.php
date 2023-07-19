@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('employees', function (Blueprint $table) {
-            $table->foreign('job_type_id')->references('id')->on('job_types')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+            // $table->foreign('job_type_id')->references('id')->on('job_types')
+            //     ->onDelete('restrict')
+            //     ->onUpdate('restrict');
         });
     }
 

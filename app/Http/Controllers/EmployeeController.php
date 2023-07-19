@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Yajra\DataTables\Facades\DataTables;
 
 class EmployeeController extends Controller
 {
@@ -131,11 +130,11 @@ class EmployeeController extends Controller
 
 
 
-          if ($request->hasFile('upload_files')) {
-              foreach ($request->file('upload_files') as $file) {
-                  $employee->addMedia($file)->toMediaCollection('employee_files');
-              }
-          }
+        //   if ($request->hasFile('upload_files')) {
+        //       foreach ($request->file('upload_files') as $file) {
+        //           $employee->addMedia($file)->toMediaCollection('employee_files');
+        //       }
+        //   }
 
           //add of update number of leaves
           $this->createOrUpdateNumberofLeaves($request, $employee->id);
@@ -159,7 +158,6 @@ class EmployeeController extends Controller
               'success' => false,
               'msg' => __('lang.something_went_wrong')
           ];
-          dd($e);
           return redirect()->back()->with('status', $output);
 
       }
@@ -241,7 +239,7 @@ class EmployeeController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update($id)
+  public function update($id ,Request $request)
   {
       $validated = $request->validate([
           'email' => 'required|email|max:255',

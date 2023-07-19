@@ -289,7 +289,13 @@
                           </li>
                   @endif
                   @if(!empty($module_settings['customer_module']))
-                      <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.customers')}}</span></a></li>
+                   <li class="dropdown">
+                        <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.customers')}}</span></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="{{route('customers.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customers')}}</a></li>
+                        <li><a href="{{route('customertypes.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customer_types')}}</a></li>
+                    </ul>
+                  </li>
                   @endif
                   @if(!empty($module_settings['supplier_module']))
                       <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
