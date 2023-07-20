@@ -1,25 +1,3 @@
-{{-- <script src="{{asset('js/popper.min.js')}}"></script>
-<script src="{{asset('js/bootstrap.min.js')}}"></script>
-<script src="{{asset('js/modernizr.min.js')}}"></script>
-<script src="{{asset('js/detect.js')}}"></script>
-<script src="{{asset('js/jquery.slimscroll.js')}}"></script>
-<script src="{{asset('js/horizontal-menu.js')}}"></script> --}}
-<!-- Switchery js -->
-{{-- <script src="{{asset('plugins/switchery/switchery.min.js')}}"></script> --}}
-<!-- Datatable js -->
-{{-- <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.bootstrap4.min.js')}}"></script> --}}
-{{-- <script src="{{asset('plugins/datatables/jszip.min.js')}}"></script> --}}
-{{-- <script src="{{asset('plugins/datatables/pdfmake.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/vfs_fonts.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.html5.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.print.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.colVis.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
-<script src="{{asset('js/custom/custom-table-datatable.js')}}"></script> --}}
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 <!-- Core js -->
 <script src="{{asset('js/core.js')}}"></script>
@@ -97,7 +75,7 @@
                 icon: 'warning',
             }).then(willDelete => {
                 if (willDelete) {
-                    var check_password = $(this).data('check_password');
+                    // var check_password = $(this).data('check_password');
                     var href = $(this).data('href');
                     var data = $(this).serialize();
 
@@ -118,22 +96,22 @@
                         },
                         focusConfirm: true
                     }).then((result) => {
-                        // if (result) {
-                        //     $.ajax({
-                        //         url: check_password,
-                        //         method: 'POST',
-                        //         data: {
-                        //             value: result
-                        //         },
-                        //         dataType: 'json',
-                        //         success: (data) => {
+                        if (result) {
+                            $.ajax({
+                                url: '/user/check-password/',
+                                method: 'POST',
+                                data: {
+                                    value: result
+                                },
+                                dataType: 'json',
+                                success: (data) => {
 
-                        //             if (data.success == true) {
-                        //                 swal(
-                        //                     'success',
-                        //                     'Correct Password!',
-                        //                     'success'
-                        //                 );
+                                    if (data.success == true) {
+                                        swal(
+                                            'success',
+                                            'Correct Password!',
+                                            'success'
+                                        );
                                         $.ajax({
                                             method: 'DELETE',
                                             url: href,
@@ -162,22 +140,22 @@
                                             },
                                         });
 
-                                    // } else {
-                                    //     swal(
-                                    //         'Failed!',
-                                    //         'Wrong Password!',
-                                    //         'error'
-                                    //     )
+                                    } else {
+                                        swal(
+                                            'Failed!',
+                                            'Wrong Password!',
+                                            'error'
+                                        )
 
-                                    // }
-                                // }
-                            // });
-                        // }
+                                    }
+                                }
+                            });
+                        }
                     });
                 }
             });
         });
-
+        //open edit modal for modules
         $(document).on('click', '.btn-modal', function(e) {
             e.preventDefault();
             var container = $(this).data('container');
@@ -185,12 +163,12 @@
                 url: $(this).data('href'),
                 dataType: 'html',
                 success: function(result) {
-                    console.log(result)
                     $(container).html(result);
-                    $('#editBrandModal').modal('show');
+                    $('#editModal').modal('show');
                 },
             });
         });
+        //make translation open if there is translation when edit
         $(document).ready(function(){
             $('table.editTogle')
                 .find("tr")
@@ -211,8 +189,6 @@
         });
         $('.select2').select2({
         });
-</script>
-
 </script>
 @stack('javascripts')
 

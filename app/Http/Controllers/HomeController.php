@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\System;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -32,5 +34,13 @@ class HomeController extends Controller
         } else {
             return redirect('/login');
         }
+    }
+    public function checkPassword()
+    {
+        $user = User::find(request()->user()->id);
+        if (Hash::check(request()->value, $user->password)) {
+            return ['success' => true];
+        }
+        return ['success' => false];
     }
 }

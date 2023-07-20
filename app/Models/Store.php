@@ -35,4 +35,8 @@ class Store extends Model
         return $this->belongsToMany(Employee::class, 'employee_stores');
     }
 
+    public function customer_types()
+    {
+        return $this->hasMany('App\Models\CustomerType');
+    }
 }

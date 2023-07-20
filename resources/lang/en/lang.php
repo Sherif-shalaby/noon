@@ -174,4 +174,8 @@ return [
     'add_category'=>'Add Category',
     'discount'=>'Discount',
     'customer_types'=>'Customer Types',
+    'customer_type'=>'Customer Type',
+    'add_customer_type'=>'Add Customer Type',
+    'edit_customer_type'=>'Edit Customer Type',
+    'edit_brand'=>'Edit Brand',
 ];
