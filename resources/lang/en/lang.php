@@ -178,4 +178,11 @@ return [
     'add_customer_type'=>'Add Customer Type',
     'edit_customer_type'=>'Edit Customer Type',
     'edit_brand'=>'Edit Brand',
+    'phone'=>'Phone',
+    'address'=>'Address',
+    'add_customers'=>'Add Customers',
+    'balance'=>'Balance',
+    'purchases'=>'Purchases',
+    'points'=>'Points',
+    'edit_customers'=>'Edit Customers',
 ];
