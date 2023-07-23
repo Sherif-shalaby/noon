@@ -13,7 +13,7 @@ class CustomerUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,10 +21,18 @@ class CustomerUpdateRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => 'required|max:255|unique:customers,id,'.$this->route()->parameter('id'),
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+        'name.required'=>__('NameRequired'),
+        'name.unique'=>__('NameUnique'),
         ];
     }
 }

@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('products', ProductController::class);
     //customers
+    Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
