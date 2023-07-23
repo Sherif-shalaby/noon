@@ -51,7 +51,7 @@
 <script>
       @if (session('status'))
                 new PNotify( {
-                    title: 'Completed Successfully !', text: '{{ session('status.msg') }}',
+                    title: '{{ session('status.msg') }} !', text: '{{ session('status.msg') }}',
                     @if (session('status.success') == '1')
                         type: "success"
                     @else
@@ -59,9 +59,6 @@
                     @endif
                 });
         @endif
-    // if($('.error-msg').text().length>0){
-    //     $('#exampleStandardModal').modal('show');
-    // }
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

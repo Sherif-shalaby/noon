@@ -25,6 +25,10 @@ class Customer extends Model
     {
         return $this->hasMany('App\Models\CustomerBalanceAdjustments');
     }
+    public function customer_important_dates()
+    {
+        return $this->hasMany(CustomerImportantDate::class);
+    }
     public function createBy()
     {
         return $this->belongsTo(User::class, 'created_by');

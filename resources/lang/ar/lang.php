@@ -157,5 +157,9 @@ return [
     'purchases'=>'المشتريات',
     'points'=>'النقاط',
     'edit_customers'=>'تعديل العميل',
+    'important_dates'=>'تواريخ مهمة',
+    'important_date'=>'تاريخ مهم',
+    'date'=>'التاريخ',
+    'notify_before_days'=>'اخطار قبل ايام',
 ];
 
