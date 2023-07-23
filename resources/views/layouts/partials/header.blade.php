@@ -146,18 +146,7 @@
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.stock')}}</span></a>
                           <ul class="dropdown-menu">
-                              <li><a href="apps-calender.html"><i class="mdi mdi-circle"></i>Calender</a></li>
-                              <li><a href="apps-chat.html"><i class="mdi mdi-circle"></i>Chat</a></li>
-                              <li class="dropdown">
-                                  <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown" ><i class="mdi mdi-circle"></i>Email</a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href="apps-email-inbox.html"><i class="mdi mdi-circle"></i>Email Inbox</a></li>
-                                      <li><a href="apps-email-open.html"><i class="mdi mdi-circle"></i>Email Open</a></li>
-                                      <li><a href="apps-email-compose.html"><i class="mdi mdi-circle"></i>Email Compose</a></li>
-                                  </ul>
-                              </li>
-                              <li><a href="apps-kanban-board.html"><i class="mdi mdi-circle"></i>Kanban Board</a></li>
-                              <li><a href="apps-onboarding-screens.html"><i class="mdi mdi-circle"></i>Onboarding Screens</a></li>
+                              <li><a href="{{route('stocks.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stock')</a></li>
                           </ul>
                       </li>
                   @endif
