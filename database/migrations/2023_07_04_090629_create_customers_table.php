@@ -14,14 +14,14 @@ class CreateCustomersTable extends Migration {
 			$table->string('email')->nullable();
 			$table->string('address')->nullable();
 			$table->string('phone')->nullable();
-			$table->decimal('deposit_balance', 10,2)->nullable();
+			$table->decimal('deposit_balance', 10,2)->nullable()->default(0);
 			$table->decimal('added_balance', 10,2)->nullable()->default(0);
+			$table->integer('customer_type_id')->unsigned();
+			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
 			$table->softDeletes();
 			$table->timestamps();
-			$table->integer('created_by')->nullable();
-			$table->integer('deleted_by')->nullable();
-			$table->integer('updated_by')->nullable();
-			$table->integer('customer_type_id')->unsigned();
 		});
 	}
 

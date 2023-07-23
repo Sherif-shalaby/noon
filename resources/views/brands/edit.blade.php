@@ -1,10 +1,10 @@
 <!-- Modal -->
-<div class="modal fade" id="editBrandModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
     style="display: none;" aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editBrandModalLabel">Edit Brand</h5>
+                <h5 class="modal-title" id="editBrandModalLabel">{{__('lang.edit_brand')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('lang.close')}}</button>
+                <button type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
             </div>
             {!! Form::close() !!}
         </div>
