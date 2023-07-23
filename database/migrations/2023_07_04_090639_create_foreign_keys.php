@@ -95,7 +95,7 @@ class CreateForeignKeys extends Migration {
 						->onUpdate('cascade');
 		});
 		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->foreign('receved_currency_id')->references('id')->on('currencies')
+			$table->foreign('received_currency_id')->references('id')->on('currencies')
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
@@ -165,7 +165,7 @@ class CreateForeignKeys extends Migration {
 			$table->dropForeign('exchange_rates_store_id_foreign');
 		});
 		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->dropForeign('exchange_rates_receved_currency_id_foreign');
+			$table->dropForeign('exchange_rates_received_currency_id_foreign');
 		});
 		Schema::table('exchange_rates', function(Blueprint $table) {
 			$table->dropForeign('exchange_rates_default_currency_id_foreign');

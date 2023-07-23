@@ -53,6 +53,10 @@ class User extends Authenticatable
         return $this->hasOne(Employee::class,'user_id');
     }
 
+    public function scopeNotview($query)
+    {
+        return $query->where('email', '!=', env( 'SYSTEM_SUPERADMIN','superadmin@sherifshalaby.tech'));
+    }
 
     public static function modulePermissionArray()
     {
