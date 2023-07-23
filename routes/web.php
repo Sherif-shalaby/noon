@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddStockController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
@@ -58,6 +59,14 @@ Route::group(['middleware' => ['auth']], function () {
     //customers
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
+    Route::resource('stocks', AddStockController::class);
+    Route::get('add-stock/add-product-row', [AddStockController::class,'addProductRow']);
+
+
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect('/login');
+    });
 });
 
 

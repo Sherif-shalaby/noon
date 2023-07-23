@@ -13,7 +13,7 @@ class CreateExchangeRatesTable extends Migration {
 			$table->timestamps();
 			$table->softDeletes();
 			$table->integer('store_id')->unsigned()->nullable();
-			$table->integer('receved_currency_id')->unsigned()->nullable();
+			$table->integer('received_currency_id')->unsigned()->nullable();
 			$table->decimal('conversion_rate', 10,2)->nullable();
 			$table->integer('default_currency_id')->unsigned()->nullable();
 			$table->date('expiery_date')->nullable();
