@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
             $module_settings = !empty($module_settings) ? json_decode($module_settings, true) : [];
             view()->share('module_settings' , $module_settings);
             $settings = System::pluck('value', 'key');
-            view()->share(['settings' => $settings,'watsapp_numbers' => System::getProperty('watsapp_numbers')]);
+            view()->share(['settings' => $settings,'watsapp_number' => System::getProperty('watsapp_numbers')]);
         }
 
         Blade::directive('format_date', function ($date = null) {

@@ -185,4 +185,8 @@ return [
     'purchases'=>'Purchases',
     'points'=>'Points',
     'edit_customers'=>'Edit Customers',
+    'important_dates'=>'Important Dates',
+    'important_date'=>'Important Date',
+    'date'=>'Date',
+    'notify_before_days'=>'Notify Before Days',
 ];
