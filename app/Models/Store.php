@@ -35,6 +35,7 @@ class Store extends Model
         return $this->belongsToMany(Employee::class, 'employee_stores');
     }
 
+
     public static function getDropdown()
     {
 //        if (session('user.is_superadmin') || session('user.is_admin')) {
@@ -48,4 +49,9 @@ class Store extends Model
         return $stores;
     }
 
+
+    public function customer_types()
+    {
+        return $this->hasMany('App\Models\CustomerType');
+    }
 }

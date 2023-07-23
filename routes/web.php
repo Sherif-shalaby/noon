@@ -26,7 +26,7 @@ use App\Http\Controllers\StoreController;
 */
 Route::group(['middleware' => ['auth']], function () {
     Route::get('brands/get-dropdown', [BrandController::class,'getDropdown']);
-    Route::resource('brands', App\Http\Controllers\BrandController::class);
+    Route::resource('brands', BrandController::class);
     Route::resource('store', App\Http\Controllers\StoreController::class);
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function () {
     //customers
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
+
     Route::resource('stocks', AddStockController::class);
     Route::get('add-stock/add-product-row', [AddStockController::class,'addProductRow']);
 
@@ -67,6 +68,12 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+
+    // Sale Screen
+    Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+
+    Route::post('user/check-password', [HomeController::class, 'checkPassword']);
+
 });
 
 

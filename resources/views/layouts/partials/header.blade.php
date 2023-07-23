@@ -31,6 +31,13 @@
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
                             <div class="notifybar">
+                                <a href="https://api.whatsapp.com/send?phone={{$watsapp_numbers}}">
+                                    <img src="{{asset('images/topbar/whatsapp.jpg')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
+                                </a>
+                            </div>
+                        </li>
+                        <li class="list-inline-item">
+                            <div class="notifybar">
                                 <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">
                                     <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">
                                     <span class="live-icon"></span>
@@ -342,6 +349,14 @@
                           </ul>
                       </li>
                   @endif
+
+
+                <li class="scroll">
+                    <a href="{{ route('invoices.create') }}">
+                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
+                        <span>شاشه البيع</span>
+                    </a>
+                </li>
               </ul>
             </div>
         </nav>

@@ -14,9 +14,8 @@ class CreateProductsTable extends Migration {
 			$table->text('translations')->nullable();
 			$table->string('sku')->nullable();
 			$table->unsignedBigInteger('category_id')->nullable();
-			// $table->text('subcategory_id')->nullable();
 			$table->text('image')->nullable();
-			$table->unsignedBigInteger('unit_id')->unsigned()->nullable();
+			$table->unsignedBigInteger('unit_id')->nullable();
 			$table->string('details')->nullable();
 			$table->text('details_translations')->nullable();
 			$table->decimal('height', 10,2)->nullable();

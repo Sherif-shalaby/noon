@@ -11,9 +11,11 @@ class CreateCustomerTypesTable extends Migration {
 		Schema::create('customer_types', function(Blueprint $table) {
 			$table->increments('id');
 			$table->string('name');
-			$table->integer('deleted_by')->nullable();
-			$table->integer('created_by')->nullable();
-			$table->integer('updated_by')->nullable();
+			$table->text('translations')->nullable();
+			$table->integer('store_id')->unsigned()->nullable();
+			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('edited_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+            $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
 			$table->softDeletes();
 			$table->timestamps();
 		});

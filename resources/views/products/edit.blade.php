@@ -104,6 +104,7 @@
                             'attribute' => 'name',
                             'translations' => $product->translations,
                             'type' => 'product',
+                            'open_input'=>true
                         ])
                     </div>
                     <div class="col-md-3">

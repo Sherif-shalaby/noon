@@ -146,5 +146,16 @@ return [
     'add_category'=>'اضافة قسم',
     'discount'=>'خصم',
     'customer_types'=>'أنواع العملاء',
+    'customer_type'=>'نوع العميل',
+    'add_customer_type'=>'اضافة نوع عميل',
+    'edit_customer_type'=>'تعديل نوع العميل',
+    'edit_brand'=>'تعديل العلامة التجارية',
+    'phone'=>'رقم التليفون',
+    'address'=>'العنوان',
+    'add_customers'=>'اضافة عميل',
+    'balance'=>'الرصيد',
+    'purchases'=>'المشتريات',
+    'points'=>'النقاط',
+    'edit_customers'=>'تعديل العميل',
 ];
 
