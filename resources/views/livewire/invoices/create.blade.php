@@ -9,9 +9,9 @@
                             <input type="checkbox" id=""> Category
                         </label> --}}
                         <div for="" class="d-flex align-items-center text-nowrap gap-1">
-                            الافسام 
+                            الافسام
                             <select class="form-control" wire:model="department_id">
-                                <option value="">اختر </option>
+                                <option  value=" " readonly selected >اختر </option>
                                 @foreach ($departments as $depart)
                                     <option value="{{ $depart->id }}">{{ $depart->name }}</option>
                                 @endforeach
@@ -21,11 +21,42 @@
                     <div class="body-card-app">
                         <div class="nav flex-column nav-pills main-tap " id="v-pills-tab" role="tablist"
                             aria-orientation="vertical">
-                            @foreach ($departments as $depart)
+                            {{-- @foreach ($departments as $depart)
                             <button class="nav-link mb-2 {{ $depart->id == $department_id ? 'active' : '' }}"
                                 type="button"
                                 wire:click='$set("department_id",{{ $depart->id }})'>{{ $depart->name }}</button>
-                            @endforeach
+                            @endforeach --}}
+                            @if($products and $products != null)
+                                @foreach ($products as $product)
+                                    <div class="order-btn" wire:click='add_product({{ $product }})' >
+                                        @if ($product->image)
+                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                        @else
+                                            <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                class="img-thumbnail" width="100px">
+                                        @endif
+                                        <div>
+                                            <span>{{ $product->name }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                @foreach ($allproducts as $product)
+                                    <div class="order-btn" wire:click='add_product({{ $product }})' >
+                                        @if ($product->image)
+                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                        @else
+                                            <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                class="img-thumbnail" width="100px">
+                                        @endif
+                                        <div>
+                                            <span>{{ $product->name }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -63,7 +94,7 @@
                     </div> --}}
                     <div class="body-card-app content py-2 ">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="">
+                            {{-- <div class="">
                                 <div class="list-orders">
                                     @foreach ($products as $product)
                                      <div class="order-btn"
@@ -81,6 +112,48 @@
                                      </div>
                                     @endforeach
                                 </div>
+                            </div> --}}
+                            <div class="body-card-app">
+                                <div class="table-responsive box-table ">
+                                    <table class="table">
+                                        <tr>
+                                            <th>م</th>
+                                            <th>اسم الصنف</th>
+                                            <th>الكمية</th>
+                                            <th>السعر</th>
+                                            <th>الاجمالي</th>
+                                            <th>حذف</th>
+                                        </tr>
+                                        @php
+                                          $total = 0;
+                                        @endphp
+                                        @foreach ($items as $key => $item)
+                                            <tr>
+                                                <td>{{ $key + 1 }}</td>
+                                                <td>{{ $item['name'] }}</td>
+                                                <td>سس</td>
+                                                <td>سس</td>
+                                                <td>سس</td>
+                                                <td class="text-center">
+                                                    <div class="btn btn-sm btn-danger py-0 px-1">
+                                                        <i class="fas fa-trash-can"></i>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @php
+                                            $total += $item['quantity'] * $item['price'];
+                                            @endphp
+                                        @endforeach
+                                    </table>
+                                    <div class="footer-table">
+                                        <div class="num">0.00</div>
+                                        <div class="num">0.00</div>
+                                        <div class="num">0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="title-card-app text-start mt-3">
+                                الاجماليات
                             </div>
                         </div>
                     </div>
