@@ -12,6 +12,7 @@
     @include('layouts.partials.css')
     @stack('css')
     <!-- End css -->
+    @livewireStyles
 </head>
 <body class="horizontal-layout">
     <!-- Start Infobar Notifications Sidebar -->
@@ -192,6 +193,7 @@
     @yield('javascript')
     @stack('js')
     <!-- End js -->
+    @livewireScripts
 </body>
 
 <!-- Mirrored from themesbox.in/admin-templates/theta/html/light-horizontal/page-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Jul 2023 09:24:31 GMT -->

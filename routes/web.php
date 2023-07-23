@@ -58,6 +58,11 @@ Route::group(['middleware' => ['auth']], function () {
     //customers
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
+
+
+    // Sale Screen
+    Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
 
 });

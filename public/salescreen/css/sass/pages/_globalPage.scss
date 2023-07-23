@@ -1,0 +1,20 @@
+body {
+    font-family: "Noto Kufi Arabic", sans-serif;
+    color: black;
+    font-size: 14px;
+    background-color: #F0F0F0;
+    scroll-behavior: smooth;
+}
+// All Rest
+* {
+    @include all-reset;
+}
+// a Reset
+a {
+    @include a-reset;
+}
+// reset btn
+button {
+    border: none;
+    outline: none;
+}

@@ -1,0 +1,10 @@
+.box-table {
+  border: 1px solid #eee;
+  table {
+    margin-bottom: 0 !important;
+    th {
+      background-color: $main-color !important;
+      color: white;
+    }
+  }
+}

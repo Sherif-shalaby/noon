@@ -360,6 +360,14 @@
                           </ul>
                       </li>
                   @endif
+
+
+                <li class="scroll">
+                    <a href="{{ route('invoices.create') }}">
+                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
+                        <span>شاشه البيع</span>
+                    </a>
+                </li>
               </ul>
             </div>
         </nav>

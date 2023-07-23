@@ -1,0 +1,149 @@
+.bg-main-color {
+  background-color: #01B3E4;
+}
+
+.py-60 {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.row-gap-24 {
+  row-gap: 24px;
+}
+
+body {
+  font-family: "Noto Kufi Arabic", sans-serif;
+  color: black;
+  font-size: 14px;
+  background-color: #F0F0F0;
+  scroll-behavior: smooth;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  color: black;
+}
+
+button {
+  border: none;
+  outline: none;
+}
+
+section.app .list-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+  background-color: #F8F8F8;
+  padding: 10px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}
+section.app .cards .card-app {
+  border: 1px solid #ddd;
+  background-color: white;
+  height: 100%;
+  overflow-y: auto;
+}
+section.app .cards .card-app .title-card-app {
+  background-color: #eee;
+  color: #444;
+  font-size: 15px;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+section.app .cards .card-app .body-card-app {
+  padding: 0 7px;
+  padding-bottom: 5px;
+}
+section.app .cards .card-app .body-card-app td, section.app .cards .card-app .body-card-app th {
+  font-size: 12px;
+  font-weight: normal;
+}
+section.app .cards .card-app .body-card-app .footer-table {
+  background-color: #F0F0F0;
+  padding: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 12px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 5px;
+}
+section.app .cards .card-app .body-card-app .footer-table .num {
+  background-color: white;
+  border-radius: 3px;
+  border: 1px solid #eee;
+  padding: 5px 10px;
+  text-align: center;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+}
+section.app .cards .card-app .body-card-app .list-orders {
+  display: -ms-grid;
+  display: grid;
+  gap: 12px;
+  -ms-grid-columns: 1fr;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 576px) {
+  section.app .cards .card-app .body-card-app .list-orders {
+    -ms-grid-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 768px) {
+  section.app .cards .card-app .body-card-app .list-orders {
+    -ms-grid-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media (min-width: 992px) {
+  section.app .cards .card-app .body-card-app .list-orders {
+    -ms-grid-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+.main-tap .nav-link {
+  color: #01B3E4 !important;
+}
+.main-tap .nav-link.active {
+  background-color: #01B3E4 !important;
+  color: white !important;
+}
+
+.box-table {
+  border: 1px solid #eee;
+}
+.box-table table {
+  margin-bottom: 0 !important;
+}
+.box-table table th {
+  background-color: #01B3E4 !important;
+  color: white;
+}
