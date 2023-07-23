@@ -30,7 +30,7 @@ class BrandController extends Controller
    */
   public function index()
   {
-    $brands=Brand::all();
+    $brands=Brand::latest()->get();
     return view('brands.index',compact('brands'));
   }
 
@@ -59,7 +59,7 @@ class BrandController extends Controller
 
       try {
           $data = $request->except('_token');
-          // $data['created_by']=Auth::user()->id;
+          $data['created_by']=Auth::user()->id;
           $brand = Brand::create($data);
           $output = [
               'success' => true,
@@ -111,17 +111,12 @@ class BrandController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update(BrandUpdateRequest $request,Brand $brand)
+  public function update(BrandUpdateRequest $request,$id)
   {
-  //   $this->validate(
-  //     $request,
-  //     ['name' => ['required', 'unique:brands,name,'.$id,'max:255']],
-  // );
-
   try {
       $data['name'] = $request->name;
-      // $data['edited_by'] = Auth::user()->id;
-      $brand->update($data);
+      $data['edited_by'] = Auth::user()->id;
+      Brand::find($id)->update($data);
       $output = [
           'success' => true,
           'msg' => __('lang.success')
@@ -146,7 +141,10 @@ class BrandController extends Controller
   public function destroy($id)
   {
     try {
-      Brand::find($id)->delete();
+      $brand=Brand::find($id);
+      $brand->deleted_by=Auth::user()->id;
+      $brand->save();
+      $brand->delete();
       $output = [
           'success' => true,
           'msg' => __('lang.success')
