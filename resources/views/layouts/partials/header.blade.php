@@ -31,7 +31,7 @@
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
                             <div class="notifybar">
-                                <a href="https://api.whatsapp.com/send?phone={{$watsapp_number}}">
+                                <a href="https://api.whatsapp.com/send?phone={{$settings['watsapp_numbers']}}">
                                     <img src="{{asset('images/topbar/whatsapp.jpg')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
                                 </a>
                             </div>
