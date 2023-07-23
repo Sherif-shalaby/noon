@@ -67,16 +67,17 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{$employee->user()->get()[0]->name}}
+
+                                            {{!empty($employee->user) ? $employee->user->name : ''}}
                                         </td>
                                         <td>
-                                            {{$employee->user()->get()[0]->email}}
+                                            {{!empty($employee->user) ? $employee->user->email : ''}}
                                         </td>
                                         <td>
                                             {{$employee->mobile}}
                                         </td>
                                         <td>
-                                            {{$employee->job_type()->get()[0]->title}}
+                                            {{!empty($employee->job_type) ? $employee->job_type->title : '' }}
                                         </td>
                                         <td>
                                             {{$employee->fixed_wage_value}}
