@@ -9,10 +9,10 @@
                         {{-- <label for="">
                             <input type="checkbox" id=""> Category
                         </label> --}}
-                        <div for="" class="d-flex align-items-center text-nowrap gap-1">
-                            الافسام
-                            <select class="form-control" wire:model="department_id">
-                                <option  value=" " readonly selected >اختر </option>
+                        <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                            الاقسام
+                            <select class="form-control " wire:model="department_id">
+                                <option  value="0 " readonly selected >اختر </option>
                                 @foreach ($departments as $depart)
                                     <option value="{{ $depart->id }}">{{ $depart->name }}</option>
                                 @endforeach
@@ -29,7 +29,7 @@
                             @endforeach --}}
 
                             @if($products and $products != null)
-                                @foreach ($products as $product)
+                                @forelse ($products as $product)
                                     <div class="order-btn" wire:click='add_product({{ $product }})' >
                                         @if ($product->image)
                                             <img src="{{ asset('uploads/products/' . $product->image) }}"
@@ -45,7 +45,9 @@
                                             </span>
                                         </div>
                                     </div>
-                                @endforeach
+                                @empty
+                                <span>عفوا لايوجد منتجات فى هذا القسم</span>
+                                @endforelse
                             @else
                                  <p>جميع المنتجات</p>
                                 @foreach ($allproducts as $product)
@@ -297,5 +299,11 @@
     </div>
 </section>
 @push('js')
-
+    <script>
+        document.addEventListener('livewire:load', function () {
+            $('select').select2().on('change', function (e) {
+                @this.set('department_id', $(this).val());
+            });
+        });
+    </script>
 @endpush

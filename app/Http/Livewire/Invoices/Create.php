@@ -18,7 +18,7 @@ class Create extends Component
     }
     public function updatedDepartmentId($department_id)
     {
-        $this->products = Product::where('category_id', $department_id)->get();
+        $this->products = $department_id > 0? Product::where('category_id', $department_id)->get() : Product::get();
     }
 
     public function add_product(Product $product){
@@ -87,6 +87,10 @@ class Create extends Component
     public function resetAll()
     {
         $this->reset();
-        // $this->mount();
+        $this->mount();
+    }
+    public function mount()
+    {
+        $this->department_id = null;
     }
 }

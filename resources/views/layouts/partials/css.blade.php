@@ -37,3 +37,5 @@
         color:red;
     }
 </style>
+{{-- <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script> --}}
+{{-- <script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script> --}}
