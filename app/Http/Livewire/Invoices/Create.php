@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Invoices;
 
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Product;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -10,16 +11,33 @@ class Create extends Component
 {
     use LivewireAlert;
     public $products = [], $department_id = null, $items = [], $price  ,$total = 0;
+    public $client_phone, $client_id, $client;
+    public function getClient()
+    {
+        if ($this->client_phone) {
+            $this->client = Customer::where('phone', $this->client_phone)->first();
+            if ($this->client) {
+                $this->client_id = $this->client->id;
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'تم إيجاد العميل بنجاح',]);
+            } else {
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'عذرا, لم يتم إيجاد العميل']);
+            }
+        } else {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'يرجى إدخال رقم العميل']);
+        }
+    }
     public function render()
     {
         $allproducts = Product::get();
         $departments = Category::get();
-        return view('livewire.invoices.create',compact('departments','allproducts'));
+        $customers = Customer::get();
+        return view('livewire.invoices.create',compact('departments','allproducts','customers'));
     }
     public function updatedDepartmentId($department_id)
     {
-        $this->products = Product::where('category_id', $department_id)->get();
+        $this->products = $department_id > 0? Product::where('category_id', $department_id)->get() : Product::get();
     }
+
 
     public function add_product(Product $product){
         // dd($product);
@@ -87,6 +105,10 @@ class Create extends Component
     public function resetAll()
     {
         $this->reset();
-        // $this->mount();
+        $this->mount();
+    }
+    public function mount()
+    {
+        $this->department_id = null;
     }
 }
