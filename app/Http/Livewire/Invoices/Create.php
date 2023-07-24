@@ -117,11 +117,11 @@ class Create extends Component
 
     public function submit($status = null){
         $data = $this->validate([
-            // 'items' => 'min:1',
+            'items' => 'min:1',
             'price' => 'required',
             'total' => 'required',
             'cash' => 'required|numeric',
-            // 'customer_id' => 'required',
+            'client_id' => 'required',
         ]);
         if ($this->cash >= 0 ) {
             $status = is_null($status) ? 'paid' : 'unpaid';
