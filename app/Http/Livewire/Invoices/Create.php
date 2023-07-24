@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Invoices;
 
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Invoice;
 use App\Models\Product;
 use Livewire\Component;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -11,7 +12,7 @@ class Create extends Component
 {
     use LivewireAlert;
     public $products = [], $department_id = null, $items = [], $price  ,$total = 0;
-    public $client_phone, $client_id, $client;
+    public $client_phone, $client_id, $client,$not_paid,$cash = 0, $rest;
     public function getClient()
     {
         if ($this->client_phone) {
@@ -65,8 +66,9 @@ class Create extends Component
                     'name' => $product->name,
                     'quantity' => 1,
                     'price' => 10,
-                    'department_id' => $product->category->id,
-                    'department_name' => $product->category->name,
+                    'category_id' => $product->category?->id,
+                    'department_name' => $product->category?->name,
+                    'client_id' => $product->customer?->id,
                 ];
             }
         }
@@ -79,6 +81,7 @@ class Create extends Component
             return $carry;
         });
         $this->total = $this->price;
+        $this->rest  = 0;
     }
     public function increment($key){
         $product = Product::whereId($this->items[$key]['product_id'])->first();
@@ -110,5 +113,60 @@ class Create extends Component
     public function mount()
     {
         $this->department_id = null;
+    }
+
+    public function submit($status = null){
+        $data = $this->validate([
+            // 'items' => 'min:1',
+            'price' => 'required',
+            'total' => 'required',
+            'cash' => 'required|numeric',
+            // 'customer_id' => 'required',
+        ]);
+        if ($this->cash >= 0 ) {
+            $status = is_null($status) ? 'paid' : 'unpaid';
+            if ($this->rest > 0) {
+                $status = 'partially_paid';
+            }
+            $data = [
+                'user_id'        => auth()->user()->id,
+                'customer_id'    => $this->client_id,
+                'date'           => now(),
+                'payment_method' => 'cash',
+                'price'          => $this->price,
+                'total'          => $this->total,
+                'cash'           => $this->cash,
+                'rest'           => $this->rest,
+                'status'         => $status,
+
+            ];
+            $invoice = Invoice::create($data);
+            $invoice->items()->createMany($this->items);
+            // foreach ($this->items as $id => $quantity) {
+            //     $product = Product::findOrFail($quantity['product_id']);
+            //     if ($product->quantity > 0) {
+            //         $product->update([
+            //             'quantity' => $product->quantity - $quantity['quantity']
+            //         ]);
+            //     }
+            // } //end of foreach
+
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'تم إضافة الفاتورة بنجاح']);
+            $this->reset();
+            $this->mount();
+            $this->resetAll();
+        }else {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'يوجد مشكلة في المبلغ المدفوع']);
+        }
+    }
+    public function updatedCash()
+    {
+        if ($this->cash) {
+            //$this->computeForAll();
+            $this->cash = $this->cash == "" ? 0 : $this->cash;
+            $this->rest =  $this->total - $this->cash;
+        } else {
+            $this->rest =  $this->total;
+        }
     }
 }

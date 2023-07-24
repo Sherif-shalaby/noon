@@ -9,7 +9,7 @@ class CreateProductsTable extends Migration {
 	public function up()
 	{
 		Schema::create('products', function(Blueprint $table) {
-			$table->increments('id');
+            $table->id();
 			$table->string('name');
 			$table->text('translations')->nullable();
 			$table->string('sku')->nullable();
