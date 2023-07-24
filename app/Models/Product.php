@@ -6,7 +6,7 @@ use App\Traits\EmployeeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model 
+class Product extends Model
 {
 
     protected $table = 'products';
@@ -18,7 +18,7 @@ class Product extends Model
     protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by');
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
-                        
+
                         // 'store_id'=>'array',
     ];
     public function getNameAttribute($value)
@@ -85,5 +85,9 @@ class Product extends Model
     public function deleteBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
+    }
+    public function productdetails()
+    {
+        return $this->hasOne(ProductStore::class);
     }
 }
