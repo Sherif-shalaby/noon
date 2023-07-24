@@ -36,4 +36,7 @@
     .error-help-block{
         color:red;
     }
+    input[type="text"],input[type="month"],textarea{
+       border:2px solid #939394 !important;
+    }
 </style>

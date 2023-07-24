@@ -33,7 +33,10 @@ class Customer extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
+    public function wages()
+    {
+        return $this->hasMany('App\Models\wage');
+    }
     public function updateBy()
     {
         return $this->belongsTo(User::class, 'updated_by');

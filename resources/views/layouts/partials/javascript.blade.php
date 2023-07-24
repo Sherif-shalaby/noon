@@ -67,8 +67,8 @@
       $(document).on('click', '.delete_item', function(e) {
             e.preventDefault();
             swal({
-                title: 'Are you sure?',
-                text: "Are you sure You Wanna Delete it?",
+                title: LANG.are_you_sure,
+                text: LANG.are_you_sure_you_wanna_delete_it,
                 icon: 'warning',
             }).then(willDelete => {
                 if (willDelete) {
@@ -77,11 +77,11 @@
                     var data = $(this).serialize();
 
                     swal({
-                        title: 'Please Enter Your Password',
+                        title: "{!!__('lang.please_enter_your_password')!!}",
                         content: {
                             element: "input",
                             attributes: {
-                                placeholder: "Type your password",
+                                placeholder:"{!!__('lang.type_your_password')!!}",
                                 type: "password",
                                 autocomplete: "off",
                                 autofocus: true,
@@ -106,7 +106,7 @@
                                     if (data.success == true) {
                                         swal(
                                             'success',
-                                            'Correct Password!',
+                                            "{!!__('lang.correct_password')!!}",
                                             'success'
                                         );
                                         $.ajax({

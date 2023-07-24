@@ -5,6 +5,7 @@ namespace App\Utils;
 use App\Models\ConsumptionProduction;
 use App\Models\ConsumptionRecipe;
 use App\Models\Currency;
+use App\Models\Employee;
 use App\Models\ExchangeRate;
 use App\Models\Invoice;
 use App\Models\InvoicePayment;
@@ -14,6 +15,8 @@ use App\Models\ReceivedInvoice;
 use App\Models\ReceivedInvoicePayment;
 use App\Models\System;
 use App\Models\User;
+use App\Models\WageTransaction;
+use App\Models\WageTransactionPayment;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
@@ -102,73 +105,55 @@ class Util
     {
         return ($number * 100) / (100 + $percent);
     }
-    public function createOrUpdateRawMaterialToRecipe($recipe_id, $consumption_details)
+
+    public function calculateEmployeeCommission($employee_id, $start_date = null, $end_date = null)
     {
-        $keep_consumption_product = [];
-        if (!empty($consumption_details)) {
-            foreach ($consumption_details as $v) {
-                if (!empty($v['raw_material_id'])) {
-                    if (!empty($v['id'])) {
-                        $consumtion_product = ConsumptionRecipe::find($v['id']);
-                        $consumtion_product->raw_material_id = $v['raw_material_id'];
-                        $consumtion_product->recipe_id = $recipe_id;
-                        $consumtion_product->amount_used = $this->num_uf($v['amount_used']);
-                        $consumtion_product->unit_id = $v['unit_id'];
-                        $consumtion_product->save();
-                        $keep_consumption_product[] = $v['id'];
+        $employee = Employee::find($employee_id);
+        $query = WageTransaction::leftjoin('wage_transaction_payments', 'wage_transactions.id', '=', 'wage_transaction_payments.transaction_id');
+        if (!empty($start_date)) {
+            $query->whereDate('transaction_date', '>=', $this->uf_date($start_date));
+        }
+        if (!empty($end_date)) {
+            $query->whereDate('transaction_date', '<=', $this->uf_date($end_date));
+        }
+        $query->where('payment_status', '!=', 'paid')
+            ->where('type', 'employee_commission')
+            ->where('employee_id', $employee_id);
+        $sale_transactions = $query->select(
+            'wage_transactions.final_total',
+            'wage_transactions.id'
+        )
+            ->get();
+
+        $amount = 0;
+        $default_currency_id = System::getProperty('currency');
+        if ($employee->commission == 1) {
+            if (!empty($sale_transactions) && $sale_transactions->count() > 0) {
+                foreach ($sale_transactions as $transaction) {
+                    $final_total = $transaction->final_total - $this->getTotalPaid($transaction->id);
+                    if (!empty($transaction->paying_currency_id)) {
+                        if ($transaction->paying_currency_id != $default_currency_id) {
+                            $amount += $this->convertCurrencyAmount($final_total, $transaction->paying_currency_id, $default_currency_id);
+                        } else {
+                            $amount += $final_total;
+                        }
                     } else {
-                        $consumtion_product_data['raw_material_id'] = $v['raw_material_id'];
-                        $consumtion_product_data['recipe_id'] = $recipe_id;
-                        $consumtion_product_data['amount_used'] = $v['amount_used'];
-                        $consumtion_product_data['unit_id'] = $v['unit_id'];
-                        $consumtion_product = ConsumptionRecipe::create($consumtion_product_data);
-                        $keep_consumption_product[] = $consumtion_product->id;
+                        $amount += $final_total;
                     }
                 }
             }
         }
 
-        if (!empty($keep_consumption_product)) {
-            //delete the consumption product removed by user
-            ConsumptionRecipe::where('recipe_id', $recipe_id)->whereNotIn('id', $keep_consumption_product)->delete();
-        }
-
-        return true;
+        return $amount;
     }
-
-
-    public function createOrUpdateRawMaterialToProduction($production_id, $consumption_details,$is_update=false)
+    public function getTotalPaid($transaction_id)
     {
-        $keep_consumption_product = [];
-        if (!empty($consumption_details)) {
-            foreach ($consumption_details as $v) {
-                if (!empty($v['raw_material_id'])) {
-                    if (!empty($v['id']) && $is_update) {
-                        $consumtion_product = ConsumptionProduction::find($v['id']);
-                        $consumtion_product->raw_material_id = $v['raw_material_id'];
-                        $consumtion_product->production_id = $production_id;
-                        $consumtion_product->amount_used = $this->num_uf($v['amount_used']);
-                        $consumtion_product->unit_id = $v['unit_id'];
-                        $consumtion_product->save();
-                        $keep_consumption_product[] = $v['id'];
-                    } else {
-                        $consumtion_product_data['raw_material_id'] = $v['raw_material_id'];
-                        $consumtion_product_data['production_id'] = $production_id;
-                        $consumtion_product_data['amount_used'] = $v['amount_used'];
-                        $consumtion_product_data['unit_id'] = $v['unit_id'];
-                        $consumtion_product = ConsumptionProduction::create($consumtion_product_data);
-                        $keep_consumption_product[] = $consumtion_product->id;
-                    }
-                }
-            }
-        }
+        $total_paid = WageTransactionPayment::where('transaction_id', $transaction_id)
+            ->select(DB::raw('SUM(IF( is_return = 0, amount, amount*-1))as total_paid'))
+            ->first()
+            ->total_paid;
 
-        if (!empty($keep_consumption_product)) {
-            //delete the consumption product removed by user
-            ConsumptionProduction::where('production_id', $production_id)->whereNotIn('id', $keep_consumption_product)->delete();
-        }
-
-        return true;
+        return $total_paid;
     }
 
     /**

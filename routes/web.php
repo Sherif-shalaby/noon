@@ -14,6 +14,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\WageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,7 +31,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', BrandController::class);
     Route::resource('store', App\Http\Controllers\StoreController::class);
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
+    //employees
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::resource('wages',WageController::class);
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');

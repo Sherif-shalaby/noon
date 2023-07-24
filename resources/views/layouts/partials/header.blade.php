@@ -132,15 +132,7 @@
                   {{-- @if(!empty($module_settings['dashboard']) ) --}}
 
                   @if(!empty($module_settings['product_module']) )
-                      <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.products')}}</span></a>
-                          <ul class="dropdown-menu">
-                            <li><a href="{{route('products.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.products')}}</a></li>
-                            <li><a href="#"><i class="mdi mdi-circle"></i>Light - Horizontal</a></li>
-                            <li><a href="https://themesbox.in/admin-templates/theta/html/dark-vertical/index.html"><i class="mdi mdi-circle"></i>Dark - Vertical</a></li>
-                            <li><a href="https://themesbox.in/admin-templates/theta/html/dark-horizontal/index.html"><i class="mdi mdi-circle"></i>Dark - Horizontal</a></li>
-                        </ul>
-                      </li>
+                  <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
                   @if(!empty($module_settings['stock_module']))
                       <li class="dropdown">
@@ -281,6 +273,7 @@
                               <ul class="dropdown-menu">
                                   <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
                                   <li><a href="{{route('employees.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
+                                  <li><a href="{{route('wages.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
                               </ul>
                           </li>
                   @endif
