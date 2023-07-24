@@ -1,17 +1,14 @@
 
 <section class="app my-3">
-    <div class="container-fluid">
+    <div class="container-fluid" >
         <div class="row g-3 cards hide-print ">
             <div class="col-xl-2 special-col">
-                <div class="card-app">
+                <div class="card-app" >
                     <div class="title-card-app">
-                        {{-- الأصناف الرئيسية --}}
-                        {{-- <label for="">
-                            <input type="checkbox" id=""> Category
-                        </label> --}}
+                        الأصناف الرئيسية
                         <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
-                            الاقسام
-                            <select class="form-control " wire:model="department_id">
+                            {{-- الاقسام --}}
+                            <select class="form-control depart" wire:model="department_id">
                                 <option  value="0 " readonly selected >اختر </option>
                                 @foreach ($departments as $depart)
                                     <option value="{{ $depart->id }}">{{ $depart->name }}</option>
@@ -177,22 +174,35 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="title-card-app text-start mt-3">
+
+                            {{-- <div class="title-card-app text-start mt-3">
                                 الاجماليات
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3">
                 <div class="card-app">
-                    {{-- <div class="mb-1 body-card-app pt-2">
-                        <label for="" class="text-info">
-                            اختيار فاتورة سابقة:
-                        </label>
-                        <select name="" class="form-select" id=""></select>
+                    <div class="d-flex  align-items-center   mt-1 body-card-app pt-2">
+                        <input type="text" wire:model.defer="client_phone" id=""
+                            class="form-control w-60" placeholder="{{ __('بحث برقم العميل') }}">
+                        <input readonly type="text" class="{{ $client ? '' : 'd-none' }} form-control w-25"
+                            value="{{ $client?->name }}">
+                        <button wire:click='getClient'
+                            class="btn btn-sm btn-primary">{{ __('Search') }}</button>
                     </div>
-                    <div class="title-card-app text-start">
+                    <div class="mb-1 body-card-app pt-2" wire:ignore>
+                        <label for="" class="text-info">العملاء</label>
+                        <select class="form-control client" wire:model="client_id">
+                            <option  value="0 " readonly selected >اختر </option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    {{ $client_id }}
+                    {{-- <div class="title-card-app text-start">
                         التفاصيل
                     </div>
                     <div class="body-card-app pt-2">
@@ -252,6 +262,7 @@
                             </div>
                         </div>
                     </div> --}}
+
                     <div class="title-card-app text-start mt-3">
                         الاجماليات
                     </div>
@@ -301,8 +312,15 @@
 @push('js')
     <script>
         document.addEventListener('livewire:load', function () {
-            $('select').select2().on('change', function (e) {
+            $('.depart').select2().on('change', function (e) {
                 @this.set('department_id', $(this).val());
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('livewire:load', function () {
+            $('.client').select2().on('change', function (e) {
+                @this.set('client_id', $(this).val());
             });
         });
     </script>
