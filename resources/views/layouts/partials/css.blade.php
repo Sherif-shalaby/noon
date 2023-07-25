@@ -39,6 +39,18 @@
     input[type="text"],input[type="month"],textarea{
        border:2px solid #939394 !important;
     }
+    /* #datatable-buttons_wrapper{
+        display: flex;
+        flex-wrap: wrap;
+    }
+    #datatable-buttons_length,.dt-buttons{
+        width:30% !important;
+        box-sizing: border-box;
+    }
+    #datatable-buttons_filter{
+        width:40% !important;
+        box-sizing: border-box;
+    } */
 </style>
 {{-- <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script> --}}
 {{-- <script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script> --}}
