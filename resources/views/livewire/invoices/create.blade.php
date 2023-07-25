@@ -37,8 +37,8 @@
                                         @endif
                                         <div>
                                             <span>{{ $product->name }}</span>
-                                            <span class="badge badge-{{ $product->productdetails->quantity_available < 1 ? 'danger': 'success' }}">
-                                                {{ $product->productdetails->quantity_available < 1 ? __('out_of_stock'): __('available') }}
+                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">
+                                                {{ $product->productdetails?->quantity_available < 1 ? __('out_of_stock'): __('available') }}
                                             </span>
                                         </div>
                                     </div>
@@ -58,8 +58,8 @@
                                         @endif
                                         <div>
                                             <span>{{ $product->name }}</span>
-                                            <span class="badge badge-{{ $product->productdetails->quantity_available < 1 ? 'danger': 'success' }}">
-                                                {{ $product->productdetails->quantity_available < 1 ? __('out_of_stock'): __('available') }}
+                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">
+                                                {{ $product->productdetails?->quantity_available < 1 ? __('out_of_stock'): __('available') }}
                                             </span>
                                         </div>
                                     </div>
@@ -201,7 +201,7 @@
                             @endforeach
                         </select>
                     </div>
-                    {{ $client_id }}
+                    {{-- {{ $client_id }} --}}
                     {{-- <div class="title-card-app text-start">
                         التفاصيل
                     </div>
@@ -299,9 +299,35 @@
                             <label for="" class="text-danger">
                                 الاجمالي النهائي:
                             </label>
-                            <input type="number" id="" readonly
-                            value="{{ $total  }}"
-                            class="form-control text-danger w-50">
+                            <input type="number" id="" readonly value="{{ $total  }}" class="form-control text-danger w-50">
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mb-2 justify-content-end">
+                            <label for="" class="text-info">{{ __('كاش') }}:</label>
+                            <input type="number" class="form-control w-50" wire:model="cash">
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mb-2 justify-content-end">
+                            <label for="" class="text-info">
+                                {{ __('المتبقى') }}
+                            </label>
+                            <input type="number" readonly class="form-control w-50" wire:model="rest">
+                        </div>
+                        <div class="row hide-print">
+                           <div class="col-xl-4 me-auto">
+                               <div class=" btns-control row my-3 row-gap-24">
+                                   <div class="col-sm-4">
+                                       <button wire:click='submit("cash")' onclick="/*ourprint();*/"
+                                           class="btn-sm   btn-success btn fs-12px">
+                                           {{ __('دفع') }}
+                                       </button>
+                                   </div>
+                                   <div class="col-sm-4">
+                                       <button wire:click='submit("cash")'
+                                           class="btn-sm   btn-success btn fs-12px">
+                                           {{ __('دفع') }}
+                                       </button>
+                                   </div>
+                               </div>
+                           </div>
                         </div>
                     </div>
                 </div>
