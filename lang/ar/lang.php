@@ -10,7 +10,7 @@ return [
     'created_by' => 'أُنشئت بواسطة',
     'dashboard'=>'نظرة عامه',
     'products'=>'المنتجات',
-    'stock'=>'المخزون',
+    'add-stock'=>'المخزون',
     'cashier'=>'المشتريات',
     'returns'=>'المرتجعات',
     'employees'=>'الموظفين',

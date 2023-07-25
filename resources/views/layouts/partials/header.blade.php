@@ -136,9 +136,9 @@
                  @endif
                   @if(!empty($module_settings['stock_module']))
                       <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.stock')}}</span></a>
+                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.add-stock')}}</span></a>
                           <ul class="dropdown-menu">
-                              <li><a href="{{route('stocks.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stock')</a></li>
+                              <li><a href="{{route('stocks.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.add-stock')</a></li>
                           </ul>
                       </li>
                   @endif
