@@ -9,7 +9,7 @@ class CreateCustomerBalanceAdjustmentsTable extends Migration {
 	public function up()
 	{
 		Schema::create('customer_balance_adjustments', function(Blueprint $table) {
-			$table->increments('id');
+			$table->id();
 			$table->integer('customer_id')->unsigned();
 			$table->integer('store_id')->unsigned();
 			$table->decimal('current_balance', 10,2)->nullable();
