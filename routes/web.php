@@ -69,12 +69,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('stocks', AddStockController::class);
     Route::get('add-stock/add-product-row', [AddStockController::class,'addProductRow']);
 
-
-    Route::post('/logout', function () {
-        Auth::logout();
-        return redirect('/login');
-    });
-
     // Sale Screen
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
