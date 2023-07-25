@@ -7,17 +7,17 @@
     "require": {
         "php": "^8.0.2",
         "guzzlehttp/guzzle": "^7.2",
+        "jantinnerezo/livewire-alert": "^2.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "laravelcollective/html": "6.4",
+        "livewire/livewire": "^2.12",
         "mcamara/laravel-localization": "^1.8",
         "nesbot/carbon": "^2.68",
         "proengsoft/laravel-jsvalidation": "^4.8",
-        "livewire/livewire": "^2.10",
-        "spatie/laravel-permission": "^5.10",
-        "jantinnerezo/livewire-alert": "^2.2"
+        "spatie/laravel-permission": "^5.10"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -61,8 +61,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
 
-    Route::resource('stocks', AddStockController::class);
-    Route::get('add-stock/add-product-row', [AddStockController::class,'addProductRow']);
+    // stocks
+    Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
+    Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
+
 
 
     Route::post('/logout', function () {
