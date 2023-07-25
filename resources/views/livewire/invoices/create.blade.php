@@ -1,6 +1,7 @@
 
 <section class="app my-3">
     <div class="container-fluid" >
+        <x-messages></x-messages>
         <div class="row g-3 cards hide-print ">
             <div class="col-xl-2 special-col">
                 <div class="card-app" >
@@ -71,7 +72,7 @@
             </div>
             <div class="col-xl-7 special-medal-col">
                 <div class="card-app ">
-                    <div class="list-btn flex-wrap ">
+                    {{-- <div class="list-btn flex-wrap ">
                         <div class="btn btn-success btn-sm">
                             <i class="fa-solid fa-plus"></i>
                             اضافة جديد
@@ -96,7 +97,7 @@
                             <i class="fa-solid fa-eye"></i>
                             معاينة قبل الطباعة
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- <div class="title-card-app text-start">
                         قائمة الأصناف الفرعية
                     </div> --}}
@@ -167,11 +168,11 @@
                                             @endphp
                                         @endforeach
                                     </table>
-                                    <div class="footer-table">
+                                    {{-- <div class="footer-table">
                                         <div class="num">{{ $price }}</div>
                                         <div class="num">{{ $total }}</div>
                                         <div class="num">{{ $total ?? '0,00' }}</div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
 
@@ -200,6 +201,7 @@
                                 <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                             @endforeach
                         </select>
+                        @error('client_id')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     {{-- {{ $client_id }} --}}
                     {{-- <div class="title-card-app text-start">
@@ -303,7 +305,7 @@
                         </div>
                         <div class="d-flex align-items-center gap-2 mb-2 justify-content-end">
                             <label for="" class="text-info">{{ __('كاش') }}:</label>
-                            <input type="number" class="form-control w-50" wire:model="cash">
+                            <input type="number" class="form-control w-50" wire:model="cash" max="{{ $total }}">
                         </div>
                         <div class="d-flex align-items-center gap-2 mb-2 justify-content-end">
                             <label for="" class="text-info">
@@ -314,12 +316,12 @@
                         <div class="row hide-print">
                            <div class="col-xl-4 me-auto">
                                <div class=" btns-control row my-3 row-gap-24">
-                                   <div class="col-sm-4">
+                                   {{-- <div class="col-sm-4">
                                        <button wire:click='submit("cash")' onclick="/*ourprint();*/"
                                            class="btn-sm   btn-success btn fs-12px">
                                            {{ __('دفع') }}
                                        </button>
-                                   </div>
+                                   </div> --}}
                                    <div class="col-sm-4">
                                        <button wire:click='submit("cash")'
                                            class="btn-sm   btn-success btn fs-12px">

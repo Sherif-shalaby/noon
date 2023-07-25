@@ -40,5 +40,4 @@
        border:2px solid #939394 !important;
     }
 </style>
-{{-- <script type="text/javascript" src="{{asset('js/select/select2.full.min.js') }}"></script> --}}
-{{-- <script type="text/javascript" src="{{asset('js/select/form-select2.js') }}"></script> --}}
+

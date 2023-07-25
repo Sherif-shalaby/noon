@@ -16,6 +16,7 @@ use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -72,7 +73,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // Sale Screen
+    Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+    Route::get('invoices/{invoice}', function ($id) {
+        return view('invoices.show', compact('id'));
+    })->name('invoices.show');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
 
