@@ -216,4 +216,12 @@ return [
     'type_your_password'=>'Type your password',
     'correct_password'=>'Correct Password!',
     'tax'=>'Tax',
+    'type'=>'Type',
+    'percentage'=>'Percentage',
+    'fixed'=>'Fixed',
+    'quantity'=>'Quantity',
+    'b_qty'=>'Bonus Qty',
+    'default_payment_type'=>'Default Payment Type',
+    'cash'=>'Cash',
+    'later'=>'Later',
 ];

@@ -141,11 +141,13 @@ class ProductController extends Controller
     // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
+            'price_type' => $request->price_type[$index_price],
             'price' => $request->price[$index_price],
+            'quantity' => $request->quantity[$index_price],
+            'bonus_quantity' => $request->bonus_quantity[$index_price],
             'price_category' => $request->price_category[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
             'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            // 'price_customers' => $price_customers,
             'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
             'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
             'created_by' => Auth::user()->id,
@@ -298,8 +300,11 @@ class ProductController extends Controller
     // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
-            'price' => $request->price[$index_price],
+            'price_type' => $request->price_type[$index_price],
             'price_category' => $request->price_category[$index_price],
+            'price' => $request->price[$index_price],
+            'quantity' => $request->quantity[$index_price],
+            'bonus_quantity' => $request->bonus_quantity[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
             'price_customer_types' => $request->get('price_customer_types'.$index_price),
             // 'price_customers' => $price_customers,

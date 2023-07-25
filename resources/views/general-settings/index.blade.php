@@ -71,6 +71,12 @@
                         ]) !!}
                     </div>
                     <div class="col-md-3">
+                        {!! Form::label('default_payment_type', __('lang.default_payment_type'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select('default_payment_type',['cash'=>__('lang.cash'),'later'=>__('lang.later')], !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null, [
+                            'class' => 'form-control select2',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
                         {!! Form::label('tax', __('lang.tax'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('tax', !empty($settings['tax']) ? $settings['tax'] : null, [
                             'class' => 'form-control',

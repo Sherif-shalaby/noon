@@ -223,5 +223,13 @@ return [
     'type_your_password'=>'ادخل كلمة السر',
     'correct_password'=>'كلمة السر صحيحة',
     'tax'=>'ضريبة',
+    'type'=>'النوع',
+    'percentage'=>'نسبة مئوية',
+    'fixed'=>'تابت',
+    'quantity'=>'الكمية',
+    'b_qty'=>'كمية اضافية',
+    'default_payment_type'=>'نوع الدفع الافتراضى',
+    'cash'=>'نقدي',
+    'later'=>'أجل',
 ];
 

@@ -203,11 +203,14 @@
                                         <thead>
                                         <tr>
                                             {{-- <th style="width: 20%;">@lang('lang.discount_type')</th> --}}
+                                            <th style="width: 10%;">@lang('lang.type')</th>
                                             <th style="width: 10%;">@lang('lang.price_category')</th>
-                                            <th style="width: 15%;">@lang('lang.price')</th>
-                                            <th style="width: 5%;"></th>
-                                            <th style="width: 20%;">@lang('lang.price_start_date')</th>
-                                            <th style="width: 20%;">@lang('lang.price_end_date')</th>
+                                            <th style="width: 10%;">@lang('lang.price')</th>
+                                            <th style="width: 10%;">@lang('lang.quantity')</th>
+                                            <th style="width: 11%;">@lang('lang.b_qty')</th>
+                                            <th style="width: 3%;"></th>
+                                            <th style="width: 17%;">@lang('lang.price_start_date')</th>
+                                            <th style="width: 17%;">@lang('lang.price_end_date')</th>
                                             <th style="width: 20%;">@lang('lang.customer_type') <i class="dripicons-question" data-toggle="tooltip"
                                                                                                 title="@lang('lang.discount_customer_info')"></i></th>
                                             <th style="width: 5%;"><button class="btn btn-xs btn-primary add_price_row"
