@@ -187,5 +187,6 @@ return [
     'please_enter_your_password'=>'من فضلك ادخل كلمة السر !',
     'type_your_password'=>'ادخل كلمة السر',
     'correct_password'=>'كلمة السر صحيحة',
+    'tax'=>'ضريبة',
 ];
 
