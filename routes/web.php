@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddStockController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
@@ -13,8 +14,8 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\StoreController;
-use App\Models\Invoice;
-use App\Models\System;
+use App\Http\Controllers\WageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', BrandController::class);
     Route::resource('store', App\Http\Controllers\StoreController::class);
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
+    //employees
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::resource('wages',WageController::class);
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
@@ -63,6 +67,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
 
+    Route::resource('stocks', AddStockController::class);
+    Route::get('add-stock/add-product-row', [AddStockController::class,'addProductRow']);
 
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');

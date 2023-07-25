@@ -41,8 +41,8 @@ fileImageInput.addEventListener("change", () => {
                     '<i style="font-size: 20px;" class="fas fa-trash"></i>';
                 deleteBtn.addEventListener("click", () => {
                     swal({
-                        title: '{{ __("Are you sure?") }}',
-                        text: "{{ __('You wont be able to delete!') }}",
+                        title: LANG.are_you_sure,
+                        text: LANG.you_wont_be_able_to_delete,
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
@@ -52,7 +52,7 @@ fileImageInput.addEventListener("change", () => {
                         if (result) {
                             swal(
                                 "Deleted!",
-                                '{{ __("Your Image has been deleted.") }}',
+                                LANG.your_image_has_been_deleted,
                                 "success"
                             );
                             files.splice(file, 1);

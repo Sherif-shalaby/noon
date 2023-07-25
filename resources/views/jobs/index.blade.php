@@ -82,7 +82,7 @@
 
 @endsection
 <div class="modal view_modal no-print" role="dialog" aria-hidden="true"></div>
-@section('javascript')
+@push('javascript')
     <script>
         $(document).ready(function () {
             $(document).on('click', '.btn-modal', function(e) {
@@ -98,4 +98,4 @@
             });
         });
     </script>
-@endsection
+@endpush

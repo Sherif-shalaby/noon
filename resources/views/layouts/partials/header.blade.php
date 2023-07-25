@@ -31,7 +31,7 @@
                     <ul class="list-inline mb-0">
                         <li class="list-inline-item">
                             <div class="notifybar">
-                                <a href="https://api.whatsapp.com/send?phone={{$watsapp_number}}">
+                                <a href="https://api.whatsapp.com/send?phone={{$settings['watsapp_numbers']}}">
                                     <img src="{{asset('images/topbar/whatsapp.jpg')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
                                 </a>
                             </div>
@@ -132,32 +132,13 @@
                   {{-- @if(!empty($module_settings['dashboard']) ) --}}
 
                   @if(!empty($module_settings['product_module']) )
-                      <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.products')}}</span></a>
-                          <ul class="dropdown-menu">
-                            <li><a href="{{route('products.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.products')}}</a></li>
-                            <li><a href="#"><i class="mdi mdi-circle"></i>Light - Horizontal</a></li>
-                            <li><a href="https://themesbox.in/admin-templates/theta/html/dark-vertical/index.html"><i class="mdi mdi-circle"></i>Dark - Vertical</a></li>
-                            <li><a href="https://themesbox.in/admin-templates/theta/html/dark-horizontal/index.html"><i class="mdi mdi-circle"></i>Dark - Horizontal</a></li>
-                        </ul>
-                      </li>
+                  <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
                   @if(!empty($module_settings['stock_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.stock')}}</span></a>
                           <ul class="dropdown-menu">
-                              <li><a href="apps-calender.html"><i class="mdi mdi-circle"></i>Calender</a></li>
-                              <li><a href="apps-chat.html"><i class="mdi mdi-circle"></i>Chat</a></li>
-                              <li class="dropdown">
-                                  <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown" ><i class="mdi mdi-circle"></i>Email</a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href="apps-email-inbox.html"><i class="mdi mdi-circle"></i>Email Inbox</a></li>
-                                      <li><a href="apps-email-open.html"><i class="mdi mdi-circle"></i>Email Open</a></li>
-                                      <li><a href="apps-email-compose.html"><i class="mdi mdi-circle"></i>Email Compose</a></li>
-                                  </ul>
-                              </li>
-                              <li><a href="apps-kanban-board.html"><i class="mdi mdi-circle"></i>Kanban Board</a></li>
-                              <li><a href="apps-onboarding-screens.html"><i class="mdi mdi-circle"></i>Onboarding Screens</a></li>
+                              <li><a href="{{route('stocks.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stock')</a></li>
                           </ul>
                       </li>
                   @endif
@@ -292,6 +273,7 @@
                               <ul class="dropdown-menu">
                                   <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
                                   <li><a href="{{route('employees.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
+                                  <li><a href="{{route('wages.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
                               </ul>
                           </li>
                   @endif

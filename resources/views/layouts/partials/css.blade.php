@@ -1,6 +1,6 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
+<link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">
 <!-- Start css -->
 <!-- Switchery css -->
 {{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
@@ -35,6 +35,9 @@
 <style>
     .error-help-block{
         color:red;
+    }
+    input[type="text"],input[type="month"],textarea{
+       border:2px solid #939394 !important;
     }
 </style>
 

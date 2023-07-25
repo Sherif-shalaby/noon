@@ -71,6 +71,12 @@
                         ]) !!}
                     </div>
                     <div class="col-md-3">
+                        {!! Form::label('tax', __('lang.tax'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::text('tax', !empty($settings['tax']) ? $settings['tax'] : null, [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
                         {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select(
                             'invoice_lang',

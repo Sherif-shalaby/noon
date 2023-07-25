@@ -14,13 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('customer_important_dates', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('customer_id')->unsigned()->nullable();
+            $table->id();
+            // $table->integer('customer_id')->unsigned()->nullable();
+			$table->foreignId('customer_id')->nullable()->constrained('customers', 'id')->cascadeOnDelete();
+
             $table->text('details');
             $table->string('date');
             $table->integer('notify_before_days');
             $table->boolean('is_notified')->default(false);
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            // $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
 			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->timestamps();
 

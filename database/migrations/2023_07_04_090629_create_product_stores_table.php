@@ -10,7 +10,7 @@ class CreateProductStoresTable extends Migration {
 	{
 		Schema::create('product_stores', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('product_id')->unsigned();
+			$table->unsignedBigInteger('product_id')->unsigned();
 			$table->integer('store_id')->unsigned();
 			$table->double('quantity_available')->nullable();
 			$table->double('quantity_expired')->nullable();
