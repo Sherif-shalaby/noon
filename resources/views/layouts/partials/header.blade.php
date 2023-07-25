@@ -365,7 +365,13 @@
                 <li class="scroll">
                     <a href="{{ route('invoices.create') }}">
                         <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
-                        <span>شاشه البيع</span>
+                        <span>{{ __('site.Sale_Screen') }}</span>
+                    </a>
+                </li>
+                <li class="scroll">
+                    <a href="{{ route('invoices.index') }}">
+                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
+                        <span>{{ __('site.Invoices') }}</span>
                     </a>
                 </li>
               </ul>

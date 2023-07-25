@@ -11,8 +11,9 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class Create extends Component
 {
     use LivewireAlert;
-    public $products = [], $department_id = null, $items = [], $price  ,$total = 0;
-    public $client_phone, $client_id, $client,$not_paid,$cash = 0, $rest;
+    public $products = [], $department_id = null, $items = [], $price  ,$total = 0,
+           $client_phone, $client_id, $client,$not_paid,$cash = 0, $rest,
+           $invoice,$invoice_id, $date, $payment_method;
     public function getClient()
     {
         if ($this->client_phone) {
@@ -31,7 +32,7 @@ class Create extends Component
     {
         $allproducts = Product::get();
         $departments = Category::get();
-        $customers = Customer::get();
+        $customers   = Customer::get();
         return view('livewire.invoices.create',compact('departments','allproducts','customers'));
     }
     public function updatedDepartmentId($department_id)
@@ -57,10 +58,11 @@ class Create extends Component
                     --$this->items[$key]['quantity'];
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
                 }else {
-                    $this->items[$key]['price'] = 5 * $this->items[$key]['quantity'];
+                    // $this->items[$key]['price'] = 10 * $this->items[$key]['quantity'];
                     $this->items[$key]['total'] = $this->items[$key]['price'] ;
                 }
             } else {
+                $total = 10;
                 $this->items[] = [
                     'product_id' => $product->id,
                     'name' => $product->name,
@@ -69,6 +71,7 @@ class Create extends Component
                     'category_id' => $product->category?->id,
                     'department_name' => $product->category?->name,
                     'client_id' => $product->customer?->id,
+                    'total' => $total,
                 ];
             }
         }
@@ -115,12 +118,20 @@ class Create extends Component
         $this->department_id = null;
     }
 
+    public function ValidationAttributes(){
+        return [
+            'client_id' => __('اسم العميل'),
+            'cash' => __('الدفع نقدا'),
+        ];
+    }
     public function submit($status = null){
         $data = $this->validate([
             'items' => 'min:1',
             'price' => 'required',
             'total' => 'required',
-            'cash' => 'required|numeric',
+            // 'cash' => 'required|numeric|max:'.(($this->total)+2)',
+            'cash' => 'required|numeric|lt:total',
+            'rest' => 'nullable|numeric',
             'client_id' => 'required',
         ]);
         if ($this->cash >= 0 ) {
@@ -154,7 +165,8 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'تم إضافة الفاتورة بنجاح']);
             $this->reset();
             $this->mount();
-            $this->resetAll();
+            // $this->resetAll();
+            return redirect()->route('invoices.show', $invoice->id);
         }else {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'يوجد مشكلة في المبلغ المدفوع']);
         }

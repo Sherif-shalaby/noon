@@ -13,6 +13,9 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\StoreController;
+use App\Models\Invoice;
+use App\Models\System;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -62,7 +65,11 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // Sale Screen
+    Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+    Route::get('invoices/{invoice}', function ($id) {
+        return view('invoices.show', compact('id'));
+    })->name('invoices.show');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
 
