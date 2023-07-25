@@ -101,6 +101,7 @@ class DatabaseSeeder extends Seeder
             ['id'=>12,'key' => 'module_settings', 'value' => json_encode($module_settings), 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>13,'key' => 'dollar_exchange', 'value' => '132', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>14,'key' => 'watsapp_numbers', 'value' => '123456789', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['id'=>15,'key' => 'tax', 'value' => '33', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ];
         foreach ($system_data as $item) {
             System::updateOrCreate(['id' => $item['id']],$item);

@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('transaction_id');
             $table->foreign('transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
-            $table->unsignedInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->unsignedBigInteger('variation_id');
+            // $table->unsignedInteger('product_id');
+            $table->foreignId('product_id')->nullable()->constrained('products', 'id')->cascadeOnDelete();
+
+            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->decimal('quantity', 15, 4);
             $table->decimal('quantity_sold', 15, 4)->default(0)->comment('quantity sold from this purchase line');
             $table->decimal('quantity_returned', 15, 4)->default(0);

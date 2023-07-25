@@ -10,7 +10,7 @@ class CreateProductPricesTable extends Migration {
 	{
 		Schema::create('product_prices', function(Blueprint $table) {
 			$table->increments('id');
-			$table->integer('product_id')->unsigned();
+			$table->unsignedBigInteger('product_id');
 			// $table->string('price_type')->nullable();
 			$table->decimal('price',10,2)->nullable();
 			$table->string('price_start_date')->nullable();

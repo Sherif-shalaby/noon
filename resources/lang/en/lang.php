@@ -215,4 +215,5 @@ return [
     'please_enter_your_password'=>'Please Enter Your Password',
     'type_your_password'=>'Type your password',
     'correct_password'=>'Correct Password!',
+    'tax'=>'Tax',
 ];
