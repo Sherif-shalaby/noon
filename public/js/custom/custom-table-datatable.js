@@ -11,11 +11,14 @@ $(document).ready(function() {
     });
     $('#default-datatable').DataTable( {
         "order": [[ 3, "desc" ]],
-        responsive: true
+        responsive: true,
     } );
     var table = $('#datatable-buttons').DataTable({
-        lengthChange: false,
-        responsive: true,
+        // lengthChange: false,
+        // responsive: true,
+        dom: '<"top"lB><"bottom"frtip>',
+        lengthMenu: [10, 25, 50, 75, 100,200,300,400],
+        pageLength: 10 ,
         buttons:
             ['copy', 'csv', 'excel', 'pdf',
             {
@@ -24,7 +27,9 @@ $(document).ready(function() {
                 columns: ":visible:not(.notexport)"
             }
         }],
+        
+       
     });
-    table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-12:eq(0)');
 
 });

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('product_subcategories', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('product_id')->unsigned();
+			$table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('category_id');
             $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();

@@ -57,12 +57,10 @@ $(document).on("change",".category",function () {
     });
 });
 $(document).ready(function() {
-    $(document).ready(function(){
-        $('.js-example-basic-multiple').select2(
-            {
-                placeholder: LANG.please_select,
-                tags: true
-            }
-        );
-    });
+    $('.js-example-basic-multiple').select2(
+        {
+            placeholder: LANG.please_select,
+            tags: true
+        }
+    );
 });

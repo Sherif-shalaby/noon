@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "7380cbcdd825eeea9bdd8374dee0b7b5",
+
     "packages": [
         {
             "name": "brick/math",
@@ -8578,6 +8579,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
+        "ext-mysql_xdevapi": "*",
         "php": "^8.0.2"
     },
     "platform-dev": [],
