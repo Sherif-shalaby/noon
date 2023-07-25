@@ -1,7 +1,7 @@
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 <!-- Core js -->
-<script src="{{asset('js/core.js')}}"></script>
-
+{{-- <script src="{{asset('js/core.js')}}"></script> --}}
+{{-- <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script> --}}
 <script src="{{asset('js/jquery.min.js')}}"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.min.js')}}"></script>
@@ -10,7 +10,7 @@
 <script src="{{asset('js/jquery.slimscroll.js')}}"></script>
 <script src="{{asset('js/horizontal-menu.js')}}"></script>
 <!-- Switchery js -->
-<script src="{{asset('plugins/switchery/switchery.min.js')}}"></script>
+{{-- <script src="{{asset('plugins/switchery/switchery.min.js')}}"></script> --}}
 <!-- Datatable js -->
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
@@ -39,7 +39,7 @@
 <script src="{{asset('js/jquery-ui.min.js') }}" ></script>
 <script src="{{ asset('js/lang/'.app()->getLocale().'.js') }}"></script>
 <script>
-   
+
 </script>
 
 

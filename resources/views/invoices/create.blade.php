@@ -108,8 +108,8 @@
     </div>
 @endsection
 @section('content')
-    {{-- <livewire:invoices.create /> --}}
-    @livewire('invoices.create')
+    <livewire:invoices.create />
+    {{-- @livewire('invoices.create') --}}
 @endsection
 @push('js')
         <script src="{{ asset('salescreen/js/main.js') }}"></script>
