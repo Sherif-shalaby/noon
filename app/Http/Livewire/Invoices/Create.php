@@ -7,10 +7,8 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Product;
 use Livewire\Component;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
 class Create extends Component
 {
-    use LivewireAlert;
     public $products = [], $department_id = null, $items = [], $price  ,$total = 0,
            $client_phone, $client_id, $client,$not_paid,$cash = 0, $rest,
            $invoice,$invoice_id, $date, $payment_method;
@@ -110,6 +108,7 @@ class Create extends Component
     }
     public function resetAll()
     {
+        $this->client_id = '';
         $this->reset();
         $this->mount();
     }
@@ -165,8 +164,8 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'تم إضافة الفاتورة بنجاح']);
             $this->reset();
             $this->mount();
-            // $this->resetAll();
-            return redirect()->route('invoices.show', $invoice->id);
+            $this->resetAll();
+            // return redirect()->route('invoices.show', $invoice->id);
         }else {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'يوجد مشكلة في المبلغ المدفوع']);
         }
