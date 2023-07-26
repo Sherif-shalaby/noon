@@ -132,7 +132,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="add-selected-btn" wire:click="fetchSelectedProducts">@lang( 'lang.add' )</button>
+                <button type="button" class="btn btn-primary" id="add-selected-btn" wire:click="fetchSelectedProducts()">@lang( 'lang.add' )</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">@lang( 'lang.close' )</button>
             </div>
 

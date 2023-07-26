@@ -11,8 +11,6 @@ use App\Models\Size;
 use App\Models\Store;
 use App\Models\Unit;
 use App\Models\User;
-use App\Utils\ProductUtil;
-use App\Utils\Util;
 use Livewire\Component;
 
 class Create extends Component
@@ -84,7 +82,6 @@ class Create extends Component
 
     public function fetchSelectedProducts()
     {
-//        dd('1');
         $this->emit('closeModal');
         $this->selectedProductData = Product::whereIn('id', $this->selectedProducts)->get();
 //        dump($this->selectedProductData);
@@ -92,6 +89,7 @@ class Create extends Component
 
     public function mount()
     {
+
         foreach ($this->selectedProductData as $index => $product) {
             $this->quantity[$index] = 0;
             $this->purchase_price[$index] = 0;
@@ -132,9 +130,6 @@ class Create extends Component
         }
         return redirect('/add-stock/index');
     }
-
-
-
 
 
     public function getPurchaseOrderStatusArray()
