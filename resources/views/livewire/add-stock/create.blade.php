@@ -1,34 +1,4 @@
-@extends('layouts.app')
-@if (!empty($is_raw_material))
-    @section('title', __('lang.add_stock_for_raw_material'))
-@else
-    @section('title', __('lang.add-stock'))
-@endif
-@section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.add-stock')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        {{-- <li class="breadcrumb-item"><a href="#">Brands</a></li> --}}
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.add-stock')</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    {{--                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createBrandModal">--}}
-                    {{--                        @lang('lang.add-stock')--}}
-                    {{--                    </button>--}}
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
 
-@section('content')
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
@@ -65,6 +35,7 @@
                     <input type="hidden" name="is_raw_material" id="is_raw_material" value="{{ $is_raw_material }}">
                     <input type="hidden" name="is_add_stock" id="is_add_stock" value="1">
                     <div class="card-body">
+                        <button type="button" class="btn btn-primary" id="add-selected-btn" wire:click="fetchSelectedProducts()">@lang( 'lang.add' )</button>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -72,19 +43,19 @@
                                     {!! Form::select('store_id', $stores, !empty($recent_stock)&&!empty($recent_stock->store_id)?$recent_stock->store_id:session('user.store_id'), ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'required', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                {{--                                    <div class="form-group">--}}
-                                {{--                                        {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}--}}
-                                {{--                                        {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:array_key_first($suppliers), ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}--}}
-                                {{--                                    </div>--}}
-                            </div>
-                            {{--                                <div class="col-md-3">--}}
-                            {{--                                    <div class="form-group">--}}
-                            {{--                                        {!! Form::label('po_no', __('lang.po_no'), []) !!} <i class="dripicons-question" data-toggle="tooltip"--}}
-                            {{--                                                                                              title="@lang('lang.po_no_add_stock_info')"></i>--}}
-                            {{--                                        {!! Form::select('po_no', $po_nos,!empty($recent_stock)&&!empty($recent_stock->purchase_order_id)?$recent_stock->purchase_order_id: null, ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}--}}
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
+{{--                            <div class="col-md-3">--}}
+{{--                                                                    <div class="form-group">--}}
+{{--                                                                        {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}--}}
+{{--                                                                        {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:array_key_first($suppliers), ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}--}}
+{{--                                                                    </div>--}}
+{{--                            </div>--}}
+{{--                                                            <div class="col-md-3">--}}
+{{--                                                                <div class="form-group">--}}
+{{--                                                                    {!! Form::label('po_no', __('lang.po_no'), []) !!} <i class="dripicons-question" data-toggle="tooltip"--}}
+{{--                                                                                                                          title="@lang('lang.po_no_add_stock_info')"></i>--}}
+{{--                                                                    {!! Form::select('po_no', $po_nos,!empty($recent_stock)&&!empty($recent_stock->purchase_order_id)?$recent_stock->purchase_order_id: null, ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}--}}
+{{--                                                                </div>--}}
+{{--                                                            </div>--}}
 
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -97,20 +68,20 @@
                                 <input type="datetime-local" id="transaction_date" name="transaction_date"
                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                             </div>
-                            {{--                                <div class="col-md-3">--}}
-                            {{--                                    <div class="form-group">--}}
-                            {{--                                        <input type="hidden" name="exchange_rate" id="exchange_rate" value="1">--}}
-                            {{--                                        <input type="hidden" name="default_currency_id" id="default_currency_id"--}}
-                            {{--                                               value="{{ !empty(App\Models\System::getProperty('currency')) ? App\Models\System::getProperty('currency') : '' }}">--}}
-                            {{--                                        {!! Form::label('paying_currency_id', __('lang.paying_currency') . ':', []) !!}--}}
-                            {{--                                        {!! Form::select('paying_currency_id', $exchange_rate_currencies, !empty(App\Models\System::getProperty('currency')) ? App\Models\System::getProperty('currency') : null, ['class' => 'form-control selectpicker', 'data-live-search' => 'true', 'required']) !!}--}}
-                            {{--                                    </div>--}}
-                            {{--                                </div>--}}
+{{--                                                            <div class="col-md-3">--}}
+{{--                                                                <div class="form-group">--}}
+{{--                                                                    <input type="hidden" name="exchange_rate" id="exchange_rate" value="1">--}}
+{{--                                                                    <input type="hidden" name="default_currency_id" id="default_currency_id"--}}
+{{--                                                                           value="{{ !empty(App\Models\System::getProperty('currency')) ? App\Models\System::getProperty('currency') : '' }}">--}}
+{{--                                                                    {!! Form::label('paying_currency_id', __('lang.paying_currency') . ':', []) !!}--}}
+{{--                                                                    {!! Form::select('paying_currency_id', $exchange_rate_currencies, !empty(App\Models\System::getProperty('currency')) ? App\Models\System::getProperty('currency') : null, ['class' => 'form-control selectpicker', 'data-live-search' => 'true', 'required']) !!}--}}
+{{--                                                                </div>--}}
+{{--                                                            </div>--}}
                         </div>
                         <br>
                         <br>
                         <div class="row">
-{{--                            <div class="col-md-8 offset-md-1">--}}
+                            <div class="col-md-8 offset-md-1">
 {{--                                <div class="search-box input-group">--}}
 {{--                                    <button type="button" class="btn btn-secondary btn-lg" id="search_button"><i--}}
 {{--                                            class="fa fa-search"></i></button>--}}
@@ -121,7 +92,7 @@
 {{--                                            data-href="{{ route('products.create') }}?quick_add=1"--}}
 {{--                                            data-container=".view_modal"><i class="fa fa-plus"></i></button>--}}
 {{--                                </div>--}}
-{{--                            </div>--}}
+                            </div>
                             <div class="col-md-2">
                                 @include('quotation.partials.product_selection')
                             </div>
@@ -310,8 +281,8 @@
     </div>
 
 
+
 </section>
-@endsection
 
 @push('javascripts')
 <script>
