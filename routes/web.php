@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 
@@ -73,7 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
-
+    //money safe
+    Route::resource('moneysafe', MoneySafeController::class);
 });
 
 

@@ -304,6 +304,7 @@
                                           <li><a href="{{route('colors.index')}}"><i class="mdi mdi-circle"></i>@lang('colors.colors')</a></li>
                                           <li><a href="{{route('sizes.index')}}"><i class="mdi mdi-circle"></i>@lang('sizes.sizes')</a></li>
                                           <li><a href="{{route('units.index')}}"><i class="mdi mdi-circle"></i>@lang('units.units')</a></li>
+                                          <li><a href="{{route('moneysafe.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.moneysafes')</a></li>
 
 
                                       </ul>

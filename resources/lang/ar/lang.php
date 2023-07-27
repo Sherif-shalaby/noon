@@ -196,5 +196,11 @@ return [
     'default_payment_type'=>'نوع الدفع الافتراضى',
     'cash'=>'نقدي',
     'later'=>'أجل',
+    'moneysafe'=>'خزينة',
+    'moneysafes'=>'الخزائن',
+    'add_moneysafe'=>'اضافة خزينة',
+    'edit_moneysafe'=>'تعديل الخزينة',
+    'type_of_safe'=>'نوع الخزنة',
+
 ];
 

@@ -90,7 +90,7 @@ class DatabaseSeeder extends Seeder
             ['id'=>7,'key' => 'system_type', 'value' => 'noon', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>8,'key' => 'tutorial_guide_url', 'value' => 'https://noon.sherifshalaby.tech', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>9,'key' => 'show_the_window_printing_prompt', 'value' => '1', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-            ['id'=>10,'key' => 'currency', 'value' => '119', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['id'=>10,'key' => 'currency', 'value' => '["119"]', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>11,'key' => 'numbers_length_after_dot', 'value' => '2', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>12,'key' => 'module_settings', 'value' => json_encode($module_settings), 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['id'=>13,'key' => 'dollar_exchange', 'value' => '132', 'created_by' => 1, 'date_and_time' => Carbon::now(), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],

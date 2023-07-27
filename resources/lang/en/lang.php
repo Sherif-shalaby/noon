@@ -224,4 +224,9 @@ return [
     'default_payment_type'=>'Default Payment Type',
     'cash'=>'Cash',
     'later'=>'Later',
+    'moneysafe'=>'Money Safe',
+    'moneysafes'=>'Money Safes',
+    'add_moneysafe'=>'Add Money Safe',
+    'edit_moneysafe'=>'Edit Money Safe',
+    'type_of_safe'=>'Type Of Safe',
 ];

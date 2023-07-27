@@ -54,4 +54,8 @@ class Store extends Model
     {
         return $this->hasMany('App\Models\CustomerType');
     }
+    public function moneysafe()
+    {
+        return $this->hasMany('App\Models\MoneySafe');
+    }
 }
