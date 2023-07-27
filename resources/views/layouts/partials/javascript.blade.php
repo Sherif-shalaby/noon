@@ -162,6 +162,7 @@
                 success: function(result) {
                     $(container).html(result);
                     $('#editModal').modal('show');
+                    $('.select2').select2();
                 },
             });
         });

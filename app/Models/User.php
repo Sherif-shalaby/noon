@@ -79,12 +79,10 @@ class User extends Authenticatable
             'dashboard' ,
             'product_module' => [
                 'product' => __('lang.products'),
-                'category' => __('lang.class'),
-                'brand' => __('lang.brand'),
-                'tax' => __('lang.tax'),
                 'product_classification_tree' => __('lang.product_classification_tree'),
                 'purchase_price' => __('lang.purchase_price'),
                 'sell_price' => __('lang.sell_price'),
+                'discount' => __('lang.discount'),
             ],
             'customer_module' => [
                 'customer' => __('lang.customer'),
@@ -114,6 +112,7 @@ class User extends Authenticatable
                 'leave_types' => __('lang.leave_types'),
                 'leaves' => __('lang.leaves'),
                 'attendance' => __('lang.attendance'),
+                'wages' => __('lang.wages'),
             ],
             'stock' => [
                 'add_stock' => __('lang.add_stock'),
@@ -150,19 +149,29 @@ class User extends Authenticatable
                 'supplier_report' => __('lang.supplier_report'),
                 'due_report' => __('lang.due_report'),
             ],
-            'cash' => [
-                'add_cash_in' => __('lang.add_cash_in'),
-                'add_closing_cash' => __('lang.add_closing_cash'),
-                'add_cash_out' => __('lang.add_cash_out'),
-                'view_details' => __('lang.view_details'),
-            ],
             'settings' => [
                 'store' => __('lang.stores'),
                 'store_pos' => __('lang.store_pos'),
                 'modules' => __('lang.modules'),
                 'general_settings' => __('lang.general_settings'),
+                'category' => __('lang.category'),
+                'brand' => __('lang.brand'),
+                'unit' => __('lang.unit'),
+                'color' => __('lang.color'),
+                'size' => __('lang.size'),
+                //
+                'money_safe' => __('lang.money_safe'),
+                'add_money_to_safe' => __('lang.add_money_to_safe'),
+                'take_money_from_safe' => __('lang.take_money_from_safe'),
+                'statement' => __('lang.statement'),
+                //
+                'add_cash_in' => __('lang.add_cash_in'),
+                'add_closing_cash' => __('lang.add_closing_cash'),
+                'add_cash_out' => __('lang.add_cash_out'),
+                'view_details' => __('lang.view_details'),
+                //
+                'sales_promotion' => __('lang.sales_promotion'),
             ],
-
         ];
     }
 }

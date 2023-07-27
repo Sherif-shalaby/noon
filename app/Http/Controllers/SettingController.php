@@ -32,7 +32,8 @@ class SettingController extends Controller
             $languages[$key] = $value['full_name'];
         }
         $currencies  = $this->allCurrencies();
-        return view('general-settings.index',compact('settings','languages','currencies'));
+        $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+        return view('general-settings.index',compact('settings','languages','currencies','selected_currencies'));
     }
 
     /**
@@ -106,10 +107,9 @@ class SettingController extends Controller
     {
         $modules = User::modulePermissionArray();
         $module_settings = System::getProperty('module_settings') ? json_decode(System::getProperty('module_settings'), true) : [];
-
         return view('settings.module')->with(compact(
             'modules',
-            'module_settings',
+            'module_settings'
         ));
     }
 
@@ -165,7 +165,7 @@ class SettingController extends Controller
             }
             System::updateOrCreate(
                 ['key' => 'currency'],
-                ['value' => $request->currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => json_encode($request->get('currency')), 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
                 ['key' => 'dollar_exchange'],
@@ -175,19 +175,19 @@ class SettingController extends Controller
                 ['key' => 'tax'],
                 ['value' => $request->tax, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
-            if (!empty($request->currency)) {
-                $currency = Currency::find($request->currency);
-                $currency_data = [
-                    'country' => $currency->country,
-                    'code' => $currency->code,
-                    'symbol' => $currency->symbol,
-                    'decimal_separator' => '.',
-                    'thousand_separator' => ',',
-                    'currency_precision' => !empty(System::getProperty('numbers_length_after_dot')) ? System::getProperty('numbers_length_after_dot') : 5,
-                    'currency_symbol_placement' => 'before',
-                ];
-                $request->session()->put('currency', $currency_data);
-            }
+            // if (!empty($request->currency)) {
+            //     $currency = Currency::find($request->currency);
+            //     $currency_data = [
+            //         'country' => $currency->country,
+            //         'code' => $currency->code,
+            //         'symbol' => $currency->symbol,
+            //         'decimal_separator' => '.',
+            //         'thousand_separator' => ',',
+            //         'currency_precision' => !empty(System::getProperty('numbers_length_after_dot')) ? System::getProperty('numbers_length_after_dot') : 5,
+            //         'currency_symbol_placement' => 'before',
+            //     ];
+            //     $request->session()->put('currency', $currency_data);
+            // }/
             System::updateOrCreate(
                 ['key' => 'invoice_lang'],
                 ['value' => $request->invoice_lang, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
