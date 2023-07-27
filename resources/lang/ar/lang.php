@@ -201,6 +201,21 @@ return [
     'add_moneysafe'=>'اضافة خزينة',
     'edit_moneysafe'=>'تعديل الخزينة',
     'type_of_safe'=>'نوع الخزنة',
+    'add_to_money_safe'=>'اضافة المال',
+    'take_money_safe'=>'سحب المال',
+    'job'=>'وظيفة',
+    'amount'=>'المبلغ',
+    'user'=>'المستخدم',
+    'safe'=>'الخزينة',
+    'watch_statement'=>'مشاهدة البيان',
+    'watch_moneysafe_transaction'=>'بيانات الخزينة',
+    'creation_date'=>'تاريخ الانشاء',
+    'source'=>'المصدر',
+    'start_date'=>'تاريخ بداية',
+    'end_date'=>'تاريخ نهاية',
+    'add_money'=>'اضافة',
+    'take_money'=>'سحب',
+    'change_to'=>'تغيير العملة الى'
 
 ];
 

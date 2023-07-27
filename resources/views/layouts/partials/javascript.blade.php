@@ -163,6 +163,7 @@
                     $(container).html(result);
                     $('#editModal').modal('show');
                     $('.select2').select2();
+                    $('.datepicker').datepicker();
                 },
             });
         });
@@ -185,8 +186,8 @@
                     }
             });
         });
-        $('.select2').select2({
-        });
+        $('.select2').select2();
+        $('.datepicker').datepicker();
 </script>
 @stack('javascripts')
 

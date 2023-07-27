@@ -18,7 +18,11 @@ class JobType extends Model
 
     public function employess()
     {
-        return $this->hasMany('Employee\Employee');
+        return $this->hasMany('App\Models\Employee');
+    }
+    public function money_safe_transaction()
+    {
+        return $this->hasMany('App\Models\MoneySafeTransaction');
     }
     public function created_by()
     {
