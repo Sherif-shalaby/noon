@@ -59,7 +59,7 @@
                                             <td>@lang('lang.'.$m_safe->type.'')</td>
                                             <td>{{$m_safe->currency->currency}}</td>
                                             <td>
-                                                {{-- {{$m_safe->transactions->latest->balance}} --}}
+                                                {{$m_safe->latest_balance}}
                                             </td>
                                             <td>
                                                 @if ($m_safe->created_by  > 0 and $m_safe->created_by != null)

@@ -11,6 +11,18 @@ class MoneySafe extends Model
     use HasFactory,SoftDeletes;
     protected $guarded = ['id'];
     protected $table = 'money_safes';
+
+
+    public function getLatestBalanceAttribute()
+    {
+        $latestTransaction = $this->transactions()->latest()->first();
+
+        if ($latestTransaction) {
+            return $latestTransaction->balance;
+        }
+
+        return 0;
+    }
     public function currency()
     {
         return $this->belongsTo(Currency::class,'currency_id');

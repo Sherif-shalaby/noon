@@ -258,12 +258,13 @@ class MoneySafeController extends Controller
             $currenciesId=[System::getProperty('currency') ,2];
             $selected_currencies=Currency::whereIn('id',$currenciesId)->latest()->pluck('currency','id');
             
-            if(request()->currecy_change!=null && request()->currecy_change!="2"){
+            if(request()->currecy_change!=null ){
                 $currency_value=System::getProperty('dollar_exchange');
                 $currency_symbol=Currency::find(request()->currecy_change)->symbol;
-            }else{
+            }
+            else{
                 $currency_value=1;
-                $currency_symbol=Currency::find("2")->symbol;
+                $currency_symbol=$moneySafeTransactions->currency->symbol;
             }
         return view('money_safe.money_safe_transactions',
         compact('moneySafeTransactions',
