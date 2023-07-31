@@ -5,15 +5,30 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MoneySafeRequest;
 use App\Http\Requests\MoneySafeUpdateRequest;
 use App\Models\Currency;
+use App\Models\JobType;
 use App\Models\MoneySafe;
+use App\Models\MoneySafeTransaction;
 use App\Models\Store;
 use App\Models\System;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-
+use App\Utils\Util;
 class MoneySafeController extends Controller
 {
+    protected $Util;
+
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -23,8 +38,9 @@ class MoneySafeController extends Controller
     {
         $moneysafe=MoneySafe::latest()->get();
         $stores=Store::getDropdown();
-        $currenciesId=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+        $currenciesId=[System::getProperty('currency') ,2];
         $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
+
         return view('money_safe.index',compact('moneysafe','stores','selected_currencies'));
     }
 
@@ -85,7 +101,7 @@ class MoneySafeController extends Controller
     {
         $moneysafe=MoneySafe::find($id);
         $stores=Store::getDropdown();
-        $currenciesId=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+        $currenciesId=[System::getProperty('currency') ,2];
         $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
         return view('money_safe.edit')->with(compact('moneysafe','stores','selected_currencies'));
     }
@@ -143,5 +159,115 @@ class MoneySafeController extends Controller
             ];
         }
         return $output;
+    }
+    public function getAddMoneyToSafe($money_safe_id){
+        $jobs = JobType::pluck('title', 'id')->toArray();
+        $stores=Store::getDropdown();
+        $users = User::Notview()->pluck('name', 'id');
+        $currenciesId=[System::getProperty('currency') ,2];
+        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
+        return view('money_safe.add_money')->with(compact('jobs','stores','selected_currencies','users','money_safe_id'));
+    }
+    public function postAddMoneyToSafe(Request $request){
+        try {
+            $data = $request->except('_token');
+            $data['created_by'] = Auth::user()->id;
+            $data['type'] = 'add_money';
+            $safe = MoneySafe::find($request->money_safe_id);
+            if (($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] =="2")) {
+                $data['amount'] = $this->Util->num_uf($data['amount'])* (float) System::getProperty('dollar_exchange');
+            }else if(($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] !="2")) {
+                $data['amount'] = $this->Util->num_uf($data['amount'])/ (float) System::getProperty('dollar_exchange');
+            }
+            $transaction=$safe->transactions()->latest()->first();
+            if(!empty($transaction->balance)){
+                $data['balance']=$data['amount'] + $transaction->balance;
+            }else{
+                $data['balance']=$data['amount'];
+            }
+            
+            $money_safe_transaction=MoneySafeTransaction::create($data);
+            $output = [
+              'success' => true,
+              'msg' => __('lang.success')
+          ];
+          }catch (\Exception $e) {
+              Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+              $output = [
+                  'success' => false,
+                  'msg' => __('lang.something_went_wrong')
+              ];
+          }
+          return redirect()->back()->with('status', $output);
+    }
+    ////
+    public function getTakeMoneyFromSafe($money_safe_id){
+        $jobs = JobType::pluck('title', 'id')->toArray();
+        $stores=Store::getDropdown();
+        $users = User::Notview()->pluck('name', 'id');
+        $currenciesId=[System::getProperty('currency') ,2];
+        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
+        return view('money_safe.take_money')->with(compact('jobs','stores','selected_currencies','users','money_safe_id'));
+    }
+    public function postTakeMoneyFromSafe(Request $request){
+        try {
+            $data = $request->except('_token');
+            $data['created_by'] = Auth::user()->id;
+            $data['type'] = 'take_money';
+            $safe = MoneySafe::find($request->money_safe_id);
+            if (($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] =="2")) {
+                $data['amount'] = $this->Util->num_uf($data['amount'])* (float) System::getProperty('dollar_exchange');
+            }else if(($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] !="2")) {
+                $data['amount'] = $this->Util->num_uf($data['amount'])/ (float) System::getProperty('dollar_exchange');
+            }
+            $transaction=$safe->transactions()->latest()->first();
+            if(!empty($transaction->balance)){
+                $data['balance']=$transaction->balance-$data['amount'] ;
+            }else{
+                $data['balance']=0;
+            }
+            $money_safe_transaction=MoneySafeTransaction::create($data);
+            $output = [
+              'success' => true,
+              'msg' => __('lang.success')
+          ];
+          }catch (\Exception $e) {
+              Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+              $output = [
+                  'success' => false,
+                  'msg' => __('lang.something_went_wrong')
+              ];
+          }
+          return redirect()->back()->with('status', $output);
+    }
+    ///
+    public function getMoneySafeTransactions($id){        
+        $moneySafeTransactions = MoneySafe::
+            when(request()->start_date != null, function ($query) {
+                $query->with(['transactions' => function ($query) {
+                    $query->whereBetween('transaction_date', [request()->start_date,request()->end_date])->latest();
+                }]);
+            })->
+            when((request()->end_date == null)&& (request()->start_date == null), function ($query) {
+                $query->with(['transactions' => function ($query) {
+                    $query->latest();
+                }]);
+            })
+            ->where('id', $id)
+            ->first();
+            $currenciesId=[System::getProperty('currency') ,2];
+            $selected_currencies=Currency::whereIn('id',$currenciesId)->latest()->pluck('currency','id');
+            
+            if(request()->currecy_change!=null ){
+                $currency_value=System::getProperty('dollar_exchange');
+                $currency_symbol=Currency::find(request()->currecy_change)->symbol;
+            }
+            else{
+                $currency_value=1;
+                $currency_symbol=$moneySafeTransactions->currency->symbol;
+            }
+        return view('money_safe.money_safe_transactions',
+        compact('moneySafeTransactions',
+        'selected_currencies','currency_value','currency_symbol'));
     }
 }

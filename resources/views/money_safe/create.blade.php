@@ -40,8 +40,8 @@
                     <label for="currency_id">@lang('lang.currency') .*</label>
                     {!! Form::select(
                         'currency_id',
-                        !empty($settings['currency']) ? $selected_currencies:[],null,
-                        ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'required']
+                        !empty($settings['currency']) ? $selected_currencies:$selected_currencies,null,
+                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'required']
                     ) !!}
                     @error('currency_id')
                         <span class="text-danger">{{ $message }}</span>

@@ -58,7 +58,9 @@
                                             <td>{{$m_safe->name}}</td>
                                             <td>@lang('lang.'.$m_safe->type.'')</td>
                                             <td>{{$m_safe->currency->currency}}</td>
-                                            <td>{{$m_safe->add_money_users??0}}</td>
+                                            <td>
+                                                {{$m_safe->latest_balance}}
+                                            </td>
                                             <td>
                                                 @if ($m_safe->created_by  > 0 and $m_safe->created_by != null)
                                                     {{ $m_safe->created_at->diffForHumans() }} <br>
@@ -87,6 +89,15 @@
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                     </button>
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                        <li>
+                                                            <a data-href="{{route('moneysafe.get-add-money-to-safe', $m_safe->id)}}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal"> <i class="fas fa-plus"></i> @lang('lang.add_to_money_safe')</a>
+                                                        </li>
+                                                        <li>
+                                                            <a data-href="{{route('moneysafe.get-take-money-to-safe', $m_safe->id)}}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal"> <i class="fas fa-minus"></i> @lang('lang.take_money_safe')</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="{{route('moneysafe.watch-money-to-safe-transaction', $m_safe->id)}}" class="btn" target="_blank" > <i class="fas fa-eye"></i> @lang('lang.watch_statement')</a>
+                                                        </li>
                                                         <li>
                                                             <a data-href="{{route('moneysafe.edit', $m_safe->id)}}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
                                                         </li>

@@ -60,8 +60,8 @@
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('currency[]', $currencies, !empty($settings['currency']) ? $selected_currencies: null, [
-                            'class' => 'form-control select2','multiple'=>'multiple'
+                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency']: null, [
+                            'class' => 'form-control select2','placholder'=>__('lang.please_select')
                         ]) !!}
                     </div>
                     <div class="col-md-3">

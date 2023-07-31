@@ -297,27 +297,24 @@
                                   <li class="mega-menu-col col-md-3">
                                       <ul class="sub-menu">
                                           <li><a href="{{route('getModules')}}"><i class="mdi mdi-circle"></i>@lang('lang.modules')</a></li>
-                                          <li><a href="{{route('store.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stores')</a></li>
-                                          <li><a href="{{route('brands.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.brands')</a></li>
-                                          <li><a href="{{route('sub-categories', 'category')}}"><i class="mdi mdi-circle"></i>@lang('categories.categories')</a></li>
                                           <li><a href="{{route('settings.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.general_settings')</a></li>
-                                          <li><a href="{{route('colors.index')}}"><i class="mdi mdi-circle"></i>@lang('colors.colors')</a></li>
-                                          <li><a href="{{route('sizes.index')}}"><i class="mdi mdi-circle"></i>@lang('sizes.sizes')</a></li>
-                                          <li><a href="{{route('units.index')}}"><i class="mdi mdi-circle"></i>@lang('units.units')</a></li>
                                           <li><a href="{{route('moneysafe.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.moneysafes')</a></li>
-
-
                                       </ul>
                                   </li>
-                                  {{--                            <li class="mega-menu-col col-md-3">--}}
-                                  {{--                                <ul class="sub-menu">--}}
-                                  {{--                                    <li><a href="basic-ui-kits-collapse.html"><i class="mdi mdi-circle"></i>Collapse</a></li>--}}
-                                  {{--                                    <li><a href="basic-ui-kits-dropdowns.html"><i class="mdi mdi-circle"></i>Dropdowns</a></li>--}}
-                                  {{--                                    <li><a href="basic-ui-kits-embeds.html"><i class="mdi mdi-circle"></i>Embeds</a></li>--}}
-                                  {{--                                    <li><a href="basic-ui-kits-grids.html"><i class="mdi mdi-circle"></i>Grids</a></li>--}}
-                                  {{--                                    <li><a href="basic-ui-kits-images.html"><i class="mdi mdi-circle"></i>Images</a></li>--}}
-                                  {{--                                </ul>--}}
-                                  {{--                            </li>--}}
+                                  <li class="mega-menu-col col-md-3">
+                                    <ul class="sub-menu">
+                                        <li><a href="{{route('store.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stores')</a></li>
+                                        <li><a href="{{route('brands.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.brands')</a></li>
+                                        <li><a href="{{route('sub-categories', 'category')}}"><i class="mdi mdi-circle"></i>@lang('categories.categories')</a></li>
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-3">
+                                    <ul class="sub-menu">
+                                        <li><a href="{{route('colors.index')}}"><i class="mdi mdi-circle"></i>@lang('colors.colors')</a></li>
+                                        <li><a href="{{route('sizes.index')}}"><i class="mdi mdi-circle"></i>@lang('sizes.sizes')</a></li>
+                                        <li><a href="{{route('units.index')}}"><i class="mdi mdi-circle"></i>@lang('units.units')</a></li>
+                                    </ul>
+                                </li>
 
 
                               </ul>

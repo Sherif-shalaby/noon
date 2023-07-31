@@ -165,7 +165,7 @@ class SettingController extends Controller
             }
             System::updateOrCreate(
                 ['key' => 'currency'],
-                ['value' => json_encode($request->get('currency')), 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => $request->currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
                 ['key' => 'dollar_exchange'],
@@ -175,19 +175,19 @@ class SettingController extends Controller
                 ['key' => 'tax'],
                 ['value' => $request->tax, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
-            // if (!empty($request->currency)) {
-            //     $currency = Currency::find($request->currency);
-            //     $currency_data = [
-            //         'country' => $currency->country,
-            //         'code' => $currency->code,
-            //         'symbol' => $currency->symbol,
-            //         'decimal_separator' => '.',
-            //         'thousand_separator' => ',',
-            //         'currency_precision' => !empty(System::getProperty('numbers_length_after_dot')) ? System::getProperty('numbers_length_after_dot') : 5,
-            //         'currency_symbol_placement' => 'before',
-            //     ];
-            //     $request->session()->put('currency', $currency_data);
-            // }/
+            if (!empty($request->currency)) {
+                $currency = Currency::find($request->currency);
+                $currency_data = [
+                    'country' => $currency->country,
+                    'code' => $currency->code,
+                    'symbol' => $currency->symbol,
+                    'decimal_separator' => '.',
+                    'thousand_separator' => ',',
+                    'currency_precision' => !empty(System::getProperty('numbers_length_after_dot')) ? System::getProperty('numbers_length_after_dot') : 5,
+                    'currency_symbol_placement' => 'before',
+                ];
+                $request->session()->put('currency', $currency_data);
+            }
             System::updateOrCreate(
                 ['key' => 'invoice_lang'],
                 ['value' => $request->invoice_lang, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
