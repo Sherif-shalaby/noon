@@ -24,7 +24,7 @@
                     <i class="fa fa-eye"></i> {{ __('Search') }}</button>
             </div>
         </div>
-        <div class="col-2">
+        {{-- <div class="col-2">
             <div class="form-group">
                 {!! Form::select(
                     'currecy_change',$selected_currencies,null,
@@ -37,7 +37,7 @@
                 <button type="submit" name="submit" class="btn btn-success width-100 text-center" title="search">
                      {{ __('lang.change_to') }}</button>
             </div>
-        </div>
+        </div> --}}
     </div>
     </form>
 </div>

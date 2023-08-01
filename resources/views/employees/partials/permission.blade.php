@@ -14,7 +14,10 @@
             @lang('lang.view')
         </th>
         <th class="">
-            @lang('lang.create_and_edit')
+            @lang('lang.create')
+        </th>
+        <th class="">
+            @lang('lang.edit')
         </th>
         <th class="">
             @lang('lang.delete')
@@ -28,6 +31,7 @@
         <td></td>
         <td> {!! Form::checkbox('view_check_all', 1, false, ['class' => 'view_check_all']) !!}</td>
         <td> {!! Form::checkbox('create_check_all', 1, false, ['class' => 'create_check_all']) !!}</td>
+        <td> {!! Form::checkbox('edit_check_all', 1, false, ['class' => 'edit_check_all']) !!}</td>
         <td> {!! Form::checkbox('delete_check_all', 1, false, ['class' => 'delete_check_all']) !!}</td>
     </tr>
     @if (session('system_mode') != 'restaurant')
@@ -67,26 +71,22 @@
                         </td>
                         @php
                             $view_permission = $key_module . '.' . $key_sub_module . '.view';
-                            $create_and_edit_permission = $key_module . '.' . $key_sub_module . '.create_and_edit';
+                            $create_permission = $key_module . '.' . $key_sub_module . '.create';
+                            $edit_permission = $key_module . '.' . $key_sub_module . '.edit';
                             $delete_permission = $key_module . '.' . $key_sub_module . '.delete';
                         @endphp
-{{--                        @if (Spatie\Permission\Models\Permission::where('name', $view_permission)->first())--}}
                             <td class="">
                                 {!! Form::checkbox('permissions[' . $view_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($view_permission)) ? true : false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!}
                             </td>
-{{--                        @endif--}}
-{{--                        @if (Spatie\Permission\Models\Permission::where('name', $create_and_edit_permission)->first())--}}
                             <td class="">
-                                {!! Form::checkbox('permissions[' . $create_and_edit_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($create_and_edit_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.create_and_edit')]) !!}
+                                {!! Form::checkbox('permissions[' . $create_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($create_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.create')]) !!}
                             </td>
-{{--                        @endif--}}
-{{--                        @if (Spatie\Permission\Models\Permission::where('name', $delete_permission)->first())--}}
                             <td class="">
-{{--                                @if ($delete_permission != 'sale.pos.delete' && $delete_permission != 'sale.sale.delete' && $delete_permission != 'stock.add_stock.delete')--}}
-                                    {!! Form::checkbox('permissions[' . $delete_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($delete_permission)) ? true : false, ['class' => 'check_box check_box_delete', 'title' => __('lang.delete')]) !!}
-{{--                                @endif--}}
+                                {!! Form::checkbox('permissions[' . $edit_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($edit_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.edit')]) !!}
                             </td>
-{{--                        @endif--}}
+                            <td class="">
+                                    {!! Form::checkbox('permissions[' . $delete_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($delete_permission)) ? true : false, ['class' => 'check_box check_box_delete', 'title' => __('lang.delete')]) !!}                     
+                            </td>
                     </tr>
                 @endforeach
             @endif
