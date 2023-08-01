@@ -48,14 +48,14 @@
                                 {!! Form::label('status', __('lang.status') . ':*', []) !!}
                                 {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'),'wire:model' => 'status']) !!}
                             </div>
-                            <div class="col-md-3">
-                                <label for="currency_id">@lang('lang.currency') .*</label>
-                                {!! Form::select(
-                                    'currency_id',
-                                    !empty($settings['currency']) ? $selected_currencies:[],null,
-                                    ['class' => 'form-control select ','placeholder'=>__('lang.please_select'),'required']
-                                ) !!}
-                            </div>
+{{--                            <div class="col-md-3">--}}
+{{--                                <label for="currency_id">@lang('lang.currency') .*</label>--}}
+{{--                                {!! Form::select(--}}
+{{--                                    'currency_id',--}}
+{{--                                    !empty($settings['currency']) ? $selected_currencies:[],null,--}}
+{{--                                    ['class' => 'form-control select ','placeholder'=>__('lang.please_select'),'required']--}}
+{{--                                ) !!}--}}
+{{--                            </div>--}}
                             <div class="col-md-3">
                                 {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
                                 <input type="datetime-local" wire:model="transaction_date"

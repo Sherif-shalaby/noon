@@ -246,6 +246,11 @@
                                         <li><a href="{{route('units.index')}}"><i class="mdi mdi-circle"></i>@lang('units.units')</a></li>
                                     </ul>
                                 </li>
+                                  <li class="mega-menu-col col-md-3">
+                                    <ul class="sub-menu">
+                                        <li><a href="{{route('store-pos.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.store_pos')</a></li>
+                                    </ul>
+                                </li>
 
 
                               </ul>

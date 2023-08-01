@@ -226,6 +226,8 @@ return [
     'new_stock' => 'New Stock',
     'change_current_stock' => 'Change Current Stock',
     'select_products' => 'Select Products',
-
+    'store_pos' => 'Store Pos',
+    'add_store_pos' => 'Add Store Pos',
+    'edit' => 'Edit',
 
 ];

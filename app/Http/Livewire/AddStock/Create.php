@@ -47,7 +47,7 @@ class Create extends Component
         $colors = Color::orderBy('name', 'asc')->pluck('name', 'id');
         $sizes = Size::orderBy('name', 'asc')->pluck('name', 'id');
         $currenciesId=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
-        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
+//        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
         $products=Product::
         when(\request()->category_id != null, function ($query) {
             $query->where('category_id',\request()->category_id);
@@ -87,7 +87,7 @@ class Create extends Component
             'units',
             'colors',
             'sizes',
-            'selected_currencies',
+//            'selected_currencies',
             'products',
             'users'));
     }
