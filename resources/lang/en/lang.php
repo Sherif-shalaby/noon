@@ -216,4 +216,14 @@ return [
     'type_your_password'=>'Type your password',
     'correct_password'=>'Correct Password!',
     'tax'=>'Tax',
+    'company_name'=>'Company Name',
+    'mobile_number' => 'Mobile Number',
+    'created_by' => 'Created By',
+    'add_supplier'=>'Add supplier',
+    'exchange_rate'=>'Exchange Rate',
+    'city'=>'City',
+    'country'=>'Country',
+    'postal_code'=>'Postal Code',
+
+
 ];

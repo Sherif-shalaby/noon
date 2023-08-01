@@ -188,5 +188,16 @@ return [
     'type_your_password'=>'ادخل كلمة السر',
     'correct_password'=>'كلمة السر صحيحة',
     'tax'=>'ضريبة',
+    'developed_by'=>'طور بواسطة',
+    'company_name'=>'اسم لشركة',
+    'mobile_number' => 'رقم الهاتف',
+    'add_supplier   '=>'اضافة مورد',
+    'vat_number' =>'ضريبة الشراء',
+    'exchange_rate' =>'سعر الصرف',
+    'city'=>'المدينة',
+    'country'=>'الدولة',
+    'postal_code'=>'الرمز البريدي',
+    'add_supplier' =>'اضافة مورد'
+    
 ];
 

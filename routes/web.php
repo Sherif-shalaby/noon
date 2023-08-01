@@ -15,6 +15,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
+use App\Http\Controllers\SuppliersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +74,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
+    //suppliers
+    Route::resource('suppliers',SuppliersController::class);
 
 });
 
