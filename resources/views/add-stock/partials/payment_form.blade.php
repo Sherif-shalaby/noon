@@ -16,7 +16,7 @@
             <div class="form-group">
                 {!! Form::label('method', __('lang.payment_type'). ':*', []) !!}
                 {!! Form::select('method', $payment_type_array,
-                !empty($transaction_payment)&&!empty($transaction_payment->method)?$transaction_payment->method:(!empty($payment) ? $payment->method : 'Please Select'), ['class' => 'selectpicker form-control',
+                !empty($transaction_payment)&&!empty($transaction_payment->method)?$transaction_payment->method:(!empty($payment) ? $payment->method : 'Please Select'), ['class' => 'select form-control',
                 'data-live-search'=>"true", 'required',
                 'style' =>'width: 80%' , 'placeholder' => __('lang.please_select')]) !!}
             </div>

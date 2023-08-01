@@ -35,48 +35,42 @@
                     <input type="hidden" name="is_raw_material" id="is_raw_material" value="{{ $is_raw_material }}">
                     <input type="hidden" name="is_add_stock" id="is_add_stock" value="1">
                     <div class="card-body">
-                        <button type="button" class="btn btn-primary" id="add-selected-btn" wire:click="fetchSelectedProducts()">@lang( 'lang.add' )</button>
                         <div class="row">
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                                    {!! Form::select('store_id', $stores, !empty($recent_stock)&&!empty($recent_stock->store_id)?$recent_stock->store_id:session('user.store_id'), ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'required', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
-                                </div>
+                                {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
+                                {!! Form::select('store_id', $stores, !empty($recent_stock)&&!empty($recent_stock->store_id)?$recent_stock->store_id:session('user.store_id'), ['class' => 'select form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
                             </div>
 {{--                            <div class="col-md-3">--}}
-{{--                                                                    <div class="form-group">--}}
-{{--                                                                        {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}--}}
-{{--                                                                        {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:array_key_first($suppliers), ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}--}}
-{{--                                                                    </div>--}}
+{{--                                {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}--}}
+{{--                                {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:array_key_first($suppliers), ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select')]) !!}--}}
 {{--                            </div>--}}
-{{--                                                            <div class="col-md-3">--}}
-{{--                                                                <div class="form-group">--}}
-{{--                                                                    {!! Form::label('po_no', __('lang.po_no'), []) !!} <i class="dripicons-question" data-toggle="tooltip"--}}
-{{--                                                                                                                          title="@lang('lang.po_no_add_stock_info')"></i>--}}
-{{--                                                                    {!! Form::select('po_no', $po_nos,!empty($recent_stock)&&!empty($recent_stock->purchase_order_id)?$recent_stock->purchase_order_id: null, ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}--}}
-{{--                                                                </div>--}}
-{{--                                                            </div>--}}
-
                             <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('status', __('lang.status') . ':*', []) !!}
-                                    {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'required', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
-                                </div>
+                                {!! Form::label('status', __('lang.status') . ':*', []) !!}
+                                {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'),'wire:model' => 'status']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="currency_id">@lang('lang.currency') .*</label>
+                                {!! Form::select(
+                                    'currency_id',
+                                    !empty($settings['currency']) ? $selected_currencies:[],null,
+                                    ['class' => 'form-control select ','placeholder'=>__('lang.please_select'),'required']
+                                ) !!}
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
-                                <input type="datetime-local" id="transaction_date" name="transaction_date"
+                                <input type="datetime-local" wire:model="transaction_date"
                                        value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                             </div>
-{{--                                                            <div class="col-md-3">--}}
-{{--                                                                <div class="form-group">--}}
-{{--                                                                    <input type="hidden" name="exchange_rate" id="exchange_rate" value="1">--}}
-{{--                                                                    <input type="hidden" name="default_currency_id" id="default_currency_id"--}}
-{{--                                                                           value="{{ !empty(App\Models\System::getProperty('currency')) ? App\Models\System::getProperty('currency') : '' }}">--}}
-{{--                                                                    {!! Form::label('paying_currency_id', __('lang.paying_currency') . ':', []) !!}--}}
-{{--                                                                    {!! Form::select('paying_currency_id', $exchange_rate_currencies, !empty(App\Models\System::getProperty('currency')) ? App\Models\System::getProperty('currency') : null, ['class' => 'form-control selectpicker', 'data-live-search' => 'true', 'required']) !!}--}}
-{{--                                                                </div>--}}
-{{--                                                            </div>--}}
+                            <div class="col-md-3">
+                                {{$purchase_type ?? 0}}
+                                {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
+                                {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'wire:model' => 'purchase_type']) !!}
+                            </div>
+                            <div class="col-md-3">
+                                {{$divide_costs ?? 0}}
+                                {!! Form::label('divide_costs', __('lang.divide_costs') . ':*', []) !!}
+                                {!! Form::select('divide_costs', ['size' =>  __('lang.size'), 'weight' => __('lang.weight'), 'price' => __('lang.price')], 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'wire:model' => 'divide_costs']) !!}
+                            </div>
                         </div>
                         <br>
                         <br>
@@ -99,19 +93,27 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-bordered table-condensed" id="product_table">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered m-0">
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th style="width: 7%" class="col-sm-8">@lang( 'lang.image' )</th>
+{{--                                        <th style="width: 7%" class="col-sm-8">@lang( 'lang.image' )</th>--}}
                                         <th style="width: 10%" class="col-sm-8">@lang( 'lang.products' )</th>
                                         <th style="width: 10%" class="col-sm-4">@lang( 'lang.sku' )</th>
-                                        <th style="width: 5%" class="col-sm-4">@lang( 'lang.quantity' )</th>
+                                        <th style="width: 10%" class="col-sm-4">@lang( 'lang.quantity' )</th>
                                         <th style="width: 10%" class="col-sm-4">@lang( 'lang.unit' )</th>
-                                        <th style="width: 30%" class="col-sm-4">@lang( 'lang.purchase_price' )</th>
-                                        <th style="width: 30%" class="col-sm-4">@lang( 'lang.selling_price' )</th>
+                                        <th style="width: 10%" class="col-sm-4">@lang( 'lang.fill' )</th>
+                                        <th style="width: 10%" class="col-sm-4">@lang( 'lang.total_quantity' )</th>
+                                        <th style="width: 10%" class="col-sm-4">@lang( 'lang.purchase_price' ) (@lang('lang.per_piece'))</th>
+                                        <th style="width: 10%" class="col-sm-4">@lang( 'lang.selling_price' )</th>
                                         <th style="width: 10%" class="col-sm-4">@lang( 'lang.sub_total' )</th>
+                                        <th style="width: 10%" class="col-sm-4"> @lang('lang.size') </th>
+                                        <th style="width: 10%" class="col-sm-4"> @lang('lang.total_size') </th>
+                                        <th style="width: 10%" class="col-sm-4"> @lang('lang.weight') </th>
+                                        <th style="width: 10%" class="col-sm-4"> @lang('lang.total_weight') </th>
+                                        <th style="width: 10%" class="col-sm-4"> @lang('lang.cost') (@lang('lang.per_piece')) </th>
+                                        <th style="width: 10%" class="col-sm-4"> @lang('lang.total_cost') </th>
                                         <th style="width: 10%" class="col-sm-4">@lang( 'lang.new_stock' )</th>
                                         <th style="width: 10%" class="col-sm-4">@lang( 'lang.change_current_stock' )</th>
                                         <th style="width: 10%" class="col-sm-4">@lang( 'lang.action' )</th>
@@ -120,54 +122,31 @@
                                     <tbody>
                                     @if(isset($selectedProductData) && !empty($selectedProducts) )
                                         @foreach($selectedProductData  as $index => $product)
-                                            <tr>
-                                                <td>
-                                                    <input type="hidden" name="selectedProductData" value="{{ json_encode($selectedProductData) }}">
-                                                    {{$index+1}}
-                                                </td>
-                                                <td>
-                                                    <img src="@if(!empty($product->image)){{asset('uploads/products/'.$product->image)}}@else{{asset('/uploads/'.session('logo'))}}@endif"
-                                                         alt="photo" width="50" height="50">
-                                                </td>
-                                                <td>
-                                                    {{ $product->name }}
-                                                </td>
-                                                <td>
-                                                    {{ $product->sku }}
-
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control quantity" data-val="0" wire:model="quantity.{{ $index }}" required >
-                                                </td>
-                                                <td>
-                                                    @if(!empty($product->unit))
-                                                        {{$product->unit->name}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control purchase_price" wire:model="purchase_price.{{ $index }}" required>
-                                                </td>
-                                                <td>
-                                                    <input type="text" class="form-control selling_price" wire:model="selling_price.{{ $index }}" required>
-                                                </td>
-                                                <td>
-                                                    <span class="sub_total_span" >{{ $this->sub_total($index) ?? 0 }}</span>
-                                                    <input type="hidden" class="form-control sub_total" name="sub_total" value="{{ $this->sub_total($index) ?? 0 }} ">
-                                                </td>
-                                                <td>
-                                                    <span class="current_stock_text">
-                                                        {{$quantity[$index] ?? 0}}
-                                                    </span>
-                                                </td>
-                                                <td></td>
-                                            </tr>
+                                            @include('add-stock.partials.product_row')
                                         @endforeach
+                                        <tr >
+                                            <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
+                                            <td> {{array_sum($sub_total)}} </td>
+                                            <td></td>
+                                            <td style="width: 10%">
+                                                {{$this->sum_size() ?? 0}}
+                                            </td>
+                                            <td></td>
+                                            <td  style="width: 10%;">
+                                                {{$this->sum_weight() ?? 0}}
+                                            </td>
+                                            <td></td>
+                                            <td  style="width: 10%;">
+                                                {{array_sum($total_cost) ?? 0}}
+                                            </td>
+
+                                        </tr>
                                     @endif
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="col-md-12 text-center">
+                        <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
                                 <span class="items_count_span" style="margin-right: 15px;">{{count($selectedProductData)}}</span>
                                 <br> @lang('lang.items_quantity'): <span
@@ -177,7 +156,7 @@
                         <br>
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
-                                <h3> @lang('lang.total'): <span class="final_total_span"></span> </h3>
+                                <h3> @lang('lang.total') : {{array_sum($total_cost)}} <span class="final_total_span"></span> </h3>
                                 <input type="hidden" name="grand_total" id="grand_total" value="0">
                                 <input type="hidden" name="final_total" id="final_total" value="0">
                             </div>
@@ -193,44 +172,46 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), []) !!} <br>
-                                    {!! Form::text('invoice_no', !empty($recent_stock)&&!empty($recent_stock->invoice_no)?$recent_stock->invoice_no:null, ['class' => 'form-control', 'placeholder' => __('lang.invoice_no')]) !!}
+                                    {!! Form::text('invoice_no', !empty($recent_stock)&&!empty($recent_stock->invoice_no)?$recent_stock->invoice_no:null, ['class' => 'form-control', 'placeholder' => __('lang.invoice_no'),'wire:model' => 'invoice_no']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    {{$other_expenses}}
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
-                                    {!! Form::text('other_expenses', !empty($recent_stock)&&!empty($recent_stock->other_expenses)?@num_format($recent_stock->other_expenses):null, ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses']) !!}
+                                    {!! Form::text('other_expenses', !empty($recent_stock)&&!empty($recent_stock->other_expenses)?@num_format($recent_stock->other_expenses):null, ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses', 'wire:model' => 'other_expenses']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
-                                    {!! Form::text('discount_amount', !empty($recent_stock)&&!empty($recent_stock->discount_amount)?@num_format($recent_stock->discount_amount):null, ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount']) !!}
+                                    {!! Form::text('discount_amount', !empty($recent_stock)&&!empty($recent_stock->discount_amount)?@num_format($recent_stock->discount_amount):null, ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount','wire:model' => 'discount_amount']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
+                                    {{$other_payments}}
                                     {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
-                                    {!! Form::text('other_payments', !empty($recent_stock)&&!empty($recent_stock->other_payments)?@num_format($recent_stock->other_payments):null, ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments']) !!}
+                                    {!! Form::text('other_payments', !empty($recent_stock)&&!empty($recent_stock->other_payments)?@num_format($recent_stock->other_payments):null, ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments', 'wire:model' => 'other_payments']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                    {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], !empty($recent_stock)&&!empty($recent_stock->source_type)?$recent_stock->source_type: 'Please Select', ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
+                                    {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], !empty($recent_stock)&&!empty($recent_stock->source_type)?$recent_stock->source_type: 'Please Select', ['class' => 'select  form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),'wire:model' => 'source_type']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                                    {!! Form::select('source_id', $users, null, ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
+                                    {!! Form::select('source_id', $users, null, ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('payment_status', __('lang.payment_status') . ':*', []) !!}
-                                    {!! Form::select('payment_status', $payment_status_array, !empty($recent_stock)&&!empty($recent_stock->payment_status)?$recent_stock->payment_status:'paid', ['class' => 'selectpicker form-control', 'data-live-search' => 'true', 'required', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
+                                    {!! Form::select('payment_status', $payment_status_array, !empty($recent_stock)&&!empty($recent_stock->payment_status)?$recent_stock->payment_status:'paid', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'),'wire:model' => 'payment_status']) !!}
                                 </div>
                             </div>
 
@@ -279,9 +260,6 @@
             </div>
         </div>
     </div>
-
-
-
 </section>
 
 @push('javascripts')
@@ -304,5 +282,16 @@
             $('#select_products_modal').modal('hide');
         });
     });
+    // $(document).ready(function () {
+    //     $('#dtHorizontalExample').DataTable({
+    //         "scrollX": true,
+    //         "searching": false,
+    //         "paging":   false,
+    //         "ordering": false,
+    //     });
+    //     $('.dataTables_length').addClass('bs-select');
+    //     document.getElementById("dtHorizontalExample_wrapper").style.width = "100%";
+    // });
+
 </script>
 @endpush

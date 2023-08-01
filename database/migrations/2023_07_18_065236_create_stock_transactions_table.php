@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
 //            $table->unsignedBigInteger('supplier_id')->nullable();
 //            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->enum('status', ['received', 'pending', 'ordered', 'final', 'draft', 'sent_admin', 'sent_supplier', 'partially_received', 'approved', 'rejected', 'expired', 'valid', 'declined', 'send_the_goods', 'compensated', 'canceled']);
+            $table->enum('status', ['received',  'partially_received']);
+            $table->enum('purchase_type', ['import', 'local']);
             $table->string('order_date')->nullable();
             $table->string('transaction_date');
             $table->enum('payment_status', ['paid', 'pending', 'partial'])->nullable();
@@ -38,7 +39,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->string('prova_datetime')->nullable();
             $table->string('source_type')->nullable();
-            $table->unsignedBigInteger('source_id')->nullable();
+            $table->foreignId('source_id')->nullable()->references('id')->on('users')->onDelete('cascade');
             $table->string('due_date')->nullable();
             $table->boolean('notify_me')->default(0);
             $table->integer('notify_before_days')->default(0);
