@@ -89,21 +89,21 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
-		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->foreign('store_id')->references('id')->on('stores')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
-		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->foreign('received_currency_id')->references('id')->on('currencies')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
-		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->foreign('default_currency_id')->references('id')->on('currencies')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
+		// Schema::table('exchange_rates', function(Blueprint $table) {
+		// 	$table->foreign('store_id')->references('id')->on('stores')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
+		// Schema::table('exchange_rates', function(Blueprint $table) {
+		// 	$table->foreign('received_currency_id')->references('id')->on('currencies')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
+		// Schema::table('exchange_rates', function(Blueprint $table) {
+		// 	$table->foreign('default_currency_id')->references('id')->on('currencies')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
 		Schema::table('product_prices', function(Blueprint $table) {
 			$table->foreign('product_id')->references('id')->on('products')
 						->onDelete('cascade')
@@ -161,15 +161,15 @@ class CreateForeignKeys extends Migration {
 		Schema::table('employees', function(Blueprint $table) {
 			$table->dropForeign('employees_job_type_id_foreign');
 		});
-		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->dropForeign('exchange_rates_store_id_foreign');
-		});
-		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->dropForeign('exchange_rates_received_currency_id_foreign');
-		});
-		Schema::table('exchange_rates', function(Blueprint $table) {
-			$table->dropForeign('exchange_rates_default_currency_id_foreign');
-		});
+		// Schema::table('exchange_rates', function(Blueprint $table) {
+		// 	$table->dropForeign('exchange_rates_store_id_foreign');
+		// });
+		// Schema::table('exchange_rates', function(Blueprint $table) {
+		// 	$table->dropForeign('exchange_rates_received_currency_id_foreign');
+		// });
+		// Schema::table('exchange_rates', function(Blueprint $table) {
+		// 	$table->dropForeign('exchange_rates_default_currency_id_foreign');
+		// });
 		Schema::table('product_prices', function(Blueprint $table) {
 			$table->dropForeign('product_discounts_product_id_foreign');
 		});

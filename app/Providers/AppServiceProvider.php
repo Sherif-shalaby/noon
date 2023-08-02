@@ -41,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }
         });
+
+
         Paginator::useBootstrap();
         if(Schema::hasTable('systems')){
             $module_settings = System::getProperty('module_settings');
@@ -63,6 +65,19 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('num_format', function ($expression) {
             $currency_precision =2;
             return "number_format($expression,  $currency_precision, '.', ',')";
+        });
+
+        Blade::directive('format_datetime', function ($date) {
+            if (!empty($date)) {
+                $time_format = 'h:i A';
+                if (System::getProperty('time_format') == 24) {
+                    $time_format = 'H:i';
+                }
+
+                return "\Carbon\Carbon::createFromTimestamp(strtotime($date))->format('m/d/Y ' . '$time_format')";
+            } else {
+                return null;
+            }
         });
 
     }

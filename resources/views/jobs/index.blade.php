@@ -81,21 +81,5 @@
     </div>
 
 @endsection
-<div class="modal view_modal no-print" role="dialog" aria-hidden="true"></div>
-@push('javascript')
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.btn-modal', function(e) {
-                e.preventDefault();
-                var container = $(this).data('container');
-                $.ajax({
-                    url: $(this).data('href'),
-                    dataType: 'html',
-                    success: function(result) {
-                        $(container).html(result).modal('show');
-                    },
-                });
-            });
-        });
-    </script>
-@endpush
+<div class="view_modal no-print" ></div>
+

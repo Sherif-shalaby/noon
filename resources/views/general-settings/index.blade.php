@@ -60,14 +60,20 @@
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
-                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
-                            'class' => 'form-control select2',
+                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency']: null, [
+                            'class' => 'form-control select2','placholder'=>__('lang.please_select')
                         ]) !!}
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
                             'class' => 'form-control',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
+                        {!! Form::label('default_payment_type', __('lang.default_payment_type'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select('default_payment_type',['cash'=>__('lang.cash'),'later'=>__('lang.later')], !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null, [
+                            'class' => 'form-control select2',
                         ]) !!}
                     </div>
                     <div class="col-md-3">

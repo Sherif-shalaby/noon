@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,9 +14,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -67,16 +70,30 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
 
-    Route::resource('stocks', AddStockController::class);
-    Route::get('add-stock/add-product-row', [AddStockController::class,'addProductRow']);
+    // stocks
+    Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
+    Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
+
+    // store pos
+    Route::resource('store-pos', StorePosController::class);
 
     // Sale Screen
+    Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
+    Route::get('invoices/{invoice}', function ($id) {
+        return view('invoices.show', compact('id'));
+    })->name('invoices.show');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers
     Route::resource('suppliers',SuppliersController::class);
-
+    //money safe
+    Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
+    Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');
+    Route::post('moneysafe/post-take-money-to-safe', [MoneySafeController::class,'postTakeMoneyFromSafe'])->name('moneysafe.post-take-money-to-safe');
+    Route::get('moneysafe/get-take-money-to-safe/{id}', [MoneySafeController::class,'getTakeMoneyFromSafe'])->name('moneysafe.get-take-money-to-safe');
+    Route::get('moneysafe/watch-money-to-safe-transaction/{id}', [MoneySafeController::class,'getMoneySafeTransactions'])->name('moneysafe.watch-money-to-safe-transaction');
+    Route::resource('moneysafe', MoneySafeController::class);
 });
 
 

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->double('rest')->default(0);
             $table->double('refund')->nullable();
             $table->enum('refund_status', ['creditor', 'debtor'])->nullable();
+            $table->foreignId('last_update')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

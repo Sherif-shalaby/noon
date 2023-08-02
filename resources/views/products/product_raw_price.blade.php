@@ -2,6 +2,9 @@
 @if(isset($price))
     <tr>
         <td>
+            {!! Form::select('price_type['.$row_id.']',['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], $price->price_type, ['class' => 'clear_input_form form-control select2']) !!}
+        </td>
+        <td>
             <input type="hidden" name="price_ids[]" value="{{$price->id}}">
             {!! Form::text('price_category['.$row_id.']', $price->price_category, ['class' => 'clear_input_form form-control','maxlength'=>"6" ]) !!}
         </td>
@@ -9,8 +12,14 @@
             {!! Form::text('price['.$row_id.']',  $price->price, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.price')]) !!}
         </td>
         <td>
+            {!! Form::text('quantity['.$row_id.']',$price->quantity, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.quantity')]) !!}
+        </td>
+        <td>
+            {!! Form::text('bonus_quantity['.$row_id.']',$price->bonus_quantity, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.b_qty')]) !!}
+        </td>
+        <td>
             <span class="i-checks d-flex justify-content-center">
-                <input class="is_price_permenant" name="is_price_permenant[{{$row_id}}]" @if($price->is_price_permenant) checked @endif type="checkbox" checked class="form-control text-primary backgroud-primary" style="width:20px">
+                <input class="is_price_permenant" name="is_price_permenant[{{$row_id}}]" @if($price->is_price_permenant) checked @endif type="checkbox" class="form-control text-primary backgroud-primary" style="width:20px">
                 &nbsp;
                 <label for="is_price_permenant "><strong class="">
                             @lang('lang.permenant')
@@ -31,10 +40,19 @@
 @else
     <tr>
         <td>
+            {!! Form::select('price_type['.$row_id.']',['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, ['class' => 'clear_input_form form-control select2']) !!}
+        </td>
+        <td>
             {!! Form::text('price_category['.$row_id.']', null, ['class' => 'clear_input_form form-control', 'maxlength'=>"6"]) !!}
         </td>
         <td>
             {!! Form::text('price['.$row_id.']',null, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.price')]) !!}
+        </td>
+        <td>
+            {!! Form::text('quantity['.$row_id.']',null, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.quantity')]) !!}
+        </td>
+        <td>
+            {!! Form::text('bonus_quantity['.$row_id.']',null, ['class' => 'clear_input_form form-control', 'placeholder' => __('lang.b_qty')]) !!}
         </td>
         <td>
             <span class="i-checks d-flex justify-content-center">

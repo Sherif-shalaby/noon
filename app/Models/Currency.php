@@ -16,4 +16,9 @@ class Currency extends Model
     protected $dates = ['deleted_at'];
     protected $fillable = array('code', 'country', 'currency', 'symbol');
 
+    public function money_safe()
+    {
+        return $this->hasMany('App\Models\MoneySafe');
+    }
+
 }

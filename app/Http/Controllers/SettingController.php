@@ -32,7 +32,8 @@ class SettingController extends Controller
             $languages[$key] = $value['full_name'];
         }
         $currencies  = $this->allCurrencies();
-        return view('general-settings.index',compact('settings','languages','currencies'));
+        $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+        return view('general-settings.index',compact('settings','languages','currencies','selected_currencies'));
     }
 
     /**
@@ -106,10 +107,9 @@ class SettingController extends Controller
     {
         $modules = User::modulePermissionArray();
         $module_settings = System::getProperty('module_settings') ? json_decode(System::getProperty('module_settings'), true) : [];
-
         return view('settings.module')->with(compact(
             'modules',
-            'module_settings',
+            'module_settings'
         ));
     }
 

@@ -18,12 +18,6 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        // for testing purpose only
-        // Schema::disableForeignKeyConstraints();
-        // Permission::truncate();
-        // Schema::enableForeignKeyConstraints();
-        // for testing purpose only
-
         $modulePermissionArray = User::modulePermissionArray();
         $subModulePermissionArray = User::subModulePermissionArray();
 
@@ -32,7 +26,8 @@ class PermissionTableSeeder extends Seeder
             if (!empty($subModulePermissionArray[$key_module])) {
                 foreach ($subModulePermissionArray[$key_module] as $key_sub_module =>  $sub_module) {
                     $data[] = ['name' => $key_module . '.' . $key_sub_module . '.view'];
-                    $data[] = ['name' => $key_module . '.' . $key_sub_module . '.create_and_edit'];
+                    $data[] = ['name' => $key_module . '.' . $key_sub_module . '.create'];
+                    $data[] = ['name' => $key_module . '.' . $key_sub_module . '.edit'];
                     $data[] = ['name' => $key_module . '.' . $key_sub_module . '.delete'];
                 }
             }
@@ -40,12 +35,14 @@ class PermissionTableSeeder extends Seeder
 
         $insert_data = [];
         $time_stamp = Carbon::now()->toDateTimeString();
-        foreach ($data as $d) {
+        foreach ($data as $index=>$d) {
+            $d['id'] = $index+1;
             $d['guard_name'] = 'web';
             $d['created_at'] = $time_stamp;
             $insert_data[] = $d;
         }
-        Permission::updateOrCreate($insert_data);
-        // Permission::insert($insert_data);
+        foreach ($insert_data as $item) {
+            Permission::updateOrCreate(['id' => $item['id']],$item);
+        }
     }
 }
