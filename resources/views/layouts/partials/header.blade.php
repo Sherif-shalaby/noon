@@ -218,7 +218,7 @@
                   </li>
                   @endif
                   @if(!empty($module_settings['supplier_module']))
-                      <li class="scroll"><a href="widgets.html"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
+                      <li class="scroll"><a href="{{route('suppliers.index')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                   @endif
                   @if(!empty($module_settings['settings_module']))
                       <li class="dropdown menu-item-has-mega-menu">

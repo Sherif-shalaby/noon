@@ -17,6 +17,7 @@ use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
+use App\Http\Controllers\SuppliersController;
 
 
 /*
@@ -84,6 +85,8 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('invoices.show');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
+    //suppliers
+    Route::resource('suppliers',SuppliersController::class);
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');
