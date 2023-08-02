@@ -225,7 +225,7 @@ return [
     'city'=>'المدينة',
     'country'=>'الدولة',
     'postal_code'=>'الرمز البريدي',
-    'add_supplier' =>'اضافة مورد'
+    'add_supplier' =>'اضافة مورد',
     'type'=>'النوع',
     'percentage'=>'نسبة مئوية',
     'fixed'=>'تابت',
