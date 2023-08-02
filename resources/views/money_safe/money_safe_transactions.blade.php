@@ -45,8 +45,10 @@
                                             <th>@lang('lang.job')</th>
                                             <th>@lang('lang.store')</th>
                                             <th>@lang('lang.type')</th>
-                                            <th>@lang('lang.amount')</th>
-                                            <th>@lang('lang.balance')</th>
+                                            <th>@lang('lang.amount') &nbsp; {{$basic_currency}}</th>
+                                            <th>@lang('lang.balance')&nbsp; {{$basic_currency}}</th>
+                                            <th>@lang('lang.amount') &nbsp; {{$default_currency}}</th>
+                                            <th>@lang('lang.balance')&nbsp; {{$default_currency}}</th>
                                             <th>@lang('added_by')</th>
                                         </tr>
                                         </thead>
@@ -61,13 +63,27 @@
                                             <td>@lang('lang.'.$msafe_trans->type.'')</td>
                                             <td>
                                                 @if($msafe_trans->type=="add_money")
-                                                    <span class="text-primary">{{$currency_symbol}}&nbsp;{{(float)$msafe_trans->amount * (float)$currency_value }}</span>
+                                                    <span class="text-primary">{{$basic_currency}}&nbsp;{{@num_format($msafe_trans->amount) }}</span>
                                                 @else
-                                                    <span class="text-danger">{{$currency_symbol}}&nbsp;{{(float)$msafe_trans->amount * (float)$currency_value }}</span>
+                                                    <span class="text-danger">{{$basic_currency}}&nbsp;{{@num_format($msafe_trans->amount) }}</span>
                                                 @endif
                                             </td>
                                             <td>
-                                                {{$currency_symbol}} &nbsp; {{(float)$msafe_trans->balance * (float)$currency_value }}
+                                                {{$basic_currency}}&nbsp;{{@num_format($msafe_trans->balance)}}
+                                            </td>
+                                            <td>
+                                                @if($msafe_trans->type=="add_money")
+                                                    <span class="text-primary">{{$default_currency}}&nbsp;{{@num_format($moneySafeTransactions->currency->id!=='2'?$msafe_trans->amount/$settings['dollar_exchange']:$msafe_trans->amount*$settings['dollar_exchange']) }}</span>
+                                                @else
+                                                    <span class="text-danger">{{$default_currency}}&nbsp;{{@num_format($moneySafeTransactions->currency->id!=='2'?$msafe_trans->amount/$settings['dollar_exchange']:$msafe_trans->amount*$settings['dollar_exchange']) }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($moneySafeTransactions->currency->id!=='2')
+                                                {{$default_currency}} &nbsp; {{@num_format($msafe_trans->balance/$settings['dollar_exchange']) }}
+                                                @else
+                                                {{$default_currency}} &nbsp; {{@num_format($msafe_trans->balance*$settings['dollar_exchange']) }}
+                                                @endif
                                             </td>
                                             <td>
                                                 @if ($msafe_trans->created_by  > 0 and $msafe_trans->created_by != null)

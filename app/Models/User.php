@@ -69,8 +69,8 @@ class User extends Authenticatable
             'employee_module' => __('lang.employee_module'),
             'customer_module' => __('lang.customer_module'),
             'supplier_module' => __('lang.supplier_module'),
-            'settings_module' => __('lang.settings_module'),
             'reports_module' => __('lang.reports_module'),
+            'settings_module' => __('lang.settings_module'),
         ];
     }
     public static function subModulePermissionArray()
@@ -92,20 +92,20 @@ class User extends Authenticatable
             'supplier_module' => [
                 'supplier' => __('lang.suppliers'),
             ],
-            'sale' => [
+            'cashier_module' => [
                 'pos' => __('lang.pos'),
                 'pay' => __('lang.payment'),
                 'sale' => __('lang.sale'),
                 'delivery_list' => __('lang.delivery_list'),
                 'import' => __('lang.import'),
             ],
-            'return' => [
+            'return_module' => [
                 'sell_return' => __('lang.sell_return'),
                 'sell_return_pay' => __('lang.sell_return_pay'),
                 'purchase_return' => __('lang.purchase_return'),
                 'purchase_return_pay' => __('lang.purchase_return_pay'),
             ],
-            'employee' => [
+            'employee_module' => [
                 'employee' => __('lang.employees'),
                 'employee_commission' => __('lang.employee_commission'),
                 'jobs' => __('lang.jobs'),
@@ -114,7 +114,7 @@ class User extends Authenticatable
                 'attendance' => __('lang.attendance'),
                 'wages' => __('lang.wages'),
             ],
-            'stock' => [
+            'stock_module' => [
                 'add_stock' => __('lang.add_stock'),
                 'pay' => __('lang.pay'),
                 'remove_stock' => __('lang.remove_stock'),
@@ -123,7 +123,7 @@ class User extends Authenticatable
                 'transfer' => __('lang.transfer'),
                 'import' => __('lang.import'),
             ],
-            'reports' => [
+            'reports_module' => [
                 'profit_loss' => __('lang.profit_loss'),
                 'daily_sales_summary' => __('lang.daily_sales_summary'),
                 'receivable_report' => __('lang.receivable_report'),
@@ -131,7 +131,6 @@ class User extends Authenticatable
                 'expected_receivable_report' => __('lang.expected_receivable_report'),
                 'expected_payable_report' => __('lang.expected_payable_report'),
                 'summary_report' => __('lang.summary_report'),
-                'dining_in_sales' => __('lang.dining_in_sales'),
                 'sales_per_employee' => __('lang.sales_per_employee'),
                 'best_seller_report' => __('lang.best_seller_report'),
                 'product_report' => __('lang.product_report'),
@@ -149,9 +148,8 @@ class User extends Authenticatable
                 'supplier_report' => __('lang.supplier_report'),
                 'due_report' => __('lang.due_report'),
             ],
-            'settings' => [
+            'settings_module' => [
                 'store' => __('lang.stores'),
-                'store_pos' => __('lang.store_pos'),
                 'modules' => __('lang.modules'),
                 'general_settings' => __('lang.general_settings'),
                 'category' => __('lang.category'),
@@ -161,8 +159,8 @@ class User extends Authenticatable
                 'size' => __('lang.size'),
                 //
                 'money_safe' => __('lang.money_safe'),
-                'add_money_to_safe' => __('lang.add_money_to_safe'),
-                'take_money_from_safe' => __('lang.take_money_from_safe'),
+                'add_money_to_safe' => __('lang.add_moneysafe'),
+                'take_money_from_safe' => __('lang.take_money_safe'),
                 'statement' => __('lang.statement'),
                 //
                 'add_cash_in' => __('lang.add_cash_in'),

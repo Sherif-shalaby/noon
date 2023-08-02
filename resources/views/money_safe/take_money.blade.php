@@ -32,7 +32,7 @@
                             @enderror
                         </div>
         
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="currency_id">@lang('lang.currency') .*</label>
                             {!! Form::select(
                                 'currency_id',
@@ -42,9 +42,9 @@
                             @error('currency_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="form-group ">
-                            <label for="amount">@lang('lang.amount') .*</label>
+                            <label for="amount">@lang('lang.amount') .* .{{$currency_symbol}}</label>
                             <div class="select_body d-flex justify-content-between align-items-center" >
                                 <input type="text" required
                                        class="form-control"

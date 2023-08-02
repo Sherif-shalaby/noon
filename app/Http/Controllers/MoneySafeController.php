@@ -39,7 +39,7 @@ class MoneySafeController extends Controller
         $moneysafe=MoneySafe::latest()->get();
         $stores=Store::getDropdown();
         $currenciesId=[System::getProperty('currency') ,2];
-        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
+        $selected_currencies=Currency::whereIn('id',$currenciesId)->orderBy('id','desc')->pluck('currency','id');
 
         return view('money_safe.index',compact('moneysafe','stores','selected_currencies'));
     }
@@ -102,7 +102,7 @@ class MoneySafeController extends Controller
         $moneysafe=MoneySafe::find($id);
         $stores=Store::getDropdown();
         $currenciesId=[System::getProperty('currency') ,2];
-        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
+        $selected_currencies=Currency::whereIn('id',$currenciesId)->orderBy('id','desc')->pluck('currency','id');
         return view('money_safe.edit')->with(compact('moneysafe','stores','selected_currencies'));
     }
 
@@ -164,9 +164,9 @@ class MoneySafeController extends Controller
         $jobs = JobType::pluck('title', 'id')->toArray();
         $stores=Store::getDropdown();
         $users = User::Notview()->pluck('name', 'id');
-        $currenciesId=[System::getProperty('currency') ,2];
-        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
-        return view('money_safe.add_money')->with(compact('jobs','stores','selected_currencies','users','money_safe_id'));
+        $safe = MoneySafe::find($money_safe_id);
+        $currency_symbol=$safe->currency->symbol;
+        return view('money_safe.add_money')->with(compact('jobs','stores','users','money_safe_id','currency_symbol'));
     }
     public function postAddMoneyToSafe(Request $request){
         try {
@@ -174,11 +174,6 @@ class MoneySafeController extends Controller
             $data['created_by'] = Auth::user()->id;
             $data['type'] = 'add_money';
             $safe = MoneySafe::find($request->money_safe_id);
-            if (($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] =="2")) {
-                $data['amount'] = $this->Util->num_uf($data['amount'])* (float) System::getProperty('dollar_exchange');
-            }else if(($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] !="2")) {
-                $data['amount'] = $this->Util->num_uf($data['amount'])/ (float) System::getProperty('dollar_exchange');
-            }
             $transaction=$safe->transactions()->latest()->first();
             if(!empty($transaction->balance)){
                 $data['balance']=$data['amount'] + $transaction->balance;
@@ -205,9 +200,9 @@ class MoneySafeController extends Controller
         $jobs = JobType::pluck('title', 'id')->toArray();
         $stores=Store::getDropdown();
         $users = User::Notview()->pluck('name', 'id');
-        $currenciesId=[System::getProperty('currency') ,2];
-        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
-        return view('money_safe.take_money')->with(compact('jobs','stores','selected_currencies','users','money_safe_id'));
+        $safe = MoneySafe::find($money_safe_id);
+        $currency_symbol=$safe->currency->symbol;
+        return view('money_safe.take_money')->with(compact('jobs','stores','users','money_safe_id','currency_symbol'));
     }
     public function postTakeMoneyFromSafe(Request $request){
         try {
@@ -215,11 +210,6 @@ class MoneySafeController extends Controller
             $data['created_by'] = Auth::user()->id;
             $data['type'] = 'take_money';
             $safe = MoneySafe::find($request->money_safe_id);
-            if (($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] =="2")) {
-                $data['amount'] = $this->Util->num_uf($data['amount'])* (float) System::getProperty('dollar_exchange');
-            }else if(($safe->currency_id != $data['currency_id'] ) && ($data['currency_id'] !="2")) {
-                $data['amount'] = $this->Util->num_uf($data['amount'])/ (float) System::getProperty('dollar_exchange');
-            }
             $transaction=$safe->transactions()->latest()->first();
             if(!empty($transaction->balance)){
                 $data['balance']=$transaction->balance-$data['amount'] ;
@@ -255,19 +245,10 @@ class MoneySafeController extends Controller
             })
             ->where('id', $id)
             ->first();
-            $currenciesId=[System::getProperty('currency') ,2];
-            $selected_currencies=Currency::whereIn('id',$currenciesId)->latest()->pluck('currency','id');
-            
-            if(request()->currecy_change!=null ){
-                $currency_value=System::getProperty('dollar_exchange');
-                $currency_symbol=Currency::find(request()->currecy_change)->symbol;
-            }
-            else{
-                $currency_value=1;
-                $currency_symbol=$moneySafeTransactions->currency->symbol;
-            }
+
+            $basic_currency=Currency::find($moneySafeTransactions->currency_id)->symbol;
+            $default_currency=$moneySafeTransactions->currency_id=='2'?Currency::find(System::getProperty('currency'))->symbol:Currency::find(2)->symbol;
         return view('money_safe.money_safe_transactions',
-        compact('moneySafeTransactions',
-        'selected_currencies','currency_value','currency_symbol'));
+        compact('moneySafeTransactions','basic_currency','default_currency'));
     }
 }
