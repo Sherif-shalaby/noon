@@ -1,6 +1,3 @@
-@php
-    $index=$index??'';
-@endphp
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#select_products_modal"
         style="margin-top: 15px;">

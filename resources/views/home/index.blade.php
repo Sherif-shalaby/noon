@@ -44,7 +44,7 @@
             </div>
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
-                    <img class="card-img-top" src="{{asset('images/dashboard-icon/warehouse.png')}}" alt="Card image cap">
+                    <img class="card-img-top" src="{{asset('images/dashboard-icon/cash-machine.png')}}" alt="Card image cap">
                     <div class="card-body">
                         <h5 class="card-title font-18 text-center">{{__('lang.add-stock')}}</h5>
                     </div>
@@ -52,7 +52,8 @@
             </div>
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
-                    <img class="card-img-top" src="{{asset('images/dashboard-icon/cash-machine.png')}}" alt="Card image cap">
+                    <img class="card-img-top" src="{{asset('images/dashboard-icon/warehouse.png')}}" alt="Card image cap">
+
                     <div class="card-body">
                         <h5 class="card-title font-18 text-center">{{__('lang.cashier')}}</h5>
                     </div>

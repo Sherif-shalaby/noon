@@ -5,6 +5,11 @@
 <!-- Switchery css -->
 {{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
 <link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
+<!-- Select2 css -->
+<link href="{{asset('plugins/select2/select2.min.css')}}" rel="stylesheet" type="text/css">
+<!-- Tagsinput css -->
+{{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" rel="stylesheet" type="text/css">--}}
+{{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css')}}" rel="stylesheet" type="text/css">--}}
 <!-- DataTables css -->
 <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{asset('plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />

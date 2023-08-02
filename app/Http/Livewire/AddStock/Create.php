@@ -6,18 +6,29 @@ use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
+use App\Models\Currency;
+use App\Models\MoneySafe;
 use App\Models\Product;
 use App\Models\Size;
+use App\Models\StockTransaction;
 use App\Models\Store;
+use App\Models\System;
+use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component
 {
     public $selectedProducts = []; public $selectedProductData = []; public $quantity = []; public $purchase_price =[];
-    public $selling_price =[];
-//    public $sub =[];
+    public $selling_price = []; public $base_unit = []; public $divide_costs ;  public $other_expenses = 0;
+    public $other_payments = 0; public $total_size = []; public $total_weight =[]; public $cost = [];
+    public $total_cost = []; public $sub_total = []; public $change_price_stock =[]; public $store_id;
+    public $status; public $order_date; public $purchase_type; public $invoice_no; public $discount_amount;
+    public $source_type; public $payment_status;
 
 
 
@@ -35,7 +46,8 @@ class Create extends Component
         $sub_categories = Category::whereNotNull('parent_id')->orderBy('name', 'asc')->pluck('name', 'id');
         $colors = Color::orderBy('name', 'asc')->pluck('name', 'id');
         $sizes = Size::orderBy('name', 'asc')->pluck('name', 'id');
-//        $exchange_rate_currencies = $this->commonUtil->getCurrenciesExchangeRateArray(true);
+        $currenciesId=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+//        $selected_currencies=Currency::whereIn('id',$currenciesId)->pluck('currency','id');
         $products=Product::
         when(\request()->category_id != null, function ($query) {
             $query->where('category_id',\request()->category_id);
@@ -75,6 +87,7 @@ class Create extends Component
             'units',
             'colors',
             'sizes',
+//            'selected_currencies',
             'products',
             'users'));
     }
@@ -89,18 +102,23 @@ class Create extends Component
 
     public function mount()
     {
-
         foreach ($this->selectedProductData as $index => $product) {
             $this->quantity[$index] = 0;
             $this->purchase_price[$index] = 0;
+
         }
+    }
+
+    public function get_product($index){
+        return Product::where('id' ,$this->selectedProductData[$index]->id)->first();
     }
 
     public function sub_total($index)
     {
         if(isset($this->quantity[$index]) && isset($this->purchase_price[$index])){
-            $sub_total = $this->quantity[$index] * $this->purchase_price[$index];
-            return number_format($sub_total, 2);
+            $this->base_unit[$index] = $this->get_product($index)->unit->base_unit_multiplier;
+            $this->sub_total[$index] = $this->quantity[$index] * $this->purchase_price[$index] * $this->base_unit[$index];
+            return number_format($this->sub_total[$index], 2);
         }
         else{
             $this->quantity[$index] = 0;
@@ -108,9 +126,91 @@ class Create extends Component
         }
     }
 
+    public function total_quantity($index){
+        return  $this->get_product($index)->unit->base_unit_multiplier * $this->quantity[$index];
+    }
+
+    public function total_size($index){
+        $this->total_size[$index] =  $this->total_quantity($index) * $this->selectedProductData[$index]->size;
+        return $this->total_size[$index];
+    }
+
+    public function total_weight($index){
+       $this->total_weight[$index] = $this->total_quantity($index) * $this->selectedProductData[$index]->weight ;
+       return $this->total_weight[$index];
+    }
+
+    public function sum_size(){
+        return array_sum($this->total_size);
+    }
+
+    public function sum_weight(){
+        return array_sum($this->total_weight);
+    }
+
+    public function cost($index){
+
+        $product = $this->get_product($index);
+        $cost = $this->other_expenses + $this->other_payments;
+
+        if ($this->divide_costs == 'size'){
+            $this->cost[$index] = ( ( $cost / $this->sum_size() ) * $product->size ) + $this->purchase_price[$index];
+        }
+        elseif ($this->divide_costs == 'weight'){
+            $this->cost[$index] = ( ( $cost / $this->sum_weight() ) * $product->weight ) + $this->purchase_price[$index];
+        }
+        elseif ($this->divide_costs == 'price'){
+            $this->cost[$index] = ( ( $cost / array_sum($this->sub_total) ) * $this->purchase_price[$index] ) + $this->purchase_price[$index];
+        }
+        else{
+           $this->cost[$index] = $this->purchase_price[$index];
+        }
+        return number_format($this->cost[$index],2);
+    }
+
+    public function total_cost($index){
+        $this->total_cost[$index] = $this->cost[$index] * $this->total_quantity($index);
+        return number_format($this->total_cost[$index],2);
+    }
+
+    public function delete_product($index){
+        unset($this->selectedProducts[$index]);
+        unset($this->selectedProductData[$index]);
+    }
+
     public function store()
     {
-//        dump($this->selectedProductData,$this->quantity,$this->selling_price);
+        $transaction =new StockTransaction();
+        $transaction->store_id = $this->store_id;
+        $transaction->status = $this->status;
+        $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
+        $transaction->purchase_type = $this->purchase_type;
+        $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
+        $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : null;
+
+
+
+
+//            $user_id = null;
+//            if (!empty($request->source_id)) {
+//                if ($request->source_type == 'pos') {
+////                    $user_id = StorePos::where('id', $request->source_id)->first()->user_id;
+//                }
+//                if ($request->source_type == 'user') {
+//                    $user_id = $request->source_id;
+//                }
+//                if ($request->source_type == 'safe') {
+//                    $money_safe = MoneySafe::find($request->source_id);
+//                    $payment_data['currency_id'] = $transaction->paying_currency_id;
+//
+//                    $this->moneysafeUtil->addPayment($transaction, $payment_data, 'debit', $transaction_payment->id, $money_safe);
+//                }
+//            }
+//            if (!empty($user_id)) {
+//                $this->cashRegisterUtil->addPayments($transaction, $payment_data, 'debit', $user_id);
+//            }
+
+        dump($this->selectedProductData,$this->quantity,$this->selling_price);
         foreach ($this->selectedProductData as $index => $product){
             $add_stock_data = [
             'product_id' => $product->id,
@@ -128,6 +228,7 @@ class Create extends Component
         else{
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
         }
+
         return redirect('/add-stock/index');
     }
 

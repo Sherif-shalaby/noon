@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SizeController;
+use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\UnitController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
 
+    // store pos
+    Route::resource('store-pos', StorePosController::class);
 
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
