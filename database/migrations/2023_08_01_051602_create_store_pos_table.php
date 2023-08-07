@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('store_pos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('store_id');
+            $table->unsignedInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
             $table->string('name');
             $table->foreignId('user_id')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();

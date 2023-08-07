@@ -294,6 +294,9 @@ return [
     'customer_report'=>'Customer Report',
     'supplier_report'=>'Supplier Report',
     'due_report'=>'Due Report',
+    'supplier' => 'Supplier',
+    'paying_currency' => 'Paying Currency ',
+
 ];
 
 

@@ -3,7 +3,7 @@
 return [
     'dashboard'=>'نظرة عامه',
     'products'=>'المنتجات',
-    'add-stock'=>'المخزن',
+    'add-stock'=>'اضافه مشتريات',
     'cashier'=>'المشتريات',
     'returns'=>'المرتجعات',
     'employees'=>'الموظفين',
@@ -268,7 +268,6 @@ return [
     'product_classification_tree' => 'شجرة تصنيف المنتج',
     'purchase_price'=>'سعر الشراء',
     'sell_price'=>'سعر البيع',
-    'add_stock'=>'اضافة مخزون',
     'pay'=>'دفع',
     'remove_stock'=>'ازالة مخزون',
     'internal_stock_request' => 'طلب مخزون داخلي',
@@ -319,5 +318,8 @@ return [
     'customer_report' => 'تقرير العملاء',
     'supplier_report' => 'تقرير المورد',
     'due_report' => 'تقرير الاستحقاق',
+    'supplier' => 'المورد',
+    'stock' => 'المشتريات',
+    'paying_currency' => 'العمله المدفوعه',
 ];
 
