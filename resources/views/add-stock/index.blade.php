@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a type="button" class="btn btn-primary" href="{{route('stocks.create')}}">@lang('lang.add_stock')</a>
+                    <a type="button" class="btn btn-primary" href="{{route('stocks.create')}}">@lang('lang.add-stock')</a>
                 </div>
             </div>
         </div>

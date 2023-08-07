@@ -1,8 +1,11 @@
+<div class="row">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#select_products_modal"
+            style="margin-top: 15px;">
+        @lang('lang.select_products')
+    </button>
+    <button type="button" id="dollar_section" class="btn btn-primary ml-4" style="margin-top: 15px;"> $ </button>
+</div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#select_products_modal"
-        style="margin-top: 15px;">
-    @lang('lang.select_products')
-</button>
 <div class="modal fade" id="select_products_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" wire:ignore
      aria-hidden="true" style="width: 100%;">
     <div class="modal-dialog modal-lg" role="document" id="select_products_modal">

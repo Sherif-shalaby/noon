@@ -135,17 +135,18 @@
                   <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
                       @if(!empty($module_settings['stock_module']))
-                          <li class="dropdown">
-                              <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.add-stock')}}</span></a>
-                              <ul class="dropdown-menu">
-                                  <li><a href=""><i class="mdi mdi-circle"></i>@lang('lang.add-stock')</a></li>
-                              </ul>
-                          </li>
-                      @endif
-                      @if(!empty($module_settings['cashier_module']))
                           <li><a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.cashier')}}</span></a>
                           </li>
+
                       @endif
+{{--                      @if(!empty($module_settings['cashier_module']))--}}
+{{--                          <li class="dropdown">--}}
+{{--                              <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('')}}</span></a>--}}
+{{--                              <ul class="dropdown-menu">--}}
+{{--                                  <li><a href=""><i class="mdi mdi-circle"></i>@lang('lang.add-stock')</a></li>--}}
+{{--                              </ul>--}}
+{{--                          </li>--}}
+{{--                      @endif--}}
                   @if(!empty($module_settings['return_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
