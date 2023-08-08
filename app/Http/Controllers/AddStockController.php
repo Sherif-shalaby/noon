@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\StockTransaction;
+use App\Models\Supplier;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -47,11 +50,21 @@ class AddStockController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return void
+     * @return Application|Factory|View
      */
     public function show($id)
     {
-        //
+        $add_stock = StockTransaction::find($id);
+        $payment_type_array = $this->getPaymentTypeArray();
+//        $taxes = Tax::pluck('name', 'id');
+        $users = User::Notview()->pluck('name', 'id');
+
+        return view('add-stock.show')->with(compact(
+            'add_stock',
+            'payment_type_array',
+            'users',
+//            'taxes'
+        ));
     }
 
     /**
@@ -87,5 +100,10 @@ class AddStockController extends Controller
     {
         //
     }
-
+    public function getPaymentTypeArray()
+    {
+        return [
+            'cash' => __('lang.cash'),
+        ];
+    }
 }

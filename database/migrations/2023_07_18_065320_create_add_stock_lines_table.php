@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('add_stock_lines', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
+            $table->foreign('stock_transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained('products', 'id')->cascadeOnDelete();
             $table->decimal('quantity', 15, 4);
             $table->decimal('quantity_sold', 15, 4)->default(0)->comment('quantity sold from this purchase line');

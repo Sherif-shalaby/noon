@@ -4,7 +4,7 @@
         <div class="col-md-3 payment_fields hide">
             <div class="form-group">
                 {!! Form::label('amount', __('lang.amount'). ':*', []) !!} <br>
-                <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model = "amount">
+                <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model = "amount" wire:change="changeAmount">
                 @error('amount')
                 <span class="error text-danger">{{ $message }}</span>
                 @enderror

@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
     'dashboard'=>'نظرة عامه',
     'products'=>'المنتجات',
     'add-stock'=>'اضافه مشتريات',
@@ -321,5 +321,19 @@ return [
     'supplier' => 'المورد',
     'stock' => 'المشتريات',
     'paying_currency' => 'العمله المدفوعه',
-];
+    'po_ref_no' => 'رقم المرجع PO.',
+    'invoice_date' => 'تاريخ الفاتورة',
+    'value' => 'قيمة',
+    'paid_amount' => 'المبلغ المدفوع',
+    'pending_amount' => 'المبلغ المتبقي',
+    'supplier_name'  => 'اسم المورد',
+    'final_cost' => 'التكلفة النهائية',
+    'batch_number' => 'رقم التشغيلة',
+    'manufacturing_date' => 'تاريخ التصنيع',
+    'expiry_date' => 'تاريخ انتهاء الصلاحية',
+    'days_before_the_expiry_date' => 'قبل أيام من تاريخ انتهاء الصلاحية',
+    'convert_status_expire' => 'تحويل حالتها إلى منتهية الصلاحية',
+    'payment_details' => 'بيانات الدفع',
+
+);
 
