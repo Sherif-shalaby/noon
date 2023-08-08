@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -29,12 +33,12 @@ class SuppliersController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
         $supplier_categories = Category::where('parent_id',null)->pluck('name', 'id');
-        
+
         return view('suppliers.create')->with(compact(
             'supplier_categories',
         ));
@@ -43,7 +47,7 @@ class SuppliersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -79,7 +83,7 @@ class SuppliersController extends Controller
         if ($request->file('image')) {
             $data['image'] = store_file($request->file('image'), 'suppliers');
         }
-        
+
         Supplier::create($data);
         // return "test";
         return response()->json(['status' => __('lang.success')]);
@@ -101,25 +105,28 @@ class SuppliersController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function edit($id)
     {
         $supplier = Supplier::find($id);
+        $supplier_categories = Category::where('parent_id',null)->pluck('name', 'id');
         return view('suppliers.edit')->with(compact(
-            'supplier'
+            'supplier',
+            'supplier_categories'
         ));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id)
     {
+//        dd($request);
         try {
             $data['name'] = $request->name;
             $data['company_name'] = $request->company_name;
@@ -132,8 +139,9 @@ class SuppliersController extends Controller
             $data['country'] = $request->country;
             $data['postal_code'] = $request->postal_code;
             $data['exchange_rate'] = $request->exchange_rate;
-            $data['edited_by'] = Auth::user()->id;
+            $data['updated_by'] = Auth::user()->id;
             Supplier::find($id)->update($data);
+
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
@@ -145,8 +153,8 @@ class SuppliersController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-        return response()->json(['status' => $output]);
-        // return redirect()->back()->with('status', $output);
+//        return response()->json(['status' => $output]);
+         return redirect()->route('suppliers.index')->with('status', $output);
     }
 
     /**

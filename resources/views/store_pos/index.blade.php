@@ -58,8 +58,7 @@
                                         <td>{{$store_pos->name}}</td>
                                         <td>{{$store_pos->user->name}}</td>
                                         <td>{{$store_pos->user->email}}</td>
-{{--                                        <td>{{@format_datetime($store_pos->created_at)}}</td>--}}
-                                        <td></td>
+                                        <td>{{@format_datetime($store_pos->created_at)}}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle"
@@ -68,8 +67,7 @@
                                                     <span class="caret"></span>
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
                                                         <li>
                                                             <a data-href="{{route('store-pos.edit', $store_pos->id)}}"
                                                                data-container=".view_modal" class="btn btn-modal"><i

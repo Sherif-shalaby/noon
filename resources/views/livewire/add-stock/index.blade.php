@@ -33,10 +33,10 @@
                                 <td>{{$stock->transaction_date }}</td>
                                 <td>{{$stock->supplier->name}}</td>
                                 <td>{{$stock->created_by()->first()->name}}</td>
-                                <td>{{$stock->paying_currency()->first()->currency}}</td>
-                                <td>{{$stock->final_total}}</td>
-                                <td>{{$stock->transaction_payments->sum('amount')}}</td>
-                                <td>{{$stock->final_total - $stock->transaction_payments->sum('amount')}}</td>
+                                <td>{{$stock->paying_currency()->first()->symbol}}</td>
+                                <td>{{number_format($stock->final_total,2)}}</td>
+                                <td>{{number_format($stock->transaction_payments->sum('amount'),2)}}</td>
+                                <td>{{number_format($stock->final_total - $stock->transaction_payments->sum('amount'),2)}}</td>
                                 <td>{{$stock->due_date ?? ''}}</td>
                                 <td>{{$stock->notes ?? ''}}</td>
                                 <td>
@@ -52,6 +52,14 @@
                                                     class="fa fa-eye"></i>
                                                 @lang('lang.view') </a>
                                         </li>
+                                        <li class="divider"></li>
+                                        @if ($stock->payment_status != 'paid')
+                                       <li>
+                                            <a data-href="{{route('stocks.add_payment',  $stock->id) }}"
+                                               data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
+                                                @lang('lang.pay') </a>
+                                        </li>
+                                        @endif
 {{--                                        <li class="divider"></li>--}}
 
 {{--                                        <li>--}}
@@ -95,3 +103,4 @@
     </div>
 
 </section>
+<div class="view_modal no-print" ></div>
