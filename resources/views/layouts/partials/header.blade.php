@@ -54,11 +54,11 @@
                            @endphp
                             <div class="languagebar">
                                 <div class="dropdown">
-                                  <a class="dropdown-toggle" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag flag-icon-{{ $flags->$local_code }} flag-icon-squared"></i>&nbsp;{{ LaravelLocalization::getCurrentLocaleNative() }}</a>
+                                  <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag flag-icon-{{ $flags->$local_code }} flag-icon-squared"></i>&nbsp;{{ LaravelLocalization::getCurrentLocaleNative() }}</a>
                                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">
                                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                                         <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                                            <i class="flag flag-icon-{{$flags->$localeCode}} flag-icon-squared"></i>{{ $properties['native'] }}
+                                            <i class="flag  flag-icon-{{$flags->$localeCode}} flag-icon-squared"></i>{{ $properties['native'] }}
                                         </a>
                                     @endforeach
                                   </div>
@@ -134,11 +134,13 @@
                   @if(!empty($module_settings['product_module']) )
                   <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
-                      @if(!empty($module_settings['stock_module']))
-                          <li><a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.cashier')}}</span></a>
-                          </li>
 
-                      @endif
+                  @if(!empty($module_settings['stock_module']))
+                      <li>
+                          <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
+                      </li>
+
+                  @endif
 {{--                      @if(!empty($module_settings['cashier_module']))--}}
 {{--                          <li class="dropdown">--}}
 {{--                              <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('')}}</span></a>--}}
@@ -150,53 +152,6 @@
                   @if(!empty($module_settings['return_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
-                          <ul class="dropdown-menu">
-                              <li class="dropdown">
-                                  <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown" ><i class="mdi mdi-circle"></i>eCommerce</a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href="ecommerce-product-list.html"><i class="mdi mdi-circle"></i>Product List</a></li>
-                                      <li><a href="ecommerce-product-detail.html"><i class="mdi mdi-circle"></i>Product Detail</a></li>
-                                      <li><a href="ecommerce-order-list.html"><i class="mdi mdi-circle"></i>Order List</a></li>
-                                      <li><a href="ecommerce-order-detail.html"><i class="mdi mdi-circle"></i>Order Detail</a></li>
-                                      <li><a href="ecommerce-shop.html"><i class="mdi mdi-circle"></i>Shop</a></li>
-                                      <li><a href="ecommerce-single-product.html"><i class="mdi mdi-circle"></i>Single Product</a></li>
-                                      <li><a href="ecommerce-cart.html"><i class="mdi mdi-circle"></i>Cart</a></li>
-                                      <li><a href="ecommerce-checkout.html"><i class="mdi mdi-circle"></i>Checkout</a></li>
-                                      <li><a href="ecommerce-thankyou.html"><i class="mdi mdi-circle"></i>Thank You</a></li>
-                                      <li><a href="ecommerce-myaccount.html"><i class="mdi mdi-circle"></i>My Account</a></li>
-                                  </ul>
-                              </li>
-                              <li class="dropdown">
-                                  <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-circle"></i>Basic Pages</a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href="page-starter.html"><i class="mdi mdi-circle"></i>Starter Page</a></li>
-                                      <li><a href="page-blog.html"><i class="mdi mdi-circle"></i>Blog</a></li>
-                                      <li><a href="page-faq.html"><i class="mdi mdi-circle"></i>FAQ</a></li>
-                                      <li><a href="page-gallery.html"><i class="mdi mdi-circle"></i>Gallery</a></li>
-                                      <li><a href="page-invoice.html"><i class="mdi mdi-circle"></i>Invoice</a></li>
-                                      <li><a href="page-pricing.html"><i class="mdi mdi-circle"></i>Pricing</a></li>
-                                      <li><a href="page-timeline.html"><i class="mdi mdi-circle"></i>Timeline</a></li>
-                                  </ul>
-                              </li>
-                              <li class="dropdown">
-                                  <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-circle"></i>User Pages</a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href="user-login.html"><i class="mdi mdi-circle"></i>Login</a></li>
-                                      <li><a href="user-register.html"><i class="mdi mdi-circle"></i>Register</a></li>
-                                      <li><a href="user-forgotpsw.html"><i class="mdi mdi-circle"></i>Forgot Password</a></li>
-                                      <li><a href="user-lock-screen.html"><i class="mdi mdi-circle"></i>Lock Screen</a></li>
-                                  </ul>
-                              </li>
-                              <li class="dropdown">
-                                  <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><i class="mdi mdi-circle"></i>Error Pages</a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href="error-comingsoon.html"><i class="mdi mdi-circle"></i>Coming Soon</a></li>
-                                      <li><a href="error-maintenance.html"><i class="mdi mdi-circle"></i>Maintenance</a></li>
-                                      <li><a href="error-404.html"><i class="mdi mdi-circle"></i>Error 404</a></li>
-                                      <li><a href="error-500.html"><i class="mdi mdi-circle"></i>Error 500</a></li>
-                                  </ul>
-                              </li>
-                          </ul>
                       </li>
                   @endif
                   @if(!empty($module_settings['employee_module']))
@@ -261,20 +216,6 @@
                   @if(!empty($module_settings['reports_module']))
                       <li class="dropdown">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced"><span>{{__('lang.reports')}}</span></a>
-                          <ul class="dropdown-menu">
-                              <li><a href="advanced-ui-kits-image-crop.html"><i class="mdi mdi-circle"></i>Image Crop</a></li>
-                              <li><a href="advanced-ui-kits-jquery-confirm.html"><i class="mdi mdi-circle"></i>jQuery Confirm</a></li>
-                              <li><a href="advanced-ui-kits-nestable.html"><i class="mdi mdi-circle"></i>Nestable</a></li>
-                              <li><a href="advanced-ui-kits-pnotify.html"><i class="mdi mdi-circle"></i>Pnotify</a></li>
-                              <li><a href="advanced-ui-kits-range-slider.html"><i class="mdi mdi-circle"></i>Range Slider</a></li>
-                              <li><a href="advanced-ui-kits-ratings.html"><i class="mdi mdi-circle"></i>Ratings</a></li>
-                              <li><a href="advanced-ui-kits-session-timeout.html"><i class="mdi mdi-circle"></i>Session Timeout</a></li>
-                              <li><a href="advanced-ui-kits-sweet-alerts.html"><i class="mdi mdi-circle"></i>Sweet Alerts</a></li>
-                              <li><a href="advanced-ui-kits-switchery.html"><i class="mdi mdi-circle"></i>Switchery</a></li>
-                              <li><a href="advanced-ui-kits-toolbar.html"><i class="mdi mdi-circle"></i>Toolbar</a></li>
-                              <li><a href="advanced-ui-kits-tour.html"><i class="mdi mdi-circle"></i>Tour</a></li>
-                              <li><a href="advanced-ui-kits-treeview.html"><i class="mdi mdi-circle"></i>Tree View</a></li>
-                          </ul>
                       </li>
                   @endif
 
