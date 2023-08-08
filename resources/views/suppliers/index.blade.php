@@ -25,9 +25,8 @@
     </div>
 @endsection
 @section('content')
-     <!-- End Breadcrumbbar -->
-            <!-- Start Contentbar -->    
-            <div class="contentbar">                
+            <!-- Start Contentbar -->
+            <div class="contentbar">
                 <!-- Start row -->
                 <div class="row">
                     <!-- Start col -->
@@ -46,6 +45,7 @@
                                             <th>@lang('lang.company_name')</th>
                                             <th>@lang('lang.mobile_number')</th>
                                             <th>@lang('lang.created_by')</th>
+                                            <th>@lang('lang.updated_by')</th>
                                             <th>@lang('lang.action')</th>
                                         </tr>
                                         </thead>
@@ -55,7 +55,8 @@
                                             <td>{{$supplier->name}}</td>
                                             <td>{{$supplier->company_name}}</td>
                                             <td>{{$supplier->mobile_number}}</td>
-                                            <td>{{$supplier->created_by}}</td>
+                                            <td>{{$supplier->created_by_user->name}}</td>
+                                            <td>{{$supplier->updated_by_user->name ?? ''}}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
@@ -64,8 +65,8 @@
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <li>
 
-                                                            <a data-href="#" data-container=".view_modal" class="btn btn-modal" data-toggle="modal"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
-                                                            
+                                                            <a href="{{route('suppliers.edit', $supplier->id)}}" class="btn edit_supplier">
+                                                                <i class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
                                                         </li>
                                                         <li class="divider"></li>
                                                             <li>
@@ -78,13 +79,10 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        
+
                                         @endforeach
                                         </tbody>
                                     </table>
-                                    <div class="view_modal no-print" >
-
-                                    </div>
                                 </div>
                             </div>
                         </div>

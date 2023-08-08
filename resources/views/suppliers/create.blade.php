@@ -70,7 +70,7 @@
                                         <div class="form-group ">
                                             <label for="mobile_number">@lang('lang.phone_number')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.phone_number')"
                                                        name="mobile_number"
@@ -102,7 +102,7 @@
                                         <div class="form-group ">
                                             <label for="exchange_rate">@lang('lang.exchange_rate')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="number" 
+                                                <input type="number"
                                                        class="form-control"
                                                        placeholder="@lang('lang.exchange_rate')"
                                                        name="exchange_rate"
@@ -117,7 +117,7 @@
                                         <div class="form-group ">
                                             <label for="name">@lang('lang.company_name')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.company_name')"
                                                        name="company_name"
@@ -132,7 +132,7 @@
                                         <div class="form-group ">
                                             <label for="vat_number">@lang('lang.vat_number')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.vat_number')"
                                                        name="vat_number"
@@ -147,7 +147,7 @@
                                         <div class="form-group ">
                                             <label for="address">@lang('lang.address')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.address')"
                                                        name="address"
@@ -162,7 +162,7 @@
                                         <div class="form-group ">
                                             <label for="city">@lang('lang.city')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.city')"
                                                        name="city"
@@ -177,7 +177,7 @@
                                         <div class="form-group ">
                                             <label for="country">@lang('lang.country')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.country')"
                                                        name="country"
@@ -192,7 +192,7 @@
                                         <div class="form-group ">
                                             <label for="postal_code">@lang('lang.postal_code')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" 
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.postal_code')"
                                                        name="postal_code"
@@ -203,7 +203,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <br>
                                 <div class="row">
