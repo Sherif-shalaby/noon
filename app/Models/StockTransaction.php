@@ -43,7 +43,7 @@ class StockTransaction extends Model
 
     public function add_stock_products()
     {
-        return $this->hasManyThrough(Product::class, AddStockLine::class, 'transaction_id', 'id', 'id', 'product_id');
+        return $this->hasManyThrough(Product::class, AddStockLine::class, 'stock_transaction_id', 'id', 'id', 'product_id');
     }
 
     public function store()

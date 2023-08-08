@@ -416,6 +416,7 @@ class Create extends Component
         else
             return $this->sum_total_cost();
     }
+
     public function dollar_final_total(){
         if(isset($this->discount_amount)){
             return $this->sum_dollar_total_cost() - $this->discount_amount;

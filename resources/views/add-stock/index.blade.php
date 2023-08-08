@@ -25,6 +25,3 @@
     @livewire('add-stock.index')
 @endsection
 
-@section('javascript')
-
-@endsection

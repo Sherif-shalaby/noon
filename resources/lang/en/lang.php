@@ -295,7 +295,22 @@ return [
     'supplier_report'=>'Supplier Report',
     'due_report'=>'Due Report',
     'supplier' => 'Supplier',
-    'paying_currency' => 'Paying Currency ',
+    'paying_currency' => 'Paying Currency',
+    'po_ref_no' => 'PO',
+    'invoice_date' => 'Invoice Date',
+    'value' => 'Value',
+    'paid_amount' => 'Paid Amount',
+    'pending_amount' => 'Pending Amount',
+    'due_date' => 'Due Date',
+    'total' => 'Total',
+    'supplier_name'  => 'Supplier Name',
+    'final_cost' => 'Final Cost',
+    'batch_number' => 'Batch Number',
+    'manufacturing_date' => 'Manufacturing Date',
+    'expiry_date' => 'Expiry Date',
+    'days_before_the_expiry_date' => 'Days Before The Expiry Date',
+    'convert_status_expire' => 'Convert To Status Expire',
+    'payment_details' => 'Payment Details',
 
 ];
 
