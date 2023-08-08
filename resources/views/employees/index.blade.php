@@ -67,16 +67,17 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{$employee->user()->get()[0]->name}}
+
+                                            {{!empty($employee->user) ? $employee->user->name : ''}}
                                         </td>
                                         <td>
-                                            {{$employee->user()->get()[0]->email}}
+                                            {{!empty($employee->user) ? $employee->user->email : ''}}
                                         </td>
                                         <td>
                                             {{$employee->mobile}}
                                         </td>
                                         <td>
-                                            {{$employee->job_type()->get()[0]->title}}
+                                            {{!empty($employee->job_type) ? $employee->job_type->title : '' }}
                                         </td>
                                         <td>
                                             {{$employee->fixed_wage_value}}
@@ -126,73 +127,6 @@
                                                             class="fa fa-trash"></i>
                                                         @lang('lang.delete')</a>
                                                 </li>
-
-{{--                                               <li class="divider"></li>--}}
-{{--                                               <li>--}}
-{{--                                                    <a data-href="{{action('EmployeeController@toggleActive', $employee->id)}}"--}}
-{{--                                                       class="btn toggle-active"><i--}}
-{{--                                                            class="fa fa-ban"></i>';--}}
-{{--                                                        @if ($row->is_active) --}}
-{{--                                                            @lang('lang.suspend');--}}
-{{--                                                        @else --}}
-{{--                                                            @lang('lang.reactivate');--}}
-{{--                                                        @endif--}}
-{{--                                                        --}}
-{{--                                                    </a>--}}
-{{--                                                </li>--}}
-{{--                                                --}}
-{{--                                                <li class="divider"></li>--}}
-{{--                                                <li>--}}
-{{--                                                    <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}"--}}
-{{--                                                       class="btn"><i--}}
-{{--                                                            class="fa fa-paper-plane"></i>--}}
-{{--                                                        @lang('lang.send_credentials') </a>--}}
-{{--                                                </li>--}}
-{{--                                                --}}
-{{--                                                <li class="divider"></li>--}}
-{{--                                             <li>--}}
-{{--                                                    <a href="{{action('SmsController@create', ['employee_id' => $employee->id])}}"--}}
-{{--                                                       class="btn"><i--}}
-{{--                                                            class="fa fa-comments-o"></i>--}}
-{{--                                                        @lang('lang.send_sms')</a>--}}
-{{--                                                </li>--}}
-{{--                                                --}}
-{{--                                               <li class="divider"></li>'--}}
-{{--                                               <li>--}}
-{{--                                                    <a href="{{action('EmailController@create', ['employee_id' => $employee->id])}}"--}}
-{{--                                                       class="btn"><i--}}
-{{--                                                            class="fa fa-envelope "></i>--}}
-{{--                                                        @lang('lang.send_email') '</a>--}}
-{{--                                                </li>--}}
-
-{{--                                                {{$due = $this->transactionUtil->calculateEmployeeCommissionPayments($row->id)['total_due'];}}--}}
-{{--                                               --}}
-{{--                                                <li class="divider"></li>--}}
-{{--                                                @if ($due > 0) --}}
-{{--                                                <li>--}}
-{{--                                                    <a href="{{action('WagesAndCompensationController@create', ['employee_id' => $employee->id, 'payment_type' => 'commission']}})"--}}
-{{--                                                       class="btn"><i--}}
-{{--                                                            class="fa fa-money "></i>--}}
-{{--                                                        @lang('lang.pay')</a>--}}
-{{--                                                </li>--}}
-{{--                                                @endif--}}
-{{--                                                <li class="divider"></li>--}}
-{{--                                                <li>--}}
-{{--                                                    <a class="btn btn-modal"--}}
-{{--                                                       data-href="{{action('LeaveController@create', ['employee_id' => $employee->id])}}"--}}
-{{--                                                       data-container=".view_modal">--}}
-{{--                                                        <i class="fa fa-sign-out"></i> @lang('lang.leave')--}}
-{{--                                                    </a>--}}
-{{--                                                </li>--}}
-{{--                                                --}}
-{{--                                                <li class="divider"></li>--}}
-{{--                                                <li>--}}
-{{--                                                    <a class="btn btn-modal"--}}
-{{--                                                       data-href="' . action('ForfeitLeaveController@create', ['employee_id' => $row->id]) . '"--}}
-{{--                                                       data-container=".view_modal">--}}
-{{--                                                        <i class="fa fa-ban"></i> @lang('lang.forfeit_leave')--}}
-{{--                                                    </a>--}}
-{{--                                                </li>--}}
                                             </ul>
                                         </td>
 
@@ -210,5 +144,3 @@
 
 @endsection
 
-@section('javascript')
-@endsection

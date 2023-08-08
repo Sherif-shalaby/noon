@@ -23,17 +23,15 @@ class BrandUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        // return [
-        //     'name' => 'required|max:255|unique:brands,name,'.$this->brand,
-        // ];
+        $id = $this->input('id');
         return [
-            'name' => 'required|max:255',
+            'name' => 'required|string|max:255|unique:brands,name,' . $id,
         ];
     }
     public function messages()
     {
         return [
-            'name.required'=>$this->brand,
+            'name.required'=>__('lang.NameRequired'),
             'name.unique'=>__('lang.NameUnique'),
         ];
     }

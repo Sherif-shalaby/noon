@@ -8,9 +8,21 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Utils\Util;
 class BrandController extends Controller 
 {
+    protected $Util;
 
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
   /**
    * Display a listing of the resource.
    *
@@ -18,7 +30,7 @@ class BrandController extends Controller
    */
   public function index()
   {
-    $brands=Brand::all();
+    $brands=Brand::latest()->get();
     return view('brands.index',compact('brands'));
   }
 
@@ -47,10 +59,11 @@ class BrandController extends Controller
 
       try {
           $data = $request->except('_token');
-          // $data['created_by']=Auth::user()->id;
+          $data['created_by']=Auth::user()->id;
           $brand = Brand::create($data);
           $output = [
               'success' => true,
+              'id' => $brand->id,
               'msg' => __('lang.success')
           ];
       } catch (\Exception $e) {
@@ -60,6 +73,9 @@ class BrandController extends Controller
               'msg' => __('lang.something_went_wrong')
           ];
       }
+      if ($request->quick_add) {
+        return $output;
+        }
       return redirect()->back()->with('status', $output);
 
   }
@@ -95,17 +111,12 @@ class BrandController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update(BrandUpdateRequest $request,Brand $brand)
+  public function update(BrandUpdateRequest $request,$id)
   {
-  //   $this->validate(
-  //     $request,
-  //     ['name' => ['required', 'unique:brands,name,'.$id,'max:255']],
-  // );
-
   try {
       $data['name'] = $request->name;
-      // $data['edited_by'] = Auth::user()->id;
-      $brand->update($data);
+      $data['edited_by'] = Auth::user()->id;
+      Brand::find($id)->update($data);
       $output = [
           'success' => true,
           'msg' => __('lang.success')
@@ -130,7 +141,10 @@ class BrandController extends Controller
   public function destroy($id)
   {
     try {
-      Brand::find($id)->delete();
+      $brand=Brand::find($id);
+      $brand->deleted_by=Auth::user()->id;
+      $brand->save();
+      $brand->delete();
       $output = [
           'success' => true,
           'msg' => __('lang.success')
@@ -145,7 +159,12 @@ class BrandController extends Controller
     return $output;
   }
   
-  
+  public function getDropdown()
+    {
+        $brands = Brand::orderBy('name', 'asc')->pluck('name', 'id');
+        $brands_dp = $this->Util->createDropdownHtml($brands, __('lang.please_select'));
+        return $brands_dp;
+    }
 }
 
 ?>

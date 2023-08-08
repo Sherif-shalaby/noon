@@ -32,8 +32,6 @@ $(document).on("click", ".add_price_row", function () {
         data: { row_id: row_id },
         success: function (result) {
             $("#consumption_table_price > tbody").prepend(result);
-            $(".selectpicker").selectpicker("refresh");
-            $(".datepicker").datepicker({refresh:"refresh",todayHighlight: true});
         },
     });
 });
@@ -41,16 +39,11 @@ $(document).on("click", ".remove_row", function () {
     row_id = $(this).closest("tr").data("row_id");
     $(this).closest("tr").remove();
 });
-// $(".js-example-basic-multiple-limit").select2({
-//     multiple:true,
-//     maximumSelectionLength: 10,
-//     placeholder: "Select a state"
-// });
-$(document).on("change","#is_price_permenant",function () {
-    $(".price_start_date").prop('disabled', (i, v) => !v);
-    $(".price_start_date").val(null);
-    $(".price_end_date").prop('disabled', (i, v) => !v);
-    $(".price_end_date").val(null);
+$(document).on("change",".is_price_permenant",function () {
+    $(this).closest("tr").find(".price_start_date").prop('disabled', (i, v) => !v);
+    $(this).closest("tr").find(".price_start_date").val(null);
+    $(this).closest("tr").find(".price_end_date").prop('disabled', (i, v) => !v);
+    $(this).closest("tr").find(".price_end_date").val(null);
 });
 $(document).on("change",".category",function () {
     $.ajax({
@@ -62,4 +55,12 @@ $(document).on("change",".category",function () {
             $(".subcategory").empty().append(response).change();
         }
     });
+});
+$(document).ready(function() {
+    $('.js-example-basic-multiple').select2(
+        {
+            placeholder: LANG.please_select,
+            tags: true
+        }
+    );
 });

@@ -18,12 +18,31 @@ class Customer extends Model
 
     public function customer_type()
     {
-        return $this->belongsTo('CustomerType\CustomerType', 'customer_type_id');
+        return $this->belongsTo('App\Models\CustomerType', 'customer_type_id');
     }
 
     public function customer_balance_adjustments()
     {
-        return $this->hasMany('CustomerBalanceAdjustments\CustomerBalanceAdjustments');
+        return $this->hasMany('App\Models\CustomerBalanceAdjustments');
     }
-
+    public function customer_important_dates()
+    {
+        return $this->hasMany(CustomerImportantDate::class);
+    }
+    public function createBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function wages()
+    {
+        return $this->hasMany('App\Models\wage');
+    }
+    public function updateBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+    public function deleteBy()
+    {
+        return $this->belongsTo(User::class, 'deleted_by');
+    }
 }

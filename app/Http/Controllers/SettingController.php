@@ -32,7 +32,8 @@ class SettingController extends Controller
             $languages[$key] = $value['full_name'];
         }
         $currencies  = $this->allCurrencies();
-        return view('general-settings.index',compact('settings','languages','currencies'));
+        $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
+        return view('general-settings.index',compact('settings','languages','currencies','selected_currencies'));
     }
 
     /**
@@ -106,10 +107,9 @@ class SettingController extends Controller
     {
         $modules = User::modulePermissionArray();
         $module_settings = System::getProperty('module_settings') ? json_decode(System::getProperty('module_settings'), true) : [];
-
         return view('settings.module')->with(compact(
             'modules',
-            'module_settings',
+            'module_settings'
         ));
     }
 
@@ -170,6 +170,10 @@ class SettingController extends Controller
             System::updateOrCreate(
                 ['key' => 'dollar_exchange'],
                 ['value' => $request->dollar_exchange, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+            System::updateOrCreate(
+                ['key' => 'tax'],
+                ['value' => $request->tax, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             if (!empty($request->currency)) {
                 $currency = Currency::find($request->currency);

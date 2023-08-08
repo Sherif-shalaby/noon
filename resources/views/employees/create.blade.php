@@ -27,7 +27,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control selectpicker', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
@@ -148,10 +148,10 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_intime_picker',]) !!}
+                                                            {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker',]) !!}
                                                         </td>
                                                         <td>
-                                                            {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_outtime_picker',]) !!}
+                                                            {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker',]) !!}
                                                         </td>
                                                     </tr>
                                                 @endforeach

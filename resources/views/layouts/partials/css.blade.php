@@ -1,10 +1,15 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
+<link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">
 <!-- Start css -->
 <!-- Switchery css -->
 {{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
 <link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
+<!-- Select2 css -->
+<link href="{{asset('plugins/select2/select2.min.css')}}" rel="stylesheet" type="text/css">
+<!-- Tagsinput css -->
+{{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" rel="stylesheet" type="text/css">--}}
+{{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css')}}" rel="stylesheet" type="text/css">--}}
 <!-- DataTables css -->
 <link href="{{asset('plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{asset('plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
@@ -31,10 +36,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script type="text/javascript" src="{{asset('js/toastr/toastr.min.js')}}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
-
+<link rel="stylesheet" href="{{asset('js/jquery-ui.css')}}">
 <style>
     .error-help-block{
         color:red;
     }
+    input[type="text"],input[type="month"],textarea{
+       border:2px solid #939394 !important;
+    }
 </style>
+

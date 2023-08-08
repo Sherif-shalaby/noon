@@ -10,7 +10,7 @@ return [
     'created_by' => 'Created by',
     'dashboard' =>'Dashboard',
     'products' =>'Products',
-    'stock' =>'Stock',
+    'add-stock' =>'Stock',
     'cashier' =>'Cashier',
     'returns' =>'Returns',
     'employees' =>'Employees',
@@ -32,8 +32,6 @@ return [
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
     'update'=>'Update',
-
-
 
 ];
 

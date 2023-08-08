@@ -38,10 +38,12 @@ class CreateEmployeesTable extends Migration {
 			$table->string('check_out')->nullable();
             $table->integer('number_of_days_any_leave_added')->nullable();
             $table->string('working_day_per_week')->nullable();
-
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('restrict')
-                ->onUpdate('restrict');
+			$table->boolean('fixed_wage')->default('0');
+            $table->decimal('fixed_wage_value')->default('0');
+            $table->string('photo')->nullable();
+            // $table->foreign('user_id')->references('id')->on('users')
+            //     ->onDelete('restrict')
+            //     ->onUpdate('restrict');
 		});
 	}
 

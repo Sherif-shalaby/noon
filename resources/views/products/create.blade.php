@@ -32,18 +32,26 @@
                 ]) !!}
                 <div class="row">
                     <div class="col-md-3">
+                        {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'brand_id',
+                                $brands,null,
+                                ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'id'=>'brand_id']
+                            ) !!}
+                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         {!! Form::label('category', __('lang.category'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
                             {!! Form::select(
                                 'category_id',
                                 $categories,null,
-                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
+                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId']
                             ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
+                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
                         </div>
                         @error('category_id')
                             <label class="text-danger error-msg">{{ $message }}</label>
@@ -55,30 +63,12 @@
                             {!! Form::select(
                                 'subcategory_id[]',
                                 $categories,[],
-                                ['class' => 'js-example-placeholder-multiple js-states form-control select2 subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select')]
+                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'subCategoryId']
                             ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
+                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::select(
-                                'brand_id',
-                                $brands,null,
-                                ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
-                            ) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                            <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
+                    
                   
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
@@ -86,9 +76,9 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,[],
-                                ['class' => 'js-example-placeholder-multiple js-states form-control select2','multiple'=>"multiple",'placeholder'=> __('lang.please_select')]
+                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'store_id']
                             ) !!}
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 
                         </div>
                     </div>
@@ -181,9 +171,9 @@
                                     {!! Form::select(
                                         'unit_id',
                                         $units,null,
-                                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'id'=>'unit_id']
                                     ) !!}
-                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create">
+                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 </div>
@@ -213,11 +203,14 @@
                                         <thead>
                                         <tr>
                                             {{-- <th style="width: 20%;">@lang('lang.discount_type')</th> --}}
+                                            <th style="width: 10%;">@lang('lang.type')</th>
                                             <th style="width: 10%;">@lang('lang.price_category')</th>
-                                            <th style="width: 15%;">@lang('lang.price')</th>
-                                            <th style="width: 5%;"></th>
-                                            <th style="width: 20%;">@lang('lang.price_start_date')</th>
-                                            <th style="width: 20%;">@lang('lang.price_end_date')</th>
+                                            <th style="width: 10%;">@lang('lang.price')</th>
+                                            <th style="width: 10%;">@lang('lang.quantity')</th>
+                                            <th style="width: 11%;">@lang('lang.b_qty')</th>
+                                            <th style="width: 3%;"></th>
+                                            <th style="width: 17%;">@lang('lang.price_start_date')</th>
+                                            <th style="width: 17%;">@lang('lang.price_end_date')</th>
                                             <th style="width: 20%;">@lang('lang.customer_type') <i class="dripicons-question" data-toggle="tooltip"
                                                                                                 title="@lang('lang.discount_customer_info')"></i></th>
                                             <th style="width: 5%;"><button class="btn btn-xs btn-primary add_price_row"
@@ -317,9 +310,10 @@
             </div>
         </div>
     </div>
-    @include('store.create')
-    @include('units.create')
-    @include('brands.create')
+    @include('store.create',['quick_add'=>$quick_add])
+    @include('units.create',['quick_add'=>$quick_add])
+    @include('brands.create',['quick_add'=>$quick_add])
+    @include('categories.create_modal',['quick_add'=>$quick_add])
 @endsection
 @push('javascripts')
 <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">

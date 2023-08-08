@@ -8,10 +8,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="form" action="{{ route('units.store') }}" method="POST" id="unit-form">
+            <form class="form" action="{{ route('units.store') }}" method="POST" id={{isset($quick_add)&&$quick_add ?'quick_add_unit_form' : 'unit-form'}}>
                 @csrf
                 <div class="modal-body">
                     <div class="form-group ">
+                        <input type="hidden" name="quick_add" value="{{ isset($quick_add)&&$quick_add?$quick_add:'' }}">
                         <label for="name">@lang('units.unitname')</label>
                         <div class="select_body d-flex justify-content-between align-items-center">
                             <input type="text" required class="form-control"
@@ -20,7 +21,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                             <button class="btn btn-primary btn-sm ml-2" type="button"
-                                data-toggle="collapse" data-target="#translation_table_unit"
+                                data-toggle="collapse" data-target="#translation_table_customer_types"
                                 aria-expanded="false" aria-controls="collapseExample">
                                 {{ __('categories.addtranslations') }}
                             </button>
@@ -28,7 +29,7 @@
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',
                             'translations' => [],
-                            'type' => 'unit',
+                            'type' => 'customer_types',
                         ])
                     </div>
                     <div class="form-group">
@@ -43,7 +44,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('cancel') }}</button>
-                    <button type="submit" class="btn btn-primary">{{ __('save') }}</button>
+                    <button  id="create-unit-btn" class="btn btn-primary">{{__('lang.save')}}</button>
                 </div>
             </form>
         </div>
@@ -52,4 +53,5 @@
 @push('js')
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\UnitRequest','#unit-form'); !!}
+{!! JsValidator::formRequest('App\Http\Requests\UnitRequest','#quick_add_unit_form'); !!}
 @endpush

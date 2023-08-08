@@ -9,9 +9,21 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
+use App\Utils\Util;
 class UnitController extends Controller
 {
+    protected $Util;
+
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
     public function index(){
         $units = Unit::latest()->paginate(10);
         return view('units.index', compact('units'));
@@ -27,9 +39,10 @@ class UnitController extends Controller
             }else{
                 $input['translation']=[];
             }
-            Unit::create($input);
+            $unit=Unit::create($input);
             $output = [
                 'success' => true,
+                'id' => $unit->id,
                 'msg' => __('lang.success')
             ];
         } catch (\Exception $e) {
@@ -38,6 +51,9 @@ class UnitController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
+        }
+        if ($request->quick_add) {
+            return $output;
         }
         return redirect()->back()->with('status', $output);
     }
@@ -83,5 +99,11 @@ class UnitController extends Controller
             ];
         }
         return $output;
+    }
+    public function getDropdown()
+    {
+        $units = Unit::orderBy('name', 'asc')->pluck('name', 'id');
+        $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
+        return $units_dp;
     }
 }

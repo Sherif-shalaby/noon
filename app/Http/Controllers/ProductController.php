@@ -12,24 +12,60 @@ use App\Models\ProductPrice;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\Unit;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
+use App\Utils\Util;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller 
 {
+    protected $Util;
 
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
   /**
    * Display a listing of the resource.
    *
    * @return Response
    */
-  public function index()
+  public function index(Request $request)
   {
-    $products=Product::latest()->get();
-    return view('products.index',compact('products'));
+    $products=Product::
+        when(\request()->category_id != null, function ($query) {
+            $query->where('category_id',\request()->category_id);
+        })
+        ->when(\request()->unit_id != null, function ($query) {
+            $query->where('unit_id',\request()->unit_id);
+        })
+        ->when(\request()->store_id != null, function ($query) {
+            $query->where('store_id',\request()->store_id);
+        })
+        ->when(\request()->brand_id != null, function ($query) {
+            $query->where('brand_id',\request()->brand_id);
+        })
+        ->when(\request()->created_by != null, function ($query) {
+            $query->where('created_by',\request()->created_by);
+        })
+        ->latest()->get();
+    $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+    $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+    $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+    $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+    $users=User::orderBy('created_at', 'desc')->pluck('name','id');
+    return view('products.index',compact('products','categories','brands','units','stores','users'));
   }
 
   /**
@@ -43,7 +79,8 @@ class ProductController extends Controller
       $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
-      return view('products.create',compact('categories','brands','units','stores'));
+      $quick_add=1;
+      return view('products.create',compact('categories','brands','units','stores','quick_add'));
   }
 
   /**
@@ -54,13 +91,14 @@ class ProductController extends Controller
   public function store(ProductRequest $request)
   {
     // return $request->all();
-    // try{
+    try{
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
         'category_id' => $request->category_id,
         // 'store_id' =>  !empty($request->subcategory_id) ?$request->subcategory_id: [],
         'brand_id' => $request->brand_id,
+        'unit_id' => $request->unit_id,
         'sku' => !empty($request->sku) ? $request->sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
@@ -99,35 +137,37 @@ class ProductController extends Controller
             $index_prices=array_keys($request->price_category);
         }
     }
-
-
-    foreach ($index_prices as $index_price){
-        $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
+    foreach ($index_prices as $index_price){   
+    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
+            'price_type' => $request->price_type[$index_price],
             'price' => $request->price[$index_price],
+            'quantity' => $request->quantity[$index_price],
+            'bonus_quantity' => $request->bonus_quantity[$index_price],
             'price_category' => $request->price_category[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types_'.$index_price),
-            // 'price_customers' => $price_customers,
+            'price_customer_types' => $request->get('price_customer_types'.$index_price),
             'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
             'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
             'created_by' => Auth::user()->id,
         ];
-
         ProductPrice::create($data_des);
     }
+
+
+
     $output = [
         'success' => true,
         'msg' => __('lang.success')
     ];
-    //  } catch (\Exception $e) {
-    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-    //         $output = [
-    //             'success' => false,
-    //             'msg' => __('lang.something_went_wrong')
-    //         ];
-    // }
+     } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+    }
     return redirect()->back()->with('status', $output);
   }
   public function getPriceCustomerFromType($customer_types)
@@ -183,7 +223,14 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-    
+      $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+      $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+      $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+      $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+      $quick_add=1;
+      $product=Product::find($id);
+      $customer_types = CustomerType::pluck('name', 'id');
+      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types'));
   }
 
   /**
@@ -192,9 +239,93 @@ class ProductController extends Controller
    * @param  int  $id
    * @return Response
    */
-  public function update($id)
+  public function update($id,Request $request)
   {
-    
+    // return $request->all();
+    // try{
+      $product_data = [
+        'name' => $request->name,
+        'translations' => !empty($request->translations) ? $request->translations : [],
+        'category_id' => $request->category_id,
+        'brand_id' => $request->brand_id,
+        // 'unit_id' => $request->unit_id,
+        'sku' => !empty($request->sku) ? $request->sku : $this->generateSku($request->name),
+        'height' => $request->height,
+        'length' => $request->length,
+        'width' => $request->width,
+        'size' => $request->size,
+        'weight' => $request->weight,
+        'details' => $request->details,
+        'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
+        'active' => !empty($request->active) ? 1 : 0,
+        'edited_by' => Auth::user()->id,
+    ];
+    $product = Product::find($id);
+    $product->update($product_data);
+
+    if(!empty($request->subcategory_id)){
+        $product->subcategories()->sync($request->subcategory_id);
+    }
+    if(!empty($request->store_id)){
+        $product->stores()->sync($request->store_id);
+    }
+
+    if ($request->has('image') && !is_null('image')) {
+        $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
+        if(File::exists($image_path)) {
+            File::delete($image_path);
+        }
+
+        $imageData = $this->getCroppedImage($request->image);
+        $extention = explode(";", explode("/", $imageData)[1])[0];
+        $image = rand(1, 1500) . "_image." . $extention;
+        $filePath = public_path('uploads/products/' . $image);
+        $image = $image;
+        $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
+        $product->image=$image;
+        $product->save();
+    }
+
+
+
+    $index_prices=[];
+    $product->product_prices()->delete();
+   $index_prices=[];
+    if($request->has('price_category')){
+        if(count($request->price_category)>0){
+            $index_prices=array_keys($request->price_category);
+        }
+    }
+    foreach ($index_prices as $index_price){   
+    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
+        $data_des=[
+            'product_id' => $product->id,
+            'price_type' => $request->price_type[$index_price],
+            'price_category' => $request->price_category[$index_price],
+            'price' => $request->price[$index_price],
+            'quantity' => $request->quantity[$index_price],
+            'bonus_quantity' => $request->bonus_quantity[$index_price],
+            'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
+            'price_customer_types' => $request->get('price_customer_types'.$index_price),
+            // 'price_customers' => $price_customers,
+            'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
+            'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
+            'created_by' => Auth::user()->id,
+        ];
+        ProductPrice::create($data_des);
+    }
+    $output = [
+        'success' => true,
+        'msg' => __('lang.success')
+    ];
+    //  } catch (\Exception $e) {
+    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+    //         $output = [
+    //             'success' => false,
+    //             'msg' => __('lang.something_went_wrong')
+    //         ];
+    // }
+    return redirect()->back()->with('status', $output);
   }
 
   /**
@@ -205,7 +336,27 @@ class ProductController extends Controller
    */
   public function destroy($id)
   {
-    
+    try {
+        $product=Product::find($id);
+        $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
+        if(File::exists($image_path)) {
+            File::delete($image_path);
+        }
+        $product->deleted_by = Auth::user()->id;
+        $product->save();
+        $product->delete();
+        $output = [
+            'success' => true,
+            'msg' => __('lang.success')
+        ];
+      } catch (\Exception $e) {
+          Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+          $output = [
+              'success' => false,
+              'msg' => __('lang.something_went_wrong')
+          ];
+      }
+      return $output;
   }
   public function getRawPrice()
   {
