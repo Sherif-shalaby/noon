@@ -1,5 +1,5 @@
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
-     style="display: none;" aria-hidden="true">
+{{--<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"--}}
+{{--     style="display: none;" aria-hidden="true">--}}
     <div class="modal-dialog" role="document">
         <div class="modal-content">
 
@@ -21,8 +21,10 @@
                             {!! Form::label('amount', __('lang.amount') . ':*', []) !!} <br>
                             @if (isset($transaction->return_parent))
                                 {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount') - $transaction->return_parent->final_total), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
+                                <input type="hidden" name="total" value="{{  @num_format($transaction->dollar_final_total - $transaction->transaction_payments->sum('amount') - $transaction->return_parent->final_total) }}">
                             @else
                                 {!! Form::text('amount', @num_format($transaction->final_total - $transaction->transaction_payments->sum('amount')), ['class' => 'form-control', 'placeholder' => __('lang.amount')]) !!}
+                                <input type="hidden" name="total" value="{{@num_format($transaction->dollar_final_total - $transaction->transaction_payments->sum('amount'))}}">
                             @endif
 
                         </div>
@@ -37,7 +39,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="paying_currency">@lang('lang.paying_currency') :*</label>
-                            {!! Form::select('paying_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required']) !!}
+                            {!! Form::select('paying_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'id' => 'paying_currency']) !!}
                             @error('paying_currency')
                             <span class="error text-danger">{{ $message }}</span>
                             @enderror
@@ -85,9 +87,10 @@
 
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div>
+{{--</div>--}}
 <script>
     $('#source_type').change(function() {
+        alert($(this).val());
         if ($(this).val() !== '') {
             $.ajax({
                 method: 'get',
@@ -97,6 +100,17 @@
                     $("#source_id").empty().append(result);
                 },
             });
+        }
+    });
+
+    $('#paying_currency').change(function() {
+        if ($(this).val() !== '') {
+           if($(this).val() == 2){
+                var exchange_rate = document.getElementById("exchange_rate").value;
+
+               alert(exchange_rate);
+           }
+
         }
     });
 </script>

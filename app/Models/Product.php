@@ -31,6 +31,7 @@ class Product extends Model
         }
         return $value;
     }
+
     public function getDetailsAttribute($value)
     {
         if (!is_null($this->details_translations)) {
@@ -56,6 +57,7 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Brand', 'brand_id');
     }
+
     public function unit()
     {
         return $this->belongsTo('App\Models\Unit', 'unit_id');
@@ -65,14 +67,17 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Models\Store', 'product_stores');
     }
+
     public function subcategories()
     {
         return $this->belongsToMany('App\Models\Category', 'product_subcategories');
     }
+
     public function product_prices()
     {
         return $this->hasMany('App\Models\ProductPrice');
     }
+
     public function createBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -82,12 +87,19 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'edited_by');
     }
+
     public function deleteBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
-    public function productdetails()
+
+    public function store()
     {
         return $this->hasOne(ProductStore::class);
+    }
+
+    public function stock_lines()
+    {
+        return $this->hasMany(AddStockLine::class);
     }
 }

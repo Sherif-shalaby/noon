@@ -25,10 +25,10 @@ $(document).ready(function() {
             ['copy', 'csv', 'excel', 'pdf',
             {
             extend: 'print',
-            exportOptions: {
-                columns: ":visible:not(.notexport)"
+            exportOptions: {columns: ":visible:not(.notexport)"}
             }
-        }],
+            // ,'colvis'
+            ],
 
 
     });
