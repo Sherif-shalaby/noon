@@ -55,9 +55,10 @@
                                         <li class="divider"></li>
                                         @if ($stock->payment_status != 'paid')
                                        <li>
-                                            <a data-href="{{route('stocks.add_payment',  $stock->id) }}"
-                                               data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
-                                                @lang('lang.pay') </a>
+{{--                                            <a data-href="{{route('stocks.add_payment',  $stock->id) }}"--}}
+{{--                                               data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>--}}
+{{--                                                @lang('lang.pay') </a>--}}
+                                           <a class="btn btn-modal" wire:click="addPayment({{$stock->id}})"><i class="fa fa-money"></i>@lang('lang.pay') </a>
                                         </li>
                                         @endif
 {{--                                        <li class="divider"></li>--}}

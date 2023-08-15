@@ -201,18 +201,11 @@ class EmployeeController extends Controller
       $commission_calculation_period = Employee::commissionCalculationPeriod();
       $modulePermissionArray = User::modulePermissionArray();
       $subModulePermissionArray = User::subModulePermissionArray();
-
-      $employee = Employee::findOrFail($id);
+      $employee = Employee::find($id);
       $user = $employee->user()->get();
       $stores = Store::pluck('name', 'id')->toArray();
+      $selected_stores = $employee->stores->pluck('id');
       $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
-
-//      $number_of_leaves = LeaveType::leftjoin('number_of_leaves', function ($join) use ($id) {
-//          $join->on('leave_types.id', 'number_of_leaves.leave_type_id')->where('employee_id', $id);
-//      })
-//          ->select('leave_types.id', 'leave_types.name', 'leave_types.number_of_days_per_year as number_of_days', 'number_of_leaves.enabled')
-//          ->groupBy('leave_types.id')
-//          ->get();
 
       return view('employees.edit')->with(compact(
           'jobs',
@@ -228,7 +221,8 @@ class EmployeeController extends Controller
           'commission_calculation_period',
           'modulePermissionArray',
           'subModulePermissionArray',
-          'user'
+          'user',
+          'selected_stores'
       ));
 
   }
@@ -241,6 +235,7 @@ class EmployeeController extends Controller
    */
   public function update($id ,Request $request)
   {
+//      dd($request);
       $validated = $request->validate([
           'email' => 'required|email|max:255',
           'name' => 'required|max:255'
@@ -263,7 +258,7 @@ class EmployeeController extends Controller
 
           $employee_data = [
               'employee_name' => $data['name'],
-              'store_id' => !empty($data['store_id']) ? $data['store_id'] : [],
+//              'store_id' => !empty($data['store_id']) ? $data['store_id'] : [],
               'date_of_start_working' => $data['date_of_start_working'],
               'date_of_birth' => $data['date_of_birth'],
               'job_type_id' => $data['job_type_id'],
@@ -287,6 +282,7 @@ class EmployeeController extends Controller
               'check_out' => $data['check_out'],
 
           ];
+
           if (!empty($request->input('password'))) {
               $validated = $request->validate([
                   'password' => 'required|confirmed|max:255',
@@ -312,7 +308,8 @@ class EmployeeController extends Controller
           }
 
 
-          Employee::where('id', $id)->update($employee_data);
+         $employee->update($employee_data);
+         $employee->stores()->sync($data['store_id']);
 
           //add of update number of leaves
           $this->createOrUpdateNumberofLeaves($request, $id);
@@ -341,6 +338,7 @@ class EmployeeController extends Controller
               'success' => false,
               'msg' => __('lang.something_went_wrong')
           ];
+          dd($e);
           return redirect()->back()->with('status', $output);
       }
   }

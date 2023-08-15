@@ -42,39 +42,39 @@
     </td>
 
     <td class="dollar_section d-">
-        <input type="text" class="form-control purchase_price" wire:model="dollar_purchase_price.{{ $index }}"  wire:change="change_purchase_price({{ $index }})" required>
+        <input type="text" class="form-control purchase_price" wire:model="dollar_purchase_price.{{ $index }}" required>
         @error('purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td class="dollar_section d-">
-        <input type="text" class="form-control selling_price" wire:model="dollar_selling_price.{{ $index }}"  wire:change="change_selling_price({{ $index }})"required>
+        <input type="text" class="form-control selling_price" wire:model="dollar_selling_price.{{ $index }}" required>
         @error('selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td class="dollar_section d-">
-        @if(isset($quantity[$index]) &&  isset($dollar_purchase_price[$index]))
+        @if(isset($quantity[$index]) &&  (isset($dollar_purchase_price[$index]) || isset($purchase_price[$index])))
             <span class="sub_total_span" >
                 {{$this->dollar_sub_total($index)}}
             </span>
         @endif
     </td>
     <td>
-        <input type="text" class="form-control purchase_price" wire:model="purchase_price.{{ $index }}"  wire:change="change_dollar_purchase_price({{ $index }})" required>
+        <input type="text" class="form-control purchase_price" wire:model="purchase_price.{{ $index }}"   required>
         @error('purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td>
 
-        <input type="text" class="form-control selling_price" wire:model="selling_price.{{ $index }}" wire:change="change_dollar_selling_price({{ $index }})" required>
+        <input type="text" class="form-control selling_price" wire:model="selling_price.{{ $index }}"  required>
         @error('selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td>
-        @if(isset($quantity[$index]) && (isset($purchase_price[$index])))
+        @if(isset($quantity[$index]) && (isset($purchase_price[$index]) || isset($dollar_purchase_price)))
             <span class="sub_total_span" >
                 {{$this->sub_total($index)}}
             </span>
@@ -119,9 +119,9 @@
     </td>
 
     <td class="dollar_section d-">
-        @if(isset($quantity[$index]) && isset($dollar_purchase_price[$index]))
+        @if(isset($quantity[$index]) &&( isset($dollar_purchase_price[$index]) || isset($purchase_price[$index])))
             <span class="dollar_cost">
-                {{$this->dollar_cost($index) }}
+                {{ $this->dollar_cost($index) }}
             </span>
         @else
             {{0.00}}
@@ -129,7 +129,7 @@
     </td>
 
     <td class="dollar_section d-">
-        @if(isset($quantity[$index]) && isset($dollar_purchase_price[$index]))
+        @if(isset($quantity[$index]) && (isset($dollar_purchase_price[$index]) || isset($purchase_price[$index])))
             <span class="dollar_total_cost">
                 {{$this->dollar_total_cost($index) }}
             </span>
@@ -138,7 +138,7 @@
         @endif
     </td>
     <td>
-        @if(isset($quantity[$index]) && isset($purchase_price[$index]))
+        @if(isset($quantity[$index]) && (isset($purchase_price[$index]) || isset($dollar_purchase_price[$index])))
             <span class="cost">
                 {{$this->cost($index) }}
             </span>
@@ -147,7 +147,7 @@
         @endif
     </td>
     <td>
-        @if(isset($quantity[$index]) && isset($purchase_price[$index]))
+        @if(isset($quantity[$index]) && (isset($purchase_price[$index]) || isset($dollar_purchase_price[$index])))
             <span class="total_cost">
                 {{$this->total_cost($index) }}
             </span>

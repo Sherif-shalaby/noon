@@ -330,6 +330,15 @@ return array(
     'days_before_the_expiry_date' => 'قبل أيام من تاريخ انتهاء الصلاحية',
     'convert_status_expire' => 'تحويل حالتها إلى منتهية الصلاحية',
     'payment_details' => 'بيانات الدفع',
+    'select_job_type' => 'اختر وظيفة',
+    'update_employee' => 'تحديث الموظف',
+    'edit_employee' => 'تعديل الموظف',
+    'kindly_assign_pos_for_that_user_to_able_to_use_it' => 'يرجى تخصيص نقاط البيع لهذا المستخدم ليتمكن من استخدامه',
+    'received_currency' => 'العملة المُستلمة',
+    'product' => 'منتج',
+    'discount_category' => 'فئة الخصم',
+    'current_stock' => 'المخزون الحالي',
+
 
 );
 

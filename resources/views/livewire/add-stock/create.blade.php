@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'wire:model' => 'supplier']) !!}
+                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()']) !!}
                                     @error('supplier')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                    <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{$exchange_rate}}" disabled>
+                                    <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{number_format($exchange_rate,2)}}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -133,10 +133,10 @@
                                         @endforeach
                                         <tr >
                                             <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
-                                            <td> {{array_sum($dollar_sub_total)}} </td>
+                                            <td> {{$this->sum_dollar_tsub_total()}} </td>
                                             <td></td>
                                             <td></td>
-                                            <td> {{array_sum($sub_total)}} </td>
+                                            <td> {{$this->sum_sub_total()}} </td>
                                             <td></td>
                                             <td style="width: 10%">
                                                 {{$this->sum_size() ?? 0}}
@@ -170,7 +170,15 @@
                         <br>
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
-                                <h3> @lang('lang.total') :  {{$this->sum_total_cost() ?? 0}} <span class="final_total_span"></span> </h3>
+                                <h3> @lang('lang.total') :
+                                    @if($paying_currency == 2)
+                                        {{$this->sum_dollar_total_cost() ?? 0.00}}
+                                    @else
+                                        {{$this->sum_total_cost() ?? 0.00}}
+
+                                    @endif
+
+                                    <span class="final_total_span"></span> </h3>
                                 <input type="hidden" name="grand_total" id="grand_total" value="0">
                                 <input type="hidden" name="final_total" id="final_total" value="0">
                             </div>

@@ -311,6 +311,14 @@ return [
     'days_before_the_expiry_date' => 'Days Before The Expiry Date',
     'convert_status_expire' => 'Convert To Status Expire',
     'payment_details' => 'Payment Details',
+    'select_job_type' => 'Select Job',
+    'update_employee' => 'Update Employee',
+    'edit_employee' => 'Edit Employee',
+    'kindly_assign_pos_for_that_user_to_able_to_use_it' => ' Kindly assign POS for that user to be able to use it',
+    'received_currency' => 'Received Currency',
+    'product' => 'Product',
+    'discount_category' => 'Discount Category',
+    'current_stock' => 'Current Stock',
 
 ];
 

@@ -10,6 +10,7 @@ use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
 use App\Models\StorePos;
+use App\Models\Supplier;
 use App\Models\System;
 use App\Models\User;
 use App\Utils\MoneySafeUtil;
@@ -175,6 +176,9 @@ class AddStockController extends Controller
             DB::beginTransaction();
 
             $transaction_payment = StockTransactionPayment::create($payment_data);
+            if(!empty($transaction->supplier->exchange_rate) && $transaction->supplier->exchange_rate !=  $request->exchange_rate){
+                Supplier::find($transaction->supplier->id)->update(['exchange_rate' => $request->exchange_rate]);
+            }
 
 //            if ($request->upload_documents) {
 //                foreach ($request->file('upload_documents', []) as $key => $doc) {
@@ -251,6 +255,7 @@ class AddStockController extends Controller
 
         return $this->commonUtil->createDropdownHtml($array, __('lang.please_select'));
     }
+
 
 
 }

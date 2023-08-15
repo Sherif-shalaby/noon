@@ -135,7 +135,7 @@
                   <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
 
-                  @if(!empty($module_settings['stock_module']))
+                  @if(!empty($module_settings['cashier_module']))
                       <li>
                           <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
                       </li>
