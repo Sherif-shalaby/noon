@@ -72,18 +72,6 @@
                         @endforeach
                         </tbody>
                         <tfoot>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <th class="table_totals" style="text-align: right">@lang('lang.total')</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
                         </tfoot>
                     </table>
                 </div>

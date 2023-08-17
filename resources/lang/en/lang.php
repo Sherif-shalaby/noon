@@ -322,7 +322,14 @@ return [
     'invoice_currency' => 'Invoice Currency',
     'change_exchange_rate_to_supplier' => 'Change Exchange Rate To Supplier',
     'close' => 'Close',
-
+    'received' => 'Received',
+    'partially_received' => 'Partially Received',
+    'items_quantity' => 'Items Quantity',
+    'items_count' => 'Items Count',
+    'paid' => 'Paid',
+    'partially_paid' => 'Partially Paid',
+    'pay_later' => 'Pay Later',
+    'add-stock' => 'Add Stock'
 ];
 
 
