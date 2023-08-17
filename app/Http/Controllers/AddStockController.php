@@ -40,42 +40,6 @@ class AddStockController extends Controller
 
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return void
-     */
-    public function create()
-    {
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function store(Request $request)
-    {
-        dd($request);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Application|Factory|View
-     */
     public function show($id)
     {
         $add_stock = StockTransaction::find($id);
@@ -91,41 +55,6 @@ class AddStockController extends Controller
         ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param  int  $id
-     * @return void
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return array
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-
     public function addPayment($transaction_id){
 
         $payment_type_array = $this->commonUtil->getPaymentTypeArray();
@@ -134,6 +63,7 @@ class AddStockController extends Controller
         $exchange_rate = $transaction->transaction_payments()->latest()->first()->exchange_rate;
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
+        $pending_amount = $this->calculatePendingAmount($transaction_id);
 
         $supplier = $transaction->supplier->id;
 
@@ -147,37 +77,39 @@ class AddStockController extends Controller
             'transaction',
             'users',
             'exchange_rate',
-            'selected_currencies'
+            'selected_currencies',
+            'pending_amount'
         ));
     }
 
     public function storePayment(Request $request,$transaction_id){
 
-//        dd($request);
         try {
             $data = $request->except('_token');
 
-            $transaction = StockTransaction::find($request->transaction_id);
+
+            $transaction = StockTransaction::find($transaction_id);
+
+            // add Stock Payment.
+
             $payment_data = [
-                'stock_transaction_id' =>  $request->transaction_id,
+                'stock_transaction_id' =>  $transaction_id,
                 'amount' => $this->commonUtil->num_uf($request->amount),
                 'method' => $data['method'],
                 'paid_on' => $this->commonUtil->uf_date($data['paid_on']) . ' ' . date('H:i:s'),
-                'ref_number' => $request->ref_number,
-                'bank_deposit_date' => !empty($data['bank_deposit_date']) ? $this->commonUtil->uf_date($data['bank_deposit_date']) : null,
-                'bank_name' => $request->bank_name,
-                'card_number' => $request->card_number,
-                'card_month' => $request->card_month,
-                'card_year' => $request->card_year,
                 'exchange_rate' => $request->exchange_rate,
                 'created_by' => Auth::user()->id,
-                'payment_for' => !empty($data['payment_for']) ? $data['payment_for'] : $transaction->customer_id,
+//                'payment_for' => !empty($data['payment_for']) ? $data['payment_for'] : $transaction->customer_id,
+                'paying_currency' => $request->paying_currency,
             ];
             DB::beginTransaction();
 
             $transaction_payment = StockTransactionPayment::create($payment_data);
-            if(!empty($transaction->supplier->exchange_rate) && $transaction->supplier->exchange_rate !=  $request->exchange_rate){
-                Supplier::find($transaction->supplier->id)->update(['exchange_rate' => $request->exchange_rate]);
+
+            //update Exchange Rate to supplier.
+
+            if(isset($request->change_exchange_rate_to_supplier)){
+                $transaction->supplier->update(['exchange_rate' => $request->exchange_rate]);
             }
 
 //            if ($request->upload_documents) {
@@ -185,7 +117,7 @@ class AddStockController extends Controller
 //                    $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
 //                }
 //            }
-            // check user and add money to user
+            // check user and add money to user.
             if ($data['method'] == 'cash') {
                 $user_id = null;
                 if (!empty($request->source_id)) {
@@ -217,6 +149,7 @@ class AddStockController extends Controller
                     }
                 }
             }
+
 
             $this->stockTransactionUtil->updateTransactionPaymentStatus($transaction->id);
 
@@ -254,6 +187,108 @@ class AddStockController extends Controller
         }
 
         return $this->commonUtil->createDropdownHtml($array, __('lang.please_select'));
+    }
+
+    public function  getPayingCurrency(Request $request,$currency)
+    {
+        $transaction_id = $request->query('transaction');
+        $pending_amount = $request->query('pending_amount');
+        $exchange_rate = $request->query('exchange_rate');
+        $amount = 0;
+        $transaction = StockTransaction::find($transaction_id);
+        if(!empty($currency)){
+            if($transaction->transaction_currency == 2){
+                if($currency == 2){
+                    $amount = $pending_amount;
+                }
+
+                else{
+                    $amount = $pending_amount * $exchange_rate;
+                }
+            }
+            else{
+                if($currency == 2){
+                    $amount = $pending_amount / $exchange_rate;
+                }
+                else{
+                    $amount = $pending_amount;
+                }
+            }
+        }
+        else{
+            $amount = $pending_amount;
+        }
+
+        return $amount;
+    }
+
+    public function calculatePendingAmount($transaction_id): string
+    {
+        $transaction = StockTransaction::find($transaction_id);
+        $final_total = 0;
+        $pending = 0;
+        $amount = 0;
+        $payments = $transaction->transaction_payments;
+        if($transaction->transaction_currency == 2){
+            $final_total = $transaction->dollar_final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $amount += $payment->amount;
+                    $pending = $final_total - $amount;
+                }
+                else{
+                    $amount += $payment->amount / $payment->exchange_rate;
+                    $pending = $final_total - $amount;
+                }
+            }
+        }
+        else {
+            $final_total = $transaction->final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $amount += $payment->amount * $payment->exchange_rate;
+                    $pending = $final_total - $amount;
+                }
+                else{
+                    $amount += $payment->amount;
+                    $pending = $final_total - $amount;;
+                }
+            }
+        }
+
+        return number_format($pending,2);
+    }
+
+    public function calculatePaidAmount($transaction_id): string
+    {
+        $transaction = StockTransaction::find($transaction_id);
+        $final_total = 0;
+        $paid = 0;
+        $payments = $transaction->transaction_payments;
+        if($transaction->transaction_currency == 2){
+            $final_total = $transaction->dollar_final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $paid = $payment->amount;
+                }
+                else{
+                    $paid = $payment->amount / $payment->exchange_rate;
+                }
+            }
+        }
+        else {
+            $final_total = $transaction->final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $paid = $payment->amount * $payment->exchange_rate;
+                }
+                else{
+                    $paid = $payment->amount;
+                }
+            }
+        }
+
+        return number_format($paid,2);
     }
 
 

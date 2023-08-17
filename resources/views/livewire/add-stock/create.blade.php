@@ -47,8 +47,8 @@
                         <div class="col-md-12 mt-2">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="paying_currency">@lang('lang.paying_currency') :*</label>
-                                    {!! Form::select('paying_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'wire:model' => 'paying_currency']) !!}
+                                    <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
+                                    {!! Form::select('invoice_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'wire:model' => 'transaction_currency']) !!}
                                     @error('paying_currency')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -96,34 +96,38 @@
                         <br>
                         <div class="row">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered m-0">
+                                <table class="table" style="width: auto" >
                                     <thead>
                                     <tr>
                                         <th>#</th>
 {{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th>--}}
                                         <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.sku')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.quantity')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.unit')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.fill')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_quantity')</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.purchase_price') (@lang('lang.per_piece')) $</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.selling_price') $</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.sub_total') $</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.purchase_price') (@lang('lang.per_piece'))</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.selling_price')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.sub_total')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.size')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_size')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.weight')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_weight')</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.cost') (@lang('lang.per_piece')) $</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.total_cost') $</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.cost') (@lang('lang.per_piece'))</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_cost')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.new_stock')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.change_current_stock')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.action')</th>
+                                        <th style="width: 10%" >@lang('lang.sku')</th>
+                                        <th style="width: 10%">@lang('lang.quantity')</th>
+                                        <th style="width: 10%">@lang('lang.unit')</th>
+                                        <th style="width: 10%">@lang('lang.fill')</th>
+                                        <th style="width: 10%">@lang('lang.total_quantity')</th>
+                                        @if ($showColumn)
+                                            <th style="width: 10%">@lang('lang.purchase_price') (@lang('lang.per_piece')) $</th>
+                                            <th style="width: 10%">@lang('lang.selling_price') $</th>
+                                            <th style="width: 10%">@lang('lang.sub_total') $</th>
+                                        @endif
+                                        <th style="width: 10%">@lang('lang.purchase_price') (@lang('lang.per_piece')) </th>
+                                        <th style="width: 10%">@lang('lang.selling_price') </th>
+                                        <th style="width: 10%">@lang('lang.sub_total')</th>
+                                        <th style="width: 10%">@lang('lang.size')</th>
+                                        <th style="width: 10%">@lang('lang.total_size')</th>
+                                        <th style="width: 10%">@lang('lang.weight')</th>
+                                        <th style="width: 10%">@lang('lang.total_weight')</th>
+                                        @if ($showColumn)
+                                            <th style="width: 10%">@lang('lang.cost') (@lang('lang.per_piece')) $</th>
+                                            <th style="width: 10%">@lang('lang.total_cost') $</th>
+                                        @endif
+                                        <th style="width: 10%">@lang('lang.cost') (@lang('lang.per_piece'))</th>
+                                        <th style="width: 10%">@lang('lang.total_cost')</th>
+                                        <th style="width: 10%">@lang('lang.new_stock')</th>
+                                        <th style="width: 10%">@lang('lang.change_current_stock')</th>
+                                        <th style="width: 10%">@lang('lang.action')</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -131,26 +135,30 @@
                                         @foreach($selectedProductData  as $index => $product)
                                             @include('add-stock.partials.product_row')
                                         @endforeach
-                                        <tr >
+                                        <tr>
                                             <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
-                                            <td> {{$this->sum_dollar_tsub_total()}} </td>
-                                            <td></td>
-                                            <td></td>
+                                            @if ($showColumn)
+                                                <td> {{$this->sum_dollar_tsub_total()}} </td>
+                                                <td></td>
+                                                <td></td>
+                                            @endif
                                             <td> {{$this->sum_sub_total()}} </td>
                                             <td></td>
-                                            <td style="width: 10%">
+                                            <td style="">
                                                 {{$this->sum_size() ?? 0}}
                                             </td>
                                             <td></td>
-                                            <td  style="width: 10%;">
+                                            <td  style=";">
                                                 {{$this->sum_weight() ?? 0}}
                                             </td>
                                             <td></td>
-                                            <td  style="width: 10%;">
-                                                {{$this->sum_dollar_total_cost() ?? 0}}
-                                            </td>
-                                            <td></td>
-                                            <td  style="width: 10%;">
+                                            @if ($showColumn)
+                                                <td>
+                                                    {{$this->sum_dollar_total_cost() ?? 0}}
+                                                </td>
+                                                <td></td>
+                                            @endif
+                                            <td  style=";">
                                                 {{$this->sum_total_cost() ?? 0}}
                                             </td>
 

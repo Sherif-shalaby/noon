@@ -338,6 +338,8 @@ return array(
     'product' => 'منتج',
     'discount_category' => 'فئة الخصم',
     'current_stock' => 'المخزون الحالي',
+    'invoice_currency' => 'عمله الفاتوره' ,
+    'change_exchange_rate_to_supplier' => 'تغيير سعر الصرف للمورد',
 
 
 );
