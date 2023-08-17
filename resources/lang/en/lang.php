@@ -319,6 +319,9 @@ return [
     'product' => 'Product',
     'discount_category' => 'Discount Category',
     'current_stock' => 'Current Stock',
+    'invoice_currency' => 'Invoice Currency',
+    'change_exchange_rate_to_supplier' => 'Change Exchange Rate To Supplier',
+    'close' => 'Close',
 
 ];
 

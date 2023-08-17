@@ -1,7 +1,8 @@
 
 <div class="col-md-12">
     <div class="row">
-        <div class="col-md-3 payment_fields hide">
+
+        <div class="col-md-2 payment_fields hide">
             <div class="form-group">
                 {!! Form::label('amount', __('lang.amount'). ':*', []) !!} <br>
                 <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model = "amount" wire:change="changeAmount">
@@ -11,7 +12,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 payment_fields hide">
+        <div class="col-md-2 payment_fields hide">
             <div class="form-group">
                 {{$method}}
                 {!! Form::label('method', __('lang.payment_type'). ':*', []) !!}
@@ -23,7 +24,13 @@
                 @enderror
             </div>
         </div>
-
+        <div class="col-md-2">
+            <label for="paying_currency">@lang('lang.paying_currency') :*</label>
+            {!! Form::select('paying_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'wire:model' => 'paying_currency']) !!}
+            @error('paying_currency')
+            <span class="error text-danger">{{ $message }}</span>
+            @enderror
+        </div>
         <div class="col-md-3 payment_fields hide">
             <div class="form-group">
                 {!! Form::label('paid_on', __('lang.payment_date'). ':', []) !!} <br>

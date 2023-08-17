@@ -32,7 +32,8 @@ class Create extends Component
         $cost = [], $total_cost = [], $sub_total = [], $change_price_stock =[], $store_id, $status, $order_date,
         $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
         $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
-        $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [];
+        $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
+        $showColumn = false, $transaction_currency ;
 
     protected $rules = [
     'store_id' => 'required',
@@ -43,6 +44,7 @@ class Create extends Component
     'payment_status' => 'required',
     'method' => 'required',
     'amount' => 'required',
+    'transaction_currency' => 'required'
 ];
 
     public function render(): Factory|View|Application
@@ -119,7 +121,7 @@ class Create extends Component
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
             $transaction->supplier_id = $this->supplier;
-            $transaction->paying_currency = $this->paying_currency;
+            $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
             $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
             $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
@@ -135,7 +137,7 @@ class Create extends Component
             $transaction->source_type = !empty($this->source_type) ? $this->source_type : null;
             $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
-
+            $transaction->save();
 
             // Add payment transaction
             $payment  = new StockTransactionPayment();
@@ -148,6 +150,7 @@ class Create extends Component
             $payment->payment_note =!empty($this->notes) ? $this->notes : null;
             $payment->created_by = Auth::user()->id;
             $payment->exchange_rate = $this->exchange_rate;
+            $payment->paying_currency = $this->paying_currency;
 
             // check user and add money to user
             if  ($payment->method == 'cash'){
@@ -219,7 +222,7 @@ class Create extends Component
                 ];
                 AddStockLine::create($add_stock_data);
             }
-            $transaction->save();
+
             $payment->save();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
@@ -533,8 +536,10 @@ class Create extends Component
             $this->exchange_rate =System::getProperty('dollar_exchange');
         }
     }
-    public function changeAmount(){
 
+    public function ShowDollarCol(){
+        $this->showColumn= !$this->showColumn;
     }
+
 
 }
