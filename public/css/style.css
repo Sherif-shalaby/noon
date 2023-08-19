@@ -26615,7 +26615,7 @@ mark {
 }
 .horizontal-nav .horizontal-menu > li > a img {
   display: inline-block;
-  width: 40px;
+  width: 25px;
   vertical-align: middle;
   margin-right: 8px;
   filter: invert(0.6) sepia(1) saturate(1) hue-rotate(185deg);
