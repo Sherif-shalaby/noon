@@ -54,7 +54,7 @@
                     , $settings['default_payment_type'], ['class' => 'form-control select2', 'required', 'placeholder' => __('lang.please_select')]) !!}
                     @error('type')
                         <span class="text-danger">{{ $message }}</span>
-                    @enderror    
+                    @enderror
                 </div>
 
             </div>

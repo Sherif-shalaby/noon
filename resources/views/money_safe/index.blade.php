@@ -7,11 +7,14 @@
                 <h4 class="page-title">@lang('lang.moneysafes')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{{url('/')}}">@lang('lang.dashboard')</a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.moneysafes')</li>
                     </ol>
                 </div>
             </div>
+            {{-- +++++++++++++++++ اضافة خزينة +++++++++++++++++ --}}
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createMoneySafeModal">
@@ -25,8 +28,8 @@
 @endsection
 @section('content')
      <!-- End Breadcrumbbar -->
-            <!-- Start Contentbar -->    
-            <div class="contentbar">                
+            <!-- Start Contentbar -->
+            <div class="contentbar">
                 <!-- Start row -->
                 <div class="row">
                     <!-- Start col -->
@@ -85,7 +88,8 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات
+                                                        <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                     </button>
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
