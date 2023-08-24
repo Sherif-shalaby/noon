@@ -3,7 +3,7 @@
             style="margin-top: 15px;">
         @lang('lang.select_products')
     </button>
-    <button type="button" id="dollar_section" class="btn btn-primary ml-4" style="margin-top: 15px;"> $ </button>
+    <button type="button" id="dollar_section" class="btn btn-primary ml-4" style="margin-top: 15px;" wire:click="ShowDollarCol">  </button>
 </div>
 
 <div class="modal fade" id="select_products_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" wire:ignore

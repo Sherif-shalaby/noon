@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Employee;
+use App\Models\JobType;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\User;
@@ -131,6 +132,12 @@ class DatabaseSeeder extends Seeder
             'details' => '',
             'created_by' => 1
         ]);
+        JobType::insert(
+            [
+                ['title' => 'Cashier', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+                ['title' => 'Deliveryman', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
+            ]
+        );
 
 
         //call the permission and currencies seeder

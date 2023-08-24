@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('store_id')->nullable();
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
-            $table->foreignId('paying_currency')->nullable()->references('id')->on('currencies')->onDelete('cascade');
+            $table->foreignId('transaction_currency')->nullable()->references('id')->on('currencies')->onDelete('cascade');
             $table->foreignId('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->enum('status', ['received',  'partially_received']);
             $table->enum('purchase_type', ['import', 'local']);

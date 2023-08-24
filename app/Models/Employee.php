@@ -75,7 +75,7 @@ class Employee extends Model
                 $query->where('title', $job_type);
             })->get();
         if ($include_superadmin) {
-            $query->orWhere('is_superadmin', 1);
+            $query->Where('is_superadmin', 1);
         }
         if ($return_user_id) {
             $employees = $query->pluck('user.name', 'user.id');

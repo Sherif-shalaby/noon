@@ -61,13 +61,15 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a data-href="{{route('jobs.edit', $job->id)}}"
-                                           data-container=".view_modal"
-                                           class="btn btn-primary btn-modal text-white edit_job"><i
-                                                class="fa fa-pencil-square-o"></i></a>
-                                        <a data-href="{{route('jobs.destroy', $job->id)}}"
-                                           class="btn btn-danger text-white delete_item"><i
-                                                class="fa fa-trash"></i></a>
+                                        @if(!in_array($job->title, ['Cashier', 'Deliveryman']) )
+                                            <a data-href="{{route('jobs.edit', $job->id)}}"
+                                               data-container=".view_modal"
+                                               class="btn btn-primary btn-modal text-white edit_job"><i
+                                                    class="fa fa-pencil-square-o"></i></a>
+                                            <a data-href="{{route('jobs.destroy', $job->id)}}"
+                                               class="btn btn-danger text-white delete_item"><i
+                                                    class="fa fa-trash"></i></a>
+                                        @endif
 
                                     </td>
                                 </tr>

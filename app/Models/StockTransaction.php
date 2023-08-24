@@ -75,10 +75,7 @@ class StockTransaction extends Model
     {
         return $this->belongsTo(User::class,'created_by');
     }
-    public function paying_currency()
-    {
-        return $this->belongsTo(Currency::class,'paying_currency');
-    }
+
 
 
 }

@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'wire:model' => 'supplier']) !!}
+                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()']) !!}
                                     @error('supplier')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -47,8 +47,8 @@
                         <div class="col-md-12 mt-2">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="paying_currency">@lang('lang.paying_currency') :*</label>
-                                    {!! Form::select('paying_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'wire:model' => 'paying_currency']) !!}
+                                    <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
+                                    {!! Form::select('invoice_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'wire:model' => 'transaction_currency']) !!}
                                     @error('paying_currency')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -70,7 +70,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                    <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{$exchange_rate}}" disabled>
+                                    <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{number_format($exchange_rate,2)}}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -96,34 +96,38 @@
                         <br>
                         <div class="row">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered m-0">
+                                <table class="table" style="width: auto" >
                                     <thead>
                                     <tr>
                                         <th>#</th>
 {{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th>--}}
                                         <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.sku')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.quantity')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.unit')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.fill')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_quantity')</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.purchase_price') (@lang('lang.per_piece')) $</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.selling_price') $</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.sub_total') $</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.purchase_price') (@lang('lang.per_piece'))</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.selling_price')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.sub_total')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.size')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_size')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.weight')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_weight')</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.cost') (@lang('lang.per_piece')) $</th>
-                                        <th style="width: 10%" class="col-sm-4 dollar_section d-">@lang('lang.total_cost') $</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.cost') (@lang('lang.per_piece'))</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.total_cost')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.new_stock')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.change_current_stock')</th>
-                                        <th style="width: 10%" class="col-sm-4">@lang('lang.action')</th>
+                                        <th style="width: 10%" >@lang('lang.sku')</th>
+                                        <th style="width: 10%">@lang('lang.quantity')</th>
+                                        <th style="width: 10%">@lang('lang.unit')</th>
+                                        <th style="width: 10%">@lang('lang.fill')</th>
+                                        <th style="width: 10%">@lang('lang.total_quantity')</th>
+                                        @if ($showColumn)
+                                            <th style="width: 10%">@lang('lang.purchase_price') (@lang('lang.per_piece')) $</th>
+                                            <th style="width: 10%">@lang('lang.selling_price') $</th>
+                                            <th style="width: 10%">@lang('lang.sub_total') $</th>
+                                        @endif
+                                        <th style="width: 10%">@lang('lang.purchase_price') (@lang('lang.per_piece')) </th>
+                                        <th style="width: 10%">@lang('lang.selling_price') </th>
+                                        <th style="width: 10%">@lang('lang.sub_total')</th>
+                                        <th style="width: 10%">@lang('lang.size')</th>
+                                        <th style="width: 10%">@lang('lang.total_size')</th>
+                                        <th style="width: 10%">@lang('lang.weight')</th>
+                                        <th style="width: 10%">@lang('lang.total_weight')</th>
+                                        @if ($showColumn)
+                                            <th style="width: 10%">@lang('lang.cost') (@lang('lang.per_piece')) $</th>
+                                            <th style="width: 10%">@lang('lang.total_cost') $</th>
+                                        @endif
+                                        <th style="width: 10%">@lang('lang.cost') (@lang('lang.per_piece'))</th>
+                                        <th style="width: 10%">@lang('lang.total_cost')</th>
+                                        <th style="width: 10%">@lang('lang.new_stock')</th>
+                                        <th style="width: 10%">@lang('lang.change_current_stock')</th>
+                                        <th style="width: 10%">@lang('lang.action')</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -131,26 +135,30 @@
                                         @foreach($selectedProductData  as $index => $product)
                                             @include('add-stock.partials.product_row')
                                         @endforeach
-                                        <tr >
+                                        <tr>
                                             <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
-                                            <td> {{array_sum($dollar_sub_total)}} </td>
+                                            @if ($showColumn)
+                                                <td> {{$this->sum_dollar_tsub_total()}} </td>
+                                                <td></td>
+                                                <td></td>
+                                            @endif
+                                            <td> {{$this->sum_sub_total()}} </td>
                                             <td></td>
-                                            <td></td>
-                                            <td> {{array_sum($sub_total)}} </td>
-                                            <td></td>
-                                            <td style="width: 10%">
+                                            <td style="">
                                                 {{$this->sum_size() ?? 0}}
                                             </td>
                                             <td></td>
-                                            <td  style="width: 10%;">
+                                            <td  style=";">
                                                 {{$this->sum_weight() ?? 0}}
                                             </td>
                                             <td></td>
-                                            <td  style="width: 10%;">
-                                                {{$this->sum_dollar_total_cost() ?? 0}}
-                                            </td>
-                                            <td></td>
-                                            <td  style="width: 10%;">
+                                            @if ($showColumn)
+                                                <td>
+                                                    {{$this->sum_dollar_total_cost() ?? 0}}
+                                                </td>
+                                                <td></td>
+                                            @endif
+                                            <td  style=";">
                                                 {{$this->sum_total_cost() ?? 0}}
                                             </td>
 
@@ -170,7 +178,15 @@
                         <br>
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
-                                <h3> @lang('lang.total') :  {{$this->sum_total_cost() ?? 0}} <span class="final_total_span"></span> </h3>
+                                <h3> @lang('lang.total') :
+                                    @if($paying_currency == 2)
+                                        {{$this->sum_dollar_total_cost() ?? 0.00}}
+                                    @else
+                                        {{$this->sum_total_cost() ?? 0.00}}
+
+                                    @endif
+
+                                    <span class="final_total_span"></span> </h3>
                                 <input type="hidden" name="grand_total" id="grand_total" value="0">
                                 <input type="hidden" name="final_total" id="final_total" value="0">
                             </div>
