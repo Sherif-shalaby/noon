@@ -268,6 +268,12 @@
                                                 <i class="mdi mdi-circle"></i>@lang('lang.general_tax')
                                             </a>
                                         </li>
+                                        {{-- ////////// ضرائب المنتجات ////////// --}}
+                                        <li>
+                                            <a href="{{route('product-tax.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.product_tax')
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                               </ul>

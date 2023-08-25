@@ -239,7 +239,7 @@ return [
     'edit' => 'Edit',
     'create'=>'Create',
     'edit'=>'Edit',
-    // ----- general tax ------
+    // ---------- general tax ----------
     'general_tax' => 'General Tax' ,
     'add_general_tax' => 'Add General Tax',
     'tax_name' => 'Tax Name' ,
@@ -253,6 +253,15 @@ return [
     'passive' => 'passive' ,
     'close' => 'close' ,
     'edit_general_tax' => 'Edit general tax',
+    'taxNameRequired' => 'Name Required' ,
+    'taxNameUnique' => 'Name Must be unique' ,
+    'taxMethodRequired' => 'method Required' ,
+    'taxRateInteger' => 'Rate must be a number',
+    'taxRateUnique' => 'Rate Required' ,
+    // ---------- product tax ----------
+    'product_tax' => 'Product Tax' ,
+    'add_product_tax' => 'Add Product Tax',
+    'edit_product_tax' => 'Edit general tax',
     'taxNameRequired' => 'Name Required' ,
     'taxNameUnique' => 'Name Must be unique' ,
     'taxMethodRequired' => 'method Required' ,

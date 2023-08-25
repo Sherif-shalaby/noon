@@ -22,18 +22,12 @@ class GeneralTaxController extends Controller
         $general_taxes = GeneralTax::with(['stores'])->get();
         return view('general-tax.index',compact('general_taxes','stores'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /* ++++++++++++++++++++ create() ++++++++++++++++++++ */
     public function create()
     {
         $stores = Store::all();
         return view('general-tax.create',compact('stores'));
     }
-
     /* ++++++++++++++ store() ++++++++++++++ */
     public function store(StoreGeneralTax $request)
     {
@@ -47,7 +41,6 @@ class GeneralTaxController extends Controller
             $generalTax->status = $request->status ;
             $generalTax->created_by = Auth::user()->name;
             // store data
-            // return $generalTax;
             $generalTax->save();
             // Store "store_id" And "general_tax_id" in "store_tax" table
             $generalTax->stores()->attach($request->store_id);
@@ -86,7 +79,6 @@ class GeneralTaxController extends Controller
     /* +++++++++++++++++++++ update() +++++++++++++++++++ */
     public function update(Request $request,$id)
     {
-        // return $request;
         try
         {
             // Get "Upated Section" data
@@ -107,9 +99,9 @@ class GeneralTaxController extends Controller
                 "updated_by" => Auth::user()->name,
             ]);
             // ++++++++++++++++++++ general_tax : update pivot Table ++++++++++++++++++++
+            // When Change "store" update "store_tax" table
             $updated_general_tax->stores()->sync($request->store_id);
             $updated_general_tax->save();
-
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
@@ -122,7 +114,6 @@ class GeneralTaxController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-
         return redirect()->back()->with('status', $output);
     }
 
