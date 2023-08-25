@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\GeneralTax;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGeneralTax;
+use App\Http\Requests\UpdateGeneralTax;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Ui\Presets\React;
 
 class GeneralTaxController extends Controller
 {
@@ -84,6 +86,7 @@ class GeneralTaxController extends Controller
     /* +++++++++++++++++++++ update() +++++++++++++++++++ */
     public function update(Request $request,$id)
     {
+        // return $request;
         try
         {
             // Get "Upated Section" data
@@ -103,18 +106,9 @@ class GeneralTaxController extends Controller
                 // update "updated_by"
                 "updated_by" => Auth::user()->name,
             ]);
-            //  // ++++++++++++++++++++ Teacher : update pivot Table ++++++++++++++++++++
-             if (isset($request->store_id))
-             {
-                // if "store" are "Edited" then take "new general_tax" and store them in "store_tax" table without repeating
-                $updated_general_tax->stores()->sync($request->store_id);
-             }
-             else
-             {
-                // if "teachers" are "Not Edited" then "Don't Update Teachers" in "teacher_section" table
-                $updated_general_tax->stores()->sync(array());
-             }
-             $updated_general_tax->save();
+            // ++++++++++++++++++++ general_tax : update pivot Table ++++++++++++++++++++
+            $updated_general_tax->stores()->sync($request->store_id);
+            $updated_general_tax->save();
 
             $output = [
                 'success' => true,

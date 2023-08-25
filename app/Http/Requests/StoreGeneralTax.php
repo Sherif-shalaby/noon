@@ -6,32 +6,23 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGeneralTax extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+    /* +++++++++++++++ authorize() ++++++++++++++ */
     public function authorize()
     {
         return true;
     }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
+    /* +++++++++++++++ rules() ++++++++++++++ */
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:general_taxes',
+            'name' => 'required|max:255|unique:general_taxes,name'.$this->id,
             'rate' => 'required|integer',
             'method' => 'required',
             'store_id' =>'required',
             'details' => 'nullable'
         ];
     }
-
+    /* +++++++++++++++ messages() ++++++++++++++ */
     public function messages()
     {
         return [
