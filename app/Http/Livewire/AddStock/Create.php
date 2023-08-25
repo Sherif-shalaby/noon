@@ -27,15 +27,13 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $selectedProducts = []; public $selectedProductData = []; public $quantity = []; public $purchase_price =[];
-    public $selling_price = []; public $base_unit = []; public $divide_costs ;  public $other_expenses = 0;
-    public $other_payments = 0; public $total_size = []; public $total_weight =[]; public $cost = [];
-    public $total_cost = []; public $sub_total = []; public $change_price_stock =[]; public $store_id;
-    public $status; public $order_date; public $purchase_type; public $invoice_no; public $discount_amount;
-    public $source_type; public $payment_status; public $source_id; public $supplier; public $exchange_rate;
-    public $amount; public $method; public $paid_on; public $paying_currency; public $transaction_date;
-    public $notes; public $notify_before_days; public $due_date; public $dollar_purchase_price = []; public $dollar_selling_price =[];
-    public $dollar_sub_total = []; public $dollar_cost = []; public $dollar_total_cost = [];
+    public $selectedProducts = [], $selectedProductData = [], $quantity = [], $purchase_price =[], $selling_price = [],
+        $base_unit = [], $divide_costs , $other_expenses = 0, $other_payments = 0, $total_size = [], $total_weight =[],
+        $cost = [], $total_cost = [], $sub_total = [], $change_price_stock =[], $store_id, $status, $order_date,
+        $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
+        $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
+        $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
+        $showColumn = false, $transaction_currency ;
 
     protected $rules = [
     'store_id' => 'required',
@@ -46,6 +44,7 @@ class Create extends Component
     'payment_status' => 'required',
     'method' => 'required',
     'amount' => 'required',
+    'transaction_currency' => 'required'
 ];
 
     public function render(): Factory|View|Application
@@ -69,15 +68,8 @@ class Create extends Component
         } else {
             $users = User::Notview()->pluck('name', 'id');
         }
-        if (isset($this->supplier)){
-            $supplier = Supplier::find($this->supplier);
-            if(isset($supplier->exchange_rate)){
-                $this->exchange_rate =  number_format($supplier->exchange_rate ,2);
-            }
-        }
-        else{
-            $this->exchange_rate =System::getProperty('dollar_exchange');
-        }
+
+        $this->changeExchangeRate();
 
 
         return view('livewire.add-stock.create',
@@ -129,12 +121,12 @@ class Create extends Component
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
             $transaction->supplier_id = $this->supplier;
-            $transaction->paying_currency = $this->paying_currency;
+            $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
             $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
             $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
-            $transaction->grand_total = $this->sum_total_cost();
-            $transaction->final_total = $this->final_total();
+            $transaction->grand_total = array_sum($this->total_cost);
+            $transaction->final_total = isset($this->discount_amount) ? (array_sum($this->total_cost) - $this->discount_amount) : array_sum($this->total_cost);
             $transaction->dollar_grand_total = $this->sum_dollar_total_cost();
             $transaction->dollar_final_total = $this->dollar_final_total();
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
@@ -149,7 +141,7 @@ class Create extends Component
 
             // Add payment transaction
             $payment  = new StockTransactionPayment();
-            $payment->transaction_id  = $transaction->id;
+            $payment->stock_transaction_id  = $transaction->id;
             $payment->amount  = $this->amount;
             $payment->method = $this->method;
             $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now() ;
@@ -158,6 +150,7 @@ class Create extends Component
             $payment->payment_note =!empty($this->notes) ? $this->notes : null;
             $payment->created_by = Auth::user()->id;
             $payment->exchange_rate = $this->exchange_rate;
+            $payment->paying_currency = $this->paying_currency;
 
             // check user and add money to user
             if  ($payment->method == 'cash'){
@@ -208,32 +201,33 @@ class Create extends Component
                     }
                 }
             }
-            $payment->save();
+
 
             // add  products to stock lines
             foreach ($this->selectedProductData as $index => $product){
                 $add_stock_data = [
                     'product_id' => $product->id,
-                    'transaction_id' =>$transaction->id ,
+                    'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $this->quantity[$index],
-                    'purchase_price' => $this->purchase_price[$index],
-                    'final_cost' => $this->total_cost[$index],
-                    'sub_total' => $this->sub_total($index),
-                    'sell_price' => $this->selling_price[$index],
-                    'dollar_purchase_price' => $this->dollar_purchase_price[$index],
-                    'dollar_final_cost' => $this->dollar_total_cost[$index],
-                    'dollar_sub_total' => $this->dollar_sub_total($index),
-                    'dollar_sell_price' => $this->dollar_selling_price[$index],
-                    'cost' => $this->cost($index),
-                    'dollar_cost' => $this->dollar_cost($index),
+                    'purchase_price' => !empty($this->purchase_price[$index]) ? $this->purchase_price[$index] : null ,
+                    'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+                    'sub_total' => !empty($this->sub_total[$index]) ? $this->sub_total[$index] : null,
+                    'sell_price' => !empty($this->selling_price[$index]) ? $this->selling_price[$index] : null,
+                    'dollar_purchase_price' => !empty($this->dollar_purchase_price[$index]) ? $this->dollar_purchase_price[$index] : null,
+                    'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                    'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? $this->dollar_sub_total($index) : null,
+                    'dollar_sell_price' => !empty($this->dollar_selling_price[$index]) ? $this->dollar_selling_price[$index] : null,
+                    'cost' => !empty($this->cost[$index]) ?  $this->cost[$index] : null,
+                    'dollar_cost' => !empty($this->dollar_cost[$index]) ? $this->dollar_cost[$index] : null,
                 ];
                 AddStockLine::create($add_stock_data);
             }
 
+            $payment->save();
+
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
         }
         catch (\Exception $e){
-//
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
@@ -253,33 +247,34 @@ class Create extends Component
 
     public function sub_total($index)
     {
-        if(isset($this->quantity[$index]) && isset($this->purchase_price[$index])){
+        if(isset($this->quantity[$index]) && (isset($this->purchase_price[$index]) ||isset($this->dollar_purchase_price[$index]) )){
+            // convert purchase price from Dollar To Dinar
+            $purchase_price = $this->convertDollarPrice($index);
+
             if(isset($this->get_product($index)->unit->base_unit_multiplier)){
                 $this->base_unit[$index] = $this->get_product($index)->unit->base_unit_multiplier;
             }
             else{
                 $this->base_unit[$index] = 1;
             }
-            $this->sub_total[$index] = (int)$this->quantity[$index] * (float)$this->purchase_price[$index] * $this->base_unit[$index];
+            $this->sub_total[$index] = (int)$this->quantity[$index] * (float)$purchase_price * $this->base_unit[$index];
 
             return number_format($this->sub_total[$index], 2);
-        }
-        else{
-            $this->quantity[$index] = 0;
-            $this->purchase_price[$index] = 0;
         }
     }
 
     public function dollar_sub_total($index)
     {
-        if(isset($this->quantity[$index]) && isset($this->dollar_purchase_price[$index])){
+        if(isset($this->quantity[$index]) && (isset($this->dollar_purchase_price[$index]) || isset($this->purchase_price[$index]))){
+            // convert purchase price from Dinar To Dollar
+            $purchase_price = $this->convertDinarPrice($index);
             if(isset($this->get_product($index)->unit->base_unit_multiplier)){
                 $this->base_unit[$index] = $this->get_product($index)->unit->base_unit_multiplier;
             }
             else{
                 $this->base_unit[$index] = 1;
             }
-            $this->dollar_sub_total[$index] = (int)$this->quantity[$index] * (float)$this->dollar_purchase_price[$index] * $this->base_unit[$index];
+            $this->dollar_sub_total[$index] = (int)$this->quantity[$index] * (float)$purchase_price * $this->base_unit[$index];
 
             return number_format($this->dollar_sub_total[$index], 2);
         }
@@ -287,22 +282,6 @@ class Create extends Component
             $this->quantity[$index] = 0;
             $this->dollar_purchase_price[$index] = 0;
         }
-    }
-
-    public function change_purchase_price($index){
-        $this->purchase_price[$index] = $this->dollar_purchase_price[$index] * $this->exchange_rate;
-    }
-
-    public function change_selling_price($index){
-        $this->selling_price[$index] = $this->dollar_selling_price[$index] * $this->exchange_rate;
-    }
-
-    public function change_dollar_purchase_price($index){
-        $this->dollar_purchase_price[$index] = $this->purchase_price[$index] / $this->exchange_rate;
-    }
-
-    public function change_dollar_selling_price($index){
-        $this->dollar_selling_price[$index] = $this->selling_price[$index] / $this->exchange_rate;
     }
 
     public function total_quantity($index){
@@ -343,22 +322,39 @@ class Create extends Component
         else{
             $cost = (float)$this->other_expenses + (float)$this->other_payments ;
         }
+        // convert purchase price from Dollar To Dinar
+        $purchase_price = $this->convertDollarPrice($index);
+//        dd($purchase_price);
+
 
         if (isset($this->divide_costs)){
+
             if ($this->divide_costs == 'size'){
-                (float)$this->cost[$index] = ( ( $cost / $this->sum_size() ) * $product->size ) + (float)$this->purchase_price[$index];
+                if($this->sum_size() >= 0){
+                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
+                    unset($this->divide_costs);
+                }
+                else{
+                    (float)$this->cost[$index] = ( ( $cost / $this->sum_size() ) * $product->size ) + (float)$purchase_price;
+                }
             }
             elseif ($this->divide_costs == 'weight'){
-                (float)$this->cost[$index] = ( ( $cost / $this->sum_weight() ) * $product->weight ) + (float)$this->purchase_price[$index];
+                if($this->sum_weight() >= 0){
+                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
+                    unset($this->divide_costs);
+
+                }
+                else {
+                    (float)$this->cost[$index] = (($cost / $this->sum_weight()) * $product->weight) + (float)$purchase_price;
+                }
             }
             else{
-                (float)$this->cost[$index] = ( ( $cost / array_sum($this->sub_total) ) * (float)$this->purchase_price[$index] ) + (float)$this->purchase_price[$index];
+                (float)$this->cost[$index] = ( ( $cost / array_sum($this->sub_total) ) * (float)$purchase_price ) + (float)$purchase_price;
             }
         }
         else{
-            $this->cost[$index] = (float)$this->purchase_price[$index];
+            $this->cost[$index] = (float)$purchase_price;
         }
-
 
         return number_format($this->cost[$index],2);
     }
@@ -366,47 +362,74 @@ class Create extends Component
     public function total_cost($index){
         $this->total_cost[$index] = (float)$this->cost[$index] * $this->total_quantity($index);
         return number_format($this->total_cost[$index],2) ;
-    }
+}
 
     public function dollar_cost($index){
 
         $product = $this->get_product($index);
-        if($this->paying_currency != 2){
-            $cost = ( (float)$this->other_expenses + (float)$this->other_payments ) / $this->exchange_rate;
+
+        if($this->paying_currency == 2){
+            $dollar_cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
         }
         else{
-            $cost = (float)$this->other_expenses + (float)$this->other_payments ;
+            $dollar_cost = (float)$this->other_expenses + (float)$this->other_payments ;
         }
+        // convert purchase price from Dinar to Dollar
+       $purchase_price = $this->convertDinarPrice($index);
+//        dd($purchase_price);
+
+
         if (isset($this->divide_costs)){
+
             if ($this->divide_costs == 'size'){
-                (float)$this->dollar_cost[$index] = ( ( $cost / $this->sum_size() ) * $product->size ) + (float)$this->dollar_purchase_price[$index];
+                if($this->sum_size() >= 0){
+                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
+                    unset($this->divide_costs);
+                }
+                else{
+                    (float)$this->cost[$index] = ( ( $dollar_cost / $this->sum_size() ) * $product->size ) + (float)$purchase_price;
+                }
             }
             elseif ($this->divide_costs == 'weight'){
-                (float)$this->dollar_cost[$index] = ( ( $cost / $this->sum_weight() ) * $product->weight ) + (float)$this->dollar_purchase_price[$index];
+                if($this->sum_weight() >= 0){
+                    $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
+                    unset($this->divide_costs);
+
+                }
+                else {
+                    (float)$this->dollar_cost[$index] = (($dollar_cost / $this->sum_weight()) * $product->weight) + (float)$purchase_price;
+                }
             }
             else{
-                (float)$this->dollar_cost[$index] = ( ( $cost / array_sum($this->dollar_sub_total) ) * (float)$this->dollar_purchase_price[$index] ) + $this->dollar_purchase_price[$index];
+                (float)$this->dollar_cost[$index] = ( ( $dollar_cost / array_sum($this->sub_total) ) * (float)$purchase_price ) + (float)$purchase_price;
             }
         }
         else{
-            $this->dollar_cost[$index] = (float)$this->dollar_purchase_price[$index];
+            $this->dollar_cost[$index] = (float)$purchase_price;
         }
-
-
         return number_format($this->dollar_cost[$index],2);
     }
 
     public function dollar_total_cost($index){
         $this->dollar_total_cost[$index] = $this->dollar_cost[$index] * $this->total_quantity($index);
-        return number_format($this->dollar_total_cost[$index],2) ;
+        return number_format($this->dollar_total_cost[$index], 2);
+
     }
 
     public function sum_total_cost(){
-        return number_format(array_sum($this->total_cost));
+        return number_format(array_sum($this->total_cost),2);
     }
 
     public function sum_dollar_total_cost(){
-        return number_format(array_sum($this->dollar_total_cost));
+        return number_format(array_sum($this->dollar_total_cost),2);
+    }
+
+    public function sum_sub_total(){
+        return number_format(array_sum($this->sub_total),2);
+    }
+
+    public function sum_dollar_tsub_total(){
+        return number_format(array_sum($this->dollar_sub_total),2);
     }
 
     public function final_total(){
@@ -429,7 +452,6 @@ class Create extends Component
         unset($this->selectedProducts[$index]);
         unset($this->selectedProductData[$index]);
     }
-
 
     public function getPurchaseOrderStatusArray()
     {
@@ -477,5 +499,47 @@ class Create extends Component
 
         return $register;
     }
+
+    public function convertDollarPrice($index){
+        if(empty($this->purchase_price[$index]) && !empty($this->dollar_purchase_price[$index])){
+            (float)$purchase_price = (float)$this->dollar_purchase_price[$index] * $this->exchange_rate;
+        }
+        else{
+            $purchase_price = $this->purchase_price[$index];
+        }
+        return $purchase_price;
+    }
+
+    public function convertDinarPrice($index)
+    {
+//        dd($this->purchase_price[$index]);
+        if (!empty($this->purchase_price[$index]) && empty($this->dollar_purchase_price[$index])) {
+            $purchase_price = $this->purchase_price[$index] / $this->exchange_rate;
+        }
+        else {
+            $purchase_price = $this->dollar_purchase_price[$index];
+        }
+        return $purchase_price;
+
+    }
+
+    public function changeExchangeRate(){
+        if (isset($this->supplier)){
+            $supplier = Supplier::find($this->supplier);
+            if(isset($supplier->exchange_rate)){
+                $this->exchange_rate =  str_replace(',' ,'',$supplier->exchange_rate);
+            }
+            else
+                $this->exchange_rate =System::getProperty('dollar_exchange');
+        }
+        else{
+            $this->exchange_rate =System::getProperty('dollar_exchange');
+        }
+    }
+
+    public function ShowDollarCol(){
+        $this->showColumn= !$this->showColumn;
+    }
+
 
 }

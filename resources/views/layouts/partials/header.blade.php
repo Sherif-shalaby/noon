@@ -136,6 +136,8 @@
                  @endif
                 {{-- ###################### Purchases : المشتريات ###################### --}}
                   @if(!empty($module_settings['stock_module']))
+
+                  @if(!empty($module_settings['cashier_module']))
                       <li>
                           <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
                       </li>

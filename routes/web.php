@@ -73,12 +73,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customertypes', CustomerTypeController::class);
 
     // stocks
+    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
+    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
+    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
-    Route::get('add-stock/add_payment/{transaction_id}',[AddStockController::class , 'addPayment'])->name('stocks.add_payment');
-    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
-    Route::post('add-stock/store_payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.store_payment');
+    Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
+    Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
+
+//    Route::get('add-stock/add-payment/{id}', function ($id) {
+//        return view('add-stock.add-payment', compact('id'));
+//    })->name('stocks.addPayment');
 
     // store pos
     Route::resource('store-pos', StorePosController::class);

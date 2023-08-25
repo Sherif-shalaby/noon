@@ -1,3 +1,4 @@
+{{--@livewire('add-stock.add-payment')--}}
 <section class="">
     <div class="col-md-22">
         <div class="card mt-3">
@@ -15,7 +16,6 @@
                             <th>@lang('lang.invoice_date')</th>
                             <th>@lang('lang.supplier')</th>
                             <th>@lang('lang.created_by')</th>
-                            <th class="currencies">@lang('lang.paying_currency')</th>
                             <th class="sum">@lang('lang.value')</th>
                             <th class="sum">@lang('lang.paid_amount')</th>
                             <th class="sum">@lang('lang.pending_amount')</th>
@@ -33,10 +33,13 @@
                                 <td>{{$stock->transaction_date }}</td>
                                 <td>{{$stock->supplier->name}}</td>
                                 <td>{{$stock->created_by()->first()->name}}</td>
-                                <td>{{$stock->paying_currency()->first()->symbol}}</td>
-                                <td>{{number_format($stock->final_total,2)}}</td>
-                                <td>{{number_format($stock->transaction_payments->sum('amount'),2)}}</td>
-                                <td>{{number_format($stock->final_total - $stock->transaction_payments->sum('amount'),2)}}</td>
+                                @if($stock->transaction_currency == 2)
+                                    <td>{{number_format($stock->dollar_final_total,2)}}</td>
+                                @else
+                                    <td>{{number_format($stock->final_total,2)}}</td>
+                                @endif
+                                <td>{{$this->calculatePaidAmount($stock->id)}}</td>
+                                <td>{{$this->calculatePendingAmount($stock->id)}}</td>
                                 <td>{{$stock->due_date ?? ''}}</td>
                                 <td>{{$stock->notes ?? ''}}</td>
                                 <td>
@@ -55,27 +58,13 @@
                                         <li class="divider"></li>
                                         @if ($stock->payment_status != 'paid')
                                        <li>
-                                            <a data-href="{{route('stocks.add_payment',  $stock->id) }}"
-                                               data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
-                                                @lang('lang.pay') </a>
-                                        </li>
+                                           <a data-href="{{route('stocks.addPayment', $stock->id)}}" data-container=".view_modal"
+                                              class="btn btn-modal">
+                                               <i class="fa fa-money"></i>
+                                               @lang('lang.pay')
+                                           </a>
+                                       </li>
                                         @endif
-{{--                                        <li class="divider"></li>--}}
-
-{{--                                        <li>--}}
-{{--                                            <a href="{{route('employees.edit', $employee->id)}}"--}}
-{{--                                               class="btn edit_employee"><i--}}
-{{--                                                    class="fa fa-pencil-square-o"></i>--}}
-{{--                                                @lang('lang.edit')</a>--}}
-{{--                                        </li>--}}
-{{--                                        <li class="divider"></li>--}}
-{{--                                        <li>--}}
-{{--                                            <a data-href="{{route('employees.destroy', $employee->id)}}"--}}
-{{--                                               --}}{{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}"--}}
-{{--                                               class="btn delete_item text-red delete_item"><i--}}
-{{--                                                    class="fa fa-trash"></i>--}}
-{{--                                                @lang('lang.delete')</a>--}}
-{{--                                        </li>--}}
                                     </ul>
                                 </td>
 
@@ -83,18 +72,6 @@
                         @endforeach
                         </tbody>
                         <tfoot>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <th class="table_totals" style="text-align: right">@lang('lang.total')</th>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
                         </tfoot>
                     </table>
                 </div>
@@ -102,5 +79,19 @@
         </div>
     </div>
 
+    <!-- add Payment Modal -->
+{{--    @include('add-stock.partials.add-payment')--}}
+
 </section>
 <div class="view_modal no-print" ></div>
+@push('javascripts')
+    <script>
+        window.addEventListener('openAddPaymentModal', event => {
+            $("#addPayment").modal('show');
+        })
+
+        window.addEventListener('closeAddPaymentModal', event => {
+            $("#addPayment").modal('hide');
+        })
+    </script>
+@endpush

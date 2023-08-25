@@ -52,13 +52,20 @@
                                     <td>{{$store->manager_mobile_number}}</td>
                                     <td class="no-print">
                                         <div class="btn-group">
-                                            <button class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">@lang('lang.action')
-{{--                                                <span class="caret"></span>--}}
-{{--                                                <span class="sr-only">Toggle Dropdown</span>--}}
-                                            </button>
-                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span></button>
+                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                <li>
+                                                    <a data-href="{{route('store.edit', $store->id)}}"
+                                                       data-container=".view_modal" class="btn btn-modal"><i
+                                                            class="dripicons-document-edit"></i> @lang('lang.edit')</a>                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{route('store.destroy', $store->id)}}"
+{{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}"--}}
+                                                       class="btn delete_item text-red delete_item"><i
+                                                            class="fa fa-trash"></i>
+                                                        @lang('lang.delete')</a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </td>
@@ -75,7 +82,4 @@
             {{--     create store modal      --}}
             @include('store.create')
 @endsection
-
-@section('javascript')
-
-@endsection
+<div class="view_modal no-print" ></div>
