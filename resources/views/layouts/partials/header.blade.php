@@ -305,6 +305,8 @@
                         <span>{{ __('site.Invoices') }}</span>
                     </a>
                 </li>
+                @endif
+
               </ul>
             </div>
         </nav>

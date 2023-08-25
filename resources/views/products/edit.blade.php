@@ -123,13 +123,14 @@
                         </select>
                     </div>
                     {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
-                    <div class="form-group">
-                        <label for="product">{{ __('lang.products').':*' }}</label>
-                        <select name="product_id" id="product" class="form-control" placeholder="{{  __('lang.please_select') }}" required>
+                    <div class="col-md-3">
+                        <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
+                        <select name="product_tax_id" id="product_tax_id" class="form-control select2" placeholder="{{  __('lang.please_select') }}" required>
                             <option value="">{{  __('lang.please_select') }}</option>
-                            @foreach ($product as $x )
-                                @foreach ($product->products as $y )
-                                    @if ($product_tax->id == $x->id)
+
+                            @foreach ($product_tax as $x )
+                                @foreach ($product->product_taxes as $y)
+                                    @if ($x->id == $y->pivot->product_tax_id)
                                         <option value="{{ $x->id }}" selected>{{$x->name}}</option>
                                     @else
                                         <option value="{{ $x->id }}">{{$x->name}}</option>

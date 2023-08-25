@@ -235,9 +235,10 @@ class ProductController extends Controller
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
-      $product=Product::find($id);
+      $product=Product::with('product_taxes')->findOrFail($id);
       $customer_types = CustomerType::pluck('name', 'id');
-      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types'));
+      $product_tax = ProductTax::all();
+      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
   }
 
   /**
@@ -266,9 +267,15 @@ class ProductController extends Controller
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
         'edited_by' => Auth::user()->id,
+        // method column
+        'method' => $request->method,
     ];
     $product = Product::find($id);
     $product->update($product_data);
+    // ++++++++++++++++++++ product_tax : update pivot Table ++++++++++++++++++++
+    // When Change "product_tax" update "products_taxes" table
+    $product->product_taxes()->sync($request->product_tax_id);
+
 
     if(!empty($request->subcategory_id)){
         $product->subcategories()->sync($request->subcategory_id);

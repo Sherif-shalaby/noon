@@ -97,4 +97,11 @@ class Product extends Model
     {
         return $this->hasOne(ProductStore::class);
     }
+    // ############ Relationships ############
+    // M:M relationship Between "products" , "product_taxes" table
+    // 'general_taxes' can applied on many 'stores'
+    public function product_taxes()
+    {
+        return $this->belongsToMany('App\Models\ProductTax','products_taxes');
+    }
 }

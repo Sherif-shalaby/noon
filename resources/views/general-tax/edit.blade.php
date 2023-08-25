@@ -61,7 +61,6 @@
                                     <option value="{{ $store->id }}">{{$store->name}}</option>
                                 @endif
                             @endforeach
-                            {{-- <option value="{{ $store->id }}">{{ $store->name }}</option> --}}
                         @endforeach
                     </select>
                 </div>
