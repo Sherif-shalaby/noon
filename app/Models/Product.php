@@ -16,6 +16,7 @@ class Product extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by');
+
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
 

@@ -340,7 +340,18 @@ return array(
     'current_stock' => 'المخزون الحالي',
     'invoice_currency' => 'عمله الفاتوره' ,
     'change_exchange_rate_to_supplier' => 'تغيير سعر الصرف للمورد',
-
-
+    'finalize_sale' => 'اتمام البيع',
+    'received_amount' => 'المبلغ المُستلم',
+    'paying_amount' => 'مبلغ الدفع',
+    'change' => 'المتبقي',
+    'payment_method' => 'طريقه الدفع',
+    'payment_note' => 'ملحوظه الدفع',
+    'sale_note' => 'ملحوظه بيع',
+    'staff_note' => 'ملاحظه للموظفين',
+    'surplus' => 'فائض',
+    'submit' => 'أرسل',
+    'print_the_transaction' => 'اطبع المعاملة',
+    'add_payment_row' => 'دفع الباقي بطريقة أخري',
+    'another_payment_option' =>  'خيار دفع آخر',
 );
 

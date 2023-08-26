@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('transaction_id');
             $table->foreign('transaction_id')->references('id')->on('transaction_sell_lines')->onDelete('cascade');
-            $table->foreignId('paying_currency')->nullable()->references('id')->on('currencies')->onDelete('cascade');
+            $table->foreignId('received_currency')->nullable()->references('id')->on('currencies')->onDelete('cascade');
             $table->decimal('amount', 15, 4);
             $table->string('method');
             $table->string('paid_on');
