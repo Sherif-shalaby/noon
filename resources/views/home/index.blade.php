@@ -26,6 +26,7 @@
     <!-- Start row -->
     <div class="row justify-content-between">
             <div class="col-md-1"></div>
+            {{-- ################ نظرة عامة ################ --}}
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/dashboard (1).png')}}" alt="Card image cap">
@@ -34,6 +35,7 @@
                     </div>
                 </div>
             </div>
+            {{-- ################ المنتجات ################ --}}
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/dairy-products.png')}}" alt="Card image cap">
@@ -42,6 +44,7 @@
                     </div>
                 </div>
             </div>
+            {{-- ################ اضافه مشتريات ################ --}}
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/cash-machine.png')}}" alt="Card image cap">
@@ -50,6 +53,7 @@
                     </div>
                 </div>
             </div>
+            {{-- ################ المشتريات ################ --}}
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/warehouse.png')}}" alt="Card image cap">
@@ -59,6 +63,7 @@
                     </div>
                 </div>
             </div>
+            {{-- ################ المرتجعات ################ --}}
             <div class="card-deck m-b-30 col-md-2">
                 <div class="card p-3">
                     <img class="card-img-top" src="{{asset('images/dashboard-icon/return.png')}}" alt="Card image cap">

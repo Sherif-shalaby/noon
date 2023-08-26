@@ -130,10 +130,12 @@
                       </li>
                   @endif
                   {{-- @if(!empty($module_settings['dashboard']) ) --}}
-
-                  @if(!empty($module_settings['product_module']) )
+                {{-- ###################### Products : المنتجات ###################### --}}
+                @if(!empty($module_settings['product_module']) )
                   <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
+                {{-- ###################### Purchases : المشتريات ###################### --}}
+                  @if(!empty($module_settings['stock_module']))
 
                   @if(!empty($module_settings['cashier_module']))
                       <li>
@@ -149,11 +151,12 @@
 {{--                              </ul>--}}
 {{--                          </li>--}}
 {{--                      @endif--}}
-                  @if(!empty($module_settings['return_module']))
-                      <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
-                      </li>
-                  @endif
+                @if(!empty($module_settings['return_module']))
+                    <li class="dropdown">
+                        <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
+                    </li>
+                @endif
+                {{-- ###################### Employees : الموظفين ###################### --}}
                   @if(!empty($module_settings['employee_module']))
                          <li class="dropdown">
                              <a href=""><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.employees')}}</span></a>
@@ -164,6 +167,7 @@
                               </ul>
                           </li>
                   @endif
+                {{-- ###################### Customers : العملاء ###################### --}}
                   @if(!empty($module_settings['customer_module']))
                    <li class="dropdown">
                         <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.customers')}}</span></a>
@@ -173,65 +177,136 @@
                     </ul>
                   </li>
                   @endif
+                {{-- ###################### suppliers : الموردين ###################### --}}
                   @if(!empty($module_settings['supplier_module']))
                       <li class="scroll"><a href="{{route('suppliers.index')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                   @endif
+                {{-- ###################### settings : الاعدادات ###################### --}}
                   @if(!empty($module_settings['settings_module']))
                       <li class="dropdown menu-item-has-mega-menu">
                           <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/settings.png')}}" class="img-fluid" alt="basic"><span>{{__('lang.settings')}}</span></a>
                           <div class="mega-menu dropdown-menu">
                               <ul class="mega-menu-row" role="menu">
-                                  <li class="mega-menu-col col-md-3">
-                                      <ul class="sub-menu">
-                                          <li><a href="{{route('getModules')}}"><i class="mdi mdi-circle"></i>@lang('lang.modules')</a></li>
-                                          <li><a href="{{route('settings.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.general_settings')</a></li>
-                                          <li><a href="{{route('moneysafe.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.moneysafes')</a></li>
-                                      </ul>
-                                  </li>
-                                  <li class="mega-menu-col col-md-3">
-                                    <ul class="sub-menu">
-                                        <li><a href="{{route('store.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.stores')</a></li>
-                                        <li><a href="{{route('brands.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.brands')</a></li>
-                                        <li><a href="{{route('sub-categories', 'category')}}"><i class="mdi mdi-circle"></i>@lang('categories.categories')</a></li>
-                                    </ul>
-                                </li>
+                                {{-- ================= Column 1 ============== --}}
                                 <li class="mega-menu-col col-md-3">
                                     <ul class="sub-menu">
-                                        <li><a href="{{route('colors.index')}}"><i class="mdi mdi-circle"></i>@lang('colors.colors')</a></li>
-                                        <li><a href="{{route('sizes.index')}}"><i class="mdi mdi-circle"></i>@lang('sizes.sizes')</a></li>
-                                        <li><a href="{{route('units.index')}}"><i class="mdi mdi-circle"></i>@lang('units.units')</a></li>
+                                    {{-- ////// اخفاء واظهار اقسام البرنامج ////// --}}
+                                    <li>
+                                        <a href="{{route('getModules')}}">
+                                            <i class="mdi mdi-circle"></i>@lang('lang.modules')
+                                        </a>
+                                    </li>
+                                    {{-- ////// الاعدادات العامة ////// --}}
+                                    <li>
+                                        <a href="{{route('settings.index')}}">
+                                            <i class="mdi mdi-circle"></i>@lang('lang.general_settings')
+                                        </a>
+                                    </li>
+                                    {{-- ////// الخزائن ////// --}}
+                                    <li>
+                                        <a href="{{route('moneysafe.index')}}">
+                                            <i class="mdi mdi-circle"></i>@lang('lang.moneysafes')
+                                        </a>
+                                    </li>
+                                    </ul>
+                                </li>
+                                {{-- ================= Column 2 ============== --}}
+                                <li class="mega-menu-col col-md-3">
+                                    <ul class="sub-menu">
+                                        {{-- ////// المخازن ////// --}}
+                                        <li>
+                                            <a href="{{route('store.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.stores')
+                                            </a>
+                                        </li>
+                                        {{-- ////// العلامة التجاية ////// --}}
+                                        <li>
+                                            <a href="{{route('brands.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.brands')
+                                            </a>
+                                        </li>
+                                        {{-- ////// الاقسام ////// --}}
+                                        <li>
+                                            <a href="{{route('sub-categories', 'category')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('categories.categories')
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {{-- ================= Column 3 ============== --}}
+                                <li class="mega-menu-col col-md-3">
+                                    <ul class="sub-menu">
+                                        {{-- ////// الالوان ////// --}}
+                                        <li>
+                                            <a href="{{route('colors.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('colors.colors')
+                                            </a>
+                                        </li>
+                                        {{-- ////// المقاسات ////// --}}
+                                        <li>
+                                            <a href="{{route('sizes.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('sizes.sizes')
+                                            </a>
+                                        </li>
+                                        {{-- ////// الوحدات ////// --}}
+                                        <li>
+                                            <a href="{{route('units.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('units.units')
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                                   <li class="mega-menu-col col-md-3">
                                     <ul class="sub-menu">
-                                        <li><a href="{{route('store-pos.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.store_pos')</a></li>
+                                        {{-- ////////// نقاط البيع للصرافين ////////// --}}
+                                        <li>
+                                            <a href="{{route('store-pos.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.store_pos')
+                                            </a>
+                                        </li>
+                                        {{-- ////////// الضرائب العامة ////////// --}}
+                                        <li>
+                                            <a href="{{route('general-tax.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.general_tax')
+                                            </a>
+                                        </li>
+                                        {{-- ////////// ضرائب المنتجات ////////// --}}
+                                        <li>
+                                            <a href="{{route('product-tax.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.product_tax')
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
-
-
                               </ul>
                           </div>
                       </li>
                   @endif
+                {{-- ###################### reports : التقرير ###################### --}}
                   @if(!empty($module_settings['reports_module']))
                       <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced"><span>{{__('lang.reports')}}</span></a>
+                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
+                            <span>{{__('lang.reports')}}</span>
+                        </a>
                       </li>
                   @endif
-
-
+                {{-- ###################### Sale_Screen : شاشة البيع ###################### --}}
                 <li class="scroll">
                     <a href="{{ route('invoices.create') }}">
                         <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
                         <span>{{ __('site.Sale_Screen') }}</span>
                     </a>
                 </li>
+                {{-- ###################### Invoices : الفواتير ###################### --}}
                 <li class="scroll">
                     <a href="{{ route('invoices.index') }}">
                         <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
                         <span>{{ __('site.Invoices') }}</span>
                     </a>
                 </li>
+                @endif
+
               </ul>
             </div>
         </nav>

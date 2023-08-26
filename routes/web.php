@@ -14,7 +14,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\MoneySafeController;
+use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
@@ -88,7 +90,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     // store pos
     Route::resource('store-pos', StorePosController::class);
-
+    // ########### General Tax ###########
+    Route::resource('general-tax', GeneralTaxController::class);
+    // ########### Product Tax ###########
+    Route::resource('product-tax', ProductTaxController::class);
     // Sell Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');

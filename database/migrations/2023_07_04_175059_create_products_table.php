@@ -4,11 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductsTable extends Migration {
-
-	public function up()
-	{
-		Schema::create('products', function(Blueprint $table) {
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
 			$table->string('name');
 			$table->text('translations')->nullable();
@@ -28,13 +33,20 @@ class CreateProductsTable extends Migration {
 			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('edited_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
-			$table->softDeletes();
+            // method column
+            $table->string('method')->nullable();
+            $table->softDeletes();
 			$table->timestamps();
-		});
-	}
+        });
+    }
 
-	public function down()
-	{
-		Schema::drop('products');
-	}
-}
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('products');
+    }
+};
