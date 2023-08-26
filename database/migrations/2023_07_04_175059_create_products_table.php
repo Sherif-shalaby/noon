@@ -34,7 +34,7 @@ return new class extends Migration
             $table->foreignId('edited_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             // method column
-            $table->string('method');
+            $table->string('method')->nullable();
             $table->softDeletes();
 			$table->timestamps();
         });

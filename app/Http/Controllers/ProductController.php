@@ -112,7 +112,7 @@ class ProductController extends Controller
         'active' => !empty($request->active) ? 1 : 0,
         'created_by' => Auth::user()->id,
         // method column
-        'method' => $request->method,
+        'method' => !empty($request->method) ? $request->method :null,
     ];
     $product = Product::create($product_data);
 
