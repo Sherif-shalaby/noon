@@ -9,9 +9,9 @@
         <!-- Main Faile Css  -->
         <link rel="stylesheet" href="{{ asset('salescreen/css/main.css')}}" />
         <!-- Font Google -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+{{--        <link rel="preconnect" href="https://fonts.googleapis.com" />--}}
+{{--        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />--}}
+{{--        <link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700;800&display=swap" rel="stylesheet"/>--}}
 @endpush
 {{--@section('breadcrumbbar')--}}
 {{--    <div class="breadcrumbbar">--}}

@@ -359,7 +359,20 @@ return [
     'paid' => 'Paid',
     'partially_paid' => 'Partially Paid',
     'pay_later' => 'Pay Later',
-    'add-stock' => 'Add Stock'
+    'add-stock' => 'Add Stock',
+    'finalize_sale' => 'Finalize Sell',
+    'received_amount' => 'Received Amount',
+    'paying_amount' => 'Paying Amount',
+    'change' => 'Change',
+    'payment_method' => 'Payment Method',
+    'payment_note' => 'Payment Note',
+    'sell_note' => 'Sell Note',
+    'staff_note' => 'Staff Note',
+    'surplus' => 'Surplus',
+    'submit' => 'Submit',
+    'print_the_transaction' => 'Print The Transaction',
+    'add_payment_row' => 'Pay the remaining amount with another Method',
+    'another_payment_option' => 'Another Payment Option',
 ];
 
 

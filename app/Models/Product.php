@@ -15,7 +15,9 @@ class Product extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
+
     protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method');
+
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
 
@@ -97,9 +99,7 @@ class Product extends Model
     {
         return $this->hasOne(ProductStore::class);
     }
-    // ############ Relationships ############
-    // M:M relationship Between "products" , "product_taxes" table
-    // 'general_taxes' can applied on many 'stores'
+
     public function product_taxes()
     {
         return $this->belongsToMany('App\Models\ProductTax','products_taxes');
