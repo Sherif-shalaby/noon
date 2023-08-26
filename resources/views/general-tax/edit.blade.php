@@ -33,8 +33,8 @@
                     <label for="method">{{ __('lang.tax_method').':*' }}</label>
                     <select name="method" id="method" class="form-control" data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
                         <option value="">{{  __('lang.please_select') }}</option>
-                        <option {{ old('method', $general_taxes['method']) == 'inclusive' ? 'selected' : '' }} value="{{ __('lang.inclusive') }}">{{ __('lang.inclusive') }}</option>
-                        <option {{ old('method', $general_taxes['method']) == 'exclusive' ? 'selected' : '' }} value="{{ __('lang.exclusive') }}">{{ __('lang.exclusive') }}</option>
+                        <option {{ old('method', $general_taxes['method']) == 'inclusive' ? 'selected' : '' }} value="inclusive">{{ __('lang.inclusive') }}</option>
+                        <option {{ old('method', $general_taxes['method']) == 'exclusive' ? 'selected' : '' }} value="exclusive">{{ __('lang.exclusive') }}</option>
                     </select>
                 </div>
                 {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
@@ -61,7 +61,6 @@
                                     <option value="{{ $store->id }}">{{$store->name}}</option>
                                 @endif
                             @endforeach
-                            {{-- <option value="{{ $store->id }}">{{ $store->name }}</option> --}}
                         @endforeach
                     </select>
                 </div>

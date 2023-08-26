@@ -28,13 +28,13 @@
         <!-- Start col -->
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
-               
-               
+
+
             </div>
         </div>
     </div> --}}
-       <!-- Start Contentbar -->    
-       <div class="contentbar">                
+       <!-- Start Contentbar -->
+       <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
@@ -106,6 +106,7 @@
                                         {{$price->price_category." : ".$price->price}} <br>
                                         @endforeach
                                     </td>
+                                    {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
                                     <td>
                                         @if ($product->created_by  > 0 and $product->created_by != null)
                                             {{ $product->created_at->diffForHumans() }} <br>
@@ -117,6 +118,7 @@
                                         {{ __('no_update') }}
                                         @endif
                                     </td>
+                                    {{-- ++++++++++++++++++++++ updated_at column ++++++++++++++++++++++ --}}
                                     <td>
                                         @if ($product->edited_by  > 0 and $product->edited_by != null)
                                             {{ $product->updated_at->diffForHumans() }} <br>
@@ -137,7 +139,7 @@
                                                 <li>
 
                                                     <a href="{{route('products.edit', $product->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
-                                                    
+
                                                 </li>
                                                 <li class="divider"></li>
                                                     <li>

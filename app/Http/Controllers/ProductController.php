@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
 use App\Models\ProductPrice;
+use App\Models\ProductTax;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\Unit;
@@ -22,7 +23,7 @@ use App\Utils\Util;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller 
+class ProductController extends Controller
 {
     protected $Util;
 
@@ -75,12 +76,14 @@ class ProductController extends Controller
    */
   public function create()
   {
-      $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
-      $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
-      $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
-      $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
-      $quick_add=1;
-      return view('products.create',compact('categories','brands','units','stores','quick_add'));
+        $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+        $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+        $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+        // product_tax
+        $product_tax = ProductTax::select('name','id')->get();
+        $quick_add=1;
+        return view('products.create',compact('categories','brands','units','stores','quick_add','product_tax'));
   }
 
   /**
@@ -90,7 +93,6 @@ class ProductController extends Controller
    */
   public function store(ProductRequest $request)
   {
-    // return $request->all();
     try{
       $product_data = [
         'name' => $request->name,
@@ -109,8 +111,13 @@ class ProductController extends Controller
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
         'created_by' => Auth::user()->id,
+        // method column
+        'method' => $request->method,
     ];
     $product = Product::create($product_data);
+
+    // Store "product_id" And "product_tax_id" in "product_tax_pivot" table
+    $product->product_taxes()->attach($request->product_tax_id) ;
     if(!empty($request->subcategory_id)){
         $product->subcategories()->attach($request->subcategory_id);
     }
@@ -137,7 +144,7 @@ class ProductController extends Controller
             $index_prices=array_keys($request->price_category);
         }
     }
-    foreach ($index_prices as $index_price){   
+    foreach ($index_prices as $index_price){
     // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
@@ -212,7 +219,7 @@ class ProductController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -228,9 +235,10 @@ class ProductController extends Controller
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
-      $product=Product::find($id);
+      $product=Product::with('product_taxes')->findOrFail($id);
       $customer_types = CustomerType::pluck('name', 'id');
-      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types'));
+      $product_tax = ProductTax::all();
+      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
   }
 
   /**
@@ -259,9 +267,15 @@ class ProductController extends Controller
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
         'edited_by' => Auth::user()->id,
+        // method column
+        'method' => $request->method,
     ];
     $product = Product::find($id);
     $product->update($product_data);
+    // ++++++++++++++++++++ product_tax : update pivot Table ++++++++++++++++++++
+    // When Change "product_tax" update "products_taxes" table
+    $product->product_taxes()->sync($request->product_tax_id);
+
 
     if(!empty($request->subcategory_id)){
         $product->subcategories()->sync($request->subcategory_id);
@@ -296,7 +310,7 @@ class ProductController extends Controller
             $index_prices=array_keys($request->price_category);
         }
     }
-    foreach ($index_prices as $index_price){   
+    foreach ($index_prices as $index_price){
     // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
@@ -404,7 +418,7 @@ class ProductController extends Controller
 
       return !empty($date_format) ? Carbon::createFromFormat($date_format, $date)->format($mysql_format) : null;
   }
-  
+
 }
 
 ?>

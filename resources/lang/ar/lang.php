@@ -260,7 +260,7 @@ return array(
     'cost' => 'التكلفة',
     'total_cost' => 'اجمالي التكاليف',
     'store_pos' => 'نقاط البيع للصرافين',
-    // ###### general tax ######
+    // ############ general tax ############
     'general_tax' => 'الضرائب العامة' ,
     'add_general_tax' => 'إضافة ضريبة',
     'tax_name' => 'الاسم' ,
@@ -276,6 +276,14 @@ return array(
     'taxNameRequired' => 'الاسم مطلوب' ,
     'taxNameUnique' => 'الاسم موجود مسبقاً' ,
     'taxMethodRequired' => 'الطريقة الضريبية مطلوبة' ,
+    'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
+    // ############ product tax ############
+    'product_tax' => 'ضريبة المنتج' ,
+    'add_product_tax' => 'إضافة ضريبة للمنتج',
+    'edit_product_tax' => 'تعديل ضريبة المنتج',
+    'taxNameRequired' => 'الاسم مطلوب' ,
+    'taxNameUnique' => 'الاسم موجود مسبقاً' ,
+    'taxMethodRequired' => 'ضريبة المنتج مطلوبة' ,
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
 
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',

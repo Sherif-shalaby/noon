@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\GeneralTax;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGeneralTax;
+use App\Http\Requests\UpdateGeneralTax;
 use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Ui\Presets\React;
 
 class GeneralTaxController extends Controller
 {
@@ -20,18 +22,12 @@ class GeneralTaxController extends Controller
         $general_taxes = GeneralTax::with(['stores'])->get();
         return view('general-tax.index',compact('general_taxes','stores'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    /* ++++++++++++++++++++ create() ++++++++++++++++++++ */
     public function create()
     {
         $stores = Store::all();
         return view('general-tax.create',compact('stores'));
     }
-
     /* ++++++++++++++ store() ++++++++++++++ */
     public function store(StoreGeneralTax $request)
     {
@@ -45,7 +41,6 @@ class GeneralTaxController extends Controller
             $generalTax->status = $request->status ;
             $generalTax->created_by = Auth::user()->name;
             // store data
-            // return $generalTax;
             $generalTax->save();
             // Store "store_id" And "general_tax_id" in "store_tax" table
             $generalTax->stores()->attach($request->store_id);
@@ -103,19 +98,10 @@ class GeneralTaxController extends Controller
                 // update "updated_by"
                 "updated_by" => Auth::user()->name,
             ]);
-            //  // ++++++++++++++++++++ Teacher : update pivot Table ++++++++++++++++++++
-             if (isset($request->store_id))
-             {
-                // if "store" are "Edited" then take "new general_tax" and store them in "store_tax" table without repeating
-                $updated_general_tax->stores()->sync($request->store_id);
-             }
-             else
-             {
-                // if "teachers" are "Not Edited" then "Don't Update Teachers" in "teacher_section" table
-                $updated_general_tax->stores()->sync(array());
-             }
-             $updated_general_tax->save();
-
+            // ++++++++++++++++++++ general_tax : update pivot Table ++++++++++++++++++++
+            // When Change "store" update "store_tax" table
+            $updated_general_tax->stores()->sync($request->store_id);
+            $updated_general_tax->save();
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
@@ -128,7 +114,6 @@ class GeneralTaxController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-
         return redirect()->back()->with('status', $output);
     }
 
