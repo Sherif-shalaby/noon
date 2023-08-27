@@ -95,6 +95,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
+     // ########### Purchases Report ###########
+     Route::resource('purchases-report', PurchasesReportController::class);
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
