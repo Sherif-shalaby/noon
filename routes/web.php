@@ -103,7 +103,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
-//    Route::get('pos/index/{data}',[SellPosController::class,'index'])->name('pos.index');
+    Route::get('invoice',[SellPosController::class,'index'])->name('pos.index');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers

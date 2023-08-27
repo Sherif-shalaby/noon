@@ -12,7 +12,7 @@ class TransactionSellLine extends Model
 
     public function transaction_sell_lines()
     {
-        return $this->hasMany(SellLine::class);
+        return $this->hasMany(SellLine::class,'transaction_id','id');
     }
 
     public function transaction_sell_line()
@@ -32,12 +32,26 @@ class TransactionSellLine extends Model
 
     public function transaction_payments()
     {
-        return $this->hasMany(PaymentTransactionSellLine::class);
+        return $this->hasMany(PaymentTransactionSellLine::class,'transaction_id','id');
     }
 
     public function transaction_currency()
     {
 
         return $this->belongsTo(Currency::class, 'transaction_currency');
+    }
+    public function received_currency()
+    {
+        $default_currency_id = System::getProperty('currency');
+        $default_currency = Currency::where('id', $default_currency_id)->first();
+
+        return $this->belongsTo(Currency::class, 'received_currency_id')->withDefault($default_currency);
+    }
+    public function paying_currency()
+    {
+        $default_currency_id = System::getProperty('currency');
+        $default_currency = Currency::where('id', $default_currency_id)->first();
+
+        return $this->belongsTo(Currency::class, 'paying_currency_id')->withDefault($default_currency);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TransactionSellLine;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -14,15 +15,16 @@ class SellPosController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function index($data)
+    public function index()
     {
-//        dd($data);
-//        $payment_types = $this->getPaymentTypeArrayForPos();
-//        return view('invoices.partials.payment',
-//            compact('payment_types'))
-//            ->with('showModal', true);
-    }
+//        dd(TransactionSellLine::all()->last());
+        $transaction = TransactionSellLine::all()->last();
+//        dd($transaction->transaction_sell_lines);
+        $payment_types = $this->getPaymentTypeArrayForPos();
+        $invoice_lang = request()->session()->get('language');
 
+        return view('invoices.partials.invoice',compact('transaction','payment_types','invoice_lang'));
+    }
     /**
      * Show the form for creating a new resource.
      *
