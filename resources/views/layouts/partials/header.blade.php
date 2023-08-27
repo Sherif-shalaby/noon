@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-inline-item menubar-toggle">
+                        <li class="list-inline-item menubar-toggle" @if(request()->segment(2) == 'invoices') style="display: inline-block;!important;"@endif>
                             <div class="menubar">
                                 <a class="menu-hamburger navbar-toggle bg-transparent" href="javascript:void();" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="true">
                                     <img src="{{asset('images/svg-icon/collapse.svg')}}" class="img-fluid menu-hamburger-collapse" alt="collapse">
@@ -114,7 +114,7 @@
 </div>
 <!-- End Topbar -->
 <!-- Start Navigationbar -->
-<div class="navigationbar">
+<div class="navigationbar" @if(request()->segment(2) == 'invoices') style="background-color: transparent;padding: 0;"@endif>
     <!-- Start container-fluid -->
     <div class="container-fluid">
         <!-- Start Horizontal Nav -->

@@ -212,7 +212,11 @@
                 </div>
             </div>
             <!-- Start Topbar -->
-            @include('layouts.partials.header')
+{{--            {{dd(request()->segment(2))}}--}}
+        @include('layouts.partials.header')
+{{--        @if (request()->segment(2) != 'invoices')--}}
+{{--            @include('layouts.partials.navbar')--}}
+{{--        @endif--}}
             <!-- End Navigationbar -->
 
             <!-- Start Breadcrumbbar -->
