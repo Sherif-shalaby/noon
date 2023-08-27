@@ -81,7 +81,7 @@ class ProductController extends Controller
         $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
         // product_tax
-        $product_tax = ProductTax::select('name','id')->get();
+        $product_tax = ProductTax::select('name','id','status')->get();
         $quick_add=1;
         return view('products.create',compact('categories','brands','units','stores','quick_add','product_tax'));
   }

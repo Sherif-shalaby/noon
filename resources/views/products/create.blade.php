@@ -125,7 +125,9 @@
                         <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}" required>
                             <option value="">{{  __('lang.please_select') }}</option>
                             @foreach ($product_tax as $tax )
-                                <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                @if( $tax->status == 'active' )
+                                    <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                     </div>
