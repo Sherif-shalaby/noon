@@ -285,6 +285,8 @@ return array(
     'taxNameUnique' => 'الاسم موجود مسبقاً' ,
     'taxMethodRequired' => 'ضريبة المنتج مطلوبة' ,
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
+    // ############ purchase_report ############
+    'purchases_report' => 'تقرير المشتريات',
 
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',

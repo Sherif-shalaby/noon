@@ -104,4 +104,9 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Models\ProductTax','products_taxes');
     }
+    // 1:M relationship Between "products" , "Add_Stock_Line" table
+    public function stock_lines()
+    {
+        return $this->hasMany(AddStockLine::class);
+    }
 }

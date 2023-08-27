@@ -285,10 +285,16 @@
                 {{-- ###################### reports : التقرير ###################### --}}
                   @if(!empty($module_settings['reports_module']))
                       <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
-                            <span>{{__('lang.reports')}}</span>
-                        </a>
+                        <li class="dropdown">
+                            <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
+                                <span>{{__('lang.reports')}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>
+                            </ul>
+                      </li>
+
                       </li>
                   @endif
                 {{-- ###################### Sale_Screen : شاشة البيع ###################### --}}

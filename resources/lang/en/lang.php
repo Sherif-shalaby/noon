@@ -267,7 +267,8 @@ return [
     'taxMethodRequired' => 'method Required' ,
     'taxRateInteger' => 'Rate must be a number',
     'taxRateUnique' => 'Rate Required' ,
-
+    // ############ purchases_report ############
+    'purchases_report' => 'purchases report',
 
     'purchase_price'=>'Purchase Price',
     'sell_price'=>'Sell Price',
