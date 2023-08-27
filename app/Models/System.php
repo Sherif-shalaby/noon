@@ -29,6 +29,16 @@ class System extends Model
             return null;
         }
     }
+    public static function getLanguageDropdown()
+    {
+        $config_languages = config('constants.langs');
+        $languages = [];
+        foreach ($config_languages as $key => $value) {
+            $languages[$key] = $value['full_name'];
+        }
+
+        return $languages;
+    }
 
 
 }

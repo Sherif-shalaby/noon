@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('stock_transaction_payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('transaction_id');
+            $table->unsignedBigInteger('stock_transaction_id');
             $table->foreign('stock_transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
+            $table->foreignId('paying_currency')->nullable()->references('id')->on('currencies')->onDelete('cascade');
             $table->decimal('amount', 15, 4);
             $table->string('method');
             $table->string('paid_on');

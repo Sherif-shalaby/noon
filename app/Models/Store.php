@@ -58,4 +58,11 @@ class Store extends Model
     {
         return $this->hasMany('App\Models\MoneySafe');
     }
+    // ############ Relationships ############
+    // M:M relationship Between "stores" , "general_taxes" table
+    // 'stores' can has on many 'general_taxes'
+    public function general_taxes()
+    {
+        return $this->belongsToMany('App\Models\GeneralTax','store_tax');
+    }
 }

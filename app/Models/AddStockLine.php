@@ -14,7 +14,7 @@ class AddStockLine extends Model
 
     public function transaction()
     {
-        return $this->belongsTo(StockTransaction::class);
+        return $this->belongsTo(StockTransaction::class,'stock_transaction_id',);
     }
     public function product()
     {
