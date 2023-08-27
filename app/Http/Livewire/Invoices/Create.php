@@ -34,7 +34,8 @@ class Create extends Component
     public $products = [], $department_id = null, $items = [], $price  ,$total = 0, $client_phone,
         $client_id, $client, $not_paid, $cash = 0, $rest, $invoice,$invoice_id, $date,
         $payments_amount, $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id,
-        $showModal = false, $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note,$payment_types;
+        $showModal = false, $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note,$payment_types,
+        $discount = 0.00, $total_after_discount = 0.00;
 
     protected $rules = [
 //            'items' => 'min:1',
@@ -98,15 +99,15 @@ class Create extends Component
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => 0,
                 'transaction_currency' => $this->transaction_currency,
-                'final_total' => number_format($this->total, 2),
-                'grand_total' => number_format($this->total, 2),
+                'final_total' => $this->num_uf($this->total),
+                'grand_total' => $this->num_uf($this->price),
                 'transaction_date' => Carbon::now(),
                 'invoice_no' => $this->generateInvoivceNumber(),
                 'status' => 'final',
                 'payment_status' => 'pending',
                 'sale_note' => $this->sale_note,
                 'staff_note' => $this->staff_note,
-//            'discount_value' => $this->commonUtil->num_uf($request->discount_value),
+                'discount_value' => $this->num_uf($this->discount),
 //            'discount_amount' => $this->commonUtil->num_uf($request->discount_amount),
 //            'current_deposit_balance' => $this->commonUtil->num_uf($request->current_deposit_balance),
 //            'used_deposit_balance' => $this->commonUtil->num_uf($request->used_deposit_balance),
@@ -119,6 +120,7 @@ class Create extends Component
 //            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
                 'created_by' => Auth::user()->id,
             ];
+            DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
 
             // Add Sell line
@@ -130,23 +132,16 @@ class Create extends Component
                 $sell_line = new SellLine();
                 $sell_line->transaction_id = $transaction->id;
                 $sell_line->product_id = $item['product']['id'];
-//                $sell_line->coupon_discount = !empty($item['coupon_discount']) ? $this->num_uf($item['coupon_discount']) : 0;
-//                $sell_line->coupon_discount_type = !empty($item['coupon_discount_type']) ? $item['coupon_discount_type'] : null;
-//                $sell_line->coupon_discount_amount = !empty($item['coupon_discount_amount']) ? $this->num_uf($item['coupon_discount_amount']) : 0;
-//                $sell_line->promotion_discount = !empty($item['promotion_discount']) ? $this->num_uf($item['promotion_discount']) : 0;
-//                $sell_line->promotion_discount_type = !empty($item['promotion_discount_type']) ? $item['promotion_discount_type'] : null;
-//                $sell_line->promotion_discount_amount = !empty($item['promotion_discount_amount']) ? $this->num_uf($item['promotion_discount_amount']) : 0;
-//                $sell_line->product_discount_value = !empty($item['product_discount_value']) ? $this->num_uf($item['product_discount_value']) : 0;
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
-                $sell_line->product_discount_amount = !empty($item['discount_price']) ? number_format($item['discount_price'], 2) : 0;
+                $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
                 $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
-//                $sell_line->batch_number = !empty($item['batch_number']) ? $item['batch_number'] : null;
                 $sell_line->quantity = (float)$item['quantity'];
                 $sell_line->sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
                 $sell_line->dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
                 $sell_line->purchase_price = !empty($item['current_stock']['purchase_price']) ? $item['current_stock']['purchase_price'] : null;
                 $sell_line->dollar_purchase_price = !empty($item['current_stock']['dollar_purchase_price']) ? $item['current_stock']['dollar_purchase_price'] : null;
-                $sell_line->sub_total = number_format($item['sub_total']);
+                $sell_line->exchange_rate = $item['exchange_rate'];
+                $sell_line->sub_total = $this->num_uf($item['sub_total']);
 //                $sell_line->tax_id = !empty($item['tax_id']) ? $item['tax_id'] : null;
 //                $sell_line->tax_method = !empty($item['tax_method']) ? $item['tax_method'] : null;
 //                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;
@@ -189,14 +184,16 @@ class Create extends Component
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
             }
-            $payment_types = $this->commonUtil->getPaymentTypeArrayForPos();
+            DB::commit();
+            $payment_types = $this->getPaymentTypeArrayForPos();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
-            $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
+//            $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
 
             return $this->redirect('/invoices/create');
 
         } catch(\Exception $e){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
+            dd($e);
         }
 
 //
@@ -248,7 +245,7 @@ class Create extends Component
                 $key = array_keys($newArr)[0];
                 ++$this->items[$key]['quantity'];
 
-                if ($this->quantity_available  < $this->items[$key]['quantity']) {
+                if ($quantity_available  < $this->items[$key]['quantity']) {
                     --$this->items[$key]['quantity'];
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
                 }else {
@@ -256,6 +253,7 @@ class Create extends Component
                 }
             }
             else {
+//                dd( $product->unit->name);
                 $this->items[] = [
                     'product' => $product,
                     'quantity' => 1,
@@ -265,7 +263,7 @@ class Create extends Component
                     'client_id' => $product->customer?->id,
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
-                    'sub_total' => 1 * $product_price,
+                    'sub_total' => $product->unit->base_unit_multiplier * $product_price,
                     'current_stock' => $current_stock,
                     'discount_categories' =>  $discounts,
                     'discount' => null,
@@ -273,8 +271,11 @@ class Create extends Component
                     'discount_type' =>  null,
                     'discount_category' =>  null,
                     'dollar_price' => $product_price / $exchange_rate,
+                    'unit_name' => $product->unit->name,
+                    'base_unit_multiplier' => $product->unit->base_unit_multiplier,
+                    'total_quantity' => 1 * $product->unit->base_unit_multiplier
                 ];
-//                dd($this->items[0]['discount_categories']);
+//                dd($this->items[0]['unit_name']);
 
             }
         }
@@ -297,7 +298,9 @@ class Create extends Component
 
         if ($this->items[$key]['quantity'] < $this->items[$key]['quantity_available']) {
             $this->items[$key]['quantity']++;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
+
+            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
+            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
                 ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
         }
         else{
@@ -309,7 +312,8 @@ class Create extends Component
     public function decrement($key){
         if($this->items[$key]['quantity'] > 1 ){
             $this->items[$key]['quantity']--;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
+            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
+            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
                 ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
         }
 
@@ -367,9 +371,10 @@ class Create extends Component
         else
             $price = 0;
 
+        $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
         $this->items[$key]['discount_price'] = $price;
-        $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
-            ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+        $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
+            ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
 
         $this->computeForAll();
     }
@@ -503,7 +508,7 @@ class Create extends Component
             $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([
-                    'amount' => number_format($payment['amount'],2),
+                    'amount' => $this->num_uf($payment['amount']),
                     'pay_method' => $payment['method'],
                     'type' => $type,
                     'transaction_type' => $transaction->type,
@@ -516,7 +521,7 @@ class Create extends Component
             else {
                 CashRegisterTransaction::create([
                     'cash_register_id' => $register->id,
-                    'amount' => number_format($payment['amount'],2),
+                    'amount' => $this->num_uf($payment['amount']),
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
                     'transaction_type' => $transaction->type,
@@ -528,7 +533,7 @@ class Create extends Component
         }
         else {
             $payments_formatted[] = new CashRegisterTransaction([
-                'amount' => number_format($payment['amount'],2),
+                'amount' => $this->num_uf($payment['amount']),
                 'pay_method' => $payment['method'],
                 'type' => $type,
                 'transaction_type' => $transaction->type,
@@ -623,5 +628,28 @@ class Create extends Component
         return $html_content;
     }
 
+    public function changeTotal(){
+        $this->total = $this->price - $this->discount;
+        $this->total_after_discount = $this->price - $this->discount;
+    }
+    public function num_uf($input_number, $currency_details = null)
+    {
+        $thousand_separator  = ',';
+        $decimal_separator  = '.';
+
+        $num = str_replace($thousand_separator, '', $input_number);
+        $num = str_replace($decimal_separator, '.', $num);
+
+        return (float)$num;
+    }
+    public function getPaymentTypeArrayForPos()
+    {
+        return [
+            'cash' => __('lang.cash'),
+//            'cheque' => __('lang.cheque'),
+//            'deposit' => __('lang.use_the_balance'),
+//            'paypal' => __('lang.paypal'),
+        ];
+    }
 
 }
