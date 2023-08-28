@@ -112,12 +112,16 @@ class ProductController extends Controller
         'active' => !empty($request->active) ? 1 : 0,
         'created_by' => Auth::user()->id,
         // method column
-        'method' => $request->method,
+        'method' => !empty($request->method) ? $request->method :null,
     ];
     $product = Product::create($product_data);
 
-    // Store "product_id" And "product_tax_id" in "product_tax_pivot" table
-    $product->product_taxes()->attach($request->product_tax_id) ;
+    // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
+    if(!empty($request->product_tax_id))
+    {
+        $product->product_taxes()->attach($request->product_tax_id) ;
+    }
+
     if(!empty($request->subcategory_id)){
         $product->subcategories()->attach($request->subcategory_id);
     }

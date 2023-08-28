@@ -285,6 +285,14 @@ return array(
     'taxNameUnique' => 'الاسم موجود مسبقاً' ,
     'taxMethodRequired' => 'ضريبة المنتج مطلوبة' ,
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
+    // ############ purchase_report ############
+    'purchases_report' => 'تقرير المشتريات',
+    // ############ sales_report ############
+    'sales_report' => 'تقرير المبيعات',
+    // ############ receivable_report ############
+    'receivable_report' => 'تقرير القبض',
+    // ############ payable_report ############
+    'payable_report' => 'تقرير القبض',
 
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
@@ -366,7 +374,18 @@ return array(
     'current_stock' => 'المخزون الحالي',
     'invoice_currency' => 'عمله الفاتوره' ,
     'change_exchange_rate_to_supplier' => 'تغيير سعر الصرف للمورد',
-
-
+    'finalize_sale' => 'اتمام البيع',
+    'received_amount' => 'المبلغ المُستلم',
+    'paying_amount' => 'مبلغ الدفع',
+    'change' => 'المتبقي',
+    'payment_method' => 'طريقه الدفع',
+    'payment_note' => 'ملحوظه الدفع',
+    'sale_note' => 'ملحوظه بيع',
+    'staff_note' => 'ملاحظه للموظفين',
+    'surplus' => 'فائض',
+    'submit' => 'أرسل',
+    'print_the_transaction' => 'اطبع المعاملة',
+    'add_payment_row' => 'دفع الباقي بطريقة أخري',
+    'another_payment_option' =>  'خيار دفع آخر',
 );
 
