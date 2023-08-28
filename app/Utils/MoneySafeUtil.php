@@ -2,9 +2,12 @@
 
 namespace App\Utils;
 
+use App\Models\CashRegister;
+use App\Models\CashRegisterTransaction;
 use App\Models\Employee;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
+use App\Models\StorePos;
 use App\Models\System;
 
 class MoneySafeUtil extends Util
@@ -163,6 +166,71 @@ class MoneySafeUtil extends Util
 
 
         return true;
+    }
+
+    public function addPayments($transaction, $payment, $type = 'credit', $user_id = null, $transaction_payment_id = null)
+    {
+        if (empty($user_id)) {
+            $user_id = auth()->user()->id;
+        }
+        $register =  $this->getCurrentCashRegisterOrCreate($user_id);
+
+        if ($transaction->type == 'sell_return') {
+            $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
+            if (!empty($cr_transaction)) {
+                $cr_transaction->update([
+                    'amount' => $this->num_uf($payment['amount']),
+                    'pay_method' => $payment['method'],
+                    'type' => $type,
+                    'transaction_type' => $transaction->type,
+                    'transaction_id' => $transaction->id,
+                    'transaction_payment_id' => $transaction_payment_id
+                ]);
+
+                return true;
+            }
+            else {
+                CashRegisterTransaction::create([
+                    'cash_register_id' => $register->id,
+                    'amount' => $this->num_uf($payment['amount']),
+                    'pay_method' =>  $payment['method'],
+                    'type' => $type,
+                    'transaction_type' => $transaction->type,
+                    'transaction_id' => $transaction->id,
+                    'transaction_payment_id' => $transaction_payment_id
+                ]);
+                return true;
+            }
+        }
+        else {
+            $payments_formatted[] = new CashRegisterTransaction([
+                'amount' => $this->num_uf($payment['amount']),
+                'pay_method' => $payment['method'],
+                'type' => $type,
+                'transaction_type' => $transaction->type,
+                'transaction_id' => $transaction->id,
+                'transaction_payment_id' => $transaction_payment_id
+            ]);
+        }
+    }
+
+    public function getCurrentCashRegisterOrCreate($user_id)
+    {
+        $register =  CashRegister::where('user_id', $user_id)
+            ->where('status', 'open')
+            ->first();
+
+        if (empty($register)) {
+            $store_pos = StorePos::where('user_id', $user_id)->first();
+            $register = CashRegister::create([
+                'user_id' => $user_id,
+                'status' => 'open',
+                'store_id' => !empty($store_pos) ? $store_pos->store_id : null,
+                'store_pos_id' => !empty($store_pos) ? $store_pos->id : null
+            ]);
+        }
+
+        return $register;
     }
 
 }

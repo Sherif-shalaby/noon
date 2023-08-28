@@ -7,7 +7,7 @@
                 <br>
                 #{{ $invoice->id }}
             </h1>
-            <h4 class="  mb-2 fw-bold mb-3 text-center mt-2">
+            <h4 class="mb-2 fw-bold mb-3 text-center mt-2">
                 {{ $setting['site_title'] }}
             </h4>
             <div class="the_date d-flex align-items-center justify-content-evenly mb-3">

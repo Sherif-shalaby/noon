@@ -95,7 +95,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="list-inline-item menubar-toggle">
+                        <li class="list-inline-item menubar-toggle" @if(request()->segment(2) == 'invoices') style="display: inline-block;!important;"@endif>
                             <div class="menubar">
                                 <a class="menu-hamburger navbar-toggle bg-transparent" href="javascript:void();" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="true">
                                     <img src="{{asset('images/svg-icon/collapse.svg')}}" class="img-fluid menu-hamburger-collapse" alt="collapse">
@@ -114,7 +114,7 @@
 </div>
 <!-- End Topbar -->
 <!-- Start Navigationbar -->
-<div class="navigationbar">
+<div class="navigationbar" @if(request()->segment(2) == 'invoices') style="background-color: transparent;padding: 0;"@endif>
     <!-- Start container-fluid -->
     <div class="container-fluid">
         <!-- Start Horizontal Nav -->
@@ -284,12 +284,41 @@
                   @endif
                 {{-- ###################### reports : التقرير ###################### --}}
                   @if(!empty($module_settings['reports_module']))
-                      <li class="dropdown">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
-                            <span>{{__('lang.reports')}}</span>
-                        </a>
-                      </li>
+                    <li class="dropdown">
+                        <li class="dropdown">
+                            <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
+                                <span>{{__('lang.reports')}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                {{-- +++++++++++ purchases report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('purchases-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ sales report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('sales-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.sales_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ receivable report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('receivable-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.receivable_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ receivable report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('payable-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.payable_report')}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </li>
                   @endif
                 {{-- ###################### Sale_Screen : شاشة البيع ###################### --}}
                 <li class="scroll">

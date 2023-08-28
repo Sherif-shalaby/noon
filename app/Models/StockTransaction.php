@@ -71,11 +71,21 @@ class StockTransaction extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
-    public function created_by()
+    public function created_by_relationship()
     {
         return $this->belongsTo(User::class,'created_by');
     }
 
+    public function paying_currency_relationship()
+    {
+
+        return $this->belongsTo(Currency::class, 'transaction_currency');
+    }
+
+    public function getSourceNameAttribute()
+    {
+
+    }
 
 
 }

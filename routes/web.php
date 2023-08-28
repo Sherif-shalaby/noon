@@ -16,10 +16,15 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\MoneySafeController;
+use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
+use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\SellPosController;
 
 
 /*
@@ -33,6 +38,11 @@ use App\Http\Controllers\SuppliersController;
 |
 */
 Route::group(['middleware' => ['auth']], function () {
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect('/login');
+    });
+
     Route::get('brands/get-dropdown', [BrandController::class,'getDropdown']);
     Route::resource('brands', BrandController::class);
     Route::resource('store', App\Http\Controllers\StoreController::class);
@@ -48,10 +58,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('settings', SettingController::class);
     Route::get('stores/get-dropdown', [StoreController::class,'getDropdown']);
     Route::resource('store',StoreController::class);
-    Route::post('/logout', function () {
-        Auth::logout();
-        return redirect('/login');
-    });
     //الاقسام
     Route::get('categories/get-dropdown', [CategoryController::class,'getDropdown']);
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
@@ -92,12 +98,21 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
+    // ########### Purchases Report ###########
+    Route::resource('purchases-report', PurchasesReportController::class);
+    // ########### Sales Report ###########
+    Route::resource('sales-report', SalesReportController::class);
+    // ########### Receivable Report ###########
+    Route::resource('receivable-report', ReceivableController::class);
+    // ########### Payable Report ###########
+    Route::resource('payable-report', PayableReportController::class);
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
+//    Route::get('pos/index/{data}',[SellPosController::class,'index'])->name('pos.index');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers

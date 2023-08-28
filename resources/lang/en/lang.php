@@ -267,7 +267,12 @@ return [
     'taxMethodRequired' => 'method Required' ,
     'taxRateInteger' => 'Rate must be a number',
     'taxRateUnique' => 'Rate Required' ,
-
+    // ############ purchases_report ############
+    'purchases_report' => 'purchases report',
+    // ############ receivable_report ############
+    'receivable_report' => 'receivable report',
+    // ############ payable_report ############
+    'payable_report' => 'payable report',
 
     'purchase_price'=>'Purchase Price',
     'sell_price'=>'Sell Price',
@@ -359,7 +364,20 @@ return [
     'paid' => 'Paid',
     'partially_paid' => 'Partially Paid',
     'pay_later' => 'Pay Later',
-    'add-stock' => 'Add Stock'
+    'add-stock' => 'Add Stock',
+    'finalize_sale' => 'Finalize Sell',
+    'received_amount' => 'Received Amount',
+    'paying_amount' => 'Paying Amount',
+    'change' => 'Change',
+    'payment_method' => 'Payment Method',
+    'payment_note' => 'Payment Note',
+    'sell_note' => 'Sell Note',
+    'staff_note' => 'Staff Note',
+    'surplus' => 'Surplus',
+    'submit' => 'Submit',
+    'print_the_transaction' => 'Print The Transaction',
+    'add_payment_row' => 'Pay the remaining amount with another Method',
+    'another_payment_option' => 'Another Payment Option',
 ];
 
 
