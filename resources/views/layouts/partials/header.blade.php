@@ -288,6 +288,7 @@
                   @endif
                 {{-- ###################### reports : التقرير ###################### --}}
                   @if(!empty($module_settings['reports_module']))
+
                       <li class="dropdown">
                         <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
@@ -295,9 +296,37 @@
                                 <span>{{__('lang.reports')}}</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>
+                                {{-- +++++++++++ purchases report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('purchases-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ sales report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('sales-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.sales_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ receivable report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('receivable-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.receivable_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ receivable report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('payable-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.payable_report')}}
+                                    </a>
+                                </li>
                             </ul>
-                      </li>
+                        </li>
+
+{{--                    </li>--}}
+{{--                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>--}}
+{{--                            </ul>--}}
+{{--                      </li>--}}
 
                       </li>
                   @endif

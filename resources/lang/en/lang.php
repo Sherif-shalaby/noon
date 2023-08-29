@@ -269,6 +269,10 @@ return [
     'taxRateUnique' => 'Rate Required' ,
     // ############ purchases_report ############
     'purchases_report' => 'purchases report',
+    // ############ receivable_report ############
+    'receivable_report' => 'receivable report',
+    // ############ payable_report ############
+    'payable_report' => 'payable report',
 
     'purchase_price'=>'Purchase Price',
     'sell_price'=>'Sell Price',

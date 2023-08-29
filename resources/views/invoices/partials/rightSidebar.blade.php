@@ -33,6 +33,7 @@
                 <label for="" class="text-primary">
                     الخصم:
                 </label>
+
                 <input type="number" class="form-control w-50" wire:model="discount" wire:change="changeTotal" >
             </div>
             <div class="d-flex align-items-center mb-2 gap-2 justify-content-end">

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Currency extends Model 
+class Currency extends Model
 {
 
     protected $table = 'currencies';
@@ -20,5 +20,4 @@ class Currency extends Model
     {
         return $this->hasMany('App\Models\MoneySafe');
     }
-
 }

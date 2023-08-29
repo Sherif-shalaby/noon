@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SellLine;
 use App\Models\TransactionSellLine;
+
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,6 +17,7 @@ class SellPosController extends Controller
      *
      * @return Application|Factory|View
      */
+
     public function index()
     {
         $sell_lines = SellLine::with('transaction','product')->get();
