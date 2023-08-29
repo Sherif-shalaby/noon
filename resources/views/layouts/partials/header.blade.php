@@ -319,10 +319,10 @@
                             </ul>
                         </li>
 
-                    </li>
-                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>
-                            </ul>
-                      </li>
+{{--                    </li>--}}
+{{--                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>--}}
+{{--                            </ul>--}}
+{{--                      </li>--}}
 
                       </li>
                   @endif
