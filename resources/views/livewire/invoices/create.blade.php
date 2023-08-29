@@ -57,6 +57,9 @@
                                         <tr>
                                             <th style="width: 12%">@lang('lang.product')</th>
                                             <th style="width: 15%">@lang('lang.quantity')</th>
+                                            <th style="width: 15%">@lang('lang.unit')</th>
+                                            <th style="width: 15%">@lang('lang.fill')</th>
+                                            <th style="width: 15%">@lang('lang.total_quantity')</th>
                                             <th style="width: 12%">@lang('lang.price')</th>
                                             @if(!empty($showColumn))
                                                 <th style="width: 12%">@lang('lang.price') $ </th>
@@ -90,6 +93,10 @@
                                                         </div>
                                                     </div>
                                                 </td>
+
+                                                <td>{{$item['unit_name'] ?? ''}}</td>
+                                                <td>{{$item['base_unit_multiplier'] ?? 1}}</td>
+                                                <td>{{$item['total_quantity'] ?? 1}}</td>
                                                 <td style="width: 12%">
                                                     {{$item['price']}}
                                                 </td>

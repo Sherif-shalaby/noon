@@ -75,6 +75,9 @@ class StockTransaction extends Model
     {
         return $this->belongsTo(User::class,'created_by');
     }
+    public function getSourceNameAttribute()
+    {
+
 
     public function paying_currency_relationship()
     {

@@ -284,7 +284,8 @@
                   @endif
                 {{-- ###################### reports : التقرير ###################### --}}
                   @if(!empty($module_settings['reports_module']))
-                    <li class="dropdown">
+
+                      <li class="dropdown">
                         <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
@@ -319,6 +320,11 @@
                         </li>
 
                     </li>
+                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>
+                            </ul>
+                      </li>
+
+                      </li>
                   @endif
                 {{-- ###################### Sale_Screen : شاشة البيع ###################### --}}
                 <li class="scroll">

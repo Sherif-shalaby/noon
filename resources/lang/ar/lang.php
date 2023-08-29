@@ -287,6 +287,7 @@ return array(
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
+
     // ############ sales_report ############
     'sales_report' => 'تقرير المبيعات',
     // ############ receivable_report ############

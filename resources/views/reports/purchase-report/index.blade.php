@@ -14,6 +14,7 @@
                 </div>
             </div>
             {{-- <div class="col-md-4 col-lg-4">
+
                 <div class="widgetbar">
                     <a href="{{route('products.create')}}" class="btn btn-primary">
                         @lang('lang.add_products')

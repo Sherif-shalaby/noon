@@ -33,15 +33,14 @@
                 <label for="" class="text-primary">
                     الخصم:
                 </label>
-                <input type="number" name="" id="" value="0.00"
-                       class="form-control w-50">
+
+                <input type="number" class="form-control w-50" wire:model="discount" wire:change="changeTotal" >
             </div>
             <div class="d-flex align-items-center mb-2 gap-2 justify-content-end">
                 <label for="" class="text-primary">
                     الاجمالي بعد الخصم:
                 </label>
-                <input type="number" name="" id="" value="0.00"
-                       class="form-control w-50">
+                <input type="number" class="form-control w-50" readonly wire:model="total_after_discount">
             </div>
             <div class="d-flex align-items-center mb-2 gap-2 justify-content-end">
                 <label for="" class="text-primary">
