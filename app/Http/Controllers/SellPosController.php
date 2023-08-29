@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TransactionSellLine;
+
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,6 +16,7 @@ class SellPosController extends Controller
      *
      * @return Application|Factory|View
      */
+
     public function index()
     {
 //        dd(TransactionSellLine::all()->last());

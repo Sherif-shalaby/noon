@@ -12,6 +12,7 @@ class TransactionSellLine extends Model
 
     public function transaction_sell_lines()
     {
+
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
 
@@ -35,7 +36,8 @@ class TransactionSellLine extends Model
         return $this->hasMany(PaymentTransactionSellLine::class,'transaction_id','id');
     }
 
-    public function transaction_currency()
+    public function transaction_currency_relationship()
+
     {
 
         return $this->belongsTo(Currency::class, 'transaction_currency');

@@ -16,8 +16,11 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\MoneySafeController;
+use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
@@ -95,8 +98,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
-     // ########### Purchases Report ###########
-     Route::resource('purchases-report', PurchasesReportController::class);
+    // ########### Purchases Report ###########
+    Route::resource('purchases-report', PurchasesReportController::class);
+    // ########### Sales Report ###########
+    Route::resource('sales-report', SalesReportController::class);
+    // ########### Receivable Report ###########
+    Route::resource('receivable-report', ReceivableController::class);
+    // ########### Payable Report ###########
+    Route::resource('payable-report', PayableReportController::class);
+
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');

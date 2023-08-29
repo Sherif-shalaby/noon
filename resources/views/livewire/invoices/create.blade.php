@@ -93,6 +93,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
+
                                                 <td>{{$item['unit_name'] ?? ''}}</td>
                                                 <td>{{$item['base_unit_multiplier'] ?? 1}}</td>
                                                 <td>{{$item['total_quantity'] ?? 1}}</td>

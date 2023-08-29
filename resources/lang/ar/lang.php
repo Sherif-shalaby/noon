@@ -288,6 +288,13 @@ return array(
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
 
+    // ############ sales_report ############
+    'sales_report' => 'تقرير المبيعات',
+    // ############ receivable_report ############
+    'receivable_report' => 'تقرير القبض',
+    // ############ payable_report ############
+    'payable_report' => 'تقرير القبض',
+
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
     'edit'=>'تعديل',
