@@ -43,7 +43,7 @@ class StockTransaction extends Model
 
     public function add_stock_products()
     {
-        return $this->hasManyThrough(Product::class, AddStockLine::class, 'transaction_id', 'id', 'id', 'product_id');
+        return $this->hasManyThrough(Product::class, AddStockLine::class, 'stock_transaction_id', 'id', 'id', 'product_id');
     }
 
     public function store()
@@ -65,6 +65,19 @@ class StockTransaction extends Model
     public function source()
     {
         return $this->belongsTo(User::class, 'source_id')->withDefault(['name' => '']);
+    }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+    public function created_by()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
+    public function getSourceNameAttribute()
+    {
+
     }
 
 

@@ -61,13 +61,15 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a data-href="{{route('jobs.edit', $job->id)}}"
-                                           data-container=".view_modal"
-                                           class="btn btn-primary btn-modal text-white edit_job"><i
-                                                class="fa fa-pencil-square-o"></i></a>
-                                        <a data-href="{{route('jobs.destroy', $job->id)}}"
-                                           class="btn btn-danger text-white delete_item"><i
-                                                class="fa fa-trash"></i></a>
+                                        @if(!in_array($job->title, ['Cashier', 'Deliveryman']) )
+                                            <a data-href="{{route('jobs.edit', $job->id)}}"
+                                               data-container=".view_modal"
+                                               class="btn btn-primary btn-modal text-white edit_job"><i
+                                                    class="fa fa-pencil-square-o"></i></a>
+                                            <a data-href="{{route('jobs.destroy', $job->id)}}"
+                                               class="btn btn-danger text-white delete_item"><i
+                                                    class="fa fa-trash"></i></a>
+                                        @endif
 
                                     </td>
                                 </tr>
@@ -81,21 +83,5 @@
     </div>
 
 @endsection
-<div class="modal view_modal no-print" role="dialog" aria-hidden="true"></div>
-@push('javascript')
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.btn-modal', function(e) {
-                e.preventDefault();
-                var container = $(this).data('container');
-                $.ajax({
-                    url: $(this).data('href'),
-                    dataType: 'html',
-                    success: function(result) {
-                        $(container).html(result).modal('show');
-                    },
-                });
-            });
-        });
-    </script>
-@endpush
+<div class="view_modal no-print" ></div>
+

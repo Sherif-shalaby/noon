@@ -462,22 +462,16 @@ class Util
     {
         return [
             'cash' => __('lang.cash'),
-            'card' => __('lang.credit_card'),
-            'bank_transfer' => __('lang.bank_transfer'),
-            'cheque' => __('lang.cheque'),
-            'money_transfer' => 'Money Transfer',
         ];
     }
+
     public function getPaymentTypeArrayForPos()
     {
         return [
             'cash' => __('lang.cash'),
-            'card' => __('lang.credit_card'),
-            'cheque' => __('lang.cheque'),
-            'gift_card' => __('lang.gift_card'),
-            'bank_transfer' => __('lang.bank_transfer'),
-            'deposit' => __('lang.use_the_balance'),
-            'paypal' => __('lang.paypal'),
+//            'cheque' => __('lang.cheque'),
+//            'deposit' => __('lang.use_the_balance'),
+//            'paypal' => __('lang.paypal'),
         ];
     }
 
@@ -702,7 +696,7 @@ class Util
 
         return $amount;
 
-   
+
     }
 }
 ?>

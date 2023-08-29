@@ -130,7 +130,7 @@ class MoneySafeController extends Controller
                   'msg' => __('lang.something_went_wrong')
               ];
           }
-      
+
         return redirect()->back()->with('status', $output);
     }
 
@@ -180,7 +180,7 @@ class MoneySafeController extends Controller
             }else{
                 $data['balance']=$data['amount'];
             }
-            
+
             $money_safe_transaction=MoneySafeTransaction::create($data);
             $output = [
               'success' => true,
@@ -231,7 +231,7 @@ class MoneySafeController extends Controller
           return redirect()->back()->with('status', $output);
     }
     ///
-    public function getMoneySafeTransactions($id){        
+    public function getMoneySafeTransactions($id){
         $moneySafeTransactions = MoneySafe::
             when(request()->start_date != null, function ($query) {
                 $query->with(['transactions' => function ($query) {

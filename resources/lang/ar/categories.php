@@ -13,7 +13,7 @@ return [
     'add_categorie_name'=>'انشاء قسم',
     'edit_categorie'=>'تعديل قسم',
     'data_no_found'=>'عفوا لاتوجد بيانات لعرضها !!',
-    'drop_file_here_to_upload'=>'حمل صوره للقسم من هنا',
+    'drop_file_here_to_upload'=>'حمل صوره من هنا',
     'cover'=>'صوره القسم',
     'updatesuccess'=>'تم نعديل بيانات القسم بنجاح',
     'addsuccess'=>'تم اضافه القسم بنجاح',

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', __('lang.employee'))
+
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="row align-items-center">
@@ -8,7 +9,6 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        {{--                        <li class="breadcrumb-item active"><a href="#">@lang('lang.employees')</a></li>--}}
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.employees')</li>
                     </ol>
                 </div>
@@ -37,16 +37,16 @@
 
                             <div class="col-sm-6">
                                 <label for="fname">@lang('lang.name'):*</label>
-                                <input type="text" class="form-control" name="name" value="{{ $employee->name }}" @if($employee->name == 'Admin') readonly @endif
+                                <input type="text" class="form-control" name="name" value="{{ $employee->employee_name }}" @if($employee->name == 'Admin') readonly @endif
                                 id="name" required placeholder="Name">
                             </div>
                             <div class="col-sm-6">
                                 <label for="store_id">@lang('lang.store')</label>
-                                {!! Form::select('store_id[]', $stores, !empty($employee->store_id) ? $employee->store_id : [], ['class' => 'form-control selectpicker', 'multiple', 'placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                {!! Form::select('store_id[]', $stores,$selected_stores, ['class' => 'form-control select2','multiple', 'placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'id' => 'store_id']) !!}
                             </div>
                             <div class="col-sm-6">
                                 <label for="email">@lang('lang.email'):*<small>(@lang('lang.it_will_be_used_for_login'))</small></label>
-                                <input type="email" class="form-control" name="email" value="{{ $employee->email }}"
+                                <input type="email" class="form-control" name="email" value="{{ $employee->user->email }}"
                                        id="email" required placeholder="Email">
                             </div>
 
@@ -209,8 +209,14 @@
 
 @endsection
 
-@section('javascript')
+@push('javascript')
     <script>
+        $('.js-example-basic-multiple').select2(
+            {
+                placeholder: "{{__('lang.please_select')}}",
+                tags: true
+            }
+        );
         $('#date_of_start_working').datepicker({
             language: '{{ session('language') }}',
             todayHighlight: true,
@@ -335,4 +341,4 @@
 
         })
     </script>
-@endsection
+@endpush

@@ -15,7 +15,9 @@ class Product extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by');
+
+    protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method');
+
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
 
@@ -31,6 +33,7 @@ class Product extends Model
         }
         return $value;
     }
+
     public function getDetailsAttribute($value)
     {
         if (!is_null($this->details_translations)) {
@@ -56,6 +59,7 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Brand', 'brand_id');
     }
+
     public function unit()
     {
         return $this->belongsTo('App\Models\Unit', 'unit_id');
@@ -65,14 +69,17 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Models\Store', 'product_stores');
     }
+
     public function subcategories()
     {
         return $this->belongsToMany('App\Models\Category', 'product_subcategories');
     }
+
     public function product_prices()
     {
         return $this->hasMany('App\Models\ProductPrice');
     }
+
     public function createBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -82,12 +89,24 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'edited_by');
     }
+
     public function deleteBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
     }
-    public function productdetails()
+
+    public function store()
     {
         return $this->hasOne(ProductStore::class);
+    }
+
+    public function product_taxes()
+    {
+        return $this->belongsToMany('App\Models\ProductTax','products_taxes');
+    }
+    // 1:M relationship Between "products" , "Add_Stock_Line" table
+    public function stock_lines()
+    {
+        return $this->hasMany(AddStockLine::class);
     }
 }

@@ -15,19 +15,23 @@ return new class extends Migration
     {
         Schema::create('add_stock_lines', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
-            // $table->unsignedInteger('product_id');
+            $table->unsignedBigInteger('stock_transaction_id');
+            $table->foreign('stock_transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained('products', 'id')->cascadeOnDelete();
-
-            // $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->decimal('quantity', 15, 4);
             $table->decimal('quantity_sold', 15, 4)->default(0)->comment('quantity sold from this purchase line');
             $table->decimal('quantity_returned', 15, 4)->default(0);
             $table->decimal('expired_qauntity', 15, 4)->default(0);
-            $table->decimal('purchase_price', 15, 4);
+            $table->decimal('purchase_price', 15, 4)->nullable();
             $table->decimal('final_cost', 15, 4)->default(0);
-            $table->decimal('sub_total', 15, 4);
+            $table->decimal('sub_total', 15, 4)->nullable();
+            $table->decimal('sell_price', 15, 4)->nullable();
+            $table->decimal('dollar_purchase_price', 15, 4)->nullable();
+            $table->decimal('dollar_final_cost', 15, 4)->default(0);
+            $table->decimal('dollar_sub_total', 15, 4)->nullable();
+            $table->decimal('dollar_sell_price', 15, 4)->nullable();
+            $table->decimal('cost', 15, 4)->nullable();
+            $table->decimal('dollar_cost', 15, 4)->nullable();
             $table->string('batch_number')->nullable();
             $table->string('manufacturing_date')->nullable();
             $table->string('expiry_date')->nullable();

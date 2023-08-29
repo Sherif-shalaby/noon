@@ -1,12 +1,12 @@
-@php
-    $index=$index??'';
-@endphp
+<div class="row">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#select_products_modal"
+            style="margin-top: 15px;">
+        @lang('lang.select_products')
+    </button>
+    <button type="button" id="dollar_section" class="btn btn-primary ml-4" style="margin-top: 15px;" wire:click="ShowDollarCol">  </button>
+</div>
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#select_products_modal"
-        style="margin-top: 15px;">
-    @lang('lang.select_products')
-</button>
-<div class="modal fade" id="select_products_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+<div class="modal fade" id="select_products_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" wire:ignore
      aria-hidden="true" style="width: 100%;">
     <div class="modal-dialog modal-lg" role="document" id="select_products_modal">
         <div class="modal-content">
@@ -46,7 +46,7 @@
                         @foreach($products as $index=>$product)
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="product_selected"  class="product_selected" value="{{$product->id}}" data-product_id="{{$product->id}}" />
+                                    <input type="checkbox" name="product_selected" class="product_selected" value="{{$product->id}}" wire:model="selectedProducts"/>
                                 </td>
                                 <td><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
                                 <td>{{$product->name}}</td>
@@ -132,7 +132,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="add-selected-btn">@lang( 'lang.add' )</button>
+                <button type="button" class="btn btn-primary" id="add-selected-btn" wire:click="fetchSelectedProducts()">@lang( 'lang.add' )</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">@lang( 'lang.close' )</button>
             </div>
 

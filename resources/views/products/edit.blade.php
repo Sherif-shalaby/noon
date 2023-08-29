@@ -70,7 +70,7 @@
                             <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
-                  
+
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
@@ -113,7 +113,32 @@
                             'class' => 'form-control'
                         ]) !!}
                     </div>
+                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
+                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
+                            <option value="">{{  __('lang.please_select') }}</option>
+                            <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }} value="inclusive">{{ __('lang.inclusive') }}</option>
+                            <option {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }} value="exclusive">{{ __('lang.exclusive') }}</option>
+                        </select>
+                    </div>
+                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
+                        <select name="product_tax_id" id="product_tax_id" class="form-control select2" placeholder="{{  __('lang.please_select') }}" required>
+                            <option value="">{{  __('lang.please_select') }}</option>
 
+                            @foreach ($product_tax as $x )
+                                @foreach ($product->product_taxes as $y)
+                                    @if ($x->id == $y->pivot->product_tax_id)
+                                        <option value="{{ $x->id }}" selected>{{$x->name}}</option>
+                                    @else
+                                        <option value="{{ $x->id }}">{{$x->name}}</option>
+                                    @endif
+                                @endforeach
+                            @endforeach
+                        </select>
+                    </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
@@ -131,7 +156,7 @@
                                 @enderror
                             </div>
 
-                            
+
 
                             <div class="col-md-3">
                                 {!! Form::label('length', __('lang.length'),['class'=>'h5 pt-3']) !!}
@@ -293,7 +318,7 @@
                         </div>
                     </div>
                     <div id="cropped_images"></div>
-                    {{-- crop image --}}    
+                    {{-- crop image --}}
 
                     {{-- product description --}}
                     <div class="col-md-12">
