@@ -247,7 +247,6 @@ return [
     'add_cash_out' => 'اعطي نقود',
     'add_closing_cash' => 'إضافة الإغلاق النقدي',
     'view_details' => 'عرض التفاصيل',
-    'sales_promotion'=>'',
     'sales_promotion' => 'العروض',
     'profit_loss' => 'خسارة الأرباح',
     'daily_sales_summary' => ' ملخص التقرير اليومي',

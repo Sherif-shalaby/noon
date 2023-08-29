@@ -139,7 +139,7 @@ class SettingController extends Controller
     }
     public function updateGeneralSetting(Request $request)
     {
-        // try {
+        try {
             System::updateOrCreate(
                 ['key' => 'site_title'],
                 ['value' => $request->site_title, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
@@ -245,13 +245,13 @@ class SettingController extends Controller
                 'success' => true,
                 'msg' => __('lang.success')
             ];
-        // } catch (\Exception $e) {
-        //     Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-        //     $output = [
-        //         'success' => false,
-        //         'msg' => __('lang.something_went_wrong')
-        //     ];
-        // }
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
 
     return redirect()->back()->with('status', $output);
 
