@@ -38,6 +38,13 @@
                         </li>
                         <li class="list-inline-item">
                             <div class="notifybar">
+                                <a href="{{ route('invoices.create') }}">
+                                    <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
+                                </a>
+                            </div>
+                        </li>
+                        <li class="list-inline-item">
+                            <div class="notifybar">
                                 <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">
                                     <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">
                                     <span class="live-icon"></span>
@@ -129,28 +136,25 @@
                           </a>
                       </li>
                   @endif
-                  {{-- @if(!empty($module_settings['dashboard']) ) --}}
                 {{-- ###################### Products : المنتجات ###################### --}}
                 @if(!empty($module_settings['product_module']) )
                   <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                  @endif
-                {{-- ###################### Purchases : المشتريات ###################### --}}
-                  @if(!empty($module_settings['stock_module']))
-
+                  {{-- ###################### Cashier : المبيعات ###################### --}}
                   @if(!empty($module_settings['cashier_module']))
-                      <li>
-                          <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
+                      <li class="scroll">
+                          <a href="{{route('pos.index')}}" ><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.sells')}}</span></a>
                       </li>
 
                   @endif
-{{--                      @if(!empty($module_settings['cashier_module']))--}}
-{{--                          <li class="dropdown">--}}
-{{--                              <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('')}}</span></a>--}}
-{{--                              <ul class="dropdown-menu">--}}
-{{--                                  <li><a href=""><i class="mdi mdi-circle"></i>@lang('lang.add-stock')</a></li>--}}
-{{--                              </ul>--}}
-{{--                          </li>--}}
-{{--                      @endif--}}
+                {{-- ###################### Purchases : المشتريات ###################### --}}
+                  @if(!empty($module_settings['stock_module']))
+                          <li>
+                              <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
+                          </li>
+                  @endif
+
+                  {{-- ###################### Returns : المرتجعات ###################### --}}
                 @if(!empty($module_settings['return_module']))
                     <li class="dropdown">
                         <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
@@ -297,21 +301,7 @@
 
                       </li>
                   @endif
-                {{-- ###################### Sale_Screen : شاشة البيع ###################### --}}
-                <li class="scroll">
-                    <a href="{{ route('invoices.create') }}">
-                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
-                        <span>{{ __('site.Sale_Screen') }}</span>
-                    </a>
-                </li>
-                {{-- ###################### Invoices : الفواتير ###################### --}}
-                <li class="scroll">
-                    <a href="{{ route('invoices.index') }}">
-                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
-                        <span>{{ __('site.Invoices') }}</span>
-                    </a>
-                </li>
-                @endif
+
 
               </ul>
             </div>

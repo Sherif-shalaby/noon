@@ -91,6 +91,7 @@ class Create extends Component
     }
 
     public function submit($status = null){
+
         try {
             // Add Transaction Sell Line
             $transaction_data = [
@@ -160,7 +161,9 @@ class Create extends Component
             if (!empty($this->payments)) {
                 $payment_formated = [];
 
+                $total_amount = 0;
                 foreach ($this->payments as $payment) {
+                    $total_amount += $payment['amount'];
                     $old_tp = null;
                     $payment_data = [
                         'transaction_id' => $transaction->id,
@@ -184,17 +187,29 @@ class Create extends Component
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
             }
+
+            // update customer balance
+            $customer = Customer::find($transaction->customer_id);
+                $customer->balance += $total_amount - $this->total;
+                $customer->save();
+
             DB::commit();
             $payment_types = $this->getPaymentTypeArrayForPos();
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
-//            $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
+            $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
 
-            return $this->redirect('/invoices/create');
+            // Emit a browser event to trigger the invoice printing
+//            $this->emit('printInvoice', "test");
+
+//            return $this->redirect('/invoices/create');
+//            $this->dispatchBrowserEvent('printInvoice', "test");
+//            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
+
 
         } catch(\Exception $e){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
+//        return $html_content;
 
 //
     }
@@ -594,7 +609,7 @@ class Create extends Component
 //                'total_due',
             ))->render();
         } else {
-            $html_content = view('sale_pos.partials.invoice')->with(compact(
+            $html_content = view('invoices.partials.invoice')->with(compact(
                 'transaction',
                 'payment_types',
                 'invoice_lang',

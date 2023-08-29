@@ -97,13 +97,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('product-tax', ProductTaxController::class);
      // ########### Purchases Report ###########
      Route::resource('purchases-report', PurchasesReportController::class);
-    // Sale Screen
+    // Sell Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
-    Route::get('invoice',[SellPosController::class,'index'])->name('pos.index');
+    Route::resource('pos',SellPosController::class);
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers

@@ -374,6 +374,23 @@ return [
     'print_the_transaction' => 'Print The Transaction',
     'add_payment_row' => 'Pay the remaining amount with another Method',
     'another_payment_option' => 'Another Payment Option',
+    'description' => 'Description',
+    'carton' => 'Carton',
+    'price_of_piece' => ' Price Of Piece',
+    'invoice' => 'Invoice',
+    'dear' => 'Dear',
+    'respected' => 'Respected',
+    'total_after_discount' => 'Total After Discount',
+    'previous_balance' => 'Previous Balance',
+    'remaining_balance' => 'Remaining Balance',
+    'dollar' => 'Dollar',
+    'dinar' => 'Dinar',
+    'sells' => 'Sells',
+    'reference' => 'Reference',
+    'sale_status' => 'Sell Status',
+    'grand_total' => 'Grand Toral',
+    'due_sale_list' => 'Due Sale List',
+    'sub_sku' => 'Sub Sku',
 ];
 
 
