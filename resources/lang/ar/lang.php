@@ -296,6 +296,8 @@ return array(
     'payable_report' => 'تقرير القبض',
     // ############ customers_report ############
     'customers_report' => 'تقرير العملاء',
+    // ############ daily_report_summary ############
+    'daily_report_summary' => 'ملخص التقرير اليومي',
 
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',

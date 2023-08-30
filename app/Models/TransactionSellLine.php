@@ -37,7 +37,6 @@ class TransactionSellLine extends Model
     }
 
     public function transaction_currency_relationship()
-
     {
 
         return $this->belongsTo(Currency::class, 'transaction_currency');
