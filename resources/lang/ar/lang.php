@@ -287,12 +287,15 @@ return array(
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
+
     // ############ sales_report ############
     'sales_report' => 'تقرير المبيعات',
     // ############ receivable_report ############
     'receivable_report' => 'تقرير القبض',
     // ############ payable_report ############
     'payable_report' => 'تقرير القبض',
+    // ############ customers_report ############
+    'customers_report' => 'تقرير العملاء',
 
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',

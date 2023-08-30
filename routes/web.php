@@ -13,6 +13,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\MoneySafeController;
@@ -106,13 +107,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // ########### Customers Report ###########
+    Route::resource('customers-report', CustomersReportController::class);
+
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
-//    Route::get('pos/index/{data}',[SellPosController::class,'index'])->name('pos.index');
+    Route::get('invoice',[SellPosController::class,'index'])->name('pos.index');
 
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers
