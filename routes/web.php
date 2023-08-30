@@ -15,6 +15,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
@@ -109,6 +110,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('payable-report', PayableReportController::class);
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
+    // ########### Daily Report Summary ###########
+    Route::resource('daily-report-summary', DailyReportSummary::class);
 
     // Sale Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
