@@ -316,6 +316,12 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.payable_report')}}
                                     </a>
                                 </li>
+                                  {{-- +++++++++++ customers report +++++++++++ --}}
+                                  <li>
+                                    <a href="{{route('customers-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.customers_report')}}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 
