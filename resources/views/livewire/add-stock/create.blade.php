@@ -292,6 +292,9 @@
         </div>
     </div>
 </section>
+{{--<!-- This will be printed -->--}}
+<section class="invoice print_section print-only" id="receipt_section"> </section>
+
 
 @push('javascripts')
 <script>
@@ -313,15 +316,15 @@
             $('#select_products_modal').modal('hide');
         });
     });
-    $(document).on('click', '#dollar_section', function() {
-        // if($('.dollar_section').hasClass('d-none')){
-            $('.dollar_section').removeClass('d-none');
-        // }
-        // else{
-        //     $('.dollar_section').addClass('d-none');
 
-        // }
+    document.addEventListener('livewire:load', function () {
+        Livewire.on('printInvoice', function (htmlContent) {
+            // Set the generated HTML content
+            // $("#receipt_section").html(htmlContent);
 
+            // Trigger the print action
+            window.print();
+        });
     });
 
 </script>

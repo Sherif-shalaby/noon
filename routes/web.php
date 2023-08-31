@@ -4,6 +4,7 @@ use App\Http\Controllers\AddStockController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\UnitController;
@@ -100,6 +101,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
+
+     // ########### Purchases Report ###########
+     Route::resource('purchases-report', PurchasesReportController::class);
+
+
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -113,14 +119,23 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
 
-    // Sale Screen
+    // Sell Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
-    Route::get('invoice',[SellPosController::class,'index'])->name('pos.index');
+    Route::resource('pos',SellPosController::class);
 
+    // Sell Return
+    Route::get('sale-return/add/{id}', function ($id) {
+        return view('returns.sell.create', compact('id'));
+    })->name('sell.return');
+
+    // Returns
+    Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+
+    // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers
     Route::resource('suppliers',SuppliersController::class);

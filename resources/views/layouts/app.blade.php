@@ -241,6 +241,9 @@
     <x-livewire-alert::scripts /> --}}
     @stack('js')
     <script>
+        $('#submit-btn').click(function() {
+            window.print();
+        });
         window.addEventListener('swal:modal', event => {
             swal({
                 title: event.detail.message,

@@ -31,7 +31,7 @@ return [
     'brands'=>'Brands',
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
-    'update'=>'Update',
+    'update' => 'Update',
 
 ];
 

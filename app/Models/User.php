@@ -100,7 +100,7 @@ class User extends Authenticatable
                 'import' => __('lang.import'),
             ],
             'return_module' => [
-                'sell_return' => __('lang.sell_return'),
+                'returns' => __('lang.returns'),
                 'sell_return_pay' => __('lang.sell_return_pay'),
                 'purchase_return' => __('lang.purchase_return'),
                 'purchase_return_pay' => __('lang.purchase_return_pay'),

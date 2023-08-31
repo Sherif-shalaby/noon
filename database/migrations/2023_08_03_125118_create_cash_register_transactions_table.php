@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 4);
             $table->string('pay_method');
             $table->enum('type', ['debit', 'credit'])->nullable();
-            $table->enum('transaction_type', ['initial', 'sell', 'transfer', 'refund', 'add_stock', 'cash_in', 'cash_out', 'expense', 'sell_return', 'closing_cash', 'wages_and_compensation'])->nullable();
+            $table->enum('transaction_type', ['initial', 'sell', 'transfer', 'refund', 'add_stock', 'cash_in', 'cash_out', 'expense', 'returns', 'closing_cash', 'wages_and_compensation'])->nullable();
             $table->unsignedBigInteger('transaction_id');
             $table->unsignedBigInteger('transaction_payment_id')->nullable();
             $table->string('source_type', 25)->nullable();
