@@ -273,6 +273,10 @@ return [
     'receivable_report' => 'receivable report',
     // ############ payable_report ############
     'payable_report' => 'payable report',
+    // ############ customers_report ############
+    'customers_report' => 'customers report',
+    // ############ daily_report_summary ############
+    'daily_report_summary' => 'daily report summary' ,
 
     'purchase_price'=>'Purchase Price',
     'sell_price'=>'Sell Price',
