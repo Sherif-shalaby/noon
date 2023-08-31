@@ -310,7 +310,7 @@ return array(
     'payment' => 'المدفوعات',
     'sale'=>'المبيعات',
     'delivery_list' => 'قائمة الطلبيات',
-    'sell_return' => 'إرجاع عملية بيع',
+    'return_sell' => 'إرجاع عملية بيع',
     'purchase_return' => 'إرجاع عملية شراء',
     'purchase_return_pay' => 'دفع عائد الشراء',
     'employee_commission' => 'عمولة الموظف',
@@ -404,7 +404,13 @@ return array(
     'reference' => 'المرجعي',
     'sale_status' => 'حاله المبيعات',
     'grand_total' => 'المبلغ الاجمالي',
-    'due_sale_list' => 'تاريخ السداد',
+    'due_sale_list' => 'متأخرات',
     'sub_sku' => '',
+    'cashier_man' => 'أمين الصندوق',
+    'return' => 'إرجاع',
+    'returned_quantity' => 'الكمية المعاده',
+    'Discount_from_the_cost_of_delivery' => 'المبلغ المخصوم من تكلفة الدليفري',
+    'The_actual_delivery_cost' => 'القيمة الفعلية لتكلفة الدليفري',
+    'sells_return' => 'عوده المبيعات',
 );
 

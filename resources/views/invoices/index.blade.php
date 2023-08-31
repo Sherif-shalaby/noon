@@ -59,7 +59,7 @@
                                     <th class="sum">@lang('lang.paid')</th>
                                     <th class="sum">@lang('lang.due_sale_list')</th>
                                     <th>@lang('lang.payment_date')</th>
-                                    <th>@lang('lang.cashier')</th>
+                                    <th>@lang('lang.cashier_man')</th>
                                     <th>@lang('lang.commission')</th>
                                     <th>@lang('lang.products')</th>
                                     <th>@lang('lang.sale_note')</th>
@@ -70,67 +70,81 @@
                                 <tbody>
                                 @foreach($sell_lines as $index => $line)
                                     <tr>
-                                        <td>{{$line->transaction->transaction_date ?? ''}}</td>
-                                        <td>{{$line->transaction->invoice_no ?? '' }}</td>
-                                        <td>{{$line->transaction->store->name ?? '' }}</td>
-                                        <td>{{$line->transaction->customer->name ?? '' }}</td>
-                                        <td>{{$line->transaction->customer->phone ?? '' }}</td>
                                         <td>
-                                            <span class="badge badge-success">{{$line->transaction->status ?? '' }}</span>
+                                            {{$line->transaction_date ?? ''}}
                                         </td>
-                                        <td>{{$line->transaction->payment_status}}</td>
                                         <td>
-                                            @foreach($line->transaction->transaction_payments as $payment)
+                                            {{$line->invoice_no ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{$line->store->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{$line->customer->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{$line->customer->phone ?? '' }}
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-success">{{$line->status ?? '' }}</span>
+                                        </td>
+                                        <td>{{$line->payment_status}}</td>
+                                        <td>
+                                            @foreach($line->transaction_payments as $payment)
                                                 {{__('lang.'.$payment->method)}}<br>
                                             @endforeach
                                         </td>
                                         <td>
-                                            @foreach($line->transaction->transaction_payments as $payment)
+                                            @foreach($line->transaction_payments as $payment)
                                                 {{$payment->ref_no ?? ''}}<br>
                                             @endforeach
                                         </td>
                                         <td>
-                                            @foreach($line->transaction->transaction_payments as $payment)
-                                                {{$payment->received_currency ?? ''}}<br>
+                                            @foreach($line->transaction_payments as $payment)
+                                                {{$payment->received_currency_relation->symbol ?? ''}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{number_format($line->final_total,2)}}
+                                        </td>
+                                        <td>
+                                            {{$line->transaction_payments->sum('amount')}}
+                                        </td>
+                                        <td>
+                                            {{$line->final_total - $line->transaction_payments->sum('amount')}}
+                                        </td>
+                                        <td>
+                                            {{$line->transaction_payments->last()->paid_on ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{$line->created_by_user->name}}
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            @foreach($line->transaction_sell_lines as $sell_line)
+                                                {{$sell_line->product->name .' '.$sell_line->product->sku }}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach($line->transaction_payments as $payment)
+                                                {{$payment->received_currency_relation->payment_note ?? ''}}<br>
                                             @endforeach
                                         </td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                @lang('lang.action')
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                                <li>
+                                                    <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
+                                                </li>
+                                                <li class="divider"></li>
 
-                                        {{--                                <td>--}}
-                                        {{--                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"--}}
-                                        {{--                                            aria-haspopup="true" aria-expanded="false">--}}
-                                        {{--                                        @lang('lang.action')--}}
-                                        {{--                                        <span class="caret"></span>--}}
-                                        {{--                                    </button>--}}
-                                        {{--                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">--}}
-                                        {{--                                        <li>--}}
-                                        {{--                                            <a href="{{route('stocks.show', $stock->id)}}"--}}
-                                        {{--                                               class="btn"><i--}}
-                                        {{--                                                    class="fa fa-eye"></i>--}}
-                                        {{--                                                @lang('lang.view') </a>--}}
-                                        {{--                                        </li>--}}
-                                        {{--                                        <li class="divider"></li>--}}
-                                        {{--                                        @if ($stock->payment_status != 'paid')--}}
-                                        {{--                                            <li>--}}
-                                        {{--                                                <a data-href="{{route('stocks.addPayment', $stock->id)}}" data-container=".view_modal"--}}
-                                        {{--                                                   class="btn btn-modal">--}}
-                                        {{--                                                    <i class="fa fa-money"></i>--}}
-                                        {{--                                                    @lang('lang.pay')--}}
-                                        {{--                                                </a>--}}
-                                        {{--                                            </li>--}}
-                                        {{--                                        @endif--}}
-                                        {{--                                    </ul>--}}
-                                        {{--                                </td>--}}
-
+                                            </ul>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

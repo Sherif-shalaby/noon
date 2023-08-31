@@ -99,6 +99,7 @@ class Create extends Component
                 'customer_id' => $this->client_id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => 0,
+                'type' => 'sell',
                 'transaction_currency' => $this->transaction_currency,
                 'final_total' => $this->num_uf($this->total),
                 'grand_total' => $this->num_uf($this->price),
@@ -519,7 +520,7 @@ class Create extends Component
         }
         $register =  $this->getCurrentCashRegisterOrCreate($user_id);
 
-        if ($transaction->type == 'sell_return') {
+        if ($transaction->type == 'returns') {
             $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([

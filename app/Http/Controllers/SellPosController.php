@@ -20,7 +20,7 @@ class SellPosController extends Controller
 
     public function index()
     {
-        $sell_lines = SellLine::with('transaction','product')->get();
+        $sell_lines = TransactionSellLine::all();
 //        dd($sell_lines);
         return view('invoices.index',compact('sell_lines'));
 

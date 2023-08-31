@@ -287,7 +287,7 @@ return [
     'sale'=>'Sale',
     'delivery_list'=>'Delivery List',
     'product_classification_tree'=>'Product Classification Tree',
-    'sell_return'=>'Sell Return',
+    'returns'=>'Sell Return',
     'sell_return_pay'=>'Sell Return Pay',
     'purchase_return'=>'Purchase Return',
     'purchase_return_pay'=>'Purchase Return Pay',
@@ -395,6 +395,14 @@ return [
     'grand_total' => 'Grand Toral',
     'due_sale_list' => 'Due Sale List',
     'sub_sku' => 'Sub Sku',
+    'cashier_man' => 'Cashier',
+    'return' => 'Return',
+    'returned_quantity' => 'Returned Quantity',
+    'Discount_from_the_cost_of_delivery' => 'Discount From The Cost of Delivery',
+    'The_actual_delivery_cost' => 'The Actual Delivery Cost',
+    'sells_return' => 'Sells Return'
+
+
 ];
 
 

@@ -153,11 +153,13 @@
                               <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
                           </li>
                   @endif
-
                   {{-- ###################### Returns : المرتجعات ###################### --}}
                 @if(!empty($module_settings['return_module']))
                     <li class="dropdown">
                         <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{route('sell_return.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.sells_return')</a></li>
+                        </ul>
                     </li>
                 @endif
                 {{-- ###################### Employees : الموظفين ###################### --}}

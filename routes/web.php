@@ -4,6 +4,7 @@ use App\Http\Controllers\AddStockController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\UnitController;
@@ -120,6 +121,15 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('invoices.show');
     Route::resource('pos',SellPosController::class);
 
+    // Sell Return
+    Route::get('sale-return/add/{id}', function ($id) {
+        return view('returns.sell.create', compact('id'));
+    })->name('sell.return');
+
+    // Returns
+    Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+
+    // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers
     Route::resource('suppliers',SuppliersController::class);

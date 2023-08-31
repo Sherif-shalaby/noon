@@ -56,4 +56,9 @@ class TransactionSellLine extends Model
 
         return $this->belongsTo(Currency::class, 'paying_currency_id')->withDefault($default_currency);
     }
+    public function created_by_user()
+    {
+        return $this->belongsTo(User::class, 'created_by')->withDefault(['name' => '']);
+    }
+
 }

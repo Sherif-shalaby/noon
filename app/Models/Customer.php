@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Customer extends Model 
+class Customer extends Model
 {
 
     protected $table = 'customers';
@@ -44,5 +44,15 @@ class Customer extends Model
     public function deleteBy()
     {
         return $this->belongsTo(User::class, 'deleted_by');
+    }
+    public static function getCustomerArrayWithMobile()
+    {
+        $customers = Customer::select('id', 'name', 'phone')->get();
+        $customer_array = [];
+        foreach ($customers as $customer) {
+            $customer_array[$customer->id] = $customer->name . ' ' . $customer->phone;
+        }
+
+        return $customer_array;
     }
 }

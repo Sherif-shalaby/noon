@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreign('transaction_currency')->references('id')->on('currencies')->onDelete('cascade');
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('store_pos_id')->nullable();
+            $table->string('type')->nullable();
             $table->enum('status', ['received', 'pending', 'ordered', 'final', 'draft', 'sent_admin', 'sent_supplier', 'partially_received', 'approved', 'rejected', 'expired', 'valid', 'declined', 'send_the_goods', 'compensated', 'canceled']);
             $table->string('transaction_date');
             $table->enum('payment_status', ['paid', 'pending', 'partial'])->nullable();

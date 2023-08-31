@@ -22,4 +22,9 @@ class PaymentTransactionSellLine extends Model
     {
         return $this->belongsTo(User::class, 'created_by', 'id')->withDefault(['name' => '']);
     }
+    public function received_currency_relation()
+    {
+        return $this->belongsTo(Currency::class, 'received_currency');
+    }
+
 }
