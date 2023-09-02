@@ -299,7 +299,8 @@ return array(
     'customers_report' => 'تقرير العملاء',
     // ############ daily_report_summary ############
     'daily_report_summary' => 'ملخص التقرير اليومي',
-
+    // ###################### preparer #####################
+    'preparer' => 'اسم المٌجهز' ,
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
     'edit'=>'تعديل',

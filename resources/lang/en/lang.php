@@ -277,6 +277,8 @@ return [
     'customers_report' => 'customers report',
     // ############ daily_report_summary ############
     'daily_report_summary' => 'daily report summary' ,
+    // ###################### preparer #####################
+    'preparer' => 'preparer' ,
 
     'purchase_price'=>'Purchase Price',
     'sell_price'=>'Sell Price',
