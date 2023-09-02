@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SellLine;
 use App\Models\TransactionSellLine;
 
 use Illuminate\Contracts\Foundation\Application;
@@ -19,7 +20,14 @@ class SellPosController extends Controller
 
     public function index()
     {
-//        dd(TransactionSellLine::all()->last());
+        $sell_lines = TransactionSellLine::all();
+//        dd($sell_lines);
+        return view('invoices.index',compact('sell_lines'));
+
+    }
+
+    public function showInvoice(){
+        //        dd(TransactionSellLine::all()->last());
         $transaction = TransactionSellLine::all()->last();
 //        dd($transaction->transaction_sell_lines);
         $payment_types = $this->getPaymentTypeArrayForPos();

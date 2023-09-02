@@ -6,6 +6,8 @@ use App\Models\AddStockLine;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Currency;
+use App\Models\Employee;
+use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\Product;
@@ -57,6 +59,7 @@ class Create extends Component
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
+        $preparers = JobType::with('employess')->where('title','preparer')->get();
         $products = Product::all();
         $stores = Store::getDropdown();
         if ($this->source_type == 'pos') {
@@ -82,6 +85,7 @@ class Create extends Component
             'payment_status_array',
             'suppliers',
             'selected_currencies',
+            'preparers' ,
             'products',
             'users'));
     }
@@ -137,6 +141,9 @@ class Create extends Component
             $transaction->source_type = !empty($this->source_type) ? $this->source_type : null;
             $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
+            // preparer_id
+            // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
+
             $transaction->save();
 
             // Add payment transaction

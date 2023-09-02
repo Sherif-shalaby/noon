@@ -96,7 +96,7 @@ class ProductUtil extends Util
 
             $number = 'Exp' . $year . $month . $inv_count;
         }
-        if ($type == 'sell_return') {
+        if ($type == 'returns') {
             $count = Transaction::where('type', $type)->whereMonth('transaction_date', $month)->count() + $i;
 
             $number = 'Rets' . $year . $month . $count;

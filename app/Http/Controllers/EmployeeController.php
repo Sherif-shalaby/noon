@@ -74,8 +74,9 @@ class EmployeeController extends Controller
    *
    * @return RedirectResponse
    */
-  public function store(Request $request): RedirectResponse
+  public function store(Request $request)
   {
+        // return response($request); 
        $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
@@ -140,9 +141,10 @@ class EmployeeController extends Controller
           $this->createOrUpdateNumberofLeaves($request, $employee->id);
 
           //assign permissions to employee
-//          if (!empty($data['permissions'])) {
-//              $user->syncPermissions($data['permissions']);
-//          }
+         if (!empty($data['permissions'])) {
+            // return $data['permissions'];
+             $user->syncPermissions($data['permissions']);
+         }
           DB::commit();
 
           $output = [

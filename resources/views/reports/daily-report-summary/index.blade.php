@@ -80,8 +80,8 @@
                                                 {{ $purchase_final_total_dinar + $wages_employees_total }} <b>Dinar</b>
                                             {{-- ============== Dinar And Dollar ============== --}}
                                             @else
-                                                {{ $purchase_final_total_dinar + $wages_employees_total }} <b>dollar</b> <br/>
-                                                {{ $purchase_final_total_dollar + $wages_employees_total }} <b>dinar</b>
+                                                {{ $purchase_final_total_dollar + $wages_employees_total }} <b>dollar</b><br/>
+                                                {{ $purchase_final_total_dinar + $wages_employees_total }} <b>dinar</b>
                                             @endif
                                         </td>
                                     </tr>
@@ -99,8 +99,8 @@
                                                 {{ $sell_final_total_dollar }} <b>dinar</b>
                                             {{-- ============== Dinar And Dollar ============== --}}
                                             @else
-                                                {{ $sell_final_total_dinar }} <b>dollar</b> <br/>
-                                                {{ $sell_final_total_dollar }} <b>dinar</b>
+                                                {{ $sell_final_total_dollar }} <b>dollar</b>  <br/>
+                                                {{ $sell_final_total_dinar }} <b>dinar</b>
                                             @endif
                                         </td>
                                     </tr>
@@ -118,8 +118,8 @@
                                                 {{ $sell_final_total_dollar }} <b>dinar</b>
                                             {{-- ============== Dinar And Dollar ============== --}}
                                             @else
-                                                {{ $sell_final_total_dinar }} <b>dollar</b> <br/>
-                                                {{ $sell_final_total_dollar }} <b>dinar</b>
+                                                {{ $sell_final_total_dinar }} <b>dinar</b> <br/>
+                                                {{ $sell_final_total_dollar }} <b>dollar</b>
                                             @endif
                                         </td>
                                     </tr>
@@ -144,8 +144,8 @@
                                                 {{ $purchase_final_total_dinar }} <b>dollar</b>
                                             {{-- ============== Dinar And Dollar ============== --}}
                                             @else
-                                                {{ $purchase_final_total_dinar }} <b>dinar</b> <br/>
-                                                {{ $purchase_final_total_dollar }} <b>dollar</b>
+                                                {{ $purchase_final_total_dollar }} <b>dollar</b><br/>
+                                                {{ $purchase_final_total_dinar }} <b>dinar</b>
                                             @endif
                                         </td>
                                     </tr>

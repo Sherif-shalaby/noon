@@ -38,6 +38,13 @@
                         </li>
                         <li class="list-inline-item">
                             <div class="notifybar">
+                                <a href="{{ route('invoices.create') }}">
+                                    <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
+                                </a>
+                            </div>
+                        </li>
+                        <li class="list-inline-item">
+                            <div class="notifybar">
                                 <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">
                                     <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">
                                     <span class="live-icon"></span>
@@ -121,72 +128,87 @@
         <nav class="horizontal-nav mobile-navbar fixed-navbar">
             <div class="collapse navbar-collapse" id="navbar-menu">
               <ul class="horizontal-menu">
-
-                  @if(!empty($module_settings['dashboard']) )
-                      <li class="scroll">
-                          <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard">
+                {{-- ###################### Dashboard : نظرة عامة ###################### --}}
+                {{-- @can('dashboard')  --}}
+                    @if(!empty($module_settings['dashboard']) )
+                        <li class="scroll">
+                            <a href="{{url('/')}}"><img src="{{asset('images/topbar/dashboard.png')}}" class="img-fluid" alt="dashboard">
                             <span>{{__('lang.dashboard')}}</span>
-                          </a>
-                      </li>
-                  @endif
-                  {{-- @if(!empty($module_settings['dashboard']) ) --}}
+                            </a>
+                        </li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### Products : المنتجات ###################### --}}
-                @if(!empty($module_settings['product_module']) )
-                  <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
-                 @endif
+                {{-- @can('product_module')  --}}
+                    @if(!empty($module_settings['product_module']) )
+                        <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
+                    @endif
+                {{-- @endcan --}}
+                {{-- ###################### Cashier : المبيعات ###################### --}}
+                {{-- @can('cashier_module') --}}
+                    @if(!empty($module_settings['cashier_module']))
+                        <li class="scroll">
+                            <a href="{{route('pos.index')}}" ><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('lang.sells')}}</span></a>
+                        </li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### Purchases : المشتريات ###################### --}}
-                  @if(!empty($module_settings['stock_module']))
-
-                  @if(!empty($module_settings['cashier_module']))
-                      <li>
-                          <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
-                      </li>
-
-                  @endif
-{{--                      @if(!empty($module_settings['cashier_module']))--}}
-{{--                          <li class="dropdown">--}}
-{{--                              <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/cashier-machine.png')}}" class="img-fluid" alt="apps"><span>{{__('')}}</span></a>--}}
-{{--                              <ul class="dropdown-menu">--}}
-{{--                                  <li><a href=""><i class="mdi mdi-circle"></i>@lang('lang.add-stock')</a></li>--}}
-{{--                              </ul>--}}
-{{--                          </li>--}}
-{{--                      @endif--}}
-                @if(!empty($module_settings['return_module']))
-                    <li class="dropdown">
-                        <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
-                    </li>
-                @endif
+                {{-- @can('stock_module') --}}
+                    @if(!empty($module_settings['stock_module']))
+                            <li>
+                                <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
+                            </li>
+                    @endif
+                {{-- @endcan --}}
+                {{-- ###################### Returns : المرتجعات ###################### --}}
+                {{-- @can('return_module')  --}}
+                    @if(!empty($module_settings['return_module']))
+                        <li class="dropdown">
+                            <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.returns')}}</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{route('sell_return.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.sells_return')</a></li>
+                            </ul>
+                        </li>
+                    @endif
+                {{-- @endcan  --}}
                 {{-- ###################### Employees : الموظفين ###################### --}}
-                  @if(!empty($module_settings['employee_module']))
-                         <li class="dropdown">
-                             <a href=""><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.employees')}}</span></a>
-                              <ul class="dropdown-menu">
-                                  <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
-                                  <li><a href="{{route('employees.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
-                                  <li><a href="{{route('wages.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
-                              </ul>
-                          </li>
-                  @endif
+                {{-- @can('employee_module')  --}}
+                    @if(!empty($module_settings['employee_module']))
+                            <li class="dropdown">
+                                <a href=""><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.employees')}}</span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
+                                    <li><a href="{{route('employees.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
+                                    <li><a href="{{route('wages.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
+                                </ul>
+                            </li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### Customers : العملاء ###################### --}}
-                  @if(!empty($module_settings['customer_module']))
-                   <li class="dropdown">
-                        <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.customers')}}</span></a>
-                        <ul class="dropdown-menu">
-                        <li><a href="{{route('customers.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customers')}}</a></li>
-                        <li><a href="{{route('customertypes.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customer_types')}}</a></li>
-                    </ul>
-                  </li>
-                  @endif
+                {{-- @can('customer_module')  --}}
+                    @if(!empty($module_settings['customer_module']))
+                    <li class="dropdown">
+                            <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.customers')}}</span></a>
+                            <ul class="dropdown-menu">
+                            <li><a href="{{route('customers.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customers')}}</a></li>
+                            <li><a href="{{route('customertypes.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customer_types')}}</a></li>
+                        </ul>
+                    </li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### suppliers : الموردين ###################### --}}
-                  @if(!empty($module_settings['supplier_module']))
-                      <li class="scroll"><a href="{{route('suppliers.index')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
-                  @endif
+                {{-- @can('supplier_module')  --}}
+                    @if(!empty($module_settings['supplier_module']))
+                        <li class="scroll"><a href="{{route('suppliers.index')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}
-                  @if(!empty($module_settings['settings_module']))
-                      <li class="dropdown menu-item-has-mega-menu">
-                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/settings.png')}}" class="img-fluid" alt="basic"><span>{{__('lang.settings')}}</span></a>
-                          <div class="mega-menu dropdown-menu">
-                              <ul class="mega-menu-row" role="menu">
+                {{-- @can('settings_module') --}}
+                    @if(!empty($module_settings['settings_module']))
+                        <li class="dropdown menu-item-has-mega-menu">
+                            <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/settings.png')}}" class="img-fluid" alt="basic"><span>{{__('lang.settings')}}</span></a>
+                            <div class="mega-menu dropdown-menu">
+                                <ul class="mega-menu-row" role="menu">
                                 {{-- ================= Column 1 ============== --}}
                                 <li class="mega-menu-col col-md-3">
                                     <ul class="sub-menu">
@@ -256,7 +278,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                  <li class="mega-menu-col col-md-3">
+                                    <li class="mega-menu-col col-md-3">
                                     <ul class="sub-menu">
                                         {{-- ////////// نقاط البيع للصرافين ////////// --}}
                                         <li>
@@ -278,14 +300,15 @@
                                         </li>
                                     </ul>
                                 </li>
-                              </ul>
-                          </div>
-                      </li>
-                  @endif
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+                {{-- @endcan  --}}
                 {{-- ###################### reports : التقرير ###################### --}}
-                  @if(!empty($module_settings['reports_module']))
-
-                      <li class="dropdown">
+                {{-- @can('reports_module') --}}
+                    @if(!empty($module_settings['reports_module']))
+                        <li class="dropdown">
                         <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
@@ -330,29 +353,11 @@
                                 </li>
                             </ul>
                         </li>
+                        </li>
+                    @endif
+                {{-- @endcan --}}
 
-{{--                    </li>--}}
-{{--                                <li><a href="{{route('purchases-report.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}</a></li>--}}
-{{--                            </ul>--}}
-{{--                      </li>--}}
 
-                      </li>
-                  @endif
-                {{-- ###################### Sale_Screen : شاشة البيع ###################### --}}
-                <li class="scroll">
-                    <a href="{{ route('invoices.create') }}">
-                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
-                        <span>{{ __('site.Sale_Screen') }}</span>
-                    </a>
-                </li>
-                {{-- ###################### Invoices : الفواتير ###################### --}}
-                <li class="scroll">
-                    <a href="{{ route('invoices.index') }}">
-                        <img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets">
-                        <span>{{ __('site.Invoices') }}</span>
-                    </a>
-                </li>
-                @endif
 
               </ul>
             </div>
