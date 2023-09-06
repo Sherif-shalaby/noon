@@ -279,8 +279,14 @@ return [
     'daily_report_summary' => 'daily report summary' ,
     // ###################### preparer #####################
     'preparer' => 'preparer' ,
+    // ###################### purchase_order #####################
+    'purchase_order' => 'Purchase Order' ,
+    'create_purchase_order' => 'Create Purchase Order',
+    'po_no' => 'Purchase Order Number',
 
     'purchase_price'=>'Purchase Price',
+    'purchase_price_dollar' => 'dollar purchase price',
+
     'sell_price'=>'Sell Price',
     'add_stock'=>'Add Stock',
     'pay'=>'Pay',

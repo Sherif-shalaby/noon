@@ -21,6 +21,7 @@ use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
+use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SalesReportController;
@@ -28,7 +29,8 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\SellPosController;
-
+use App\Models\Product;
+use App\Models\PurchaseOrderLine;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,11 +103,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
-
-     // ########### Purchases Report ###########
-     Route::resource('purchases-report', PurchasesReportController::class);
-
-
+    // ########### Purchases Report ###########
+    Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -118,7 +117,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
-
+    // ########### Purchase Order ###########
+    Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ajax request : get_product_search
+    Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
+    // selected_products : Add All Selected Product
+    Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');

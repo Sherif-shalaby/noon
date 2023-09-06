@@ -68,12 +68,7 @@ class ProductController extends Controller
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
     return view('products.index',compact('products','categories','brands','units','stores','users'));
   }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return Response
-   */
+  /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
         $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
@@ -82,15 +77,10 @@ class ProductController extends Controller
         $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
         // product_tax
         $product_tax = ProductTax::select('name','id','status')->get();
-        $quick_add=1;
-        return view('products.create',compact('categories','brands','units','stores','quick_add','product_tax'));
+        // $quick_add = request()->quick_add;
+        return view('products.create',compact('categories','brands','units','stores','product_tax'));
   }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @return Response
-   */
+  /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
     try{
