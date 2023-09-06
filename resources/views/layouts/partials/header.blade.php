@@ -160,6 +160,27 @@
                             </li>
                     @endif
                 {{-- @endcan --}}
+                {{-- ###################### Purchase_Order : امر شراء ###################### --}}
+                <li class="dropdown">
+                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                        <span>{{__('lang.purchase_order')}}</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {{-- +++++++++++ purchase_order : index +++++++++++ --}}
+                        <li>
+                            <a href="{{route('purchase_order.index')}}">
+                                <i class="mdi mdi-circle"></i>{{__('lang.purchase_order')}}
+                            </a>
+                        </li>
+                        {{-- +++++++++++ purchase_order : create +++++++++++ --}}
+                        <li>
+                            <a href="{{route('purchase_order.create')}}">
+                                <i class="mdi mdi-circle"></i>{{__('lang.create_purchase_order')}}
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
                     @if(!empty($module_settings['return_module']))
@@ -308,7 +329,7 @@
                 {{-- ###################### reports : التقرير ###################### --}}
                 {{-- @can('reports_module') --}}
                     @if(!empty($module_settings['reports_module']))
-                        <li class="dropdown">
+
                         <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="{{asset('images/topbar/report.png')}}" class="img-fluid" alt="advanced">
@@ -353,7 +374,7 @@
                                 </li>
                             </ul>
                         </li>
-                        </li>
+
                     @endif
                 {{-- @endcan --}}
 

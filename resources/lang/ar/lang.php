@@ -160,6 +160,7 @@ return array(
     'notify_before_days'=>'اخطار قبل ايام',
     'quantity' => 'كمية',
     'purchase_price' => 'سعر الشراء',
+    'purchase_price_dollar' => 'سعر الشراء بالدولار',
     'selling_price' => 'سعر البيع',
     'sub_total' => 'المجموع الفرعي',
     'new_stock' => 'المخزون الجديد',
@@ -301,6 +302,11 @@ return array(
     'daily_report_summary' => 'ملخص التقرير اليومي',
     // ###################### preparer #####################
     'preparer' => 'اسم المٌجهز' ,
+    // ###################### purchase_order #####################
+    'purchase_order' => 'أمر شراء' ,
+    'create_purchase_order' => 'انشاء أمر شراء' ,
+    'po_no' => 'رقم طلب الشراء' ,
+
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
     'edit'=>'تعديل',
