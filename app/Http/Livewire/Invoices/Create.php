@@ -75,13 +75,16 @@ class Create extends Component
         $allproducts = Product::get();
         $departments = Category::get();
         $this->customers   = Customer::get();
-        $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id');
+        $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+        $this->store_pos_id = array_key_first($store_pos);
         $store_poses = [];
         $languages = System::getLanguageDropdown();
+        $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types=CustomerType::latest()->pluck('name','id');
         $stores = Store::getDropdown();
+        $this->store_id = array_key_first($stores);
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.kindly_assign_pos_for_that_user_to_able_to_use_it']);
             return redirect()->to('/home');
@@ -168,6 +171,10 @@ class Create extends Component
 
                 // Update Sold Quantity in stock line
                 $this->updateSoldQuantityInAddStockLine($sell_line->product_id, $transaction->store_id, (float)$item['quantity'], $old_quantity, $stock_id);
+                if ($transaction->status == 'final') {
+                    $product = Product::find($sell_line->product_id);
+                    $this->decreaseProductQuantity($sell_line->product_id, $transaction->store_id, (float) $sell_line->quantity);
+                }
 
             }
 
@@ -436,6 +443,7 @@ class Create extends Component
     public function changeDollarTotal(){
         $this->dollar_final_total = $this->total_dollar - $this->discount_dollar;
     }
+
     public function changeTotal() {
         $this->final_total = $this->total - $this->discount;
     }
@@ -636,6 +644,30 @@ class Create extends Component
         }
 
         return $register;
+    }
+
+    public function decreaseProductQuantity($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
+    {
+        $qty_difference = $new_quantity - $old_quantity;
+        $product = Product::find($product_id);
+
+            //Decrement Quantity in variations store table
+            $details = ProductStore::where('product_id', $product_id)
+                ->where('store_id', $store_id)
+                ->first();
+
+            //If store details not exists create new one
+            if (empty($details)) {
+                $details = ProductStore::create([
+                    'product_id' => $product_id,
+                    'store_id' => $store_id,
+                    'variation_id' => $variation_id,
+                    'qty_available' => 0
+                ]);
+            }
+            $details->decrement('qty_available', $qty_difference);
+
+        return true;
     }
 
     public function getInvoicePrint($transaction, $payment_types, $transaction_invoice_lang = null)
