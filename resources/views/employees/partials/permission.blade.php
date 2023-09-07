@@ -85,7 +85,7 @@
                                 {!! Form::checkbox('permissions[' . $edit_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($edit_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.edit')]) !!}
                             </td>
                             <td class="">
-                                    {!! Form::checkbox('permissions[' . $delete_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($delete_permission)) ? true : false, ['class' => 'check_box check_box_delete', 'title' => __('lang.delete')]) !!}                     
+                                    {!! Form::checkbox('permissions[' . $delete_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($delete_permission)) ? true : false, ['class' => 'check_box check_box_delete', 'title' => __('lang.delete')]) !!}
                             </td>
                     </tr>
                 @endforeach

@@ -140,9 +140,16 @@ class EmployeeController extends Controller
           $this->createOrUpdateNumberofLeaves($request, $employee->id);
 
           //assign permissions to employee
-//          if (!empty($data['permissions'])) {
-//              $user->syncPermissions($data['permissions']);
-//          }
+//          dd($data['permissions']);
+          if (!empty($data['permissions'])) {
+              foreach ($data['permissions'] as $key => $value) {
+                  $permissions[] = $key;
+              }
+
+              if (!empty($permissions)) {
+                  $user->syncPermissions($permissions);
+              }
+          }
           DB::commit();
 
           $output = [
@@ -153,11 +160,13 @@ class EmployeeController extends Controller
           return redirect()->route('employees.index')->with('status', $output);
       }
       catch (\Exception $e) {
+          dd($e);
           Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
           $output = [
               'success' => false,
               'msg' => __('lang.something_went_wrong')
           ];
+
           return redirect()->back()->with('status', $output);
 
       }
@@ -200,9 +209,10 @@ class EmployeeController extends Controller
       $commission_type = Employee::commissionType();
       $commission_calculation_period = Employee::commissionCalculationPeriod();
       $modulePermissionArray = User::modulePermissionArray();
+//      dd()
       $subModulePermissionArray = User::subModulePermissionArray();
       $employee = Employee::find($id);
-      $user = $employee->user()->get();
+      $user = User::find($employee->user_id);
       $stores = Store::pluck('name', 'id')->toArray();
       $selected_stores = $employee->stores->pluck('id');
       $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
