@@ -1,5 +1,5 @@
 
-<div class="topbar">
+<div class="topbar no-print">
     <!-- Start container-fluid -->
     <div class="container-fluid">
         <!-- Start row -->

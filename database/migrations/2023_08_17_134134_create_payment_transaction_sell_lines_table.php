@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('transaction_id');
             $table->foreign('transaction_id')->references('id')->on('transaction_sell_lines')->onDelete('cascade');
             $table->foreignId('received_currency')->nullable()->references('id')->on('currencies')->onDelete('cascade');
-            $table->decimal('amount', 15, 4);
+            $table->decimal('amount', 15, 4)->nullable();
+            $table->decimal('dollar_amount', 15, 4)->nullable();
             $table->string('method');
             $table->string('paid_on');
             $table->boolean('is_return')->default(0);

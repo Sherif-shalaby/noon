@@ -21,4 +21,8 @@ class ProductStore extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function Store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

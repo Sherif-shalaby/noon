@@ -9,6 +9,7 @@ use App\Models\Currency;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\Product;
+use App\Models\ProductStore;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
@@ -23,6 +24,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component
@@ -33,7 +35,7 @@ class Create extends Component
         $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
         $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-        $showColumn = false, $transaction_currency ;
+        $showColumn = false, $transaction_currency, $current_stock ;
 
     protected $rules = [
     'store_id' => 'required',
@@ -59,6 +61,7 @@ class Create extends Component
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $products = Product::all();
         $stores = Store::getDropdown();
+
         if ($this->source_type == 'pos') {
             $users = StorePos::pluck('name', 'id');
         } elseif ($this->source_type == 'store') {
@@ -137,6 +140,8 @@ class Create extends Component
             $transaction->source_type = !empty($this->source_type) ? $this->source_type : null;
             $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
+
+            DB::beginTransaction();
             $transaction->save();
 
             // Add payment transaction
@@ -205,6 +210,18 @@ class Create extends Component
 
             // add  products to stock lines
             foreach ($this->selectedProductData as $index => $product){
+                if (isset($this->change_price_stock[$index]) && $this->change_price_stock[$index]) {
+                    if (isset($product->stock_lines)) {
+                        foreach ($product->stock_lines as $line) {
+                            $line->purchase_price = !empty($this->purchase_price[$index]) ? $this->purchase_price[$index] : null;
+                            $line->sell_price = !empty($this->selling_price[$index]) ? $this->selling_price[$index] : null;
+                            $line->dollar_purchase_price = empty($this->dollar_purchase_price[$index]) ? $this->dollar_purchase_price[$index] : null;
+                            $line->dollar_sell_price = !empty($this->dollar_selling_price[$index]) ? $this->dollar_selling_price[$index] : null;
+                            $line->save();
+                        }
+                    }
+                }
+                $supplier = Supplier::find($this->supplier);
                 $add_stock_data = [
                     'product_id' => $product->id,
                     'stock_transaction_id' =>$transaction->id ,
@@ -219,11 +236,16 @@ class Create extends Component
                     'dollar_sell_price' => !empty($this->dollar_selling_price[$index]) ? $this->dollar_selling_price[$index] : null,
                     'cost' => !empty($this->cost[$index]) ?  $this->cost[$index] : null,
                     'dollar_cost' => !empty($this->dollar_cost[$index]) ? $this->dollar_cost[$index] : null,
+                    'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
                 AddStockLine::create($add_stock_data);
+                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->quantity[$index], 0);
+
             }
 
             $payment->save();
+
+            DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
         }
@@ -238,7 +260,7 @@ class Create extends Component
     {
         $this->emit('closeModal');
         $this->selectedProductData = Product::whereIn('id', $this->selectedProducts)->get();
-//        dump($this->selectedProductData);
+
     }
 
     public function get_product($index){
@@ -539,6 +561,29 @@ class Create extends Component
 
     public function ShowDollarCol(){
         $this->showColumn= !$this->showColumn;
+    }
+
+    public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
+    {
+        $qty_difference = $new_quantity - $old_quantity;
+
+        if ($qty_difference != 0) {
+            $product_store = ProductStore::where('product_id', $product_id)
+                ->where('store_id', $store_id)
+                ->first();
+
+            if (empty($product_store)) {
+                $product_store = new ProductStore();
+                $product_store->product_id = $product_id;
+                $product_store->store_id = $store_id;
+                $product_store->quantity_available = 0;
+            }
+
+            $product_store->quantity_available += $qty_difference;
+            $product_store->save();
+        }
+
+        return true;
     }
 
 
