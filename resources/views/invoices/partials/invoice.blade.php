@@ -1,4 +1,8 @@
 <style>
+    .print-only {
+        display: none;
+    }
+
     @media print {
         * {
             font-size: 12px;
@@ -32,6 +36,19 @@
 
         #header_invoice_img {
             max-width: 80mm;
+        }
+        .no-print {
+            display: none;
+        }
+
+        .print-only {
+            display: block;
+        }
+        .ui-pnotify-container{
+            display: none !important;
+        }
+        @livewireScripts {
+            display: none !important;
         }
     }
     section{

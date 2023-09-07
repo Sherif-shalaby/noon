@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'superadmin',
             'email' => 'superadmin@sherifshalaby.tech',
             'password' => Hash::make('123456'),
-            // 'is_superadmin' => 1,
-            // 'is_admin' => 0,
-            // 'is_detault' => 1,
+             'is_superadmin' => 1,
+             'is_admin' => 0,
+             'is_detault' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ];
@@ -53,9 +53,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@sherifshalaby.tech',
             'password' => Hash::make('123456'),
-            // 'is_superadmin' => 0,
-            // 'is_admin' => 1,
-            // 'is_detault' => 1,
+             'is_superadmin' => 0,
+             'is_admin' => 1,
+             'is_detault' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ];
@@ -153,7 +153,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ColorSeeder::class,
             SizeSeeder::class,
-            ProductSeeder::class,
+//            ProductSeeder::class,
         ]);
     }
 }

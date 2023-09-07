@@ -159,8 +159,7 @@
         </span>
     </td>
     <td>
-{{--       <input id="active" type="checkbox"  checked  wire:model = "change_price_stock.{{ $index }}">--}}
-{{--        {{$change_price_stock[$index] ?? 0}}--}}
+       <input type="checkbox" name="change_price"  wire:model="change_price_stock.{{ $index }}">
     </td>
     <td  class="text-center">
         <div class="btn btn-sm btn-danger py-0 px-1"

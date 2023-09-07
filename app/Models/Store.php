@@ -38,14 +38,13 @@ class Store extends Model
 
     public static function getDropdown()
     {
-//        if (session('user.is_superadmin') || session('user.is_admin')) {
+        $user = auth()->user();
+        if ($user->is_superadmin || $user->is_admin) {
             $stores = Store::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-//        } else {
-//            $user = auth()->user();
-//            $employee = $user->emoployee;
-////            $stores = $employee->stores()->orderBy('name'.'asc')->pluck('name','id')->toArray();
-//            dd($user, $employee);
-//        }
+        } else {
+            $employee = $user->employee;
+            $stores = $employee->stores()->orderBy('name','asc')->pluck('name','id')->toArray();
+        }
         return $stores;
     }
 

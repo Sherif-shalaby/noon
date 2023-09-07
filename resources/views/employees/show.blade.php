@@ -212,7 +212,7 @@
                                     <tbody>
                                     @foreach ($modulePermissionArray as $key_module => $moudle)
                                         <div>
-                                            <tr=class="module_permission" data-moudle="{{$key_module}}">
+                                            <tr class="module_permission" data-moudle="{{$key_module}}">
                                             <td class="">{{$moudle}} </td>
                                             <td></td>
                                             <td></td>
@@ -223,28 +223,7 @@
                                                 @php
                                                     $sub_module_permission_array = $subModulePermissionArray[$key_module];
                                                 @endphp
-                                                @if(session('system_mode') == 'restaurant')
-                                                    @if($key_module == 'product_module')
-                                                        @php
-                                                            unset($sub_module_permission_array['category']);
-                                                            unset($sub_module_permission_array['sub_category']);
-                                                            unset($sub_module_permission_array['brand']);
-                                                            unset($sub_module_permission_array['color']);
-                                                            unset($sub_module_permission_array['grade']);
-                                                        @endphp
-                                                    @endif
-                                                @endif
-                                                @if(session('system_mode') != 'restaurant')
-                                                    @if($key_module == 'product_module')
-                                                        @php
-                                                            unset($sub_module_permission_array['raw_material']);
-                                                            unset($sub_module_permission_array['consumption']);
-                                                            unset($sub_module_permission_array['add_consumption_for_others']);
-                                                        @endphp
-                                                    @endif
-                                                @endif
-                                                @foreach ( $sub_module_permission_array as $key_sub_module =>
-                                                $sub_module)
+                                                @foreach ( $sub_module_permission_array as $key_sub_module => $sub_module)
                                                     <tr class="sub_module_permission_{{$key_module}}">
                                                         <td class=""></td>
                                                         <td>{{$sub_module}}</td>
