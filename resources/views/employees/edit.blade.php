@@ -187,7 +187,7 @@
                                 <h3>@lang('lang.user_rights')</h3>
                             </div>
                             <div class="col-md-12">
-{{--                                @include('employees.partials.permission')--}}
+                                @include('employees.partials.permission')
                             </div>
                         </div>
 
