@@ -18,6 +18,8 @@ use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\GetDueReport;
+use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
@@ -113,6 +115,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // ########### Get Due Report ###########
+    Route::resource('get-due-report', GetDueReportController::class);
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########

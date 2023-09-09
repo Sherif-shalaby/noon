@@ -273,6 +273,8 @@ return [
     'receivable_report' => 'receivable report',
     // ############ payable_report ############
     'payable_report' => 'payable report',
+    // ############ get_due_report ############
+    'get_due_report' => 'get due report',
     // ############ customers_report ############
     'customers_report' => 'customers report',
     // ############ daily_report_summary ############

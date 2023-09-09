@@ -372,6 +372,12 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.daily_report_summary')}}
                                     </a>
                                 </li>
+                                {{-- +++++++++++ Get Due Report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('get-due-report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.get_due_report')}}
+                                    </a>
+                                </li>
                             </ul>
                         </li>
 

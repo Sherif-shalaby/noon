@@ -186,6 +186,7 @@ return array(
     'ref_number' => 'رقم المرجع',
     'bank_deposit_date' => 'تاريخ الإيداع المصرفي',
     'bank_name' => 'اسم البنك',
+    'duePaid' => 'متاخرات',
     'due' => 'تاريخ الاستحقاق',
     'due_date' => 'يخطر قبل أيام',
     'cash' => 'نقدي',
@@ -289,7 +290,8 @@ return array(
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
-
+    // ############ get_due_report ############
+    'get_due_report' => 'تقرير الاستحقاقات',
     // ############ sales_report ############
     'sales_report' => 'تقرير المبيعات',
     // ############ receivable_report ############
