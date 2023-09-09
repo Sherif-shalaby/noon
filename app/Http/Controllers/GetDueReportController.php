@@ -11,9 +11,7 @@ class GetDueReportController extends Controller
     /* +++++++++++++++++++ index() +++++++++++++++++++ */
     public function index()
     {
-        // $customer_transactions_sell_lines = TransactionSellLine::with('transaction_sell_lines','transaction_payments','customer')->orderBy('customer_id')->get();
         $dues = TransactionSellLine::where('payment_status', '!=', 'paid')->where('status', 'final')->get();
-        // return $dues;
         return view('reports.get-due-report.index',compact('dues'));
     }
 
