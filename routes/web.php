@@ -31,6 +31,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\SellPosController;
+use App\Http\Controllers\SupplierReportController;
 use App\Models\Product;
 use App\Models\PurchaseOrderLine;
 
@@ -107,8 +108,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('product-tax', ProductTaxController::class);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
-    // ########### Purchases Report ###########
-    Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
     Route::resource('sales-report', SalesReportController::class);
     // ########### Receivable Report ###########
@@ -117,6 +116,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('payable-report', PayableReportController::class);
     // ########### Get Due Report ###########
     Route::resource('get-due-report', GetDueReportController::class);
+    // ########### Supplier Report ###########
+    Route::resource('get-supplier-report', SupplierReportController::class);
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########

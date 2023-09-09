@@ -361,6 +361,7 @@ return array(
     'product_quantity_alert_report' => 'تقرير تنبيه كمية المنتج',
     'user_report' => 'تقرير المستخدم',
     'customer_report' => 'تقرير العملاء',
+    // supplier_report
     'supplier_report' => 'تقرير المورد',
     'due_report' => 'تقرير الاستحقاق',
     'supplier' => 'المورد',
@@ -415,6 +416,11 @@ return array(
     'dinar' => 'الواصل دينار',
     'sells' => 'المبيعات',
     'reference' => 'المرجعي',
+    'reference_no' => 'رقم المرجع',
+    'payment_ref' => 'مرجع الدفع',
+    'sale_ref' => 'مرجع البيع',
+    'purchase_ref' => 'مرجع الشراء',
+
     'sale_status' => 'حاله المبيعات',
     'grand_total' => 'المبلغ الاجمالي',
     'due_sale_list' => 'متأخرات',

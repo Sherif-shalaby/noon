@@ -405,6 +405,12 @@ return [
     'dinar' => 'Dinar',
     'sells' => 'Sells',
     'reference' => 'Reference',
+    'purchase_ref' => 'Purchase Reference',
+    'reference' => 'Reference',
+    'payment_ref' => 'Payment Reference',
+    'sale_ref' => 'Sale Reference',
+    'reference_no' => 'Reference No',
+
     'sale_status' => 'Sell Status',
     'grand_total' => 'Grand Toral',
     'due_sale_list' => 'Due Sale List',
