@@ -95,7 +95,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        <tr>
+                                            @foreach ( $add_stocks as $add_stock )
+                                                {{-- @foreach ($add_stocks->transaction as $line) --}}
+                                                        <td>{{ @format_date($add_stock->transaction->transaction_date) }}</td>
+                                                        <td>{{$add_stock->transaction->invoice_no}}</td>
+                                                        <td>@if(!empty($add_stock->transaction->supplier)){{$add_stock->transaction->supplier->name}}@endif</td>
+                                                        <td>{{@num_format($add_stock->transaction->final_total)}}</td>
+                                                        <td>{{@num_format($add_stock->transaction->transaction_payments->sum('amount'))}}</td>
+                                                        {{-- <td>{{@num_format($add_stock->transaction->final_total - $add_stocks->transaction->transaction_payments->sum('amount'))}} --}}
+                                                        </td>
+                                                    {{-- <td>@if($add_stock->status == 'received')<span
+                                                                class="badge badge-success">@lang('lang.completed')</span>@else
+                                                            {{ucfirst($add_stock->status)}} @endif</td> --}}
+                                                {{-- @endforeach --}}
+                                            @endforeach
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

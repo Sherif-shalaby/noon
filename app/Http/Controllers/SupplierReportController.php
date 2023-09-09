@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\AddStockLine;
+use App\Models\PurchaseOrderTransaction;
 use Illuminate\Http\Request;
 
 class SupplierReportController extends Controller
@@ -10,7 +12,10 @@ class SupplierReportController extends Controller
     /* ++++++++++++++++++++ index() ++++++++++++++++++++ */
     public function index()
     {
-        return view('reports.suppliers-report.index');
+        $purchase_orders = PurchaseOrderTransaction::get();
+        $add_stocks = AddStockLine::with('transaction.supplier','transaction.transaction_payments','product')->get();
+        // return $add_stocks;
+        return view('reports.suppliers-report.index',compact('purchase_orders','add_stocks'));
     }
 
     /**
