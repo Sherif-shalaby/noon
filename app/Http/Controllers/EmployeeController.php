@@ -74,8 +74,9 @@ class EmployeeController extends Controller
    *
    * @return RedirectResponse
    */
-  public function store(Request $request): RedirectResponse
+  public function store(Request $request)
   {
+        // return response($request);
        $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',

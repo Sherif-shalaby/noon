@@ -273,12 +273,22 @@ return [
     'receivable_report' => 'receivable report',
     // ############ payable_report ############
     'payable_report' => 'payable report',
+    // ############ get_due_report ############
+    'get_due_report' => 'get due report',
     // ############ customers_report ############
     'customers_report' => 'customers report',
     // ############ daily_report_summary ############
     'daily_report_summary' => 'daily report summary' ,
+    // ###################### preparer #####################
+    'preparer' => 'preparer' ,
+    // ###################### purchase_order #####################
+    'purchase_order' => 'Purchase Order' ,
+    'create_purchase_order' => 'Create Purchase Order',
+    'po_no' => 'Purchase Order Number',
 
     'purchase_price'=>'Purchase Price',
+    'purchase_price_dollar' => 'dollar purchase price',
+
     'sell_price'=>'Sell Price',
     'add_stock'=>'Add Stock',
     'pay'=>'Pay',
@@ -395,6 +405,12 @@ return [
     'dinar' => 'Dinar',
     'sells' => 'Sells',
     'reference' => 'Reference',
+    'purchase_ref' => 'Purchase Reference',
+    'reference' => 'Reference',
+    'payment_ref' => 'Payment Reference',
+    'sale_ref' => 'Sale Reference',
+    'reference_no' => 'Reference No',
+
     'sale_status' => 'Sell Status',
     'grand_total' => 'Grand Toral',
     'due_sale_list' => 'Due Sale List',

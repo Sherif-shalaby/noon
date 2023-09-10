@@ -18,9 +18,12 @@ use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\GetDueReport;
+use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
+use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SalesReportController;
@@ -28,7 +31,9 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\SellPosController;
-
+use App\Http\Controllers\SupplierReportController;
+use App\Models\Product;
+use App\Models\PurchaseOrderLine;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,11 +106,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
-
-     // ########### Purchases Report ###########
-     Route::resource('purchases-report', PurchasesReportController::class);
-
-
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -114,11 +114,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // ########### Get Due Report ###########
+    Route::resource('get-due-report', GetDueReportController::class);
+    // ########### Supplier Report ###########
+    Route::resource('get-supplier-report', SupplierReportController::class);
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
-
+    // ########### Purchase Order ###########
+    Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ajax request : get_product_search
+    Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
+    // selected_products : Add All Selected Product
+    Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
     Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');

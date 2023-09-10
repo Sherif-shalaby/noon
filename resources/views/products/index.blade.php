@@ -143,7 +143,7 @@
                                                 </li>
                                                 <li class="divider"></li>
                                                     <li>
-                                                        <a data-href="{{route('products.destroy', $product->id)}}"
+                                                        <a  data-href="{{route('products.destroy', $product->id)}}"
                                                             {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
                                                             class="btn text-red delete_item"><i class="fa fa-trash"></i>
                                                             @lang('lang.delete')</a>

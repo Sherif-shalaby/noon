@@ -38,6 +38,10 @@ class Supplier extends Model
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+    public function supplier()
+    {
+        return $this->hasMany(StockTransaction::class, 'supplier_id');
+    }
 
     public function supplier_products()
     {

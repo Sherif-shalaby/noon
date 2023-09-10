@@ -160,6 +160,7 @@ return array(
     'notify_before_days'=>'اخطار قبل ايام',
     'quantity' => 'كمية',
     'purchase_price' => 'سعر الشراء',
+    'purchase_price_dollar' => 'سعر الشراء بالدولار',
     'selling_price' => 'سعر البيع',
     'sub_total' => 'المجموع الفرعي',
     'new_stock' => 'المخزون الجديد',
@@ -185,6 +186,7 @@ return array(
     'ref_number' => 'رقم المرجع',
     'bank_deposit_date' => 'تاريخ الإيداع المصرفي',
     'bank_name' => 'اسم البنك',
+    'duePaid' => 'متاخرات',
     'due' => 'تاريخ الاستحقاق',
     'due_date' => 'يخطر قبل أيام',
     'cash' => 'نقدي',
@@ -288,7 +290,8 @@ return array(
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
-
+    // ############ get_due_report ############
+    'get_due_report' => 'تقرير الاستحقاقات',
     // ############ sales_report ############
     'sales_report' => 'تقرير المبيعات',
     // ############ receivable_report ############
@@ -299,6 +302,12 @@ return array(
     'customers_report' => 'تقرير العملاء',
     // ############ daily_report_summary ############
     'daily_report_summary' => 'ملخص التقرير اليومي',
+    // ###################### preparer #####################
+    'preparer' => 'اسم المٌجهز' ,
+    // ###################### purchase_order #####################
+    'purchase_order' => 'أمر شراء' ,
+    'create_purchase_order' => 'انشاء أمر شراء' ,
+    'po_no' => 'رقم طلب الشراء' ,
 
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
@@ -352,6 +361,7 @@ return array(
     'product_quantity_alert_report' => 'تقرير تنبيه كمية المنتج',
     'user_report' => 'تقرير المستخدم',
     'customer_report' => 'تقرير العملاء',
+    // supplier_report
     'supplier_report' => 'تقرير المورد',
     'due_report' => 'تقرير الاستحقاق',
     'supplier' => 'المورد',
@@ -406,6 +416,11 @@ return array(
     'dinar' => 'الواصل دينار',
     'sells' => 'المبيعات',
     'reference' => 'المرجعي',
+    'reference_no' => 'رقم المرجع',
+    'payment_ref' => 'مرجع الدفع',
+    'sale_ref' => 'مرجع البيع',
+    'purchase_ref' => 'مرجع الشراء',
+
     'sale_status' => 'حاله المبيعات',
     'grand_total' => 'المبلغ الاجمالي',
     'due_sale_list' => 'متأخرات',

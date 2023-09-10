@@ -53,6 +53,23 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                {{-- +++++++++++++++ Order Preparer Employee +++++++++++++++ --}}
+                                {{-- <div class="col-md-3">
+                                    <label for="preparer_id">@lang('lang.preparer') :*</label>
+                                    <select name="preparer_id" id="preparer_id" class="form-control-custom select2" placeholder="{{  __('lang.please_select') }}" required>
+                                        <option value="">{{  __('lang.please_select') }}</option>
+
+                                        @foreach ($preparers as $preparer )
+                                            @foreach ( $preparer->employess as $employee )
+                                                <option value="{{ $employee->id }}">{{ $employee->employee_name }}</option>
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                    @error('preparers')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div> --}}
+
                                 <div class="col-md-3">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'wire:model' => 'purchase_type']) !!}
