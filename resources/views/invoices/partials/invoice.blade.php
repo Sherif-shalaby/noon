@@ -134,8 +134,13 @@
                                 {{$line->sell_price}}
                             @endif
                         </td>
-                        <td>{{number_format($line->quantity * $line->product->unit->base_unit_multiplier,2)}}</td>
-                        <td style="background-color: #CACACA">{{$line->product->unit->base_unit_multiplier}}</td>
+                        @if(isset($line->product->unit->base_unit_multiplier))
+                            <td>{{number_format($line->quantity * $line->product->unit->base_unit_multiplier,2)}}</td>
+                            <td style="background-color: #CACACA">{{$line->product->unit->base_unit_multiplier}}</td>
+                        @else
+                            <td>{{$line->quantity}}</td>
+                            <td>1</td>
+                        @endif
                         <td>{{number_format($line->quantity,2)}}</td>
                         <td style="text-align: center"> {{$line->product->name}}</td>
                         <td></td>

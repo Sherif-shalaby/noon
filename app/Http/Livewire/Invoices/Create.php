@@ -39,7 +39,7 @@ class Create extends Component
          $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id,
          $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note,$payment_types,
         $discount = 0.00, $total_dollar, $add_customer=[], $customers = [],$discount_dollar,
-        $final_total, $dollar_final_total, $dollar_amount = 0 , $amount = 0;
+        $final_total, $dollar_final_total, $dollar_amount = 0 , $amount = 0 ,$redirectToHome = false;
 
     protected $rules = [
             'items' => 'array|min:1',
@@ -68,14 +68,15 @@ class Create extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+
     }
 
     public function render()
     {
+        $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $allproducts = Product::get();
         $departments = Category::get();
         $this->customers   = Customer::get();
-        $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($store_pos);
         $store_poses = [];
         $languages = System::getLanguageDropdown();
@@ -85,11 +86,9 @@ class Create extends Component
         $customer_types=CustomerType::latest()->pluck('name','id');
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
-        if (empty($store_pos)) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.kindly_assign_pos_for_that_user_to_able_to_use_it']);
-            return redirect()->to('/home');
-        }
-
+//        if (empty($store_pos)) {
+//            return redirect()->route('home');
+//        }
         return view('livewire.invoices.create', compact(
             'departments',
             'allproducts',
@@ -101,6 +100,10 @@ class Create extends Component
             'stores',
             'customer_types'
             ));
+    }
+
+    public function emptyStorePos(){
+        return redirect()->route('home');
     }
 
     public function submit(){
@@ -646,7 +649,7 @@ class Create extends Component
         return $register;
     }
 
-    public function decreaseProductQuantity($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
+    public function decreaseProductQuantity($product_id, $store_id, $new_quantity, $old_quantity = 0)
     {
         $qty_difference = $new_quantity - $old_quantity;
         $product = Product::find($product_id);
@@ -661,11 +664,10 @@ class Create extends Component
                 $details = ProductStore::create([
                     'product_id' => $product_id,
                     'store_id' => $store_id,
-                    'variation_id' => $variation_id,
-                    'qty_available' => 0
+                    'quantity_available' => 0
                 ]);
             }
-            $details->decrement('qty_available', $qty_difference);
+            $details->decrement('quantity_available', $qty_difference);
 
         return true;
     }
