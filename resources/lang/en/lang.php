@@ -277,12 +277,15 @@ return [
     'get_due_report' => 'get due report',
     // ############ customers_report ############
     'customers_report' => 'customers report',
+    // ############ representative_salary_report ############
+    'representative_salary_report' => 'representative salary report' ,
     // ############ daily_report_summary ############
     'daily_report_summary' => 'daily report summary' ,
     // ###################### preparer #####################
     'preparer' => 'preparer' ,
     // ###################### purchase_order #####################
     'purchase_order' => 'Purchase Order' ,
+    'show_purchase_order' => 'Show Purchase Order' ,
     'create_purchase_order' => 'Create Purchase Order',
     'po_no' => 'Purchase Order Number',
 

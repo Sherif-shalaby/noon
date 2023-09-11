@@ -113,13 +113,14 @@ class WageController extends Controller
                 'msg' => __('lang.success')
             ];
         } catch (\Exception $e) {
+            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-    
+
         return redirect()->back()->with('status', $output);
     }
 
@@ -204,10 +205,10 @@ class WageController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-    
+
         return redirect()->back()->with('status', $output);
     }
- 
+
     /**
      * Remove the specified resource from storage.
      *

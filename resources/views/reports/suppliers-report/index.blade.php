@@ -140,7 +140,8 @@
                                                 </td>
                                                 <td>{{$purchase_order->product->name}}</td>
                                                 <td> {{@num_format($purchase_order->quantity)}} </td>
-                                                <td>{{ $purchase_order->transaction->final_total }}</td>
+                                                <td></td>
+                                                {{-- <td>{{ $purchase_order->transaction->final_total }}</td> --}}
                                                 {{-- <td>{{@num_format($purchase_order->transaction_payments->sum('amount'))}}</td> --}}
                                                 <td></td>
                                                 <td></td>

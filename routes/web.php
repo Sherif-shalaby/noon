@@ -26,6 +26,7 @@ use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
@@ -136,6 +137,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ########### representative salary report ###########
+    Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
     Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
     // selected_products : Add All Selected Product
