@@ -19,7 +19,9 @@
                 </select>
                 <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
             </div>
-            @error('client_id')<span class="text-danger">{{ $message }}</span>@enderror
+            @error('client_id')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
             @include('customers.quick_add')
         </div>
         <div class="title-card-app text-start mt-3">
@@ -87,17 +89,33 @@
 {{--                <input type="number" readonly class="form-control w-50" wire:model="rest">--}}
 {{--            </div>--}}
             <div class="row hide-print">
-                <div class="col-xl-4 me-auto">
-                    <div class=" btns-control row my-3 row-gap-24">
-                        <div class="col-sm-4">
-                            <button data-method="cash" style="width: 78px" type="button"
+{{--                <div class="me-auto">--}}
+{{--                    <div class="btns-control row">--}}
+                        <div class="col-md-3">
+                            <button data-method="cash" style="width: 100%" type="button"
                                     class="btn btn-success payment-btn"  wire:click="submit"
                                     id="cash-btn" ><i class="fa-solid fa-money-bill"></i>
                                 @lang('lang.pay')</button>
 {{--                            @include('invoices.partials.payment')--}}
                         </div>
-                    </div>
-                </div>
+                        <div class="col-md-4">
+                            <button data-method="cash" style="width: 100%" type="button"
+                                    class="btn btn-warning payment-btn"  wire:click="changeStatus"
+                                    id="cash-btn" ><i class="fa-solid fa-flag"></i>
+                                @lang('lang.draft')</button>
+                        </div>
+                        <div class="col-md-5">
+                            <button  style="width: 100%" type="button"
+                                    class="btn btn-primary payment-btn"
+                                     data-toggle="modal" data-target="#draftTransaction"
+{{--                                     wire:click="getDraftTransactions"--}}
+                                    id="cash-btn" ><i class="fa-solid fa-flag"></i>
+                                @lang('lang.view_draft')</button>
+                            @include('invoices.partials.draft_transaction')
+
+                        </div>
+{{--                    </div>--}}
+{{--                </div>--}}
             </div>
         </div>
     </div>
