@@ -16,7 +16,7 @@ class PurchaseOrderLine extends Model
 
     public function transaction()
     {
-        return $this->belongsTo(PurchaseOrderTransaction::class,'purchase_transaction_id',);
+        return $this->belongsTo(PurchaseOrderTransaction::class,'purchase_transaction_id');
     }
     public function product()
     {

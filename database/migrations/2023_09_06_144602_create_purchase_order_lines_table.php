@@ -15,8 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             // foreign key : product_id
-            $table->unsignedBigInteger('purchase_transaction_id');
-            $table->foreign('purchase_transaction_id')->references('id')->on('purchase_order_lines')->onDelete('cascade');
+            $table->unsignedBigInteger('purchase_transaction_id')->nullable();
+            $table->foreign('purchase_transaction_id')->references('id')->on('purchase_order_lines')->onDelete('cascade')->onUpdate('cascade');
             $table->decimal('quantity', 15, 4);
             $table->decimal('purchase_price', 15, 4);
             $table->decimal('purchase_price_dollar', 15, 4);

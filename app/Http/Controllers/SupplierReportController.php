@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\AddStockLine;
+use App\Models\PurchaseOrderLine;
 use App\Models\PurchaseOrderTransaction;
 use Illuminate\Http\Request;
 
@@ -12,10 +13,13 @@ class SupplierReportController extends Controller
     /* ++++++++++++++++++++ index() ++++++++++++++++++++ */
     public function index()
     {
+        // ++++++++++++++ "supplier_report" => "شراء" ++++++++++++++
         $purchase_orders = PurchaseOrderTransaction::get();
         $add_stocks = AddStockLine::with('transaction.supplier','transaction.transaction_payments','product')->get();
-        // return $add_stocks;
-        return view('reports.suppliers-report.index',compact('purchase_orders','add_stocks'));
+        // ++++++++++++++ "supplier_report" => "امر شراء" ++++++++++++++
+        $supplier_purchase_orders = PurchaseOrderLine::with('transaction.product.supplier')->get();
+        return $supplier_purchase_orders;
+        return view('reports.suppliers-report.index',compact('purchase_orders','add_stocks','supplier_purchase_orders'));
     }
 
     /**
