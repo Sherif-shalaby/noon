@@ -122,7 +122,7 @@
                                             <th>@lang('lang.reference_no')</th>
                                             <th>@lang('lang.supplier_name')</th>
                                             <th>@lang('lang.product_name')</th>
-                                            <th>@lang('lang.grand_total')</th>
+                                            <th>@lang('lang.quantity')</th>
                                             <th>@lang('lang.paid')</th>
                                             <th>@lang('lang.duePaid')</th>
                                             <th>@lang('lang.status')</th>
@@ -131,20 +131,20 @@
                                     <tbody>
                                         @foreach ($supplier_purchase_orders as $purchase_order)
                                             <tr>
-                                                <td>{{@format_date($purchase_order->transaction_date)}}</td>
-                                                <td>{{$purchase_order->po_no}}</td>
-                                                <td>@if(!empty($purchase_order->supplier)){{$purchase_order->supplier->name}}@endif
-                                                </td>
+                                                <td>{{@format_date($purchase_order->transaction->transaction_date)}}</td>
+                                                <td>{{$purchase_order->transaction->po_no}}</td>
                                                 <td>
-                                                    {{-- @foreach ($purchase_order->purchase_order_lines as $line)
-                                                    ({{@num_format($line->quantity)}})
-                                                    @if(!empty($line->product)){{$line->product->name}}@endif <br>
-                                                    @endforeach --}}
+                                                    @if(!empty($purchase_order->transaction->supplier))
+                                                        {{$purchase_order->transaction->supplier->name}}
+                                                    @endif
                                                 </td>
-                                                <td>{{@num_format($purchase_order->final_total)}}</td>
+                                                <td>{{$purchase_order->product->name}}</td>
+                                                <td> {{@num_format($purchase_order->quantity)}} </td>
+                                                <td>{{ $purchase_order->transaction->final_total }}</td>
                                                 {{-- <td>{{@num_format($purchase_order->transaction_payments->sum('amount'))}}</td> --}}
-                                                {{-- <td>{{@num_format($purchase_order->final_total - $purchase_order->transaction_payments->sum('amount'))}} --}}
-                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                {{-- <td>{{@num_format($purchase_order->final_total - $purchase_order->transaction_payments->sum('amount'))}}</td> --}}
                                                 <td>@if($purchase_order->status == 'final')<span
                                                         class="badge badge-success">@lang('lang.completed')</span>@elseif($purchase_order->status == 'sent_admin') Sent Admin @else
                                                     {{ucfirst($purchase_order->status)}} @endif</td>

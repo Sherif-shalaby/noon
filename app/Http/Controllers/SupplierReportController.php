@@ -17,8 +17,8 @@ class SupplierReportController extends Controller
         $purchase_orders = PurchaseOrderTransaction::get();
         $add_stocks = AddStockLine::with('transaction.supplier','transaction.transaction_payments','product')->get();
         // ++++++++++++++ "supplier_report" => "امر شراء" ++++++++++++++
-        $supplier_purchase_orders = PurchaseOrderLine::with('transaction.product.supplier')->get();
-        return $supplier_purchase_orders;
+        $supplier_purchase_orders = PurchaseOrderLine::with('transaction.supplier','product')->get();
+        // return $supplier_purchase_orders;
         return view('reports.suppliers-report.index',compact('purchase_orders','add_stocks','supplier_purchase_orders'));
     }
 

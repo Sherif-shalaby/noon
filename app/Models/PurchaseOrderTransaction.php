@@ -13,11 +13,6 @@ class PurchaseOrderTransaction extends Model
     // soft delete
     protected $dates = ['deleted_at'];
 
-    // +++++++++++++++++ transaction_purchase_order_lines() Relationship +++++++++++++++++
-    // public function transaction_purchase_order_lines()
-    // {
-    //     return $this->hasMany(PurchaseOrderLine::class,'transaction_id','id');
-    // }
     // +++++++++++++++++ transaction_purchase_order_line() Relationship +++++++++++++++++
     public function transaction_purchase_order_lines()
     {
@@ -37,5 +32,9 @@ class PurchaseOrderTransaction extends Model
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withDefault(['name' => '']);
+    }
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }
