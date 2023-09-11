@@ -134,7 +134,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
+    Route::get('invoices/edit/{invoice}', function ($id) {
+        return view('invoices.edit', compact('id'));
+    })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
+    Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
 
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {

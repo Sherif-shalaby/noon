@@ -420,7 +420,9 @@ return [
     'returned_quantity' => 'Returned Quantity',
     'Discount_from_the_cost_of_delivery' => 'Discount From The Cost of Delivery',
     'The_actual_delivery_cost' => 'The Actual Delivery Cost',
-    'sells_return' => 'Sells Return'
+    'sells_return' => 'Sells Return',
+    'view_draft' => 'View Draft',
+    'customer_name' => 'Customer Name',
 
 
 ];
