@@ -50,6 +50,18 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+    // Home cards route
+    Route::get('returns', function () {
+        return view('returns.index');
+    })->name('returns');
+
+    Route::get('settings/all', function () {
+        return view('settings.index');
+    })->name('settings.all');
+
+    Route::get('reports/all', function () {
+        return view('reports.index');
+    })->name('reports.all');
 
     Route::get('brands/get-dropdown', [BrandController::class,'getDropdown']);
     Route::resource('brands', BrandController::class);
