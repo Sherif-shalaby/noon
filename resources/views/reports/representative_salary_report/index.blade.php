@@ -60,79 +60,29 @@
                                     {{-- <th>@lang('lang.action')</th>  --}}
                                 </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($allproducts as $index=>$product)
+                                {{-- <tbody>
+                                    @php
+                                        $i = 1 ;
+                                        $total_paid = 0;
+                                        $total_due = 0;
+                                    @endphp
+                                    @foreach ($dues as $due)
                                         <tr>
-                                            <td>{{ $index+1 }}</td>
-                                            <td>{{$product->name}}</td>
-                                            @php
-                                                // ++++++++++++++++++++ purchase_price_var ++++++++++++++++++++
-                                                $purchase_price_var = 0;
-                                                // ++++++++++++++++++++ purchase_quantity_var ++++++++++++++++++++
-                                                $purchase_quantity = 0;
-                                                // ++++++++++++++++++++ purchase_store_var ++++++++++++++++++++
-                                                $purchase_store = 0;
-                                                foreach ($product->stock_lines as $key => $stockLine)
-                                                {
-                                                    // =========== purchase_price ===========
-                                                    if (!empty($stockLine->purchase_price))
-                                                    {
-                                                        $purchase_price_var = $purchase_price_var + $stockLine->purchase_price;
-                                                    }
-                                                    else
-                                                    {
-                                                        $last_exchange_rate = $stockLine->transaction->transaction_payments->last()->exchange_rate;
-                                                        $purchase_price_var = $purchase_price_var + $stockLine->dollar_purchase_price * $last_exchange_rate;
-                                                    }
-                                                    // =========== purchase_quantity ===========
-                                                    $purchase_quantity = $purchase_quantity + $stockLine->quantity ;
-                                                    // =========== purchase_store ===========
-                                                    $purchase_store = ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned );
-                                                }
-                                             @endphp
-                                            {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                            <td> {{ number_format($purchase_price_var,2) }}</td>
-                                            {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
-                                            <td> {{ $purchase_quantity }} </td>
-                                            {{-- ++++++++++ في المخزن ++++++++++ --}}
-                                            <td>{{ $purchase_store }}</td>
-
-                                            {{-- ++++++++++++++++++++++++++ Actions +++++++++++++++++++ --}}
-                                            {{-- <td>
-                                                <div class="btn-group">
-                                                    <div class="bn-group">
-                                                        <a href="{{ route('invoices.show', $product->id) }}" title="{{ __('Show') }}"
-                                                            class=" btn btn-info btn-sm text-white mx-1">
-                                                            <i class="fa fa-print"></i>
-                                                        </a>
-                                                        <button type="button" class="btn btn-danger btn-sm " data-toggle="modal" title="{{ __('Delete') }}"
-                                                            data-target="#delete{{ $product->id }}">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal fade" id="delete{{ $product->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="exampleModalLabel">{{ __('site.Delete_an_invoice?') }}</h5>
-                                                                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    {{ __('site.Are_you_sure_to_delete_an_invoice?') }}
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('site.Close') }}</button>
-                                                                    <button click='delete({{ $product->id }})' type="button" class="btn btn-primary" data-dismiss="modal">{{ __('site.yes') }}</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </td> --}}
+                                            <td>{{ $i }}</td>
+                                            <td>{{@format_date($due->transaction_date)}}</td>
+                                            <td> {{$due->invoice_no}}</td>
+                                            <td> {{$due->customer->name ?? ''}}</td>
+                                            <td> {{@num_format($due->final_total)}}</td>
+                                            <td> {{@num_format($due->transaction_payments->sum('amount'))}}</td>
+                                            <td> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}</td>
                                         </tr>
-                                    {{-- @include('products.edit',$product) --}}
+                                        @php
+                                            $i++ ;
+                                            $total_paid += $due->transaction_payments->sum('amount');
+                                            $total_due += $due->final_total - $due->transaction_payments->sum('amount');
+                                        @endphp
                                     @endforeach
-                                </tbody>
+                                </tbody> --}}
                             </table>
                             <div class="view_modal no-print" >
 
