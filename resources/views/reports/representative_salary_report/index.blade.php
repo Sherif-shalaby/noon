@@ -60,29 +60,29 @@
                                     {{-- <th>@lang('lang.action')</th>  --}}
                                 </tr>
                                 </thead>
-                                {{-- <tbody>
-                                    @php
+                                <tbody>
+                                    {{-- @php
                                         $i = 1 ;
                                         $total_paid = 0;
                                         $total_due = 0;
-                                    @endphp
-                                    @foreach ($dues as $due)
+                                    @endphp --}}
+                                    @foreach ($wages as $wage)
                                         <tr>
-                                            <td>{{ $i }}</td>
-                                            <td>{{@format_date($due->transaction_date)}}</td>
-                                            <td> {{$due->invoice_no}}</td>
-                                            <td> {{$due->customer->name ?? ''}}</td>
-                                            <td> {{@num_format($due->final_total)}}</td>
-                                            <td> {{@num_format($due->transaction_payments->sum('amount'))}}</td>
+                                            <td>{{ $wage->transaction_date }}</td>
+                                            <td>{{ $wage->employee->employee_name }}</td>
+                                            <td> {{$wage->payment_type}}</td>
+                                            <td> {{$wage->net_amount}}</td>
+                                            <td> {{@num_format($wage->wage_transaction->final_total)}}</td>
+                                            <td> {{@num_format($wage->employee->commission)}}</td>
                                             <td> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}</td>
                                         </tr>
-                                        @php
+                                        {{-- @php
                                             $i++ ;
                                             $total_paid += $due->transaction_payments->sum('amount');
                                             $total_due += $due->final_total - $due->transaction_payments->sum('amount');
-                                        @endphp
+                                        @endphp --}}
                                     @endforeach
-                                </tbody> --}}
+                                </tbody>
                             </table>
                             <div class="view_modal no-print" >
 

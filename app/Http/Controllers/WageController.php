@@ -61,7 +61,7 @@ class WageController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request);
+    //    dd($request);
         try {
             $data = $request->except('_token', 'submit');
             $data['net_amount'] = (float)($data['net_amount']);
@@ -81,7 +81,7 @@ class WageController extends Controller
             $transaction_data = [
                 'type' => 'wage',
                 'store_id' => !empty($employee->store_id) ? $employee->store_id[0] : null,
-                'employee_id' => $wage->employee_id,
+                'employee_col_id' => $wage->employee_id,
                 'transaction_date' => Carbon::now(),
                 'grand_total' => $this->Util->num_uf($data['net_amount']),
                 'final_total' => $this->Util->num_uf($data['net_amount']),
@@ -96,22 +96,22 @@ class WageController extends Controller
 
             $transaction = WageTransaction::create($transaction_data);
 
-            // if ($request->payment_status != 'pending') {
-            //     $payment_data = [
-            //         'transaction_id' => $transaction->id,
-            //         'amount' => $this->Util->num_uf($request->net_amount),
-            //         'method' => 'cash',
-            //         'paid_on' => $data['payment_date'],
-            //         'ref_number' => $request->ref_number,
-            //         'source_type' => $request->source_type,
-            //         'source_id' => $request->source_id,
-            //     ];
-            //     if (!empty($payment_data['amount'])) {
-            //         $payment_data['created_by'] = Auth::user()->id;
-            //         $payment_data['payment_for'] = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
-            //         $transaction_payment = WageTransactionPayment::create($payment_data);
-            //     }
-            // }
+            if ($request->payment_status != 'pending') {
+                $payment_data = [
+                    'transaction_id' => $transaction->id,
+                    'amount' => $this->Util->num_uf($request->net_amount),
+                    'method' => 'cash',
+                    'paid_on' => $data['payment_date'],
+                    'ref_number' => $request->ref_number,
+                    'source_type' => $request->source_type,
+                    'source_id' => $request->source_id,
+                ];
+                if (!empty($payment_data['amount'])) {
+                    $payment_data['created_by'] = Auth::user()->id;
+                    $payment_data['payment_for'] = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
+                    $transaction_payment = WageTransactionPayment::create($payment_data);
+                }
+            }
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')

@@ -12,9 +12,10 @@ class RepresentativeSalaryReportController extends Controller
     /* ++++++++++++++++++ index() ++++++++++++++++++++++ */
     public function index()
     {
-        $wage = Wage::with('wage_transaction','employee')->get();
+        $wages = Wage::with('wage_transaction.','employee')->get();
         $dues = WageTransaction::where('payment_status', '!=', 'paid')->where('status', 'final')->get();
-        return view('reports.representative_salary_report.index');
+        // return $wages;
+        return view('reports.representative_salary_report.index',compact('wages'));
     }
 
     /**

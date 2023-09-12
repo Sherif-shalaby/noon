@@ -57,10 +57,6 @@ class User extends Authenticatable
     {
         return $this->hasOne(Employee::class,'user_id');
     }
-    public function employees()
-    {
-        return $this->hasMany(Employee::class,'user_id');
-    }
 
     public function scopeNotview($query)
     {
