@@ -3,23 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\AddStockLine;
-use App\Models\PurchaseOrderLine;
-use App\Models\PurchaseOrderTransaction;
+use App\Models\Wage;
+use App\Models\WageTransaction;
 use Illuminate\Http\Request;
 
-class SupplierReportController extends Controller
+class RepresentativeSalaryReportController extends Controller
 {
-    /* ++++++++++++++++++++ index() ++++++++++++++++++++ */
+    /* ++++++++++++++++++ index() ++++++++++++++++++++++ */
     public function index()
     {
-        // ++++++++++++++ "supplier_report" => "شراء" ++++++++++++++
-        $purchase_orders = PurchaseOrderTransaction::get();
-        $add_stocks = AddStockLine::with('transaction.supplier','transaction.transaction_payments','product')->get();
-        // ++++++++++++++ "supplier_report" => "امر شراء" ++++++++++++++
-        $supplier_purchase_orders = PurchaseOrderLine::with('transaction.supplier','product')->get();
-        // return $supplier_purchase_orders;
-        return view('reports.suppliers-report.index',compact('purchase_orders','add_stocks','supplier_purchase_orders'));
+        $wages = Wage::with('wage_transaction.','employee')->get();
+        $dues = WageTransaction::where('payment_status', '!=', 'paid')->where('status', 'final')->get();
+        // return $wages;
+        return view('reports.representative_salary_report.index',compact('wages'));
     }
 
     /**

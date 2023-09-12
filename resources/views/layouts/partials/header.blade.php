@@ -175,7 +175,7 @@
                         {{-- +++++++++++ purchase_order : index +++++++++++ --}}
                         <li>
                             <a href="{{route('purchase_order.index')}}">
-                                <i class="mdi mdi-circle"></i>{{__('lang.purchase_order')}}
+                                <i class="mdi mdi-circle"></i>{{__('lang.show_purchase_order')}}
                             </a>
                         </li>
                         {{-- +++++++++++ purchase_order : create +++++++++++ --}}
@@ -387,6 +387,12 @@
                                 <li>
                                     <a href="{{route('get-supplier-report.index')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.supplier_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('representative_salary_report.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.representative_salary_report')}}
                                     </a>
                                 </li>
                             </ul>

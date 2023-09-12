@@ -21,9 +21,6 @@ return new class extends Migration
             // foreign key : supplier_id
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
-            // foreign key : purchase_order_id
-            $table->unsignedBigInteger('purchase_order_id')->nullable();
-            $table->foreign('purchase_order_id')->references('id')->on('purchase_order_lines')->onDelete('cascade')->onUpdate('cascade');
             // sub_total
             $table->decimal('grand_total', 15, 4)->nullable();
             // final_total
