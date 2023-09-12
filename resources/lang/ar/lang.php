@@ -300,12 +300,15 @@ return array(
     'payable_report' => 'تقرير القبض',
     // ############ customers_report ############
     'customers_report' => 'تقرير العملاء',
+    // ############ representative_salary_report ############
+    'representative_salary_report' => 'تقرير مقبوضات المندوبين',
     // ############ daily_report_summary ############
     'daily_report_summary' => 'ملخص التقرير اليومي',
     // ###################### preparer #####################
     'preparer' => 'اسم المٌجهز' ,
     // ###################### purchase_order #####################
     'purchase_order' => 'أمر شراء' ,
+    'show_purchase_order' => 'عرض اوامر الشراء' ,
     'create_purchase_order' => 'انشاء أمر شراء' ,
     'po_no' => 'رقم طلب الشراء' ,
 

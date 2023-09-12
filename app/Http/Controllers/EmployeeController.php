@@ -12,6 +12,9 @@ use App\Models\NumberOfLeave;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
+use App\Utils\MoneySafeUtil;
+use App\Utils\StockTransactionUtil;
+use App\Utils\Util;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -25,8 +28,16 @@ use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
+    protected $commonUtil;
 
-  /**
+
+    public function __construct(Util $commonUtil)
+    {
+        $this->commonUtil = $commonUtil;
+
+    }
+
+    /**
    * Display a listing of the resource.
    *
    *
@@ -76,8 +87,8 @@ class EmployeeController extends Controller
    */
   public function store(Request $request)
   {
-        // return response($request);
-       $request->validate([
+      // return response($request);
+      $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
           'password' => 'required|confirmed|max:255',
@@ -88,6 +99,7 @@ class EmployeeController extends Controller
           DB::beginTransaction();
 
           $data = $request->except('_token');
+//          dd($data['commission_type']);
           $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
           $data['commission'] = !empty($data['commission']) ? 1 : 0;
 
@@ -116,7 +128,7 @@ class EmployeeController extends Controller
           $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
           $employee->payment_cycle = $data['payment_cycle'];
           $employee->commission = $data['commission'];
-          $employee->commission_value = $data['commission_value']?? 0;
+          $employee->commission_value = $this->commonUtil->num_uf($data['commission_value']) ?? 0;
           $employee->commission_type = $data['commission_type'];
           $employee->commision_calculation_period = $data['commission_calculation_period'];
           $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);

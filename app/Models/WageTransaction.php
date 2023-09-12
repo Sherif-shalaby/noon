@@ -14,4 +14,13 @@ class WageTransaction extends Model
     {
         return $this->belongsTo(User::class, 'source_id')->withDefault(['name' => '']);
     }
+    // +++++++++++++++ Relationship : employees and wage_transactions
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class,'employee_col_id');
+    }
+    public function wages_relationship()
+    {
+        return $this->hasMany(Wage::class);
+    }
 }
