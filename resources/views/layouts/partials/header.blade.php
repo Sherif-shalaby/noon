@@ -44,12 +44,12 @@
                             </div>
                         </li>
                         <li class="list-inline-item">
-                            <div class="notifybar">
-                                <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">
-                                    <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">
-                                    <span class="live-icon"></span>
-                                </a>
-                            </div>
+{{--                            <div class="notifybar">--}}
+{{--                                <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">--}}
+{{--                                    <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">--}}
+{{--                                    <span class="live-icon"></span>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
                         </li>
                         <li class="list-inline-item">
                             @php
@@ -157,6 +157,11 @@
                     @if(!empty($module_settings['stock_module']))
                             <li>
                                 <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
+                            </li>
+                    @endif
+                  @if(!empty($module_settings['stock_module']))
+                            <li>
+                                <a href="{{route('initial_balance.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
                             </li>
                     @endif
                 {{-- @endcan --}}

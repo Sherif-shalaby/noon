@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Livewire\AddStock;
+namespace App\Http\Livewire\InitialBalance;
 
 use App\Models\AddStockLine;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Currency;
-use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
@@ -21,8 +20,6 @@ use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +28,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
+
     public $selectedProducts = [], $selectedProductData = [], $quantity = [], $purchase_price =[], $selling_price = [],
         $base_unit = [], $divide_costs , $other_expenses = 0, $other_payments = 0, $total_size = [], $total_weight =[],
         $cost = [], $total_cost = [], $sub_total = [], $change_price_stock =[], $store_id, $status, $order_date,
@@ -40,18 +38,11 @@ class Create extends Component
         $showColumn = false, $transaction_currency, $current_stock ;
 
     protected $rules = [
-    'store_id' => 'required',
-    'supplier' => 'required',
-    'status' => 'required',
-    'paying_currency' => 'required',
-    'purchase_type' => 'required',
-    'payment_status' => 'required',
-    'method' => 'required',
-    'amount' => 'required',
-    'transaction_currency' => 'required'
-];
+        'store_id' => 'required',
+        'purchase_type' => 'required',
+    ];
 
-    public function render(): Factory|View|Application
+    public function render()
     {
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
@@ -76,21 +67,20 @@ class Create extends Component
         }
 
         $this->changeExchangeRate();
-
-
-        return view('livewire.add-stock.create',
+        return view('livewire.initial-balance.create',
             compact('status_array',
-            'payment_status_array',
-            'payment_type_array',
-            'stores',
-            'product_id',
-            'payment_types',
-            'payment_status_array',
-            'suppliers',
-            'selected_currencies',
-            'preparers' ,
-            'products',
-            'users'));
+                'payment_status_array',
+                'payment_type_array',
+                'stores',
+                'product_id',
+                'payment_types',
+                'payment_status_array',
+                'suppliers',
+                'selected_currencies',
+                'preparers' ,
+                'products',
+                'users')
+        );
     }
 
     public function updated($propertyName)
@@ -113,6 +103,19 @@ class Create extends Component
                 'amount' => 'required',
             ];
         }
+        if(!empty($this->amount)){
+            $this->rules = [
+                'store_id' => 'required',
+                'supplier' => 'required',
+                'status' => 'required',
+                'paying_currency' => 'required',
+                'purchase_type' => 'required',
+                'payment_status' => 'required',
+                'method' => 'required',
+                'amount' => 'required',
+                'transaction_currency' => 'required'
+            ];
+        }
 
         $this->validate();
 
@@ -121,14 +124,14 @@ class Create extends Component
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
-            $transaction->status = $this->status;
+            $transaction->status = !empty($this->status) ? $this->status : 'received';
             $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
             $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
             $transaction->purchase_type = $this->purchase_type;
-            $transaction->type = 'add_stock';
+            $transaction->type = empty($this->amount) ? 'initial_balance' : 'initial_balance_payment' ;
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
-            $transaction->supplier_id = $this->supplier;
+            $transaction->supplier_id = !empty($this->supplier) ? $this->supplier : null;
             $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
             $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
@@ -151,10 +154,8 @@ class Create extends Component
             // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
 
             $transaction->save();
-
-
-            // Add payment transaction
             if(!empty($this->amount)){
+                // Add payment transaction
                 $payment  = new StockTransactionPayment();
                 $payment->stock_transaction_id  = $transaction->id;
                 $payment->amount  = $this->amount;
@@ -263,7 +264,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
-        return redirect('/add-stock/index');
+        return redirect('/initial-balance/index');
     }
 
     public function fetchSelectedProducts()
@@ -332,8 +333,8 @@ class Create extends Component
     }
 
     public function total_weight($index){
-       $this->total_weight[$index] = $this->total_quantity($index) * $this->selectedProductData[$index]->weight ;
-       return $this->total_weight[$index];
+        $this->total_weight[$index] = $this->total_quantity($index) * $this->selectedProductData[$index]->weight ;
+        return $this->total_weight[$index];
     }
 
     public function sum_size(){
@@ -394,7 +395,7 @@ class Create extends Component
     public function total_cost($index){
         $this->total_cost[$index] = (float)$this->cost[$index] * $this->total_quantity($index);
         return number_format($this->total_cost[$index],2) ;
-}
+    }
 
     public function dollar_cost($index){
 
@@ -407,7 +408,7 @@ class Create extends Component
             $dollar_cost = (float)$this->other_expenses + (float)$this->other_payments ;
         }
         // convert purchase price from Dinar to Dollar
-       $purchase_price = $this->convertDinarPrice($index);
+        $purchase_price = $this->convertDinarPrice($index);
 //        dd($purchase_price);
 
 
@@ -595,6 +596,4 @@ class Create extends Component
 
         return true;
     }
-
-
 }

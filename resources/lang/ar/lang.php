@@ -435,5 +435,7 @@ return array(
     'sells_return' => 'عوده المبيعات',
     'view_draft' => 'عرض المسوده',
     'customer_name' => 'اسم العميل',
+    'initial_balance' => 'الأرصدة الأولية',
+    'add_initial_balance' => 'اضافة رصيد أولي',
 );
 
