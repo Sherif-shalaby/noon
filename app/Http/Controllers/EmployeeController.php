@@ -247,6 +247,7 @@ class EmployeeController extends Controller
   public function update($id ,Request $request)
   {
 //      dd($request);
+//      dd($request);
       $validated = $request->validate([
           'email' => 'required|email|max:255',
           'name' => 'required|max:255'
@@ -260,6 +261,7 @@ class EmployeeController extends Controller
           $data['date_of_start_working'] = !empty($data['date_of_start_working']) ? Carbon::createFromFormat('m/d/Y', $data['date_of_start_working'])->format('Y-m-d') : null;
           $data['date_of_birth'] = !empty($data['date_of_birth']) ? Carbon::createFromFormat('m/d/Y', $data['date_of_birth'])->format('Y-m-d') : null;
           $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
+//          dd($data['fixed_wage_value']);
           $data['commission'] = !empty($data['commission']) ? 1 : 0;
 
           $user_data = [
@@ -267,32 +269,34 @@ class EmployeeController extends Controller
               'email' => $data['email']
           ];
 
-          $employee_data = [
-              'employee_name' => $data['name'],
-//              'store_id' => !empty($data['store_id']) ? $data['store_id'] : [],
-              'date_of_start_working' => $data['date_of_start_working'],
-              'date_of_birth' => $data['date_of_birth'],
-              'job_type_id' => $data['job_type_id'],
-              'mobile' => $data['mobile'],
-              'annual_leave_per_year' => !empty($data['annual_leave_per_year']) ? $data['annual_leave_per_year'] : 0,
-              'sick_leave_per_year' => !empty($data['sick_leave_per_year']) ?  $data['sick_leave_per_year'] : 0,
-              'number_of_days_any_leave_added' => !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0,
-              'fixed_wage' => $data['fixed_wage'],
-              'fixed_wage_value' => $data['fixed_wage_value'] ?? 0,
-              'payment_cycle' => $data['payment_cycle'],
-              'commission' => $data['commission'],
-              'commission_value' => $data['commission_value'] ?? 0,
-              'commission_type' => $data['commission_type'],
-              'commission_calculation_period' => $data['commission_calculation_period'],
-              'commissioned_products' => !empty($data['commissioned_products']) ? $data['commissioned_products'] : [],
-              'commission_customer_types' => !empty($data['commission_customer_types']) ? $data['commission_customer_types'] : [],
-              'commission_stores' => !empty($data['commission_stores']) ? $data['commission_stores'] : [],
-              'commission_cashiers' => !empty($data['commission_cashiers']) ? $data['commission_cashiers'] : [],
-              'working_day_per_week' => !empty($data['working_day_per_week']) ? $data['working_day_per_week'] : [],
-              'check_in' => $data['check_in'],
-              'check_out' => $data['check_out'],
+          $employee =  Employee::find($id);
+          $employee->employee_name = $data['name'];
+          $employee->pass_string = Crypt::encrypt($data['password']);
+          $employee->date_of_start_working = $data['date_of_start_working'];
+          $employee->date_of_birth = $data['date_of_birth'];
+          $employee->job_type_id = $data['job_type_id'];
+          $employee->mobile = $data['mobile'];
+          $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
+          $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
+          $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
+          $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
+          $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
+          $employee->fixed_wage = $data['fixed_wage'];
+          $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
+          $employee->payment_cycle = $data['payment_cycle'];
+          $employee->commission = $data['commission'];
+          $employee->commission_value = $data['commission_value']?? 0;
+          $employee->commission_type = $data['commission_type'];
+          $employee->commision_calculation_period = $data['commission_calculation_period'];
+          $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
+          $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
+          $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
+          $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
 
-          ];
+          if ($request->hasFile('photo')) {
+              $employee->photo = store_file($request->file('photo'), 'employees');
+          }
+          $employee->save();
 
           if (!empty($request->input('password'))) {
               $validated = $request->validate([
@@ -302,14 +306,8 @@ class EmployeeController extends Controller
               $employee_data['pass_string'] = Crypt::encrypt($data['password']);;
           }
 
-          $employee = Employee::find($id);
           $user = User::find($employee->user_id);
           User::where('id', $employee->user_id)->update($user_data);
-
-          if ($request->hasFile('photo')) {
-              $employee->clearMediaCollection('employee_photo');
-              $employee->addMedia($request->photo)->toMediaCollection('employee_photo');
-          }
 
 
           if ($request->hasFile('upload_files')) {
@@ -318,8 +316,6 @@ class EmployeeController extends Controller
               }
           }
 
-
-         $employee->update($employee_data);
          $employee->stores()->sync($data['store_id']);
 
           //add of update number of leaves
@@ -342,7 +338,7 @@ class EmployeeController extends Controller
               'msg' => __('lang.employee_updated')
           ];
 
-          return redirect()->to('/hrm/employee')->with('status', $output);
+          return redirect()->route('employees.index')->with('status', $output);
       } catch (\Exception $e) {
           Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
           $output = [

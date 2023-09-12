@@ -61,6 +61,7 @@ class WageController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request);
         try {
             $data = $request->except('_token', 'submit');
             $data['net_amount'] = (float)($data['net_amount']);
@@ -70,6 +71,8 @@ class WageController extends Controller
             $data['payment_date'] = !empty($data['payment_date']) ? $this->Util->uf_date($data['payment_date']) : null;
             $data['acount_period_start_date'] = !empty($data['acount_period_start_date']) ? $this->Util->uf_date($data['acount_period_start_date']) : null;
             $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
+            $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
+            $data['amount'] = !empty($data['amount']) ? (float)($data['amount']) : 0;
 
             $wage=Wage::create($data);
 
@@ -88,6 +91,7 @@ class WageController extends Controller
                 'source_type' => $request->source_type,
                 'source_id' => $request->source_id,
                 'created_by' => Auth::user()->id,
+
             ];
 
             $transaction = WageTransaction::create($transaction_data);
@@ -113,13 +117,14 @@ class WageController extends Controller
                 'msg' => __('lang.success')
             ];
         } catch (\Exception $e) {
+            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-    
+
         return redirect()->back()->with('status', $output);
     }
 
@@ -204,10 +209,10 @@ class WageController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-    
+
         return redirect()->back()->with('status', $output);
     }
- 
+
     /**
      * Remove the specified resource from storage.
      *
