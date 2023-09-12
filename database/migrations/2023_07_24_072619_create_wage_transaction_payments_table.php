@@ -39,7 +39,7 @@ return new class extends Migration
             // $table->text('payment_note')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('edited_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
-            $table->timestamps();
+            $table->timestamps(); 
         });
     }
 

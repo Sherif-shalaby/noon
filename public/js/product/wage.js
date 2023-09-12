@@ -31,7 +31,7 @@ $('.calculate_salary').change(function() {
         undefined) {
 
         if (payment_type === 'salary' || payment_type === 'commission') {
-            alert(1);
+            // alert(1);
             $.ajax({
                 method: 'get',
                 url: `/wages/calculate-salary-and-commission/${employee_id}/${payment_type}`,
@@ -42,11 +42,11 @@ $('.calculate_salary').change(function() {
                 success: function(result) {
                     if (result.amount) {
                         $('#amount').val(result.amount);
-                        alert(result.amount)
+                        // alert(result.amount);
                         let amount = result.amount
                         if ($('#deductibles').val() != '' && $('#deductibles').val() !=
                             undefined) {
-                            let deductibles = parseFloat($('#deductibles').val());
+                            let deductibles = parseFloat( $('#deductibles').val());
                             amount = amount - deductibles;
                         }
                         $('#net_amount').val(amount);

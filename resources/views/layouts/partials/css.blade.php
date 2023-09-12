@@ -1,6 +1,6 @@
 <!-- CSRF Token -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">
+{{-- <link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">  --}}
 <!-- Start css -->
 <!-- Switchery css -->
 {{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}

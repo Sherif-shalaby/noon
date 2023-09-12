@@ -166,25 +166,25 @@
                     @endif
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
-                <li class="dropdown">
-                    <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown">
+                <li>
+                    <a href="{{route('purchase_order.index')}}">
                         <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
                         <span>{{__('lang.purchase_order')}}</span>
                     </a>
-                    <ul class="dropdown-menu">
+                    {{-- <ul class="dropdown-menu"> --}}
                         {{-- +++++++++++ purchase_order : index +++++++++++ --}}
-                        <li>
+                        {{-- <li>
                             <a href="{{route('purchase_order.index')}}">
                                 <i class="mdi mdi-circle"></i>{{__('lang.show_purchase_order')}}
                             </a>
-                        </li>
+                        </li> --}}
                         {{-- +++++++++++ purchase_order : create +++++++++++ --}}
-                        <li>
+                        {{-- <li>
                             <a href="{{route('purchase_order.create')}}">
                                 <i class="mdi mdi-circle"></i>{{__('lang.create_purchase_order')}}
                             </a>
-                        </li>
-                    </ul>
+                        </li> --}}
+                    {{-- </ul> --}}
                 </li>
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
