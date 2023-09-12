@@ -44,12 +44,12 @@
                             </div>
                         </li>
                         <li class="list-inline-item">
-                            <div class="notifybar">
-                                <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">
-                                    <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">
-                                    <span class="live-icon"></span>
-                                </a>
-                            </div>
+{{--                            <div class="notifybar">--}}
+{{--                                <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">--}}
+{{--                                    <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">--}}
+{{--                                    <span class="live-icon"></span>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
                         </li>
                         <li class="list-inline-item">
                             @php
