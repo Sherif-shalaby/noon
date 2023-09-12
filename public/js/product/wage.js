@@ -40,10 +40,16 @@ $('.calculate_salary').change(function() {
                     acount_period_start_date: $('#acount_period_start_date').val(),
                 },
                 success: function(result) {
-                    if (result.amount) {
-                        $('#amount').val(result.amount);
-                        // alert(result.amount);
-                        let amount = result.amount
+                    if (result.amount)
+                    {
+                        // +++++++++++++ convert [ result.amount ] from [ 1,000.00 format ] to [ 1000.00 format ] +++++++++++++
+                        const stringWithCommas = result.amount;
+                        const stringWithoutCommas = stringWithCommas.replace(/,/g, ''); // Remove commas
+                        const decimalAmount = parseFloat(stringWithoutCommas); // Parse as a decimal
+                        // console.log(decimalValue);
+                        $('#amount').val(decimalAmount);
+                        // alert(decimalAmount);
+                        let amount = decimalAmount
                         if ($('#deductibles').val() != '' && $('#deductibles').val() !=
                             undefined) {
                             let deductibles = parseFloat( $('#deductibles').val());
