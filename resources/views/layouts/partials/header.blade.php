@@ -159,6 +159,11 @@
                                 <a href="{{route('stocks.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.stock')}}</span></a>
                             </li>
                     @endif
+                  @if(!empty($module_settings['stock_module']))
+                            <li>
+                                <a href="{{route('initial_balance.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
+                            </li>
+                    @endif
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
                 <li class="dropdown">

@@ -4,7 +4,7 @@
 
         <div class="col-md-2 payment_fields hide">
             <div class="form-group">
-                {!! Form::label('amount', __('lang.amount'). ':*', []) !!} <br>
+                {!! Form::label('amount', __('lang.amount'), []) !!} <br>
                 <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model = "amount">
                 @error('amount')
                 <span class="error text-danger">{{ $message }}</span>
@@ -15,7 +15,7 @@
         <div class="col-md-2 payment_fields hide">
             <div class="form-group">
                 {{$method}}
-                {!! Form::label('method', __('lang.payment_type'). ':*', []) !!}
+                {!! Form::label('method', __('lang.payment_type'), []) !!}
                 {!! Form::select('method', $payment_type_array,
                 !empty($transaction_payment)&&!empty($transaction_payment->method)?$transaction_payment->method:(!empty($payment) ? $payment->method : 'Please Select'), ['class' => 'select form-control',
                 'data-live-search'=>"true", 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'method' ]) !!}
@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="col-md-2">
-            <label for="paying_currency">@lang('lang.paying_currency') :*</label>
+            <label for="paying_currency">@lang('lang.paying_currency') </label>
             {!! Form::select('paying_currency', $selected_currencies, null, ['class' => 'form-control select','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'wire:model' => 'paying_currency']) !!}
             @error('paying_currency')
             <span class="error text-danger">{{ $message }}</span>
