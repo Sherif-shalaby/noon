@@ -18,6 +18,8 @@ use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\GetDueReport;
+use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\SellPosController;
+use App\Http\Controllers\SupplierReportController;
 use App\Models\Product;
 use App\Models\PurchaseOrderLine;
 
@@ -47,6 +50,18 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+    // Home cards route
+    Route::get('returns', function () {
+        return view('returns.index');
+    })->name('returns');
+
+    Route::get('settings/all', function () {
+        return view('settings.index');
+    })->name('settings.all');
+
+    Route::get('reports/all', function () {
+        return view('reports.index');
+    })->name('reports.all');
 
     Route::get('brands/get-dropdown', [BrandController::class,'getDropdown']);
     Route::resource('brands', BrandController::class);
@@ -105,14 +120,16 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('product-tax', ProductTaxController::class);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
-    // ########### Purchases Report ###########
-    Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
     Route::resource('sales-report', SalesReportController::class);
     // ########### Receivable Report ###########
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // ########### Get Due Report ###########
+    Route::resource('get-due-report', GetDueReportController::class);
+    // ########### Supplier Report ###########
+    Route::resource('get-supplier-report', SupplierReportController::class);
     // ########### Customers Report ###########
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
@@ -129,7 +146,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('invoices/{invoice}', function ($id) {
         return view('invoices.show', compact('id'));
     })->name('invoices.show');
+    Route::get('invoices/edit/{invoice}', function ($id) {
+        return view('invoices.edit', compact('id'));
+    })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
+    Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
 
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {

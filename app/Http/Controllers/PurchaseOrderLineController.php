@@ -67,7 +67,7 @@ class PurchaseOrderLineController extends Controller
     // ++++++++++++++++++++++++++++++ Ajax Search : get_products() ++++++++++++++++++++++++++++++++
     public function search(Request $request)
     {
-        return $request;
+        // return $request;
 
         // if($request->ajax())
         // {

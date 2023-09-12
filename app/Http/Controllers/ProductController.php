@@ -77,13 +77,14 @@ class ProductController extends Controller
         $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
         // product_tax
         $product_tax = ProductTax::select('name','id','status')->get();
-        // $quick_add = request()->quick_add;
-        return view('products.create',compact('categories','brands','units','stores','product_tax'));
+        $quick_add = 1;
+        return view('products.create',compact('categories','brands','units','stores','product_tax','quick_add'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
-    try{
+    try
+    {
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],

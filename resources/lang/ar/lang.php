@@ -186,6 +186,7 @@ return array(
     'ref_number' => 'رقم المرجع',
     'bank_deposit_date' => 'تاريخ الإيداع المصرفي',
     'bank_name' => 'اسم البنك',
+    'duePaid' => 'متاخرات',
     'due' => 'تاريخ الاستحقاق',
     'due_date' => 'يخطر قبل أيام',
     'cash' => 'نقدي',
@@ -289,7 +290,8 @@ return array(
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
-
+    // ############ get_due_report ############
+    'get_due_report' => 'تقرير الاستحقاقات',
     // ############ sales_report ############
     'sales_report' => 'تقرير المبيعات',
     // ############ receivable_report ############
@@ -359,6 +361,7 @@ return array(
     'product_quantity_alert_report' => 'تقرير تنبيه كمية المنتج',
     'user_report' => 'تقرير المستخدم',
     'customer_report' => 'تقرير العملاء',
+    // supplier_report
     'supplier_report' => 'تقرير المورد',
     'due_report' => 'تقرير الاستحقاق',
     'supplier' => 'المورد',
@@ -413,6 +416,10 @@ return array(
     'dinar' => 'الواصل دينار',
     'sells' => 'المبيعات',
     'reference' => 'المرجعي',
+    'reference_no' => 'رقم المرجع',
+    'payment_ref' => 'مرجع الدفع',
+    'sale_ref' => 'مرجع البيع',
+    'purchase_ref' => 'مرجع الشراء',
     'sale_status' => 'حاله المبيعات',
     'grand_total' => 'المبلغ الاجمالي',
     'due_sale_list' => 'متأخرات',
@@ -423,5 +430,7 @@ return array(
     'Discount_from_the_cost_of_delivery' => 'المبلغ المخصوم من تكلفة الدليفري',
     'The_actual_delivery_cost' => 'القيمة الفعلية لتكلفة الدليفري',
     'sells_return' => 'عوده المبيعات',
+    'view_draft' => 'عرض المسوده',
+    'customer_name' => 'اسم العميل',
 );
 

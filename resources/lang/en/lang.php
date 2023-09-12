@@ -273,6 +273,8 @@ return [
     'receivable_report' => 'receivable report',
     // ############ payable_report ############
     'payable_report' => 'payable report',
+    // ############ get_due_report ############
+    'get_due_report' => 'get due report',
     // ############ customers_report ############
     'customers_report' => 'customers report',
     // ############ daily_report_summary ############
@@ -403,6 +405,12 @@ return [
     'dinar' => 'Dinar',
     'sells' => 'Sells',
     'reference' => 'Reference',
+    'purchase_ref' => 'Purchase Reference',
+    'reference' => 'Reference',
+    'payment_ref' => 'Payment Reference',
+    'sale_ref' => 'Sale Reference',
+    'reference_no' => 'Reference No',
+
     'sale_status' => 'Sell Status',
     'grand_total' => 'Grand Toral',
     'due_sale_list' => 'Due Sale List',
@@ -412,7 +420,9 @@ return [
     'returned_quantity' => 'Returned Quantity',
     'Discount_from_the_cost_of_delivery' => 'Discount From The Cost of Delivery',
     'The_actual_delivery_cost' => 'The Actual Delivery Cost',
-    'sells_return' => 'Sells Return'
+    'sells_return' => 'Sells Return',
+    'view_draft' => 'View Draft',
+    'customer_name' => 'Customer Name',
 
 
 ];
