@@ -248,6 +248,7 @@ class WageController extends Controller
         $employee = Employee::find($employee_id);
         $user_id = $employee->user_id;
         $amount = 0;
+//        dd($employee->fixed_wage);
 
         if ($payment_type == 'salary') {
             if ($employee->fixed_wage == 1) {
