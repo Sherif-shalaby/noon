@@ -10,4 +10,11 @@ class WageTransactionPayment extends Model
 {
     use HasFactory,SoftDeletes;
     protected $guarded = ['id'];
+
+    // ++++++++++++++++++ wages_transaction_payments +++++++++++++++
+    public function wages_transactions()
+    {
+        return $this->hasMany(WageTransaction::class);
+    }
+
 }

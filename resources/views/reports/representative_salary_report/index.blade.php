@@ -68,13 +68,13 @@
                                     @endphp --}}
                                     @foreach ($wages as $wage)
                                         <tr>
-                                            <td>{{ $wage->transaction_date }}</td>
+                                            <td>{{ $wage->wage_transaction->transaction_date }}</td>
                                             <td>{{ $wage->employee->employee_name }}</td>
-                                            <td> {{$wage->payment_type}}</td>
+                                            <td> {{$wage->wage_transaction->payment_type}}</td>
                                             <td> {{$wage->net_amount}}</td>
                                             <td> {{@num_format($wage->wage_transaction->final_total)}}</td>
                                             <td> {{@num_format($wage->employee->commission)}}</td>
-                                            <td> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}</td>
+                                            <td> {{@num_format($wage->wage_transaction->final_total - $wage->wage_transaction->transaction_payments->amount )}}</td>
                                         </tr>
                                         {{-- @php
                                             $i++ ;
