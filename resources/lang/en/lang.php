@@ -423,6 +423,8 @@ return [
     'sells_return' => 'Sells Return',
     'view_draft' => 'View Draft',
     'customer_name' => 'Customer Name',
+    'initial_balance' => 'Initial Balance',
+    'add_initial_balance' => 'Add Initial Balance',
 
 
 ];
