@@ -138,6 +138,8 @@ return [
     'edit_brand'=>'Edit Brand',
     'phone'=>'Phone',
     'address'=>'Address',
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
     'add_customers'=>'Add Customers',
     'balance'=>'Balance',
     'purchases'=>'Purchases',
@@ -288,6 +290,9 @@ return [
     'show_purchase_order' => 'Show Purchase Order' ,
     'create_purchase_order' => 'Create Purchase Order',
     'po_no' => 'Purchase Order Number',
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'Amer' ,
+    'invoice_title2' => 'For General Trading',
 
     'purchase_price'=>'Purchase Price',
     'purchase_price_dollar' => 'dollar purchase price',

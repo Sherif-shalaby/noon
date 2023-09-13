@@ -149,6 +149,10 @@ return array(
     'edit_brand'=>'تعديل العلامة التجارية',
     'phone'=>'رقم التليفون',
     'address'=>'العنوان',
+    // ++++++++++++ invoice_address +++++++++++++++
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
+
     'add_customers'=>'اضافة عميل',
     'balance'=>'الرصيد',
     'purchases'=>'المشتريات',
@@ -311,7 +315,9 @@ return array(
     'show_purchase_order' => 'عرض اوامر الشراء' ,
     'create_purchase_order' => 'انشاء أمر شراء' ,
     'po_no' => 'رقم طلب الشراء' ,
-
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'عامر' ,
+    'invoice_title2' => 'للتجارة العامة',
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
     'edit'=>'تعديل',

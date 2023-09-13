@@ -1,4 +1,8 @@
 <style>
+    *  , *::after , *::before
+    {
+        color: #000 !important;
+    }
     .print-only {
         display: none;
     }
@@ -14,7 +18,10 @@
         th {
             padding: 5px 0;
         }
-
+        thead
+        {
+            background-color: #dddddd !important;
+        }
         .hidden-print {
             display: none !important;
         }
@@ -70,7 +77,7 @@
         text-align: center;
     }
     th{
-        background-color: #CACACA;
+        background-color: #DDD !important;
         padding: 5px;
     }
     p{
@@ -93,41 +100,99 @@
     @include('layouts.partials.print_header')
 
     <div class="description">
-        <h3>@lang('lang.invoice')</h3>
-        <div class="d-flex" style="justify-content: space-between">
-            <p>
-                @lang('lang.number') : 1
-            </p>
-            <p>
-                {{__('lang.'.$transaction->payment_status)}}
-            </p>
-            <p>
-                @lang('lang.date_and_time') : {{$transaction->transaction_date}}
-            </p>
+        <!-- ++++++++++++++++++ system info +++++++++++++ -->
+        <div style="border: 2px dashed #000; justify-content: center;">
+
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h1>
+                        @lang('lang.invoice_title1') <br/>
+                        @lang('lang.invoice_title2')
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6 pl-3">
+                    <p class="text-left">
+                        <b>@lang('lang.invoice_address_en') </b>
+                    </p>
+                </div>
+                <div class="col-sm-6 pr-3">
+                    <p class="text-right">
+                        <b>@lang('lang.invoice_address_ar') </b>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="address d-flex" style="flex-wrap: wrap;">
-            <p style="width: 50%;"> <span style="text-decoration: underline">{{$transaction->customer->address}} </span></p>
-            <p style="width: 50%;"> @lang('lang.respected') <span style="text-decoration: underline">{{$transaction->customer->name}}</span>  : @lang('lang.dear') </p>
-            <p style="width: 50%;"> <span style="text-decoration: underline"></span></p>
-            <p style="width: 50%;"> <span style="text-decoration: underline"> {{$transaction->customer->phone}} </span> </p>
+        <br/><br/>
+        <!-- ++++++++++++++++++ invoice info +++++++++++++  -->
+        <div>
+            <!-- ======== row 1 ========  -->
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h1> @lang('lang.invoice')</h1>
+                </div>
+            </div>
+            <!-- ======== row 2 ========  -->
+            <div class="row">
+                <div class="col-sm-4">
+                    <p>
+                        <b> @lang('lang.invoice_no') </b> : 1
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <p>
+                        <b> @lang('lang.payment_status') </b> : @lang('lang.'.$transaction->payment_status)
+                    </p>
+                </div>
+                <div class="col-sm-4">
+                    <p>
+                        <b>@lang('lang.date_and_time') </b> : {{$transaction->transaction_date}}
+                    </p>
+                </div>
+            </div>
+            <!-- ======== row 3 ========  -->
+            <div class="row">
+                <div class="col-sm-4">
+                    <p class="text-left">
+                        <b>@lang('lang.phone') </b> : <span style="text-decoration: underline"> {{$transaction->customer->phone}} </span>
+                    </p>
+                </div>
+
+                <div class="col-sm-4">
+                    <p class="text-center">
+                       <span style="text-decoration: underline"> Address is {{$transaction->customer->address}} </span>  :
+                       <b>@lang('lang.address')</b>
+                    </p>
+                </div>
+
+                <div class="col-sm-4">
+                    <p class="text-right">
+                        <span style="text-decoration: underline">{{$transaction->customer->name}}</span>
+                        <b> : @lang('lang.dear')  @lang('lang.respected') </b>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- +++++++++++++++++++++++++ Invoice Table +++++++++++++++++++++++++  -->
     <div class="invoice">
         <table class="content_table">
-            <thead>
-                <th style="width:10%">@lang('lang.total')</th>
-                <th style="width:10%">@lang('lang.price_of_piece')</th>
-                <th style="width:10%">@lang('lang.quantity')</th>
-                <th style="width:10%">@lang('lang.fill')</th>
-                <th style="width:10%">@lang('lang.carton')</th>
-                <th style="width:40%">@lang('lang.description')</th>
-                <th style="width:10%">@lang('lang.notes')</th>
+            <thead style="background-color:#DDD !important;">
+                <th style="width:10%;text-align: center">@lang('lang.total')</th>
+                <th style="width:10%;text-align: center">@lang('lang.price_of_piece')</th>
+                <th style="width:10%;text-align: center">@lang('lang.quantity')</th>
+                <th style="width:10%;text-align: center">@lang('lang.fill')</th>
+                <th style="width:10%;text-align: center">@lang('lang.carton')</th>
+                <th style="width:40%;text-align: center">@lang('lang.description')</th>
+                <th style="width:10%;text-align: center">@lang('lang.notes')</th>
             </thead>
             <tbody>
                 @foreach ($transaction->transaction_sell_lines as $line)
-                    <tr>
-                        <td>{{number_format($line->sub_total,2)}}</td>
-                        <td>
+                    <tr style="text-align: center;">
+                        <td style="text-align: center;background-color: #dddddd !important;">{{number_format($line->sub_total,2)}}</td>
+                        <td style="text-align: center;background-color: #dddddd !important;">
                             @if(!empty($line->dollar_sell_price))
                                 {{number_format($line->dollar_sell_price * $line->exchange_rate,2)}}
                             @else
@@ -135,13 +200,13 @@
                             @endif
                         </td>
                         @if(isset($line->product->unit->base_unit_multiplier))
-                            <td>{{number_format($line->quantity * $line->product->unit->base_unit_multiplier,2)}}</td>
-                            <td style="background-color: #CACACA">{{$line->product->unit->base_unit_multiplier}}</td>
+                            <td style="text-align: center;">{{number_format($line->quantity * $line->product->unit->base_unit_multiplier,2)}}</td>
+                            <td style="background-color: #CACACA;text-align: center;">{{$line->product->unit->base_unit_multiplier}}</td>
                         @else
-                            <td>{{$line->quantity}}</td>
-                            <td>1</td>
+                            <td style="text-align: center;">{{$line->quantity}}</td>
+                            <td style="text-align: center;">1</td>
                         @endif
-                        <td>{{number_format($line->quantity,2)}}</td>
+                        <td style="text-align: center">{{number_format($line->quantity,2)}}</td>
                         <td style="text-align: center"> {{$line->product->name}}</td>
                         <td></td>
                     </tr>
@@ -149,61 +214,61 @@
             </tbody>
         </table>
     </div>
+
     <div class="d-flex" style="flex-wrap: wrap; justify-content: space-between">
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
-            <tr >
+            <tr style="text-align: center;">
                 @if($transaction->customer->balance < 0)
-                    <td> {{$transaction->customer->balance + ($transaction->final_total - $transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount'))}}</td>
+                    <td style="text-align: center;"> {{$transaction->customer->balance + ($transaction->final_total - $transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount'))}}</td>
                 @else
-                    <td> {{$transaction->customer->balance - ($transaction->final_total - $transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount'))}}</td>
+                    <td style="text-align: center;"> {{$transaction->customer->balance - ($transaction->final_total - $transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount'))}}</td>
                 @endif
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.previous_balance') </td>
+                <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.previous_balance') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%">
-            <tr>
-                <td > {{$transaction->final_total}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.total_after_discount') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->final_total}}</td>
+                <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.total_after_discount') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
-            <tr>
-                <td> {{$transaction->discount_value}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.discount') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->discount_value}}</td>
+                <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.discount') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
-            <tr >
-                <td> {{$transaction->grand_total}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.total') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->grand_total}}</td>
+                <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.total') </td>
             </tr>
         </table>
-
-
     </div>
+
     <div class="d-flex" style="flex-wrap: wrap; justify-content: space-between">
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
-            <tr >
-                <td> {{$transaction->customer->balance}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.remaining_balance') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->customer->balance}}</td>
+                <td style="background-color: #CACACA; width: 50%;text-align: center;"> @lang('lang.remaining_balance') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%">
-            <tr>
-                <td > {{$transaction->store->name}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.store') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->store->name}}</td>
+                <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.store') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
-            <tr>
-                <td> {{$transaction->transaction_payments->where('received_currency' ,2)->sum('amount')}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.dollar') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,2)->sum('amount')}}</td>
+                <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dollar') </td>
             </tr>
         </table>
         <table style="border-collapse: collapse; margin-top: 20px; width: 23%;">
-            <tr >
-                <td> {{$transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount')}}</td>
-                <td style="background-color: #CACACA; width: 50%"> @lang('lang.dinar') </td>
+            <tr style="text-align: center;">
+                <td style="text-align: center;"> {{$transaction->transaction_payments->where('received_currency' ,'!=',2)->sum('amount')}}</td>
+                <td style="background-color: #CACACA;width: 50%;text-align: center;"> @lang('lang.dinar') </td>
             </tr>
         </table>
 
