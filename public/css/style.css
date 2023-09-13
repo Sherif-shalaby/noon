@@ -34830,7 +34830,7 @@ table.focus-on tfoot tr.focused td {
 .error{
     color:#dc3545 !important;
 }
-input.form-control-custom + label::before {
-    background:#596fd7!important;
-}
+/*input.form-control-custom + label::before {*/
+/*    background:#596fd7!important;*/
+/*}*/
 /*# sourceMappingURL=style.css.map */
