@@ -78,7 +78,8 @@ class SuppliersController extends Controller
 
             return redirect()->back()->withInput()->with('status', $output);
         }
-        $data = $request->except('_token');
+        $data = $request->except('_token','mobile_number');
+        $data['mobile_number'] = json_encode($request->mobile_number);
         $data['created_by'] = Auth::user()->id;
         if ($request->file('image')) {
             $data['image'] = store_file($request->file('image'), 'suppliers');

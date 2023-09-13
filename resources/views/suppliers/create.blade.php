@@ -82,8 +82,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 ">
-                                        <div class="form-group ">
+                                    {{-- +++++++++++++++++++++++++++++++ mobile_number ++++++++++++++++++++++++ --}}
+                                    {{-- <div class="col-md-6 ">
+                                        <div class="form-group">
                                             <label for="mobile_number"> <span class="text-danger">*</span> @lang('lang.phone_number') </label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
                                                 <input type="text"
@@ -96,7 +97,43 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                    </div> --}}
+                                    {{-- +++++++++++++++++++++++++++++++ mobile_number ++++++++++++++++++++++++ --}}
+                                    <div class="col-md-6"  style="width: 100%;">
+                                        <table class="bordered">
+                                            <thead class="phone_thead">
+                                                <tr>
+                                                    <th class="text-left" style="font-weight: normal;">
+                                                        <span class="text-danger">*</span>
+                                                        @lang('lang.phone_number')
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="phone_tbody">
+                                                <tr>
+                                                    <td class="col-md-12">
+                                                        <div class="select_body d-flex justify-content-between align-items-center" >
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   placeholder="@lang('lang.phone_number')"
+                                                                   name="mobile_number[]"
+                                                                   value="{{ old('mobile_number') }}" required >
+                                                            @error('mobile_number')
+                                                             <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </td>
+                                                    <td  class="col-md-6">
+                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                        <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow" style="margin-bottom: 10px;" type="button">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
+                                    {{-- +++++++++++++++++++++++++++++++ exchange_rate ++++++++++++++++++++++++ --}}
                                     <div class="col-md-6 ">
                                         <div class="form-group ">
                                             <label for="exchange_rate">@lang('lang.exchange_rate')</label>
@@ -203,4 +240,28 @@
 @endsection
 @push('js')
 <script src="{{ asset('js/supplier.js') }}"></script>
+{{-- +++++++++++++++++++++++++++++++ Add New Row in mobile_number ++++++++++++++++++++++++ --}}
+<script>
+    $('.phone_tbody').on('click','.addRow', function(){
+        console.log('new mobile_number inputField was added');
+        var tr = `<tr>
+                    <td>
+                        <input  type="text" class="form-control" placeholder="@lang('lang.phone_number')" name="mobile_number[]"
+                                value="{{ old('mobile_number') }}" required >
+                                @error('mobile_number')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
+                    </td>
+
+                </td>
+            </tr>`;
+        $('.phone_tbody').append(tr);
+    } );
+    $('.phone_tbody').on('click','.deleteRow',function(){
+        $(this).parent().parent().remove();
+    });
+</script>
 @endpush
