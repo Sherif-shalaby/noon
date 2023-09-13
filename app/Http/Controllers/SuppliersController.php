@@ -55,11 +55,11 @@ class SuppliersController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => ['required', 'max:30'],
+                'name' => ['nullable', 'max:30'],
                 'company_name' => ['nullable', 'max:30'],
                 'vat_number' => ['nullable', 'max:30'],
                 'email' => ['nullable', 'email'],
-                'mobile_number' => ['nullable', 'max:30'],
+                'mobile_number' => ['required', 'max:30'],
                 'address' => ['nullable', 'max:60'],
                 'city' => ['nullable', 'max:30'],
                 'state' => ['nullable', 'max:30'],

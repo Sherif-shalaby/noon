@@ -1,5 +1,5 @@
 
-<section class="app my-3 no-print" style="margin-top: 100px!important;">
+<section class="app my-3 no-print" style="margin-top: 35px!important;">
     <div class="container-fluid" >
         {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}
         <div class="row">
