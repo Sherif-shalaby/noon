@@ -156,7 +156,7 @@
                                                         <input id="working_day_per_week{{ $key }}"
                                                                @if (!empty($employee->working_day_per_week[$key])) checked @endif
                                                                name="working_day_per_week[{{ $key }}]"
-                                                               type="checkbox" value="1" class="form-control-custom">
+                                                               type="checkbox" value="1">
                                                         <label
                                                             for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
                                                     </div>

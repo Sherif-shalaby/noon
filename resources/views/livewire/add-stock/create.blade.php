@@ -15,7 +15,7 @@
                             <div class="i-checks">
                                 <input id="clear_all_input_form" name="clear_all_input_form"
                                        type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif
-                                       class="form-control-custom">
+                                       class="">
                                 <label for="clear_all_input_form">
                                     <strong>
                                         @lang('lang.clear_all_input_form')
@@ -362,7 +362,6 @@
             url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
             contentType: "html",
             success: function (result) {
-                alert(1);
                 if (result.success) {
                     swal("Success", response.msg, "success");
                 }
