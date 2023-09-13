@@ -32,6 +32,7 @@
                         <h5 class="card-title">@lang('lang.suppliers')</h5>
                     </div>
                     <div class="card-body">
+                        <p class="italic"><small>@lang('lang.required_fields_info')</small></p>
                         <form class="form ajaxform" action="{{ route('suppliers.store') }}" method="post" enctype="multipart/form-data" id='product-form'>
                             @csrf
                             <div class="form-body">
@@ -40,74 +41,12 @@
                                         <div class="form-group ">
                                             <label for="name">@lang('lang.name')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" required
+                                                <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.name')"
                                                        name="name"
                                                        value="{{ old('name') }}" >
                                                 @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="email">@lang('lang.email')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" required
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.email')"
-                                                       name="email"
-                                                       value="{{ old('email') }}" >
-                                                @error('email')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="mobile_number">@lang('lang.phone_number')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.phone_number')"
-                                                       name="mobile_number"
-                                                       value="{{ old('mobile_number') }}" >
-                                                @error('mobile_number')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="parent_id">@lang('categories.categories')</label>
-                                            <select name="supplier_category_id" class="form-control select2"  id="my-select">
-                                                <option value="" selected disabled readonly>---{{ __('select') }}---</option>
-                                                @forelse($supplier_categories as $key=> $val)
-                                                    <option value="{{ $key }}" >
-                                                        {{ $val }}
-                                                    </option>
-                                                @empty
-                                                @endforelse
-                                            </select>
-                                        </div>
-                                        @error('supplier_category_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="exchange_rate">@lang('lang.exchange_rate')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="number"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.exchange_rate')"
-                                                       name="exchange_rate"
-                                                       value="{{ old('exchange_rate') }}" >
-                                                @error('exchange_rate')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -130,14 +69,14 @@
                                     </div>
                                     <div class="col-md-6 ">
                                         <div class="form-group ">
-                                            <label for="vat_number">@lang('lang.vat_number')</label>
+                                            <label for="email">@lang('lang.email')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
                                                 <input type="text"
                                                        class="form-control"
-                                                       placeholder="@lang('lang.vat_number')"
-                                                       name="vat_number"
-                                                       value="{{ old('vat_number') }}" >
-                                                @error('vat_number')
+                                                       placeholder="@lang('lang.email')"
+                                                       name="email"
+                                                       value="{{ old('email') }}" >
+                                                @error('email')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -145,44 +84,29 @@
                                     </div>
                                     <div class="col-md-6 ">
                                         <div class="form-group ">
-                                            <label for="address">@lang('lang.address')</label>
+                                            <label for="mobile_number"> <span class="text-danger">*</span> @lang('lang.phone_number') </label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
                                                 <input type="text"
                                                        class="form-control"
-                                                       placeholder="@lang('lang.address')"
-                                                       name="address"
-                                                       value="{{ old('address') }}" >
-                                                @error('address')
-                                                <span class="text-danger">{{ $message }}</span>
+                                                       placeholder="@lang('lang.phone_number')"
+                                                       name="mobile_number"
+                                                       value="{{ old('mobile_number') }}" required >
+                                                @error('mobile_number')
+                                                 <div class="alert alert-danger">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 ">
                                         <div class="form-group ">
-                                            <label for="city">@lang('lang.city')</label>
+                                            <label for="exchange_rate">@lang('lang.exchange_rate')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
+                                                <input type="number"
                                                        class="form-control"
-                                                       placeholder="@lang('lang.city')"
-                                                       name="city"
-                                                       value="{{ old('city') }}" >
-                                                @error('city')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="country">@lang('lang.country')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.country')"
-                                                       name="country"
-                                                       value="{{ old('country') }}" >
-                                                @error('country')
+                                                       placeholder="@lang('lang.exchange_rate')"
+                                                       name="exchange_rate"
+                                                       value="{{ old('exchange_rate') }}" >
+                                                @error('exchange_rate')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -203,7 +127,51 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="col-md-4 ">
+                                        <div class="form-group ">
+                                            <label for="address">@lang('lang.address')</label>
+                                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="@lang('lang.address')"
+                                                       name="address"
+                                                       value="{{ old('address') }}" >
+                                                @error('address')
+                                                <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label for="city">@lang('lang.city')</label>
+                                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="@lang('lang.city')"
+                                                       name="city"
+                                                       value="{{ old('city') }}" >
+                                                @error('city')
+                                                <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label for="country">@lang('lang.country')</label>
+                                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="@lang('lang.country')"
+                                                       name="country"
+                                                       value="{{ old('country') }}" >
+                                                @error('country')
+                                                <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <br>
                                 <div class="row">
