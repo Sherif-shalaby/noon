@@ -220,7 +220,7 @@ return array(
     'please_enter_your_password'=>'من فضلك ادخل كلمة السر !',
     'type_your_password'=>'ادخل كلمة السر',
     'correct_password'=>'كلمة السر صحيحة',
-    'company_name'=>'اسم لشركة',
+    'company_name'=>'اسم الشركة',
     'mobile_number' => 'رقم الهاتف',
     'add_supplier   '=>'اضافة مورد',
     'vat_number' =>'ضريبة الشراء',
@@ -434,5 +434,8 @@ return array(
     'customer_name' => 'اسم العميل',
     'initial_balance' => 'الأرصدة الأولية',
     'add_initial_balance' => 'اضافة رصيد أولي',
+    'required_fields_info' => 'الحقول المميزة بعلامة <span style="color: #dc3545">*</span> هي حقول إدخال مطلوبة.',
+    'clear_all_input_form'=>'الاحتفاظ بالبيانات بعد عملية الإدخال',
+
 );
 
