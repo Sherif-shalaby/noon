@@ -53,18 +53,39 @@
                                 @enderror
                             </div>
                         </div>
+                        {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
                         <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('phone', __('lang.phone')) !!}
-                                {!! Form::text('phone', null, [
-                                    'class' => 'form-control required',
-                                ]) !!}
-                                @error('phone')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
+                            <table class="bordered">
+                                <thead class="phone_thead">
+                                    <tr>
+                                        <th class="text-left" style="font-weight: normal;">@lang('lang.phone')</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="phone_tbody">
+                                    <tr>
+                                        <td>
+                                            <div class="form-group">
+                                                {!! Form::text('phone[]', null, [
+                                                    'class' => 'form-control required',
+                                                ])!!}
+                                                @error('phone')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                            <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow" style="margin-bottom: 10px;" type="button">
+                                                <i class="fa fa-plus"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
                         </div>
-    
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('email', __('lang.email')) !!}
@@ -76,7 +97,7 @@
                                 @enderror
                             </div>
                         </div>
-    
+
                         <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('address', __('lang.address')) !!}
@@ -107,7 +128,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-    
+
                                     </tbody>
                                 </table>
                             </div>
@@ -126,5 +147,25 @@
     </div>
 @endsection
 @push('js')
-<script src="{{asset('js/product/customer.js')}}" ></script>  
+<script src="{{asset('js/product/customer.js')}}" ></script>
+{{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
+<script>
+    $('.phone_tbody').on('click','.addRow', function(){
+        console.log('new phone inputField was added');
+        var tr = `<tr>
+                    <td>
+                        <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
+                    </td>
+
+                </td>
+            </tr>`;
+        $('.phone_tbody').append(tr);
+    } );
+    $('.phone_tbody').on('click','.deleteRow',function(){
+        $(this).parent().parent().remove();
+    });
+</script>
 @endpush

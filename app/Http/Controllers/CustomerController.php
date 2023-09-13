@@ -70,9 +70,11 @@ class CustomerController extends Controller
    */
   public function store(CustomerRequest $request)
   {
-//      dd($request);
+    //  dd($request);
     try {
-      $data = $request->except('_token');
+        // ++++++++++++++ Edit phone to array dataType ++++++++++++++++++
+      $data = $request->except('_token','phone');
+      $data['phone'] = json_encode($request->phone);
       $data['created_by']=Auth::user()->id;
       $customer = Customer::create($data);
 

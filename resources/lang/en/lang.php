@@ -137,6 +137,7 @@ return [
     'edit_customer_type'=>'Edit Customer Type',
     'edit_brand'=>'Edit Brand',
     'phone'=>'Phone',
+    'add_phone' => "Add Phone" ,
     'address'=>'Address',
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
     'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,

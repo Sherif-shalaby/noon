@@ -17,6 +17,14 @@ return new class extends Migration
             $table->string('name', 30)->nullable()->change();
             $table->string('mobile_number', 30)->nullable(false)->change();
         });
+        // +++++++++++++++++ phone_number of customer mobile_number
+        Schema::table('customers', function(Blueprint $table) {
+            $table->json('phone')->nullable()->change();
+        });
+        // +++++++++++++++++ mobile_number of suppliers mobile_number
+        Schema::table('suppliers', function(Blueprint $table) {
+            $table->json('mobile_number')->nullable()->change();
+        });
     }
 
     /**

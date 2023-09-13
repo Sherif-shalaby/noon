@@ -152,7 +152,7 @@ return array(
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
     'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
-
+    'add_phone' => "اضافة رقم تليفون" ,
     'add_customers'=>'اضافة عميل',
     'balance'=>'الرصيد',
     'purchases'=>'المشتريات',
