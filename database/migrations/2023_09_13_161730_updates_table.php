@@ -15,15 +15,13 @@ return new class extends Migration
     {
         Schema::table('suppliers', function(Blueprint $table) {
             $table->string('name', 30)->nullable()->change();
-            $table->string('mobile_number', 30)->nullable(false)->change();
+            // ======== mobile_number of suppliers mobile_number ========
+            $table->json('mobile_number', 30)->nullable()->change();
         });
-        // +++++++++++++++++ phone_number of customer mobile_number
+        // +++++++++++++++++ customers +++++++++++++++++
         Schema::table('customers', function(Blueprint $table) {
+            // ======== phone_number of customer mobile_number ========
             $table->json('phone')->nullable()->change();
-        });
-        // +++++++++++++++++ mobile_number of suppliers mobile_number
-        Schema::table('suppliers', function(Blueprint $table) {
-            $table->json('mobile_number')->nullable()->change();
         });
     }
 

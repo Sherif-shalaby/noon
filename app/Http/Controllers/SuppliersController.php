@@ -56,6 +56,7 @@ class SuppliersController extends Controller
             $request->all(),
             [
                 'name' => ['nullable', 'max:30'],
+                'notes' => ['nullable', 'max:255'],
                 'company_name' => ['nullable', 'max:30'],
                 'vat_number' => ['nullable', 'max:30'],
                 'email' => ['nullable', 'email'],

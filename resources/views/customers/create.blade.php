@@ -97,11 +97,23 @@
                                 @enderror
                             </div>
                         </div>
-
+                        {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
                         <div class="col-md-3">
                             <div class="form-group">
                                 {!! Form::label('address', __('lang.address')) !!}
                                 {!! Form::textarea('address', null, [
+                                    'class' => 'form-control',
+                                ]) !!}
+                                @error('address')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {!! Form::label('notes', __('lang.notes')) !!}
+                                {!! Form::textarea('notes', null, [
                                     'class' => 'form-control',
                                 ]) !!}
                                 @error('address')

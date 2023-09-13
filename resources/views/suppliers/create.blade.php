@@ -211,7 +211,21 @@
                                     </div>
                                 </div>
                                 <br>
+                                {{-- ====================== notes , images ====================== --}}
                                 <div class="row">
+                                    {{-- ++++++++++++ notes ++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            {!! Form::label('notes', __('lang.notes')) !!}
+                                            {!! Form::textarea('notes', null, [
+                                                'class' => 'form-control',
+                                            ]) !!}
+                                            @error('address')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    {{-- ++++++++++++ images ++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>@lang('image')</label>

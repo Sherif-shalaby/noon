@@ -70,21 +70,22 @@ class CustomerController extends Controller
    */
   public function store(CustomerRequest $request)
   {
-    //  dd($request);
-    try {
-        // ++++++++++++++ Edit phone to array dataType ++++++++++++++++++
-      $data = $request->except('_token','phone');
-      $data['phone'] = json_encode($request->phone);
-      $data['created_by']=Auth::user()->id;
-      $customer = Customer::create($data);
+    //  dd($request->notes);
+    try
+    {
+        $data = $request->except('_token','phone');
+        // ++++++++++++++ store phones in array ++++++++++++++++++
+        $data['phone'] = json_encode($request->phone);
+        $data['created_by']=Auth::user()->id;
+        $customer = Customer::create($data);
 
-      if (!empty($request->important_dates)) {
-        $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
-      }
-      $output = [
-          'success' => true,
-          'msg' => __('lang.success')
-      ];
+        if (!empty($request->important_dates)) {
+            $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
+        }
+        $output = [
+            'success' => true,
+            'msg' => __('lang.success')
+        ];
 
 
     } catch (\Exception $e) {
