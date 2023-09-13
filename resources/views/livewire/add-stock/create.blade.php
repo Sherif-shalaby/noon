@@ -5,12 +5,24 @@
             <div class="col-md-12">
                 <div class="card mt-3">
                     <div class="card-header d-flex align-items-center">
-
-                        @if (!empty($is_raw_material))
-                            <h4>@lang('lang.add_stock_for_raw_material')</h4>
-                        @else
-                            <h4>@lang('lang.add-stock')</h4>
-                        @endif
+                        <h4>@lang('lang.add-stock')</h4>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-9">
+                            <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="i-checks">
+                                <input id="clear_all_input_form" name="clear_all_input_form"
+                                       type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif
+                                       class="form-control-custom">
+                                <label for="clear_all_input_form">
+                                    <strong>
+                                        @lang('lang.clear_all_input_form')
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     {!! Form::open([ 'id' => 'add_stock_form']) !!}
                     <div class="card-body">
@@ -341,6 +353,20 @@
 
             // Trigger the print action
             window.print();
+        });
+    });
+    $(document).on("click", "#clear_all_input_form", function () {
+        var value = $('#clear_all_input_form').is(':checked')?1:0;
+        $.ajax({
+            method: "get",
+            url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
+            contentType: "html",
+            success: function (result) {
+                alert(1);
+                if (result.success) {
+                    swal("Success", response.msg, "success");
+                }
+            },
         });
     });
 

@@ -37,7 +37,7 @@ class Create extends Component
         $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
         $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-        $showColumn = false, $transaction_currency, $current_stock ;
+        $showColumn = false, $transaction_currency, $current_stock, $clear_all_input_stock_form ;
 
     protected $rules = [
     'store_id' => 'required',
@@ -53,6 +53,39 @@ class Create extends Component
 
     public function render(): Factory|View|Application
     {
+        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
+        if($this->clear_all_input_stock_form ==0){
+            $transaction_payment=[];
+            $recent_stock=[];
+        }else{
+            $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
+//dd($recent_stock);
+            if(!empty($recent_stock)){
+                $transaction_payment = $recent_stock->transaction_payments->first();
+                $this->store_id =$recent_stock->store_id;
+                $this->supplier = $recent_stock->supplier_id;
+                $this->status = $recent_stock->status;
+                $this->transaction_date = $recent_stock->transaction_date;
+                $this->transaction_currency = $recent_stock->transaction_currency;
+                $this->purchase_type = $recent_stock->purchase_type;
+                $this->divide_costs = $recent_stock->divide_costs;
+                $this->payment_status = $recent_stock->payment_status;
+                $this->invoice_no = $recent_stock->invoice_no;
+                $this->other_expenses = $recent_stock->other_expenses;
+                $this->discount_amount = $recent_stock->discount_amount;
+                $this->other_payments = $recent_stock->other_payments;
+                $this->amount = $transaction_payment->amount;
+                $this->method = $transaction_payment->method;
+                $this->paying_currency = $transaction_payment->paying_currency;
+                $this->source_type =$transaction_payment->source_type;
+                $this->source_id = $transaction_payment->source_id;
+                $this->paid_on = $transaction_payment->paid_on;
+
+
+
+            }
+        }
+
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
@@ -263,7 +296,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
-        return redirect('/add-stock/index');
+        return redirect('/add-stock/create');
     }
 
     public function fetchSelectedProducts()

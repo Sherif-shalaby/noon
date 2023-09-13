@@ -181,6 +181,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('moneysafe', MoneySafeController::class);
 });
 
+Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
