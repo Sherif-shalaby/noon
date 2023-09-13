@@ -98,7 +98,7 @@
                                                     <div class="i-checks">
                                                         <input id="number_of_leaves{{ $leave_type->id }}"
                                                                name="number_of_leaves[{{ $leave_type->id }}][enabled]"
-                                                               type="checkbox" value="1" class="form-control-custom">
+                                                               type="checkbox" value="1">
                                                         <label
                                                             for="number_of_leaves{{ $leave_type->id }}"><strong>{{ $leave_type->name }}</strong></label>
                                                         <input type="number" class="form-control"
@@ -140,8 +140,7 @@
                                                                 <div class="i-checks">
                                                                     <input id="working_day_per_week{{ $key }}"
                                                                            name="working_day_per_week[{{ $key }}]"
-                                                                           type="checkbox" value="1"
-                                                                           class="form-control-custom">
+                                                                           type="checkbox" value="1">
                                                                     <label
                                                                         for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
                                                                 </div>
