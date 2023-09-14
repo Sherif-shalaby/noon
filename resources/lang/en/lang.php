@@ -146,6 +146,16 @@ return [
     'purchases'=>'Purchases',
     'points'=>'Points',
     'edit_customers'=>'Edit Customers',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'min_amount_in_dollar' ,
+    'max_amount_in_dollar' => 'max_amount_in_dollar' ,
+    'min_amount_in_dinar'  => 'min_amount_in_dinar' ,
+    'max_amount_in_dinar'  => 'max_amount_in_dinar' ,
+    // balance_in_dollar
+    'balance_in_dollar'    => 'balance_in_dollar' ,
+    // balance_in_dinar
+    'balance_in_dinar'     => 'balance_in_dinar' ,
+
     'important_dates'=>'Important Dates',
     'important_date'=>'Important Date',
     'date'=>'Date',

@@ -142,6 +142,7 @@ return array(
     'add_brand'=>'اضافة علامة تجارية',
     'add_category'=>'اضافة قسم',
     'discount'=>'خصم',
+    // ++++++++++++ customers +++++++++++++++
     'customer_types'=>'أنواع العملاء',
     'customer_type'=>'نوع العميل',
     'add_customer_type'=>'اضافة نوع عميل',
@@ -149,6 +150,21 @@ return array(
     'edit_brand'=>'تعديل العلامة التجارية',
     'phone'=>'رقم التليفون',
     'address'=>'العنوان',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'الحد الادني بالدولار' ,
+    'max_amount_in_dollar' => 'الحد الاقصي بالدولار' ,
+    'min_amount_in_dinar' => 'الحد الادني بالدينار' ,
+    'max_amount_in_dinar' => 'الحد الاقصي بالدينار' ,
+    // balance_in_dollar
+    'balance_in_dollar'   => 'الرصيد بالدولار' ,
+    // balance_in_dinar
+    'balance_in_dinar'   => 'الرصيد بالدينار' ,
+    // ++++++++++++++++++ Suppliers ++++++++++++++++
+    // owner_debt_in_dinar
+    'owner_debt_in_dinar'   => 'الدين بالدينار' ,
+    // owner_debt_in_dollar
+    'owner_debt_in_dollar'   => 'الدين بالدولار' ,
+
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
     'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,

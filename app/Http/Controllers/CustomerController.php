@@ -70,18 +70,29 @@ class CustomerController extends Controller
    */
   public function store(CustomerRequest $request)
   {
-    //  dd($request->notes);
+    // return $request;
     try
     {
-        $data = $request->except('_token','phone');
+        $data = $request->except('_token','phone','email');
         // ++++++++++++++ store phones in array ++++++++++++++++++
         $data['phone'] = json_encode($request->phone);
+        // ++++++++++++++ store email in array ++++++++++++++++++
+        $data['email'] = json_encode($request->email);
+
         $data['created_by']=Auth::user()->id;
+        // ========== uploaded image ==========
+        if ($request->file('image'))
+        {
+            $data['image'] = store_file($request->file('image'), 'customers');
+        }
+        // dd($data);
+
         $customer = Customer::create($data);
 
         if (!empty($request->important_dates)) {
             $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
         }
+
         $output = [
             'success' => true,
             'msg' => __('lang.success')
@@ -95,9 +106,9 @@ class CustomerController extends Controller
             'msg' => __('lang.something_went_wrong')
         ];
     }
-      if ($request->quick_add) {
-          return $output;
-      }
+    //   if ($request->quick_add) {
+    //       return $output;
+    //   }
 
     return redirect()->back()->with('status', $output);
   }
