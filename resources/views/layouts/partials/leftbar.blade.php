@@ -18,7 +18,7 @@
     <div class="profilebar text-center">
         {{--                    <img src="{{asset('images/users/profile.svg')}}" class="img-fluid" alt="profile">--}}
         <div class="profilename">
-            <h5>{{\Illuminate\Support\Facades\Auth::user()->name}}</h5>
+{{--            <h5>{{\Illuminate\Support\Facades\Auth::user()->name}}</h5>--}}
             {{--                        <p>Social Media Strategist</p>--}}
         </div>
         <div class="userbox">
@@ -49,11 +49,11 @@
         @endphp
         <div class="languagebar">
             <div class="dropdown">
-                <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="rounded-circle flag flag-icon-{{ $flags->$local_code }} flag-icon-squared" style="width: 26px;height: 26px;"></i>&nbsp;{{ LaravelLocalization::getCurrentLocaleNative() }}</a>
+                <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="dripicons-web" style="width: 26px;height: 26px;"></i>&nbsp;</a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">
                     @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
-                            <i class="rounded-circle flag  flag-icon-{{$flags->$localeCode}} flag-icon-squared" style="width: 26px;height: 26px;" ></i>{{ $properties['native'] }}
+                            {{ $properties['native'] }}
                         </a>
                     @endforeach
                 </div>
