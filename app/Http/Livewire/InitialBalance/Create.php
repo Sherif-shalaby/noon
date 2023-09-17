@@ -102,6 +102,7 @@ class Create extends Component
 
     public function store(): Redirector|Application|RedirectResponse
     {
+       
         if (!empty($this->other_expenses) || !empty($this->other_payments)){
             $this->rules = [
                 'store_id' => 'required',
@@ -139,7 +140,7 @@ class Create extends Component
             $transaction->status = !empty($this->status) ? $this->status : 'received';
             $transaction->order_date = Carbon::now();
             $transaction->transaction_date =  Carbon::now();
-            $transaction->purchase_type = 'in_store';
+            $transaction->purchase_type = 'local';
             $transaction->type ='initial_balance' ;
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
@@ -161,7 +162,7 @@ class Create extends Component
             $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
 
-            DB::beginTransaction();
+            // DB::beginTransaction();
             // preparer_id
             // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
 
@@ -270,7 +271,7 @@ class Create extends Component
 
             }
 
-            DB::commit();
+            // DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
         }
