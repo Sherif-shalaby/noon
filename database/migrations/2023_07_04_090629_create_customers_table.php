@@ -14,6 +14,8 @@ class CreateCustomersTable extends Migration {
 			$table->string('email')->nullable();
 			$table->string('address')->nullable();
 			$table->string('phone')->nullable();
+            $table->decimal('balance',10,2)->default(0);
+            $table->decimal('dollar_balance',10,2)->default(0);
 			$table->decimal('deposit_balance', 10,2)->nullable()->default(0);
 			$table->decimal('added_balance', 10,2)->nullable()->default(0);
 			$table->integer('customer_type_id')->unsigned();

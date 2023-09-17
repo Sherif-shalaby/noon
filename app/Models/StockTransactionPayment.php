@@ -28,7 +28,7 @@ class StockTransactionPayment extends Model
         return $this->belongsTo(User::class, 'created_by', 'id')
             ->withDefault(['name' => '']);
     }
-    public function paying_currency()
+    public function paying_currency_relationship()
     {
         return $this->belongsTo(Currency::class,'paying_currency');
     }

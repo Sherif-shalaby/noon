@@ -21,10 +21,9 @@ return new class extends Migration
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
-            $table->unsignedBigInteger('transaction_currency');
-            $table->foreign('transaction_currency')->references('id')->on('currencies')->onDelete('cascade');
             $table->unsignedBigInteger('employee_id')->nullable();
             $table->unsignedBigInteger('store_pos_id')->nullable();
+            $table->string('type')->nullable();
             $table->enum('status', ['received', 'pending', 'ordered', 'final', 'draft', 'sent_admin', 'sent_supplier', 'partially_received', 'approved', 'rejected', 'expired', 'valid', 'declined', 'send_the_goods', 'compensated', 'canceled']);
             $table->string('transaction_date');
             $table->enum('payment_status', ['paid', 'pending', 'partial'])->nullable();
@@ -54,6 +53,8 @@ return new class extends Migration
             $table->string('ref_no')->nullable();
             $table->decimal('grand_total', 15, 4)->nullable();
             $table->decimal('final_total', 15, 4)->default(0.0000);
+            $table->decimal('dollar_grand_total', 15, 4)->nullable();
+            $table->decimal('dollar_final_total', 15, 4)->default(0.0000);
             $table->decimal('exchange_rate', 15, 4)->default(1);
             $table->integer('rp_earned')->default(0);
             $table->integer('rp_redeemed')->default(0);

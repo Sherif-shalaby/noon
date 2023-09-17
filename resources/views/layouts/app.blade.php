@@ -1,6 +1,8 @@
+@php
+    $local_code=LaravelLocalization::getCurrentLocale();
+@endphp
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{$local_code}}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -171,7 +173,12 @@
         </div>
     </div>
     <!-- Start Containerbar -->
-    <div id="containerbar" class="container-fluid">
+    <div id="containerbar" class="container-fluid pl-0">
+
+        @include('layouts.partials.header')
+
+        @include('layouts.partials.leftbar')
+
         <!-- Start Rightbar -->
         <div class="rightbar">
             <!-- Start Topbar Mobile -->
@@ -211,32 +218,22 @@
                     </div>
                 </div>
             </div>
-            <!-- Start Topbar -->
-{{--            {{dd(request()->segment(2))}}--}}
-        @include('layouts.partials.header')
-{{--        @if (request()->segment(2) != 'invoices')--}}
-{{--            @include('layouts.partials.navbar')--}}
-{{--        @endif--}}
-            <!-- End Navigationbar -->
-
-            <!-- Start Breadcrumbbar -->
+            <!-- End Topbar Mobile -->
             @yield('breadcrumbbar')
-            <!-- end Breadcrumbbar -->
-
-            <!-- Start Contentbar -->
             @yield('content')
-            <!-- End Contentbar -->
-            <!-- Start Footerbar -->
-            @include('layouts.partials.footer')
-            <!-- End Footerbar -->
         </div>
         <!-- End Rightbar -->
+
+        @include('layouts.partials.footer')
     </div>
     <!-- End Containerbar -->
     <!-- Start js -->
     @include('layouts.partials.javascript')
+
     @yield('javascript')
+
     @livewireScripts
+
     {{-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <x-livewire-alert::scripts /> --}}
     @stack('js')

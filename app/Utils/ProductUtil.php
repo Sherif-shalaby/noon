@@ -13,6 +13,7 @@ use App\Models\ProductClass;
 use App\Models\ProductDiscount;
 use App\Models\ProductStore;
 use App\Models\PurchaseOrderLine;
+use App\Models\PurchaseOrderTransaction;
 use App\Models\PurchaseReturnLine;
 use App\Models\RedemptionOfPoint;
 use App\Models\RemoveStockLine;
@@ -60,17 +61,9 @@ class ProductUtil extends Util
             $sub_sku = $sku . $c;
             // $sub_sku = $sku . '-' . $c;
         }
-
         return $sub_sku;
     }
-
-    /**
-     * Generated unique ref numbers
-     *
-     * @param string $type
-     *
-     * @return void
-     */
+    /* ++++++++++++++++ getNumberByType() ++++++++++++++++ */
     public function getNumberByType($type, $store_id = null, $i = 1)
     {
         $number = '';
@@ -78,76 +71,77 @@ class ProductUtil extends Util
         $day = Carbon::now()->day;
         $month = Carbon::now()->month;
         $year = Carbon::now()->year;
+
         if (!empty($store_id)) {
             $store_string = $this->getStoreNameFirstLetters($store_id);
         }
-        if ($type == 'purchase_order') {
-            $po_count = Transaction::where('type', $type)->count() + $i;
-
+        if ($type == 'purchase_order')
+        {
+            $po_count = PurchaseOrderTransaction::where('type', $type)->count() + $i;
             $number = 'PO' . $store_string . $po_count;
         }
         if ($type == 'sell') {
-            $inv_count = Transaction::where('type', $type)->count() + $i;
+            $inv_count = PurchaseOrderTransaction::where('type', $type)->count() + $i;
 
             $number = 'Inv' . $year . $month . $inv_count;
         }
         if ($type == 'expense') {
-            $inv_count = Transaction::where('type', $type)->count() + $i;
+            $inv_count = PurchaseOrderTransaction::where('type', $type)->count() + $i;
 
             $number = 'Exp' . $year . $month . $inv_count;
         }
         if ($type == 'sell_return') {
-            $count = Transaction::where('type', $type)->whereMonth('transaction_date', $month)->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', $type)->whereMonth('PurchaseOrderTransaction_date', $month)->count() + $i;
 
             $number = 'Rets' . $year . $month . $count;
         }
         if ($type == 'purchase_return') {
-            $count = Transaction::where('type', $type)->whereMonth('transaction_date', $month)->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', $type)->whereMonth('PurchaseOrderTransaction_date', $month)->count() + $i;
 
             $number = 'RetP' . $year . $month . $count;
         }
         if ($type == 'remove_stock') {
-            $count = Transaction::where('type', $type)->whereMonth('transaction_date', $month)->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', $type)->whereMonth('PurchaseOrderTransaction_date', $month)->count() + $i;
 
             $number = 'RST' . $year . $month . $count;
         }
         if ($type == 'transfer') {
-            $count = Transaction::where('type', $type)->whereMonth('transaction_date', $month)->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', $type)->whereMonth('PurchaseOrderTransaction_date', $month)->count() + $i;
 
             $number = 'tras' . $year . $month . $count;
         }
         if ($type == 'quotation') {
-            $count = Transaction::where('type', 'sell')->where('is_quotation', 1)->whereMonth('transaction_date', $month)->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', 'sell')->where('is_quotation', 1)->whereMonth('PurchaseOrderTransaction_date', $month)->count() + $i;
 
             $number = 'Qu' . $year . $month . $count;
         }
 
-        $number_exists = Transaction::where('type', $type)->where('invoice_no', $number)->exists();
-        if ($number_exists) {
-            return $this->getNumberByType($type, $store_id, $i + 1);
-        }
+        // $number_exists = PurchaseOrderTransaction::where('type', $type)->where('invoice_no', $number)->exists();
+        // if ($number_exists) {
+        //     return $this->getNumberByType($type, $store_id, $i + 1);
+        // }
 
         if ($type == 'internal_stock_request') {
-            $count = Transaction::where('type', 'transfer')->where('is_internal_stock_transfer', 1)->distinct('invoice_no')->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', 'transfer')->where('is_internal_stock_transfer', 1)->distinct('invoice_no')->count() + $i;
 
             $number = 'ISRQ' . $year . $month . $day .  $count;
         }
         if ($type == 'internal_stock_return') {
-            $count = Transaction::where('type', 'internal_stock_return')->where('is_internal_stock_transfer', 1)->where('is_return', 1)->distinct('invoice_no')->count() + $i;
+            $count = PurchaseOrderTransaction::where('type', 'internal_stock_return')->where('is_internal_stock_transfer', 1)->where('is_return', 1)->distinct('invoice_no')->count() + $i;
 
             $number = 'ISRT' . $year . $month . $day .  $count;
         }
 
-        if ($type == 'earning_of_point') {
-            $count = EarningOfPoint::count() + $i;
+        // if ($type == 'earning_of_point') {
+        //     $count = EarningOfPoint::count() + $i;
 
-            $number = 'LPE' . $year . $month . $day .  $count;
-        }
-        if ($type == 'redemption_of_point') {
-            $count = RedemptionOfPoint::count() + $i;
+        //     $number = 'LPE' . $year . $month . $day .  $count;
+        // }
+        // if ($type == 'redemption_of_point') {
+        //     $count = RedemptionOfPoint::count() + $i;
 
-            $number = 'LPR' . $year . $month . $day .  $count;
-        }
+        //     $number = 'LPR' . $year . $month . $day .  $count;
+        // }
 
         return $number;
     }
@@ -241,110 +235,110 @@ class ProductUtil extends Util
      * @param object $request
      * @return boolean
      */
-    public function createOrUpdateVariations($product, $request)
-    {
-        $variations = $request->variations;
-        $keey_variations = [];
-        $purchase_price=!empty($request->is_service) ? $this->num_uf($product->purchase_price):0;
-        $sell_price= !empty($request->is_service) ? $this->num_uf($product->sell_price):0;
-        if (!empty($variations)) {
-            $variation_data['name'] = 'Default';
-            $variation_data['product_id'] = $product->id;
-            $variation_data['sub_sku'] = $product->sku;
-            $variation_data['color_id'] = !empty($request->multiple_colors) ? $request->multiple_colors[0] : null;
-            $variation_data['size_id'] = !empty($request->multiple_sizes) ? $request->multiple_sizes[0] : null;
-            $variation_data['grade_id'] = !empty($request->multiple_grades) ? $request->multiple_grades[0] : null;
-            $variation_data['unit_id'] = !empty($request->multiple_units) ? $request->multiple_units[0] : null;
+    // public function createOrUpdateVariations($product, $request)
+    // {
+    //     $variations = $request->variations;
+    //     $keey_variations = [];
+    //     $purchase_price=!empty($request->is_service) ? $this->num_uf($product->purchase_price):0;
+    //     $sell_price= !empty($request->is_service) ? $this->num_uf($product->sell_price):0;
+    //     if (!empty($variations)) {
+    //         $variation_data['name'] = 'Default';
+    //         $variation_data['product_id'] = $product->id;
+    //         $variation_data['sub_sku'] = $product->sku;
+    //         $variation_data['color_id'] = !empty($request->multiple_colors) ? $request->multiple_colors[0] : null;
+    //         $variation_data['size_id'] = !empty($request->multiple_sizes) ? $request->multiple_sizes[0] : null;
+    //         $variation_data['grade_id'] = !empty($request->multiple_grades) ? $request->multiple_grades[0] : null;
+    //         $variation_data['unit_id'] = !empty($request->multiple_units) ? $request->multiple_units[0] : null;
 
-            $variation_data['is_dummy'] = 1;
-            $variation_data['default_purchase_price'] = $purchase_price;
-            $variation_data['default_sell_price'] = $sell_price;
+    //         $variation_data['is_dummy'] = 1;
+    //         $variation_data['default_purchase_price'] = $purchase_price;
+    //         $variation_data['default_sell_price'] = $sell_price;
 
-            // $variation = Variation::create($variation_data);
-            // $variation_array[] = ['variation' => $variation_data, 'variant_stores' =>  []];
-            // $keey_variations[] = $variation->id;
-            foreach ($variations as $v) {
+    //         // $variation = Variation::create($variation_data);
+    //         // $variation_array[] = ['variation' => $variation_data, 'variant_stores' =>  []];
+    //         // $keey_variations[] = $variation->id;
+    //         foreach ($variations as $v) {
 
-                $c = Variation::where('product_id', $product->id)
-                        ->count() + 1;
-                if ($v['name'] == 'Default') {
-                    $sub_sku = $product->sku;
-                    $color_id = !empty($request->multiple_colors) ? $request->multiple_colors[0] : null;
-                    $size_id = !empty($request->multiple_sizes) ? $request->multiple_sizes[0] : null;
-                    $grade_id = !empty($request->multiple_grades) ? $request->multiple_grades[0] : null;
-                    $unit_id = !empty($request->multiple_units) ? $request->multiple_units[0] : null;
+    //             $c = Variation::where('product_id', $product->id)
+    //                     ->count() + 1;
+    //             if ($v['name'] == 'Default') {
+    //                 $sub_sku = $product->sku;
+    //                 $color_id = !empty($request->multiple_colors) ? $request->multiple_colors[0] : null;
+    //                 $size_id = !empty($request->multiple_sizes) ? $request->multiple_sizes[0] : null;
+    //                 $grade_id = !empty($request->multiple_grades) ? $request->multiple_grades[0] : null;
+    //                 $unit_id = !empty($request->multiple_units) ? $request->multiple_units[0] : null;
 
-                } else {
-                    $unit_id=$v['unit_id'] ??null;
-                    $color_id=$v['color_id'] ??null;
-                    $size_id=$v['size_id'] ??null;
-                    $grade_id=$v['grade_id'] ??null;
-                    $sub_sku = !empty($v['sub_sku']) ? $v['sub_sku'] : $this->generateSubSku($product->sku, $c, $product->barcode_type);
-                }
+    //             } else {
+    //                 $unit_id=$v['unit_id'] ??null;
+    //                 $color_id=$v['color_id'] ??null;
+    //                 $size_id=$v['size_id'] ??null;
+    //                 $grade_id=$v['grade_id'] ??null;
+    //                 $sub_sku = !empty($v['sub_sku']) ? $v['sub_sku'] : $this->generateSubSku($product->sku, $c, $product->barcode_type);
+    //             }
 
-                if (!empty($v['id'])) {
-                    $v['default_purchase_price'] = (float)$this->num_uf($v['default_purchase_price']);
-                    $v['default_sell_price'] = (float)$this->num_uf($v['default_sell_price']);
-                    $variation = Variation::find($v['id']);
-                    $variation->name = $v['name'];
-                    $variation->sub_sku = $sub_sku;
-                    $variation->color_id = $color_id;
-                    $variation->size_id = $size_id ;
-                    $variation->grade_id = $grade_id  ;
-                    $variation->unit_id = $unit_id;
-                    $variation->number_vs_base_unit= $v['number_vs_base_unit'] ?? 0;
-                    $variation->default_purchase_price = !empty($v['default_purchase_price']) ? $this->num_uf($v['default_purchase_price']) : $this->num_uf($product->purchase_price);
-                    $variation->default_sell_price = !empty($v['default_sell_price']) ? $this->num_uf($v['default_sell_price']) : $this->num_uf($product->sell_price);
-                    $variation->save();
-                    $variation_array[] = ['variation' => $variation, 'variant_stores' => $v['variant_stores']];
-                    $keey_variations[] = $v['id'];
-                } else {
-                    $variation_data['name'] = $v['name'];
-                    $variation_data['product_id'] = $product->id;
-                    $variation_data['sub_sku'] = !empty($v['sub_sku']) ? $v['sub_sku'] : $this->generateSubSku($product->sku, $c, $product->barcode_type);
-                    $variation_data['color_id'] = $v['color_id'] ?? null;
-                    $variation_data['size_id'] = $v['size_id'] ?? null;
-                    $variation_data['grade_id'] = $v['grade_id'] ?? null;
-                    $variation_data['unit_id'] = $v['unit_id'] ??  null;
-                    $variation_data['number_vs_base_unit']= $v['number_vs_base_unit'] ?? 0;
-                    $variation_data['default_purchase_price'] = !empty($v['default_purchase_price']) ? $this->num_uf($v['default_purchase_price']) : $this->num_uf($product->purchase_price);
-                    $variation_data['default_sell_price'] = !empty($v['default_sell_price']) ? $this->num_uf($v['default_sell_price']) : $this->num_uf($product->sell_price);
-                    $variation_data['is_dummy'] = 0;
+    //             if (!empty($v['id'])) {
+    //                 $v['default_purchase_price'] = (float)$this->num_uf($v['default_purchase_price']);
+    //                 $v['default_sell_price'] = (float)$this->num_uf($v['default_sell_price']);
+    //                 $variation = Variation::find($v['id']);
+    //                 $variation->name = $v['name'];
+    //                 $variation->sub_sku = $sub_sku;
+    //                 $variation->color_id = $color_id;
+    //                 $variation->size_id = $size_id ;
+    //                 $variation->grade_id = $grade_id  ;
+    //                 $variation->unit_id = $unit_id;
+    //                 $variation->number_vs_base_unit= $v['number_vs_base_unit'] ?? 0;
+    //                 $variation->default_purchase_price = !empty($v['default_purchase_price']) ? $this->num_uf($v['default_purchase_price']) : $this->num_uf($product->purchase_price);
+    //                 $variation->default_sell_price = !empty($v['default_sell_price']) ? $this->num_uf($v['default_sell_price']) : $this->num_uf($product->sell_price);
+    //                 $variation->save();
+    //                 $variation_array[] = ['variation' => $variation, 'variant_stores' => $v['variant_stores']];
+    //                 $keey_variations[] = $v['id'];
+    //             } else {
+    //                 $variation_data['name'] = $v['name'];
+    //                 $variation_data['product_id'] = $product->id;
+    //                 $variation_data['sub_sku'] = !empty($v['sub_sku']) ? $v['sub_sku'] : $this->generateSubSku($product->sku, $c, $product->barcode_type);
+    //                 $variation_data['color_id'] = $v['color_id'] ?? null;
+    //                 $variation_data['size_id'] = $v['size_id'] ?? null;
+    //                 $variation_data['grade_id'] = $v['grade_id'] ?? null;
+    //                 $variation_data['unit_id'] = $v['unit_id'] ??  null;
+    //                 $variation_data['number_vs_base_unit']= $v['number_vs_base_unit'] ?? 0;
+    //                 $variation_data['default_purchase_price'] = !empty($v['default_purchase_price']) ? $this->num_uf($v['default_purchase_price']) : $this->num_uf($product->purchase_price);
+    //                 $variation_data['default_sell_price'] = !empty($v['default_sell_price']) ? $this->num_uf($v['default_sell_price']) : $this->num_uf($product->sell_price);
+    //                 $variation_data['is_dummy'] = 0;
 
-                    $variation = Variation::create($variation_data);
-                    $variation_array[] = ['variation' => $variation, 'variant_stores' => $v['variant_stores']];
-                    $keey_variations[] = $variation->id;
-                }
-            }
-        } else {
-            $variation_data['name'] = 'Default';
-            $variation_data['product_id'] = $product->id;
-            $variation_data['sub_sku'] = $product->sku;
-            $variation_data['color_id'] = !empty($request->multiple_colors) ? $request->multiple_colors[0] : null;
-            $variation_data['size_id'] = !empty($request->multiple_sizes) ? $request->multiple_sizes[0] : null;
-            $variation_data['grade_id'] = !empty($request->multiple_grades) ? $request->multiple_grades[0] : null;
-            $variation_data['unit_id'] = !empty($request->multiple_units) ? $request->multiple_units[0] : null;
+    //                 $variation = Variation::create($variation_data);
+    //                 $variation_array[] = ['variation' => $variation, 'variant_stores' => $v['variant_stores']];
+    //                 $keey_variations[] = $variation->id;
+    //             }
+    //         }
+    //     } else {
+    //         $variation_data['name'] = 'Default';
+    //         $variation_data['product_id'] = $product->id;
+    //         $variation_data['sub_sku'] = $product->sku;
+    //         $variation_data['color_id'] = !empty($request->multiple_colors) ? $request->multiple_colors[0] : null;
+    //         $variation_data['size_id'] = !empty($request->multiple_sizes) ? $request->multiple_sizes[0] : null;
+    //         $variation_data['grade_id'] = !empty($request->multiple_grades) ? $request->multiple_grades[0] : null;
+    //         $variation_data['unit_id'] = !empty($request->multiple_units) ? $request->multiple_units[0] : null;
 
-            $variation_data['is_dummy'] = 1;
-            $variation_data['default_purchase_price'] = $purchase_price;
-            $variation_data['default_sell_price'] = $sell_price;
+    //         $variation_data['is_dummy'] = 1;
+    //         $variation_data['default_purchase_price'] = $purchase_price;
+    //         $variation_data['default_sell_price'] = $sell_price;
 
-            $variation = Variation::create($variation_data);
-            $variation_array[] = ['variation' => $variation, 'variant_stores' =>  []];
-            $keey_variations[] = $variation->id;
-        }
+    //         $variation = Variation::create($variation_data);
+    //         $variation_array[] = ['variation' => $variation, 'variant_stores' =>  []];
+    //         $keey_variations[] = $variation->id;
+    //     }
 
-        if (!empty($keey_variations)) {
-            //delete the variation removed by user
-            Variation::where('product_id', $product->id)->whereNotIn('id', $keey_variations)->delete();
-            ProductStore::where('product_id', $product->id)->whereNotIn('variation_id', $keey_variations)->delete();
-        }
-        foreach ($variation_array as $array) {
-            $this->createOrUpdateProductStore($product, $array['variation'], $request, $array['variant_stores']);
-        }
+    //     if (!empty($keey_variations)) {
+    //         //delete the variation removed by user
+    //         Variation::where('product_id', $product->id)->whereNotIn('id', $keey_variations)->delete();
+    //         ProductStore::where('product_id', $product->id)->whereNotIn('variation_id', $keey_variations)->delete();
+    //     }
+    //     foreach ($variation_array as $array) {
+    //         $this->createOrUpdateProductStore($product, $array['variation'], $request, $array['variant_stores']);
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * create or update product consumption data
@@ -353,40 +347,40 @@ class ProductUtil extends Util
      * @param array $consumption_details
      * @return boolean
      */
-    public function createOrUpdateRawMaterialToProduct($variation_id, $consumption_details)
-    {
-        $keep_consumption_product = [];
-        if (!empty($consumption_details)) {
-            foreach ($consumption_details as $v) {
-                if (!empty($v['raw_material_id'])) {
-                    if (!empty($v['id'])) {
-                        $consumtion_product = ConsumptionProduct::find($v['id']);
-                        $consumtion_product->raw_material_id = $v['raw_material_id'];
-                        $consumtion_product->variation_id = $variation_id;
-                        $consumtion_product->amount_used = $this->num_uf($v['amount_used']);
-                        $consumtion_product->unit_id = $v['unit_id'];
+    // public function createOrUpdateRawMaterialToProduct($variation_id, $consumption_details)
+    // {
+    //     $keep_consumption_product = [];
+    //     if (!empty($consumption_details)) {
+    //         foreach ($consumption_details as $v) {
+    //             if (!empty($v['raw_material_id'])) {
+    //                 if (!empty($v['id'])) {
+    //                     $consumtion_product = ConsumptionProduct::find($v['id']);
+    //                     $consumtion_product->raw_material_id = $v['raw_material_id'];
+    //                     $consumtion_product->variation_id = $variation_id;
+    //                     $consumtion_product->amount_used = $this->num_uf($v['amount_used']);
+    //                     $consumtion_product->unit_id = $v['unit_id'];
 
-                        $consumtion_product->save();
-                        $keep_consumption_product[] = $v['id'];
-                    } else {
-                        $consumtion_product_data['raw_material_id'] = $v['raw_material_id'];
-                        $consumtion_product_data['variation_id'] = $variation_id;
-                        $consumtion_product_data['amount_used'] = $v['amount_used'];
-                        $consumtion_product_data['unit_id'] = $v['unit_id'];
-                        $consumtion_product = ConsumptionProduct::create($consumtion_product_data);
-                        $keep_consumption_product[] = $consumtion_product->id;
-                    }
-                }
-            }
-        }
+    //                     $consumtion_product->save();
+    //                     $keep_consumption_product[] = $v['id'];
+    //                 } else {
+    //                     $consumtion_product_data['raw_material_id'] = $v['raw_material_id'];
+    //                     $consumtion_product_data['variation_id'] = $variation_id;
+    //                     $consumtion_product_data['amount_used'] = $v['amount_used'];
+    //                     $consumtion_product_data['unit_id'] = $v['unit_id'];
+    //                     $consumtion_product = ConsumptionProduct::create($consumtion_product_data);
+    //                     $keep_consumption_product[] = $consumtion_product->id;
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        if (!empty($keep_consumption_product)) {
-            //delete the consumption product removed by user
-            ConsumptionProduct::where('variation_id', $variation_id)->whereNotIn('id', $keep_consumption_product)->delete();
-        }
+    //     if (!empty($keep_consumption_product)) {
+    //         //delete the consumption product removed by user
+    //         ConsumptionProduct::where('variation_id', $variation_id)->whereNotIn('id', $keep_consumption_product)->delete();
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
     /**
      * create or update product consumption data
      *
@@ -394,110 +388,110 @@ class ProductUtil extends Util
      * @param array $consumption_details
      * @return boolean
      */
-    public function createOrUpdateConsumptionProducts($raw_material, $consumption_details = [])
-    {
-        $keep_consumption_product = [];
-        if (!empty($consumption_details)) {
-            foreach ($consumption_details as $v) {
-                if (!empty($v['id'])) {
-                    $consumtion_product = ConsumptionProduct::find($v['id']);
-                    $consumtion_product->raw_material_id = $raw_material->id;
-                    $consumtion_product->variation_id = $v['variation_id'];
-                    $consumtion_product->amount_used = $this->num_uf($v['amount_used']);
-                    $consumtion_product->unit_id = $v['unit_id'];
+    // public function createOrUpdateConsumptionProducts($raw_material, $consumption_details = [])
+    // {
+    //     $keep_consumption_product = [];
+    //     if (!empty($consumption_details)) {
+    //         foreach ($consumption_details as $v) {
+    //             if (!empty($v['id'])) {
+    //                 $consumtion_product = ConsumptionProduct::find($v['id']);
+    //                 $consumtion_product->raw_material_id = $raw_material->id;
+    //                 $consumtion_product->variation_id = $v['variation_id'];
+    //                 $consumtion_product->amount_used = $this->num_uf($v['amount_used']);
+    //                 $consumtion_product->unit_id = $v['unit_id'];
 
-                    $consumtion_product->save();
-                    $keep_consumption_product[] = $v['id'];
-                } else {
-                    $consumtion_product_data['raw_material_id'] = $raw_material->id;
-                    $consumtion_product_data['variation_id'] = $v['variation_id'];
-                    $consumtion_product_data['amount_used'] = $v['amount_used'];
-                    $consumtion_product_data['unit_id'] = $v['unit_id'];
-                    $consumtion_product = ConsumptionProduct::create($consumtion_product_data);
-                    $keep_consumption_product[] = $consumtion_product->id;
-                }
-            }
-        } else {
-            ConsumptionProduct::where('raw_material_id', $raw_material->id)->delete();
-        }
+    //                 $consumtion_product->save();
+    //                 $keep_consumption_product[] = $v['id'];
+    //             } else {
+    //                 $consumtion_product_data['raw_material_id'] = $raw_material->id;
+    //                 $consumtion_product_data['variation_id'] = $v['variation_id'];
+    //                 $consumtion_product_data['amount_used'] = $v['amount_used'];
+    //                 $consumtion_product_data['unit_id'] = $v['unit_id'];
+    //                 $consumtion_product = ConsumptionProduct::create($consumtion_product_data);
+    //                 $keep_consumption_product[] = $consumtion_product->id;
+    //             }
+    //         }
+    //     } else {
+    //         ConsumptionProduct::where('raw_material_id', $raw_material->id)->delete();
+    //     }
 
-        if (!empty($keep_consumption_product)) {
-            //delete the consumption product removed by user
-            ConsumptionProduct::where('raw_material_id', $raw_material->id)->whereNotIn('id', $keep_consumption_product)->delete();
-        }
+    //     if (!empty($keep_consumption_product)) {
+    //         //delete the consumption product removed by user
+    //         ConsumptionProduct::where('raw_material_id', $raw_material->id)->whereNotIn('id', $keep_consumption_product)->delete();
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
-    public function getProductClassificationTreeObject()
-    {
-        $classes = ProductClass::select('name', 'id')->get();
+    // public function getProductClassificationTreeObject()
+    // {
+    //     $classes = ProductClass::select('name', 'id')->get();
 
-        $tree = '';
-        foreach ($classes as $class) {
-            $tree .= '{text: "' . $class->name . '",';
-            $tree .= $this->treeConfigString('red');
-            $tree .= 'nodes: [';
+    //     $tree = '';
+    //     foreach ($classes as $class) {
+    //         $tree .= '{text: "' . $class->name . '",';
+    //         $tree .= $this->treeConfigString('red');
+    //         $tree .= 'nodes: [';
 
-            $categories = Product::where(
-                'product_class_id',
-                $class->id
-            )->select('category_id')->groupBy('category_id')->get();
+    //         $categories = Product::where(
+    //             'product_class_id',
+    //             $class->id
+    //         )->select('category_id')->groupBy('category_id')->get();
 
-            foreach ($categories as $category) {
-                $tree .= '{';
-                $category = Category::find($category->category_id);
-                $tree .= 'text: "' . $category->name . '",';
-                $tree .= $this->treeConfigString('lightblue');
-                $tree .= 'nodes: [';
+    //         foreach ($categories as $category) {
+    //             $tree .= '{';
+    //             $category = Category::find($category->category_id);
+    //             $tree .= 'text: "' . $category->name . '",';
+    //             $tree .= $this->treeConfigString('lightblue');
+    //             $tree .= 'nodes: [';
 
-                $sub_categories = Product::where(
-                    'category_id',
-                    $category->id
-                )->select('sub_category_id')->groupBy('sub_category_id')->get();
-                foreach ($sub_categories as $sub_category) {
-                    $tree .= '{';
-                    $sub_category = Category::find($sub_category->sub_category_id);
-                    $tree .= 'text: "' . $sub_category->name . '",';
-                    $tree .= $this->treeConfigString('maroon');
-                    $tree .= 'nodes: [';
-                    $brands = Product::where(
-                        'sub_category_id',
-                        $sub_category->id
-                    )->select('brand_id')->groupBy('brand_id')->get();
-                    foreach ($brands as $brand) {
-                        $tree .= '{';
-                        $brand = Brand::find($brand->brand_id);
-                        $tree .= 'text: "' . $brand->name . '",';
-                        $tree .= $this->treeConfigString('gray');
-                        $tree .= 'nodes: [';
-                        $products = Product::where(
-                            'brand_id',
-                            $brand->id
-                        )->select('id')->get();
-                        foreach ($products as $product) {
-                            $tree .= '{';
-                            $product = Product::find($product->id);
-                            $action = action('ProductController@edit', $product->id);
-                            $tree .= 'text: "' . $product->name . '",';
-                            // $tree .= 'href:  "'.$action.'",';
-                            $tree .= 'color: "green",';
-                            $tree .= 'nodes: [';
+    //             $sub_categories = Product::where(
+    //                 'category_id',
+    //                 $category->id
+    //             )->select('sub_category_id')->groupBy('sub_category_id')->get();
+    //             foreach ($sub_categories as $sub_category) {
+    //                 $tree .= '{';
+    //                 $sub_category = Category::find($sub_category->sub_category_id);
+    //                 $tree .= 'text: "' . $sub_category->name . '",';
+    //                 $tree .= $this->treeConfigString('maroon');
+    //                 $tree .= 'nodes: [';
+    //                 $brands = Product::where(
+    //                     'sub_category_id',
+    //                     $sub_category->id
+    //                 )->select('brand_id')->groupBy('brand_id')->get();
+    //                 foreach ($brands as $brand) {
+    //                     $tree .= '{';
+    //                     $brand = Brand::find($brand->brand_id);
+    //                     $tree .= 'text: "' . $brand->name . '",';
+    //                     $tree .= $this->treeConfigString('gray');
+    //                     $tree .= 'nodes: [';
+    //                     $products = Product::where(
+    //                         'brand_id',
+    //                         $brand->id
+    //                     )->select('id')->get();
+    //                     foreach ($products as $product) {
+    //                         $tree .= '{';
+    //                         $product = Product::find($product->id);
+    //                         $action = action('ProductController@edit', $product->id);
+    //                         $tree .= 'text: "' . $product->name . '",';
+    //                         // $tree .= 'href:  "'.$action.'",';
+    //                         $tree .= 'color: "green",';
+    //                         $tree .= 'nodes: [';
 
-                            $tree .= ']},';
-                        }
+    //                         $tree .= ']},';
+    //                     }
 
-                        $tree .= ']},';
-                    }
-                    $tree .= ']},';
-                }
-                $tree .= ']},';
-            }
-            $tree .= ']},';
-        }
+    //                     $tree .= ']},';
+    //                 }
+    //                 $tree .= ']},';
+    //             }
+    //             $tree .= ']},';
+    //         }
+    //         $tree .= ']},';
+    //     }
 
-        return $tree;
-    }
+    //     return $tree;
+    // }
 
     public function treeConfigString($color)
     {
@@ -677,96 +671,96 @@ class ProductUtil extends Util
      * @param int $customer_id
      * @return mix
      */
-    public function getProductDiscountDetails($product_id, $customer_id)
-    {
-        $customer = Customer::find($customer_id);
-        $customer_type_id = null;
-        if (!empty($customer)) {
-            $customer_type_id = (string) $customer->customer_type_id;
-        }
-        if (!empty($customer_type_id)) {
+    // public function getProductDiscountDetails($product_id, $customer_id)
+    // {
+    //     $customer = Customer::find($customer_id);
+    //     $customer_type_id = null;
+    //     if (!empty($customer)) {
+    //         $customer_type_id = (string) $customer->customer_type_id;
+    //     }
+    //     if (!empty($customer_type_id)) {
 
-            $product = Product::whereJsonContains('discount_customer_types', $customer_type_id)
-                ->where('id', $product_id)
-                ->where('discount', '>',0)
-                ->select(
-                    'products.discount_type',
-                    'products.discount',
-                    'products.discount_start_date',
-                    'products.discount_end_date',
-                )
-                ->first();
-            if(!$product){
-                $product = ProductDiscount::whereJsonContains('discount_customer_types', $customer_type_id)
-                    ->where('product_id', $product_id)
-                    ->select(
-                        'id',
-                        'discount_type',
-                        'discount',
-                        'discount_category',
-                        'discount_start_date',
-                        'discount_end_date',
-                    )
-                    ->first();
-            }
+    //         $product = Product::whereJsonContains('discount_customer_types', $customer_type_id)
+    //             ->where('id', $product_id)
+    //             ->where('discount', '>',0)
+    //             ->select(
+    //                 'products.discount_type',
+    //                 'products.discount',
+    //                 'products.discount_start_date',
+    //                 'products.discount_end_date',
+    //             )
+    //             ->first();
+    //         if(!$product){
+    //             $product = ProductDiscount::whereJsonContains('discount_customer_types', $customer_type_id)
+    //                 ->where('product_id', $product_id)
+    //                 ->select(
+    //                     'id',
+    //                     'discount_type',
+    //                     'discount',
+    //                     'discount_category',
+    //                     'discount_start_date',
+    //                     'discount_end_date',
+    //                 )
+    //                 ->first();
+    //         }
 
-            if (!empty($product)) {
-                if (!empty($product->discount_start_date) && !empty($product->discount_end_date)) {
-                    //if end date set then check for expiry
-                    if (($product->discount_start_date <= date('Y-m-d') && $product->discount_end_date >= date('Y-m-d'))||$product->is_discount_permenant=='1') {
-                        return $product;
-                    } else {
-                        return false;
-                    }
-                }
-                return $product;
-            }
-        }
-        return null;
-    }
+    //         if (!empty($product)) {
+    //             if (!empty($product->discount_start_date) && !empty($product->discount_end_date)) {
+    //                 //if end date set then check for expiry
+    //                 if (($product->discount_start_date <= date('Y-m-d') && $product->discount_end_date >= date('Y-m-d'))||$product->is_discount_permenant=='1') {
+    //                     return $product;
+    //                 } else {
+    //                     return false;
+    //                 }
+    //             }
+    //             return $product;
+    //         }
+    //     }
+    //     return null;
+    // }
 
-    public function getProductAllDiscountCategories($product_id)
-    {
-        // $product = Product::where('id', $product_id)
-        //     ->where('discount', '>',0)
-        //     ->select(
-        //         'products.discount_type',
-        //         'products.discount',
-        //         'products.discount_start_date',
-        //         'products.discount_end_date',
-        //     )
-        //     ->first();
-        // if(!$product){
-        $product = ProductDiscount::where('product_id', $product_id)
-            ->where(function($query){
-                $query->where('discount_start_date','<=',date('Y-m-d'));
-                $query->where('discount_end_date','>=',date('Y-m-d'));
-                $query->orWhere('is_discount_permenant',"1");
-            }) ->select(
-                'id',
-                'discount_type',
-                'discount',
-                'discount_category',
-                'discount_start_date',
-                'discount_end_date',
-            )
-            ->get();
-        // }
+    // public function getProductAllDiscountCategories($product_id)
+    // {
+    //     // $product = Product::where('id', $product_id)
+    //     //     ->where('discount', '>',0)
+    //     //     ->select(
+    //     //         'products.discount_type',
+    //     //         'products.discount',
+    //     //         'products.discount_start_date',
+    //     //         'products.discount_end_date',
+    //     //     )
+    //     //     ->first();
+    //     // if(!$product){
+    //     $product = ProductDiscount::where('product_id', $product_id)
+    //         ->where(function($query){
+    //             $query->where('discount_start_date','<=',date('Y-m-d'));
+    //             $query->where('discount_end_date','>=',date('Y-m-d'));
+    //             $query->orWhere('is_discount_permenant',"1");
+    //         }) ->select(
+    //             'id',
+    //             'discount_type',
+    //             'discount',
+    //             'discount_category',
+    //             'discount_start_date',
+    //             'discount_end_date',
+    //         )
+    //         ->get();
+    //     // }
 
-        if (!empty($product)) {
-            // if (!empty($product->discount_start_date) && !empty($product->discount_end_date)) {
-            //if end date set then check for expiry
-            // if (($product->discount_start_date <= date('Y-m-d') && $product->discount_end_date >= date('Y-m-d')) ) {
-            // return $product;
-            // } else {
-            // return false;
-            // }
-            // }
-            return $product;
-        }
-        // }
-        return null;
-    }
+    //     if (!empty($product)) {
+    //         // if (!empty($product->discount_start_date) && !empty($product->discount_end_date)) {
+    //         //if end date set then check for expiry
+    //         // if (($product->discount_start_date <= date('Y-m-d') && $product->discount_end_date >= date('Y-m-d')) ) {
+    //         // return $product;
+    //         // } else {
+    //         // return false;
+    //         // }
+    //         // }
+    //         return $product;
+    //     }
+    //     // }
+    //     return null;
+    // }
     /**
      * get the sales promotion details for product if exist
      *
@@ -775,36 +769,36 @@ class ProductUtil extends Util
      * @param int $customer_id
      * @return object
      */
-    public function getSalesPromotionDetail($product_id, $store_id, $customer_id, $added_products = [])
-    {
-        $customer = Customer::find($customer_id);
-        $store_id = (string) $store_id;
-        $product_id = (int) $product_id;
-        $added_products = (array)$added_products;
+    // public function getSalesPromotionDetail($product_id, $store_id, $customer_id, $added_products = [])
+    // {
+    //     $customer = Customer::find($customer_id);
+    //     $store_id = (string) $store_id;
+    //     $product_id = (int) $product_id;
+    //     $added_products = (array)$added_products;
 
-        $customer_type_id = (string) $customer->customer_type_id;
-        if (!empty($customer_type_id)) {
-            $sales_promotions = SalesPromotion::whereJsonContains('customer_type_ids', $customer_type_id)
-                ->whereJsonContains('store_ids', $store_id)
-                ->whereJsonContains('product_ids', $product_id)
-                ->whereDate('start_date', '<=', date('Y-m-d'))
-                ->whereDate('end_date', '>=', date('Y-m-d'))
-                ->orWhere('is_discount_permenant','1')
-                ->get();
-            foreach ($sales_promotions as $sales_promotion) {
-                if ($sales_promotion->type == 'item_discount') {
-                    if (!$sales_promotion->product_condition) {
-                        return $sales_promotion;
-                    } else {
-                        $com = $this->compareArray($sales_promotion->condition_product_ids, $added_products);
-                        if ($com) {
-                            return $sales_promotion;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //     $customer_type_id = (string) $customer->customer_type_id;
+    //     if (!empty($customer_type_id)) {
+    //         $sales_promotions = SalesPromotion::whereJsonContains('customer_type_ids', $customer_type_id)
+    //             ->whereJsonContains('store_ids', $store_id)
+    //             ->whereJsonContains('product_ids', $product_id)
+    //             ->whereDate('start_date', '<=', date('Y-m-d'))
+    //             ->whereDate('end_date', '>=', date('Y-m-d'))
+    //             ->orWhere('is_discount_permenant','1')
+    //             ->get();
+    //         foreach ($sales_promotions as $sales_promotion) {
+    //             if ($sales_promotion->type == 'item_discount') {
+    //                 if (!$sales_promotion->product_condition) {
+    //                     return $sales_promotion;
+    //                 } else {
+    //                     $com = $this->compareArray($sales_promotion->condition_product_ids, $added_products);
+    //                     if ($com) {
+    //                         return $sales_promotion;
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
     /**
      * get the sales promotion details for product if valid for this sale
      *
@@ -813,36 +807,36 @@ class ProductUtil extends Util
      * @param int $customer_id
      * @return object
      */
-    public function getSalePromotionDetailsIfValidForThisSale($store_id, $customer_id, $added_products = [], $qty_array = [])
-    {
-        $customer = Customer::find($customer_id);
-        $store_id = (string) $store_id;
-        $added_products = (array)$added_products;
+    // public function getSalePromotionDetailsIfValidForThisSale($store_id, $customer_id, $added_products = [], $qty_array = [])
+    // {
+    //     $customer = Customer::find($customer_id);
+    //     $store_id = (string) $store_id;
+    //     $added_products = (array)$added_products;
 
-        $customer_type_id = (string) $customer->customer_type_id;
-        $array_sales_promotions=[];
-        if (!empty($customer_type_id)) {
-            $sales_promotions = SalesPromotion::
-            whereJsonContains('customer_type_ids', $customer_type_id)
-                ->whereJsonContains('store_ids', $store_id)
-                ->whereDate('start_date', '<=', date('Y-m-d'))
-                ->whereDate('end_date', '>=', date('Y-m-d'))
-                ->orWhere('is_discount_permenant','1')
-                ->get();
-            foreach ($sales_promotions as $sales_promotion) {
-                $v_sales_promotion = $this->getSalePromotionDetailsIfValidForThisSaleArray($sales_promotion, $added_products, $qty_array);
-                if($v_sales_promotion['vale_return'] != null ){
-                    array_push($array_sales_promotions,$v_sales_promotion['vale_return']);
-                }
-                if(empty($v_sales_promotion['qty_array'])){
-                    break;
+    //     $customer_type_id = (string) $customer->customer_type_id;
+    //     $array_sales_promotions=[];
+    //     if (!empty($customer_type_id)) {
+    //         $sales_promotions = SalesPromotion::
+    //         whereJsonContains('customer_type_ids', $customer_type_id)
+    //             ->whereJsonContains('store_ids', $store_id)
+    //             ->whereDate('start_date', '<=', date('Y-m-d'))
+    //             ->whereDate('end_date', '>=', date('Y-m-d'))
+    //             ->orWhere('is_discount_permenant','1')
+    //             ->get();
+    //         foreach ($sales_promotions as $sales_promotion) {
+    //             $v_sales_promotion = $this->getSalePromotionDetailsIfValidForThisSaleArray($sales_promotion, $added_products, $qty_array);
+    //             if($v_sales_promotion['vale_return'] != null ){
+    //                 array_push($array_sales_promotions,$v_sales_promotion['vale_return']);
+    //             }
+    //             if(empty($v_sales_promotion['qty_array'])){
+    //                 break;
 
-                }
-            }
-        }
+    //             }
+    //         }
+    //     }
 
-        return $array_sales_promotions;
-    }
+    //     return $array_sales_promotions;
+    // }
     public function getSalePromotionDetailsIfValidForThisSaleArray($sales_promotion,$added_products,$qty_array)
     {
         $data['vale_return']=null;
@@ -929,49 +923,49 @@ class ProductUtil extends Util
      *
      * @return object
      */
-    public function getDetailsFromVariation($variation_id,  $store_id = null, $check_qty = true)
-    {
-        $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
-            ->leftjoin('product_stores AS ps', 'variations.id', '=', 'ps.variation_id')
-            ->leftjoin('units', 'variations.unit_id', '=', 'units.id')
-            ->leftjoin('grades', 'variations.grade_id', '=', 'grades.id')
-            ->leftjoin('sizes', 'variations.size_id', '=', 'sizes.id')
-            ->leftjoin('colors', 'variations.color_id', '=', 'colors.id')
+    // public function getDetailsFromVariation($variation_id,  $store_id = null, $check_qty = true)
+    // {
+    //     $query = Variation::join('products AS p', 'variations.product_id', '=', 'p.id')
+    //         ->leftjoin('product_stores AS ps', 'variations.id', '=', 'ps.variation_id')
+    //         ->leftjoin('units', 'variations.unit_id', '=', 'units.id')
+    //         ->leftjoin('grades', 'variations.grade_id', '=', 'grades.id')
+    //         ->leftjoin('sizes', 'variations.size_id', '=', 'sizes.id')
+    //         ->leftjoin('colors', 'variations.color_id', '=', 'colors.id')
 
-            ->where('variations.id', $variation_id);
+    //         ->where('variations.id', $variation_id);
 
 
-        if (!empty($store_id) && $check_qty) {
-            //Check for enable add-stock, if enabled check for store id.
-            $query->where(function ($query) use ($store_id) {
-                $query->where('ps.store_id', $store_id);
-            });
-        }
+    //     if (!empty($store_id) && $check_qty) {
+    //         //Check for enable add-stock, if enabled check for store id.
+    //         $query->where(function ($query) use ($store_id) {
+    //             $query->where('ps.store_id', $store_id);
+    //         });
+    //     }
 
-        $product = $query->select(
-            DB::raw("IF(variations.is_dummy = 0, CONCAT(p.name,
-                    ' (', variations.name, ':',variations.name, ')'), p.name) AS product_name"),
-            'p.id as product_id',
-            'p.sell_price',
-            'p.type as product_type',
-            'p.name as product_actual_name',
-            'variations.name as product_variation_name',
-            'variations.is_dummy as is_dummy',
-            'variations.name as variation_name',
-            'variations.sub_sku',
-            'p.barcode_type',
-            'ps.qty_available',
-            'units.name as unit_name',
-            'grades.name as grade_name',
-            'sizes.name as size_name',
-            'colors.name as color_name',
-            'variations.default_sell_price',
-            'variations.id as variation_id'
-        )
-            ->first();
+    //     $product = $query->select(
+    //         DB::raw("IF(variations.is_dummy = 0, CONCAT(p.name,
+    //                 ' (', variations.name, ':',variations.name, ')'), p.name) AS product_name"),
+    //         'p.id as product_id',
+    //         'p.sell_price',
+    //         'p.type as product_type',
+    //         'p.name as product_actual_name',
+    //         'variations.name as product_variation_name',
+    //         'variations.is_dummy as is_dummy',
+    //         'variations.name as variation_name',
+    //         'variations.sub_sku',
+    //         'p.barcode_type',
+    //         'ps.qty_available',
+    //         'units.name as unit_name',
+    //         'grades.name as grade_name',
+    //         'sizes.name as size_name',
+    //         'colors.name as color_name',
+    //         'variations.default_sell_price',
+    //         'variations.id as variation_id'
+    //     )
+    //         ->first();
 
-        return $product;
-    }
+    //     return $product;
+    // }
 
     /**
      * createOrUpdatePurchaseOrderLines
@@ -1027,61 +1021,61 @@ class ProductUtil extends Util
      * @param [mix] $transaction
      * @return void
      */
-    public function createOrUpdateRemoveStockLines($remove_stock_lines, $transaction)
-    {
+    // public function createOrUpdateRemoveStockLines($remove_stock_lines, $transaction)
+    // {
 
-        $keep_lines_ids = [];
+    //     $keep_lines_ids = [];
 
-        foreach ($remove_stock_lines as $line) {
-            if (!empty($line['remove_stock_line_id'])) {
-                $remove_stock_line = RemoveStockLine::find($line['remove_stock_line_id']);
+    //     foreach ($remove_stock_lines as $line) {
+    //         if (!empty($line['remove_stock_line_id'])) {
+    //             $remove_stock_line = RemoveStockLine::find($line['remove_stock_line_id']);
 
-                $remove_stock_line->product_id = $line['product_id'];
-                $remove_stock_line->variation_id = $line['variation_id'];
-                $remove_stock_line->quantity = $this->num_uf($line['quantity']);
-                $remove_stock_line->purchase_price = $this->num_uf($line['purchase_price']);
-                $remove_stock_line->sub_total = $this->num_uf($line['sub_total']);
-                $remove_stock_line->notes = !empty($line['notes']) ? $line['notes'] : null;
+    //             $remove_stock_line->product_id = $line['product_id'];
+    //             $remove_stock_line->variation_id = $line['variation_id'];
+    //             $remove_stock_line->quantity = $this->num_uf($line['quantity']);
+    //             $remove_stock_line->purchase_price = $this->num_uf($line['purchase_price']);
+    //             $remove_stock_line->sub_total = $this->num_uf($line['sub_total']);
+    //             $remove_stock_line->notes = !empty($line['notes']) ? $line['notes'] : null;
 
-                $remove_stock_line->save();
-                if ($line['quantity'] > 0) {
-                    $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], $remove_stock_line->quantity);
-                }
+    //             $remove_stock_line->save();
+    //             if ($line['quantity'] > 0) {
+    //                 $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], $remove_stock_line->quantity);
+    //             }
 
-                $keep_lines_ids[] = $line['remove_stock_line_id'];
-            } else {
-                $remove_stock_line_data = [
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $line['product_id'],
-                    'variation_id' => $line['variation_id'],
-                    'quantity' => $this->num_uf($line['quantity']),
-                    'purchase_price' => $this->num_uf($line['purchase_price']),
-                    'sub_total' => $this->num_uf($line['sub_total']),
-                    'notes' => !empty($line['notes']) ? $line['notes'] : null,
-                ];
+    //             $keep_lines_ids[] = $line['remove_stock_line_id'];
+    //         } else {
+    //             $remove_stock_line_data = [
+    //                 'transaction_id' => $transaction->id,
+    //                 'product_id' => $line['product_id'],
+    //                 'variation_id' => $line['variation_id'],
+    //                 'quantity' => $this->num_uf($line['quantity']),
+    //                 'purchase_price' => $this->num_uf($line['purchase_price']),
+    //                 'sub_total' => $this->num_uf($line['sub_total']),
+    //                 'notes' => !empty($line['notes']) ? $line['notes'] : null,
+    //             ];
 
-                if ($line['quantity'] > 0) {
-                    $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], 0);
-                }
+    //             if ($line['quantity'] > 0) {
+    //                 $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], 0);
+    //             }
 
-                $remove_stock_line = RemoveStockLine::create($remove_stock_line_data);
+    //             $remove_stock_line = RemoveStockLine::create($remove_stock_line_data);
 
-                $keep_lines_ids[] = $remove_stock_line->id;
-            }
-        }
+    //             $keep_lines_ids[] = $remove_stock_line->id;
+    //         }
+    //     }
 
-        if (!empty($keep_lines_ids)) {
-            $deleted_lines = RemoveStockLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
-            foreach ($deleted_lines as $deleted_line) {
-                if ($deleted_line->quantity > 0) {
-                    $this->updateProductQuantityStore($deleted_line->product_id, $deleted_line->variation_id, $transaction->store_id, $deleted_line->quantity, 0);
-                }
-                $deleted_line->delete();
-            }
-        }
+    //     if (!empty($keep_lines_ids)) {
+    //         $deleted_lines = RemoveStockLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
+    //         foreach ($deleted_lines as $deleted_line) {
+    //             if ($deleted_line->quantity > 0) {
+    //                 $this->updateProductQuantityStore($deleted_line->product_id, $deleted_line->variation_id, $transaction->store_id, $deleted_line->quantity, 0);
+    //             }
+    //             $deleted_line->delete();
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
     /**
      * createOrUpdateAddStockLines
      *
@@ -1215,160 +1209,160 @@ class ProductUtil extends Util
         }
         return true;
     } --*/
-    public function createOrUpdateAddStockLines($add_stocks, $transaction,$batch_row=null)
-    {
+    // public function createOrUpdateAddStockLines($add_stocks, $transaction,$batch_row=null)
+    // {
 
-        $keep_lines_ids = [];
-        $batch_numbers=[];
-        $qty=0;
-        $all_cost_ratio = 0;
-        $number_vs_base_unit=1;
-        // return $add_stocks;
-        foreach ($add_stocks as $line) {
-            if( $transaction->discount_amount || $transaction->other_payments || $transaction->other_expenses){
-                $all_cost_percentage = ((($line['quantity'] * $line['purchase_price'])*100) / $transaction->grand_total); //percentage
+    //     $keep_lines_ids = [];
+    //     $batch_numbers=[];
+    //     $qty=0;
+    //     $all_cost_ratio = 0;
+    //     $number_vs_base_unit=1;
+    //     // return $add_stocks;
+    //     foreach ($add_stocks as $line) {
+    //         if( $transaction->discount_amount || $transaction->other_payments || $transaction->other_expenses){
+    //             $all_cost_percentage = ((($line['quantity'] * $line['purchase_price'])*100) / $transaction->grand_total); //percentage
 
-                $discount_amount_per_line =  !empty($transaction->discount_amount) ? ($transaction->discount_amount * $all_cost_percentage /100 ): 0;
-                $other_payments_per_line = !empty($transaction->other_payments) ? ($transaction->other_payments * $all_cost_percentage /100) : 0;
-                $other_expenses_per_line = !empty($transaction->other_expenses) ? ($transaction->other_expenses * $all_cost_percentage /100) : 0;
-                $all_cost_ratio = $this->num_uf( $other_payments_per_line +$other_expenses_per_line - $discount_amount_per_line );
-            }
-            $number_vs_base_unit=Variation::find($line['variation_id'])->number_vs_base_unit==0?1:Variation::find($line['variation_id'])->number_vs_base_unit;
-            if(isset($line['product_id'] ) && isset($line['variation_id']) ){
-                if (!empty($line['add_stock_line_id'])) {
-                    $add_stock = AddStockLine::find($line['add_stock_line_id']);
-                    $add_stock->product_id = $line['product_id'];
-                    $add_stock->variation_id = $line['variation_id'];
-                    $old_qty = $add_stock->quantity;
-                    $add_stock->quantity = $line['bounce_qty'] > 0 ?  $number_vs_base_unit*($this->num_uf($line['quantity'])+$line['bounce_qty']): $this->num_uf($line['quantity']);
-                    $add_stock->purchase_price = $line['bounce_qty'] > 0 ? $line['bounce_purchase_price']:$this->num_uf($line['purchase_price']);
-                    $add_stock->final_cost = $this->num_uf($line['final_cost']);
-                    $add_stock->sub_total = $this->num_uf($line['sub_total']);
-                    $add_stock->batch_number = $line['batch_number'];
-                    $add_stock->manufacturing_date = !empty($line['manufacturing_date']) ? $this->uf_date($line['manufacturing_date']) : null;
-                    $add_stock->expiry_date = !empty($line['expiry_date']) ? $this->uf_date($line['expiry_date']) : null;
-                    $add_stock->expiry_warning = $line['expiry_warning'];
-                    $add_stock->convert_status_expire = $line['convert_status_expire'];
-                    $add_stock->sell_price = $line['selling_price'];
-                    $add_stock->bounce_qty = $line['bounce_qty'];
-                    $add_stock->profit_bounce = $line['bounce_profit'];
-                    $add_stock->bounce_purchase_price = $line['bounce_purchase_price'];
-                    $add_stock->bounce_convert_status_expire = $line['bounce_convert_status_expire'];
-                    $add_stock->bounce_expiry_warning = $line['bounce_expiry_warning'];
-                    $add_stock->bounce_expiry_date = $line['bounce_expiry_date'];
-                    $add_stock->bounce_manufacturing_date = $line['bounce_manufacturing_date'];
-                    $add_stock->bounce_batch_number = $line['bounce_batch_number'];
-                    $add_stock->cost_ratio_per_one = $this->num_uf($all_cost_ratio / $line['quantity']) ?? 0;
-                    $add_stock->save();
-                    $keep_lines_ids[] = $line['add_stock_line_id'];
-                    $batch_numbers[]=$line['batch_number'];
-                    $qty =  $number_vs_base_unit * $this->num_uf($line['quantity']);
-                    $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->store_id,  $qty, $old_qty);
-                } else {
-                    $add_stock_data = [
-                        'transaction_id' => $transaction->id,
-                        'product_id' => $line['product_id'],
-                        'variation_id' => $line['variation_id'],
-                        'quantity' => $line['bounce_qty'] > 0 ? $number_vs_base_unit *($this->num_uf($line['quantity'])+$line['bounce_qty']): $this->num_uf($line['quantity']),
-                        'purchase_price' => $line['bounce_qty'] > 0 ? $line['bounce_purchase_price'] : $this->num_uf($line['purchase_price']),
-                        'final_cost' => $this->num_uf($line['final_cost']),
-                        'sub_total' => $this->num_uf($line['sub_total']),
-                        'batch_number' => $line['batch_number'],
-                        'manufacturing_date' => !empty($line['manufacturing_date']) ? $this->uf_date($line['manufacturing_date']) : null,
-                        'expiry_date' => !empty($line['expiry_date']) ? $this->uf_date($line['expiry_date']) : null,
-                        'expiry_warning' => $line['expiry_warning'],
-                        'convert_status_expire' => $line['convert_status_expire'],
-                        'sell_price' => $line['selling_price'],
-                        'bounce_qty' => $line['bounce_qty'],
-                        'profit_bounce' => $line['bounce_profit'],
-                        'bounce_purchase_price' => $line['bounce_purchase_price'],
-                        'bounce_convert_status_expire' => $line['bounce_convert_status_expire'],
-                        'bounce_expiry_warning' => $line['bounce_expiry_warning'],
-                        'bounce_expiry_date' => $line['bounce_expiry_date'],
-                        'bounce_manufacturing_date' => $line['bounce_manufacturing_date'],
-                        'bounce_batch_number' => $line['bounce_batch_number'],
-                        'cost_ratio_per_one' => $this->num_uf($all_cost_ratio / $line['quantity']) ?? 0,
-                    ];
+    //             $discount_amount_per_line =  !empty($transaction->discount_amount) ? ($transaction->discount_amount * $all_cost_percentage /100 ): 0;
+    //             $other_payments_per_line = !empty($transaction->other_payments) ? ($transaction->other_payments * $all_cost_percentage /100) : 0;
+    //             $other_expenses_per_line = !empty($transaction->other_expenses) ? ($transaction->other_expenses * $all_cost_percentage /100) : 0;
+    //             $all_cost_ratio = $this->num_uf( $other_payments_per_line +$other_expenses_per_line - $discount_amount_per_line );
+    //         }
+    //         $number_vs_base_unit=Variation::find($line['variation_id'])->number_vs_base_unit==0?1:Variation::find($line['variation_id'])->number_vs_base_unit;
+    //         if(isset($line['product_id'] ) && isset($line['variation_id']) ){
+    //             if (!empty($line['add_stock_line_id'])) {
+    //                 $add_stock = AddStockLine::find($line['add_stock_line_id']);
+    //                 $add_stock->product_id = $line['product_id'];
+    //                 $add_stock->variation_id = $line['variation_id'];
+    //                 $old_qty = $add_stock->quantity;
+    //                 $add_stock->quantity = $line['bounce_qty'] > 0 ?  $number_vs_base_unit*($this->num_uf($line['quantity'])+$line['bounce_qty']): $this->num_uf($line['quantity']);
+    //                 $add_stock->purchase_price = $line['bounce_qty'] > 0 ? $line['bounce_purchase_price']:$this->num_uf($line['purchase_price']);
+    //                 $add_stock->final_cost = $this->num_uf($line['final_cost']);
+    //                 $add_stock->sub_total = $this->num_uf($line['sub_total']);
+    //                 $add_stock->batch_number = $line['batch_number'];
+    //                 $add_stock->manufacturing_date = !empty($line['manufacturing_date']) ? $this->uf_date($line['manufacturing_date']) : null;
+    //                 $add_stock->expiry_date = !empty($line['expiry_date']) ? $this->uf_date($line['expiry_date']) : null;
+    //                 $add_stock->expiry_warning = $line['expiry_warning'];
+    //                 $add_stock->convert_status_expire = $line['convert_status_expire'];
+    //                 $add_stock->sell_price = $line['selling_price'];
+    //                 $add_stock->bounce_qty = $line['bounce_qty'];
+    //                 $add_stock->profit_bounce = $line['bounce_profit'];
+    //                 $add_stock->bounce_purchase_price = $line['bounce_purchase_price'];
+    //                 $add_stock->bounce_convert_status_expire = $line['bounce_convert_status_expire'];
+    //                 $add_stock->bounce_expiry_warning = $line['bounce_expiry_warning'];
+    //                 $add_stock->bounce_expiry_date = $line['bounce_expiry_date'];
+    //                 $add_stock->bounce_manufacturing_date = $line['bounce_manufacturing_date'];
+    //                 $add_stock->bounce_batch_number = $line['bounce_batch_number'];
+    //                 $add_stock->cost_ratio_per_one = $this->num_uf($all_cost_ratio / $line['quantity']) ?? 0;
+    //                 $add_stock->save();
+    //                 $keep_lines_ids[] = $line['add_stock_line_id'];
+    //                 $batch_numbers[]=$line['batch_number'];
+    //                 $qty =  $number_vs_base_unit * $this->num_uf($line['quantity']);
+    //                 $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->store_id,  $qty, $old_qty);
+    //             } else {
+    //                 $add_stock_data = [
+    //                     'transaction_id' => $transaction->id,
+    //                     'product_id' => $line['product_id'],
+    //                     'variation_id' => $line['variation_id'],
+    //                     'quantity' => $line['bounce_qty'] > 0 ? $number_vs_base_unit *($this->num_uf($line['quantity'])+$line['bounce_qty']): $this->num_uf($line['quantity']),
+    //                     'purchase_price' => $line['bounce_qty'] > 0 ? $line['bounce_purchase_price'] : $this->num_uf($line['purchase_price']),
+    //                     'final_cost' => $this->num_uf($line['final_cost']),
+    //                     'sub_total' => $this->num_uf($line['sub_total']),
+    //                     'batch_number' => $line['batch_number'],
+    //                     'manufacturing_date' => !empty($line['manufacturing_date']) ? $this->uf_date($line['manufacturing_date']) : null,
+    //                     'expiry_date' => !empty($line['expiry_date']) ? $this->uf_date($line['expiry_date']) : null,
+    //                     'expiry_warning' => $line['expiry_warning'],
+    //                     'convert_status_expire' => $line['convert_status_expire'],
+    //                     'sell_price' => $line['selling_price'],
+    //                     'bounce_qty' => $line['bounce_qty'],
+    //                     'profit_bounce' => $line['bounce_profit'],
+    //                     'bounce_purchase_price' => $line['bounce_purchase_price'],
+    //                     'bounce_convert_status_expire' => $line['bounce_convert_status_expire'],
+    //                     'bounce_expiry_warning' => $line['bounce_expiry_warning'],
+    //                     'bounce_expiry_date' => $line['bounce_expiry_date'],
+    //                     'bounce_manufacturing_date' => $line['bounce_manufacturing_date'],
+    //                     'bounce_batch_number' => $line['bounce_batch_number'],
+    //                     'cost_ratio_per_one' => $this->num_uf($all_cost_ratio / $line['quantity']) ?? 0,
+    //                 ];
 
-                    $add_stock = AddStockLine::create($add_stock_data);
-                    // $qty =  $this->num_uf($line['quantity']);
-                    $batch_qty=0;
-                    if($add_stock){
-                        if(!empty($batch_row)){
-                            // return $batch_row;
+    //                 $add_stock = AddStockLine::create($add_stock_data);
+    //                 // $qty =  $this->num_uf($line['quantity']);
+    //                 $batch_qty=0;
+    //                 if($add_stock){
+    //                     if(!empty($batch_row)){
+    //                         // return $batch_row;
 
-                            foreach($batch_row as $batch){
-                                if($batch['product_id']==$line['product_id'] && $batch['variation_id']==$line['variation_id']){
-                                    $add_stock_batch_data = [
-                                        'transaction_id' => $transaction->id,
-                                        'product_id' => $line['product_id'],
-                                        'variation_id' => $line['variation_id'],
-                                        'quantity' => $line['bounce_qty'] > 0 ? $number_vs_base_unit *($this->num_uf($batch['batch_quantity'])+$line['bounce_qty']): $this->num_uf($batch['batch_quantity']),
-                                        'purchase_price' => $line['bounce_qty'] > 0 ? $line['bounce_purchase_price'] : $this->num_uf($batch['batch_purchase_price']),
-                                        'final_cost' => $this->num_uf($batch['batch_final_cost']),
-                                        'sub_total' => $this->num_uf($line['sub_total']),
-                                        'batch_number' => $batch['new_batch_number'],
-                                        'manufacturing_date' => !empty($batch['batch_manufacturing_date']) ? $this->uf_date($line['manufacturing_date']) : null,
-                                        'expiry_date' => !empty($batch['batch_expiry_date']) ? $this->uf_date($line['batch_expiry_date']) : null,
-                                        'expiry_warning' => $batch['batch_expiry_warning'],
-                                        'convert_status_expire' => $line['convert_status_expire'],
-                                        'sell_price' => $batch['batch_selling_price'],
-                                        'bounce_qty' => $line['bounce_qty'],
-                                        'profit_bounce' => $line['bounce_profit'],
-                                        'bounce_purchase_price' => $line['bounce_purchase_price'],
-                                        'bounce_convert_status_expire' => $line['bounce_convert_status_expire'],
-                                        'bounce_expiry_warning' => $line['bounce_expiry_warning'],
-                                        'bounce_expiry_date' => $line['bounce_expiry_date'],
-                                        'bounce_manufacturing_date' => $line['bounce_manufacturing_date'],
-                                        'bounce_batch_number' => $line['bounce_batch_number'],
-                                        'cost_ratio_per_one' => $this->num_uf($all_cost_ratio / ($number_vs_base_unit *$line['quantity'])) ?? 0,
-                                    ];
-                                    // $batch_number=$create.blade.php->batch_number;
-                                    $add_stock_batch = AddStockLine::create($add_stock_batch_data);
-                                    $batch_numbers[]=$add_stock_batch->batch_number;
-                                    $batch_qty+= $number_vs_base_unit * $this->num_uf($batch['batch_quantity']);
+    //                         foreach($batch_row as $batch){
+    //                             if($batch['product_id']==$line['product_id'] && $batch['variation_id']==$line['variation_id']){
+    //                                 $add_stock_batch_data = [
+    //                                     'transaction_id' => $transaction->id,
+    //                                     'product_id' => $line['product_id'],
+    //                                     'variation_id' => $line['variation_id'],
+    //                                     'quantity' => $line['bounce_qty'] > 0 ? $number_vs_base_unit *($this->num_uf($batch['batch_quantity'])+$line['bounce_qty']): $this->num_uf($batch['batch_quantity']),
+    //                                     'purchase_price' => $line['bounce_qty'] > 0 ? $line['bounce_purchase_price'] : $this->num_uf($batch['batch_purchase_price']),
+    //                                     'final_cost' => $this->num_uf($batch['batch_final_cost']),
+    //                                     'sub_total' => $this->num_uf($line['sub_total']),
+    //                                     'batch_number' => $batch['new_batch_number'],
+    //                                     'manufacturing_date' => !empty($batch['batch_manufacturing_date']) ? $this->uf_date($line['manufacturing_date']) : null,
+    //                                     'expiry_date' => !empty($batch['batch_expiry_date']) ? $this->uf_date($line['batch_expiry_date']) : null,
+    //                                     'expiry_warning' => $batch['batch_expiry_warning'],
+    //                                     'convert_status_expire' => $line['convert_status_expire'],
+    //                                     'sell_price' => $batch['batch_selling_price'],
+    //                                     'bounce_qty' => $line['bounce_qty'],
+    //                                     'profit_bounce' => $line['bounce_profit'],
+    //                                     'bounce_purchase_price' => $line['bounce_purchase_price'],
+    //                                     'bounce_convert_status_expire' => $line['bounce_convert_status_expire'],
+    //                                     'bounce_expiry_warning' => $line['bounce_expiry_warning'],
+    //                                     'bounce_expiry_date' => $line['bounce_expiry_date'],
+    //                                     'bounce_manufacturing_date' => $line['bounce_manufacturing_date'],
+    //                                     'bounce_batch_number' => $line['bounce_batch_number'],
+    //                                     'cost_ratio_per_one' => $this->num_uf($all_cost_ratio / ($number_vs_base_unit *$line['quantity'])) ?? 0,
+    //                                 ];
+    //                                 // $batch_number=$create.blade.php->batch_number;
+    //                                 $add_stock_batch = AddStockLine::create($add_stock_batch_data);
+    //                                 $batch_numbers[]=$add_stock_batch->batch_number;
+    //                                 $batch_qty+= $number_vs_base_unit * $this->num_uf($batch['batch_quantity']);
 
-                                    // return $add_stock_batch;
-                                }
+    //                                 // return $add_stock_batch;
+    //                             }
 
-                            }
+    //                         }
 
-                        }
-                        $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->store_id,  $batch_qty, 0);
-                        $batch_qty=0;
-                    }
-                    if(isset($line['bounce_purchase_price'])){
-                        $product = Product::where('id',$line['product_id'])->update(['purchase_price' =>$line['bounce_purchase_price'] ,'purchase_price_depends' => $line['bounce_purchase_price']]);
-                    }
-                    $keep_lines_ids[] = $add_stock->id;
-                    $batch_numbers[]=$add_stock->batch_number;
+    //                     }
+    //                     $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->store_id,  $batch_qty, 0);
+    //                     $batch_qty=0;
+    //                 }
+    //                 if(isset($line['bounce_purchase_price'])){
+    //                     $product = Product::where('id',$line['product_id'])->update(['purchase_price' =>$line['bounce_purchase_price'] ,'purchase_price_depends' => $line['bounce_purchase_price']]);
+    //                 }
+    //                 $keep_lines_ids[] = $add_stock->id;
+    //                 $batch_numbers[]=$add_stock->batch_number;
 
-                    $qty =  $number_vs_base_unit *$this->num_uf($line['quantity']);
-                    $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->store_id,  $qty, 0);
-                }
-                if(!empty($line['stock_pricechange'])){
-                    AddStockLine::where('variation_id',$line['variation_id'])
-                        ->whereColumn('quantity',">",'quantity_sold')->update([
-                            'sell_price' => $line['selling_price'],
-                            'purchase_price'=>$line['bounce_qty'] > 0 ? $line['bounce_purchase_price']:$this->num_uf($line['purchase_price'])
-                        ]);
-                }
-            }
-        }
-        // return $keep_lines_ids;
-        if (!empty($keep_lines_ids)) {
-            $deleted_lines = AddStockLine::where('transaction_id', $transaction->id)->whereNotIn('batch_number',$batch_numbers)->whereNotIn('id', $keep_lines_ids)->get();
-            foreach ($deleted_lines as $deleted_line) {
-                if ($deleted_line->quantity_sold != 0) {
-                    $product_name = Product::find($deleted_line->product_id)->name ?? '';
-                    return ['mismatch' => true, 'product_name' => $product_name, 'quantity' => 0];
-                }
-                $this->decreaseProductQuantity($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->store_id, $deleted_line['quantity'], 0);
-                $deleted_line->delete();
-            }
-        }
-        return true;
-    }
+    //                 $qty =  $number_vs_base_unit *$this->num_uf($line['quantity']);
+    //                 $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->store_id,  $qty, 0);
+    //             }
+    //             if(!empty($line['stock_pricechange'])){
+    //                 AddStockLine::where('variation_id',$line['variation_id'])
+    //                     ->whereColumn('quantity',">",'quantity_sold')->update([
+    //                         'sell_price' => $line['selling_price'],
+    //                         'purchase_price'=>$line['bounce_qty'] > 0 ? $line['bounce_purchase_price']:$this->num_uf($line['purchase_price'])
+    //                     ]);
+    //             }
+    //         }
+    //     }
+    //     // return $keep_lines_ids;
+    //     if (!empty($keep_lines_ids)) {
+    //         $deleted_lines = AddStockLine::where('transaction_id', $transaction->id)->whereNotIn('batch_number',$batch_numbers)->whereNotIn('id', $keep_lines_ids)->get();
+    //         foreach ($deleted_lines as $deleted_line) {
+    //             if ($deleted_line->quantity_sold != 0) {
+    //                 $product_name = Product::find($deleted_line->product_id)->name ?? '';
+    //                 return ['mismatch' => true, 'product_name' => $product_name, 'quantity' => 0];
+    //             }
+    //             $this->decreaseProductQuantity($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->store_id, $deleted_line['quantity'], 0);
+    //             $deleted_line->delete();
+    //         }
+    //     }
+    //     return true;
+    // }
     /**
      * check if there is any quantity mismatch in sold and purchase quantity
      *
@@ -1416,47 +1410,47 @@ class ProductUtil extends Util
      * @param [mix] $transaction
      * @return float
      */
-    public function createOrUpdateInternalStockRequestLines($transfer_lines, $transaction)
-    {
-        $keep_lines_ids = [];
-        $final_total = 0;
-        foreach ($transfer_lines as $line) {
-            if (!empty($line['transfer_line_id'])) {
-                $transfer_line = TransferLine::find($line['transfer_line_id']);
+    // public function createOrUpdateInternalStockRequestLines($transfer_lines, $transaction)
+    // {
+    //     $keep_lines_ids = [];
+    //     $final_total = 0;
+    //     foreach ($transfer_lines as $line) {
+    //         if (!empty($line['transfer_line_id'])) {
+    //             $transfer_line = TransferLine::find($line['transfer_line_id']);
 
-                $transfer_line->product_id = $line['product_id'];
-                $transfer_line->variation_id = $line['variation_id'];
-                $transfer_line->quantity = $this->num_uf($line['quantity']);
-                $transfer_line->purchase_price = $this->num_uf($line['purchase_price']);
-                $transfer_line->sub_total = $this->num_uf($line['sub_total']);
-                $transfer_line->save();
-                $final_total += $line['sub_total'];
-                $keep_lines_ids[] = $line['transfer_line_id'];
-            } else {
-                $transfer_line_data = [
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $line['product_id'],
-                    'variation_id' => $line['variation_id'],
-                    'quantity' => $this->num_uf($line['quantity']),
-                    'purchase_price' => $this->num_uf($line['purchase_price']),
-                    'sub_total' => $this->num_uf($line['sub_total']),
-                ];
-                $final_total += $line['sub_total'];
-                $transfer_line = TransferLine::create($transfer_line_data);
-                $keep_lines_ids[] = $transfer_line->id;
-            }
-        }
+    //             $transfer_line->product_id = $line['product_id'];
+    //             $transfer_line->variation_id = $line['variation_id'];
+    //             $transfer_line->quantity = $this->num_uf($line['quantity']);
+    //             $transfer_line->purchase_price = $this->num_uf($line['purchase_price']);
+    //             $transfer_line->sub_total = $this->num_uf($line['sub_total']);
+    //             $transfer_line->save();
+    //             $final_total += $line['sub_total'];
+    //             $keep_lines_ids[] = $line['transfer_line_id'];
+    //         } else {
+    //             $transfer_line_data = [
+    //                 'transaction_id' => $transaction->id,
+    //                 'product_id' => $line['product_id'],
+    //                 'variation_id' => $line['variation_id'],
+    //                 'quantity' => $this->num_uf($line['quantity']),
+    //                 'purchase_price' => $this->num_uf($line['purchase_price']),
+    //                 'sub_total' => $this->num_uf($line['sub_total']),
+    //             ];
+    //             $final_total += $line['sub_total'];
+    //             $transfer_line = TransferLine::create($transfer_line_data);
+    //             $keep_lines_ids[] = $transfer_line->id;
+    //         }
+    //     }
 
-        if (!empty($keep_lines_ids)) {
-            $deleted_lines = TransferLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
-            foreach ($deleted_lines as $deleted_line) {
-                $deleted_line->delete();
-            }
-        }
+    //     if (!empty($keep_lines_ids)) {
+    //         $deleted_lines = TransferLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
+    //         foreach ($deleted_lines as $deleted_line) {
+    //             $deleted_line->delete();
+    //         }
+    //     }
 
 
-        return $final_total;
-    }
+    //     return $final_total;
+    // }
     /**
      * createOrUpdateAddStockLines
      *
@@ -1464,55 +1458,55 @@ class ProductUtil extends Util
      * @param [mix] $transaction
      * @return void
      */
-    public function createOrUpdateTransferLines($transfer_lines, $transaction)
-    {
+    // public function createOrUpdateTransferLines($transfer_lines, $transaction)
+    // {
 
-        $keep_lines_ids = [];
+    //     $keep_lines_ids = [];
 
-        foreach ($transfer_lines as $line) {
-            if (!empty($line['transfer_line_id'])) {
-                $transfer_line = TransferLine::find($line['transfer_line_id']);
+    //     foreach ($transfer_lines as $line) {
+    //         if (!empty($line['transfer_line_id'])) {
+    //             $transfer_line = TransferLine::find($line['transfer_line_id']);
 
-                $transfer_line->product_id = $line['product_id'];
-                $transfer_line->variation_id = $line['variation_id'];
-                $old_qty = $transfer_line->quantity;
-                $transfer_line->quantity = $this->num_uf($line['quantity']);
-                $transfer_line->purchase_price = $this->num_uf($line['purchase_price']);
-                $transfer_line->sub_total = $this->num_uf($line['sub_total']);
-                $transfer_line->save();
-                $keep_lines_ids[] = $line['transfer_line_id'];
-                $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->sender_store_id, $line['quantity'], $old_qty);
-                $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->receiver_store_id,  $line['quantity'], $old_qty);
-            } else {
-                $transfer_line_data = [
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $line['product_id'],
-                    'variation_id' => $line['variation_id'],
-                    'quantity' => $this->num_uf($line['quantity']),
-                    'purchase_price' => $this->num_uf($line['purchase_price']),
-                    'sub_total' => $this->num_uf($line['sub_total']),
-                ];
+    //             $transfer_line->product_id = $line['product_id'];
+    //             $transfer_line->variation_id = $line['variation_id'];
+    //             $old_qty = $transfer_line->quantity;
+    //             $transfer_line->quantity = $this->num_uf($line['quantity']);
+    //             $transfer_line->purchase_price = $this->num_uf($line['purchase_price']);
+    //             $transfer_line->sub_total = $this->num_uf($line['sub_total']);
+    //             $transfer_line->save();
+    //             $keep_lines_ids[] = $line['transfer_line_id'];
+    //             $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->sender_store_id, $line['quantity'], $old_qty);
+    //             $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->receiver_store_id,  $line['quantity'], $old_qty);
+    //         } else {
+    //             $transfer_line_data = [
+    //                 'transaction_id' => $transaction->id,
+    //                 'product_id' => $line['product_id'],
+    //                 'variation_id' => $line['variation_id'],
+    //                 'quantity' => $this->num_uf($line['quantity']),
+    //                 'purchase_price' => $this->num_uf($line['purchase_price']),
+    //                 'sub_total' => $this->num_uf($line['sub_total']),
+    //             ];
 
-                $transfer_line = TransferLine::create($transfer_line_data);
+    //             $transfer_line = TransferLine::create($transfer_line_data);
 
-                $keep_lines_ids[] = $transfer_line->id;
-                $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->sender_store_id, $line['quantity'], 0);
-                $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->receiver_store_id,  $line['quantity'], 0);
-            }
-        }
+    //             $keep_lines_ids[] = $transfer_line->id;
+    //             $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->sender_store_id, $line['quantity'], 0);
+    //             $this->updateProductQuantityStore($line['product_id'], $line['variation_id'], $transaction->receiver_store_id,  $line['quantity'], 0);
+    //         }
+    //     }
 
-        if (!empty($keep_lines_ids)) {
-            $deleted_lines = TransferLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
-            foreach ($deleted_lines as $deleted_line) {
-                $this->decreaseProductQuantity($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->receiver_store_id, $deleted_line['quantity'], 0);
-                $this->updateProductQuantityStore($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->sender_store_id,  $deleted_line['quantity'], 0);
-                $deleted_line->delete();
-            }
-        }
+    //     if (!empty($keep_lines_ids)) {
+    //         $deleted_lines = TransferLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
+    //         foreach ($deleted_lines as $deleted_line) {
+    //             $this->decreaseProductQuantity($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->receiver_store_id, $deleted_line['quantity'], 0);
+    //             $this->updateProductQuantityStore($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->sender_store_id,  $deleted_line['quantity'], 0);
+    //             $deleted_line->delete();
+    //         }
+    //     }
 
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * createOrUpdatePurchaseReturnLine
@@ -1521,55 +1515,55 @@ class ProductUtil extends Util
      * @param [mix] $transaction
      * @return void
      */
-    public function createOrUpdatePurchaseReturnLine($purchase_return_lines, $transaction)
-    {
+    // public function createOrUpdatePurchaseReturnLine($purchase_return_lines, $transaction)
+    // {
 
-        $keep_lines_ids = [];
+    //     $keep_lines_ids = [];
 
-        foreach ($purchase_return_lines as $line) {
-            if (!empty($line['add_stock_line_id'])) {
-                $purchase_return_line = PurchaseReturnLine::find($line['purchase_return_line_id']);
+    //     foreach ($purchase_return_lines as $line) {
+    //         if (!empty($line['add_stock_line_id'])) {
+    //             $purchase_return_line = PurchaseReturnLine::find($line['purchase_return_line_id']);
 
-                $purchase_return_line->product_id = $line['product_id'];
-                $purchase_return_line->variation_id = $line['variation_id'];
-                $purchase_return_line->quantity = $this->num_uf($line['quantity']);
-                $purchase_return_line->purchase_price = $this->num_uf($line['purchase_price']);
-                $purchase_return_line->sub_total = $this->num_uf($line['sub_total']);
+    //             $purchase_return_line->product_id = $line['product_id'];
+    //             $purchase_return_line->variation_id = $line['variation_id'];
+    //             $purchase_return_line->quantity = $this->num_uf($line['quantity']);
+    //             $purchase_return_line->purchase_price = $this->num_uf($line['purchase_price']);
+    //             $purchase_return_line->sub_total = $this->num_uf($line['sub_total']);
 
-                $purchase_return_line->save();
-                if ($transaction->status != 'pending') {
-                    $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], $purchase_return_line->quantity);
-                }
-                $keep_lines_ids[] = $line['purchase_return_line_id'];
-            } else {
-                $purchase_return_line_data = [
-                    'transaction_id' => $transaction->id,
-                    'product_id' => $line['product_id'],
-                    'variation_id' => $line['variation_id'],
-                    'quantity' => $this->num_uf($line['quantity']),
-                    'purchase_price' => $this->num_uf($line['purchase_price']),
-                    'sub_total' => $this->num_uf($line['sub_total']),
-                ];
+    //             $purchase_return_line->save();
+    //             if ($transaction->status != 'pending') {
+    //                 $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], $purchase_return_line->quantity);
+    //             }
+    //             $keep_lines_ids[] = $line['purchase_return_line_id'];
+    //         } else {
+    //             $purchase_return_line_data = [
+    //                 'transaction_id' => $transaction->id,
+    //                 'product_id' => $line['product_id'],
+    //                 'variation_id' => $line['variation_id'],
+    //                 'quantity' => $this->num_uf($line['quantity']),
+    //                 'purchase_price' => $this->num_uf($line['purchase_price']),
+    //                 'sub_total' => $this->num_uf($line['sub_total']),
+    //             ];
 
-                if ($transaction->status != 'pending') {
-                    $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], 0);
-                }
-                $purchase_return_line = PurchaseReturnLine::create($purchase_return_line_data);
+    //             if ($transaction->status != 'pending') {
+    //                 $this->decreaseProductQuantity($line['product_id'], $line['variation_id'], $transaction->store_id, $line['quantity'], 0);
+    //             }
+    //             $purchase_return_line = PurchaseReturnLine::create($purchase_return_line_data);
 
-                $keep_lines_ids[] = $purchase_return_line->id;
-            }
-        }
+    //             $keep_lines_ids[] = $purchase_return_line->id;
+    //         }
+    //     }
 
-        if (!empty($keep_lines_ids)) {
-            $deleted_lines = PurchaseReturnLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
-            foreach ($deleted_lines as $deleted_line) {
-                $this->updateProductQuantityStore($deleted_line->product_id, $deleted_line->variation_id, $transaction->store_id, $deleted_line->quantity, 0);
-                $deleted_line->delete();
-            }
-        }
+    //     if (!empty($keep_lines_ids)) {
+    //         $deleted_lines = PurchaseReturnLine::where('transaction_id', $transaction->id)->whereNotIn('id', $keep_lines_ids)->get();
+    //         foreach ($deleted_lines as $deleted_line) {
+    //             $this->updateProductQuantityStore($deleted_line->product_id, $deleted_line->variation_id, $transaction->store_id, $deleted_line->quantity, 0);
+    //             $deleted_line->delete();
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * Checks if products has manage add-stock enabled then Updates quantity for product and its
@@ -1620,35 +1614,35 @@ class ProductUtil extends Util
      *
      * @return boolean
      */
-    public function decreaseProductQuantity($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
-    {
-        $qtyByUnit=Variation::find($variation_id)->number_vs_base_unit==0?1:Variation::find($variation_id)->number_vs_base_unit;
-        $qty_difference = ($qtyByUnit?$qtyByUnit*$new_quantity:$new_quantity) - $old_quantity;
-        $product = Product::find($product_id);
+    // public function decreaseProductQuantity($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
+    // {
+    //     $qtyByUnit=Variation::find($variation_id)->number_vs_base_unit==0?1:Variation::find($variation_id)->number_vs_base_unit;
+    //     $qty_difference = ($qtyByUnit?$qtyByUnit*$new_quantity:$new_quantity) - $old_quantity;
+    //     $product = Product::find($product_id);
 
-        //Check if add-stock is enabled or not.
-        if ($product->is_service != 1) {
-            //Decrement Quantity in variations store table
-            $details = ProductStore::where('variation_id', $variation_id)
-                ->where('product_id', $product_id)
-                ->where('store_id', $store_id)
-                ->first();
+    //     //Check if add-stock is enabled or not.
+    //     if ($product->is_service != 1) {
+    //         //Decrement Quantity in variations store table
+    //         $details = ProductStore::where('variation_id', $variation_id)
+    //             ->where('product_id', $product_id)
+    //             ->where('store_id', $store_id)
+    //             ->first();
 
-            //If store details not exists create new one
-            if (empty($details)) {
-                $details = ProductStore::create([
-                    'product_id' => $product_id,
-                    'store_id' => $store_id,
-                    'variation_id' => $variation_id,
-                    'qty_available' => 0
-                ]);
-            }
+    //         //If store details not exists create new one
+    //         if (empty($details)) {
+    //             $details = ProductStore::create([
+    //                 'product_id' => $product_id,
+    //                 'store_id' => $store_id,
+    //                 'variation_id' => $variation_id,
+    //                 'qty_available' => 0
+    //             ]);
+    //         }
 
-            $details->decrement('qty_available', $qty_difference);
-        }
+    //         $details->decrement('qty_available', $qty_difference);
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * update the block quantity for quotations
@@ -1711,18 +1705,18 @@ class ProductUtil extends Util
      * @param array $data_selected
      * @return array
      */
-    public function extractProductVariationIdsfromProductTree($data_selected)
-    {
-        $product_ids = [];
-        if (!empty($data_selected['product_selected'])) {
-            $p = array_values(Variation::whereIn('id', $data_selected['product_selected'])->select('id')->pluck('id')->toArray());
-            $product_ids = array_merge($product_ids, $p);
-        }
+    // public function extractProductVariationIdsfromProductTree($data_selected)
+    // {
+    //     $product_ids = [];
+    //     if (!empty($data_selected['product_selected'])) {
+    //         $p = array_values(Variation::whereIn('id', $data_selected['product_selected'])->select('id')->pluck('id')->toArray());
+    //         $product_ids = array_merge($product_ids, $p);
+    //     }
 
-        $product_ids  = array_unique($product_ids);
+    //     $product_ids  = array_unique($product_ids);
 
-        return (array)$product_ids;
-    }
+    //     return (array)$product_ids;
+    // }
     public function getProductDetailsUsingArrayIds($array, $store_ids = null,$variations= null)
     {
         $query = Product::leftjoin('variations', 'products.id', 'variations.product_id')
@@ -2101,72 +2095,72 @@ class ProductUtil extends Util
             ->get();
     }
 
-    public function getNonIdentifiableProductDetails($name, $sell_price, $purchase_price, $request)
-    {
-        $product_exist = Product::where('name', $name)->first();
+    // public function getNonIdentifiableProductDetails($name, $sell_price, $purchase_price, $request)
+    // {
+    //     $product_exist = Product::where('name', $name)->first();
 
-        if (!empty($product_exist)) {
-            $product_exist->purchase_price = $purchase_price;
-            $product_exist->sell_price = $sell_price;
+    //     if (!empty($product_exist)) {
+    //         $product_exist->purchase_price = $purchase_price;
+    //         $product_exist->sell_price = $sell_price;
 
-            $product_exist->save();
-            $variation = Variation::where('product_id', $product_exist->id)->first();
-            $variation->default_purchase_price = $purchase_price;
-            $variation->default_sell_price = $sell_price;
-            $variation->save();
-        } else {
-            $product_data = [
-                'name' => $name,
-                'sku' => !empty($sku) ? $sku : $this->generateSku($name),
-                'multiple_units' => [],
-                'multiple_colors' => [],
-                'multiple_sizes' => [],
-                'multiple_grades' => [],
-                'is_service' => 1,
-                'product_details' => null,
-                'barcode_type' => 'C128',
-                'alert_quantity' => 0,
-                'purchase_price' => $purchase_price,
-                'sell_price' => $sell_price,
-                'tax_id' => null,
-                'tax_method' => null,
-                'discount_type' => 'fixed',
-                'discount_customer_types' => [],
-                'discount_customers' => [],
-                'discount' => 0,
-                'discount_start_date' => null,
-                'discount_end_date' => null,
-                'show_to_customer' => 0,
-                'show_to_customer_types' => 0,
-                'different_prices_for_stores' => 0,
-                'this_product_have_variant' => 0,
-                'type' => 'single',
-                'active' => 0,
-                'created_by' => Auth::user()->id
-            ];
-            $product = Product::create($product_data);
+    //         $product_exist->save();
+    //         $variation = Variation::where('product_id', $product_exist->id)->first();
+    //         $variation->default_purchase_price = $purchase_price;
+    //         $variation->default_sell_price = $sell_price;
+    //         $variation->save();
+    //     } else {
+    //         $product_data = [
+    //             'name' => $name,
+    //             'sku' => !empty($sku) ? $sku : $this->generateSku($name),
+    //             'multiple_units' => [],
+    //             'multiple_colors' => [],
+    //             'multiple_sizes' => [],
+    //             'multiple_grades' => [],
+    //             'is_service' => 1,
+    //             'product_details' => null,
+    //             'barcode_type' => 'C128',
+    //             'alert_quantity' => 0,
+    //             'purchase_price' => $purchase_price,
+    //             'sell_price' => $sell_price,
+    //             'tax_id' => null,
+    //             'tax_method' => null,
+    //             'discount_type' => 'fixed',
+    //             'discount_customer_types' => [],
+    //             'discount_customers' => [],
+    //             'discount' => 0,
+    //             'discount_start_date' => null,
+    //             'discount_end_date' => null,
+    //             'show_to_customer' => 0,
+    //             'show_to_customer_types' => 0,
+    //             'different_prices_for_stores' => 0,
+    //             'this_product_have_variant' => 0,
+    //             'type' => 'single',
+    //             'active' => 0,
+    //             'created_by' => Auth::user()->id
+    //         ];
+    //         $product = Product::create($product_data);
 
-            $this->createOrUpdateVariations($product, $request);
-        }
+    //         $this->createOrUpdateVariations($product, $request);
+    //     }
 
-        $query = Product::join('variations', 'products.id', '=', 'variations.product_id')
-            ->whereNull('variations.deleted_at')
-            ->where('products.name', $name);
+    //     $query = Product::join('variations', 'products.id', '=', 'variations.product_id')
+    //         ->whereNull('variations.deleted_at')
+    //         ->where('products.name', $name);
 
-        $query->select(
-            'products.id as product_id',
-            'products.name',
-            'products.type',
-            'variations.id as variation_id',
-            'variations.name as variation',
-            'variations.default_sell_price',
-            'variations.sub_sku',
-        );
+    //     $query->select(
+    //         'products.id as product_id',
+    //         'products.name',
+    //         'products.type',
+    //         'variations.id as variation_id',
+    //         'variations.name as variation',
+    //         'variations.default_sell_price',
+    //         'variations.sub_sku',
+    //     );
 
-        $query->groupBy('variations.id');
-        return $query
-            ->first();
-    }
+    //     $query->groupBy('variations.id');
+    //     return $query
+    //         ->first();
+    // }
 
     public function getCurrentStockDataByProduct($product_id, $store_id = null)
     {
@@ -2180,21 +2174,21 @@ class ProductUtil extends Util
         return ['current_stock' => $current_Stock];
     }
 
-    public function createProductStoreForThisStoreIfNotExist($store_id)
-    {
-        $variations = Variation::whereNull('deleted_at')->get();
+    // public function createProductStoreForThisStoreIfNotExist($store_id)
+    // {
+    //     $variations = Variation::whereNull('deleted_at')->get();
 
-        foreach ($variations as $variation) {
-            $product_store = ProductStore::where('product_id', $variation->product_id)->where('variation_id', $variation->id)->where('store_id', $store_id)->first();
+    //     foreach ($variations as $variation) {
+    //         $product_store = ProductStore::where('product_id', $variation->product_id)->where('variation_id', $variation->id)->where('store_id', $store_id)->first();
 
-            if (empty($product_store)) {
-                $product_store = new ProductStore();
-                $product_store->product_id = $variation->product_id;
-                $product_store->variation_id = $variation->id;
-                $product_store->store_id = $store_id;
-                $product_store->qty_available = 0;
-                $product_store->save();
-            }
-        }
-    }
+    //         if (empty($product_store)) {
+    //             $product_store = new ProductStore();
+    //             $product_store->product_id = $variation->product_id;
+    //             $product_store->variation_id = $variation->id;
+    //             $product_store->store_id = $store_id;
+    //             $product_store->qty_available = 0;
+    //             $product_store->save();
+    //         }
+    //     }
+    // }
 }

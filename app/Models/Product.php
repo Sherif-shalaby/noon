@@ -109,4 +109,9 @@ class Product extends Model
     {
         return $this->hasMany(AddStockLine::class);
     }
+    // 1:M relationship Between "products" , "sell_lines" table
+    public function sell_lines()
+    {
+        return $this->hasMany(SellLine::class);
+    }
 }

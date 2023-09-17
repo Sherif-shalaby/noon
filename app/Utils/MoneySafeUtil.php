@@ -175,7 +175,7 @@ class MoneySafeUtil extends Util
         }
         $register =  $this->getCurrentCashRegisterOrCreate($user_id);
 
-        if ($transaction->type == 'sell_return') {
+        if ($transaction->type == 'returns') {
             $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([

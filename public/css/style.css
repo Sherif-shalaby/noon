@@ -161,13 +161,15 @@ code {
 }
 
 .leftbar {
-  width: 250px;
-  height: 100%;
+  width: 50px;
+  /*height: 100%;*/
   position: fixed;
-  background: linear-gradient(-90deg, #8a51ff 0%, #ac45ff 100%);
   box-shadow: 0 0 30px 0 rgba(200, 200, 200, 0.2);
   z-index: 9;
+  top: 120px;
+  left: 0;
   transition: all 0.3s ease;
+
 }
 
 .profilebar img {
@@ -193,7 +195,7 @@ code {
 }
 
 .profilename {
-  padding: 0;
+  padding: 10px;
 }
 .profilename h5 {
   margin-bottom: 5px;
@@ -230,6 +232,8 @@ code {
   overflow: hidden;
   min-height: 500px;
   transition: all 0.3s ease;
+    margin-top: 100px;
+    margin-left: 50px
 }
 
 .contentbar {
@@ -256,7 +260,7 @@ code {
 }
 
 .container-fluid {
-  width: 90%;
+  width: 95%;
 }
 
 /*
@@ -18842,6 +18846,11 @@ mark {
 
 .dripicons-web:before {
   content: "";
+  color: #596fd7
+}
+.dropdown-toggle::after {
+    margin-left:-5px;
+    color: #596fd7;
 }
 
 .dripicons-weight:before {
@@ -26806,6 +26815,7 @@ mark {
   padding: 20px 30px;
   left: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    top: 0;
 }
 .topbar-mobile .mobile-logobar {
   display: inline-block;
@@ -26938,17 +26948,27 @@ mark {
 .topbar .menubar-toggle {
   display: none;
 }
+.leftbar .menubar-toggle {
+  display: none;
+}
 .topbar .menubar-toggle .menu-hamburger img {
+  filter: invert(0.62) sepia(1) saturate(4.5) hue-rotate(199deg);
+  width: 20px;
+}
+.leftbar .menubar-toggle .menu-hamburger img {
   filter: invert(0.62) sepia(1) saturate(4.5) hue-rotate(199deg);
   width: 20px;
 }
 .topbar .menubar-toggle .menu-hamburger img.menu-hamburger-close {
   display: none;
 }
+.leftbar .menubar-toggle .menu-hamburger img.menu-hamburger-close {
+  display: none;
+}
 
 .breadcrumbbar {
   padding: 30px 30px 0 30px;
-  margin-top: 215px;
+  margin-top: 10px;
 }
 .breadcrumbbar .page-title {
   font-size: 20px;
@@ -27172,9 +27192,12 @@ mark {
   overflow: hidden;
   z-index: 1000;
 }
+.languagebar {
+    padding: 10px
+}
 
 .languagebar .dropdown-menu {
-  top: 18px !important;
+  top: 0px !important;
   border-radius: 3px;
 }
 .languagebar .dropdown-menu .dropdown-item {
@@ -27238,7 +27261,7 @@ mark {
   z-index: 1;
   left: 0;
   right: 0;
-  top: 71px;
+  top: 0px;
 }
 
 /*
@@ -31343,9 +31366,9 @@ input[type=range]:focus {
     : Custom - Form Validation css :
 ----------------------------------------
 */
-.error {
-  color: ff0000;
-}
+/*.error {*/
+/*  color: ff0000;*/
+/*}*/
 
 .parsley-error {
   border-color: #f44455;
@@ -34578,6 +34601,9 @@ table.focus-on tfoot tr.focused td {
   .topbar .menubar-toggle {
     display: inline-block;
   }
+  .leftbar .menubar-toggle {
+    display: inline-block;
+  }
 
   .navigationbar {
     background-color: transparent;
@@ -34716,6 +34742,7 @@ table.focus-on tfoot tr.focused td {
     position: fixed;
     width: 100%;
     z-index: 10;
+      top: 0;
   }
 
   .topbar {
@@ -34728,6 +34755,9 @@ table.focus-on tfoot tr.focused td {
     margin-right: 0;
   }
   .topbar .menubar-toggle {
+    display: none;
+  }
+    .leftbar .menubar-toggle {
     display: none;
   }
 
@@ -34799,5 +34829,13 @@ table.focus-on tfoot tr.focused td {
     overflow:hidden;
     border-top:1px solid;
 }
-
+.card-deck {
+    align-content: center !important;
+}
+.error{
+    color:#dc3545 !important;
+}
+/*input.form-control-custom + label::before {*/
+/*    background:#596fd7!important;*/
+/*}*/
 /*# sourceMappingURL=style.css.map */

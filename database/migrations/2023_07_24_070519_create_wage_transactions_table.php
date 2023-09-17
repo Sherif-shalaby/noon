@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('wage_transactions', function (Blueprint $table) {
             $table->increments('id');
-         
+
 			$table->integer('store_id')->unsigned()->nullable();
             $table->foreign('store_id')->references('id')->on('stores');
-            $table->integer('employee_id')->unsigned()->nullable();
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->integer('employee_col_id')->unsigned()->nullable();
+            $table->foreign('employee_col_id')->references('id')->on('employees');
             $table->integer('wage_id')->unsigned()->nullable();
             $table->foreign('wage_id')->references('id')->on('wages');
             $table->string('type')->nullable();

@@ -6,9 +6,12 @@ use App\Models\AddStockLine;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Currency;
+use App\Models\Employee;
+use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\Product;
+use App\Models\ProductStore;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
@@ -23,6 +26,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component
@@ -33,7 +37,7 @@ class Create extends Component
         $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
         $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-        $showColumn = false, $transaction_currency ;
+        $showColumn = false, $transaction_currency, $current_stock, $clear_all_input_stock_form ;
 
     protected $rules = [
     'store_id' => 'required',
@@ -49,6 +53,39 @@ class Create extends Component
 
     public function render(): Factory|View|Application
     {
+        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
+        if($this->clear_all_input_stock_form ==0){
+            $transaction_payment=[];
+            $recent_stock=[];
+        }else{
+            $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
+//dd($recent_stock);
+            if(!empty($recent_stock)){
+                $transaction_payment = $recent_stock->transaction_payments->first();
+                $this->store_id =$recent_stock->store_id;
+                $this->supplier = $recent_stock->supplier_id;
+                $this->status = $recent_stock->status;
+                $this->transaction_date = $recent_stock->transaction_date;
+                $this->transaction_currency = $recent_stock->transaction_currency;
+                $this->purchase_type = $recent_stock->purchase_type;
+                $this->divide_costs = $recent_stock->divide_costs;
+                $this->payment_status = $recent_stock->payment_status;
+                $this->invoice_no = $recent_stock->invoice_no;
+                $this->other_expenses = $recent_stock->other_expenses;
+                $this->discount_amount = $recent_stock->discount_amount;
+                $this->other_payments = $recent_stock->other_payments;
+                $this->amount = $transaction_payment->amount;
+                $this->method = $transaction_payment->method;
+                $this->paying_currency = $transaction_payment->paying_currency;
+                $this->source_type =$transaction_payment->source_type;
+                $this->source_id = $transaction_payment->source_id;
+                $this->paid_on = $transaction_payment->paid_on;
+
+
+
+            }
+        }
+
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
@@ -57,8 +94,10 @@ class Create extends Component
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
+        $preparers = JobType::with('employess')->where('title','preparer')->get();
         $products = Product::all();
         $stores = Store::getDropdown();
+
         if ($this->source_type == 'pos') {
             $users = StorePos::pluck('name', 'id');
         } elseif ($this->source_type == 'store') {
@@ -82,6 +121,7 @@ class Create extends Component
             'payment_status_array',
             'suppliers',
             'selected_currencies',
+            'preparers' ,
             'products',
             'users'));
     }
@@ -118,6 +158,7 @@ class Create extends Component
             $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
             $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
             $transaction->purchase_type = $this->purchase_type;
+            $transaction->type = 'add_stock';
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
             $transaction->supplier_id = $this->supplier;
@@ -137,74 +178,95 @@ class Create extends Component
             $transaction->source_type = !empty($this->source_type) ? $this->source_type : null;
             $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
+
+            DB::beginTransaction();
+            // preparer_id
+            // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
+
             $transaction->save();
 
-            // Add payment transaction
-            $payment  = new StockTransactionPayment();
-            $payment->stock_transaction_id  = $transaction->id;
-            $payment->amount  = $this->amount;
-            $payment->method = $this->method;
-            $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now() ;
-            $payment->source_type = !empty($this->source_type) ? $this->source_type : null;
-            $payment->source_id = !empty($this->source_id) ? $this->source_id : null;
-            $payment->payment_note =!empty($this->notes) ? $this->notes : null;
-            $payment->created_by = Auth::user()->id;
-            $payment->exchange_rate = $this->exchange_rate;
-            $payment->paying_currency = $this->paying_currency;
 
-            // check user and add money to user
-            if  ($payment->method == 'cash'){
-                $user_id = null;
-                if (!empty($this->source_id)) {
-                    if ($this->source_type == 'pos') {
-                        $user_id = StorePos::where('id', $this->source_id)->first()->user_id;
-                    }
-                    if ($this->source_type == 'user') {
-                        $user_id = $this->source_id;
-                    }
-                    if ($this->source_type == 'safe') {
-                        $money_safe = MoneySafe::find($this->source_id);
-                        $money_safe_Date = [
-                            'created_by' => Auth::user()->id,
-                            'type' => 'debit',
-                            'source_type' => 'safe',
-                            'source_id' => $this->source_id,
-                            'store_id' =>  $this->store_id,
-                            'transaction_date' => !empty($this->transaction_date) ? $this->transaction_date : Carbon::now(),
-                            'currency_id' => $this->paying_currency,
-                            'amount' => $this->amount,
-                            'money_safe_id' => $money_safe->id,
-                        ];
-                        $transaction= $money_safe->transactions()->latest()->first();
-                        if(!empty($transaction->balance)){
-                            $money_safe_Date['balance'] = $money_safe_Date['amount'] + $transaction->balance;
-                        }else{
-                            $money_safe_Date['balance'] = $money_safe_Date['amount'];
+            // Add payment transaction
+            if(!empty($this->amount)){
+                $payment  = new StockTransactionPayment();
+                $payment->stock_transaction_id  = $transaction->id;
+                $payment->amount  = $this->amount;
+                $payment->method = $this->method;
+                $payment->paid_on = !empty($this->paid_on) ? $this->paid_on :  Carbon::now() ;
+                $payment->source_type = !empty($this->source_type) ? $this->source_type : null;
+                $payment->source_id = !empty($this->source_id) ? $this->source_id : null;
+                $payment->payment_note =!empty($this->notes) ? $this->notes : null;
+                $payment->created_by = Auth::user()->id;
+                $payment->exchange_rate = $this->exchange_rate;
+                $payment->paying_currency = $this->paying_currency;
+
+                // check user and add money to user
+                if  ($payment->method == 'cash'){
+                    $user_id = null;
+                    if (!empty($this->source_id)) {
+                        if ($this->source_type == 'pos') {
+                            $user_id = StorePos::where('id', $this->source_id)->first()->user_id;
                         }
-                        MoneySafeTransaction::create($money_safe_Date);
+                        if ($this->source_type == 'user') {
+                            $user_id = $this->source_id;
+                        }
+                        if ($this->source_type == 'safe') {
+                            $money_safe = MoneySafe::find($this->source_id);
+                            $money_safe_Date = [
+                                'created_by' => Auth::user()->id,
+                                'type' => 'debit',
+                                'source_type' => 'safe',
+                                'source_id' => $this->source_id,
+                                'store_id' =>  $this->store_id,
+                                'transaction_date' => !empty($this->transaction_date) ? $this->transaction_date : Carbon::now(),
+                                'currency_id' => $this->paying_currency,
+                                'amount' => $this->amount,
+                                'money_safe_id' => $money_safe->id,
+                            ];
+                            $transaction= $money_safe->transactions()->latest()->first();
+                            if(!empty($transaction->balance)){
+                                $money_safe_Date['balance'] = $money_safe_Date['amount'] + $transaction->balance;
+                            }else{
+                                $money_safe_Date['balance'] = $money_safe_Date['amount'];
+                            }
+                            MoneySafeTransaction::create($money_safe_Date);
+                        }
+                    }
+                    if(!empty($user_id)){
+                        $register =  $this->getCurrentCashRegisterOrCreate($user_id);
+                        if (!empty($user_id)) {
+                            $payments_formatted[] = new CashRegisterTransaction([
+                                'amount' => $this->amount,
+                                'pay_method' => $this->method,
+                                'type' => 'debit',
+                                'transaction_type' => 'add_stock',
+                                'transaction_id' => $transaction->id,
+                                'transaction_payment_id' => null
+                            ]);
+                        }
+                        if (!empty($payments_formatted) && !empty($register)) {
+                            $register->cash_register_transactions()->saveMany($payments_formatted);
+                        }
                     }
                 }
-                if(!empty($user_id)){
-                    $register =  $this->getCurrentCashRegisterOrCreate($user_id);
-                    if (!empty($user_id)) {
-                        $payments_formatted[] = new CashRegisterTransaction([
-                            'amount' => $this->amount,
-                            'pay_method' => $this->method,
-                            'type' => 'debit',
-                            'transaction_type' => 'add_stock',
-                            'transaction_id' => $transaction->id,
-                            'transaction_payment_id' => null
-                        ]);
-                    }
-                    if (!empty($payments_formatted) && !empty($register)) {
-                        $register->cash_register_transactions()->saveMany($payments_formatted);
-                    }
-                }
+                $payment->save();
             }
 
 
             // add  products to stock lines
             foreach ($this->selectedProductData as $index => $product){
+                if (isset($this->change_price_stock[$index]) && $this->change_price_stock[$index]) {
+                    if (isset($product->stock_lines)) {
+                        foreach ($product->stock_lines as $line) {
+                            $line->purchase_price = !empty($this->purchase_price[$index]) ? $this->purchase_price[$index] : null;
+                            $line->sell_price = !empty($this->selling_price[$index]) ? $this->selling_price[$index] : null;
+                            $line->dollar_purchase_price = empty($this->dollar_purchase_price[$index]) ? $this->dollar_purchase_price[$index] : null;
+                            $line->dollar_sell_price = !empty($this->dollar_selling_price[$index]) ? $this->dollar_selling_price[$index] : null;
+                            $line->save();
+                        }
+                    }
+                }
+                $supplier = Supplier::find($this->supplier);
                 $add_stock_data = [
                     'product_id' => $product->id,
                     'stock_transaction_id' =>$transaction->id ,
@@ -219,11 +281,14 @@ class Create extends Component
                     'dollar_sell_price' => !empty($this->dollar_selling_price[$index]) ? $this->dollar_selling_price[$index] : null,
                     'cost' => !empty($this->cost[$index]) ?  $this->cost[$index] : null,
                     'dollar_cost' => !empty($this->dollar_cost[$index]) ? $this->dollar_cost[$index] : null,
+                    'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
                 AddStockLine::create($add_stock_data);
+                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->quantity[$index], 0);
+
             }
 
-            $payment->save();
+            DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
         }
@@ -231,14 +296,14 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
-        return redirect('/add-stock/index');
+        return redirect('/add-stock/create');
     }
 
     public function fetchSelectedProducts()
     {
         $this->emit('closeModal');
         $this->selectedProductData = Product::whereIn('id', $this->selectedProducts)->get();
-//        dump($this->selectedProductData);
+
     }
 
     public function get_product($index){
@@ -539,6 +604,29 @@ class Create extends Component
 
     public function ShowDollarCol(){
         $this->showColumn= !$this->showColumn;
+    }
+
+    public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
+    {
+        $qty_difference = $new_quantity - $old_quantity;
+
+        if ($qty_difference != 0) {
+            $product_store = ProductStore::where('product_id', $product_id)
+                ->where('store_id', $store_id)
+                ->first();
+
+            if (empty($product_store)) {
+                $product_store = new ProductStore();
+                $product_store->product_id = $product_id;
+                $product_store->store_id = $store_id;
+                $product_store->quantity_available = 0;
+            }
+
+            $product_store->quantity_available += $qty_difference;
+            $product_store->save();
+        }
+
+        return true;
     }
 
 

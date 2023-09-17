@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable,HasPermissions;
 
     /**
      * The attributes that are mass assignable.
@@ -50,6 +51,10 @@ class User extends Authenticatable
     }
     public function employees()
     {
+        return $this->hasMany(Employee::class,'user_id');
+    }
+    public function employee()
+    {
         return $this->hasOne(Employee::class,'user_id');
     }
 
@@ -84,13 +89,14 @@ class User extends Authenticatable
                 'sell_price' => __('lang.sell_price'),
                 'discount' => __('lang.discount'),
             ],
-            'customer_module' => [
-                'customer' => __('lang.customer'),
-                'customer_type' => __('lang.customer_type'),
-                'add_payment' => __('lang.add_payment'),
-            ],
-            'supplier_module' => [
-                'supplier' => __('lang.suppliers'),
+            'stock_module' => [
+                'add_stock' => __('lang.add_stock'),
+                'pay' => __('lang.pay'),
+                'remove_stock' => __('lang.remove_stock'),
+                'internal_stock_request' => __('lang.internal_stock_request'),
+                'internal_stock_return' => __('lang.internal_stock_return'),
+                'transfer' => __('lang.transfer'),
+                'import' => __('lang.import'),
             ],
             'cashier_module' => [
                 'pos' => __('lang.pos'),
@@ -100,7 +106,6 @@ class User extends Authenticatable
                 'import' => __('lang.import'),
             ],
             'return_module' => [
-                'sell_return' => __('lang.sell_return'),
                 'sell_return_pay' => __('lang.sell_return_pay'),
                 'purchase_return' => __('lang.purchase_return'),
                 'purchase_return_pay' => __('lang.purchase_return_pay'),
@@ -114,14 +119,13 @@ class User extends Authenticatable
                 'attendance' => __('lang.attendance'),
                 'wages' => __('lang.wages'),
             ],
-            'stock_module' => [
-                'add_stock' => __('lang.add_stock'),
-                'pay' => __('lang.pay'),
-                'remove_stock' => __('lang.remove_stock'),
-                'internal_stock_request' => __('lang.internal_stock_request'),
-                'internal_stock_return' => __('lang.internal_stock_return'),
-                'transfer' => __('lang.transfer'),
-                'import' => __('lang.import'),
+            'customer_module' => [
+                'customer' => __('lang.customer'),
+                'customer_type' => __('lang.customer_type'),
+                'add_payment' => __('lang.add_payment'),
+            ],
+            'supplier_module' => [
+                'supplier' => __('lang.suppliers'),
             ],
             'reports_module' => [
                 'profit_loss' => __('lang.profit_loss'),

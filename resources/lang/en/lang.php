@@ -137,12 +137,25 @@ return [
     'edit_customer_type'=>'Edit Customer Type',
     'edit_brand'=>'Edit Brand',
     'phone'=>'Phone',
+    'add_phone' => "Add Phone" ,
     'address'=>'Address',
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
     'add_customers'=>'Add Customers',
     'balance'=>'Balance',
     'purchases'=>'Purchases',
     'points'=>'Points',
     'edit_customers'=>'Edit Customers',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'min_amount_in_dollar' ,
+    'max_amount_in_dollar' => 'max_amount_in_dollar' ,
+    'min_amount_in_dinar'  => 'min_amount_in_dinar' ,
+    'max_amount_in_dinar'  => 'max_amount_in_dinar' ,
+    // balance_in_dollar
+    'balance_in_dollar'    => 'balance_in_dollar' ,
+    // balance_in_dinar
+    'balance_in_dinar'     => 'balance_in_dinar' ,
+
     'important_dates'=>'Important Dates',
     'important_date'=>'Important Date',
     'date'=>'Date',
@@ -269,8 +282,32 @@ return [
     'taxRateUnique' => 'Rate Required' ,
     // ############ purchases_report ############
     'purchases_report' => 'purchases report',
+    // ############ receivable_report ############
+    'receivable_report' => 'receivable report',
+    // ############ payable_report ############
+    'payable_report' => 'payable report',
+    // ############ get_due_report ############
+    'get_due_report' => 'get due report',
+    // ############ customers_report ############
+    'customers_report' => 'customers report',
+    // ############ representative_salary_report ############
+    'representative_salary_report' => 'representative salary report' ,
+    // ############ daily_report_summary ############
+    'daily_report_summary' => 'daily report summary' ,
+    // ###################### preparer #####################
+    'preparer' => 'preparer' ,
+    // ###################### purchase_order #####################
+    'purchase_order' => 'Purchase Order' ,
+    'show_purchase_order' => 'Show Purchase Order' ,
+    'create_purchase_order' => 'Create Purchase Order',
+    'po_no' => 'Purchase Order Number',
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'Amer' ,
+    'invoice_title2' => 'For General Trading',
 
     'purchase_price'=>'Purchase Price',
+    'purchase_price_dollar' => 'dollar purchase price',
+
     'sell_price'=>'Sell Price',
     'add_stock'=>'Add Stock',
     'pay'=>'Pay',
@@ -283,7 +320,7 @@ return [
     'sale'=>'Sale',
     'delivery_list'=>'Delivery List',
     'product_classification_tree'=>'Product Classification Tree',
-    'sell_return'=>'Sell Return',
+    'returns'=>'Sell Return',
     'sell_return_pay'=>'Sell Return Pay',
     'purchase_return'=>'Purchase Return',
     'purchase_return_pay'=>'Purchase Return Pay',
@@ -374,6 +411,43 @@ return [
     'print_the_transaction' => 'Print The Transaction',
     'add_payment_row' => 'Pay the remaining amount with another Method',
     'another_payment_option' => 'Another Payment Option',
+    'description' => 'Description',
+    'carton' => 'Carton',
+    'price_of_piece' => ' Price Of Piece',
+    'invoice' => 'Invoice',
+    'dear' => 'Dear',
+    'respected' => 'Respected',
+    'total_after_discount' => 'Total After Discount',
+    'previous_balance' => 'Previous Balance',
+    'remaining_balance' => 'Remaining Balance',
+    'dollar' => 'Dollar',
+    'dinar' => 'Dinar',
+    'sells' => 'Sells',
+    'reference' => 'Reference',
+    'purchase_ref' => 'Purchase Reference',
+    'reference' => 'Reference',
+    'payment_ref' => 'Payment Reference',
+    'sale_ref' => 'Sale Reference',
+    'reference_no' => 'Reference No',
+
+    'sale_status' => 'Sell Status',
+    'grand_total' => 'Grand Toral',
+    'due_sale_list' => 'Due Sale List',
+    'sub_sku' => 'Sub Sku',
+    'cashier_man' => 'Cashier',
+    'return' => 'Return',
+    'returned_quantity' => 'Returned Quantity',
+    'Discount_from_the_cost_of_delivery' => 'Discount From The Cost of Delivery',
+    'The_actual_delivery_cost' => 'The Actual Delivery Cost',
+    'sells_return' => 'Sells Return',
+    'view_draft' => 'View Draft',
+    'customer_name' => 'Customer Name',
+    'initial_balance' => 'Initial Balance',
+    'add_initial_balance' => 'Add Initial Balance',
+    'required_fields_info' => 'The field labels marked with <span style="color: #dc3545">*</span> are required input fields.',
+    'clear_all_input_form'=>'Keeping data after saving',
+
+
 ];
 
 

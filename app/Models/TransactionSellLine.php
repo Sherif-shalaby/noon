@@ -12,6 +12,7 @@ class TransactionSellLine extends Model
 
     public function transaction_sell_lines()
     {
+
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
 
@@ -35,7 +36,7 @@ class TransactionSellLine extends Model
         return $this->hasMany(PaymentTransactionSellLine::class,'transaction_id','id');
     }
 
-    public function transaction_currency()
+    public function transaction_currency_relationship()
     {
 
         return $this->belongsTo(Currency::class, 'transaction_currency');
@@ -54,4 +55,9 @@ class TransactionSellLine extends Model
 
         return $this->belongsTo(Currency::class, 'paying_currency_id')->withDefault($default_currency);
     }
+    public function created_by_user()
+    {
+        return $this->belongsTo(User::class, 'created_by')->withDefault(['name' => '']);
+    }
+
 }

@@ -1,6 +1,6 @@
 <div class="footerbar mt-5">
     <footer class="footer">
-        <p class="mb-0">© 2020 Theta - All Rights Reserved.</p>
+        <p class="mb-0">© 2020 sherifshalaby.tech - All Rights Reserved.</p>
     </footer>
 
 

@@ -52,14 +52,16 @@ class SuppliersController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => ['required', 'max:30'],
+                'name' => ['nullable', 'max:30'],
+                'notes' => ['nullable', 'max:255'],
                 'company_name' => ['nullable', 'max:30'],
                 'vat_number' => ['nullable', 'max:30'],
-                'email' => ['nullable', 'email'],
-                'mobile_number' => ['nullable', 'max:30'],
+                'email' => ['nullable', 'max:50'],
+                'mobile_number' => ['required', 'max:30'],
                 'address' => ['nullable', 'max:60'],
                 'city' => ['nullable', 'max:30'],
                 'state' => ['nullable', 'max:30'],
@@ -78,7 +80,12 @@ class SuppliersController extends Controller
 
             return redirect()->back()->withInput()->with('status', $output);
         }
-        $data = $request->except('_token');
+        $data = $request->except('_token','mobile_number','email');
+        // ++++++++++++++ store mobile_number in array ++++++++++++++++++
+        $data['mobile_number'] = json_encode($request->mobile_number);
+        // ++++++++++++++ store email in array ++++++++++++++++++
+        $data['email'] = json_encode($request->email);
+
         $data['created_by'] = Auth::user()->id;
         if ($request->file('image')) {
             $data['image'] = store_file($request->file('image'), 'suppliers');
@@ -86,8 +93,8 @@ class SuppliersController extends Controller
 
         Supplier::create($data);
         // return "test";
-        return response()->json(['status' => __('lang.success')]);
-        // return redirect()->back()->with('status', __('lang.success'));
+        // return response()->json(['status' => __('lang.success')]);
+        return redirect()->back()->with('status', __('lang.success'));
     }
 
     /**

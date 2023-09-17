@@ -27,6 +27,7 @@ return new class extends Migration
             $table->decimal('dollar_sell_price', 15, 4)->nullable();
             $table->decimal('exchange_rate');
             $table->decimal('sub_total', 15, 4);
+            $table->decimal('dollar_sub_total', 15, 4);
             $table->boolean('point_earned')->default(0);
             $table->boolean('point_redeemed')->default(0);
             $table->string('product_discount_type')->nullable();

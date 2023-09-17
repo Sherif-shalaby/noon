@@ -8,17 +8,19 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.reports')</li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.purchases_report')</li>
                     </ol>
                 </div>
             </div>
-            <div class="col-md-4 col-lg-4">
+            {{-- <div class="col-md-4 col-lg-4">
+
                 <div class="widgetbar">
                     <a href="{{route('products.create')}}" class="btn btn-primary">
                         @lang('lang.add_products')
                       </a>
                 </div>
-            </div>
+            </div> --}}
    </div>
     </div>
 @endsection
@@ -61,7 +63,7 @@
                                     <th>مبلغ المشتريات</th>
                                     <th>الكمية المشتراة</th>
                                     <th>في المخزن</th>
-                                    <th>@lang('lang.action')</th>
+                                    {{-- <th>@lang('lang.action')</th>  --}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -69,30 +71,41 @@
                                         <tr>
                                             <td>{{ $index+1 }}</td>
                                             <td>{{$product->name}}</td>
-                                            @foreach ( $product->stock_lines as $stockLine )
-                                            {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                            <td>
-                                                @if( !empty($stockLine->purchase_price) )
-                                                    {{  number_format( $stockLine->purchase_price , 2 ) }}
-                                                @elseif( !empty($stockLine->dollar_purchase_price) )
-                                                    @php
+                                            @php
+                                                // ++++++++++++++++++++ purchase_price_var ++++++++++++++++++++
+                                                $purchase_price_var = 0;
+                                                // ++++++++++++++++++++ purchase_quantity_var ++++++++++++++++++++
+                                                $purchase_quantity = 0;
+                                                // ++++++++++++++++++++ purchase_store_var ++++++++++++++++++++
+                                                $purchase_store = 0;
+                                                foreach ($product->stock_lines as $key => $stockLine)
+                                                {
+                                                    // =========== purchase_price ===========
+                                                    if (!empty($stockLine->purchase_price))
+                                                    {
+                                                        $purchase_price_var = $purchase_price_var + $stockLine->purchase_price;
+                                                    }
+                                                    else
+                                                    {
                                                         $last_exchange_rate = $stockLine->transaction->transaction_payments->last()->exchange_rate;
-                                                    @endphp
-                                                    {{  number_format( ( $stockLine->dollar_purchase_price * $last_exchange_rate ) , 2 ) }}
-                                                @endif
-                                            </td>
+                                                        $purchase_price_var = $purchase_price_var + $stockLine->dollar_purchase_price * $last_exchange_rate;
+                                                    }
+                                                    // =========== purchase_quantity ===========
+                                                    $purchase_quantity = $purchase_quantity + $stockLine->quantity ;
+                                                    // =========== purchase_store ===========
+                                                    $purchase_store = ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned );
+                                                }
+                                             @endphp
+                                            {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
+                                            <td> {{ number_format($purchase_price_var,2) }}</td>
                                             {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
-                                            <td>
-                                                {{ number_format($stockLine->quantity,2) }}
-                                            </td>
+                                            <td> {{ $purchase_quantity }} </td>
                                             {{-- ++++++++++ في المخزن ++++++++++ --}}
-                                            <td>
-                                                {{ number_format( ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned ) , 2 ) }}
-                                            </td>
-                                            @endforeach
-                                            <td>
+                                            <td>{{ $purchase_store }}</td>
+                                          
+                                            {{-- ++++++++++++++++++++++++++ Actions +++++++++++++++++++ --}}
+                                            {{-- <td>
                                                 <div class="btn-group">
-                                                    {{-- +++++++++++++++++++++++++++ Actions ++++++++++++++++++++++++ --}}
                                                     <div class="bn-group">
                                                         <a href="{{ route('invoices.show', $product->id) }}" title="{{ __('Show') }}"
                                                             class=" btn btn-info btn-sm text-white mx-1">
@@ -103,8 +116,6 @@
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </div>
-
-                                                    {{-- modal delete --}}
                                                     <div class="modal fade" id="delete{{ $product->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore.self>
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
@@ -123,7 +134,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     {{-- @include('products.edit',$product) --}}
                                     @endforeach

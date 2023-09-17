@@ -44,6 +44,10 @@
                                             <th>@lang('lang.name')</th>
                                             <th>@lang('lang.company_name')</th>
                                             <th>@lang('lang.mobile_number')</th>
+                                            <th>@lang('lang.email')</th>
+                                            <th>@lang('lang.exchange_rate')</th>
+                                            <th>@lang('lang.owner_debt_in_dinar')</th>
+                                            <th>@lang('lang.owner_debt_in_dollar')</th>
                                             <th>@lang('lang.created_by')</th>
                                             <th>@lang('lang.updated_by')</th>
                                             <th>@lang('lang.action')</th>
@@ -55,6 +59,10 @@
                                             <td>{{$supplier->name}}</td>
                                             <td>{{$supplier->company_name}}</td>
                                             <td>{{$supplier->mobile_number}}</td>
+                                            <td>{{$supplier->email}}</td>
+                                            <td>{{$supplier->exchange_rate}}</td>
+                                            <td>{{$supplier->owner_debt_in_dinar}}</td>
+                                            <td>{{$supplier->owner_debt_in_dollar}}</td>
                                             <td>{{$supplier->created_by_user->name}}</td>
                                             <td>{{$supplier->updated_by_user->name ?? ''}}</td>
                                             <td>

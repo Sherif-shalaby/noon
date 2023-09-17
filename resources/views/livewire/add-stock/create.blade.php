@@ -5,12 +5,24 @@
             <div class="col-md-12">
                 <div class="card mt-3">
                     <div class="card-header d-flex align-items-center">
-
-                        @if (!empty($is_raw_material))
-                            <h4>@lang('lang.add_stock_for_raw_material')</h4>
-                        @else
-                            <h4>@lang('lang.add-stock')</h4>
-                        @endif
+                        <h4>@lang('lang.add-stock')</h4>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-9">
+                            <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="i-checks">
+                                <input id="clear_all_input_form" name="clear_all_input_form"
+                                       type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif
+                                       class="">
+                                <label for="clear_all_input_form">
+                                    <strong>
+                                        @lang('lang.clear_all_input_form')
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     {!! Form::open([ 'id' => 'add_stock_form']) !!}
                     <div class="card-body">
@@ -53,6 +65,23 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                {{-- +++++++++++++++ Order Preparer Employee +++++++++++++++ --}}
+                                {{-- <div class="col-md-3">
+                                    <label for="preparer_id">@lang('lang.preparer') :*</label>
+                                    <select name="preparer_id" id="preparer_id" class="form-control-custom select2" placeholder="{{  __('lang.please_select') }}" required>
+                                        <option value="">{{  __('lang.please_select') }}</option>
+
+                                        @foreach ($preparers as $preparer )
+                                            @foreach ( $preparer->employess as $employee )
+                                                <option value="{{ $employee->id }}">{{ $employee->employee_name }}</option>
+                                            @endforeach
+                                        @endforeach
+                                    </select>
+                                    @error('preparers')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div> --}}
+
                                 <div class="col-md-3">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'wire:model' => 'purchase_type']) !!}
@@ -292,6 +321,9 @@
         </div>
     </div>
 </section>
+{{--<!-- This will be printed -->--}}
+<section class="invoice print_section print-only" id="receipt_section"> </section>
+
 
 @push('javascripts')
 <script>
@@ -313,15 +345,28 @@
             $('#select_products_modal').modal('hide');
         });
     });
-    $(document).on('click', '#dollar_section', function() {
-        // if($('.dollar_section').hasClass('d-none')){
-            $('.dollar_section').removeClass('d-none');
-        // }
-        // else{
-        //     $('.dollar_section').addClass('d-none');
 
-        // }
+    document.addEventListener('livewire:load', function () {
+        Livewire.on('printInvoice', function (htmlContent) {
+            // Set the generated HTML content
+            // $("#receipt_section").html(htmlContent);
 
+            // Trigger the print action
+            window.print();
+        });
+    });
+    $(document).on("click", "#clear_all_input_form", function () {
+        var value = $('#clear_all_input_form').is(':checked')?1:0;
+        $.ajax({
+            method: "get",
+            url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
+            contentType: "html",
+            success: function (result) {
+                if (result.success) {
+                    swal("Success", response.msg, "success");
+                }
+            },
+        });
     });
 
 </script>

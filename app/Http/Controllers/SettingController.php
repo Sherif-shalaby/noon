@@ -308,4 +308,28 @@ class SettingController extends Controller
         $b64image = "data:image/jpeg;base64," . $base64_image;
         return $b64image;
     }
+
+    public function createOrUpdateSystemProperty($key, $value)
+    {
+        try {
+            System::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value, 'date_and_time' => Carbon::now(), 'created_by' => 1]
+            );
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+
+        return $output;
+    }
 }

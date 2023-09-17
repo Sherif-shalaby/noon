@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'superadmin',
             'email' => 'superadmin@sherifshalaby.tech',
             'password' => Hash::make('123456'),
-            // 'is_superadmin' => 1,
-            // 'is_admin' => 0,
-            // 'is_detault' => 1,
+             'is_superadmin' => 1,
+             'is_admin' => 0,
+             'is_detault' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ];
@@ -53,9 +53,9 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@sherifshalaby.tech',
             'password' => Hash::make('123456'),
-            // 'is_superadmin' => 0,
-            // 'is_admin' => 1,
-            // 'is_detault' => 1,
+             'is_superadmin' => 0,
+             'is_admin' => 1,
+             'is_detault' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ];
@@ -135,7 +135,14 @@ class DatabaseSeeder extends Seeder
         JobType::insert(
             [
                 ['title' => 'Cashier', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
-                ['title' => 'Deliveryman', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]
+                ['title' => 'Deliveryman', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()] ,
+                ['title' => 'Representative', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()] ,
+                // Order_Preparer employee
+//                [
+//                    'title' => 'preparer', 'date_of_creation' => Carbon::now(),
+//                                'created_by' => 1, 'created_at' => Carbon::now(),
+//                                'updated_at' => Carbon::now()
+//                ]
             ]
         );
 
@@ -147,7 +154,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ColorSeeder::class,
             SizeSeeder::class,
-            ProductSeeder::class,
+//            ProductSeeder::class,
         ]);
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-
+    use HasFactory;
     protected $table = 'employees';
     public $timestamps = true;
 
@@ -29,7 +30,11 @@ class Employee extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    // +++++++++++++++ Relationship : employees and wage_transactions +++++++++++++++
+    public function wage_transactions()
+    {
+        return $this->hasMany(WageTransaction::class);
+    }
     public static function getWeekDays(){
         return [
             'sunday' => __('lang.sunday'),

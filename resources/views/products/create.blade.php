@@ -31,6 +31,7 @@
                     'enctype' => 'multipart/form-data',
                 ]) !!}
                 <div class="row">
+                    {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
                     <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
@@ -113,7 +114,7 @@
                     {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
-                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
+                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}">
                             <option value="">{{  __('lang.please_select') }}</option>
                             <option value="inclusive">{{ __('lang.inclusive') }}</option>
                             <option value="exclusive">{{ __('lang.exclusive') }}</option>
@@ -122,7 +123,7 @@
                     {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="product" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
-                        <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}" required>
+                        <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}">
                             <option value="">{{  __('lang.please_select') }}</option>
                             @foreach ($product_tax as $tax )
                                 @if( $tax->status == "active" )
@@ -233,10 +234,15 @@
                                             <th style="width: 3%;"></th>
                                             <th style="width: 17%;">@lang('lang.price_start_date')</th>
                                             <th style="width: 17%;">@lang('lang.price_end_date')</th>
-                                            <th style="width: 20%;">@lang('lang.customer_type') <i class="dripicons-question" data-toggle="tooltip"
-                                                                                                title="@lang('lang.discount_customer_info')"></i></th>
-                                            <th style="width: 5%;"><button class="btn btn-xs btn-primary add_price_row"
-                                                                        type="button"><i class="fa fa-plus"></i></button></th>
+                                            <th style="width: 20%;">@lang('lang.customer_type')
+                                                <i class="dripicons-question" data-toggle="tooltip"
+                                                    title="@lang('lang.discount_customer_info')"></i>
+                                                </th>
+                                            <th style="width: 5%;">
+                                                <button class="btn btn-xs btn-primary add_price_row" type="button">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>

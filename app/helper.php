@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Storage;
 function store_file($file,$path)
 {
     $name = time().$file->getClientOriginalName();
-    return $value = $file->storeAs($path, $name, 'uploads');
+    $value = $file->storeAs($path, $name, 'uploads');
+    return $value;
 }
 
 function delete_file($file)

@@ -142,6 +142,7 @@ return array(
     'add_brand'=>'اضافة علامة تجارية',
     'add_category'=>'اضافة قسم',
     'discount'=>'خصم',
+    // ++++++++++++ customers +++++++++++++++
     'customer_types'=>'أنواع العملاء',
     'customer_type'=>'نوع العميل',
     'add_customer_type'=>'اضافة نوع عميل',
@@ -149,6 +150,25 @@ return array(
     'edit_brand'=>'تعديل العلامة التجارية',
     'phone'=>'رقم التليفون',
     'address'=>'العنوان',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'الحد الادني بالدولار' ,
+    'max_amount_in_dollar' => 'الحد الاقصي بالدولار' ,
+    'min_amount_in_dinar' => 'الحد الادني بالدينار' ,
+    'max_amount_in_dinar' => 'الحد الاقصي بالدينار' ,
+    // balance_in_dollar
+    'balance_in_dollar'   => 'الرصيد بالدولار' ,
+    // balance_in_dinar
+    'balance_in_dinar'   => 'الرصيد بالدينار' ,
+    // ++++++++++++++++++ Suppliers ++++++++++++++++
+    // owner_debt_in_dinar
+    'owner_debt_in_dinar'   => 'الدين بالدينار' ,
+    // owner_debt_in_dollar
+    'owner_debt_in_dollar'   => 'الدين بالدولار' ,
+
+    // ++++++++++++ invoice_address +++++++++++++++
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
+    'add_phone' => "اضافة رقم تليفون" ,
     'add_customers'=>'اضافة عميل',
     'balance'=>'الرصيد',
     'purchases'=>'المشتريات',
@@ -160,6 +180,7 @@ return array(
     'notify_before_days'=>'اخطار قبل ايام',
     'quantity' => 'كمية',
     'purchase_price' => 'سعر الشراء',
+    'purchase_price_dollar' => 'سعر الشراء بالدولار',
     'selling_price' => 'سعر البيع',
     'sub_total' => 'المجموع الفرعي',
     'new_stock' => 'المخزون الجديد',
@@ -185,10 +206,12 @@ return array(
     'ref_number' => 'رقم المرجع',
     'bank_deposit_date' => 'تاريخ الإيداع المصرفي',
     'bank_name' => 'اسم البنك',
+    'duePaid' => 'متاخرات',
     'due' => 'تاريخ الاستحقاق',
     'due_date' => 'يخطر قبل أيام',
     'cash' => 'نقدي',
     'partially_paid' =>'المدفوعة جزئيا',
+    'partial' =>'مدفوعة جزئيا',
     'paid' => 'دفعت',
     'pay_later' => 'ادفع لاحقا',
     'draft' => 'مسودة',
@@ -217,7 +240,7 @@ return array(
     'please_enter_your_password'=>'من فضلك ادخل كلمة السر !',
     'type_your_password'=>'ادخل كلمة السر',
     'correct_password'=>'كلمة السر صحيحة',
-    'company_name'=>'اسم لشركة',
+    'company_name'=>'اسم الشركة',
     'mobile_number' => 'رقم الهاتف',
     'add_supplier   '=>'اضافة مورد',
     'vat_number' =>'ضريبة الشراء',
@@ -287,7 +310,30 @@ return array(
     'taxRateInteger' => 'المعدل لابد ان يكون عدد صحيح' ,
     // ############ purchase_report ############
     'purchases_report' => 'تقرير المشتريات',
-
+    // ############ get_due_report ############
+    'get_due_report' => 'تقرير الاستحقاقات',
+    // ############ sales_report ############
+    'sales_report' => 'تقرير المبيعات',
+    // ############ receivable_report ############
+    'receivable_report' => 'تقرير القبض',
+    // ############ payable_report ############
+    'payable_report' => 'تقرير القبض',
+    // ############ customers_report ############
+    'customers_report' => 'تقرير العملاء',
+    // ############ representative_salary_report ############
+    'representative_salary_report' => 'تقرير مقبوضات المندوبين',
+    // ############ daily_report_summary ############
+    'daily_report_summary' => 'ملخص التقرير اليومي',
+    // ###################### preparer #####################
+    'preparer' => 'اسم المٌجهز' ,
+    // ###################### purchase_order #####################
+    'purchase_order' => 'أمر شراء' ,
+    'show_purchase_order' => 'عرض اوامر الشراء' ,
+    'create_purchase_order' => 'انشاء أمر شراء' ,
+    'po_no' => 'رقم طلب الشراء' ,
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'عامر' ,
+    'invoice_title2' => 'للتجارة العامة',
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
     'edit'=>'تعديل',
@@ -302,7 +348,7 @@ return array(
     'payment' => 'المدفوعات',
     'sale'=>'المبيعات',
     'delivery_list' => 'قائمة الطلبيات',
-    'sell_return' => 'إرجاع عملية بيع',
+    'return_sell' => 'إرجاع عملية بيع',
     'purchase_return' => 'إرجاع عملية شراء',
     'purchase_return_pay' => 'دفع عائد الشراء',
     'employee_commission' => 'عمولة الموظف',
@@ -340,6 +386,7 @@ return array(
     'product_quantity_alert_report' => 'تقرير تنبيه كمية المنتج',
     'user_report' => 'تقرير المستخدم',
     'customer_report' => 'تقرير العملاء',
+    // supplier_report
     'supplier_report' => 'تقرير المورد',
     'due_report' => 'تقرير الاستحقاق',
     'supplier' => 'المورد',
@@ -381,5 +428,39 @@ return array(
     'print_the_transaction' => 'اطبع المعاملة',
     'add_payment_row' => 'دفع الباقي بطريقة أخري',
     'another_payment_option' =>  'خيار دفع آخر',
+    'description' => 'مواصفات',
+    'carton' => 'كارتون',
+    'price_of_piece' => 'سعر القطعه الواحده',
+    'invoice' => 'فاتوره',
+    'dear' => 'حضرة السيد',
+    'respected' => 'المحترم',
+    'total_after_discount' => 'المجموع بعد الخصم',
+    'previous_balance' => 'الرصيد السابق',
+    'remaining_balance' => 'الرصيد المتبقي',
+    'dollar' => 'الواصل دولار',
+    'dinar' => 'الواصل دينار',
+    'sells' => 'المبيعات',
+    'reference' => 'المرجعي',
+    'reference_no' => 'رقم المرجع',
+    'payment_ref' => 'مرجع الدفع',
+    'sale_ref' => 'مرجع البيع',
+    'purchase_ref' => 'مرجع الشراء',
+    'sale_status' => 'حاله المبيعات',
+    'grand_total' => 'المبلغ الاجمالي',
+    'due_sale_list' => 'متأخرات',
+    'sub_sku' => '',
+    'cashier_man' => 'أمين الصندوق',
+    'return' => 'إرجاع',
+    'returned_quantity' => 'الكمية المعاده',
+    'Discount_from_the_cost_of_delivery' => 'المبلغ المخصوم من تكلفة الدليفري',
+    'The_actual_delivery_cost' => 'القيمة الفعلية لتكلفة الدليفري',
+    'sells_return' => 'عوده المبيعات',
+    'view_draft' => 'عرض المسوده',
+    'customer_name' => 'اسم العميل',
+    'initial_balance' => 'الأرصدة الأولية',
+    'add_initial_balance' => 'اضافة رصيد أولي',
+    'required_fields_info' => 'الحقول المميزة بعلامة <span style="color: #dc3545">*</span> هي حقول إدخال مطلوبة.',
+    'clear_all_input_form'=>'الاحتفاظ بالبيانات بعد عملية الإدخال',
+
 );
 
