@@ -159,6 +159,7 @@
     </div>
 </section>
 {{--<!-- This will be printed -->--}}
+<div class="view_modal no-print" ></div>
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 
 
