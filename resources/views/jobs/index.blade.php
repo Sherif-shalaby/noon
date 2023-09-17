@@ -61,7 +61,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if(!in_array($job->title, ['Cashier', 'Deliveryman']) )
+                                        @if(!in_array($job->title, ['Cashier', 'Deliveryman','Representative']) )
                                             <a data-href="{{route('jobs.edit', $job->id)}}"
                                                data-container=".view_modal"
                                                class="btn btn-primary btn-modal text-white edit_job"><i

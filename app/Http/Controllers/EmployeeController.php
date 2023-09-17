@@ -390,6 +390,12 @@ class EmployeeController extends Controller
       return redirect()->back()->with('status', $output);
 
   }
+
+  public function  addPoints(){
+//      dd('test');
+      return view('employees.add_point');
+  }
+
   public function createOrUpdateNumberofLeaves($request, $employee_id)
   {
       if (!empty($request->number_of_leaves)) {
@@ -401,6 +407,7 @@ class EmployeeController extends Controller
           }
       }
   }
+
 
 }
 

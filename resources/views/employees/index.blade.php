@@ -67,7 +67,6 @@
                                             @endif
                                         </td>
                                         <td>
-
                                             {{!empty($employee->user) ? $employee->user->name : ''}}
                                         </td>
                                         <td>
@@ -127,6 +126,16 @@
                                                             class="fa fa-trash"></i>
                                                         @lang('lang.delete')</a>
                                                 </li>
+                                                @if(!empty($employee->job_type) && $employee->job_type->title == 'Representative')
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a href="{{route('employees.add_points')}}"
+                                                           class="btn add_point"><i
+                                                                class="fa fa-plus"></i>
+                                                            @lang('lang.add_points')
+                                                        </a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </td>
 
