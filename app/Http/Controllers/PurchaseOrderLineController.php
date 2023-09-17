@@ -43,7 +43,9 @@ class PurchaseOrderLineController extends Controller
     /* +++++++++++++++ index() +++++++++++++++ */
     public function index()
     {
-        //
+        $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->get();
+        // return $purchase_orders;
+        return view('purchase_order.index',compact('purchase_orders'));
     }
     /* +++++++++++++++ create() +++++++++++++++ */
     public function create()

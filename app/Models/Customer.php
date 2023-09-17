@@ -14,7 +14,10 @@ class Customer extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = array('name', 'email', 'address', 'phone', 'deposit_balance', 'added_balance', 'created_by', 'deleted_by', 'updated_by', 'customer_type_id');
+    protected $fillable = array('name', 'email','image', 'address', 'phone','notes',
+                                    'min_amount_in_dollar','max_amount_in_dollar','min_amount_in_dinar','max_amount_in_dinar',
+                                    'balance_in_dollar','balance_in_dinar','deposit_balance', 'added_balance',
+                                    'created_by', 'deleted_by', 'updated_by', 'customer_type_id');
 
     public function customer_type()
     {

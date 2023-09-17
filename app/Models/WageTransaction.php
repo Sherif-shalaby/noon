@@ -23,4 +23,9 @@ class WageTransaction extends Model
     {
         return $this->hasMany(Wage::class);
     }
+    // ++++++++++++++++++ wages_transaction_payments +++++++++++++++
+    public function transaction_payments()
+    {
+        return $this->hasMany(WageTransactionPayment::class,'transaction_id');
+    }
 }

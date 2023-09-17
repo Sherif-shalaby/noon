@@ -31,6 +31,7 @@
                     'enctype' => 'multipart/form-data',
                 ]) !!}
                 <div class="row">
+                    {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
                     <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
@@ -233,10 +234,15 @@
                                             <th style="width: 3%;"></th>
                                             <th style="width: 17%;">@lang('lang.price_start_date')</th>
                                             <th style="width: 17%;">@lang('lang.price_end_date')</th>
-                                            <th style="width: 20%;">@lang('lang.customer_type') <i class="dripicons-question" data-toggle="tooltip"
-                                                                                                title="@lang('lang.discount_customer_info')"></i></th>
-                                            <th style="width: 5%;"><button class="btn btn-xs btn-primary add_price_row"
-                                                                        type="button"><i class="fa fa-plus"></i></button></th>
+                                            <th style="width: 20%;">@lang('lang.customer_type')
+                                                <i class="dripicons-question" data-toggle="tooltip"
+                                                    title="@lang('lang.discount_customer_info')"></i>
+                                                </th>
+                                            <th style="width: 5%;">
+                                                <button class="btn btn-xs btn-primary add_price_row" type="button">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </th>
                                         </tr>
                                         </thead>
                                         <tbody>

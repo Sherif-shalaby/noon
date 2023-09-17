@@ -83,6 +83,7 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
+    // return $request;
     try
     {
       $product_data = [

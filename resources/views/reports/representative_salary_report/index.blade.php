@@ -57,30 +57,28 @@
                                     <th>@lang('lang.commission')</th>
                                     <th>@lang('lang.paid_amount')</th>
                                     <th>@lang('lang.duePaid')</th>
+                                    <th>@lang('lang.payment_status')</th>
                                     {{-- <th>@lang('lang.action')</th>  --}}
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    {{-- @php
-                                        $i = 1 ;
-                                        $total_paid = 0;
-                                        $total_due = 0;
-                                    @endphp --}}
                                     @foreach ($wages as $wage)
+                                        @php
+                                            $totalAmount = 0; // Initialize the totalAmount for each wage record
+                                            foreach ($wage->wage_transaction->transaction_payments as $payment) {
+                                                $totalAmount += $payment->amount;
+                                            }
+                                        @endphp
                                         <tr>
-                                            <td>{{ $wage->transaction_date }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($wage->wage_transaction->transaction_date)->format('Y-m-d') }}</td>
                                             <td>{{ $wage->employee->employee_name }}</td>
-                                            <td> {{$wage->payment_type}}</td>
-                                            <td> {{$wage->net_amount}}</td>
-                                            <td> {{@num_format($wage->wage_transaction->final_total)}}</td>
-                                            <td> {{@num_format($wage->employee->commission)}}</td>
-                                            <td> {{@num_format($due->final_total - $due->transaction_payments->sum('amount'))}}</td>
+                                            <td>{{ $wage->payment_type }}</td>
+                                            <td>{{ $wage->employee->fixed_wage_value }}</td>
+                                            <td>{{ number_format($wage->employee->commission_value,2) }}</td>
+                                            <td>{{ number_format($totalAmount,2) }}</td>
+                                            <td>{{ number_format($wage->wage_transaction->final_total - $totalAmount,2) }}</td>
+                                            <td>{{ $wage->wage_transaction->payment_status }}</td>
                                         </tr>
-                                        {{-- @php
-                                            $i++ ;
-                                            $total_paid += $due->transaction_payments->sum('amount');
-                                            $total_due += $due->final_total - $due->transaction_payments->sum('amount');
-                                        @endphp --}}
                                     @endforeach
                                 </tbody>
                             </table>

@@ -23,8 +23,8 @@
     </div>
 @endsection
 @section('content')
-       <!-- Start Contentbar -->    
-       <div class="contentbar">                
+       <!-- Start Contentbar -->
+       <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
@@ -51,6 +51,12 @@
                                     <th>@lang('lang.customer_type')</th>
                                     <th>@lang('lang.email')</th>
                                     <th>@lang('lang.phone')</th>
+                                    <th>@lang('lang.min_amount_in_dinar')</th>
+                                    <th>@lang('lang.max_amount_in_dinar')</th>
+                                    <th>@lang('lang.min_amount_in_dollar')</th>
+                                    <th>@lang('lang.max_amount_in_dollar')</th>
+                                    <th>@lang('lang.balance_in_dinar')</th>
+                                    <th>@lang('lang.balance_in_dollar')</th>
                                     <th>@lang('lang.balance')</th>
                                     <th>@lang('lang.purchases')</th>
                                     <th>@lang('lang.discount')</th>
@@ -67,6 +73,12 @@
                                    <td>{{$customer->customer_type->name}}</td>
                                     <td>{{$customer->email}}</td>
                                     <td>{{$customer->phone}}</td>
+                                    <td>{{ $customer->min_amount_in_dinar }}</td>
+                                    <td>{{ $customer->max_amount_in_dinar }}</td>
+                                    <td>{{ $customer->min_amount_in_dollar }}</td>
+                                    <td>{{ $customer->max_amount_in_dollar }}</td>
+                                    <td>{{ $customer->balance_in_dinar }}</td>
+                                    <td>{{ $customer->balance_in_dollar }}</td>
                                     <td>{{$customer->added_balance}}</td>
                                     <td>{{$customer->added_balance}}</td>
                                     <td>{{$customer->added_balance}}</td>

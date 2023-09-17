@@ -137,12 +137,25 @@ return [
     'edit_customer_type'=>'Edit Customer Type',
     'edit_brand'=>'Edit Brand',
     'phone'=>'Phone',
+    'add_phone' => "Add Phone" ,
     'address'=>'Address',
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
     'add_customers'=>'Add Customers',
     'balance'=>'Balance',
     'purchases'=>'Purchases',
     'points'=>'Points',
     'edit_customers'=>'Edit Customers',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'min_amount_in_dollar' ,
+    'max_amount_in_dollar' => 'max_amount_in_dollar' ,
+    'min_amount_in_dinar'  => 'min_amount_in_dinar' ,
+    'max_amount_in_dinar'  => 'max_amount_in_dinar' ,
+    // balance_in_dollar
+    'balance_in_dollar'    => 'balance_in_dollar' ,
+    // balance_in_dinar
+    'balance_in_dinar'     => 'balance_in_dinar' ,
+
     'important_dates'=>'Important Dates',
     'important_date'=>'Important Date',
     'date'=>'Date',
@@ -288,6 +301,9 @@ return [
     'show_purchase_order' => 'Show Purchase Order' ,
     'create_purchase_order' => 'Create Purchase Order',
     'po_no' => 'Purchase Order Number',
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'Amer' ,
+    'invoice_title2' => 'For General Trading',
 
     'purchase_price'=>'Purchase Price',
     'purchase_price_dollar' => 'dollar purchase price',

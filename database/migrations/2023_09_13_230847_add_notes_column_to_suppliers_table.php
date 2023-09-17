@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('suppliers', function(Blueprint $table) {
-            $table->string('name', 30)->nullable()->change();
-            $table->string('mobile_number', 30)->nullable(false)->change();
+        Schema::table('suppliers', function (Blueprint $table) {
+            // ======== notes of suppliers ========
+            $table->string('notes', 255)->after('address')->nullable();
         });
     }
 
@@ -26,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('suppliers', function (Blueprint $table) {
+            //
+        });
     }
 };

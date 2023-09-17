@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Wage;
 use App\Models\WageTransaction;
+use App\Models\WageTransactionPayment;
 use Illuminate\Http\Request;
 
 class RepresentativeSalaryReportController extends Controller
@@ -12,9 +13,7 @@ class RepresentativeSalaryReportController extends Controller
     /* ++++++++++++++++++ index() ++++++++++++++++++++++ */
     public function index()
     {
-        $wages = Wage::with('wage_transaction.','employee')->get();
-        $dues = WageTransaction::where('payment_status', '!=', 'paid')->where('status', 'final')->get();
-        // return $wages;
+        $wages = Wage::with(['wage_transaction.transaction_payments','employee'])->get();
         return view('reports.representative_salary_report.index',compact('wages'));
     }
 
