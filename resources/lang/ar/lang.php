@@ -43,6 +43,7 @@ return array(
     'brand_name'=>'اسم العلامة التجارية',
     'update'=>'تعديل',
     'general_settings'=>'الاعدادات العامة',
+    'state' => 'المحافظة' ,
     'developed_by'=>'طور بواسطة',
     'site_title'=>'عنوان الموقع',
     'time_format'=>'تنسيق الوقت',

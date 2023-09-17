@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Currency;
+use App\Models\State;
 use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
@@ -33,9 +36,23 @@ class SettingController extends Controller
         }
         $currencies  = $this->allCurrencies();
         $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
-        return view('general-settings.index',compact('settings','languages','currencies','selected_currencies'));
+        // Get All Countries
+        $countries = Country::get(['name','id']);
+        // return $countries;
+        return view('general-settings.index',compact('countries','settings','languages','currencies','selected_currencies'));
     }
-
+    // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where('country_id', $request->country_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++++++++++ fetchCity(): to get "cities" of "selected city" selectbox ++++++++++++++
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
+        return response()->json($data);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -139,6 +156,7 @@ class SettingController extends Controller
     }
     public function updateGeneralSetting(Request $request)
     {
+        // return $request;
         // try {
             System::updateOrCreate(
                 ['key' => 'site_title'],
@@ -200,6 +218,12 @@ class SettingController extends Controller
                 ['key' => 'watsapp_numbers'],
                 ['value' => $request->watsapp_numbers, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            // +++++++++++++++++++++ Country_id ++++++++++++++++++++
+            System::updateOrCreate(
+                ['key' => 'country_id'],
+                ['value' => $request->country, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+
             $data['letter_header'] = null;
             if ($request->has('letter_header') && !is_null('letter_header')) {
                 $imageData = $this->getCroppedImage($request->letter_header);

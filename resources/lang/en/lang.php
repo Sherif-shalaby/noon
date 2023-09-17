@@ -20,6 +20,7 @@ return [
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong!',
     'general_settings'=>'General Settings',
+    'state' => 'State',
     'developed_by'=>'Developed By',
     'site_title'=>'Site Title',
     'time_format'=>'Time Format',

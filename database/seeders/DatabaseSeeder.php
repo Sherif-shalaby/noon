@@ -22,6 +22,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            CountrySeeder::class,
+            CategorySeeder::class,
+            StatesSeeder::class ,
+            CitySeeder::class ,
+            ProductSeeder::class ,
+            SizeSeeder::class ,
+            ColorSeeder::class ,
+            SizeSeeder::class ,
+            CurrenciesTableSeeder::class ,
+
+        ]);
+
         $user_data = [
             'id'=>1,
             'name' => 'superadmin',

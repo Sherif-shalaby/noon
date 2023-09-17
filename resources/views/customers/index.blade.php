@@ -51,6 +51,8 @@
                                     <th>@lang('lang.customer_type')</th>
                                     <th>@lang('lang.email')</th>
                                     <th>@lang('lang.phone')</th>
+                                    <th>@lang('lang.state')</th>
+                                    <th>@lang('lang.city')</th>
                                     <th>@lang('lang.min_amount_in_dinar')</th>
                                     <th>@lang('lang.max_amount_in_dinar')</th>
                                     <th>@lang('lang.min_amount_in_dollar')</th>
@@ -73,6 +75,12 @@
                                    <td>{{$customer->customer_type->name}}</td>
                                     <td>{{$customer->email}}</td>
                                     <td>{{$customer->phone}}</td>
+                                    @php
+                                        $state = \App\Models\State::find($customer->state_id);
+                                        $city = \App\Models\City::find($customer->city_id);
+                                    @endphp
+                                    <td>{{ $state ? $state->name : '' }}</td>
+                                    <td>{{ $city ? $city->name : '' }}</td>
                                     <td>{{ $customer->min_amount_in_dinar }}</td>
                                     <td>{{ $customer->max_amount_in_dinar }}</td>
                                     <td>{{ $customer->min_amount_in_dollar }}</td>

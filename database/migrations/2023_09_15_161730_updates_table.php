@@ -24,6 +24,10 @@ return new class extends Migration
             $table->decimal('owner_debt_in_dollar', 15, 4)->after('notes')->nullable();
             // ======== owner_debt_in_dinar ===============
             $table->decimal('owner_debt_in_dinar', 15, 4)->after('notes')->nullable();
+            // ======== state_id column ===============
+            $table->unsignedBigInteger('state_id')->after('notes')->nullable();
+            // ======== city_id column ===============
+            $table->unsignedBigInteger('city_id')->after('notes')->nullable();
         });
         // ++++++++++++++++++++++++++++++++++ customers ++++++++++++++++++++++++++++++++++
         Schema::table('customers', function(Blueprint $table) {
@@ -43,6 +47,10 @@ return new class extends Migration
             $table->decimal('balance_in_dollar', 15, 4)->after('notes')->nullable();
             // ======== balance_in_dinar ===============
             $table->decimal('balance_in_dinar', 15, 4)->after('notes')->nullable();
+            // ======== state_id column ===============
+            $table->unsignedBigInteger('state_id')->after('notes')->nullable();
+            // ======== city_id column ===============
+            $table->unsignedBigInteger('city_id')->after('notes')->nullable();
         });
     }
 

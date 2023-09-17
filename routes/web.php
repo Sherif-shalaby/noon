@@ -74,7 +74,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('wages',WageController::class);
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
+    // // general_setting : fetch "state" of selected "country" selectbox
+    // Route::post('api/fetch-state',[SettingController::class,'fetchState']);
+    // // general_setting : fetch "city" of selected "state" selectbox
+    // Route::post('api/fetch-cities',[SettingController::class,'fetchCity']);
+
     Route::post('settings/remove-image/{type}', [SettingController::class,'removeImage']);
     Route::resource('settings', SettingController::class);
     Route::get('stores/get-dropdown', [StoreController::class,'getDropdown']);
@@ -172,6 +178,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers
     Route::resource('suppliers',SuppliersController::class);
+    // general_setting : fetch "state" of selected "country" selectbox
+    Route::post('api/fetch-state',[SuppliersController::class,'fetchState']);
+    // general_setting : fetch "city" of selected "state" selectbox
+    Route::post('api/fetch-cities',[SuppliersController::class,'fetchCity']);
+
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');

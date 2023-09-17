@@ -44,6 +44,8 @@
                                             <th>@lang('lang.name')</th>
                                             <th>@lang('lang.company_name')</th>
                                             <th>@lang('lang.mobile_number')</th>
+                                            <th>@lang('lang.state')</th>
+                                            <th>@lang('lang.city')</th>
                                             <th>@lang('lang.email')</th>
                                             <th>@lang('lang.exchange_rate')</th>
                                             <th>@lang('lang.owner_debt_in_dinar')</th>
@@ -59,6 +61,12 @@
                                             <td>{{$supplier->name}}</td>
                                             <td>{{$supplier->company_name}}</td>
                                             <td>{{$supplier->mobile_number}}</td>
+                                            @php
+                                                $state = \App\Models\State::find($supplier->state_id);
+                                                $city = \App\Models\City::find($supplier->city_id);
+                                            @endphp
+                                            <td>{{ $state ? $state->name : '' }}</td>
+                                            <td>{{ $city  ? $city->name : '' }}</td>
                                             <td>{{$supplier->email}}</td>
                                             <td>{{$supplier->exchange_rate}}</td>
                                             <td>{{$supplier->owner_debt_in_dinar}}</td>
