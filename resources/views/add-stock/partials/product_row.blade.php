@@ -8,10 +8,10 @@
 {{--             alt="photo" width="50" height="50">--}}
 {{--    </td>--}}
     <td>
-        {{ $product->name }}
+        {{ $product['name'] }}
     </td>
     <td>
-        {{ $product->sku }}
+        {{ $product['sku'] }}
 
     </td>
     <td>
@@ -21,14 +21,17 @@
         @enderror
     </td>
     <td>
-        @if(!empty($product->unit))
-            {{$product->unit->name}}
+        @php
+        $unit = \App\Models\Unit::find($product['unit_id'])->first();
+        @endphp
+        @if(!empty($unit))
+            {{$unit->name}}
         @endif
     </td>
     <td>
-        @if(!empty($product->unit))
+        @if(!empty($unit))
             <span>
-                {{$product->unit->base_unit_multiplier}}
+                {{$unit->base_unit_multiplier}}
             </span>
         @endif
     </td>
@@ -81,8 +84,8 @@
     </td>
     <td>
         <span class="size">
-            @if($product->size)
-                {{$product->size}}
+            @if($product['size'])
+                {{$product['size']}}
             @else
                 {{0.00}}
             @endif
@@ -99,8 +102,8 @@
     </td>
     <td>
         <span class="weight">
-            @if($product->weight)
-                {{$product->weight}}
+            @if($product['weight'])
+                {{$product['weight']}}
             @else
                 {{0.00}}
             @endif

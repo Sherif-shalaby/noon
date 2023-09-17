@@ -1,6 +1,8 @@
+@php
+    $local_code=LaravelLocalization::getCurrentLocale();
+@endphp
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="{{$local_code}}">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

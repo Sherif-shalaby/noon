@@ -42,7 +42,7 @@
         color:red;
     }
     input[type="text"],input[type="month"],textarea{
-       border:2px solid #939394 !important;
+       /*border:2px solid #939394 !important;*/
     }
 {{--    @if(request()->segment(2) == 'invoices')--}}
 {{--    /* -- Horizontal Navbar -- */--}}

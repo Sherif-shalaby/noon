@@ -25,9 +25,11 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Create extends Component
 {
+    use WithPagination;
 
     public $selectedProducts = [], $selectedProductData = [], $quantity = [], $purchase_price =[], $selling_price = [],
         $base_unit = [], $divide_costs , $other_expenses = 0, $other_payments = 0, $total_size = [], $total_weight =[],
@@ -35,11 +37,10 @@ class Create extends Component
         $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
         $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-        $showColumn = false, $transaction_currency, $current_stock ;
+        $showColumn = true, $transaction_currency, $current_stock,$searchProduct ;
 
     protected $rules = [
         'store_id' => 'required',
-        'purchase_type' => 'required',
     ];
 
     public function render()
@@ -55,7 +56,17 @@ class Create extends Component
         $preparers = JobType::with('employess')->where('title','preparer')->get();
         $products = Product::all();
         $stores = Store::getDropdown();
-
+        $search_result = '';
+        if(!empty($this->searchProduct)){
+            $search_result = Product::when($this->searchProduct,function ($query){
+                return $query->where('name','like','%'.$this->searchProduct.'%');
+            });
+            $search_result = $search_result->paginate();
+            if(count($search_result) === 1){
+                $this->fetchProduct($search_result->first()->id);
+                $search_result = '';
+            }
+        }
         if ($this->source_type == 'pos') {
             $users = StorePos::pluck('name', 'id');
         } elseif ($this->source_type == 'store') {
@@ -79,6 +90,7 @@ class Create extends Component
                 'selected_currencies',
                 'preparers' ,
                 'products',
+                'search_result',
                 'users')
         );
     }
@@ -125,10 +137,10 @@ class Create extends Component
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
             $transaction->status = !empty($this->status) ? $this->status : 'received';
-            $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
-            $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
-            $transaction->purchase_type = $this->purchase_type;
-            $transaction->type = empty($this->amount) ? 'initial_balance' : 'initial_balance_payment' ;
+            $transaction->order_date = Carbon::now();
+            $transaction->transaction_date =  Carbon::now();
+            $transaction->purchase_type = 'in_store';
+            $transaction->type ='initial_balance' ;
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
             $transaction->supplier_id = !empty($this->supplier) ? $this->supplier : null;
@@ -235,8 +247,10 @@ class Create extends Component
                     }
                 }
                 $supplier = Supplier::find($this->supplier);
+//                dd($product);
+
                 $add_stock_data = [
-                    'product_id' => $product->id,
+                    'product_id' => $product['id'],
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $this->quantity[$index],
                     'purchase_price' => !empty($this->purchase_price[$index]) ? $this->purchase_price[$index] : null ,
@@ -252,7 +266,7 @@ class Create extends Component
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
                 AddStockLine::create($add_stock_data);
-                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->quantity[$index], 0);
+                $this->updateProductQuantityStore($product['id'], $transaction->store_id,  $this->quantity[$index], 0);
 
             }
 
@@ -273,9 +287,21 @@ class Create extends Component
         $this->selectedProductData = Product::whereIn('id', $this->selectedProducts)->get();
 
     }
+    public function fetchProduct($id) {
+        $product = Product::find($id);
+        if(!empty($this->selectedProductData)){
+            $this->selectedProductData[count($this->selectedProductData)] =  $product;
+        }
+        else{
+            $this->selectedProductData[0] = $product;
+        }
+
+        $this->searchProduct ='';
+    }
 
     public function get_product($index){
-        return Product::where('id' ,$this->selectedProductData[$index]->id)->first();
+//        dd($this->selectedProductData[$index]['id']);
+        return Product::where('id' ,$this->selectedProductData[$index]['id'])->first();
     }
 
     public function sub_total($index)
@@ -572,6 +598,7 @@ class Create extends Component
 
     public function ShowDollarCol(){
         $this->showColumn= !$this->showColumn;
+            dd($this->selectedProductData);
     }
 
     public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
