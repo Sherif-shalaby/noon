@@ -29,7 +29,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-8 m-t-15 offset-md-1">
-                                <div class="search-box input-group">
+                                {{-- <div class="search-box input-group">
                                     <button type="button" class="btn btn-secondary" id="search_button"><i
                                             class="fa fa-search"></i>
                                     </button>
@@ -52,11 +52,14 @@
                                             @endforeach
                                         </ul>
                                     @endif
-{{--                                    {{$search_result->links()}}--}}
-                                </div>
+                                </div> --}}
 
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 pt-3">
+                                <button type="button" class="btn btn-primary btn-sm ml-2 " wire:click=addRaw()>
+                                    <i class="fa fa-plus"></i> @lang('lang.add')
+                                </button>
+                                <input type="hidden" id="raw_product_index" value="0">
 {{--                                <button type="button" id="dollar_section" class="btn btn-primary ml-4" style="margin-top: 15px;" wire:click="ShowDollarCol"> <i class="fa fa-eye-slash" aria-hidden="true"></i> </button>--}}
 
 {{--                                @include('quotation.partials.product_selection')--}}
@@ -65,7 +68,7 @@
                         <br>
                         <div class="row">
                             <div class="table-responsive">
-                                <table class="table" style="width: auto" >
+                                <table class="table" id="balance_table" style="width: auto" >
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -100,11 +103,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @if(isset($selectedProductData) && !empty($selectedProductData) )
-                                        @foreach($selectedProductData  as $index => $product)
+                                    {{-- @if(isset($selectedProductData) && !empty($selectedProductData) ) --}}
+                                        {{-- @foreach($selectedProductData  as $index => $product) --}}
 {{--                                            {{$selectedProductData}}--}}
-                                            @include('add-stock.partials.product_row')
-                                        @endforeach
+
+                                            @foreach ($rows as $index => $row)
+                                             @include('add-stock.partials.add_product_row',['index'=>$index])
+
+                                            @endforeach
+                                        {{-- @endforeach --}}
                                         <tr>
                                             <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
                                             @if ($showColumn)
@@ -133,16 +140,16 @@
                                             </td>
 
                                         </tr>
-                                    @endif
+                                    {{-- @endif --}}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{count($selectedProductData)}}</span>
+                                <span class="items_count_span" style="margin-right: 15px;">{{count($rows)}}</span>
                                 <br> @lang('lang.items_quantity'): <span
-                                    class="items_quantity_span" style="margin-right: 15px;">{{array_sum($quantity)}}</span>
+                                    class="items_quantity_span" style="margin-right: 15px;">{{$totalQuantity}}</span>
                             </h4>
                         </div>
                         <br>
@@ -193,6 +200,8 @@
                 window.print();
             });
         });
-
+        $(document).ready(function () {
+            $('.select2').select2();
+        });
     </script>
 @endpush

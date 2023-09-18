@@ -378,6 +378,16 @@ class ProductController extends Controller
           'customer_types',
       ));
   }
+  public function getRawProduct()
+  {
+      $index= request()->row_id ?? 0;
+    $units=Unit::orderBy('created_at', 'desc')->get();
+      return view('add-stock.partials.add_product_row',compact(
+          'index',
+          'units',
+      ));
+  }
+
   function getCroppedImage($img)
   {
       if (strlen($img) < 200) {

@@ -128,17 +128,16 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], null, ['class' => 'select2 form-control','placeholder' => __('lang.please_select')]) !!}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
                                 {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
                                 {!! Form::select('source_id', $users, null, ['class' => 'select2 form-control', 'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
                             </div>
                         </div>
-                
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
+                                {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], null, ['class' => 'select2 form-control','placeholder' => __('lang.please_select')]) !!}
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('notes', __('lang.notes')) !!}

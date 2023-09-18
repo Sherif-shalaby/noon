@@ -32,7 +32,9 @@ return [
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
     'update' => 'Update',
-
+    'this_product_exists_before'=>'This Product Exists Before',
+    'add'=>'Add',
+    'success'=>'Success',
 ];
 
 

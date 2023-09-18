@@ -41,8 +41,9 @@ return [
     'add_brand_name'=>'اضافة علامة التجارية',
     'brand_name'=>'اسم العلامة التجارية',
     'update'=>'تعديل',
-
-
+    'this_product_exists_before'=>'هذا المنتج موجود من قبل',
+    'add'=>'اضافة',
+    'success'=>'تم بنجاح',
 
 ];
 
