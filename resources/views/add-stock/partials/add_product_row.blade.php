@@ -18,7 +18,7 @@
         @enderror
     </td>
     <td>
-        <select wire:model="rows.{{ $index }}.unit_id" class="form-control select2">
+        <select wire:model="rows.{{ $index }}.unit_id" wire:change="changeUnit({{$index}})" class="form-control select2">
             <option value="">{{__('lang.please_select')}}</option>
             @foreach($units as $unit)
                 <option value="{{$unit->id}}">{{$unit->name}}</option>
@@ -27,11 +27,9 @@
  
     </td>
     <td>
-        {{-- @if(!empty($unit))
-            <span>
-                {{$unit->base_unit_multiplier}}
-            </span>
-        @endif --}}
+        <span>
+            {{$rows[$index]['base_unit_multiplier']}}
+        </span>
     </td>
     <td>
         @if(isset($rows[$index]['quantity']))

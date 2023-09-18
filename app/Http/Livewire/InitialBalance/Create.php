@@ -135,9 +135,13 @@ class Create extends Component
     'unit_id'=>'',
     'dollar_cost'=>'',
     'change_price_stock'=>'',
-    'skuExist'=>0
+    'skuExist'=>0,
+    'base_unit_multiplier'=>''
     ];
     $this->rows[] = $newRow;
+    }
+    public function changeUnit($index){
+        $this->rows[$index]['base_unit_multiplier']=!empty($this->rows[$index]['unit_id'])?Unit::find($this->rows[$index]['unit_id'])->base_unit_multiplier:'';
     }
     public function store() : Redirector|Application|RedirectResponse
     {
