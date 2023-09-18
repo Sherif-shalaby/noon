@@ -83,7 +83,7 @@
                                     <td><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->sku}}</td>
-                                    <td>{{$product->category->name}}</td>
+                                    <td>{{$product->category->name??''}}</td>
                                     <td>
                                         @foreach($product->subcategories as $subcategory)
                                         {{$subcategory->name}}<br>
