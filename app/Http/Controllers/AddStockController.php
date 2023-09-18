@@ -43,7 +43,7 @@ class AddStockController extends Controller
     public function show($id)
     {
         $add_stock = StockTransaction::find($id);
-        $payment_type_array = $this->getPaymentTypeArray();
+        $payment_type_array = $this->commonUtil->getPaymentTypeArray();
 //        $taxes = Tax::pluck('name', 'id');
         $users = User::Notview()->pluck('name', 'id');
 
