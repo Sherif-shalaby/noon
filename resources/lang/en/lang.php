@@ -17,6 +17,7 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'show_hide_columns' => 'Show/Hide Columns' ,
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong!',
     'general_settings'=>'General Settings',

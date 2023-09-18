@@ -33,6 +33,7 @@ return array(
     'stores' =>'المخازن',
     'add_store' => 'أضف مخزن',
     'name' => 'الاسم',
+    'show_hide_columns' => 'اخفاء و إظهار الاعمدة' ,
     'email' => 'بريد إلكتروني',
     'phone_number' => 'رقم التليفون',
     'manager_name' => 'اسم المدير',
