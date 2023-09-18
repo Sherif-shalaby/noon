@@ -461,6 +461,8 @@ return array(
     'add_initial_balance' => 'اضافة رصيد أولي',
     'required_fields_info' => 'الحقول المميزة بعلامة <span style="color: #dc3545">*</span> هي حقول إدخال مطلوبة.',
     'clear_all_input_form'=>'الاحتفاظ بالبيانات بعد عملية الإدخال',
-
+    'this_product_exists_before'=>'هذا المنتج موجود من قبل',
+    'add'=>'اضافة',
+    'success'=>'تم بنجاح',
 );
 

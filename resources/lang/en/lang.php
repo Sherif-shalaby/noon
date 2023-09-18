@@ -446,7 +446,9 @@ return [
     'add_initial_balance' => 'Add Initial Balance',
     'required_fields_info' => 'The field labels marked with <span style="color: #dc3545">*</span> are required input fields.',
     'clear_all_input_form'=>'Keeping data after saving',
-
+    'this_product_exists_before'=>'This Product Exists Before',
+    'add'=>'Add',
+    'success'=>'Success',
 
 ];
 
