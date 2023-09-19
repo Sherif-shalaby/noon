@@ -75,7 +75,7 @@ class Create extends Component
     public function render()
     {
         $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
-        $allproducts = Product::get();
+            $allproducts = Product::get();
         $departments = Category::get();
         $this->customers   = Customer::get();
         $this->store_pos_id = array_key_first($store_pos);

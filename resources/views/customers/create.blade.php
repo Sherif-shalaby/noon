@@ -31,6 +31,7 @@
                 ]) !!}
                 <div class="container-fluid">
                     <div class="row pt-5">
+                        {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
@@ -44,6 +45,7 @@
                                 @enderror
                             </div>
                         </div>
+                        {{-- +++++++++++++++++++++++++++++++ name  ++++++++++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('name', __('lang.name')) !!}

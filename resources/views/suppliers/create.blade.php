@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.suppliers'))
+@section('title', __('lang.add_supplier'))
 @push('css')
 
 @endpush
@@ -360,10 +360,11 @@
     $('.phone_tbody').on('click','.deleteRow',function(){
         $(this).parent().parent().remove();
     });
-    // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
+    // ============================== Email Repeater ==============================
+    // +++++++++++++ Add New Row in email +++++++++++++
     $('.email_tbody').on('click','.addRow_email', function(){
         console.log('new Email inputField was added');
-        var tr = `<tr>
+        var tr =`<tr>
                     <td>
                         <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
                                 value="{{ old('email') }}" required >
@@ -374,11 +375,10 @@
                     <td>
                         <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
                     </td>
-
-                </td>
-            </tr>`;
+                </tr>`;
         $('.email_tbody').append(tr);
     } );
+    // +++++++++++++ Delete Row in email +++++++++++++
     $('.email_tbody').on('click','.deleteRow_email',function(){
         $(this).parent().parent().remove();
     });

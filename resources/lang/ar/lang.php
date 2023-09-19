@@ -166,6 +166,7 @@ return array(
     'owner_debt_in_dinar'   => 'الدين بالدينار' ,
     // owner_debt_in_dollar
     'owner_debt_in_dollar'   => 'الدين بالدولار' ,
+    'edit_supplier' => 'تعديل مورد' ,
 
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,

@@ -3,19 +3,21 @@
 @section('breadcrumbbar')
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
     <style>
-        .multiselect {
-            width: 200px;
-            margin-left: auto;
-            }
-
             .selectBox {
             position: relative;
             }
 
-            .selectBox select {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ddd;
+            /* selectbox style */
+            .selectBox select
+            {
+                width: 100%;
+                padding: 0 !important;
+                padding-left: 4px;
+                padding-right: 4px;
+                color: #fff;
+                border: 1px solid #596fd7;
+                background-color: #596fd7;
+                height: 39px !important;
             }
 
             .overSelect {
@@ -29,9 +31,10 @@
             #checkboxes {
             display: none;
             border: 1px #dadada solid;
-            height: 160px;
+            height: 125px;
             overflow: auto;
-            text-align: end;
+            padding-top: 10px;
+            /* text-align: end;  */
             }
 
             #checkboxes label {
@@ -71,8 +74,8 @@
     </div>
 @endsection
 @section('content')
-       <!-- Start Contentbar -->
-       <div class="contentbar">
+    <!-- Start Contentbar -->
+    <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
@@ -91,95 +94,109 @@
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <div class="multiselect">
-                                <div class="selectBox" onclick="showCheckboxes()">
-                                    <select class="form-select select2">
-                                        <option>@lang('lang.show_hide_columns')</option>
-                                    </select>
-                                    <div class="overSelect"></div>
-                                </div>
+                            {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                            <div class="col-md-3 col-lg-3">
+                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                                <div class="multiselect col-md-12">
+                                    <div class="selectBox" onclick="showCheckboxes()">
+                                        <select class="form-select form-control form-control-lg">
+                                            <option>@lang('lang.show_hide_columns')</option>
+                                        </select>
+                                        <div class="overSelect"></div>
+                                    </div>
 
-                                <div id="checkboxes">
-                                    {{-- +++++++++++++++++ checkbox1 : customer_name +++++++++++++++++ --}}
-                                    <label for="col1_id">
-                                        <span>@lang('lang.customer_name')</span> &nbsp;
-                                        <input type="checkbox" id="col1_id" name="col1" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox2 : customer_type +++++++++++++++++ --}}
-                                    <label for="col2_id">
-                                        <span>@lang('lang.customer_type')</span>
-                                        <input type="checkbox" id="col2_id" name="col2" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox3 : email +++++++++++++++++ --}}
-                                    <label for="col3_id">
-                                        <span>@lang('lang.email')</span>
-                                        <input type="checkbox" id="col3_id" name="col3" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox4 : phone +++++++++++++++++ --}}
-                                    <label for="col4_id">
-                                        <span>@lang('lang.phone')</span>
-                                        <input type="checkbox" id="col4_id" name="col4" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox5 : state +++++++++++++++++ --}}
-                                    <label for="col5_id">
-                                        <span>@lang('lang.state')</span>
-                                        <input type="checkbox" id="col5_id" name="col5" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox6 : city +++++++++++++++++ --}}
-                                    <label for="col6_id">
-                                        <span>@lang('lang.city')</span>
-                                        <input type="checkbox" id="col6_id" name="col6" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox7 : min_amount_in_dinar +++++++++++++++++ --}}
-                                    <label for="col7_id">
-                                        <span>@lang('lang.min_amount_in_dinar')</span>
-                                        <input type="checkbox" id="col7_id" name="col7" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox8 : max_amount_in_dinar +++++++++++++++++ --}}
-                                    <label for="col8_id">
-                                        <span>@lang('lang.max_amount_in_dinar')</span>
-                                        <input type="checkbox" id="col8_id" name="col8" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox9 : min_amount_in_dollar +++++++++++++++++ --}}
-                                    <label for="col9_id">
-                                        <span>@lang('lang.min_amount_in_dollar')</span>
-                                        <input type="checkbox" id="col9_id" name="col9" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox10 : max_amount_in_dollar +++++++++++++++++ --}}
-                                    <label for="col10_id">
-                                        <span>@lang('lang.max_amount_in_dollar')</span>
-                                        <input type="checkbox" id="col10_id" name="col10" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox11 : balance_in_dinar +++++++++++++++++ --}}
-                                    <label for="col11_id">
-                                        <span>@lang('lang.balance_in_dinar')</span>
-                                        <input type="checkbox" id="col11_id" name="col11" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox12 : balance_in_dollar +++++++++++++++++ --}}
-                                    <label for="col12_id">
-                                        <span>@lang('lang.balance_in_dollar')</span>
-                                        <input type="checkbox" id="col12_id" name="col12" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox13 : balance +++++++++++++++++ --}}
-                                    <label for="col13_id">
-                                        <span>@lang('lang.balance')</span>
-                                        <input type="checkbox" id="col13_id" name="col13" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox14 : purchases +++++++++++++++++ --}}
-                                    <label for="col14_id">
-                                        <span>@lang('lang.purchases')</span>
-                                        <input type="checkbox" id="col14_id" name="col14" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox15 : discount +++++++++++++++++ --}}
-                                    <label for="col15_id">
-                                        <span>@lang('lang.discount')</span>
-                                        <input type="checkbox" id="col15_id" name="col15" checked="checked" />
-                                    </label>
-                                    {{-- +++++++++++++++++ checkbox16 : points +++++++++++++++++ --}}
-                                    <label for="col16_id">
-                                        <span>@lang('lang.points')</span>
-                                        <input type="checkbox" id="col16_id" name="col16" checked="checked" />
-                                    </label>
+                                    <div id="checkboxes">
+                                        {{-- +++++++++++++++++ checkbox1 : customer_name +++++++++++++++++ --}}
+                                        <label for="col1_id">
+                                            <input type="checkbox" id="col1_id" name="col1" checked="checked" />
+                                            <span>@lang('lang.customer_name')</span> &nbsp;
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox2 : customer_type +++++++++++++++++ --}}
+                                        <label for="col2_id">
+                                            <input type="checkbox" id="col2_id" name="col2" checked="checked" />
+                                            <span>@lang('lang.customer_type')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox3 : email +++++++++++++++++ --}}
+                                        <label for="col3_id">
+                                            <input type="checkbox" id="col3_id" name="col3" checked="checked" />
+                                            <span>@lang('lang.email')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox4 : phone +++++++++++++++++ --}}
+                                        <label for="col4_id">
+                                            <input type="checkbox" id="col4_id" name="col4" checked="checked" />
+                                            <span>@lang('lang.phone')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox5 : state +++++++++++++++++ --}}
+                                        <label for="col5_id">
+                                            <input type="checkbox" id="col5_id" name="col5" checked="checked" />
+                                            <span>@lang('lang.state')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox6 : city +++++++++++++++++ --}}
+                                        <label for="col6_id">
+                                            <input type="checkbox" id="col6_id" name="col6" checked="checked" />
+                                            <span>@lang('lang.city')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox7 : min_amount_in_dinar +++++++++++++++++ --}}
+                                        <label for="col7_id">
+                                            <input type="checkbox" id="col7_id" name="col7" checked="checked" />
+                                            <span>@lang('lang.min_amount_in_dinar')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox8 : max_amount_in_dinar +++++++++++++++++ --}}
+                                        <label for="col8_id">
+                                            <input type="checkbox" id="col8_id" name="col8" checked="checked" />
+                                            <span>@lang('lang.max_amount_in_dinar')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox9 : min_amount_in_dollar +++++++++++++++++ --}}
+                                        <label for="col9_id">
+                                            <input type="checkbox" id="col9_id" name="col9" checked="checked" />
+                                            <span>@lang('lang.min_amount_in_dollar')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox10 : max_amount_in_dollar +++++++++++++++++ --}}
+                                        <label for="col10_id">
+                                            <input type="checkbox" id="col10_id" name="col10" checked="checked" />
+                                            <span>@lang('lang.max_amount_in_dollar')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox11 : balance_in_dinar +++++++++++++++++ --}}
+                                        <label for="col11_id">
+                                            <input type="checkbox" id="col11_id" name="col11" checked="checked" />
+                                            <span>@lang('lang.balance_in_dinar')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox12 : balance_in_dollar +++++++++++++++++ --}}
+                                        <label for="col12_id">
+                                            <input type="checkbox" id="col12_id" name="col12" checked="checked" />
+                                            <span>@lang('lang.balance_in_dollar')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox13 : balance +++++++++++++++++ --}}
+                                        <label for="col13_id">
+                                            <input type="checkbox" id="col13_id" name="col13" checked="checked" />
+                                            <span>@lang('lang.balance')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox14 : purchases +++++++++++++++++ --}}
+                                        <label for="col14_id">
+                                            <input type="checkbox" id="col14_id" name="col14" checked="checked" />
+                                            <span>@lang('lang.purchases')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox15 : discount +++++++++++++++++ --}}
+                                        <label for="col15_id">
+                                            <input type="checkbox" id="col15_id" name="col15" checked="checked" />
+                                            <span>@lang('lang.discount')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox16 : points +++++++++++++++++ --}}
+                                        <label for="col16_id">
+                                            <input type="checkbox" id="col16_id" name="col16" checked="checked" />
+                                            <span>@lang('lang.points')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox17 : updated_by +++++++++++++++++ --}}
+                                        <label for="col17_id">
+                                            <input type="checkbox" id="col17_id" name="col17" checked="checked" />
+                                            <span>@lang('lang.updated_by')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox18 : action +++++++++++++++++ --}}
+                                        <label for="col18_id">
+                                            <input type="checkbox" id="col18_id" name="col18" checked="checked" />
+                                            <span>@lang('lang.action')</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <br/><br/>
@@ -188,7 +205,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th class="col1">@lang('lang.name')</th>
+                                        <th class="col1">@lang('lang.customer_name')</th>
                                         <th class="col2">@lang('lang.customer_type')</th>
                                         <th class="col3">@lang('lang.email')</th>
                                         <th class="col4">@lang('lang.phone')</th>
@@ -214,8 +231,34 @@
                                             <td>{{ $index+1 }}</td>
                                             <td class="col1">{{$customer->name}}</td>
                                             <td class="col2">{{$customer->customer_type->name}}</td>
-                                            <td class="col3">{{$customer->email}}</td>
-                                            <td class="col4">{{$customer->phone}}</td>
+                                            {{-- Convert the email and phone strings to arrays --}}
+                                            @php
+                                                $emailArray = explode(',', $customer->email);
+                                                $phoneArray = explode(',', $customer->phone);
+                                                // Remove square brackets from each element in the emailArray
+                                                foreach ($emailArray as $key => $email)
+                                                {
+                                                    $emailArray[$key] = str_replace(['[', ']','"'], '', $email);
+                                                }
+                                                // Remove square brackets from each element in the emailArray
+                                                foreach ($phoneArray as $key => $phone)
+                                                {
+                                                    $phoneArray[$key] = str_replace(['[', ']','"'], '', $phone);
+                                                }
+                                            @endphp
+                                            <td class="col3">
+                                                {{-- Iterate over the email array elements --}}
+                                                @foreach ($emailArray as $email)
+                                                    {{ $email }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td class="col4">
+                                                {{-- Iterate over the phone array elements --}}
+                                                @foreach ($phoneArray as $phone)
+                                                    {{ $phone }}<br>
+                                                @endforeach
+                                            </td>
+
                                             @php
                                                 $state = \App\Models\State::find($customer->state_id);
                                                 $city = \App\Models\City::find($customer->city_id);
@@ -287,6 +330,7 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
         $("input:checkbox:not(:checked)").each(function() {
             var column = "table ." + $(this).attr("name");
             $(column).hide();
@@ -296,7 +340,7 @@
             var column = "table ." + $(this).attr("name");
             $(column).toggle();
         });
-        // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+        // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
         var expanded = false;
         function showCheckboxes()
         {

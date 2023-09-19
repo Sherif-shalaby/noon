@@ -193,6 +193,7 @@ return [
     'mobile_number' => 'Mobile Number',
     'created_by' => 'Created By',
     'add_supplier'=>'Add supplier',
+    'edit_supplier' => 'Edit Supplier' ,
     'exchange_rate'=>'Exchange Rate',
     'city'=>'City',
     'country'=>'Country',

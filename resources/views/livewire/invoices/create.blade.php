@@ -136,7 +136,7 @@
                                                     <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1" readonly
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
-                                                <td >
+                                                <td>
                                                     <select class="select discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount" wire:change="subtotal({{$key}})">
                                                         <option selected value="0.00">select</option>
                                                         @if(!empty($item['discount_categories']))
