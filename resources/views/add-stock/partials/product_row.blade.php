@@ -12,7 +12,6 @@
     </td>
     <td>
         {{ $product['sku'] }}
-
     </td>
     <td>
         <input type="text" class="form-control quantity"  wire:model="quantity.{{ $index }}" style="width: 61px;" required >
@@ -22,10 +21,13 @@
     </td>
     <td>
         @php
+        $unit=[];
+        if(isset($product['unit_id'])){
         $unit = \App\Models\Unit::find($product['unit_id'])->first();
+        }
         @endphp
         @if(!empty($unit))
-            {{$unit->name}}
+            {{$unit->name??''}}
         @endif
     </td>
     <td>

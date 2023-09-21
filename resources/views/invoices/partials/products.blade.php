@@ -20,7 +20,7 @@
                     type="button"
                     wire:click='$set("department_id",{{ $depart->id }})'>{{ $depart->name }}</button>
                 @endforeach --}}
-
+                {{-- ++++++++++++++++++++ جميع المنتجات ++++++++++++++++++ --}}
                 @if($products and $products != null)
                     @forelse ($products as $product)
                         <div class="order-btn" wire:click='add_product({{ $product }})' >
@@ -48,19 +48,20 @@
                         <div class="order-btn" wire:click='add_product({{ $product->id }})' >
                             @if ($product->image)
                                 <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                     alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" >
                             @else
                                 <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
                                      class="img-thumbnail" width="100px">
                             @endif
-                            <div>
+                            {{-- <div> --}}
                                 <span>{{ $product->sku }} </span>
                                 <span>{{ $product->name }}</span>
                                 {{--                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
                                 {{--                                                {{ $product->productdetails?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
                                 {{--                                            </span>--}}
-                            </div>
+                            {{-- </div> --}}
                         </div>
+                        <hr/>
                     @endforeach
                 @endif
             </div>

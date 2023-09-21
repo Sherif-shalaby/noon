@@ -276,7 +276,7 @@ class Create extends Component
                     'sub_total' => !empty($this->sub_total[$index]) ? $this->sub_total[$index] : null,
                     'sell_price' => !empty($this->selling_price[$index]) ? $this->selling_price[$index] : null,
                     'dollar_purchase_price' => !empty($this->dollar_purchase_price[$index]) ? $this->dollar_purchase_price[$index] : null,
-                    'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                    'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : 0,
                     'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? $this->dollar_sub_total($index) : null,
                     'dollar_sell_price' => !empty($this->dollar_selling_price[$index]) ? $this->dollar_selling_price[$index] : null,
                     'cost' => !empty($this->cost[$index]) ?  $this->cost[$index] : null,

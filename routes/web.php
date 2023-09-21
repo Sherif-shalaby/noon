@@ -121,6 +121,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Initial Balance
     Route::view('initial-balance/create', 'initial-balance.create')->name('initial_balance.create');
     Route::view('initial-balance/index', 'initial-balance.index')->name('initial_balance.index');
+    Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
 
 
 //    Route::get('add-stock/add-payment/{id}', function ($id) {

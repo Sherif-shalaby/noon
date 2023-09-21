@@ -3,6 +3,7 @@
     <div class="container-fluid" >
         {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}
         <div class="row">
+            {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
@@ -28,6 +29,7 @@
 {{--                    @error('client_id')<span class="text-danger">{{ $message }}</span>@enderror--}}
 {{--                </div>--}}
 {{--            </div>--}}
+            {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_pos_id', __('lang.pos') . ':*', []) !!}
@@ -37,7 +39,8 @@
                     @enderror
                 </div>
             </div>
-            <div class="col-md-2">
+            {{-- +++++++++++++++++++++++++ لغة الفاتورة +++++++++++++++++++++++++ --}}
+            {{-- <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('invoice_lang', __('lang.invoice_lang') . ':', []) !!}
                     {!! Form::select('invoice_lang', $languages + ['ar_and_en' => 'Arabic and English'], null, ['class' => 'form-control select', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select') , 'wire:model' => 'invoice_lang']) !!}
@@ -45,7 +48,8 @@
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-            </div>
+            </div> --}}
+            {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
@@ -54,6 +58,23 @@
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+            </div>
+            {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+            <div class="col-md-2" wire:ignore>
+                <label for="" class="text-primary">العملاء</label>
+                <div class="d-flex justify-content-center">
+                    <select class="form-control client" wire:model="client_id" id="Client_Select" wire:change="refreshSelect">
+                        <option  value="0 " readonly selected >اختر </option>
+                        @foreach ($customers as $customer)
+                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+                </div>
+                @error('client_id')
+                <span class="text-danger">{{ $message }}</span>
+                @enderror
+                @include('customers.quick_add')
             </div>
 {{--            <div class="col-md-1">--}}
 {{--                <div class="form-group">--}}
@@ -72,6 +93,7 @@
                                     <table class="table">
                                         <tr>
                                             <th >@lang('lang.product')</th>
+                                            {{-- <th >@lang('lang.product_image')</th>  --}}
                                             <th >@lang('lang.quantity')</th>
                                             <th >@lang('lang.unit')</th>
                                             <th >@lang('lang.fill')</th>
@@ -94,10 +116,14 @@
                                           $total = 0;
                                         @endphp
                                         @foreach ($items as $key => $item)
+                                        {{-- {{ dd($item)  }} --}}
                                             <tr>
                                                 <td >
                                                     {{$item['product']['name']}}
                                                 </td>
+                                                {{-- <td>
+                                                    <img src="{{ asset('uploads/products/' . $item['product']['image']) }}" alt="product image" width="60" height="60"/>
+                                                </td> --}}
                                                 <td >
                                                     <div class="d-flex align-items-center gap-1 " style="width: 80px">
                                                         <div class=" add-num control-num"
@@ -183,6 +209,7 @@
 
                                                 </td>
                                             </tr>
+                                            <hr />
                                         @endforeach
                                     </table>
                                 </div>
