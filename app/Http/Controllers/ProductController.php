@@ -14,6 +14,7 @@ use App\Models\Store;
 use App\Models\System;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,22 +79,21 @@ class ProductController extends Controller
         // product_tax
         $product_tax = ProductTax::select('name','id','status')->get();
         $quick_add = 1;
-        return view('products.create',compact('categories','brands','units','stores','product_tax','quick_add'));
+        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        return view('products.create',
+        compact('categories','brands','units','stores','product_tax','quick_add','unitArray'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
-    // return $request;
     try
     {
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
         'category_id' => $request->category_id,
-        // 'store_id' =>  !empty($request->subcategory_id) ?$request->subcategory_id: [],
         'brand_id' => $request->brand_id,
-        'unit_id' => $request->unit_id,
-        'sku' => !empty($request->sku) ? $request->sku : $this->generateSku($request->name),
+        'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
         'width' => $request->width,
@@ -103,7 +103,6 @@ class ProductController extends Controller
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
         'created_by' => Auth::user()->id,
-        // method column
         'method' => !empty($request->method) ? $request->method :null,
     ];
     $product = Product::create($product_data);
@@ -132,7 +131,20 @@ class ProductController extends Controller
         $product->save();
     }
 
-
+    $index_units=[];
+    if($request->has('unit_id')){
+        if(count($request->unit_id)>0){
+            $index_units=array_keys($request->unit_id);
+        }
+    }
+    foreach ($index_units as $index){
+        $var_data=[
+            'product_id'=>$product->id,
+            'unit_id'=>$request->unit_id[$index],
+            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+        ];
+        Variation::create($var_data);
+    }
 
     $index_prices=[];
     if($request->has('price_category')){
@@ -234,7 +246,8 @@ class ProductController extends Controller
       $product=Product::with('product_taxes')->findOrFail($id);
       $customer_types = CustomerType::pluck('name', 'id');
       $product_tax = ProductTax::all();
-      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
+      $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
   }
 
   /**
@@ -253,7 +266,7 @@ class ProductController extends Controller
         'category_id' => $request->category_id,
         'brand_id' => $request->brand_id,
         // 'unit_id' => $request->unit_id,
-        'sku' => !empty($request->sku) ? $request->sku : $this->generateSku($request->name),
+        'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
         'width' => $request->width,
@@ -294,6 +307,24 @@ class ProductController extends Controller
         $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
         $product->image=$image;
         $product->save();
+    }
+
+
+    $index_units=[];
+    $product->variations()->delete();
+
+    if($request->has('unit_id')){
+        if(count($request->unit_id)>0){
+            $index_units=array_keys($request->unit_id);
+        }
+    }
+    foreach ($index_units as $index){
+        $var_data=[
+            'product_id'=>$product->id,
+            'unit_id'=>$request->unit_id[$index],
+            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+        ];
+        Variation::create($var_data);
     }
 
 
@@ -352,6 +383,10 @@ class ProductController extends Controller
         if(File::exists($image_path)) {
             File::delete($image_path);
         }
+        $product->variations()->update([
+            'deleted_by'=>Auth::user()->id
+        ]);
+        $product->variations()->delete();
         $product->deleted_by = Auth::user()->id;
         $product->save();
         $product->delete();
@@ -424,7 +459,16 @@ class ProductController extends Controller
 
       return !empty($date_format) ? Carbon::createFromFormat($date_format, $date)->format($mysql_format) : null;
   }
-
+  public function getRawUnit()
+    {
+        $index = request()->row_id ?? 0;
+        $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+  
+        return view('products.product_unit_raw',compact(
+            'index',
+            'units',
+        ));
+    }
 }
 
 ?>

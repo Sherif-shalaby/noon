@@ -106,8 +106,8 @@
                         ])
                     </div>
                     <div class="col-md-3">
-                        {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-                        {!! Form::text('sku',  null, [
+                        {!! Form::label('product_sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
+                        {!! Form::text('product_sku',  null, [
                             'class' => 'form-control'
                         ]) !!}
                     </div>
@@ -184,23 +184,6 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {!! Form::label('unit', __('lang.unit'), ['class'=>'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select(
-                                        'unit_id',
-                                        $units,null,
-                                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'id'=>'unit_id']
-                                    ) !!}
-                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                </div>
-                            </div>
                             <div class="col-md-3">
                                 {!! Form::label('weight', __('lang.weight'),['class'=>'h5 pt-3']) !!}
                                 {!! Form::text('weight', 0, [
@@ -212,6 +195,17 @@
                                 @enderror
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-3">
+                            <button class="btn btn btn-primary add_unit_row" type="button">
+                                <i class="fa fa-plus"></i> @lang('lang.add')
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 product_unit_raws ">
+                     @include('products.product_unit_raw',['index'=>0])
+                     <input type="hidden" id="raw_unit_index" value="0"/>
                     </div>
                     {{-- sizes --}}
                     {{-- add prices --}}

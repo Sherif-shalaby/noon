@@ -173,7 +173,7 @@
         </div>
     </div>
     <!-- Start Containerbar -->
-    <div id="containerbar" class="container-fluid pl-0">
+    <div id="containerbar" class="pl-3 pr-3">
 
         @include('layouts.partials.header')
 
@@ -242,7 +242,7 @@
             swal({
                 title: event.detail.message,
                 text: event.detail.text,
-                icon: event.detail.type,
+                icon:event.detail.type,
             });
         });
 

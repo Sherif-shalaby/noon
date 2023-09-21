@@ -187,6 +187,12 @@
                     }
             });
         });
+        // $('.js-example-basic-multiple').select2(
+        //     {
+        //         placeholder: LANG.please_select,
+        //         tags: true
+        //     }
+        // );
         $('.select2').select2();
         $('.datepicker').datepicker();
 </script>

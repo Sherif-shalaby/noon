@@ -34,7 +34,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $products = [], $department_id = null, $items = [], $price  ,$total, $client_phone,
+    public $products = [],$variations = [], $department_id = null, $items = [], $price  ,$total, $client_phone,
         $client_id, $client, $cash = 0, $rest, $invoice,$invoice_id, $date, $payment_status,
          $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id,
          $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note,$payment_types,
@@ -92,6 +92,8 @@ class Create extends Component
 //        if (empty($store_pos)) {
 //            return redirect()->route('home');
 //        }
+        // $variations=Variation::orderBy('created_at','desc')->get();
+        // $this->variations=Variation::all();
         return view('livewire.invoices.create', compact(
             'departments',
             'allproducts',
@@ -110,7 +112,6 @@ class Create extends Component
     }
 
     public function submit(){
-
         $this->validate();
         try {
 
@@ -157,6 +158,7 @@ class Create extends Component
                 $sell_line = new SellLine();
                 $sell_line->transaction_id = $transaction->id;
                 $sell_line->product_id = $item['product']['id'];
+                $sell_line->variation_id = $item['variation']['id'];
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
                 $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
                 $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
@@ -260,7 +262,9 @@ class Create extends Component
 
     public function updatedDepartmentId($department_id)
     {
-        $this->products = $department_id > 0? Product::where('category_id', $department_id)->get() : Product::get();
+        $this->variations = $department_id > 0? Variation::whereHas('product', function ($query) use ($department_id) {
+            $query->where('category_id', $department_id);
+        })->get() : Variation::all();
     }
 
     public function addCustomer(){
@@ -283,7 +287,7 @@ class Create extends Component
 
     public function add_product($id){
 
-        $product = Product::find($id);
+        $product = Variation::where('id',$id)->first();
         $quantity_available = $this->quantityAvailable($product);
         if ( $quantity_available < 1) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
@@ -321,7 +325,8 @@ class Create extends Component
                 $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,2) : 0;
 //                dd($price);
                 $this->items[] = [
-                    'product' => $product,
+                    'variation' => $product,
+                    'product' => $product->product,
                     'quantity' => 1,
                     'price' => $this->num_uf($price),
                     'category_id' => $product->category?->id,

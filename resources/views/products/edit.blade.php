@@ -109,7 +109,7 @@
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-                        {!! Form::text('sku',  $product->sku, [
+                        {!! Form::text('product_sku',  $product->sku, [
                             'class' => 'form-control'
                         ]) !!}
                     </div>
@@ -138,6 +138,27 @@
                                 @endforeach
                             @endforeach
                         </select>
+                    </div>
+
+                     <div class="col-md-12 pt-5">
+                        <div class="col-md-3">
+                            <button class="btn btn btn-primary add_unit_row" type="button">
+                                <i class="fa fa-plus"></i> @lang('lang.add') 
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-12 product_unit_raws ">
+                    @if(!empty($product->variations))
+                        @foreach($product->variations as $index=>$variation)
+                            @include('products.product_unit_raw', [
+                            'index' => $index ,
+                            'variation'=>$variation,
+                            ])
+                        @endforeach
+                        @else
+                        @include('products.product_unit_raw',['index' => 0])
+                    @endif
+                     <input type="hidden" id="raw_unit_index" value="0"/>
                     </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
@@ -193,7 +214,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 {!! Form::label('unit', __('lang.unit'), ['class'=>'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select(
@@ -205,7 +226,7 @@
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-md-3">
                                 {!! Form::label('weight', __('lang.weight'),['class'=>'h5 pt-3']) !!}
                                 {!! Form::text('weight', $product->weight, [
@@ -245,14 +266,14 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            @if(!empty($product->product_prices))
+                                            {{-- @if(!empty($product->product_prices))
                                                 @foreach($product->product_prices as $price)
                                                     @include('products.product_raw_price', [
                                                     'row_id' => $loop->index +0,
                                                     'price'=>$price,
                                                     ])
                                                 @endforeach
-                                            @endif
+                                            @endif --}}
                                         </tbody>
                                     </table>
                                     <input type="hidden" name="raw_price_index" id="raw_price_index" value="{{count($product->product_prices)}}">

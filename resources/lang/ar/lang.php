@@ -464,5 +464,8 @@ return array(
     'this_product_exists_before'=>'هذا المنتج موجود من قبل',
     'add'=>'اضافة',
     'success'=>'تم بنجاح',
+    'base_unit'=>'قاعدة الوحدة',
+    'number'=>'عدد',
+    'add_sku_with_sku_for_product'=>'اضف باركود مع وحدة للمنتج',
 );
 

@@ -24,7 +24,21 @@
 @endsection
 
 @section('content')
-    @livewire('initial-balance.create')
+@livewire('initial-balance.create')
+
 @endsection
 @push('javascripts')
+<script>
+ document.addEventListener('livewire:load', function() {
+     window.addEventListener('initialize-select2', event => {
+        $('.select2').select2();
+        $('.js-example-basic-multiple').select2({
+                placeholder: LANG.please_select,
+                tags: true
+        });
+        
+    });
+    });
+
+</script>
 @endpush

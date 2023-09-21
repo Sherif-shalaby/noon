@@ -63,7 +63,7 @@
                                             <td>{{$supplier->exchange_rate}}</td>
                                             <td>{{$supplier->owner_debt_in_dinar}}</td>
                                             <td>{{$supplier->owner_debt_in_dollar}}</td>
-                                            <td>{{$supplier->created_by_user->name}}</td>
+                                            <td>{{$supplier->created_by_user->name??''}}</td>
                                             <td>{{$supplier->updated_by_user->name ?? ''}}</td>
                                             <td>
                                                 <div class="btn-group">
