@@ -449,7 +449,9 @@ return [
     'this_product_exists_before'=>'This Product Exists Before',
     'add'=>'Add',
     'success'=>'Success',
-
+    'base_unit'=>'Base Unit',
+    'number'=>'Number',
+    'add_sku_with_sku_for_product'=>'Add Sku With Sku For Product',
 ];
 
 

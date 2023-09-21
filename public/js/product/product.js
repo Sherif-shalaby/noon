@@ -64,3 +64,18 @@ $(document).ready(function() {
         }
     );
 });
+$(document).on("click", ".add_unit_row", function () {
+    let row_id = parseInt($("#raw_unit_index").val())+ 1;
+    $("#raw_unit_index").val(row_id );
+    $.ajax({
+        method: "get",
+        url: "/product/get-raw-unit",
+        data: { row_id: row_id },
+        success: function (result) {
+            $(".product_unit_raws").append(result);
+        },
+    });
+});
+$(document).on("click", ".remove_row", function () {
+$(this).closest(".unit-row").remove();
+});

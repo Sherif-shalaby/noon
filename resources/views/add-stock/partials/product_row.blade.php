@@ -8,10 +8,10 @@
 {{--             alt="photo" width="50" height="50">--}}
 {{--    </td>--}}
     <td>
-        {{ $product['name'] }}
+        {{ $variation->product->name }}
     </td>
     <td>
-        {{ $product['sku'] }}
+        {{ $variation->product->sku }}
     </td>
     <td>
         <input type="text" class="form-control quantity"  wire:model="quantity.{{ $index }}" style="width: 61px;" required >
@@ -22,8 +22,8 @@
     <td>
         @php
         $unit=[];
-        if(isset($product['unit_id'])){
-        $unit = \App\Models\Unit::find($product['unit_id'])->first();
+        if(isset($variation['unit_id'])){
+        $unit = \App\Models\Unit::find($variation['unit_id'])->first();
         }
         @endphp
         @if(!empty($unit))
@@ -86,15 +86,15 @@
     </td>
     <td>
         <span class="size">
-            @if($product['size'])
-                {{$product['size']}}
+            @if($variation->product->size)
+                {{$variation->product->size}}
             @else
                 {{0.00}}
             @endif
         </span>
     </td>
     <td>
-       @if(isset($quantity[$index]) && isset($product->size))
+       @if(isset($quantity[$index]) && isset($variation->product->size))
             <span class="total_size">
                 {{$this->total_size($index) }}
             </span>
@@ -104,15 +104,15 @@
     </td>
     <td>
         <span class="weight">
-            @if($product['weight'])
-                {{$product['weight']}}
+            @if($variation->product->weight)
+                {{$variation->product->weight}}
             @else
                 {{0.00}}
             @endif
         </span>
     </td>
     <td>
-       @if(isset($quantity[$index]) && isset($product->weight))
+       @if(isset($quantity[$index]) && isset($variation->product->weight))
             <span class="total_weight">
                 {{$this->total_weight($index) }}
             </span>

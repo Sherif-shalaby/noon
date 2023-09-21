@@ -16,7 +16,7 @@ class Product extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method');
+    protected $fillable = array('name','translations', 'sku','store_id','brand_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method');
 
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
@@ -60,10 +60,10 @@ class Product extends Model
         return $this->belongsTo('App\Models\Brand', 'brand_id');
     }
 
-    public function unit()
-    {
-        return $this->belongsTo('App\Models\Unit', 'unit_id');
-    }
+    // public function unit()
+    // {
+    //     return $this->belongsTo('App\Models\Unit', 'unit_id');
+    // }
 
     public function stores()
     {
@@ -79,7 +79,10 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductPrice');
     }
-
+    public function variations()
+    {
+        return $this->hasMany('App\Models\Variation');
+    }
     public function createBy()
     {
         return $this->belongsTo(User::class, 'created_by');

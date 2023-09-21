@@ -82,7 +82,7 @@
                                     @enderror
                                 </div> --}}
 
-                                <div class="col-md-3">
+                                <div class="col-md-3">exchange_rate
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'wire:model' => 'purchase_type']) !!}
                                     @error('purchase_type')
@@ -161,7 +161,7 @@
                                     </thead>
                                     <tbody>
                                     @if(isset($selectedProductData) && !empty($selectedProducts) )
-                                        @foreach($selectedProductData  as $index => $product)
+                                        @foreach($selectedProductData  as $index => $variation)
                                             @include('add-stock.partials.product_row')
                                         @endforeach
                                         <tr>

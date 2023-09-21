@@ -20,7 +20,7 @@ return new class extends Migration
 			$table->string('sku')->nullable();
 			$table->unsignedBigInteger('category_id')->nullable();
 			$table->text('image')->nullable();
-			$table->unsignedBigInteger('unit_id')->nullable();
+			// $table->unsignedBigInteger('unit_id')->nullable();
 			$table->string('details')->nullable();
 			$table->text('details_translations')->nullable();
 			$table->decimal('height', 10,2)->nullable();

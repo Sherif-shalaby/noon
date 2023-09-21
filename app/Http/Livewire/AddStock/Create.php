@@ -19,6 +19,7 @@ use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
 use App\Models\User;
+use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -96,6 +97,7 @@ class Create extends Component
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
         $products = Product::all();
+        $variations=Variation::orderBy('created_at','desc')->get();
         $stores = Store::getDropdown();
 
         if ($this->source_type == 'pos') {
@@ -122,7 +124,7 @@ class Create extends Component
             'suppliers',
             'selected_currencies',
             'preparers' ,
-            'products',
+            'products','variations',
             'users'));
     }
 
@@ -268,7 +270,8 @@ class Create extends Component
                 }
                 $supplier = Supplier::find($this->supplier);
                 $add_stock_data = [
-                    'product_id' => $product->id,
+                    'variation_id' => $product->id,
+                    'product_id' => $product->product_id,
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $this->quantity[$index],
                     'purchase_price' => !empty($this->purchase_price[$index]) ? $this->purchase_price[$index] : null ,
@@ -284,7 +287,7 @@ class Create extends Component
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
                 AddStockLine::create($add_stock_data);
-                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->quantity[$index], 0);
+                $this->updateProductQuantityStore($product->product_id, $transaction->store_id,  $this->quantity[$index], 0);
 
             }
 
@@ -302,12 +305,12 @@ class Create extends Component
     public function fetchSelectedProducts()
     {
         $this->emit('closeModal');
-        $this->selectedProductData = Product::whereIn('id', $this->selectedProducts)->get();
+        $this->selectedProductData = Variation::whereIn('id', $this->selectedProducts)->get();
 
     }
 
     public function get_product($index){
-        return Product::where('id' ,$this->selectedProductData[$index]->id)->first();
+        return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
     }
 
     public function sub_total($index)
@@ -360,12 +363,12 @@ class Create extends Component
     }
 
     public function total_size($index){
-        $this->total_size[$index] =  $this->total_quantity($index) * $this->selectedProductData[$index]->size;
+        $this->total_size[$index] =  $this->total_quantity($index) * $this->selectedProductData[$index]->product->size;
         return $this->total_size[$index];
     }
 
     public function total_weight($index){
-       $this->total_weight[$index] = $this->total_quantity($index) * $this->selectedProductData[$index]->weight ;
+       $this->total_weight[$index] = $this->total_quantity($index) * $this->selectedProductData[$index]->product->weight ;
        return $this->total_weight[$index];
     }
 
@@ -400,7 +403,7 @@ class Create extends Component
                     unset($this->divide_costs);
                 }
                 else{
-                    (float)$this->cost[$index] = ( ( $cost / $this->sum_size() ) * $product->size ) + (float)$purchase_price;
+                    (float)$this->cost[$index] = ( ( $cost / $this->sum_size() ) * $product->product->size ) + (float)$purchase_price;
                 }
             }
             elseif ($this->divide_costs == 'weight'){
@@ -410,7 +413,7 @@ class Create extends Component
 
                 }
                 else {
-                    (float)$this->cost[$index] = (($cost / $this->sum_weight()) * $product->weight) + (float)$purchase_price;
+                    (float)$this->cost[$index] = (($cost / $this->sum_weight()) * $product->product->weight) + (float)$purchase_price;
                 }
             }
             else{
@@ -462,7 +465,7 @@ class Create extends Component
 
                 }
                 else {
-                    (float)$this->dollar_cost[$index] = (($dollar_cost / $this->sum_weight()) * $product->weight) + (float)$purchase_price;
+                    (float)$this->dollar_cost[$index] = (($dollar_cost / $this->sum_weight()) * $product->product->weight) + (float)$purchase_price;
                 }
             }
             else{
