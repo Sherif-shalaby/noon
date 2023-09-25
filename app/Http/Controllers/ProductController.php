@@ -86,12 +86,17 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
+    // return $request->all();
     try
     {
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
         'category_id' => $request->category_id,
+        'subcategory_id1' => $request->subcategory_id1,
+        'subcategory_id2' => $request->subcategory_id2,
+        'subcategory_id3' => $request->subcategory_id3,
+        'unit_id' => $request->unit_id,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
@@ -113,9 +118,9 @@ class ProductController extends Controller
         $product->product_taxes()->attach($request->product_tax_id) ;
     }
 
-    if(!empty($request->subcategory_id)){
-        $product->subcategories()->attach($request->subcategory_id);
-    }
+    // if(!empty($request->subcategory_id)){
+    //     $product->subcategories()->attach($request->subcategory_id);
+    // }
     if(!empty($request->store_id)){
         $product->stores()->attach($request->store_id);
     }
@@ -132,16 +137,18 @@ class ProductController extends Controller
     }
 
     $index_units=[];
-    if($request->has('unit_id')){
-        if(count($request->unit_id)>0){
-            $index_units=array_keys($request->unit_id);
+    if($request->has('new_unit_id')){
+        if(count($request->new_unit_id)>0){
+            $index_units=array_keys($request->new_unit_id);
         }
     }
     foreach ($index_units as $index){
         $var_data=[
             'product_id'=>$product->id,
-            'unit_id'=>$request->unit_id[$index],
+            'unit_id'=>$request->new_unit_id[$index],
+            'equal'=>$request->equal[$index],
             'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+            'created_by'=>Auth::user()->id
         ];
         Variation::create($var_data);
     }
@@ -259,13 +266,16 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     // return $request->all();
-    // try{
+    try{
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
         'category_id' => $request->category_id,
+        'subcategory_id1' => $request->subcategory_id1,
+        'subcategory_id2' => $request->subcategory_id2,
+        'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
-        // 'unit_id' => $request->unit_id,
+        'unit_id' => $request->unit_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
@@ -285,10 +295,6 @@ class ProductController extends Controller
     // When Change "product_tax" update "products_taxes" table
     $product->product_taxes()->sync($request->product_tax_id);
 
-
-    if(!empty($request->subcategory_id)){
-        $product->subcategories()->sync($request->subcategory_id);
-    }
     if(!empty($request->store_id)){
         $product->stores()->sync($request->store_id);
     }
@@ -313,16 +319,18 @@ class ProductController extends Controller
     $index_units=[];
     $product->variations()->delete();
 
-    if($request->has('unit_id')){
-        if(count($request->unit_id)>0){
-            $index_units=array_keys($request->unit_id);
+    if($request->has('new_unit_id')){
+        if(count($request->new_unit_id)>0){
+            $index_units=array_keys($request->new_unit_id);
         }
     }
     foreach ($index_units as $index){
         $var_data=[
             'product_id'=>$product->id,
-            'unit_id'=>$request->unit_id[$index],
+            'unit_id'=>$request->new_unit_id[$index],
+            'equal'=>$request->equal[$index],
             'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+            'edited_by'=>Auth::user()->id
         ];
         Variation::create($var_data);
     }
@@ -331,14 +339,13 @@ class ProductController extends Controller
 
     $index_prices=[];
     $product->product_prices()->delete();
-   $index_prices=[];
+    $index_prices=[];
     if($request->has('price_category')){
         if(count($request->price_category)>0){
             $index_prices=array_keys($request->price_category);
         }
     }
     foreach ($index_prices as $index_price){
-    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
             'price_type' => $request->price_type[$index_price],
@@ -348,7 +355,6 @@ class ProductController extends Controller
             'bonus_quantity' => $request->bonus_quantity[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
             'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            // 'price_customers' => $price_customers,
             'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
             'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
             'created_by' => Auth::user()->id,
@@ -359,13 +365,13 @@ class ProductController extends Controller
         'success' => true,
         'msg' => __('lang.success')
     ];
-    //  } catch (\Exception $e) {
-    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-    //         $output = [
-    //             'success' => false,
-    //             'msg' => __('lang.something_went_wrong')
-    //         ];
-    // }
+     } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+    }
     return redirect()->back()->with('status', $output);
   }
 

@@ -85,9 +85,9 @@
                                     <td>{{$product->sku}}</td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
-                                        @foreach($product->subcategories as $subcategory)
-                                        {{$subcategory->name}}<br>
-                                        @endforeach
+                                        {{$product->subCategory1->name??''}} <br>
+                                        {{$product->subCategory2->name??''}} <br>
+                                        {{$product->subCategory3->name??''}}
                                     </td>
                                     <td>{{$product->height}}</td>
                                     <td>{{$product->length}}</td>

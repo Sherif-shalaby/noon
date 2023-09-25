@@ -2,7 +2,8 @@
     $local_code=LaravelLocalization::getCurrentLocale();
 @endphp
 <!DOCTYPE html>
-<html lang="{{$local_code}}">
+<html lang="{{$local_code}}" >
+{{-- dir="rtl" --}}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +19,7 @@
     <!-- End css -->
     @livewireStyles
 </head>
-
+{{-- {{app()->getLocale() === 'ar'?'text-right':''}} --}}
 <body class="horizontal-layout">
     <!-- Start Infobar Notifications Sidebar -->
     <div id="infobar-notifications-sidebar" class="infobar-notifications-sidebar">

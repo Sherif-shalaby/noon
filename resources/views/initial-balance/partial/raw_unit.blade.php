@@ -20,9 +20,11 @@
         </select>
     </td>
     <td>
-        <span>
+        <input type="text" class="form-control unit_equal"  wire:model="rows.{{ $index }}.equal" style="width: 100px;" required >
+
+        {{-- <span>
             {{$rows[$index]['base_unit_multiplier']??''}} / {{$rows[$index]['base_unit']??""}}
-        </span>
+        </span> --}}
     </td>
     <td>
         @if(isset($rows[$index]['quantity']))
@@ -71,10 +73,10 @@
             </span>
         @endif
     </td>
-    <td>
+    {{-- <td>
         <input type="number" class="form-control size"  wire:model="rows.{{ $index }}.size" style="width: 100px;" required >
-    </td>
-    <td>
+    </td> --}}
+    {{-- <td>
        @if(isset($rows[$index]['quantity']))
             <span class="total_size">
                 {{$this->total_size($index) }}
@@ -82,11 +84,11 @@
         @else
            {{0.00}}
         @endif
-    </td>
-    <td>
+    </td> --}}
+    {{-- <td>
         <input type="number" class="form-control weight"  wire:model="rows.{{ $index }}.weight" style="width: 100px;" required >
-    </td>
-    <td>
+    </td> --}}
+    {{-- <td>
        @if(isset($rows[$index]['quantity']))
             <span class="total_weight">
                 {{$this->total_weight($index) }}
@@ -94,12 +96,12 @@
         @else
            {{0.00}}
         @endif
-    </td>
+    </td> --}}
     {{-- @if ($showColumn) --}}
-        <td>
+        {{-- <td>
         <input type="text" class="form-control dollar_cost"  wire:model="rows.{{ $index }}.dollar_cost" style="width: 100px;" required wire:change="changeCost({{$index}})">
-        </td>
-        <td>
+        </td> --}}
+        {{-- <td>
             @if(isset($rows[$index]['quantity']) && (isset($rows[$index]['dollar_purchase_price']) || isset($rows[$index]['purchase_price'])))
                 <span class="dollar_total_cost">
                     {{$this->dollar_total_cost($index) }}
@@ -107,12 +109,12 @@
             @else
                 {{0.00}}
             @endif
-        </td>
+        </td> --}}
     {{-- @endif --}}
-    <td>
+    {{-- <td>
         <input type="number" class="form-control cost"  wire:model="rows.{{ $index }}.cost" style="width: 100px;" required >
-    </td>
-    <td>
+    </td> --}}
+    {{-- <td>
         @if(isset($rows[$index]['quantity']) && (isset($rows[$index]['purchase_price']) || isset($rows[$index]['dollar_purchase_price'])))
             <span class="total_cost">
                 {{$this->total_cost($index) }}
@@ -120,7 +122,7 @@
         @else
             {{0.00}}
         @endif
-    </td>
+    </td> --}}
     <td>
         <span class="current_stock_text">
             {{$rows[$index]['quantity'] ?? 0}}
