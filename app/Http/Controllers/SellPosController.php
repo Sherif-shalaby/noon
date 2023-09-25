@@ -74,7 +74,7 @@ class SellPosController extends Controller
             if (empty($transaction->received_currency_id)) {
             }
 
-            $html_content = $this->transactionUtil->getInvoicePrint($transaction, $payment_types);
+            $html_content = $this->transactionUtil->getInvoicePrint($transaction, $payment_types,null);
 
             $output = [
                 'success' => true,

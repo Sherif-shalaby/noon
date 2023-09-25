@@ -452,6 +452,9 @@ return [
     'base_unit'=>'Base Unit',
     'number'=>'Number',
     'add_sku_with_sku_for_product'=>'Add Sku With Sku For Product',
+    'basic_unit'=>'Basic Unit',
+    'equal'=>'Equal',
+    'new_unit'=>'New Unit',
 ];
 
 

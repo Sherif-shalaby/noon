@@ -24,6 +24,7 @@ return new class extends Migration
             ->onDelete('cascade')
             ->onUpdate('cascade');
             $table->string('sku')->nullable();
+            $table->decimal('equal',15,2)->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('edited_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();

@@ -1,4 +1,4 @@
-<section class="forms  {{app()->getLocale() === 'ar'?'text-right':''}}" >
+<section class="forms">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -58,40 +58,6 @@
                                 @enderror
                             </div>
                             <div class="col-md-3">
-                                {!! Form::label('category', __('lang.category'), ['class' => 'h5']) !!}
-                                {!! Form::select('category_id', $categories, null, [
-                                    'class' => 'form-control select2 category_id',
-                                    'placeholder' => __('lang.please_select'),
-                                    'data-name'=>'category_id',
-                                    'id' => 'categoryId',
-                                    'wire:model' => 'item.0.category_id',
-                                    // 'wire:change'=>'changeCategory()'
-                                ]) !!}
-                                @error('item.0.category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory'), ['class' => 'h5 ']) !!}
-                                {!! Form::select(
-                                    'subcategory_id[]',
-                                    $subcategories,
-                                    [],
-                                    [
-                                        'class' => 'js-example-basic-multiple subcategory',
-                                        'data-name'=>'subcategory_id',
-                                        'multiple' => 'multiple',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId',
-                                        'wire:model' => 'item.0.subcategory_id',
-                                        
-                                    ],
-                                ) !!}
-                                 @error('item.0.subcategory_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
                                 {!! Form::label('name', __('lang.product_name'), ['class' => 'h5']) !!}
                                 {!! Form::text('name', null, [
                                     'class' => 'form-control required',
@@ -101,17 +67,93 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5']) !!}
                                 {!! Form::text('sku', null, [
                                     'class' => 'form-control',
                                     'wire:model' => 'item.0.sku',
                                 ]) !!}
-                            </div>
+                            </div> --}}
                             <div class="col-md-3">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                <input type="text"  class="form-control" id="exchange_rate" wire:model="exchange_rate" disabled>
+                                <input type="text"  class="form-control" id="exchange_rate" wire:model="exchange_rate">
                             </div>
+
+                            <div class="col-md-3">
+                                {!! Form::label('category', __('lang.category'), ['class' => 'h5']) !!}
+                                {!! Form::select('category_id', $categories, null, [
+                                    'class' => 'form-control select2 category_id',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name'=>'category_id',
+                                    'id' => 'categoryId',
+                                    'wire:model' => 'item.0.category_id'
+                                ]) !!}
+                                @error('item.0.category_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                      
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class'=>'h5 ']) !!}
+                                {{-- <div class="d-flex justify-content-center"> --}}
+                                    {!! Form::select(
+                                        'subcategory_id1',
+                                        $subcategories1,null,
+                                        [
+                                        'class' => 'form-control select2 subcategory',
+                                        'data-name'=>'subcategory_id1',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'subCategoryId1',
+                                        'wire:model' => 'item.0.subcategory_id1',
+                                        ],
+                                    ) !!}
+                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div> --}}
+                                @error('item.0.subcategory_id1')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class'=>'h5 ']) !!}
+                                {{-- <div class="d-flex justify-content-center"> --}}
+                                    {!! Form::select(
+                                        'subcategory_id2',
+                                        $subcategories2,null,
+                                        [
+                                        'class' => 'form-control select2 subcategory2',
+                                        'data-name'=>'subcategory_id2',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'subCategoryId2',
+                                        'wire:model' => 'item.0.subcategory_id2',
+                                        ],
+                                    ) !!}
+                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div> --}}
+                                @error('item.0.subcategory_id2')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class'=>'h5 ']) !!}
+                                {{-- <div class="d-flex justify-content-center"> --}}
+                                    {!! Form::select(
+                                        'subcategory_id3',
+                                        $subcategories3,null,
+                                        [
+                                        'class' => 'form-control select2 subcategory3',
+                                        'data-name'=>'subcategory_id3',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'subCategoryId3',
+                                        'wire:model' => 'item.0.subcategory_id3',
+                                        ],
+                                    ) !!}
+                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div> --}}
+                                @error('item.0.subcategory_id3')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            
                             <div class="col-md-3">
                                 {!! Form::label('status', __('lang.status') . ':*', []) !!}
                                 {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control select2','data-name'=>'status', 'required',  'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!}
@@ -180,17 +222,25 @@
                             <div class="col-md-3">
                                 {!! Form::label('divide_costs', __('lang.divide_costs') . ':', []) !!}
                                 {!! Form::select('divide_costs', ['size' =>  __('lang.size'), 'weight' => __('lang.weight'), 'price' => __('lang.price')], 'Please Select',
-                                 ['class' => 'select2 form-control', 'data-name'=>'divide_costs','wire:model'=>'item.0.divide_costs', 'required',  'placeholder' => __('lang.please_select'), 'wire:model' => 'divide_costs']) !!}
+                                 ['class' => 'select2 form-control', 'data-name'=>'divide_costs','wire:model'=>'item.0.divide_costs', 'required',  'placeholder' => __('lang.please_select')]) !!}
                                 @error('item.0.divide_costs')
                                 <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="col-md-3 pt-4">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="change_current_stock" wire:model="change_current_stock">
-                                    <label class="custom-control-label" for="change_current_stock">@lang('lang.change_current_stock')</label>
-                                </div>
-                            </div> --}}
+                            <div class="col-md-3">
+                                {!! Form::label('unit', __('lang.basic_unit') . ':', []) !!}
+                                {!! Form::select(
+                                    'unit_id',
+                                    $basic_units,null,
+                                    ['class' => 'form-control select2 unit_id',
+                                    'placeholder'=>__('lang.please_select'), 'data-name'=>'unit_id',
+                                    'wire:model'=>'item.0.unit_id', 'required',
+                                    'id'=>'unitId']
+                                ) !!}
+                                @error('item.0.unit_id')
+                                <span class="error text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="row text-right">
                             <div class="col">
@@ -222,20 +272,12 @@
                                         <th style="width: 10%">@lang('lang.unit')</th>
                                         <th style="width: 10%">@lang('lang.fill')</th>
                                         <th style="width: 10%">@lang('lang.total_quantity')</th>
-                                        <th style="width: 10%">@lang('lang.purchase_price') (@lang('lang.per_piece')) $</th>
+                                        <th style="width: 10%">@lang('lang.purchase_price') ({{$unit_name!==''?$unit_name:__('lang.per_piece')}}) $</th>
                                         <th style="width: 10%">@lang('lang.selling_price') $</th>
                                         <th style="width: 10%">@lang('lang.sub_total') $</th>
-                                        <th style="width: 10%">@lang('lang.purchase_price') (@lang('lang.per_piece')) </th>
+                                        <th style="width: 10%">@lang('lang.purchase_price') ({{$unit_name!==''?$unit_name:__('lang.per_piece')}}) </th>
                                         <th style="width: 10%">@lang('lang.selling_price') </th>
                                         <th style="width: 10%">@lang('lang.sub_total')</th>
-                                        <th style="width: 10%">@lang('lang.size')</th>
-                                        <th style="width: 10%">@lang('lang.total_size')</th>
-                                        <th style="width: 10%">@lang('lang.weight')</th>
-                                        <th style="width: 10%">@lang('lang.total_weight')</th>
-                                        <th style="width: 10%">@lang('lang.cost') (@lang('lang.per_piece')) $</th>
-                                        <th style="width: 10%">@lang('lang.total_cost') $</th>
-                                        <th style="width: 10%">@lang('lang.cost') (@lang('lang.per_piece'))</th>
-                                        <th style="width: 10%">@lang('lang.total_cost')</th>
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
                                         <th style="width: 10%">@lang('lang.change_current_stock')</th>
                                         <th style="width: 10%">@lang('lang.action')</th>
@@ -246,31 +288,31 @@
                                         @include('initial-balance.partial.raw_unit',['index'=>$index])
                                         @endforeach
                                         <tr>
-                                            <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
+                                            <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
                                             {{-- @if ($showColumn) --}}
                                                 <td> {{$this->sum_dollar_tsub_total()}} </td>
-                                                {{-- <td></td> --}}
+                                                <td></td>
                                                 <td></td>
                                             {{-- @endif --}}
                                             <td> {{$this->sum_sub_total()}} </td>
                                             <td></td>
-                                            <td style="">
+                                            {{-- <td style="">
                                                 {{$this->sum_size() ?? 0}}
-                                            </td>
-                                            <td></td>
-                                            <td  style=";">
+                                            </td> --}}
+                                            {{-- <td></td> --}}
+                                            {{-- <td  style=";">
                                                 {{$this->sum_weight() ?? 0}}
-                                            </td>
-                                            <td></td>
+                                            </td> --}}
+                                            {{-- <td></td> --}}
                                             {{-- @if ($showColumn) --}}
-                                                <td>
+                                                {{-- <td>
                                                     {{$this->sum_dollar_total_cost() ?? 0}}
-                                                </td>
-                                                <td></td>
+                                                </td> --}}
+                                                {{-- <td></td> --}}
                                             {{-- @endif --}}
-                                            <td  style=";">
+                                            {{-- <td  style=";">
                                                 {{$this->sum_total_cost() ?? 0}}
-                                            </td>
+                                            </td> --}}
 
                                         </tr>
                                     </tbody>

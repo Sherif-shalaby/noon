@@ -44,33 +44,7 @@
 
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        {!! Form::label('category', __('lang.category'), ['class'=>'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::select(
-                                'category_id',
-                                $categories,null,
-                                ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId']
-                            ) !!}
-                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
-                        </div>
-                        @error('category_id')
-                            <label class="text-danger error-msg">{{ $message }}</label>
-                        @enderror
-                    </div>
-                    <div class="col-md-3">
-                        {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::select(
-                                'subcategory_id[]',
-                                $categories,[],
-                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'subCategoryId']
-                            ) !!}
-                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div>
-
-
+                    
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
@@ -132,8 +106,79 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                {!! Form::label('category', __('lang.category'), ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'category_id',
+                                        $categories,null,
+                                        ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId','required']
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
+                                </div>
+                                @error('category_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'subcategory_id1',
+                                        $categories,null,
+                                        ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId1']
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div>
+                                @error('category_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'subcategory_id2',
+                                        $categories,null,
+                                        ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId2']
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="3"><i class="fas fa-plus"></i></button>
+                                </div>
+                                @error('subcategory_id2')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
+                            <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'subcategory_id3',
+                                        $categories,null,
+                                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId3']
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="4"><i class="fas fa-plus"></i></button>
+                                </div>
+                                @error('subcategory_id3')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            {{-- <div class="col-md-3">
+                                {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'subcategory_id[]',
+                                        $categories,[],
+                                        ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'subCategoryId']
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div> --}}
+                        </div>
+                            </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
@@ -194,7 +239,21 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+                            <div class="col-md-3">
+                                {!! Form::label('unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'unit_id',
+                                        $units,null,
+                                        ['class' => 'form-control select2 unit_id','placeholder'=>__('lang.please_select'),'id'=>'unitId']
+                                    ) !!}
+                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                </div>
+                            </div>
                         </div>
+                        
                     </div>
                     <div class="col-md-12">
                         <div class="col-md-3">
