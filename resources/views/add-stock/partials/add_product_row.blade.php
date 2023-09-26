@@ -4,8 +4,7 @@
         {{$index+1}}
     </td>
 
-    <td>
-        
+    <td> 
         <input type="text" class="form-control name"  wire:model="rows.{{ $index }}.name"  style="width: 61px;" required >
     </td>
     <td>
@@ -24,7 +23,7 @@
                 <option value="{{$unit->id}}">{{$unit->name}}</option>
             @endforeach
         </select>
- 
+
     </td>
     <td>
         <span>

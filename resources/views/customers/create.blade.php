@@ -19,6 +19,7 @@
 @section('content')
     <!-- Start row -->
     <div class="row d-flex justify-content-center">
+        {{-- {{ dd($countryName) }}  --}}
         <!-- Start col -->
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
@@ -30,6 +31,7 @@
                 ]) !!}
                 <div class="container-fluid">
                     <div class="row pt-5">
+                        {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
@@ -43,6 +45,7 @@
                                 @enderror
                             </div>
                         </div>
+                        {{-- +++++++++++++++++++++++++++++++ name  ++++++++++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('name', __('lang.name')) !!}
@@ -134,32 +137,40 @@
                                 <input type="text" class="form-control" name="balance_in_dinar" id="balance_in_dinar" />
                             </div>
                         </div>
-                        {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
+                        {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <label for="country-dd">@lang('lang.country')</label>
+                            <select id="country-dd" name="country" class="form-control" disabled>
+                                <option value="{{ $countryId }}">
+                                    {{ $countryName }}
+                                </option>
+                            </select>
+                        </div>
+                        {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                {!! Form::label('address', __('lang.address')) !!}
-                                {!! Form::textarea('address', null, [
-                                    'class' => 'form-control',
-                                ]) !!}
-                                @error('address')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
+                                <label for="state-dd">@lang('lang.state')</label>
+                                <select id="state-dd" name="state_id" class="form-control">
+                                    @php
+                                        $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
+                                    @endphp
+                                    @foreach ( $states as $state)
+                                        <option value="{{ $state->id }}">
+                                            {{ $state->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
-                        {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
+                        {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                {!! Form::label('notes', __('lang.notes')) !!}
-                                {!! Form::textarea('notes', null, [
-                                    'class' => 'form-control',
-                                ]) !!}
-                                @error('address')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
+                                <label for="city-dd">@lang('lang.city')</label>
+                                <select id="city-dd" name="city_id" class="form-control"></select>
                             </div>
                         </div>
                         {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 mt-1">
                             <table class="bordered">
                                 <thead class="phone_thead">
                                     <tr>
@@ -187,6 +198,30 @@
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {!! Form::label('address', __('lang.address')) !!}
+                                {!! Form::textarea('address', null, [
+                                    'class' => 'form-control',
+                                ]) !!}
+                                @error('address')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {!! Form::label('notes', __('lang.notes')) !!}
+                                {!! Form::textarea('notes', null, [
+                                    'class' => 'form-control',
+                                ]) !!}
+                                @error('address')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
                         </div>
                         {{-- ++++++++++++ images ++++++++++++ --}}
                         <div class="col-md-4">
@@ -284,6 +319,49 @@
     } );
     $('.email_tbody').on('click','.deleteRow_email',function(){
         $(this).parent().parent().remove();
+    });
+    // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
+    // ================ countries selectbox ================
+    // $('#country-dd').on('click',function(event) {
+    //     var idCountry = this.value;
+    //     // console.log(idCountry);
+    //     $('#state-dd').html('');
+    //     $.ajax({
+    //         url: "/api/fetch-state",
+    //         type: 'POST',
+    //         dataType: 'json',
+    //         data: { country_id : idCountry , _token : "{{ csrf_token() }}" } ,
+    //         success:function(response)
+    //         {
+    //             $('#state-dd').html('<option value="">Select State</option>');
+    //             $.each(response.states,function(index, val)
+    //             {
+    //                 $('#state-dd').append('<option value="'+val.id+'"> '+val.name+' </option>')
+    //             });
+    //             $('#city-dd').html('<option value="">Select City</option>');
+    //         }
+    //     })
+    // });
+
+    // ================ state selectbox ================
+    $('#state-dd').change(function(event) {
+        var idState = this.value;
+        $('#city-dd').html('');
+        $.ajax({
+        url: "/api/fetch-cities",
+        type: 'POST',
+        dataType: 'json',
+        data: {state_id: idState,_token:"{{ csrf_token() }}"},
+        success:function(response)
+        {
+            $('#city-dd').html('<option value="">Select State</option>');
+            console.log(response);
+            $.each(response.cities,function(index, val)
+                {
+                    $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                });
+            }
+        })
     });
 </script>
 @endpush

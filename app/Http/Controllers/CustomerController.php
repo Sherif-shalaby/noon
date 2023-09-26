@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Models\Country;
 use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
+use App\Models\System;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -49,17 +51,20 @@ class CustomerController extends Controller
   {
     $customer_types=CustomerType::latest()->pluck('name','id');
 
-      $quick_add = request()->quick_add ?? null;
-      $customers = Customer::getCustomerArrayWithMobile();
+    $quick_add = request()->quick_add ?? null;
+    $customers = Customer::getCustomerArrayWithMobile();
+    // ++++++++++++++++++++ Country , State , Cities Selectbox ++++++++++++++++
+    $countryId = System::getProperty('country_id');
+    $countryName = Country::where('id', $countryId)->pluck('name')->first();
 
       if ($quick_add) {
           return view('customers.quick_add')->with(compact(
               'customer_types',
               'customers',
-              'quick_add'
+              'quick_add',
           ));
       }
-    return view('customers.create',compact('customer_types'));
+    return view('customers.create',compact('customer_types','countryId','countryName'));
 
   }
 

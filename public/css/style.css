@@ -33660,7 +33660,7 @@ input[type=range]:focus {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #dcdde1;
+  background-color: #f8f9fa !important;
 }
 
 .thead-default th {

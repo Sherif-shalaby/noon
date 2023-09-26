@@ -15,8 +15,9 @@ class Customer extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = array('name', 'email','image', 'address', 'phone','notes',
-                                    'min_amount_in_dollar','max_amount_in_dollar','min_amount_in_dinar','max_amount_in_dinar',
-                                    'balance_in_dollar','balance_in_dinar','deposit_balance', 'added_balance',
+                                    'min_amount_in_dollar','max_amount_in_dollar','min_amount_in_dinar',
+                                    'max_amount_in_dinar','balance_in_dollar','balance_in_dinar',
+                                    'deposit_balance', 'added_balance','city_id','state_id',
                                     'created_by', 'deleted_by', 'updated_by', 'customer_type_id');
 
     public function customer_type()

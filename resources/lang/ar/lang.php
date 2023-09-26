@@ -33,6 +33,7 @@ return array(
     'stores' =>'المخازن',
     'add_store' => 'أضف مخزن',
     'name' => 'الاسم',
+    'show_hide_columns' => 'اخفاء و إظهار الاعمدة' ,
     'email' => 'بريد إلكتروني',
     'phone_number' => 'رقم التليفون',
     'manager_name' => 'اسم المدير',
@@ -43,6 +44,7 @@ return array(
     'brand_name'=>'اسم العلامة التجارية',
     'update'=>'تعديل',
     'general_settings'=>'الاعدادات العامة',
+    'state' => 'المحافظة' ,
     'developed_by'=>'طور بواسطة',
     'site_title'=>'عنوان الموقع',
     'time_format'=>'تنسيق الوقت',
@@ -164,6 +166,7 @@ return array(
     'owner_debt_in_dinar'   => 'الدين بالدينار' ,
     // owner_debt_in_dollar
     'owner_debt_in_dollar'   => 'الدين بالدولار' ,
+    'edit_supplier' => 'تعديل مورد' ,
 
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
