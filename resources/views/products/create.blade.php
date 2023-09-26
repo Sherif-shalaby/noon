@@ -16,6 +16,13 @@
                     </ol>
                 </div>
             </div>
+           <div class="col-md-4 col-lg-4">
+               <div class="widgetbar">
+                   <a href="{{route('products.index')}}" class="btn btn-primary">
+                       @lang('lang.products')
+                   </a>
+               </div>
+           </div>
         </div>
     </div>
 @endsection
@@ -44,7 +51,7 @@
 
                         </div>
                     </div>
-                    
+
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
@@ -253,7 +260,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="col-md-12">
                         <div class="col-md-3">

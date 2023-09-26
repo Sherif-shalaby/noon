@@ -16,10 +16,13 @@
                     </ol>
                 </div>
             </div>
-            <a href="{{route('suppliers.index')}}" class="btn btn-info">
-                <i class="fa fa-arrow-left"></i>
-                @lang('Back')
-            </a>
+            <div class="col-md-4 col-lg-4">
+                <div class="widgetbar">
+                    <a href="{{ route('suppliers.index') }}" class="btn btn-primary">
+                        @lang('lang.suppliers')
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

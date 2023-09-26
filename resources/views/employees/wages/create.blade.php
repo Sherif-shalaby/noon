@@ -13,6 +13,13 @@
                     </ol>
                 </div>
             </div>
+            <div class="col-md-4 col-lg-4">
+                <div class="widgetbar">
+                    <a href="{{route('wages.index')}}" class="btn btn-primary">
+                        @lang('lang.wages')
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

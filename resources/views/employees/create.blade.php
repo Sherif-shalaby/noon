@@ -2,6 +2,12 @@
 @section('title', __('lang.jobs'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
+        <div class="widgetbar">
+            <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
+            {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
+            {{--                            class="dripicons-plus"></i>--}}
+            {{--                        @lang('lang.add_new_employee')</a>--}}
+        </div>
     </div>
 @endsection
 @section('content')
