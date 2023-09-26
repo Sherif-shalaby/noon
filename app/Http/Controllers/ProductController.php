@@ -96,7 +96,6 @@ class ProductController extends Controller
         'subcategory_id1' => $request->subcategory_id1,
         'subcategory_id2' => $request->subcategory_id2,
         'subcategory_id3' => $request->subcategory_id3,
-        'unit_id' => $request->unit_id,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
@@ -146,6 +145,7 @@ class ProductController extends Controller
         $var_data=[
             'product_id'=>$product->id,
             'unit_id'=>$request->new_unit_id[$index],
+            'basic_unit_id'=>$request->basic_unit_id[$index],
             'equal'=>$request->equal[$index],
             'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
             'created_by'=>Auth::user()->id
@@ -275,7 +275,6 @@ class ProductController extends Controller
         'subcategory_id2' => $request->subcategory_id2,
         'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
-        'unit_id' => $request->unit_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
@@ -328,6 +327,7 @@ class ProductController extends Controller
         $var_data=[
             'product_id'=>$product->id,
             'unit_id'=>$request->new_unit_id[$index],
+            'basic_unit_id'=>$request->basic_unit_id[$index],
             'equal'=>$request->equal[$index],
             'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
             'edited_by'=>Auth::user()->id

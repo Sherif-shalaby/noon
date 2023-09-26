@@ -41,7 +41,7 @@
     .error-help-block{
         color:red;
     }
-    input[type="text"],input[type="month"],input[type="number"],textarea{
+    input[type="text"],input[type="month"],input[type="number"],textarea,.custom-select {
        border:2px solid #cececf !important;
     }
 {{--    @if(request()->segment(2) == 'invoices')--}}

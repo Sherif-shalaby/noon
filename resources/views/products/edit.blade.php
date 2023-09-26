@@ -266,7 +266,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 {!! Form::label('unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select(
@@ -278,7 +278,7 @@
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-12 pt-5">

@@ -23,7 +23,7 @@ return new class extends Migration
 			$table->unsignedBigInteger('subcategory_id2')->nullable();
 			$table->unsignedBigInteger('subcategory_id3')->nullable();
 			$table->text('image')->nullable();
-			$table->unsignedBigInteger('unit_id')->nullable();
+			// $table->unsignedBigInteger('unit_id')->nullable();
 			$table->string('details')->nullable();
 			$table->text('details_translations')->nullable();
 			$table->decimal('height', 10,2)->nullable();

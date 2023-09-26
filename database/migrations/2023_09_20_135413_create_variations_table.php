@@ -17,12 +17,19 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')
-						->onDelete('cascade')
-						->onUpdate('cascade');
             $table->foreign('unit_id')->references('id')->on('units')
             ->onDelete('cascade')
             ->onUpdate('cascade');
+
+            $table->unsignedBigInteger('basic_unit_id')->nullable();
+            $table->foreign('basic_unit_id')->references('id')->on('units')
+            ->onDelete('cascade')
+            ->onUpdate('cascade');
+
+            $table->foreign('product_id')->references('id')->on('products')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+            
             $table->string('sku')->nullable();
             $table->decimal('equal',15,2)->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();

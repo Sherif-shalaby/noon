@@ -54,11 +54,11 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->foreign('unit_id')->references('id')->on('units')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->foreign('unit_id')->references('id')->on('units')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->foreign('product_id')->references('id')->on('products')
 						->onDelete('cascade')
@@ -155,9 +155,9 @@ class CreateForeignKeys extends Migration {
 		Schema::table('products', function(Blueprint $table) {
 			$table->dropForeign('products_brand_id_foreign');
 		});
-		Schema::table('products', function(Blueprint $table) {
-			$table->dropForeign('products_unit_id_foreign');
-		});
+		// Schema::table('products', function(Blueprint $table) {
+		// 	$table->dropForeign('products_unit_id_foreign');
+		// });
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->dropForeign('product_stores_product_id_foreign');
 		});

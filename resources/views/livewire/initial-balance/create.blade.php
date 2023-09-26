@@ -62,6 +62,7 @@
                                 {!! Form::text('name', null, [
                                     'class' => 'form-control required',
                                     'wire:model' => 'item.0.name',
+                                    'wire:change'=>'confirmCreateProduct()'
                                 ]) !!}
                                 @error('item.0.name')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -76,7 +77,7 @@
                             </div> --}}
                             <div class="col-md-3">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                <input type="text"  class="form-control" id="exchange_rate" wire:model="exchange_rate">
+                                <input type="text"  class="form-control" id="exchange_rate" wire:model="exchange_rate" wire:change="changeExchangeRateBasedPrices()">
                             </div>
 
                             <div class="col-md-3">
@@ -156,7 +157,10 @@
                             
                             <div class="col-md-3">
                                 {!! Form::label('status', __('lang.status') . ':*', []) !!}
-                                {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'select form-control select2','data-name'=>'status', 'required',  'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!}
+                                {!! Form::select('status',
+                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')]
+                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required',
+                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!}
                                 @error('item.0.status')
                                 <span class="error text-danger">{{ $message }}</span>
                                 @enderror
@@ -204,8 +208,6 @@
                                 @enderror
                             </div>
                         </div>
-
-                        <br>
                         <div class="row">
                             {{-- <div class="col-md-3">
                                 {!! Form::label('quantity', __('lang.quantity')."*", ['class' => 'h5']) !!}
@@ -227,7 +229,7 @@
                                 <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 {!! Form::label('unit', __('lang.basic_unit') . ':', []) !!}
                                 {!! Form::select(
                                     'unit_id',
@@ -240,7 +242,7 @@
                                 @error('item.0.unit_id')
                                 <span class="error text-danger">{{ $message }}</span>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="row text-right">
                             <div class="col">
@@ -270,12 +272,13 @@
                                         <th style="width: 10%" >@lang('lang.sku')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.unit')</th>
-                                        <th style="width: 10%">@lang('lang.fill')</th>
-                                        <th style="width: 10%">@lang('lang.total_quantity')</th>
-                                        <th style="width: 10%">@lang('lang.purchase_price') ({{$unit_name!==''?$unit_name:__('lang.per_piece')}}) $</th>
+                                        <th style="width: 10%">@lang('lang.fill_from_basic_unit')</th>
+                                        <th style="width: 10%">@lang('lang.basic_unit')</th>
+                                        <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
+                                        <th style="width: 10%">@lang('lang.purchase_price')$</th>
                                         <th style="width: 10%">@lang('lang.selling_price') $</th>
                                         <th style="width: 10%">@lang('lang.sub_total') $</th>
-                                        <th style="width: 10%">@lang('lang.purchase_price') ({{$unit_name!==''?$unit_name:__('lang.per_piece')}}) </th>
+                                        <th style="width: 10%">@lang('lang.purchase_price')</th>
                                         <th style="width: 10%">@lang('lang.selling_price') </th>
                                         <th style="width: 10%">@lang('lang.sub_total')</th>
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
@@ -379,19 +382,35 @@
                 window.print();
             });
         });
-        $(document).ready(function() {
-            $('select').on('change', function(e) { 
-                var name = $(this).data('name');
-                var index = $(this).data('index');
-                var select2 = $(this); // Save a reference to $(this)
-
-                Livewire.emit('listenerReferenceHere',{
-                    var1 :name,
-                    var2 :select2.select2("val") ,
-                    var3:index
-                });
-                
+        $(document).on('change','select', function(e) { 
+            var name = $(this).data('name');
+            var index = $(this).data('index');
+            var select2 = $(this); // Save a reference to $(this)
+            Livewire.emit('listenerReferenceHere',{
+                var1 :name,
+                var2 :select2.select2("val") ,
+                var3:index
             });
+            
         });
+
+
+
+    window.addEventListener('showCreateProductConfirmation', function () {
+        Swal.fire({
+            title: "{{__('lang.this_product_exists_before')}}"+"<br>"+"{{__('lang.continue_to_add_stock')}}",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.emit('create');
+            }else{
+                Livewire.emit('cancelCreateProduct');
+            }
+        });
+    });
+
     </script>
 @endpush

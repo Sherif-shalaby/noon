@@ -23,7 +23,7 @@
         {!! Form::label('basic_unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
             {!! Form::select(
                 'basic_unit_id['.$index.']',
-                $units,isset($product->unit_id)?$product->unit_id:null,
+                $units,isset($variation->basic_unit_id)?$variation->basic_unit_id:null,
                 ['class' => 'form-control select2 basic_unit_id','placeholder'=>__('lang.please_select')]
             ) !!}
     </div>

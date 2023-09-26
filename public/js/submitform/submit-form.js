@@ -16,7 +16,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $("#createBrandModal").modal("hide");
                 var brand_id = result.id;
                 $.ajax({
@@ -30,7 +30,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -54,7 +54,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $("#create").modal("hide");
                 var unit_id = result.id;
                 $.ajax({
@@ -73,7 +73,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -98,7 +98,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $(".add-store").modal("hide");
                 var store_id = result.id;
                 $.ajax({
@@ -112,7 +112,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -140,7 +140,7 @@ $(document).on("submit", "#category-form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $("#createCategoryModal").modal("hide");
                 console.log(result);
                 var category_id = result.id;
@@ -168,7 +168,7 @@ $(document).on("submit", "#category-form", function (e) {
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });

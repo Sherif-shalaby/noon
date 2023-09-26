@@ -470,5 +470,8 @@ return array(
     'basic_unit'=>'الوحدة الاساسية',
     'equal'=>'تساوى',
     'new_unit'=>'الوحدة الجديدة',
+    'continue_to_add_stock'=>'استمرار لاضافة مخزون',
+    'to_get_sell_price'=>'للحصول على سعر البيع',
+    'fill_from_basic_unit'=>'التعبئة من الوحدة الاساسية',
 );
 
