@@ -455,6 +455,8 @@ return [
     'basic_unit'=>'Basic Unit',
     'equal'=>'Equal',
     'new_unit'=>'New Unit',
+    'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
+
 ];
 
 

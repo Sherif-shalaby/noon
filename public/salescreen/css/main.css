@@ -1,43 +1,4 @@
-.bg-main-color {
-  background-color: #6e81dc;
-}
 
-.py-60 {
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-
-.row-gap-24 {
-  row-gap: 24px;
-}
-
-body {
-  font-family: "Noto Kufi Arabic", sans-serif;
-  color: black;
-  font-size: 14px;
-  background-color: #F0F0F0;
-  scroll-behavior: smooth;
-}
-
-* {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-a:hover {
-  color: black;
-}
-
-button {
-  border: none;
-  outline: none;
-}
 
 section.app .list-btn {
   display: -webkit-box;
