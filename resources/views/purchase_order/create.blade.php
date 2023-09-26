@@ -17,6 +17,13 @@
                 </div>
                 <br/>
             </div>
+           <div class="col-md-4 col-lg-4">
+               <div class="widgetbar">
+                   <a href="{{route('purchase_order.index')}}" class="btn btn-primary">
+                       @lang('lang.purchase_order')
+                   </a>
+               </div>
+           </div>
         </div>
     </div>
 @endsection
@@ -129,9 +136,9 @@
                                                             <td>{{$product->sku}}</td>
                                                             <td>{{$product->category->name}}</td>
                                                             <td>
-                                                                @foreach($product->subcategories as $subcategory)
-                                                                    {{$subcategory->name}}<br>
-                                                                @endforeach
+{{--                                                                @foreach($product->subcategories as $subcategory)--}}
+{{--                                                                    {{$subcategory->name}}<br>--}}
+{{--                                                                @endforeach--}}
                                                             </td>
                                                             <td>{{$product->height}}</td>
                                                             <td>{{$product->length}}</td>
@@ -249,7 +256,7 @@
 </section>
 @endsection
 
-@section('javascript')
+@push('javascript')
     <script src="{{asset('js/purchase.js')}}"></script>
     <script type="text/javascript">
         // ++++++++++++++ Function 1 : calculateSubTotal() : Function to calculate the sub-total ++++++++++++++
@@ -418,4 +425,4 @@
         });
 
     </script>
-@endsection
+@endpush
