@@ -49,6 +49,16 @@
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
+    document.addEventListener('livewire:load', function() {
+        window.addEventListener('initialize-select2', event => {
+            $('.select2').select2();
+            $('.js-example-basic-multiple').select2({
+                placeholder: LANG.please_select,
+                tags: true
+            });
+
+        });
+    });
       @if (session('status'))
                 new PNotify( {
                     title: '{{ session('status.msg') }} !', text: '{{ session('status.msg') }}',
