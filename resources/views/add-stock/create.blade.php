@@ -1,5 +1,9 @@
 @extends('layouts.app')
 @section('title', __('lang.add_stock'))
+@push('css')
+    <!-- Main Faile Css  -->
+    <link rel="stylesheet" href="{{ asset('salescreen/css/main.css')}}" />
+    @endpush
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="row align-items-center">

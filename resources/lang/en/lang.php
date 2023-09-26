@@ -452,6 +452,13 @@ return [
     'this_product_exists_before'=>'This Product Exists Before',
     'add'=>'Add',
     'success'=>'Success',
+    'base_unit'=>'Base Unit',
+    'number'=>'Number',
+    'add_sku_with_sku_for_product'=>'Add Sku With Sku For Product',
+    'basic_unit'=>'Basic Unit',
+    'equal'=>'Equal',
+    'new_unit'=>'New Unit',
+    'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
 
 ];
 

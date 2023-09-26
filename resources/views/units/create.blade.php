@@ -41,6 +41,13 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('base_unit_id', __('lang.base_unit') . ':', []) !!}
+                        {!! Form::select('base_unit_id',$unitArray, null, ['class' => 'select2 form-control',  'placeholder' => __('lang.please_select')]) !!}
+                        @error('base_unit_id')
+                        <span class="error text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('cancel') }}</button>

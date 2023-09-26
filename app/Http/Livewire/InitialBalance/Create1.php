@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Livewire\AddStock;
+namespace App\Http\Livewire\InitialBalance;
 
 use App\Models\AddStockLine;
+use App\Models\Brand;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\Currency;
-use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
@@ -19,12 +19,10 @@ use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\Unit;
 use App\Models\User;
-use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
@@ -36,68 +34,19 @@ class Create extends Component
 {
     use WithPagination;
 
-    public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $status, $order_date, $purchase_type,
-        $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
-        $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
-        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items, $department_id;
-
+    public $selectedProducts = [], $selectedProductData = [],$quantity = [], $purchase_price =[], $selling_price = [],
+        $base_unit = [], $divide_costs , $other_expenses = 0, $other_payments = 0, $total_size = [], $total_weight =[],
+        $cost = [], $total_cost = [], $sub_total = [], $change_price_stock =[], $store_id, $status, $order_date,
+        $purchase_type, $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate,
+        $amount, $method, $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date,
+        $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
+        $showColumn = true, $transaction_currency, $current_stock,$searchProduct,$totalQuantity=0 ;
+    public $rows = [];
     protected $rules = [
-    'store_id' => 'required',
-    'supplier' => 'required',
-    'status' => 'required',
-    'paying_currency' => 'required',
-    'purchase_type' => 'required',
-    'payment_status' => 'required',
-    'method' => 'required',
-    'amount' => 'required',
-    'transaction_currency' => 'required'
-];
+        'store_id' => 'required',
+    ];
 
-    public function mount(){
-        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
-        if($this->clear_all_input_stock_form ==0){
-            $transaction_payment=[];
-            $recent_stock=[];
-        }else{
-            $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
-//dd($recent_stock);
-            if(!empty($recent_stock)){
-                $transaction_payment = $recent_stock->transaction_payments->first();
-                $this->store_id =$recent_stock->store_id ??'' ;
-                $this->supplier = $recent_stock->supplier_id??'';
-                $this->status = $recent_stock->status ??'';
-                $this->transaction_date = $recent_stock->transaction_date ??'';
-                $this->transaction_currency = $recent_stock->transaction_currency ??'';
-                $this->purchase_type = $recent_stock->purchase_type ??'';
-                $this->divide_costs = $recent_stock->divide_costs ??'';
-                $this->payment_status = $recent_stock->payment_status ??'';
-                $this->invoice_no = $recent_stock->invoice_no ??'';
-                $this->other_expenses = !empty((int)$recent_stock->other_expenses) ? $recent_stock->other_expenses : null;
-                $this->discount_amount = !empty((int)$recent_stock->discount_amount) ? $recent_stock->discount_amount: null;
-                $this->other_payments = !empty((int)$recent_stock->other_payments) ? $recent_stock->other_payments: null;
-                $this->amount = $transaction_payment->amount ??'';
-                $this->method = $transaction_payment->method ??'';
-                $this->paying_currency = $transaction_payment->paying_currency ??'';
-                $this->source_type =$transaction_payment->source_type ??'' ;
-                $this->source_id = $transaction_payment->source_id ??'';
-                $this->paid_on = $transaction_payment->paid_on ??'';
-
-
-
-            }
-        }
-    }
-    protected $listeners = ['listenerReferenceHere'];
-
-    public function listenerReferenceHere($data)
-    {
-        if(isset($data['var1'])) {
-            $this->{$data['var1']} = $data['var2'];
-        }
-//        dd(11);
-    }
-
-    public function render(): Factory|View|Application
+    public function render()
     {
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
@@ -108,9 +57,8 @@ class Create extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-        $variations=Variation::orderBy('created_at','desc')->get();
+        $products = Product::all();
         $stores = Store::getDropdown();
-        $departments = Category::get();
         $search_result = '';
         if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
@@ -118,12 +66,10 @@ class Create extends Component
             });
             $search_result = $search_result->paginate();
             if(count($search_result) === 1){
-                $this->add_product($search_result->first()->id);
+                $this->fetchProduct($search_result->first()->id);
                 $search_result = '';
-                $this->searchProduct = '';
             }
         }
-
         if ($this->source_type == 'pos') {
             $users = StorePos::pluck('name', 'id');
         } elseif ($this->source_type == 'store') {
@@ -133,41 +79,73 @@ class Create extends Component
         } else {
             $users = User::Notview()->pluck('name', 'id');
         }
-        if(!empty($this->department_id)){
-            $products = Product::where('category_id' , $this->department_id)->get();
-        }
-        else{
-            $products = Product::paginate();
-        }
 
         $this->changeExchangeRate();
-        $this->dispatchBrowserEvent('initialize-select2');
-
-
-        return view('livewire.add-stock.create',
+        $units=Unit::orderBy('created_at', 'desc')->get();
+        // $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+        // $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        // $users=User::orderBy('created_at', 'desc')->pluck('name','id');
+        return view('livewire.initial-balance.create',
             compact('status_array',
-            'payment_status_array',
-            'payment_type_array',
-            'stores',
-            'product_id',
-            'payment_types',
-            'payment_status_array',
-            'suppliers',
-            'selected_currencies',
-            'preparers' ,
-            'products','variations',
-            'departments',
-            'search_result',
-            'users'));
+                'payment_status_array',
+                'payment_type_array',
+                'stores',
+                'product_id',
+                'payment_types',
+                'payment_status_array',
+                'suppliers',
+                'selected_currencies',
+                'preparers' ,
+                'products',
+                'search_result',
+                'users','units')
+        );
     }
-
+    // public function mount()
+    // {
+    //     $this->calculateTotalQuantity();
+    // }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
-
-    public function store(): Redirector|Application|RedirectResponse
+    public function calculateTotalQuantity()
     {
+        $this->totalQuantity=0;
+        foreach ($this->rows as $index=>$row) {
+            $this->totalQuantity += (int)$this->rows[$index]['quantity'];
+        }
+    }
+    public function checkSku($index){
+        $product=Product::where('sku',$this->rows[$index]['sku'])->first();
+        if(!empty($product)){
+            $this->rows[$index]['skuExist']=1;
+            $this->rows[$index]['name']=$product->name;
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'warning','message' => 'lang.this_product_exists_before',]);
+        }
+    }
+    public function addRaw(){
+    $newRow = ['id'=>'','name' => '','sku' => '','weight' => '','quantity' => '','size' => '','weight' => '',
+    'cost'=>'',
+    'total_cost'=>'',
+    'purchase_price'=>'',
+    'selling_price'=>'',
+    'dollar_purchase_price'=>'',
+    'dollar_selling_price'=>'',
+    'unit_id'=>'',
+    'dollar_cost'=>'',
+    'change_price_stock'=>'',
+    'skuExist'=>0,
+    'base_unit_multiplier'=>''
+    ];
+    $this->rows[] = $newRow;
+    }
+    public function changeUnit($index){
+        $this->rows[$index]['base_unit_multiplier']=!empty($this->rows[$index]['unit_id'])?Unit::find($this->rows[$index]['unit_id'])->base_unit_multiplier:'';
+    }
+    public function store() : Redirector|Application|RedirectResponse
+    {
+       
         if (!empty($this->other_expenses) || !empty($this->other_payments)){
             $this->rules = [
                 'store_id' => 'required',
@@ -181,28 +159,41 @@ class Create extends Component
                 'amount' => 'required',
             ];
         }
+        if(!empty($this->amount)){
+            $this->rules = [
+                'store_id' => 'required',
+                'supplier' => 'required',
+                'status' => 'required',
+                'paying_currency' => 'required',
+                'purchase_type' => 'required',
+                'payment_status' => 'required',
+                'method' => 'required',
+                'amount' => 'required',
+                'transaction_currency' => 'required'
+            ];
+        }
 
         $this->validate();
 
         try {
-
+         
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
-            $transaction->status = $this->status;
-            $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
-            $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
-            $transaction->purchase_type = $this->purchase_type;
-            $transaction->type = 'add_stock';
+            $transaction->status = !empty($this->status) ? $this->status : 'received';
+            $transaction->order_date = Carbon::now();
+            $transaction->transaction_date =  Carbon::now();
+            $transaction->purchase_type = 'local';
+            $transaction->type ='initial_balance' ;
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
-            $transaction->supplier_id = $this->supplier;
+            $transaction->supplier_id = !empty($this->supplier) ? $this->supplier : null;
             $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
             $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
             $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
-            $transaction->grand_total = $this->sum_total_cost();
-            $transaction->final_total = isset($this->discount_amount) ? ($this->sum_total_cost() - $this->discount_amount) : $this->sum_total_cost();
+            $transaction->grand_total = array_sum($this->total_cost);
+            $transaction->final_total = isset($this->discount_amount) ? (array_sum($this->total_cost) - $this->discount_amount) : array_sum($this->total_cost);
             $transaction->dollar_grand_total = $this->sum_dollar_total_cost();
             $transaction->dollar_final_total = $this->dollar_final_total();
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
@@ -214,16 +205,13 @@ class Create extends Component
             $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
 
-
-            DB::beginTransaction();
+            // DB::beginTransaction();
             // preparer_id
             // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
 
             $transaction->save();
-
-
-            // Add payment transaction
             if(!empty($this->amount)){
+                // Add payment transaction
                 $payment  = new StockTransactionPayment();
                 $payment->stock_transaction_id  = $transaction->id;
                 $payment->amount  = $this->amount;
@@ -290,44 +278,54 @@ class Create extends Component
 
 
             // add  products to stock lines
-            foreach ($this->items as $index => $item){
-                if (isset($this->product['change_price_stock']) && $this->product['change_price_stock']) {
-                    if (isset($product->stock_lines)) {
-                        foreach ($product->stock_lines as $line) {
-                            $line->sell_price = !empty($item['selling_price']) ? $item['selling_price'] : null;
-                            $line->dollar_sell_price = !empty($item['dollar_selling_price']) ? $item['dollar_selling_price'] : null;
-                            $line->save();
-                        }
-                    }
+            foreach ($this->rows as $index => $row){
+                //Add Product 
+                if($this->rows[$index]['skuExist']!==1){
+                    $product=new Product();
+                    $product->name=$this->rows[$index]['name'];
+                    $product->sku=$this->rows[$index]['sku'];
+                    $product->unit_id=$this->rows[$index]['unit_id']!==""?$this->rows[$index]['unit_id']:null;
+                    $product->size=$this->rows[$index]['size'];
+                    $product->save();
+                }else{
+                    $product=Product::where('sku',$this->rows[$index]['sku'])->first();
                 }
+                ////////////////
                 $supplier = Supplier::find($this->supplier);
-//                dd($item['variation']['id']);
+
                 $add_stock_data = [
-                    'variation_id' => $item['variation']['id'],
-                    'product_id' => $item['product']['id'],
+                    'product_id' => $product->id,
                     'stock_transaction_id' =>$transaction->id ,
-                    'quantity' => $item['quantity'],
-                    'purchase_price' => !empty($item['purchase_price']) ? $item['purchase_price'] : null ,
-                    'final_cost' => !empty($item['total_cost']) ? $item['total_cost'] : null,
-                    'sub_total' => !empty($item['sub_total']) ? $item['sub_total'] : null,
-                    'sell_price' => !empty($item['selling_price']) ? $item['selling_price'] : null,
-                    'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $item['dollar_purchase_price'] : null,
-                    'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $item['dollar_total_cost'] : 0,
-                    'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $item['dollar_sub_total']: null,
-                    'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $item['dollar_selling_price'] : null,
-                    'cost' => !empty($item['cost']) ?  $item['cost'] : null,
-                    'dollar_cost' => !empty($item['dollar_cost']) ? $item['dollar_cost'] : null,
-                    'expiry_date' => !empty($item['expiry_date']) ? $item['expiry_date'] : null,
-                    'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
-                    'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
+                    'quantity' => $this->rows[$index]['quantity'],
+                    'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null ,
+                    'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+                    'sub_total' => !empty($this->sub_total[$index]) ? $this->sub_total[$index] : null,
+                    'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
+                    'dollar_purchase_price' => !empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
+                    'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                    'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? $this->dollar_sub_total($index) : null,
+                    'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null,
+                    'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
+                    'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
                 AddStockLine::create($add_stock_data);
-                $this->updateProductQuantityStore($item['product']['id'], $transaction->store_id, $item['quantity'], 0);
+                if (isset($this->rows[$index]['change_price_stock']) && $this->rows[$index]['change_price_stock']!=='') {
+                    $stockLine=AddStockLine::find($product->id);
+                    if(!empty($stockLine)){
+                        $stockLine->update([
+                        'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
+                        'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
+                        'dollar_purchase_price' => empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
+                        'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null
+                        ]);
+                    }
+                }
+                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
 
             }
 
-            DB::commit();
+            // DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
         }
@@ -335,126 +333,102 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
-        return redirect('/add-stock/create');
+        return redirect('/initial-balance/index');
     }
 
-    public function add_product($id){
-
-        $variation = Variation::where('product_id',$id)->first();
-//        dd($variation->unit->toArray('name','id'));
-        $product = Product::find($id);
-//        dd($product->stock_lines->sum('quantity' ,'-','quantity_sold', '+', 'quantity_returned'));
-        if(!empty($this->items)){
-            $newArr = array_filter($this->items, function ($item) use ($product) {
-                return $item['product']['id'] == $product->id;
-            });
-            if (count($newArr) > 0) {
-                $key = array_keys($newArr)[0];
-                ++$this->items[$key]['quantity'];
-//                $this->items[$key]['sub_total'] = ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -( $this->items[$key]['quantity'] * $this->items[$key]['discount']);
-            }
-            else{
-                $this->addNewProduct($variation,$product);
-            }
-        }
-        else{
-            $this->addNewProduct($variation,$product);
-        }
-//            dd($this->items);
-    }
-    public function addNewProduct($variation,$product){
-        $current_stock = $product->stock_lines->sum('quantity' ,'-','quantity_sold', '+', 'quantity_returned');
-        $this->items[] = [
-            'variation' => $variation,
-            'product' => $product,
-            'quantity' => 1,
-            'unit_name' => $product->unit->name ?? '',
-            'base_unit_multiplier' => $product->unit->base_unit_multiplier ?? 1,
-            'sub_total' => 0,
-            'dollar_sub_total' => 0,
-            'size' => !empty($product->size) ? $product->size : 0,
-            'total_size' => !empty($product->size) ? $product->size * 1 : 0,
-            'weight' => !empty($product->weight) ? $product->weight : 0,
-            'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
-            'dollar_cost' => 0,
-            'cost' => 0,
-            'dollar_total_cost' => 0,
-            'total_cost' => 0,
-            'current_stock' =>$current_stock,
-            'total_stock' => $current_stock + 1,
-        ];
-    }
     public function fetchSelectedProducts()
     {
         $this->emit('closeModal');
-        $this->selectedProductData = Variation::whereIn('id', $this->selectedProducts)->get();
+        $this->selectedProductData = Product::whereIn('id', $this->selectedProducts)->get();
 
+    }
+    public function fetchProduct($id) {
+        $product = Product::find($id);
+        if(!empty($this->selectedProductData)){
+            $this->selectedProductData[count($this->selectedProductData)] =  $product;
+        }
+        else{
+            $this->selectedProductData[0] = $product;
+        }
+
+        $this->searchProduct ='';
     }
 
     public function get_product($index){
-        return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
+//        dd($this->selectedProductData[$index]['id']);
+        return Unit::where('id' ,$this->rows[$index]['unit_id'])->first();
     }
 
     public function sub_total($index)
     {
-        if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
+        if(isset($this->rows[$index]['quantity']) && (isset($this->rows[$index]['purchase_price']) ||isset($this->dollar_purchase_price[$index]) )){
             // convert purchase price from Dollar To Dinar
             $purchase_price = $this->convertDollarPrice($index);
 
-            $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
+            if(isset($this->get_product($index)->base_unit_multiplier)){
+                $this->base_unit[$index] = $this->get_product($index)->base_unit_multiplier;
+            }
+            else{
+                $this->base_unit[$index] = 1;
+            }
+            $this->sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * $this->base_unit[$index];
 
-            return number_format($this->items[$index]['sub_total'], 2);
-        }
-        else{
-            $this->items[$index]['purchase_price'] = null;
+            return number_format($this->sub_total[$index], 2);
         }
     }
 
     public function dollar_sub_total($index)
     {
-        if(isset($this->items[$index]['quantity']) && ($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])){
+        if(isset($this->rows[$index]['quantity']) && (isset($this->rows[$index]['dollar_purchase_price']) || isset($this->rows[$index]['purchase_price']))){
             // convert purchase price from Dinar To Dollar
             $purchase_price = $this->convertDinarPrice($index);
+            if(isset($this->get_product($index)->base_unit_multiplier)){
+                $this->base_unit[$index]  = $this->get_product($index)->base_unit_multiplier;
+            }
+            else{
+                $this->base_unit[$index] = 1;
+            }
+            $this->dollar_sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * $this->base_unit[$index] ;
 
-            $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
-
-            return number_format($this->items[$index]['dollar_sub_total'], 2);
+            return number_format($this->dollar_sub_total[$index], 2);
         }
         else{
-            $this->items[$index]['dollar_purchase_price'] = null;
+            $this->quantity[$index] = 0;
+            $this->dollar_purchase_price[$index] = 0;
         }
     }
 
+    public function total_quantity($index){
+        if (isset($this->get_product($index)->base_unit_multiplier)){
+            return  $this->get_product($index)->base_unit_multiplier * (int)$this->rows[$index]['quantity'];
+        }
+        else{
+            return  (int)$this->rows[$index]['quantity'];
+        }
+
+    }
 
     public function total_size($index){
-        $this->items[$index]['total_size'] =  (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['size'];
-        return  $this->items[$index]['total_size'];
+        $this->total_size[$index] =  $this->total_quantity($index) * (float)$this->rows[$index]['size'];
+        return $this->total_size[$index];
     }
 
     public function total_weight($index){
-        $this->items[$index]['total_weight'] = (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['weight'] ;
-       return $this->items[$index]['total_weight'];
+        $this->total_weight[$index] = $this->total_quantity($index) * (float)$this->rows[$index]['weight'] ;
+        return $this->total_weight[$index];
     }
 
     public function sum_size(){
-        $totalSize = 0;
-
-        foreach ($this->items as $item) {
-            $totalSize += $item['total_size'];
-        }
-        return $totalSize;
+        return array_sum($this->total_size);
     }
 
     public function sum_weight(){
-        $totalWeight = 0;
-
-        foreach ($this->items as $item) {
-            $totalWeight += $item['total_weight'];
-        }
-        return $totalWeight;
+        return array_sum($this->total_weight);
     }
 
     public function cost($index){
+
+        $product = $this->get_product($index);
 
         if($this->paying_currency == 2){
             $cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
@@ -475,7 +449,7 @@ class Create extends Component
                     unset($this->divide_costs);
                 }
                 else{
-                    (float)$this->items[$index]['cost'] = ( ( $cost / $this->sum_size() ) * $this->items[$index]['size'] ) + (float)$purchase_price;
+                    (float)$this->cost[$index] = ( ( $cost / $this->sum_size() ) * $product->size ) + (float)$purchase_price;
                 }
             }
             elseif ($this->divide_costs == 'weight'){
@@ -485,27 +459,28 @@ class Create extends Component
 
                 }
                 else {
-                    (float)$this->items[$index]['cost'] = (($cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
+                    (float)$this->cost[$index] = (($cost / $this->sum_weight()) * $product->weight) + (float)$purchase_price;
                 }
             }
             else{
-                (float)$this->items[$index]['cost'] = ( ( $cost / $this->sum_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
+                (float)$this->cost[$index] = ( ( $cost / array_sum($this->sub_total) ) * (float)$purchase_price ) + (float)$purchase_price;
             }
         }
         else{
-            $this->items[$index]['cost'] = (float)$purchase_price;
+            $this->cost[$index] = (float)$purchase_price;
         }
 
-        return number_format($this->items[$index]['cost'],2);
+        return number_format($this->cost[$index],2);
     }
 
     public function total_cost($index){
-        $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['total_cost'],2) ;
-}
+        $this->total_cost[$index] = (float)$this->rows[$index]['cost'] * $this->total_quantity($index);
+        return number_format($this->total_cost[$index],2) ;
+    }
 
     public function dollar_cost($index){
 
+        $product = $this->get_product($index);
 
         if($this->paying_currency == 2){
             $dollar_cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
@@ -514,98 +489,63 @@ class Create extends Component
             $dollar_cost = (float)$this->other_expenses + (float)$this->other_payments ;
         }
         // convert purchase price from Dinar to Dollar
-       $purchase_price = $this->convertDinarPrice($index);
+        $purchase_price = $this->convertDinarPrice($index);
+//        dd($purchase_price);
+
 
         if (isset($this->divide_costs)){
 
             if ($this->divide_costs == 'size'){
-                if($this->sum_size() == 0){
+                if($this->sum_size() >= 0){
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
                     unset($this->divide_costs);
                 }
                 else{
-                    (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_size() ) * $this->items[$index]['size'] ) + (float)$purchase_price;
+                    (float)$this->cost[$index] = ( ( $dollar_cost / $this->sum_size() ) * $product->size ) + (float)$purchase_price;
                 }
             }
             elseif ($this->divide_costs == 'weight'){
-                if($this->sum_weight() == 0){
+                if($this->sum_weight() >= 0){
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
                     unset($this->divide_costs);
 
                 }
                 else {
-                    (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
+                    (float)$this->dollar_cost[$index] = (($dollar_cost / $this->sum_weight()) * $product->weight) + (float)$purchase_price;
                 }
             }
             else{
-                (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
+                (float)$this->dollar_cost[$index] = ( ( $dollar_cost / array_sum($this->sub_total) ) * (float)$purchase_price ) + (float)$purchase_price;
             }
         }
         else{
-            $this->items[$index]['dollar_cost'] = (float)$purchase_price;
+            $this->dollar_cost[$index] = (float)$purchase_price;
         }
-        return number_format($this->items[$index]['dollar_cost'],2);
+        return number_format($this->dollar_cost[$index],2);
     }
 
     public function dollar_total_cost($index){
-        $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        $this->dollar_total_cost[$index] = (float)$this->rows[$index]['dollar_cost']* (float)$this->total_quantity($index);
+        return number_format($this->dollar_total_cost[$index], 2);
 
     }
 
     public function sum_total_cost(){
-        $totalCost = 0;
-        if(!empty($this->items)) {
-            foreach ($this->items as $item) {
-                $totalCost += $item['total_cost'];
-            }
-        }
-        return number_format($totalCost,2);
+        return number_format(array_sum($this->total_cost),2);
     }
 
     public function sum_dollar_total_cost(){
-        $totalDollarCost = 0;
-        if(!empty($this->items)){
-            foreach ($this->items as $item) {
-//                dd($item['dollar_total_cost']);
-                $totalDollarCost += $item['dollar_total_cost'];
-            }
-        }
-//        dd($totalDollarCost);
-        return number_format($totalDollarCost,2);
+        return number_format(array_sum($this->dollar_total_cost),2);
     }
 
     public function sum_sub_total(){
-        $totalSubTotal = 0;
-
-        foreach ($this->items as $item) {
-            $totalSubTotal += $item['sub_total'];
-        }
-        return number_format($totalSubTotal,2);
+        return number_format(array_sum($this->sub_total),2);
     }
 
-    public function sum_dollar_sub_total(){
-        $totalDollarSubTotal = 0;
-
-        foreach ($this->items as $item) {
-            $totalDollarSubTotal += $item['dollar_sub_total'];
-        }
-        return number_format($totalDollarSubTotal,2);
+    public function sum_dollar_tsub_total(){
+        return number_format(array_sum($this->dollar_sub_total),2);
     }
 
-    public function changeCurrentStock($index){
-        $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
-    }
-
-    public function total_quantity(){
-        $totalQuantity = 0;
-        if(!empty($this->items)){
-            foreach ($this->items as $item){
-                $totalQuantity += (int)$item['quantity'];
-            }
-        }
-       return $totalQuantity;
-    }
     public function final_total(){
         if(isset($this->discount_amount)){
             return $this->sum_total_cost() - $this->discount_amount;
@@ -623,7 +563,9 @@ class Create extends Component
     }
 
     public function delete_product($index){
-        unset($this->items[$index]);
+        unset($this->rows[$index]);
+    //     unset($this->selectedProducts[$index]);
+    //     unset($this->selectedProductData[$index]);
     }
 
     public function getPurchaseOrderStatusArray()
@@ -674,11 +616,11 @@ class Create extends Component
     }
 
     public function convertDollarPrice($index){
-        if(empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])){
-            $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->exchange_rate;
+        if(empty($this->rows[$index]['purchase_price']) && !empty($this->rows[$index]['dollar_purchase_price'])){
+            (float)$purchase_price = (float)$this->rows[$index]['dollar_purchase_price'] * $this->exchange_rate;
         }
         else{
-            $purchase_price = $this->items[$index]['purchase_price'];
+            $purchase_price = $this->rows[$index]['purchase_price'];
         }
         return $purchase_price;
     }
@@ -686,11 +628,11 @@ class Create extends Component
     public function convertDinarPrice($index)
     {
 //        dd($this->purchase_price[$index]);
-        if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
-            $purchase_price = $this->items[$index]['purchase_price'] / $this->exchange_rate;
+        if (!empty($this->rows[$index]['purchase_price']) && empty($this->rows[$index]['dollar_purchase_price'])) {
+            $purchase_price = $this->rows[$index]['purchase_price'] / $this->exchange_rate;
         }
         else {
-            $purchase_price = $this->items[$index]['dollar_purchase_price'];
+            $purchase_price = $this->rows[$index]['dollar_purchase_price'];
         }
         return $purchase_price;
 
@@ -712,6 +654,7 @@ class Create extends Component
 
     public function ShowDollarCol(){
         $this->showColumn= !$this->showColumn;
+            dd($this->selectedProductData);
     }
 
     public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
@@ -736,6 +679,4 @@ class Create extends Component
 
         return true;
     }
-
-
 }

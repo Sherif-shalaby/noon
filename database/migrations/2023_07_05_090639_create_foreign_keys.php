@@ -29,6 +29,21 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->foreign('subcategory_id1')->references('id')->on('categories')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->foreign('subcategory_id2')->references('id')->on('categories')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->foreign('subcategory_id3')->references('id')->on('categories')
+						->onDelete('cascade')
+						->onUpdate('cascade');
+		});
 		// Schema::table('products', function(Blueprint $table) {
 		// 	$table->foreign('subcategory_id')->references('id')->on('categories')
 		// 				->onDelete('cascade')
@@ -54,16 +69,16 @@ class CreateForeignKeys extends Migration {
 						->onDelete('cascade')
 						->onUpdate('cascade');
 		});
-		Schema::table('product_subcategories', function(Blueprint $table) {
-			$table->foreign('product_id')->references('id')->on('products')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
-		Schema::table('product_subcategories', function(Blueprint $table) {
-			$table->foreign('category_id')->references('id')->on('categories')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
+		// Schema::table('product_subcategories', function(Blueprint $table) {
+		// 	$table->foreign('product_id')->references('id')->on('products')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
+		// Schema::table('product_subcategories', function(Blueprint $table) {
+		// 	$table->foreign('category_id')->references('id')->on('categories')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
 		Schema::table('customers', function(Blueprint $table) {
 			$table->foreign('customer_type_id')->references('id')->on('customer_types')
 						->onDelete('cascade')
@@ -125,6 +140,15 @@ class CreateForeignKeys extends Migration {
 		Schema::table('products', function(Blueprint $table) {
 			$table->dropForeign('products_category_id_foreign');
 		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->dropForeign('products_subcategory_id1_foreign');
+		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->dropForeign('products_subcategory_id2_foreign');
+		});
+		Schema::table('products', function(Blueprint $table) {
+			$table->dropForeign('products_subcategory_id3_foreign');
+		});
 		// Schema::table('products', function(Blueprint $table) {
 		// 	$table->dropForeign('products_subcategory_id_foreign');
 		// });
@@ -140,12 +164,12 @@ class CreateForeignKeys extends Migration {
 		Schema::table('product_stores', function(Blueprint $table) {
 			$table->dropForeign('product_stores_store_id_foreign');
 		});
-		Schema::table('product_subcategories', function(Blueprint $table) {
-			$table->dropForeign('product_subcategories_product_id_foreign');
-		});
-		Schema::table('product_subcategories', function(Blueprint $table) {
-			$table->dropForeign('product_subcategories_category_id_foreign');
-		});
+		// Schema::table('product_subcategories', function(Blueprint $table) {
+		// 	$table->dropForeign('product_subcategories_product_id_foreign');
+		// });
+		// Schema::table('product_subcategories', function(Blueprint $table) {
+		// 	$table->dropForeign('product_subcategories_category_id_foreign');
+		// });
 		Schema::table('customers', function(Blueprint $table) {
 			$table->dropForeign('customers_customer_type_id_foreign');
 		});

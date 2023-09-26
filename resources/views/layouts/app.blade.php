@@ -2,7 +2,8 @@
     $local_code=LaravelLocalization::getCurrentLocale();
 @endphp
 <!DOCTYPE html>
-<html lang="{{$local_code}}">
+<html lang="{{$local_code}}" >
+{{-- dir="rtl" --}}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +19,7 @@
     <!-- End css -->
     @livewireStyles
 </head>
-
+{{-- {{app()->getLocale() === 'ar'?'text-right':''}} --}}
 <body class="horizontal-layout">
     <!-- Start Infobar Notifications Sidebar -->
     <div id="infobar-notifications-sidebar" class="infobar-notifications-sidebar">
@@ -173,7 +174,7 @@
         </div>
     </div>
     <!-- Start Containerbar -->
-    <div id="containerbar" class="container-fluid pl-0">
+    <div id="containerbar" class="pl-3 pr-3">
 
         @include('layouts.partials.header')
 
@@ -242,7 +243,7 @@
             swal({
                 title: event.detail.message,
                 text: event.detail.text,
-                icon: event.detail.type,
+                icon:event.detail.type,
             });
         });
 

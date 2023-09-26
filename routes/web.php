@@ -20,6 +20,7 @@ use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\GetDueReport;
 use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
@@ -98,9 +99,11 @@ Route::group(['middleware' => ['auth']], function () {
     // sizes
     Route::resource('sizes', SizeController::class)->except(['show']);
     // units
+    Route::get('units/get-unit-data/{id}', [UnitController::class,'getUnitData']);
     Route::get('units/get-dropdown', [UnitController::class,'getDropdown']);
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
+    Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
 
     Route::resource('products', ProductController::class);
     //customers
@@ -119,8 +122,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
 
     // Initial Balance
-    Route::view('initial-balance/create', 'initial-balance.create')->name('initial_balance.create');
-    Route::view('initial-balance/index', 'initial-balance.index')->name('initial_balance.index');
+    Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
+    Route::resource('initial-balance', InitialBalanceController::class);
+
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
 
 

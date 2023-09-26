@@ -20,5 +20,8 @@ class AddStockLine extends Model
     {
         return $this->belongsTo(Product::class);
     }
-
+    public function variation()
+    {
+        return $this->belongsTo(Variation::class,'variation_id');
+    }
 }
