@@ -24,14 +24,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CountrySeeder::class,
-            CategorySeeder::class,
             StatesSeeder::class ,
             CitySeeder::class ,
-            ProductSeeder::class ,
-            SizeSeeder::class ,
-            ColorSeeder::class ,
-            SizeSeeder::class ,
             CurrenciesTableSeeder::class ,
+//            SizeSeeder::class ,
+//            ColorSeeder::class ,
+//            SizeSeeder::class ,
+//            ProductSeeder::class ,
+//            CategorySeeder::class,
 
         ]);
 
@@ -164,9 +164,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionTableSeeder::class,
             CurrenciesTableSeeder::class,
-            CategorySeeder::class,
-            ColorSeeder::class,
-            SizeSeeder::class,
+//            CategorySeeder::class,
+//            ColorSeeder::class,
+//            SizeSeeder::class,
 //            ProductSeeder::class,
         ]);
     }

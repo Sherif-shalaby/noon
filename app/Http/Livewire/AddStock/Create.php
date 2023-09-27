@@ -39,7 +39,7 @@ class Create extends Component
     public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $status, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
-        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items, $department_id;
+        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id;
 
     protected $rules = [
     'store_id' => 'required',
@@ -108,7 +108,7 @@ class Create extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-        $variations=Variation::orderBy('created_at','desc')->get();
+//        $variations=Variation::orderBy('created_at','desc')->get();
         $stores = Store::getDropdown();
         $departments = Category::get();
         $search_result = '';
@@ -155,7 +155,8 @@ class Create extends Component
             'suppliers',
             'selected_currencies',
             'preparers' ,
-            'products','variations',
+            'products',
+//            'variations',
             'departments',
             'search_result',
             'users'));
@@ -173,7 +174,7 @@ class Create extends Component
                 'store_id' => 'required',
                 'supplier' => 'required',
                 'status' => 'required',
-                'paying_currency' => 'required',
+                'transaction_currency' => 'required',
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
                 'payment_status' => 'required',
@@ -201,9 +202,9 @@ class Create extends Component
             $transaction->payment_status = $this->payment_status;
             $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
             $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
-            $transaction->grand_total = $this->sum_total_cost();
-            $transaction->final_total = isset($this->discount_amount) ? ($this->sum_total_cost() - $this->discount_amount) : $this->sum_total_cost();
-            $transaction->dollar_grand_total = $this->sum_dollar_total_cost();
+            $transaction->grand_total = $this->num_uf($this->sum_total_cost());
+            $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
+            $transaction->dollar_grand_total = $this->num_uf($this->sum_dollar_total_cost());
             $transaction->dollar_final_total = $this->dollar_final_total();
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
             $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
@@ -218,6 +219,12 @@ class Create extends Component
             DB::beginTransaction();
             // preparer_id
             // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
+//            if ($request->files) {
+//                foreach ($request->file('files', []) as $key => $file) {
+//
+//                    $transaction->addMedia($file)->toMediaCollection('add_stock');
+//                }
+//            }
 
             $transaction->save();
 
@@ -288,7 +295,11 @@ class Create extends Component
                 $payment->save();
             }
 
-
+//            if ($request->upload_documents) {
+//                foreach ($request->file('upload_documents', []) as $key => $doc) {
+//                    $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
+//                }
+//            }
             // add  products to stock lines
             foreach ($this->items as $index => $item){
                 if (isset($this->product['change_price_stock']) && $this->product['change_price_stock']) {
@@ -301,9 +312,10 @@ class Create extends Component
                     }
                 }
                 $supplier = Supplier::find($this->supplier);
-//                dd($item['variation']['id']);
+//                dd($item);
                 $add_stock_data = [
-                    'variation_id' => $item['variation']['id'],
+                    'variation_id' => $item['variation_id'],
+                    'variation_id' => $item['variation_id'],
                     'product_id' => $item['product']['id'],
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $item['quantity'],
@@ -338,38 +350,50 @@ class Create extends Component
         return redirect('/add-stock/create');
     }
 
-    public function add_product($id){
+    public function add_product($id, $add_via = null){
+        if(!empty($this->searchProduct)){
+            $this->searchProduct = '';
 
-        $variation = Variation::where('product_id',$id)->first();
-//        dd($variation->unit->toArray('name','id'));
+        }
+
         $product = Product::find($id);
-//        dd($product->stock_lines->sum('quantity' ,'-','quantity_sold', '+', 'quantity_returned'));
-        if(!empty($this->items)){
-            $newArr = array_filter($this->items, function ($item) use ($product) {
-                return $item['product']['id'] == $product->id;
-            });
-            if (count($newArr) > 0) {
-                $key = array_keys($newArr)[0];
-                ++$this->items[$key]['quantity'];
-//                $this->items[$key]['sub_total'] = ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -( $this->items[$key]['quantity'] * $this->items[$key]['discount']);
-            }
-            else{
-                $this->addNewProduct($variation,$product);
-            }
+        $variations = $product->variations;
+
+        if($add_via == 'unit'){
+            $show_product_data = false;
+            $this->addNewProduct($variations,$product,$show_product_data);
         }
         else{
-            $this->addNewProduct($variation,$product);
+            if(!empty($this->items)){
+                $newArr = array_filter($this->items, function ($item) use ($product) {
+                    return $item['product']['id'] == $product->id;
+                });
+                if (count($newArr) > 0) {
+                    $key = array_keys($newArr)[0];
+                    ++$this->items[$key]['quantity'];
+        //                $this->items[$key]['sub_total'] = ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -( $this->items[$key]['quantity'] * $this->items[$key]['discount']);
+                }
+                else{
+                    $show_product_data = true;
+                    $this->addNewProduct($variations,$product,$show_product_data);
+                }
+            }
+            else{
+                $show_product_data = true;
+                $this->addNewProduct($variations,$product,$show_product_data);
+            }
         }
-//            dd($this->items);
+
     }
-    public function addNewProduct($variation,$product){
-        $current_stock = $product->stock_lines->sum('quantity' ,'-','quantity_sold', '+', 'quantity_returned');
-        $this->items[] = [
-            'variation' => $variation,
+    public function addNewProduct($variations,$product,$show_product_data){
+//        $current_stock = $this->getCurrentStock($product->id);
+        $new_item = [
+            'show_product_data' => $show_product_data,
+            'variations' => $variations,
             'product' => $product,
             'quantity' => 1,
-            'unit_name' => $product->unit->name ?? '',
-            'base_unit_multiplier' => $product->unit->base_unit_multiplier ?? 1,
+            'unit' => null,
+            'base_unit_multiplier' => null,
             'sub_total' => 0,
             'dollar_sub_total' => 0,
             'size' => !empty($product->size) ? $product->size : 0,
@@ -380,17 +404,52 @@ class Create extends Component
             'cost' => 0,
             'dollar_total_cost' => 0,
             'total_cost' => 0,
-            'current_stock' =>$current_stock,
-            'total_stock' => $current_stock + 1,
+            'current_stock' =>0,
+            'total_stock' => 0 + 1,
         ];
-    }
-    public function fetchSelectedProducts()
-    {
-        $this->emit('closeModal');
-        $this->selectedProductData = Variation::whereIn('id', $this->selectedProducts)->get();
+//    if ($show_product_data){
+//        array_unshift($this->items, $new_item);
+//    }
+//    else{
+        array_push($this->items, $new_item);
+//    }
 
     }
 
+//    public function getCurrentStock($product_id){
+//        $stocks = AddStockLine::where('product_id',$product_id)->get();
+//        foreach ($stocks as $stock){
+//            dd($stock->variation);
+//        }
+//        dd($stocks);
+//    }
+
+    public function getVariationData($index){
+       $variant = Variation::find($this->items[$index]['variation_id']);
+       $this->items[$index]['unit'] = $variant->unit->name;
+       $this->items[$index]['base_unit_multiplier'] = $variant->equal;
+    }
+
+    public function changeFilling($index){
+        if(!empty($this->items[$index]['purchase_price'])){
+            if($this->items[$index]['fill_type']=='fixed'){
+                $this->items[$index]['selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+            }else{
+                $percent=((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                $this->items[$index]['selling_price']=($this->items[$index]['dollar_purchase_price']+$percent);
+            }
+        }
+        if(!empty($this->items[$index]['dollar_purchase_price'])){
+            if($this->items[$index]['fill_type']=='fixed'){
+                $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+            }
+        else{
+                $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                $this->items[$index]['dollar_selling_price'] = ($this->items[$index]['dollar_purchase_price'] + $percent);
+            }
+
+        }
+    }
     public function get_product($index){
         return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
     }
@@ -557,10 +616,10 @@ class Create extends Component
         $totalCost = 0;
         if(!empty($this->items)) {
             foreach ($this->items as $item) {
-                $totalCost += $item['total_cost'];
+                $totalCost += (float)$item['total_cost'];
             }
         }
-        return number_format($totalCost,2);
+        return number_format($this->num_uf($totalCost),2);
     }
 
     public function sum_dollar_total_cost(){
@@ -736,6 +795,12 @@ class Create extends Component
 
         return true;
     }
-
+ public function num_uf($input_number, $currency_details = null){
+     $thousand_separator  = ',';
+     $decimal_separator  = '.';
+     $num = str_replace($thousand_separator, '', $input_number);
+     $num = str_replace($decimal_separator, '.', $num);
+     return (float)$num;
+ }
 
 }
