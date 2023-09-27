@@ -294,7 +294,7 @@
                             <div class="col-md-3 due_fields d-none">
                                 <div class="form-group">
                                     {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}
-                                    <br>
+                                    <br/>
                                     {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}
                                 </div>
                             </div>

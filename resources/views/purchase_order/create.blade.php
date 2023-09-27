@@ -83,6 +83,7 @@
                                 </div>
                             </div>
                             <br>
+                            {{-- ++++++++++++++++++++++ select products ++++++++++++++++++++++ --}}
                             <div class="modal fade" id="select_products_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
                                 aria-hidden="true" style="width: 100%;">
                                 <div class="modal-dialog modal-lg" role="document" id="select_products_modal">
@@ -346,9 +347,10 @@
                         console.log(response);
                         $.each(response, function(key, val) {
                             var currencySign = '';
+                            console.log("we are outSide if condition");
 
                             // Check if val.stock_lines is defined and not empty
-                            if (val.stock_lines && val.stock_lines.length > 0)
+                            if (val.stock_lines && val.stock_lines.length >= 0)
                             {
                                 // lastDollarPurchasePrice
                                 var lastDollarPurchasePrice = val.stock_lines[val.stock_lines.length - 1].dollar_purchase_price;
@@ -375,7 +377,7 @@
                                     lastPurchasePrice = 0.0000;
                                     lastDollarPurchasePrice = 0.0000; // Set to 0.0000 when both are null
                                 }
-
+                                console.log("we are inside if condition");
                                 var output = `
                                         <tr>
                                             <td name='id'>
