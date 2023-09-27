@@ -45,7 +45,7 @@ class Create extends Component
 
     public $rows = [];
     protected $rules = [
-        'item.*.name' => 'required|unique:products,sku',
+        'item.*.name' => 'required',
         'item.*.store_id' => 'required',
         'item.*.supplier_id' => 'required',
         'item.*.category_id' => 'required',
@@ -61,7 +61,7 @@ class Create extends Component
         'item.*.status' => 'required',
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
-        'rows.*.sku' => 'required|unique:variations,sku',
+        'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -163,8 +163,13 @@ class Create extends Component
     public function store() 
     // : Redirector|Application|RedirectResponse
     {
-        // dd($this->item);
-
+        // dd($this->rows);
+        //for variation valid sku
+        if($this->item[0]['isExist']==1){
+            $product=Product::find($this->item[0]['id']);
+            $product->variations()->forceDelete();
+        }
+        //////////
         $this->validate();
 
         // try {
@@ -198,7 +203,7 @@ class Create extends Component
                 $product->weight=$this->item[0]['weight'];
                 $product->size=$this->item[0]['size'];
                 $product->save();
-                $product->variations()->delete();
+                // $product->variations()->delete();
             }else{
                 $product=new Product();
                 $product->name=$this->item[0]['name'];
@@ -249,17 +254,19 @@ class Create extends Component
                     'exchange_rate' => !empty($this->exchange_rate) ? $this->exchange_rate : null,
                 ];
                 AddStockLine::create($add_stock_data);
-                if (isset($this->rows[$index]['change_price_stock']) && $this->rows[$index]['change_price_stock']!=='') {
-                    $stockLine=AddStockLine::find($product->id);
-                    if(!empty($stockLine)){
-                        $stockLine->update([
-                        'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
-                        'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
-                        'dollar_purchase_price' => empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
-                        'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null
-                        ]);
-                    }
-                }
+                // if (isset($this->rows[$index]['change_price_stock']) && ($this->rows[$index]['change_price_stock']!=='' || $this->rows[$index]['change_price_stock']!='true')) {
+                //     $stockLines=AddStockLine::where('product_id',$product->id)->get();
+                //     if(!empty($stockLine)){
+                //         foreach ($stockLines as $index => $stockLine) {
+                //             $stockLine->update([
+                //                 'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
+                //                 'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
+                //                 'dollar_purchase_price' => empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
+                //                 'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null
+                //             ]);
+                //         }
+                //     }
+                // }
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
 
             }

@@ -91,9 +91,12 @@
             {{$this->total_quantity($index) ?? 0}}
         </span>
     </td>
-    <td>
-       <input type="checkbox"  wire:model="rows.{{ $index }}.change_price_stock">
-    </td>
+    {{-- <td>
+        <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch{{$index}}" wire:model="rows.{{ $index }}.change_price_stock">
+            <label class="custom-control-label" for="customSwitch{{$index}}"></label>
+        </div>
+    </td> --}}
     <td  class="text-center">
         <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_product({{$index}})">
             <i class="fa fa-trash"></i>
