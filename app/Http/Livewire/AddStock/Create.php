@@ -39,7 +39,8 @@ class Create extends Component
     public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $status, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
-        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id;
+        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
+        $files, $upload_documents;
 
     protected $rules = [
     'store_id' => 'required',
@@ -219,12 +220,9 @@ class Create extends Component
             DB::beginTransaction();
             // preparer_id
             // $transaction->preparer_id = !empty($this->preparer_id) ? $this->preparer_id : null;
-//            if ($request->files) {
-//                foreach ($request->file('files', []) as $key => $file) {
-//
-//                    $transaction->addMedia($file)->toMediaCollection('add_stock');
-//                }
-//            }
+            if ($this->files) {
+                $transaction->file = store_file($this->files, 'stock_transaction');
+            }
 
             $transaction->save();
 
@@ -292,14 +290,13 @@ class Create extends Component
                         }
                     }
                 }
+                if ($this->upload_documents) {
+                     $payment->upload_documents = store_file($this->upload_documents, 'stock_transaction_payment');
+                }
                 $payment->save();
             }
 
-//            if ($request->upload_documents) {
-//                foreach ($request->file('upload_documents', []) as $key => $doc) {
-//                    $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
-//                }
-//            }
+
             // add  products to stock lines
             foreach ($this->items as $index => $item){
                 if (isset($this->product['change_price_stock']) && $this->product['change_price_stock']) {
