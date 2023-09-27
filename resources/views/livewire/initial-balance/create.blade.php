@@ -282,7 +282,7 @@
                                         <th style="width: 10%">@lang('lang.selling_price') </th>
                                         <th style="width: 10%">@lang('lang.sub_total')</th>
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
-                                        <th style="width: 10%">@lang('lang.change_current_stock')</th>
+                                        {{-- <th style="width: 10%">@lang('lang.change_current_stock')</th> --}}
                                         <th style="width: 10%">@lang('lang.action')</th>
                                     </tr>
                                     </thead>
