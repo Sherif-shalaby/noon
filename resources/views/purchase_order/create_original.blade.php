@@ -17,6 +17,13 @@
                 </div>
                 <br/>
             </div>
+           <div class="col-md-4 col-lg-4">
+               <div class="widgetbar">
+                   <a href="{{route('purchase_order.index')}}" class="btn btn-primary">
+                       @lang('lang.purchase_order')
+                   </a>
+               </div>
+           </div>
         </div>
     </div>
 @endsection
@@ -130,9 +137,9 @@
                                                             <td>{{$product->sku}}</td>
                                                             <td>{{$product->category->name}}</td>
                                                             <td>
-                                                                @foreach($product->subcategories as $subcategory)
-                                                                    {{$subcategory->name}}<br>
-                                                                @endforeach
+{{--                                                                @foreach($product->subcategories as $subcategory)--}}
+{{--                                                                    {{$subcategory->name}}<br>--}}
+{{--                                                                @endforeach--}}
                                                             </td>
                                                             <td>{{$product->height}}</td>
                                                             <td>{{$product->length}}</td>
@@ -250,7 +257,7 @@
 </section>
 @endsection
 
-@section('javascript')
+@push('javascript')
     <script src="{{asset('js/purchase.js')}}"></script>
     <script type="text/javascript">
         // ++++++++++++++ Function 1 : calculateSubTotal() : Function to calculate the sub-total ++++++++++++++
@@ -350,7 +357,7 @@
                             console.log("we are outSide if condition");
 
                             // Check if val.stock_lines is defined and not empty
-                            if (val.stock_lines && val.stock_lines.length > 0)
+                            if (val.stock_lines && val.stock_lines.length >= 0)
                             {
                                 // lastDollarPurchasePrice
                                 var lastDollarPurchasePrice = val.stock_lines[val.stock_lines.length - 1].dollar_purchase_price;
@@ -377,45 +384,37 @@
                                     lastPurchasePrice = 0.0000;
                                     lastDollarPurchasePrice = 0.0000; // Set to 0.0000 when both are null
                                 }
-                            }
-                            else
-                            {
-                                lastDollarPurchasePrice = 0.0000;
-                                // lastDinarPurchasePrice
-                                lastDinarPurchasePrice = 0.0000;
-                                lastPurchasePrice = 0.0000;
-                            }
-                            console.log("we are inside if condition");
-                            // +++++++++++++++++++++ all products +++++++++++++++++++++
-                            var output = `
-                                    <tr>
-                                        <td name='id'>
-                                            ${val.id}
-                                            <input type="hidden" name="product_id[]" value="${val.id}" id="product_id${val.id}" />
-                                        </td>
-                                        <td name='name'>${val.name}</td>
-                                        <td name='sku'>${val.sku}</td>
-                                        <td>
-                                            <input class="quantity form-control" type='text' name='quantity[]' class="form-control" value="0" />
-                                        </td>
-                                        <td>
-                                            <input type='text' class="purchase_price form-control" name='purchase_price[]' value="${lastDinarPurchasePrice}" readonly />
-                                        </td>
-                                        <td>
-                                            <input type='text' class="purchase_price_dollar form-control" name='purchase_price_dollar[]' value="${lastDollarPurchasePrice}" readonly />
-                                        </td>
-                                        <td>
-                                            <input type='text' class="form-control sub_total" name='sub_total[]' value="0" readonly />
-                                        </td>
-                                        <td name='currencySign[]'>${currencySign}</td>
-                                        <td>
-                                            <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
-                                        </td>
-                                    </tr>
+                                console.log("we are inside if condition");
+                                var output = `
+                                        <tr>
+                                            <td name='id'>
+                                                ${val.id}
+                                                <input type="hidden" name="product_id[]" value="${val.id}" id="product_id${val.id}" />
+                                            </td>
+                                            <td name='name'>${val.name}</td>
+                                            <td name='sku'>${val.sku}</td>
+                                            <td>
+                                                <input class="quantity form-control" type='text' name='quantity[]' class="form-control" value="0" />
+                                            </td>
+                                            <td>
+                                                <input type='text' class="purchase_price form-control" name='purchase_price[]' value="${lastDinarPurchasePrice}" readonly />
+                                            </td>
+                                            <td>
+                                                <input type='text' class="purchase_price_dollar form-control" name='purchase_price_dollar[]' value="${lastDollarPurchasePrice}" readonly />
+                                            </td>
+                                            <td>
+                                                <input type='text' class="form-control sub_total" name='sub_total[]' value="0" readonly />
+                                            </td>
+                                            <td name='currencySign[]'>${currencySign}</td>
+                                            <td>
+                                                <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
+                                            </td>
+                                        </tr>
 
-                                `;
+                                    `;
 
-                            $('#search_list').append(output);
+                                $('#search_list').append(output);
+                            }
                         });
 
                         // Bind the calculateSubTotal function to the input fields
@@ -428,4 +427,4 @@
         });
 
     </script>
-@endsection
+@endpush

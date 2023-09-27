@@ -320,12 +320,20 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 due_fields ">
-                                    <div class="form-group">
-                                        {!! Form::label('notify_before_days', __('lang.due_date') . ':', []) !!} <br>
-                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->due_date)?@format_date($transaction_payment->due_date):(!empty($payment) ? @format_date($payment->due_date) : null), ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'notify_before_days']) !!}
-                                    </div>
+                            <div class="col-md-3 due_fields d-none">
+                                <div class="form-group">
+                                    {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>
+                                    {!! Form::text('due_date', !empty($transaction_payment)&&!empty($transaction_payment->due_date)?@format_date($transaction_payment->due_date):(!empty($payment) ? @format_date($payment->due_date) : null), ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'due_date']) !!}
                                 </div>
+                            </div>
+
+                            <div class="col-md-3 due_fields d-none">
+                                <div class="form-group">
+                                    {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}
+                                    <br>
+                                    {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}
+                                </div>
+                            </div>
 
 {{--                                <div class="col-md-3 due_fields ">--}}
 {{--                                    <div class="form-group">--}}
