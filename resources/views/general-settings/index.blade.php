@@ -97,13 +97,22 @@
                             'class' => 'form-control'
                         ]) !!}
                     </div>
+                    {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="country-dd" class="h5 pt-3">@lang('lang.country')</label>
+                        <select id="country-dd" name="country" class="form-control">
+                            @foreach ( $countries as $data )
+                                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <br>
                     <hr>
                     <div class="col-md-12 pt-5">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    
+
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                             <div class="col-12">

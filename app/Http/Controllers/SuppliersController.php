@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Product;
+use App\Models\State;
 use App\Models\Supplier;
+use App\Models\System;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -24,26 +28,40 @@ class SuppliersController extends Controller
     public function index()
     {
         $suppliers = Supplier::orderBy('id','desc')->get();
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
+        // return $settings;
 
         return view('suppliers.index')->with(compact(
-            'suppliers',
+            'suppliers','countryId' , 'countryName'
         ));
+        // return view('suppliers.index',compact(
+        //     'suppliers','countryId' , 'countryName'
+        // ));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
+    /* ++++++++++++++++++++++++++ create() ++++++++++++++++++++ */
     public function create()
     {
         $supplier_categories = Category::where('parent_id',null)->pluck('name', 'id');
-
+        // ++++++++++++++++++++ Country , State , Cities Selectbox ++++++++++++++++
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
         return view('suppliers.create')->with(compact(
-            'supplier_categories',
+            'supplier_categories','countryId','countryName'
         ));
     }
-
+    // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where('country_id', $request->country_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++++++++++ fetchCity(): to get "cities" of "selected city" selectbox ++++++++++++++
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
+        return response()->json($data);
+    }
     /**
      * Store a newly created resource in storage.
      *

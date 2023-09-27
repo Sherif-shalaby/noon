@@ -59,8 +59,9 @@
                                 {{--                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
                                 {{--                                                {{ $product->productdetails?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
                                 {{--                                            </span>--}}
-                            </div>
+                            {{-- </div> --}}
                         </div>
+                        <hr/>
                     @endforeach
                 @endif
             </div>

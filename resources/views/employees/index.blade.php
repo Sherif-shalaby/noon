@@ -113,7 +113,7 @@
                                                 <li class="divider"></li>
 
                                                 <li>
-                                                    <a href="{{route('employees.edit', $employee->id)}}"
+                                                    <a href="{{route('employees.edit', $employee->id)}}"  target="_blank"
                                                        class="btn edit_employee"><i
                                                             class="fa fa-pencil-square-o"></i>
                                                         @lang('lang.edit')</a>

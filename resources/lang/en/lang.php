@@ -17,9 +17,11 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'show_hide_columns' => 'Show/Hide Columns' ,
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong!',
     'general_settings'=>'General Settings',
+    'state' => 'State',
     'developed_by'=>'Developed By',
     'site_title'=>'Site Title',
     'time_format'=>'Time Format',
@@ -191,6 +193,7 @@ return [
     'mobile_number' => 'Mobile Number',
     'created_by' => 'Created By',
     'add_supplier'=>'Add supplier',
+    'edit_supplier' => 'Edit Supplier' ,
     'exchange_rate'=>'Exchange Rate',
     'city'=>'City',
     'country'=>'Country',
@@ -458,6 +461,7 @@ return [
     'continue_to_add_stock'=>'Continue To Sdd Stock',
     'to_get_sell_price'=>'To Get Sell Price',
     'fill_from_basic_unit'=>'Fill From Basic Unit',
+    'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
 
 ];
 
