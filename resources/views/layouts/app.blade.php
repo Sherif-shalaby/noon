@@ -240,7 +240,7 @@
     @stack('js')
     <script>
         window.addEventListener('swal:modal', event => {
-            swal({
+            Swal.fire({
                 title: event.detail.message,
                 text: event.detail.text,
                 icon:event.detail.type,
@@ -248,7 +248,7 @@
         });
 
         window.addEventListener('swal:confirm', event => {
-            swal({
+            Swal.fire({
                     title: event.detail.message,
                     text: event.detail.text,
                     icon: event.detail.type,

@@ -66,7 +66,7 @@
                                     <th>@lang('lang.length')</th>
                                     <th>@lang('lang.width')</th>
                                     <th>@lang('lang.size')</th>
-                                    <th>@lang('lang.unit')</th>
+                                    {{-- <th>@lang('lang.unit')</th> --}}
                                     <th>@lang('lang.weight')</th>
                                     <th>@lang('lang.stores')</th>
                                     <th>@lang('lang.brand')</th>
@@ -93,7 +93,7 @@
                                     <td>{{$product->length}}</td>
                                     <td>{{$product->width}}</td>
                                     <td><span class="text-primary">{{$product->size}}</span></td>
-                                    <td>{{!empty($product->unit)?$product->unit->name:''}}</td>
+                                    {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
                                     <td>{{$product->weight}}</td>
                                     <td>
                                         @foreach($product->stores as $store)

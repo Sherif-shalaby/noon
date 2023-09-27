@@ -25,7 +25,7 @@
 <script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
 <script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 
 
 <script type="text/javascript" src="{{asset('js/jquery-validation/jquery.validate.min.js') }}"></script>
@@ -46,6 +46,7 @@
 <!-- Pnotify js -->
 <script src="{{asset('plugins/pnotify/js/pnotify.custom.min.js')}}"></script>
 <script src="{{asset('js/custom/custom-pnotify.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
@@ -76,7 +77,7 @@
     });
       $(document).on('click', '.delete_item', function(e) {
             e.preventDefault();
-            swal({
+            Swal.fire({
                 title: LANG.are_you_sure,
                 text: LANG.are_you_sure_you_wanna_delete_it,
                 icon: 'warning',
@@ -86,7 +87,7 @@
                     var href = $(this).data('href');
                     var data = $(this).serialize();
 
-                    swal({
+                    Swal.fire({
                         title: "{!!__('lang.please_enter_your_password')!!}",
                         content: {
                             element: "input",
@@ -114,7 +115,7 @@
                                 success: (data) => {
 
                                     if (data.success == true) {
-                                        swal(
+                                        Swal.fire(
                                             'success',
                                             "{!!__('lang.correct_password')!!}",
                                             'success'
@@ -136,7 +137,7 @@
                                                     }, 1500);
                                                     location.reload();
                                                 } else {
-                                                    // swal(
+                                                    // Swal.fire(
                                                     //     'Error',
                                                     //     result.msg,
                                                     //     'error'
@@ -149,7 +150,7 @@
                                         });
 
                                     } else {
-                                        swal(
+                                        Swal.fire(
                                             'Failed!',
                                             'Wrong Password!',
                                             'error'

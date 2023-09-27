@@ -94,7 +94,7 @@ $(document).on("click", ".add_unit_row", function () {
         url: "/product/get-raw-unit",
         data: { row_id: row_id },
         success: function (result) {
-            $(".product_unit_raws").append(result);
+            $(".product_unit_raws").prepend(result);
             $('.select2').select2();
         },
     });
@@ -102,6 +102,6 @@ $(document).on("click", ".add_unit_row", function () {
 $(document).on("click", ".remove_row", function () {
 $(this).closest(".unit-row").remove();
 });
-$(document).on("change", ".unit_id", function () {
-    $('.basic_unit_id').val($(this).val()).trigger('change');
-});
+// $(document).on("change", ".unit_id", function () {
+//     $('.basic_unit_id').val($(this).val()).trigger('change');
+// });

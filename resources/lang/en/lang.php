@@ -458,6 +458,9 @@ return [
     'basic_unit'=>'Basic Unit',
     'equal'=>'Equal',
     'new_unit'=>'New Unit',
+    'continue_to_add_stock'=>'Continue To Sdd Stock',
+    'to_get_sell_price'=>'To Get Sell Price',
+    'fill_from_basic_unit'=>'Fill From Basic Unit',
     'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
 
 ];

@@ -395,7 +395,7 @@
             contentType: "html",
             success: function (result) {
                 if (result.success) {
-                    swal("Success", response.msg, "success");
+                    Swal.fire("Success", response.msg, "success");
                 }
             },
         });
