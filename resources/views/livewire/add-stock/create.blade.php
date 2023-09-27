@@ -248,7 +248,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('files', __('lang.files'), []) !!} <br>
-                                    <input type="file" name="files[]" id="files" multiple>
+                                    <input type="file" name="files[]" id="files"  wire:model="files">
                                 </div>
                             </div>
                             <div class="col-md-3">

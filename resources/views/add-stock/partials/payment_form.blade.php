@@ -42,7 +42,7 @@
         <div class="col-md-3 payment_fields hide">
             <div class="form-group">
                 {!! Form::label('upload_documents', __('lang.upload_documents'). ':', []) !!} <br>
-                <input type="file" name="upload_documents[]" id="upload_documents" multiple>
+                <input type="file" name="upload_documents[]" id="upload_documents" wire:model="upload_documents">
             </div>
         </div>
     </div>
