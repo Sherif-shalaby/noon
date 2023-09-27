@@ -142,7 +142,7 @@
                 {{-- ###################### Products : المنتجات ###################### --}}
                 {{-- @can('product_module')  --}}
                     @if(!empty($module_settings['product_module']) )
-                        <li class="scroll"><a href="{{route('products.index')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
+                        <li class="scroll"><a href="{{route('products.create')}}"><img src="{{asset('images/topbar/dairy-products.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.products')}}</span></a></li>
                     @endif
                 {{-- @endcan --}}
                 {{-- ###################### Cashier : المبيعات ###################### --}}
@@ -162,13 +162,13 @@
                     @endif
                   @if(!empty($module_settings['stock_module']))
                             <li>
-                                <a href="{{route('initial_balance.index')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
+                                <a href="{{route('initial-balance.create')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
                             </li>
                     @endif
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
                 <li>
-                    <a href="{{route('purchase_order.index')}}">
+                    <a href="{{route('purchase_order.create')}}">
                         <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
                         <span>{{__('lang.purchase_order')}}</span>
                     </a>
@@ -205,8 +205,8 @@
                                 <a href=""><img src="{{asset('images/topbar/employee.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.employees')}}</span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
-                                    <li><a href="{{route('employees.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
-                                    <li><a href="{{route('wages.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
+                                    <li><a href="{{route('employees.create')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
+                                    <li><a href="{{route('wages.create')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
                                 </ul>
                             </li>
                     @endif
@@ -217,7 +217,7 @@
                     <li class="dropdown">
                             <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.customers')}}</span></a>
                             <ul class="dropdown-menu">
-                            <li><a href="{{route('customers.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customers')}}</a></li>
+                            <li><a href="{{route('customers.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.customers')}}</a></li>
                             <li><a href="{{route('customertypes.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.customer_types')}}</a></li>
                         </ul>
                     </li>
@@ -226,7 +226,7 @@
                 {{-- ###################### suppliers : الموردين ###################### --}}
                 {{-- @can('supplier_module')  --}}
                     @if(!empty($module_settings['supplier_module']))
-                        <li class="scroll"><a href="{{route('suppliers.index')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
+                        <li class="scroll"><a href="{{route('suppliers.create')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                     @endif
                 {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}

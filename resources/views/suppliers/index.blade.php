@@ -98,7 +98,6 @@
                                         </select>
                                         <div class="overSelect"></div>
                                     </div>
-
                                     <div id="checkboxes">
                                         {{-- +++++++++++++++++ checkbox1 : name +++++++++++++++++ --}}
                                         <label for="col1_id">

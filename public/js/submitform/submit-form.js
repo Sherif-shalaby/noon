@@ -16,7 +16,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $("#createBrandModal").modal("hide");
                 var brand_id = result.id;
                 $.ajax({
@@ -30,7 +30,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -54,7 +54,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $("#create").modal("hide");
                 var unit_id = result.id;
                 $.ajax({
@@ -63,12 +63,17 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $("#unit_id").empty().append(data_html);
-                        $("#unit_id").val(unit_id).change();
+                        $(".unit_id").empty().append(data_html);
+                        $(".unit_id").val(unit_id).change();
+                        $(".new_unit").empty().append(data_html);
+                        $(".basic_unit_id").empty().append(data_html);
+                        $(".basic_unit_id").val(unit_id).change();
+
+
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -93,7 +98,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $(".add-store").modal("hide");
                 var store_id = result.id;
                 $.ajax({
@@ -107,7 +112,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -135,8 +140,9 @@ $(document).on("submit", "#category-form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                swal("Success", result.msg, "success");
+                Swal.fire("Success", result.msg, "success");
                 $("#createCategoryModal").modal("hide");
+                console.log(result);
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
@@ -145,16 +151,24 @@ $(document).on("submit", "#category-form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         if(select_category=="1"){
+                            alert(select_category)
                             $("#categoryId").empty().append(data_html);
                             $("#categoryId").val(category_id).change();
-                        }else{
-                            $("#subCategoryId").empty().append(data_html);
-                            $("#subCategoryId").val(category_id).change();
+                        }else if(select_category=="3"){
+                            $("#subCategoryId2").empty().append(data_html);
+                            $("#subCategoryId2").val(category_id).change();
+                        }else if(select_category=="4"){
+                            $("#subCategoryId3").empty().append(data_html);
+                            $("#subCategoryId3").val(category_id).change();
+                        }
+                        else{
+                            $("#subCategoryId1").empty().append(data_html);
+                            $("#subCategoryId1").val(category_id).change();
                         }
                     },
                 });
             } else {
-                swal("Error", result.msg, "error");
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });

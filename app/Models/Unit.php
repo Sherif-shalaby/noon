@@ -37,4 +37,8 @@ class Unit extends Model
     {
         return $this->belongsTo(User::class, 'last_update');
     }
+    public function base_unit()
+    {
+        return $this->belongsTo(Unit::class, 'base_unit_id');
+    }
 }

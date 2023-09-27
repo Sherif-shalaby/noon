@@ -14,6 +14,7 @@ use App\Models\Store;
 use App\Models\System;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,22 +79,25 @@ class ProductController extends Controller
         // product_tax
         $product_tax = ProductTax::select('name','id','status')->get();
         $quick_add = 1;
-        return view('products.create',compact('categories','brands','units','stores','product_tax','quick_add'));
+        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        return view('products.create',
+        compact('categories','brands','units','stores','product_tax','quick_add','unitArray'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
-    // return $request;
+    // return $request->all();
     try
     {
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
         'category_id' => $request->category_id,
-        // 'store_id' =>  !empty($request->subcategory_id) ?$request->subcategory_id: [],
+        'subcategory_id1' => $request->subcategory_id1,
+        'subcategory_id2' => $request->subcategory_id2,
+        'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
-        'unit_id' => $request->unit_id,
-        'sku' => !empty($request->sku) ? $request->sku : $this->generateSku($request->name),
+        'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
         'width' => $request->width,
@@ -103,7 +107,6 @@ class ProductController extends Controller
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
         'created_by' => Auth::user()->id,
-        // method column
         'method' => !empty($request->method) ? $request->method :null,
     ];
     $product = Product::create($product_data);
@@ -114,9 +117,9 @@ class ProductController extends Controller
         $product->product_taxes()->attach($request->product_tax_id) ;
     }
 
-    if(!empty($request->subcategory_id)){
-        $product->subcategories()->attach($request->subcategory_id);
-    }
+    // if(!empty($request->subcategory_id)){
+    //     $product->subcategories()->attach($request->subcategory_id);
+    // }
     if(!empty($request->store_id)){
         $product->stores()->attach($request->store_id);
     }
@@ -132,7 +135,23 @@ class ProductController extends Controller
         $product->save();
     }
 
-
+    $index_units=[];
+    if($request->has('new_unit_id')){
+        if(count($request->new_unit_id)>0){
+            $index_units=array_keys($request->new_unit_id);
+        }
+    }
+    foreach ($index_units as $index){
+        $var_data=[
+            'product_id'=>$product->id,
+            'unit_id'=>$request->new_unit_id[$index],
+            'basic_unit_id'=>$request->basic_unit_id[$index],
+            'equal'=>$request->equal[$index],
+            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+            'created_by'=>Auth::user()->id
+        ];
+        Variation::create($var_data);
+    }
 
     $index_prices=[];
     if($request->has('price_category')){
@@ -234,7 +253,8 @@ class ProductController extends Controller
       $product=Product::with('product_taxes')->findOrFail($id);
       $customer_types = CustomerType::pluck('name', 'id');
       $product_tax = ProductTax::all();
-      return view('products.edit',compact('categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
+      $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
   }
 
   /**
@@ -246,14 +266,16 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     // return $request->all();
-    // try{
+    try{
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
         'category_id' => $request->category_id,
+        'subcategory_id1' => $request->subcategory_id1,
+        'subcategory_id2' => $request->subcategory_id2,
+        'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
-        // 'unit_id' => $request->unit_id,
-        'sku' => !empty($request->sku) ? $request->sku : $this->generateSku($request->name),
+        'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
         'height' => $request->height,
         'length' => $request->length,
         'width' => $request->width,
@@ -272,10 +294,6 @@ class ProductController extends Controller
     // When Change "product_tax" update "products_taxes" table
     $product->product_taxes()->sync($request->product_tax_id);
 
-
-    if(!empty($request->subcategory_id)){
-        $product->subcategories()->sync($request->subcategory_id);
-    }
     if(!empty($request->store_id)){
         $product->stores()->sync($request->store_id);
     }
@@ -297,17 +315,37 @@ class ProductController extends Controller
     }
 
 
+    $index_units=[];
+    $product->variations()->delete();
+
+    if($request->has('new_unit_id')){
+        if(count($request->new_unit_id)>0){
+            $index_units=array_keys($request->new_unit_id);
+        }
+    }
+    foreach ($index_units as $index){
+        $var_data=[
+            'product_id'=>$product->id,
+            'unit_id'=>$request->new_unit_id[$index],
+            'basic_unit_id'=>$request->basic_unit_id[$index],
+            'equal'=>$request->equal[$index],
+            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+            'edited_by'=>Auth::user()->id
+        ];
+        Variation::create($var_data);
+    }
+
+
 
     $index_prices=[];
     $product->product_prices()->delete();
-   $index_prices=[];
+    $index_prices=[];
     if($request->has('price_category')){
         if(count($request->price_category)>0){
             $index_prices=array_keys($request->price_category);
         }
     }
     foreach ($index_prices as $index_price){
-    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
         $data_des=[
             'product_id' => $product->id,
             'price_type' => $request->price_type[$index_price],
@@ -317,7 +355,6 @@ class ProductController extends Controller
             'bonus_quantity' => $request->bonus_quantity[$index_price],
             'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
             'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            // 'price_customers' => $price_customers,
             'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
             'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
             'created_by' => Auth::user()->id,
@@ -328,13 +365,13 @@ class ProductController extends Controller
         'success' => true,
         'msg' => __('lang.success')
     ];
-    //  } catch (\Exception $e) {
-    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-    //         $output = [
-    //             'success' => false,
-    //             'msg' => __('lang.something_went_wrong')
-    //         ];
-    // }
+     } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+    }
     return redirect()->back()->with('status', $output);
   }
 
@@ -352,6 +389,10 @@ class ProductController extends Controller
         if(File::exists($image_path)) {
             File::delete($image_path);
         }
+        $product->variations()->update([
+            'deleted_by'=>Auth::user()->id
+        ]);
+        $product->variations()->delete();
         $product->deleted_by = Auth::user()->id;
         $product->save();
         $product->delete();
@@ -424,7 +465,16 @@ class ProductController extends Controller
 
       return !empty($date_format) ? Carbon::createFromFormat($date_format, $date)->format($mysql_format) : null;
   }
-
+  public function getRawUnit()
+    {
+        $index = request()->row_id ?? 0;
+        $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+  
+        return view('products.product_unit_raw',compact(
+            'index',
+            'units',
+        ));
+    }
 }
 
 ?>

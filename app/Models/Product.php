@@ -16,7 +16,7 @@ class Product extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = array('name','translations', 'sku','store_id','brand_id','unit_id','category_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method');
+    protected $fillable = array('name','translations', 'sku','store_id','brand_id','category_id','subcategory_id1','subcategory_id2','subcategory_id3','unit_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method');
 
     protected $casts = ['translations' => 'array',
                         'details_translations'=>'array',
@@ -50,9 +50,17 @@ class Product extends Model
         return $this->belongsTo('App\Models\Category', 'category_id');
     }
 
-    public function subCategory()
+    public function subCategory1()
     {
-        return $this->belongsTo('App\Models\Category', 'subategory_id');
+        return $this->belongsTo('App\Models\Category', 'subcategory_id1');
+    }
+    public function subCategory2()
+    {
+        return $this->belongsTo('App\Models\Category', 'subcategory_id2');
+    }
+    public function subCategory3()
+    {
+        return $this->belongsTo('App\Models\Category', 'subcategory_id3');
     }
 
     public function brand()
@@ -79,7 +87,10 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductPrice');
     }
-
+    public function variations()
+    {
+        return $this->hasMany('App\Models\Variation');
+    }
     public function createBy()
     {
         return $this->belongsTo(User::class, 'created_by');
