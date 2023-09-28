@@ -57,7 +57,7 @@ class Create extends Component
         'item.*.height' => 'numeric',
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
-        'item.*.divide_costs' => 'required',
+//        'item.*.divide_costs' => 'required',
         'item.*.status' => 'required',
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
@@ -145,7 +145,7 @@ class Create extends Component
         foreach ($this->rows as $i => $item) {
             if ($item['basic_unit_id'] === $unit) {
                 $unit_index=$i;
-                break; 
+                break;
             }
         }
         $unit=$this->get_product($index);
@@ -160,7 +160,7 @@ class Create extends Component
             $this->rows[$index]['dollar_selling_price']=(float)$this->rows[$unit_index]['dollar_selling_price']/(float)$this->rows[$unit_index]['equal'];
         }
     }
-    public function store() 
+    public function store()
     // : Redirector|Application|RedirectResponse
     {
         // dd($this->rows);
@@ -188,8 +188,8 @@ class Create extends Component
             $transaction->created_by = Auth::user()->id;
             $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
             $transaction->save();
-            //Add Product 
-            $product=[];  
+            //Add Product
+            $product=[];
             if($this->item[0]['isExist']==1){
                 $product=Product::find($this->item[0]['id']);
                 $product->sku="Default";
@@ -221,7 +221,7 @@ class Create extends Component
             }
             // add  products to stock lines
             foreach ($this->rows as $index => $row){
-                
+
                 // if($this->rows[$index]['skuExist']!==1){
                     $Variation=new Variation();
 
@@ -275,7 +275,7 @@ class Create extends Component
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => __('lang.success'),]);
             return redirect('/initial-balance');
-        
+
         }
         // }
         // catch (\Exception $e){
@@ -296,7 +296,7 @@ class Create extends Component
         }
         $sku = $sku . $number;
         $sku_exist = Product::where('sku', $sku)->exists();
-  
+
         if ($sku_exist) {
             return $this->generateSku($name, $number + 1);
         } else {
@@ -458,7 +458,7 @@ class Create extends Component
         else{
             return $this->exchangeRate =System::getProperty('dollar_exchange');
         }
-        
+
     }
     public function changePurchasePrice($index){
         $this->rows[$index]['purchase_price']=$this->rows[$index]['dollar_purchase_price']*$this->exchange_rate;

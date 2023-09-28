@@ -39,7 +39,6 @@
                                         <tr>
                                             <th>#</th>
                                             <th>@lang('units.unitname')</th>
-                                            <th>@lang('units.base_unit_multiplier')</th>
                                             <th>@lang('added_by')</th>
                                             <th>@lang('updated_by')</th>
                                             <th>@lang('action')</th>
@@ -50,7 +49,6 @@
                                             <tr>
                                                 <td>{{ $index+1 }}</td>
                                                 <td>{{ $unit->name }}</td>
-                                                <td>{{$unit->base_unit_multiplier}}</td>
                                                 <td>
                                                     @if ($unit->user_id  > 0 and $unit->user_id != null)
                                                         {{ $unit->created_at->diffForHumans() }} <br>
