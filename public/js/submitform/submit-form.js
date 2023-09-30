@@ -63,13 +63,8 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $(".unit_id").empty().append(data_html);
-                        $(".unit_id").val(unit_id).change();
-                        $(".new_unit").empty().append(data_html);
-                        $(".basic_unit_id").empty().append(data_html);
-                        $(".basic_unit_id").val(unit_id).change();
-
-
+                        $("#unit_id").empty().append(data_html);
+                        $("#unit_id").val(unit_id).change();
                     },
                 });
             } else {
@@ -117,6 +112,42 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         },
     });
 });
+$("#create-supplier-btn").click(function (e){
+    e.preventDefault();
+    setTimeout(()=>{
+        $("#add_supplier").submit();
+        $("#quick_add_supplier_form").submit();
+    },500)
+});
+$(document).on("submit", "form#quick_add_supplier_form", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result.success) {
+                Swal.fire("Success", result.msg, "success");
+                $(".add-supplier").modal("hide");
+                var supplier_id = result.id;
+                $.ajax({
+                    method: "get",
+                    url: "/suppliers/get-dropdown",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        $("#supplier_id").empty().append(data_html);
+                        $("#supplier_id").val(supplier_id).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
 //store form
 
 //category form
@@ -133,6 +164,7 @@ $("#create-category-btn").click(function (e){
 $(document).on("submit", "#category-form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
+    alert($(this).attr("action"));
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
@@ -150,21 +182,20 @@ $(document).on("submit", "#category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        if(select_category=="1"){
-                            alert(select_category)
+                        // if(select_category=="1"){
                             $("#categoryId").empty().append(data_html);
                             $("#categoryId").val(category_id).change();
-                        }else if(select_category=="3"){
-                            $("#subCategoryId2").empty().append(data_html);
-                            $("#subCategoryId2").val(category_id).change();
-                        }else if(select_category=="4"){
-                            $("#subCategoryId3").empty().append(data_html);
-                            $("#subCategoryId3").val(category_id).change();
-                        }
-                        else{
-                            $("#subCategoryId1").empty().append(data_html);
-                            $("#subCategoryId1").val(category_id).change();
-                        }
+                        // }else if(select_category=="3"){
+                        //     $("#subCategoryId2").empty().append(data_html);
+                        //     $("#subCategoryId2").val(category_id).change();
+                        // }else if(select_category=="4"){
+                        //     $("#subCategoryId3").empty().append(data_html);
+                        //     $("#subCategoryId3").val(category_id).change();
+                        // }
+                        // else{
+                        //     $("#subCategoryId1").empty().append(data_html);
+                        //     $("#subCategoryId1").val(category_id).change();
+                        // }
                     },
                 });
             } else {
@@ -173,4 +204,50 @@ $(document).on("submit", "#category-form", function (e) {
         },
     });
 });
+
+$(document).ready(function () {
+$("#create-product-tax-btn").click(function (e) {
+    e.preventDefault();
+    setTimeout(() => {
+        $("#add_product_tax").submit();
+    }, 500);
+});
+});
+
+// $("#create-product-tax-btn").click(function (e){
+//     e.preventDefault();
+//     setTimeout(()=>{
+//         $("#add_product_tax").submit();
+//     },500)
+// });
+$(document).on("submit", "#add_product_tax", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result.success) {
+                Swal.fire("Success", result.msg, "success");
+                $("#add_product_tax").modal("hide");
+                var product_tax_id = result.id;
+                $.ajax({
+                    method: "get",
+                    url: "/product-tax/get-dropdown",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        $("#product_tax").empty().append(data_html);
+                        $("#product_tax").val(product_tax_id).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
+
 //category form
