@@ -37,7 +37,14 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()']) !!}
+                                    <div class="d-flex justify-content-center">
+                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select',
+                                        ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                        'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()'
+                                        ]) !!}
+                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" href="{{route('suppliers.create')}}"><i class="fas fa-plus"></i></button>
+                                        @include('suppliers.quick_add',['quick_add'=>1])
+                                    </div>
                                     @error('supplier')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -363,6 +370,7 @@
         </div>
     </div>
 </section>
+<div class="view_modal no-print"></div>
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 

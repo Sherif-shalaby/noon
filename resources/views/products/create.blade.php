@@ -104,14 +104,18 @@
                     {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="product" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
-                        <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}">
-                            <option value="">{{  __('lang.please_select') }}</option>
-                            @foreach ($product_tax as $tax )
-                                @if( $tax->status == "active" )
-                                    <option value="{{ $tax->id }}">{{ $tax->name }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        <div class="d-flex justify-content-center">
+                            <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}">
+                                <option value="">{{  __('lang.please_select') }}</option>
+                                @foreach ($product_tax as $tax )
+                                    @if( $tax->status == "active" )
+                                        <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+{{--                            <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#add_product_tax" data-select_category="2"><i class="fas fa-plus"></i></button>--}}
+                            @include('product-tax.create')
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <div class="row">
@@ -275,45 +279,45 @@
                     </div>
                     {{-- sizes --}}
                     {{-- add prices --}}
-                    <div class="col-md-12">
-                        <div class="container-fluid pt-5">
-                            <div class="row ">
-                                <div class="col-md-12 pt-5">
-                                    <h4 class="text-primary">{{__('lang.add_prices_for_different_users')}}</h4>
-                                </div>
-                                <div class="col-md-12 ">
-                                    <table class="table table-bordered" id="consumption_table_price">
-                                        <thead>
-                                        <tr>
-                                            {{-- <th style="width: 20%;">@lang('lang.discount_type')</th> --}}
-                                            <th style="width: 10%;">@lang('lang.type')</th>
-                                            <th style="width: 10%;">@lang('lang.price_category')</th>
-                                            <th style="width: 10%;">@lang('lang.price')</th>
-                                            <th style="width: 10%;">@lang('lang.quantity')</th>
-                                            <th style="width: 11%;">@lang('lang.b_qty')</th>
-                                            <th style="width: 3%;"></th>
-                                            <th style="width: 17%;">@lang('lang.price_start_date')</th>
-                                            <th style="width: 17%;">@lang('lang.price_end_date')</th>
-                                            <th style="width: 20%;">@lang('lang.customer_type')
-                                                <i class="dripicons-question" data-toggle="tooltip"
-                                                    title="@lang('lang.discount_customer_info')"></i>
-                                                </th>
-                                            <th style="width: 5%;">
-                                                <button class="btn btn-xs btn-primary add_price_row" type="button">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {{-- @include('product.partial.raw_discount', ['row_id' => 0]) --}}
-                                        </tbody>
-                                    </table>
-                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{{--                    <div class="col-md-12">--}}
+{{--                        <div class="container-fluid pt-5">--}}
+{{--                            <div class="row ">--}}
+{{--                                <div class="col-md-12 pt-5">--}}
+{{--                                    <h4 class="text-primary">{{__('lang.add_prices_for_different_users')}}</h4>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-md-12 ">--}}
+{{--                                    <table class="table table-bordered" id="consumption_table_price">--}}
+{{--                                        <thead>--}}
+{{--                                        <tr>--}}
+{{--                                             <th style="width: 20%;">@lang('lang.discount_type')</th>--}}
+{{--                                            <th style="width: 10%;">@lang('lang.type')</th>--}}
+{{--                                            <th style="width: 10%;">@lang('lang.price_category')</th>--}}
+{{--                                            <th style="width: 10%;">@lang('lang.price')</th>--}}
+{{--                                            <th style="width: 10%;">@lang('lang.quantity')</th>--}}
+{{--                                            <th style="width: 11%;">@lang('lang.b_qty')</th>--}}
+{{--                                            <th style="width: 3%;"></th>--}}
+{{--                                            <th style="width: 17%;">@lang('lang.price_start_date')</th>--}}
+{{--                                            <th style="width: 17%;">@lang('lang.price_end_date')</th>--}}
+{{--                                            <th style="width: 20%;">@lang('lang.customer_type')--}}
+{{--                                                <i class="dripicons-question" data-toggle="tooltip"--}}
+{{--                                                    title="@lang('lang.discount_customer_info')"></i>--}}
+{{--                                                </th>--}}
+{{--                                            <th style="width: 5%;">--}}
+{{--                                                <button class="btn btn-xs btn-primary add_price_row" type="button">--}}
+{{--                                                    <i class="fa fa-plus"></i>--}}
+{{--                                                </button>--}}
+{{--                                            </th>--}}
+{{--                                        </tr>--}}
+{{--                                        </thead>--}}
+{{--                                        <tbody>--}}
+{{--                                         @include('product.partial.raw_discount', ['row_id' => 0])--}}
+{{--                                        </tbody>--}}
+{{--                                    </table>--}}
+{{--                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     {{-- add prices --}}
 
                     {{-- crop image --}}

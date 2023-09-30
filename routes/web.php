@@ -124,7 +124,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Initial Balance
     Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
     Route::resource('initial-balance', InitialBalanceController::class);
-
+    Route::get('suppliers/get-dropdown', [SuppliersController::class,'getDropdown']);
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
 
 
@@ -138,6 +138,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
+    Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########

@@ -6,6 +6,7 @@ use App\Models\AddStockLine;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductStore;
+use App\Models\ProductTax;
 use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\Supplier;
@@ -14,26 +15,32 @@ use App\Models\Unit;
 use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Create extends Component
 {
     use WithPagination;
-    public $item=[['id','name' => '',
-    'store_id' => '',
-    'supplier_id' => '',
-    'category_id'=>'',
-    'subcategory_id1'=>'',
-    'subcategory_id2'=>'',
-    'subcategory_id3'=>'',
-    'weight' => 0,
-    'width' => 0,
-    'height' =>0,
-    'length'=>0,
-    'size' => 0,
-    'isExist'=>0,'status'=>'',
-    'divide_costs'=>'','change_current_stock'=>0,'exchange_rate'=>0,'divide_costs'=>'']
+    public $item=[
+        ['id',
+        'name' => '',
+        'store_id' => '',
+        'supplier_id' => '',
+        'category_id'=>'',
+        'subcategory_id1'=>'',
+        'subcategory_id2'=>'',
+        'subcategory_id3'=>'',
+        'weight' => 0,
+        'width' => 0,
+        'height' =>0,
+        'length'=>0,
+        'size' => 0,
+        'isExist'=>0,'status'=>'',
+    //    'divide_costs'=>'',
+        'change_current_stock'=>0,
+        'exchange_rate'=>0,
+    ]
     ];
     public $subcategories1=[],$subcategories2=[],$subcategories3=[];
     public $quantity = [], $purchase_price =[], $selling_price = [],
@@ -41,7 +48,7 @@ class Create extends Component
         $sub_total = [], $change_price_stock =[], $store_id, $status,
         $supplier, $exchange_rate,$exchangeRate,$transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-         $current_stock,$totalQuantity=0,$edit_product=[] ;
+         $current_stock,$totalQuantity=0,$edit_product=[], $current_sub_category , $clear_all_input_stock_form, $product_tax;
 
     public $rows = [];
     protected $rules = [
@@ -58,7 +65,7 @@ class Create extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
 //        'item.*.divide_costs' => 'required',
-        'item.*.status' => 'required',
+//        'item.*.status' => 'required',
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
@@ -98,24 +105,64 @@ class Create extends Component
         $stores = Store::getDropdown();
         $units=Unit::orderBy('created_at', 'desc')->get();
         $basic_units=Unit::orderBy('created_at', 'desc')->pluck('name', 'id');
+        $product_taxes = ProductTax::select('name','id','status')->get();
         $this->dispatchBrowserEvent('initialize-select2');
 
         return view('livewire.initial-balance.create',
             compact(
                 'stores',
                 'suppliers',
-                'products',
+                'products','product_taxes',
                 'units','basic_units','categories')
         );
     }
     public function mount()
     {
-        $this->exchange_rate=$this->changeExchangeRate();
+        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
+        if($this->clear_all_input_stock_form == 0){
+            $recent_stock=[];
+        }
+        else {
+            $recent_stock = StockTransaction::where('type','initial_balance')->orderBy('created_at', 'desc')->first();
+            if(!empty($recent_stock)) {
+                $this->item[0]['store_id'] = $recent_stock->store_id;
+                $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
+                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name;
+                $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
+                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id;
+                if(!empty($this->item[0]['category_id'])){
+                    $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1;
+                if(!empty($this->item[0]['subcategory_id1'])){
+                    $this->subcategories2 = Category::where('parent_id',$this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2;
+                if(!empty($this->item[0]['subcategory_id2'])){
+                    $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3;
+                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height;
+                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length;
+                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width;
+                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight;
+                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size;
+            }
+        }
+        $this->exchange_rate = $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
     }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+    }
+
+    public function setSubCategoryValue($value){
+
+        $this->dispatchBrowserEvent('show-modal');
+    }
+    public function addSubCategory(){
+
     }
     public function calculateTotalQuantity()
     {
@@ -161,9 +208,7 @@ class Create extends Component
         }
     }
     public function store()
-    // : Redirector|Application|RedirectResponse
     {
-        // dd($this->rows);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -176,17 +221,17 @@ class Create extends Component
          if(empty($this->rows)){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.add_sku_with_sku_for_product'),]);
         }else{
+             DB::beginTransaction();
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->item[0]['store_id'];
-            $transaction->status = !empty($this->item[0]['status']) ? $this->item[0]['status'] : 'received';
+            $transaction->status = 'received';
             $transaction->order_date = Carbon::now();
             $transaction->transaction_date =  Carbon::now();
             $transaction->purchase_type = 'local';
             $transaction->type ='initial_balance' ;
             $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
             $transaction->created_by = Auth::user()->id;
-            $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
             $transaction->save();
             //Add Product
             $product=[];
@@ -205,18 +250,19 @@ class Create extends Component
                 $product->save();
                 // $product->variations()->delete();
             }else{
+//                dd($this->item[0]['subcategory_id2']);
                 $product=new Product();
                 $product->name=$this->item[0]['name'];
                 $product->sku="Default";
                 $product->category_id=$this->item[0]['category_id'];
-                $product->subcategory_id1=$this->item[0]['subcategory_id1'];
-                $product->subcategory_id2=$this->item[0]['subcategory_id2'];
-                $product->subcategory_id3=$this->item[0]['subcategory_id3'];
-                $product->height=$this->item[0]['height'];
-                $product->length=$this->item[0]['length'];
-                $product->width=$this->item[0]['width'];
-                $product->weight=$this->item[0]['weight'];
-                $product->size=$this->item[0]['size'];
+                $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ?$this->item[0]['subcategory_id1'] : null;
+                $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
+                $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
+                $product->height=$this->item[0]['height'] ?? null;
+                $product->length=$this->item[0]['length'] ?? null;
+                $product->width=$this->item[0]['width'] ?? null;
+                $product->weight=$this->item[0]['weight'] ?? null;
+                $product->size=$this->item[0]['size'] ?? null;
                 $product->save();
             }
             // add  products to stock lines
@@ -271,10 +317,9 @@ class Create extends Component
 
             }
 
-            // DB::commit();
-
+             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => __('lang.success'),]);
-            return redirect('/initial-balance');
+            return redirect('/initial-balance/create');
 
         }
         // }
@@ -433,7 +478,6 @@ class Create extends Component
         }
         return $purchase_price;
     }
-
     public function convertDinarPrice($index)
     {
 //        dd($this->purchase_price[$index]);
@@ -453,10 +497,10 @@ class Create extends Component
                 return $this->exchangeRate =  str_replace(',' ,'',$supplier->exchange_rate);
             }
             else
-            return $this->exchangeRate =System::getProperty('dollar_exchange');
+            return $this->exchangeRate = System::getProperty('dollar_exchange');
         }
         else{
-            return $this->exchangeRate =System::getProperty('dollar_exchange');
+            return $this->exchangeRate = System::getProperty('dollar_exchange') ;
         }
 
     }

@@ -50,6 +50,19 @@
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
+    $(document).on("click", "#clear_all_input_form", function () {
+        var value = $('#clear_all_input_form').is(':checked')?1:0;
+        $.ajax({
+            method: "get",
+            url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
+            contentType: "html",
+            success: function (result) {
+                if (result.success) {
+                    Swal.fire("Success", response.msg, "success");
+                }
+            },
+        });
+    });
     document.addEventListener('livewire:load', function() {
         window.addEventListener('initialize-select2', event => {
             $('.select2').select2();
@@ -206,6 +219,8 @@
         // );
         $('.select2').select2();
         $('.datepicker').datepicker();
+
+
 </script>
 @stack('javascripts')
 

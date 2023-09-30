@@ -14,52 +14,74 @@
                     @php
                         $index=0;
                     @endphp
+                    <div class="row mt-2">
+                        <div class="col-md-9">
+                            <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="i-checks">
+                                <input id="clear_all_input_form" name="clear_all_input_form"
+                                       type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif
+                                       class="">
+                                <label for="clear_all_input_form" style="font-size: 0.75rem">
+                                    <strong>
+                                        @lang('lang.clear_all_input_form')
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     {{-- {!! Form::open(['id' => 'add_stock_form']) !!} --}}
                     <div class="card-body">
                         {{-- <div class="col-md-12"> --}}
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                                {!! Form::select(
-                                    'store_id',
-                                    $stores,
-                                    !empty($recent_stock) && !empty($recent_stock->store_id) ? $recent_stock->store_id : session('user.store_id'),
-                                    [
-                                        'class' => ' form-control select2 store_id',
-                                        'data-name'=>'store_id',
-                                        'required',
-                                        'placeholder' => __('lang.please_select'),
-                                        'wire:model' => 'item.0.store_id',
-                                    ],
-                                ) !!}
-
-
-                                {{-- {{$item[0]['store_id']}} --}}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'store_id',
+                                        $stores,$item[0]['store_id'],
+                                        [
+                                            'class' => ' form-control select2 store_id',
+                                            'data-name'=>'store_id',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'wire:model' => 'item.0.store_id',
+                                        ],
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
+                                    @include('store.create',['quick_add'=>1])
+                                </div>
                                 @error('item.0.store_id')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('supplier_id ', __('lang.supplier') . ':*', []) !!}
-                                {!! Form::select(
-                                    'supplier_id',
-                                    $suppliers,
-                                    !empty($recent_stock) && !empty($recent_stock->supplier_id) ? $recent_stock->supplier_id : session('user.supplier_id'),
-                                    [
-                                        'class' => ' form-control select2 supplier_id',
-                                        'data-name'=>'supplier_id',
-                                        'required',
-                                        'placeholder' => __('lang.please_select'),
-                                        'wire:model' => 'item.0.supplier_id',
-                                    ],
-                                ) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'supplier_id',
+                                        $suppliers,
+                                        $item[0]['supplier_id'],
+                                        [
+                                            'id' => 'supplier_id',
+                                            'class' => ' form-control select2 supplier_id',
+                                            'data-name'=>'supplier_id',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'wire:model' => 'item.0.supplier_id',
+                                        ],
+                                    ) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" href="{{route('suppliers.create')}}"><i class="fas fa-plus"></i></button>
+                                    @include('suppliers.quick_add',['quick_add'=>1])
+                                </div>
                                 @error('item.0.supplier_id ')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('name', __('lang.product_name'), ['class' => 'h5']) !!}
-                                {!! Form::text('name', null, [
+                                {!! Form::text('name', $item[0]['name'], [
                                     'class' => 'form-control required',
                                     'wire:model' => 'item.0.name',
                                     'wire:change'=>'confirmCreateProduct()'
@@ -77,29 +99,33 @@
                             </div> --}}
                             <div class="col-md-3">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                <input type="text"  class="form-control" id="exchange_rate" wire:model="exchange_rate" wire:change="changeExchangeRateBasedPrices()">
+                                <input type="text"  class="form-control" id="exchange_rate" value="{{$item[0]['exchange_rate']}}" placeholder="سعر السوق({{$exchange_rate}})" wire:model="exchange_rate" wire:change="changeExchangeRateBasedPrices()">
                             </div>
 
                             <div class="col-md-3">
                                 {!! Form::label('category', __('lang.category'), ['class' => 'h5']) !!}
-                                {!! Form::select('category_id', $categories, null, [
-                                    'class' => 'form-control select2 category_id',
-                                    'placeholder' => __('lang.please_select'),
-                                    'data-name'=>'category_id',
-                                    'id' => 'categoryId',
-                                    'wire:model' => 'item.0.category_id'
-                                ]) !!}
+                                <div class="d-flex justify-content-center">
+                                {!! Form::select('category_id', $categories, $item[0]['category_id'] , [
+                                        'class' => 'form-control select2 category_id',
+                                        'placeholder' => __('lang.please_select'),
+                                        'data-name'=>'category_id',
+                                        'id' => 'categoryId',
+                                        'wire:model' => 'item.0.category_id'
+                                    ]) !!}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#createCategoryModal" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
+                                    @include('categories.create_modal',['quick_add'=>1])
+                                </div>
                                 @error('item.0.category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                      
+
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class'=>'h5 ']) !!}
-                                {{-- <div class="d-flex justify-content-center"> --}}
+                                 <div class="d-flex justify-content-center">
                                     {!! Form::select(
                                         'subcategory_id1',
-                                        $subcategories1,null,
+                                        $subcategories1,$item[0]['subcategory_id1'],
                                         [
                                         'class' => 'form-control select2 subcategory',
                                         'data-name'=>'subcategory_id1',
@@ -108,18 +134,20 @@
                                         'wire:model' => 'item.0.subcategory_id1',
                                         ],
                                     ) !!}
-                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
-                                </div> --}}
+                                     <button type="button" class="btn btn-primary btn-sm ml-2 " data-toggle="modal" data-target="#createSubCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
+                                     @include('categories.create_sub_cat_modal',['quick_add'=>1,'selectCategoryValue' => null])
+
+                                 </div>
                                 @error('item.0.subcategory_id1')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class'=>'h5 ']) !!}
-                                {{-- <div class="d-flex justify-content-center"> --}}
+                                 <div class="d-flex justify-content-center">
                                     {!! Form::select(
                                         'subcategory_id2',
-                                        $subcategories2,null,
+                                        $subcategories2,$item[0]['subcategory_id2'],
                                         [
                                         'class' => 'form-control select2 subcategory2',
                                         'data-name'=>'subcategory_id2',
@@ -128,18 +156,20 @@
                                         'wire:model' => 'item.0.subcategory_id2',
                                         ],
                                     ) !!}
-                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
-                                </div> --}}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#createSubCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div>
+                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                            </div> --}}
                                 @error('item.0.subcategory_id2')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class'=>'h5 ']) !!}
-                                {{-- <div class="d-flex justify-content-center"> --}}
+                                 <div class="d-flex justify-content-center">
                                     {!! Form::select(
                                         'subcategory_id3',
-                                        $subcategories3,null,
+                                        $subcategories3,$item[0]['subcategory_id3'],
                                         [
                                         'class' => 'form-control select2 subcategory3',
                                         'data-name'=>'subcategory_id3',
@@ -148,23 +178,47 @@
                                         'wire:model' => 'item.0.subcategory_id3',
                                         ],
                                     ) !!}
-                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
-                                </div> --}}
+                                     <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createSubCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                </div>
                                 @error('item.0.subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            
                             <div class="col-md-3">
-                                {!! Form::label('status', __('lang.status') . ':*', []) !!}
-                                {!! Form::select('status',
-                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')]
-                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required',
-                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!}
-                                @error('item.0.status')
-                                <span class="error text-danger">{{ $message }}</span>
-                                @enderror
+                                <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
+                                <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}">
+                                    <option value="">{{  __('lang.please_select') }}</option>
+                                    <option value="inclusive">{{ __('lang.inclusive') }}</option>
+                                    <option value="exclusive">{{ __('lang.exclusive') }}</option>
+                                </select>
                             </div>
+                            {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                            <div class="col-md-3">
+                                <label for="product" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
+                                <div class="d-flex justify-content-center">
+                                    <select name="product_tax_id" id="product_tax" class="form-control select2" wire:model="product_tax" placeholder="{{  __('lang.please_select') }}">
+                                        <option value="">{{  __('lang.please_select') }}</option>
+                                        @foreach ($product_taxes as $tax )
+                                            @if( $tax->status == "active" )
+                                                <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#add_product_tax" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                    @include('product-tax.create')
+                                </div>
+                            </div>
+
+{{--                            <div class="col-md-3">--}}
+{{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!}--}}
+{{--                                {!! Form::select('status',--}}
+{{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')]--}}
+{{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required',--}}
+{{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!}--}}
+{{--                                @error('item.0.status')--}}
+{{--                                <span class="error text-danger">{{ $message }}</span>--}}
+{{--                                @enderror--}}
+{{--                            </div>--}}
                         </div>
                         {{-- sizes --}}
                         <div class="row">
@@ -221,28 +275,6 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
-                                {!! Form::label('divide_costs', __('lang.divide_costs') . ':', []) !!}
-                                {!! Form::select('divide_costs', ['size' =>  __('lang.size'), 'weight' => __('lang.weight'), 'price' => __('lang.price')], 'Please Select',
-                                 ['class' => 'select2 form-control', 'data-name'=>'divide_costs','wire:model'=>'item.0.divide_costs', 'required',  'placeholder' => __('lang.please_select')]) !!}
-                                @error('item.0.divide_costs')
-                                <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('unit', __('lang.basic_unit') . ':', []) !!}
-                                {!! Form::select(
-                                    'unit_id',
-                                    $basic_units,null,
-                                    ['class' => 'form-control select2 unit_id',
-                                    'placeholder'=>__('lang.please_select'), 'data-name'=>'unit_id',
-                                    'wire:model'=>'item.0.unit_id', 'required',
-                                    'id'=>'unitId']
-                                ) !!}
-                                @error('item.0.unit_id')
-                                <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div> --}}
                         </div>
                         <div class="row text-right">
                             <div class="col">
@@ -251,17 +283,6 @@
                                 </button>
                             </div>
                         </div>
-                        {{-- <div class="row">
-                            <div class="col-md-8 m-t-15 offset-md-1">
-                               
-
-                            </div>
-                            <div class="col-md-2 pt-3">
-                                <button type="button" class="btn btn-primary btn-sm ml-2 " wire:click=addRaw()>
-                                    <i class="fa fa-plus"></i> @lang('lang.add')
-                                </button>
-                            </div>
-                        </div> --}}
                         <br>
                         <div class="row">
                             <div class="table-responsive">
@@ -346,11 +367,11 @@
 {{-- <!-- This will be printed --> --}}
 <div class="view_modal no-print"></div>
 <section class="invoice print_section print-only" id="receipt_section"> </section>
+@include('units.create',['quick_add'=>1])
 
 
 @push('javascripts')
     <script>
-
         document.addEventListener('livewire:load', function() {
             $('.js-example-basic-multiple').select2({
                 placeholder: LANG.please_select,
@@ -376,13 +397,12 @@
                 $('#select_products_modal').modal('hide');
             });
         });
-
         document.addEventListener('livewire:load', function() {
             Livewire.on('printInvoice', function(htmlContent) {
                 window.print();
             });
         });
-        $(document).on('change','select', function(e) { 
+        $(document).on('change','select', function(e) {
             var name = $(this).data('name');
             var index = $(this).data('index');
             var select2 = $(this); // Save a reference to $(this)
@@ -391,12 +411,9 @@
                 var2 :select2.select2("val") ,
                 var3:index
             });
-            
+
         });
-
-
-
-    window.addEventListener('showCreateProductConfirmation', function () {
+        window.addEventListener('showCreateProductConfirmation', function () {
         Swal.fire({
             title: "{{__('lang.this_product_exists_before')}}"+"<br>"+"{{__('lang.continue_to_add_stock')}}",
             icon: 'warning',
@@ -411,6 +428,5 @@
             }
         });
     });
-
     </script>
 @endpush
