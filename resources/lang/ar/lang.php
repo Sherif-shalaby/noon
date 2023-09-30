@@ -477,5 +477,6 @@ return array(
     'to_get_sell_price'=>'للحصول على سعر البيع',
     'fill_from_basic_unit'=>'التعبئة من الوحدة الاساسية',
     'enter_product_name_to_print_labels' => 'استخدم الماسح الضوئي أو أكتب أول ثلاثة أحرف من المنتج أو أول الباركو',
+    'permissions'=>'الاذونات',
 );
 
