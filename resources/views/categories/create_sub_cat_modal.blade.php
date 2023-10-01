@@ -1,6 +1,6 @@
 <!-- Modal -->
-<div class="modal fade" id="createSubCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
-     aria-hidden="true" wire:ignore>
+<div class="modal fade createSubCategoryModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
+     aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -39,20 +39,9 @@
                         <label for="parent_id">@lang('categories.parent')</label>
                         {!! Form::select(
                             'parent_id',
-                            $categories,null,
-                            ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
+                            $subcategories,null,
+                            ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']
                         ) !!}
-
-                        {{-- <select name="parent_id" class="form-control select2"  id="my-select">
-                            <option value="" selected disabled readonly>---{{ __('select') }}---</option>
-                            @forelse($categories as $cat)
-                                <option value="{{ $cat->id }}"
-                                    {{ old('parent_id', request()->parent_id ) ==$cat->id?'selected':null }} >
-                                    {{ $cat->name }}
-                                </option>
-                            @empty
-                            @endforelse
-                        </select> --}}
                         @error('parent_id')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror

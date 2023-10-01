@@ -48,7 +48,7 @@ class Create extends Component
         $sub_total = [], $change_price_stock =[], $store_id, $status,
         $supplier, $exchange_rate,$exchangeRate,$transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-         $current_stock,$totalQuantity=0,$edit_product=[], $current_sub_category , $clear_all_input_stock_form, $product_tax;
+         $current_stock,$totalQuantity=0,$edit_product=[], $current_sub_category , $clear_all_input_stock_form, $product_tax,$subcategories=[];
 
     public $rows = [];
     protected $rules = [
@@ -94,13 +94,17 @@ class Create extends Component
                 if($data['var1']=='subcategory_id2'){
                     $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
+
             }
+            $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+
         }
     }
     public function render()
     {
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
-        $categories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
+        $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $products = Product::all();
         $stores = Store::getDropdown();
         $units=Unit::orderBy('created_at', 'desc')->get();
@@ -113,7 +117,7 @@ class Create extends Component
                 'stores',
                 'suppliers',
                 'products','product_taxes',
-                'units','basic_units','categories')
+                'units','basic_units','categories','customer_types')
         );
     }
     public function mount()
