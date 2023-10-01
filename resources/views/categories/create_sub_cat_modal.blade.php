@@ -39,7 +39,7 @@
                         <label for="parent_id">@lang('categories.parent')</label>
                         {!! Form::select(
                             'parent_id',
-                            $categories,null,
+                            $subcategories,null,
                             ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
                         ) !!}
 
