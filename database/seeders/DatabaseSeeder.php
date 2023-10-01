@@ -22,6 +22,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            CountrySeeder::class,
+            StatesSeeder::class ,
+            CitySeeder::class ,
+            CurrenciesTableSeeder::class ,
+//            SizeSeeder::class ,
+//            ColorSeeder::class ,
+//            SizeSeeder::class ,
+//            ProductSeeder::class ,
+//            CategorySeeder::class,
+
+        ]);
+
         $user_data = [
             'id'=>1,
             'name' => 'superadmin',
@@ -136,12 +149,13 @@ class DatabaseSeeder extends Seeder
             [
                 ['title' => 'Cashier', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
                 ['title' => 'Deliveryman', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()] ,
+                ['title' => 'Representative', 'date_of_creation' => Carbon::now(), 'created_by' => 1, 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()] ,
                 // Order_Preparer employee
-                [
-                    'title' => 'preparer', 'date_of_creation' => Carbon::now(),
-                                'created_by' => 1, 'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                ]
+//                [
+//                    'title' => 'preparer', 'date_of_creation' => Carbon::now(),
+//                                'created_by' => 1, 'created_at' => Carbon::now(),
+//                                'updated_at' => Carbon::now()
+//                ]
             ]
         );
 
@@ -150,9 +164,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionTableSeeder::class,
             CurrenciesTableSeeder::class,
-            CategorySeeder::class,
-            ColorSeeder::class,
-            SizeSeeder::class,
+//            CategorySeeder::class,
+//            ColorSeeder::class,
+//            SizeSeeder::class,
 //            ProductSeeder::class,
         ]);
     }

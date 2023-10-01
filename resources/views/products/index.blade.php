@@ -19,7 +19,7 @@
                       </a>
                 </div>
             </div>
-   </div>
+        </div>
     </div>
 @endsection
 @section('content')
@@ -66,7 +66,7 @@
                                     <th>@lang('lang.length')</th>
                                     <th>@lang('lang.width')</th>
                                     <th>@lang('lang.size')</th>
-                                    <th>@lang('lang.unit')</th>
+                                    {{-- <th>@lang('lang.unit')</th> --}}
                                     <th>@lang('lang.weight')</th>
                                     <th>@lang('lang.stores')</th>
                                     <th>@lang('lang.brand')</th>
@@ -83,17 +83,17 @@
                                     <td><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->sku}}</td>
-                                    <td>{{$product->category->name}}</td>
+                                    <td>{{$product->category->name??''}}</td>
                                     <td>
-                                        @foreach($product->subcategories as $subcategory)
-                                        {{$subcategory->name}}<br>
-                                        @endforeach
+                                        {{$product->subCategory1->name??''}} <br>
+                                        {{$product->subCategory2->name??''}} <br>
+                                        {{$product->subCategory3->name??''}}
                                     </td>
                                     <td>{{$product->height}}</td>
                                     <td>{{$product->length}}</td>
                                     <td>{{$product->width}}</td>
                                     <td><span class="text-primary">{{$product->size}}</span></td>
-                                    <td>{{!empty($product->unit)?$product->unit->name:''}}</td>
+                                    {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
                                     <td>{{$product->weight}}</td>
                                     <td>
                                         @foreach($product->stores as $store)

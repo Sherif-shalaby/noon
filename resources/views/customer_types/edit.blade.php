@@ -38,8 +38,8 @@
                                 'open_input'=>true
                             ])
                         </div>
-        
-                        <div class="form-group">
+
+                        {{-- <div class="form-group">
                             <label for="store_id">@lang('lang.store')</label>
                             {!! Form::select(
                                 'store_id',
@@ -49,7 +49,7 @@
                             @error('store_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
                     </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{__('lang.close')}}</button>

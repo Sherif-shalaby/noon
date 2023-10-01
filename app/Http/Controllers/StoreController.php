@@ -54,9 +54,10 @@ class StoreController extends Controller
    *
    * @return RedirectResponse
    */
+// ++++++++++++++++++++++ Task : store() +++++++++++++++
   public function store(Request $request)
   {
-//      dd($request);
+    //  dd($request);
       $request->validate([
           'name' => 'max:255|required',
       ]);

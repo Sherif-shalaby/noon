@@ -20,12 +20,14 @@ use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\GetDueReport;
 use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\PayableReportController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
@@ -69,28 +71,40 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
     //employees
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
-    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::get('add_point', [App\Http\Controllers\EmployeeController::class,'addPoints'])->name('employees.add_points');
+
+    // Wages
     Route::resource('wages',WageController::class);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
+    // // general_setting : fetch "state" of selected "country" selectbox
+    // Route::post('api/fetch-state',[SettingController::class,'fetchState']);
+    // // general_setting : fetch "city" of selected "state" selectbox
+    // Route::post('api/fetch-cities',[SettingController::class,'fetchCity']);
+
     Route::post('settings/remove-image/{type}', [SettingController::class,'removeImage']);
     Route::resource('settings', SettingController::class);
     Route::get('stores/get-dropdown', [StoreController::class,'getDropdown']);
     Route::resource('store',StoreController::class);
     //الاقسام
-    Route::get('categories/get-dropdown', [CategoryController::class,'getDropdown']);
+    Route::get('categories/get-dropdown/{category_id}', [CategoryController::class,'getDropdown']);
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
+    Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');
     // colors
     Route::resource('colors', ColorController::class)->except(['show']);
     // sizes
     Route::resource('sizes', SizeController::class)->except(['show']);
     // units
+    Route::get('units/get-unit-data/{id}', [UnitController::class,'getUnitData']);
     Route::get('units/get-dropdown', [UnitController::class,'getDropdown']);
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
+    Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
 
     Route::resource('products', ProductController::class);
     //customers
@@ -99,14 +113,21 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customertypes', CustomerTypeController::class);
 
     // stocks
-    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
-    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
-    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
+//    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
+//    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
+//    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
+
+    // Initial Balance
+    Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
+    Route::resource('initial-balance', InitialBalanceController::class);
+    Route::get('suppliers/get-dropdown', [SuppliersController::class,'getDropdown']);
+    Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
+
 
 //    Route::get('add-stock/add-payment/{id}', function ($id) {
 //        return view('add-stock.add-payment', compact('id'));
@@ -118,6 +139,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
     Route::resource('product-tax', ProductTaxController::class);
+    Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -136,6 +158,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ########### representative salary report ###########
+    Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
     Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
     // selected_products : Add All Selected Product
@@ -164,6 +188,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('user/check-password', [HomeController::class, 'checkPassword']);
     //suppliers
     Route::resource('suppliers',SuppliersController::class);
+    // general_setting : fetch "state" of selected "country" selectbox
+    Route::post('api/fetch-state',[SuppliersController::class,'fetchState']);
+    // general_setting : fetch "city" of selected "state" selectbox
+    Route::post('api/fetch-cities',[SuppliersController::class,'fetchCity']);
+
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');
@@ -173,6 +202,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('moneysafe', MoneySafeController::class);
 });
 
+Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 

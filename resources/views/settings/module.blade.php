@@ -32,7 +32,7 @@
                                 <div class="i-checks">
                                     <input id="{{$loop->index}}" name="module_settings[{{$key}}]" type="checkbox"
                                            @if( !empty($module_settings[$key]) ) checked @endif value="1"
-                                           class="form-control-custom">
+                                           class=""">
                                     <label for="{{$loop->index}}"><strong>{{__('lang.'.$key)}}</strong></label>
                                 </div>
 

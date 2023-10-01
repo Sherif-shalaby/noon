@@ -26,13 +26,16 @@ class UnitController extends Controller
     }
     public function index(){
         $units = Unit::latest()->paginate(10);
-        return view('units.index', compact('units'));
+        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        return view('units.index', compact('units','unitArray'));
+
     }
     public function store(UnitRequest $request){
         try {
             $input['name'] = $request->name;
             $input['slug'] = Str::slug($request->name);
             $input['base_unit_multiplier'] = $request->base_unit_multiplier?? 1;
+            $input['base_unit_id'] = $request->base_unit_id?? 0;
             if(!empty($request->translations))
             {
                 $input['translation']= $request->translations;
@@ -57,6 +60,7 @@ class UnitController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
+    
     public function update(UnitupdateRequest $request, Unit $unit){
         try {
             $input['name'] = $request->name;
@@ -105,5 +109,8 @@ class UnitController extends Controller
         $units = Unit::orderBy('name', 'asc')->pluck('name', 'id');
         $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
         return $units_dp;
+    }
+    public function getUnitData($id){
+        return Unit::Find($id);
     }
 }

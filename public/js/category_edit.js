@@ -38,13 +38,13 @@ myDropzone = new Dropzone("div#my-dropzone", {
                         url: $("#product-edit-form").attr("action"),
                         data: $("#product-edit-form").serialize(),
                         success: function (response) {
-                            // swal(response.status);
-                            swal("Success", response.status, "success");
+                            // Swal.fire(response.status);
+                            Swal.fire("Success", response.status, "success");
                             location.replace('/categories');
                         },
                         error: function (response) {
-                            // swal(response.status);
-                            swal("Error", response.status, "error");
+                            // Swal.fire(response.status);
+                            Swal.fire("Error", response.status, "error");
                         },
                     });
                 }
@@ -67,14 +67,14 @@ myDropzone = new Dropzone("div#my-dropzone", {
     // successmultiple: function (file, response) {
     success: function (file, response) {
         if (response.success) {
-            // swal("Success", response.status, "success");
-            swal("Error", response.status, "error");
+            // Swal.fire("Success", response.status, "success");
+            Swal.fire("Error", response.status, "error");
             // window.location.reload();
             // location.replace('/categories');
         }
         if (!response.success) {
-            // swal("Error", response.status, "error");
-            swal("Success", response.status, "success");
+            // Swal.fire("Error", response.status, "error");
+            Swal.fire("Success", response.status, "success");
             location.replace('/categories');
         }
     },

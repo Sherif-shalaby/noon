@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration {
 			$table->enum('payment_cycle', array('daily', 'weekly', 'monthly'))->nullable();
 			$table->tinyInteger('commission')->nullable();
 			$table->decimal('commission_value', 10,2)->nullable();
-			$table->enum('commission_type', array('profit_sales'))->nullable();
+			$table->enum('commission_type', array('profit','sales'))->nullable();
 			$table->enum('commision_calculation_period', array('daily', 'weekly', 'one_month', 'three_month'))->nullable();
 			$table->integer('created_by')->nullable();
 			$table->timestamps();

@@ -37,14 +37,14 @@ myDropzone = new Dropzone("div#my-dropzone", {
                         url: $("form#product-form").attr("action"),
                         data: $("#product-form").serialize(),
                         success: function (response) {
-                            // swal(response.status);
-                            swal("Success", response.status, "success");
+                            // Swal.fire(response.status);
+                            Swal.fire("Success", response.status, "success");
                             location.replace('/categories');
                             // $(".ajaxform")[0].reset();
                         },
                         error: function (response) {
-                            // swal(response.status);
-                            swal("Error", response.status, "error");
+                            // Swal.fire(response.status);
+                            Swal.fire("Error", response.status, "error");
                         },
 
                     });
@@ -71,12 +71,12 @@ myDropzone = new Dropzone("div#my-dropzone", {
     },
     success: function (file, response) {
         if (response.success) {
-            // swal(response.status);
-            swal("Error", response.status, "error");
+            // Swal.fire(response.status);
+            Swal.fire("Error", response.status, "error");
         }
         if (!response.success) {
-            // swal(response.status);
-            swal("Success", response.status, "success");
+            // Swal.fire(response.status);
+            Swal.fire("Success", response.status, "success");
             location.replace('/categories');
         }
     },

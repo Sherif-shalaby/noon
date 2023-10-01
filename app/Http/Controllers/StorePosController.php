@@ -50,6 +50,7 @@ class StorePosController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         try {
             $store_pos = StorePos::create($request->except('_token'));
             $store_pos->created_by   = Auth::user()->id ;

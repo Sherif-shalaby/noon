@@ -83,6 +83,7 @@
                                 </div>
                             </div>
                             <br>
+                            {{-- ++++++++++++++++++++++ select products ++++++++++++++++++++++ --}}
                             <div class="modal fade" id="select_products_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
                                 aria-hidden="true" style="width: 100%;">
                                 <div class="modal-dialog modal-lg" role="document" id="select_products_modal">
@@ -346,6 +347,7 @@
                         console.log(response);
                         $.each(response, function(key, val) {
                             var currencySign = '';
+                            console.log("we are outSide if condition");
 
                             // Check if val.stock_lines is defined and not empty
                             if (val.stock_lines && val.stock_lines.length > 0)
@@ -375,37 +377,45 @@
                                     lastPurchasePrice = 0.0000;
                                     lastDollarPurchasePrice = 0.0000; // Set to 0.0000 when both are null
                                 }
-
-                                var output = `
-                                        <tr>
-                                            <td name='id'>
-                                                ${val.id}
-                                                <input type="hidden" name="product_id[]" value="${val.id}" id="product_id${val.id}" />
-                                            </td>
-                                            <td name='name'>${val.name}</td>
-                                            <td name='sku'>${val.sku}</td>
-                                            <td>
-                                                <input class="quantity form-control" type='text' name='quantity[]' class="form-control" value="0" />
-                                            </td>
-                                            <td>
-                                                <input type='text' class="purchase_price form-control" name='purchase_price[]' value="${lastDinarPurchasePrice}" readonly />
-                                            </td>
-                                            <td>
-                                                <input type='text' class="purchase_price_dollar form-control" name='purchase_price_dollar[]' value="${lastDollarPurchasePrice}" readonly />
-                                            </td>
-                                            <td>
-                                                <input type='text' class="form-control sub_total" name='sub_total[]' value="0" readonly />
-                                            </td>
-                                            <td name='currencySign[]'>${currencySign}</td>
-                                            <td>
-                                                <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
-                                            </td>
-                                        </tr>
-
-                                    `;
-
-                                $('#search_list').append(output);
                             }
+                            else
+                            {
+                                lastDollarPurchasePrice = 0.0000;
+                                // lastDinarPurchasePrice
+                                lastDinarPurchasePrice = 0.0000;
+                                lastPurchasePrice = 0.0000;
+                            }
+                            console.log("we are inside if condition");
+                            // +++++++++++++++++++++ all products +++++++++++++++++++++
+                            var output = `
+                                    <tr>
+                                        <td name='id'>
+                                            ${val.id}
+                                            <input type="hidden" name="product_id[]" value="${val.id}" id="product_id${val.id}" />
+                                        </td>
+                                        <td name='name'>${val.name}</td>
+                                        <td name='sku'>${val.sku}</td>
+                                        <td>
+                                            <input class="quantity form-control" type='text' name='quantity[]' class="form-control" value="0" />
+                                        </td>
+                                        <td>
+                                            <input type='text' class="purchase_price form-control" name='purchase_price[]' value="${lastDinarPurchasePrice}" readonly />
+                                        </td>
+                                        <td>
+                                            <input type='text' class="purchase_price_dollar form-control" name='purchase_price_dollar[]' value="${lastDollarPurchasePrice}" readonly />
+                                        </td>
+                                        <td>
+                                            <input type='text' class="form-control sub_total" name='sub_total[]' value="0" readonly />
+                                        </td>
+                                        <td name='currencySign[]'>${currencySign}</td>
+                                        <td>
+                                            <button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>
+                                        </td>
+                                    </tr>
+
+                                `;
+
+                            $('#search_list').append(output);
                         });
 
                         // Bind the calculateSubTotal function to the input fields

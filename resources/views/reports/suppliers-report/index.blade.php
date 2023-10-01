@@ -119,17 +119,38 @@
                                     <thead>
                                         <tr>
                                             <th>@lang('lang.date')</th>
-                                            <th>@lang('lang.payment_ref')</th>
-                                            <th>@lang('lang.sale_ref')</th>
-                                            <th>@lang('lang.purchase_ref')</th>
-                                            <th>@lang('lang.paid_by')</th>
-                                            <th class="sum">@lang('lang.amount')</th>
-                                            <th>@lang('lang.created_by')</th>
-                                            <th class="notexport">@lang('lang.action')</th>
+                                            <th>@lang('lang.reference_no')</th>
+                                            <th>@lang('lang.supplier_name')</th>
+                                            <th>@lang('lang.product_name')</th>
+                                            <th>@lang('lang.quantity')</th>
+                                            <th>@lang('lang.paid')</th>
+                                            <th>@lang('lang.duePaid')</th>
+                                            <th>@lang('lang.status')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @foreach ($supplier_purchase_orders as $purchase_order)
+                                            <tr>
+                                                <td>{{@format_date($purchase_order->transaction->transaction_date)}}</td>
+                                                <td>{{$purchase_order->transaction->po_no}}</td>
+                                                <td>
+                                                    @if(!empty($purchase_order->transaction->supplier))
+                                                        {{$purchase_order->transaction->supplier->name}}
+                                                    @endif
+                                                </td>
+                                                <td>{{$purchase_order->product->name}}</td>
+                                                <td> {{@num_format($purchase_order->quantity)}} </td>
+                                                <td></td>
+                                                {{-- <td>{{ $purchase_order->transaction->final_total }}</td> --}}
+                                                {{-- <td>{{@num_format($purchase_order->transaction_payments->sum('amount'))}}</td> --}}
+                                                <td></td>
+                                                <td></td>
+                                                {{-- <td>{{@num_format($purchase_order->final_total - $purchase_order->transaction_payments->sum('amount'))}}</td> --}}
+                                                <td>@if($purchase_order->status == 'final')<span
+                                                        class="badge badge-success">@lang('lang.completed')</span>@elseif($purchase_order->status == 'sent_admin') Sent Admin @else
+                                                    {{ucfirst($purchase_order->status)}} @endif</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -142,10 +163,9 @@
                                             <th>@lang('lang.payment_ref')</th>
                                             <th>@lang('lang.sale_ref')</th>
                                             <th>@lang('lang.purchase_ref')</th>
-                                            <th>@lang('lang.paid_by')</th>
+                                            <th>@lang('lang.paid')</th>
                                             <th class="sum">@lang('lang.amount')</th>
                                             <th>@lang('lang.created_by')</th>
-                                            <th class="notexport">@lang('lang.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -89,7 +89,7 @@
                                         $total_due += $due->final_total - $due->transaction_payments->sum('amount');
                                     @endphp
                                     @endforeach
-                                {{-- </tbody> --}}
+                                </tbody>
                             </table>
                             <div class="view_modal no-print" >
 

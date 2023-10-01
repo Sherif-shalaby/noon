@@ -139,7 +139,7 @@
                                     <div class="i-checks">
                                         <input id="print_the_transaction" name="print_the_transaction" type="checkbox"
                                                @if (!empty($show_the_window_printing_prompt) && $show_the_window_printing_prompt == '1') checked @endif value="1"
-                                               class="form-control-custom">
+                                               class="">
                                         <label
                                             for="print_the_transaction"><strong>@lang('lang.print_the_transaction')</strong></label>
                                     </div>
