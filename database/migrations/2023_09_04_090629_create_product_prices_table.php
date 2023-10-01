@@ -11,6 +11,7 @@ class CreateProductPricesTable extends Migration {
 		Schema::create('product_prices', function(Blueprint $table) {
 			$table->id();
 			// $table->unsignedBigInteger('product_id');
+			// $table->unsignedBigInteger('product_id');
 			$table->string('price_type')->nullable();
 			$table->decimal('price',10,2)->nullable();
 			$table->text('price_customer_types')->nullable();
