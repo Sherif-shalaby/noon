@@ -164,7 +164,6 @@ $("#create-category-btn").click(function (e){
 $(document).on("submit", "#category-form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
-    alert(select_category);
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
