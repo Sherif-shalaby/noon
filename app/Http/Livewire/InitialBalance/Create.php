@@ -222,7 +222,6 @@ class Create extends Component
     }
     public function store()
     {
-        dd($this->priceRow);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -332,13 +331,13 @@ class Create extends Component
             }
             foreach ($this->priceRow as $index => $row){
             $data_des=[
-                'product_id' => $product->id,
-                'price_type' => $this->rows[$index]['price_type'],
-                'price' => $this->rows[$index]['price'],
-                'quantity' => $this->rows[$index]['quantity'],
-                'bonus_quantity' => $this->rows[$index]['bonus_quantity'],
-                'price_category' => $this->rows[$index]['price_category'],
-                'price_customer_types' => $this->rows[$index]['price_customer_types'],
+                'price_type' => $this->priceRow[$index]['price_type'],
+                'price' => $this->priceRow[$index]['price'],
+                'quantity' => $this->priceRow[$index]['quantity'],
+                'bonus_quantity' => $this->priceRow[$index]['bonus_quantity'],
+                'price_category' => $this->priceRow[$index]['price_category'],
+                'stock_transaction_id'=>$transaction->id,
+                'price_customer_types' => $this->priceRow[$index]['price_customer_types'],
                 'created_by' => Auth::user()->id,
             ];
             ProductPrice::create($data_des);

@@ -37,6 +37,10 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
 });
 //brand form
 //unit form
+var raw_index=0;
+$(document).on('click','.add_unit_raw',function(){
+    raw_index=$(this).data('index');
+})
 $("#create-unit-btn").click(function (e){
     e.preventDefault();
     setTimeout(()=>{
@@ -63,8 +67,8 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $("#unit_id").empty().append(data_html);
-                        $("#unit_id").val(unit_id).trigger();
+                        $(".unit_id"+raw_index).empty().append(data_html);
+                        $(".unit_id"+raw_index).val(unit_id).trigger();
                     },
                 });
             } else {

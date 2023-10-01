@@ -12,7 +12,6 @@ class ProductPrice extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = array('stock_transaction_id','price_type','bonus_quantity','quantity','price', 'price_customer_types', 'price_customers', 'price_category', 'created_by', 'updated_by', 'deleted_by');
-    // protected $visible = array('created_by');
     protected $casts =['price_customer_types'=>'array'];
 
     public function product()

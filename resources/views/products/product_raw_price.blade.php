@@ -26,7 +26,7 @@
 
         </td>
         <td>
-            <input type="text" class="form-control bonus_quantity" wire:model="priceRow.{{ $index }}.bonus_quantity" placeholder = "{{__('lang.bonus_quantity')}}" >
+            <input type="text" class="form-control bonus_quantity" wire:model="priceRow.{{ $index }}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
 
         </td>
         <td>
