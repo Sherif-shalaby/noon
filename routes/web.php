@@ -90,10 +90,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('stores/get-dropdown', [StoreController::class,'getDropdown']);
     Route::resource('store',StoreController::class);
     //الاقسام
-    Route::get('categories/get-dropdown', [CategoryController::class,'getDropdown']);
+    Route::get('categories/get-dropdown/{category_id}', [CategoryController::class,'getDropdown']);
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
+    Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');
     // colors
     Route::resource('colors', ColorController::class)->except(['show']);
     // sizes
