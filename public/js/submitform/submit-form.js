@@ -152,8 +152,21 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
 
 //category form
 var select_category=0;
+var main_category_id=0;
 $(".openCategoryModal").click(function (e){
     select_category=$(this).data('select_category');
+    if(select_category=="0"){
+        main_category_id= 0;
+    }
+    else if(select_category=="1"){
+        main_category_id= $("#categoryId").val();
+    }
+    else if(select_category=="2"){
+        main_category_id= $("#subCategoryId1").val();
+    }
+    else if(select_category=="3"){
+        main_category_id= $("#subCategoryId2").val();
+    }
 });
 $("#create-category-btn").click(function (e){
     e.preventDefault();
@@ -173,15 +186,16 @@ $(document).on("submit", "#category-form", function (e) {
             if (result.success) {
                 Swal.fire("Success", result.msg, "success");
                 $("#createCategoryModal").modal("hide");
-                $("#createSubCategoryModal").modal("hide");
+                $(".createSubCategoryModal").modal("hide");
                 console.log(result);
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
-                    url: "/categories/get-dropdown",
+                    url: "/categories/get-dropdown/"+main_category_id,
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
+                        console.log(data_html)
                         if(select_category=="0"){
                             $("#categoryId").empty().append(data_html);
                             $("#categoryId").val(category_id).trigger();
