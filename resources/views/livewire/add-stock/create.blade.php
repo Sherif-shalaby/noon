@@ -42,7 +42,7 @@
                                         ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
                                         'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()'
                                         ]) !!}
-                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" href="{{route('suppliers.create')}}"><i class="fas fa-plus"></i></button>
+                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button>
                                         @include('suppliers.quick_add',['quick_add'=>1])
                                     </div>
                                     @error('supplier')

@@ -4,7 +4,9 @@ namespace App\Http\Livewire\InitialBalance;
 
 use App\Models\AddStockLine;
 use App\Models\Category;
+use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\ProductTax;
 use App\Models\StockTransaction;
@@ -37,11 +39,13 @@ class Create extends Component
         'length'=>0,
         'size' => 0,
         'isExist'=>0,'status'=>'',
-    //    'divide_costs'=>'',
+       'product_tax_id'=>'',
         'change_current_stock'=>0,
+        'method'=>0,
         'exchange_rate'=>0,
     ]
     ];
+    public $priceRow=[];
     public $subcategories1=[],$subcategories2=[],$subcategories3=[];
     public $quantity = [], $purchase_price =[], $selling_price = [],
         $base_unit = [], $divide_costs , $total_size = [], $total_weight =[],
@@ -64,11 +68,11 @@ class Create extends Component
         'item.*.height' => 'numeric',
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
-//        'item.*.divide_costs' => 'required',
-//        'item.*.status' => 'required',
+       'item.*.product_tax_id' => 'required',
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
+        'priceRow.*.price_customer_types' => 'array',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -83,7 +87,10 @@ class Create extends Component
                 if($data['var1']=="unit_id"){
                     $this->changeUnit($data['var3']);
                 }
-            }else{
+            }else if(($data['var1']=="price_customer_types" || $data['var1']=="price_type") && $data['var3']!==''){
+                $this->priceRow[$data['var3']][$data['var1']]=$data['var2'];
+            }
+            else{
                 $this->item[0][$data['var1']]=$data['var2'];
                 if($data['var1']=='category_id'){
                     $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
@@ -100,12 +107,14 @@ class Create extends Component
     public function render()
     {
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
-        $categories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
+        $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $products = Product::all();
         $stores = Store::getDropdown();
         $units=Unit::orderBy('created_at', 'desc')->get();
         $basic_units=Unit::orderBy('created_at', 'desc')->pluck('name', 'id');
         $product_taxes = ProductTax::select('name','id','status')->get();
+        $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
 
         return view('livewire.initial-balance.create',
@@ -113,7 +122,7 @@ class Create extends Component
                 'stores',
                 'suppliers',
                 'products','product_taxes',
-                'units','basic_units','categories')
+                'units','basic_units','categories','subcategories','customer_types')
         );
     }
     public function mount()
@@ -185,6 +194,7 @@ class Create extends Component
     'equal'=>'',
     ];
     array_unshift($this->rows, $newRow);
+    // $this->dispatchBrowserEvent('initialize-select2');
     }
     public function changeUnit($index){
         $unit=$this->rows[$index]['unit_id'];
@@ -209,6 +219,7 @@ class Create extends Component
     }
     public function store()
     {
+        dd($this->priceRow);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -316,7 +327,19 @@ class Create extends Component
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
 
             }
-
+            foreach ($this->priceRow as $index => $row){
+            $data_des=[
+                'product_id' => $product->id,
+                'price_type' => $this->rows[$index]['price_type'],
+                'price' => $this->rows[$index]['price'],
+                'quantity' => $this->rows[$index]['quantity'],
+                'bonus_quantity' => $this->rows[$index]['bonus_quantity'],
+                'price_category' => $this->rows[$index]['price_category'],
+                'price_customer_types' => $this->rows[$index]['price_customer_types'],
+                'created_by' => Auth::user()->id,
+            ];
+            ProductPrice::create($data_des);
+            }
              DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => __('lang.success'),]);
             return redirect('/initial-balance/create');
@@ -555,5 +578,21 @@ class Create extends Component
         }
 
         return true;
+    }
+    public function addPriceRaw(){
+        $newRow = [
+            'id'=>'',
+            'price_type'=>'',
+            'price_category'=>'',
+            'price'=>'',
+            'quantity'=>'',
+            'bonus_quantity'=>'',
+            'price_customer_types'=>'',
+        ];
+        array_unshift($this->priceRow, $newRow);
+        // $this->dispatchBrowserEvent('initialize-select2');
+    }
+    public function delete_price_raw($index){
+        unset($this->priceRow[$index]);
     }
 }
