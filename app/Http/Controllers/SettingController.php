@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Currency;
+use App\Models\State;
 use App\Models\System;
 use App\Models\User;
 use Carbon\Carbon;
@@ -33,9 +36,23 @@ class SettingController extends Controller
         }
         $currencies  = $this->allCurrencies();
         $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
-        return view('general-settings.index',compact('settings','languages','currencies','selected_currencies'));
+        // Get All Countries
+        $countries = Country::get(['name','id']);
+        // return $countries;
+        return view('general-settings.index',compact('countries','settings','languages','currencies','selected_currencies'));
     }
-
+    // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where('country_id', $request->country_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++++++++++ fetchCity(): to get "cities" of "selected city" selectbox ++++++++++++++
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
+        return response()->json($data);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -139,7 +156,8 @@ class SettingController extends Controller
     }
     public function updateGeneralSetting(Request $request)
     {
-        // try {
+        // return $request;
+        try {
             System::updateOrCreate(
                 ['key' => 'site_title'],
                 ['value' => $request->site_title, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
@@ -200,6 +218,12 @@ class SettingController extends Controller
                 ['key' => 'watsapp_numbers'],
                 ['value' => $request->watsapp_numbers, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            // +++++++++++++++++++++ Country_id ++++++++++++++++++++
+            System::updateOrCreate(
+                ['key' => 'country_id'],
+                ['value' => $request->country, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+
             $data['letter_header'] = null;
             if ($request->has('letter_header') && !is_null('letter_header')) {
                 $imageData = $this->getCroppedImage($request->letter_header);
@@ -245,13 +269,13 @@ class SettingController extends Controller
                 'success' => true,
                 'msg' => __('lang.success')
             ];
-        // } catch (\Exception $e) {
-        //     Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-        //     $output = [
-        //         'success' => false,
-        //         'msg' => __('lang.something_went_wrong')
-        //     ];
-        // }
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
 
     return redirect()->back()->with('status', $output);
 
@@ -307,5 +331,29 @@ class SettingController extends Controller
         $base64_image = base64_encode($image_content);
         $b64image = "data:image/jpeg;base64," . $base64_image;
         return $b64image;
+    }
+
+    public function createOrUpdateSystemProperty($key, $value)
+    {
+        try {
+            System::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value, 'date_and_time' => Carbon::now(), 'created_by' => 1]
+            );
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+
+        return $output;
     }
 }

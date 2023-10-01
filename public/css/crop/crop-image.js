@@ -40,7 +40,7 @@ fileImageInput.addEventListener("change", () => {
                 deleteBtn.innerHTML =
                     '<i style="font-size: 20px;" class="fas fa-trash"></i>';
                 deleteBtn.addEventListener("click", () => {
-                    swal({
+                    Swal.fire({
                         title: LANG.are_you_sure,
                         text: LANG.you_wont_be_able_to_delete,
                         icon: "warning",
@@ -50,7 +50,7 @@ fileImageInput.addEventListener("change", () => {
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
                         if (result) {
-                            swal(
+                            Swal.fire(
                                 "Deleted!",
                                 LANG.your_image_has_been_deleted,
                                 "success"
@@ -78,7 +78,7 @@ fileImageInput.addEventListener("change", () => {
             });
             reader.readAsDataURL(file);
         } else {
-            swal({
+            Swal.fire({
                 icon: "error",
                 title: '{{ __("Oops...") }}',
                 text: '{{ __("Sorry , You Should Upload Valid Image") }}',

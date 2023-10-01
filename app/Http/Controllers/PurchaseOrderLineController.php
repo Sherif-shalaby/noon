@@ -12,6 +12,7 @@ use App\Models\Store;
 use App\Models\Supplier;
 use App\Utils\StockTransactionUtil;
 use App\Utils\Util;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PurchaseOrderLineController extends Controller
@@ -42,7 +43,9 @@ class PurchaseOrderLineController extends Controller
     /* +++++++++++++++ index() +++++++++++++++ */
     public function index()
     {
-        //
+        $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->get();
+        // return $purchase_orders;
+        return view('purchase_order.index',compact('purchase_orders'));
     }
     /* +++++++++++++++ create() +++++++++++++++ */
     public function create()
@@ -65,51 +68,63 @@ class PurchaseOrderLineController extends Controller
         return $products;
     }
     // ++++++++++++++++++++++++++++++ Ajax Search : get_products() ++++++++++++++++++++++++++++++++
-    public function search(Request $request)
-    {
-        // return $request;
+    // public function search(Request $request)
+    // {
+    //     // return $request;
 
-        // if($request->ajax())
-        // {
-        //     $data = Product::all();
-        //     $output='';
-        //     if( count($data) > 0 )
-        //     {
-        //         $output ='
-        //                 <thead>
-        //                     <tr>
-        //                         <th scope="col">#</th>
-        //                         <th scope="col">name</th>
-        //                     </tr>
-        //                 </thead>
-        //                 <tbody>';
-        //                 foreach($data as $row){
-        //                     $output .='
-        //                     <tr>
-        //                     <th scope="row">'.$row->id.'</th>
-        //                     <td>'.$row->name.'</td>
-        //                     </tr>
-        //                     ';
-        //                 }
-        //         $output .= '
-        //             </tbody>';
-        //     }
-        //     else
-        //     {
-        //         $output .='No results';
-        //     }
-        //     return $output;
-        // }
-    }
+    //     // if($request->ajax())
+    //     // {
+    //     //     $data = Product::all();
+    //     //     $output='';
+    //     //     if( count($data) > 0 )
+    //     //     {
+    //     //         $output ='
+    //     //                 <thead>
+    //     //                     <tr>
+    //     //                         <th scope="col">#</th>
+    //     //                         <th scope="col">name</th>
+    //     //                     </tr>
+    //     //                 </thead>
+    //     //                 <tbody>';
+    //     //                 foreach($data as $row){
+    //     //                     $output .='
+    //     //                     <tr>
+    //     //                     <th scope="row">'.$row->id.'</th>
+    //     //                     <td>'.$row->name.'</td>
+    //     //                     </tr>
+    //     //                     ';
+    //     //                 }
+    //     //         $output .= '
+    //     //             </tbody>';
+    //     //     }
+    //     //     else
+    //     //     {
+    //     //         $output .='No results';
+    //     //     }
+    //     //     return $output;
+    //     // }
+    // }
     /* ++++++++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
     public function store(Request $request)
     {
         // return $request;
         try
         {
-            // Create an array to store purchase order lines
-            $purchaseOrderLines = [];
-
+            DB::beginTransaction();
+            // Create a new PurchaseOrderTransaction instance and populate it with data from the request
+            $purchaseOrderTransaction = new PurchaseOrderTransaction();
+            $purchaseOrderTransaction->store_id = $request['store_id'];
+            $purchaseOrderTransaction->supplier_id = $request['supplier_id'];
+            $purchaseOrderTransaction->grand_total = 0; // You'll update this after saving the transaction
+            $purchaseOrderTransaction->final_total = $request['total_subtotal'];
+            $purchaseOrderTransaction->po_no = $request['po_no'];
+            $purchaseOrderTransaction->created_by = auth()->user()->id;
+            $purchaseOrderTransaction->order_date = now();
+            $purchaseOrderTransaction->transaction_date = now();
+            // Save the purchase order transaction to the database
+            $purchaseOrderTransaction->save();
+            // Retrieve the ID of the saved PurchaseOrderTransaction
+            $transactionId = $purchaseOrderTransaction->id;
             // Loop through each product and create a new PurchaseOrderLine instance for each
             for ($i = 0; $i < count($request['product_id']); $i++)
             {
@@ -119,37 +134,17 @@ class PurchaseOrderLineController extends Controller
                 $purchaseOrderLine->purchase_price = $request['purchase_price'][$i];
                 $purchaseOrderLine->purchase_price_dollar = $request['purchase_price_dollar'][$i];
                 $purchaseOrderLine->sub_total = $request['sub_total'][$i];
+                // Set the purchase_transaction_id to the retrieved transaction ID
+                $purchaseOrderLine->purchase_order_transaction_id = $transactionId;
+                $purchaseOrderLine->save();
                 // Push the purchase order line to the array
-                $purchaseOrderLines[] = $purchaseOrderLine->toArray(); // Convert to array
             }
-
-            // ################## "PurchaseOrderTransaction" Table ##################
-            // Create a new PurchaseOrderTransaction instance and populate it with data from the request
-            $purchaseOrderTransaction = new PurchaseOrderTransaction();
-            $purchaseOrderTransaction->store_id = $request['store_id'];
-            $purchaseOrderTransaction->supplier_id = $request['supplier_id'];
-            $purchaseOrderTransaction->grand_total = 0; // You'll update this after saving the transaction
-            $purchaseOrderTransaction->final_total = $request['total_subtotal'];
-            $purchaseOrderTransaction->po_no = $request['po_no'];
-            $purchaseOrderTransaction->created_by = auth()->user()->id;
-            $purchaseOrderTransaction->order_date = $request['created_at'];
-            $purchaseOrderTransaction->transaction_date = $request['created_at'];
-
-            // Save the purchase order transaction to the database
-            $purchaseOrderTransaction->save();
-
-            // Now that you have the transaction ID, update the purchase_order_id and grand_total fields
-            $purchaseOrderTransaction->purchase_order_id = $request['id'];
-            $purchaseOrderTransaction->grand_total = $request['total_subtotal'];
-            // Use the insert method to insert all purchase order lines into the database
-            PurchaseOrderLine::insert($purchaseOrderLines);
-            // Now that you have inserted the purchase order lines, retrieve the ID of the first one
-            $firstPurchaseOrderLineId = PurchaseOrderLine::first()->id;
-            // Update the purchase_order_id of the purchase order transaction with the actual ID
-            $purchaseOrderTransaction->purchase_order_id = $firstPurchaseOrderLineId;
+            // Now, you can update the grand_total and details of the PurchaseOrderTransaction
             $purchaseOrderTransaction->grand_total = $request['total_subtotal'];
             $purchaseOrderTransaction->details = $request['details'];
+            // Save the updated PurchaseOrderTransaction
             $purchaseOrderTransaction->save();
+            DB::commit();
             // You can return a success response or redirect to a success page here
             $output = [
                 'success' => true,
@@ -158,6 +153,7 @@ class PurchaseOrderLineController extends Controller
         }
         catch (\Exception $e)
         {
+            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
@@ -166,6 +162,7 @@ class PurchaseOrderLineController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
+
 
 
 

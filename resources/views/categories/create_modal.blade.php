@@ -34,30 +34,34 @@
                         'type' => 'category',
                     ])
                 </div>
+{{--                @if(!empty($item[0]['category_id']))--}}
+{{--                    <input type="hidden" name="parent_id" value="{{$item[0]['category_id']}}">--}}
+{{--                @else--}}
+{{--                    <div class="form-group">--}}
+{{--                        <label for="parent_id">@lang('categories.parent')</label>--}}
+{{--                        {!! Form::select(--}}
+{{--                            'parent_id',--}}
+{{--                            $categories,null,--}}
+{{--                            ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]--}}
+{{--                        ) !!}--}}
 
-                <div class="form-group">
-                    <label for="parent_id">@lang('categories.parent')</label>
-                    {!! Form::select(
-                        'parent_id',
-                        $categories,null,
-                        ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]
-                    ) !!}
+{{--                        --}}{{-- <select name="parent_id" class="form-control select2"  id="my-select">--}}
+{{--                            <option value="" selected disabled readonly>---{{ __('select') }}---</option>--}}
+{{--                            @forelse($categories as $cat)--}}
+{{--                                <option value="{{ $cat->id }}"--}}
+{{--                                    {{ old('parent_id', request()->parent_id ) ==$cat->id?'selected':null }} >--}}
+{{--                                    {{ $cat->name }}--}}
+{{--                                </option>--}}
+{{--                            @empty--}}
+{{--                            @endforelse--}}
+{{--                        </select> --}}
+{{--                        @error('parent_id')--}}
+{{--                        <span class="text-danger">{{ $message }}</span>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
+{{--                @endif--}}
 
-                    {{-- <select name="parent_id" class="form-control select2"  id="my-select">
-                        <option value="" selected disabled readonly>---{{ __('select') }}---</option>
-                        @forelse($categories as $cat)
-                            <option value="{{ $cat->id }}"
-                                {{ old('parent_id', request()->parent_id ) ==$cat->id?'selected':null }} >
-                                {{ $cat->name }}
-                            </option>
-                        @empty
-                        @endforelse
-                    </select> --}}
-                    @error('parent_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                
+
                 <div class="form-group">
                     <label for="status">@lang('categories.status')</label>
                     <select name="status" class="form-control" required>

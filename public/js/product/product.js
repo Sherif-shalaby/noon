@@ -56,6 +56,28 @@ $(document).on("change",".category",function () {
         }
     });
 });
+$(document).on("change",".subcategory",function () {
+    $.ajax({
+        type: "get",
+        url: "/category/get-subcategories/"+$(this).val(),
+        dataType: "html",
+        success: function (response) {
+            console.log(response)
+            $(".subcategory2").empty().append(response).change();
+        }
+    });
+});
+$(document).on("change",".subcategory2",function () {
+    $.ajax({
+        type: "get",
+        url: "/category/get-subcategories/"+$(this).val(),
+        dataType: "html",
+        success: function (response) {
+            console.log(response)
+            $(".subcategory3").empty().append(response).change();
+        }
+    });
+});
 $(document).ready(function() {
     $('.js-example-basic-multiple').select2(
         {
@@ -64,3 +86,22 @@ $(document).ready(function() {
         }
     );
 });
+$(document).on("click", ".add_unit_row", function () {
+    let row_id = parseInt($("#raw_unit_index").val())+ 1;
+    $("#raw_unit_index").val(row_id );
+    $.ajax({
+        method: "get",
+        url: "/product/get-raw-unit",
+        data: { row_id: row_id },
+        success: function (result) {
+            $(".product_unit_raws").prepend(result);
+            $('.select2').select2();
+        },
+    });
+});
+$(document).on("click", ".remove_row", function () {
+$(this).closest(".unit-row").remove();
+});
+// $(document).on("change", ".unit_id", function () {
+//     $('.basic_unit_id').val($(this).val()).trigger('change');
+// });

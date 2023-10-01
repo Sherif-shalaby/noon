@@ -67,7 +67,6 @@
                                             @endif
                                         </td>
                                         <td>
-
                                             {{!empty($employee->user) ? $employee->user->name : ''}}
                                         </td>
                                         <td>
@@ -114,7 +113,7 @@
                                                 <li class="divider"></li>
 
                                                 <li>
-                                                    <a href="{{route('employees.edit', $employee->id)}}"
+                                                    <a href="{{route('employees.edit', $employee->id)}}"  target="_blank"
                                                        class="btn edit_employee"><i
                                                             class="fa fa-pencil-square-o"></i>
                                                         @lang('lang.edit')</a>
@@ -127,6 +126,16 @@
                                                             class="fa fa-trash"></i>
                                                         @lang('lang.delete')</a>
                                                 </li>
+                                                @if(!empty($employee->job_type) && $employee->job_type->title == 'Representative')
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a href="{{route('employees.add_points')}}"
+                                                           class="btn add_point"><i
+                                                                class="fa fa-plus"></i>
+                                                            @lang('lang.add_points')
+                                                        </a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </td>
 

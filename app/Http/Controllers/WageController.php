@@ -47,7 +47,7 @@ class WageController extends Controller
      */
     public function create()
     {
-        $employees = User::has('employees')->latest()->pluck('name','id');
+        $employees = Employee::with('user')->get()->pluck('user.name', 'id');
         $payment_types = Wage::getPaymentTypes();
         $users = User::Notview()->pluck('name', 'id');
         return view('employees.wages.create',compact('employees','payment_types','users'));
@@ -61,7 +61,6 @@ class WageController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request);
         try {
             $data = $request->except('_token', 'submit');
             $data['net_amount'] = (float)($data['net_amount']);
@@ -81,7 +80,7 @@ class WageController extends Controller
             $transaction_data = [
                 'type' => 'wage',
                 'store_id' => !empty($employee->store_id) ? $employee->store_id[0] : null,
-                'employee_id' => $wage->employee_id,
+                'employee_col_id' => $wage->employee_id,
                 'transaction_date' => Carbon::now(),
                 'grand_total' => $this->Util->num_uf($data['net_amount']),
                 'final_total' => $this->Util->num_uf($data['net_amount']),
@@ -96,22 +95,22 @@ class WageController extends Controller
 
             $transaction = WageTransaction::create($transaction_data);
 
-            // if ($request->payment_status != 'pending') {
-            //     $payment_data = [
-            //         'transaction_id' => $transaction->id,
-            //         'amount' => $this->Util->num_uf($request->net_amount),
-            //         'method' => 'cash',
-            //         'paid_on' => $data['payment_date'],
-            //         'ref_number' => $request->ref_number,
-            //         'source_type' => $request->source_type,
-            //         'source_id' => $request->source_id,
-            //     ];
-            //     if (!empty($payment_data['amount'])) {
-            //         $payment_data['created_by'] = Auth::user()->id;
-            //         $payment_data['payment_for'] = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
-            //         $transaction_payment = WageTransactionPayment::create($payment_data);
-            //     }
-            // }
+            if ($request->payment_status != 'pending') {
+                $payment_data = [
+                    'transaction_id' => $transaction->id,
+                    'amount' => $this->Util->num_uf($request->net_amount),
+                    'method' => 'cash',
+                    'paid_on' => $data['payment_date'],
+                    'ref_number' => $request->ref_number,
+                    'source_type' => $request->source_type,
+                    'source_id' => $request->source_id,
+                ];
+                if (!empty($payment_data['amount'])) {
+                    $payment_data['created_by'] = Auth::user()->id;
+                    $payment_data['payment_for'] = !empty($payment_data['payment_for']) ? $payment_data['payment_for'] : $transaction->customer_id;
+                    $transaction_payment = WageTransactionPayment::create($payment_data);
+                }
+            }
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
@@ -248,27 +247,28 @@ class WageController extends Controller
         $employee = Employee::find($employee_id);
         $user_id = $employee->user_id;
         $amount = 0;
+//        dd($employee->fixed_wage);
 
-        if ($payment_type == 'salary') {
+
+        if ($payment_type === "salary") {
+//            dd('salary');
             if ($employee->fixed_wage == 1) {
                 $fixed_wage_value = $employee->fixed_wage_value;
                 $payment_cycle = $employee->payment_cycle;
 
-                if ($payment_cycle == 'daily') {
+                if ($employee->payment_cycle == "daily") {
                     $amount = $fixed_wage_value * 30;
                 }
-                if ($payment_cycle == 'weekly') {
+                if ($employee->payment_cycle == "weekly") {
                     $amount = $fixed_wage_value * 4;
                 }
-                if ($payment_cycle == 'bi-weekly') {
+                if ($employee->payment_cycle == "bi-weekly") {
                     $amount = $fixed_wage_value * 2;
                 }
-                if ($payment_cycle == 'monthly') {
-                    $amount = $fixed_wage_value * 1;
-                }
+                if ($employee->payment_cycle === "monthly") {
+                    $amount = $fixed_wage_value * 1;}
             }
         }
-
         if ($payment_type == 'commission') {
             $start_date = request()->acount_period_start_date;
             $end_date = request()->acount_period_end_date;

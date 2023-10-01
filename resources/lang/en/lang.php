@@ -17,9 +17,11 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'show_hide_columns' => 'Show/Hide Columns' ,
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong!',
     'general_settings'=>'General Settings',
+    'state' => 'State',
     'developed_by'=>'Developed By',
     'site_title'=>'Site Title',
     'time_format'=>'Time Format',
@@ -137,12 +139,25 @@ return [
     'edit_customer_type'=>'Edit Customer Type',
     'edit_brand'=>'Edit Brand',
     'phone'=>'Phone',
+    'add_phone' => "Add Phone" ,
     'address'=>'Address',
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
     'add_customers'=>'Add Customers',
     'balance'=>'Balance',
     'purchases'=>'Purchases',
     'points'=>'Points',
     'edit_customers'=>'Edit Customers',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'min_amount_in_dollar' ,
+    'max_amount_in_dollar' => 'max_amount_in_dollar' ,
+    'min_amount_in_dinar'  => 'min_amount_in_dinar' ,
+    'max_amount_in_dinar'  => 'max_amount_in_dinar' ,
+    // balance_in_dollar
+    'balance_in_dollar'    => 'balance_in_dollar' ,
+    // balance_in_dinar
+    'balance_in_dinar'     => 'balance_in_dinar' ,
+
     'important_dates'=>'Important Dates',
     'important_date'=>'Important Date',
     'date'=>'Date',
@@ -178,6 +193,7 @@ return [
     'mobile_number' => 'Mobile Number',
     'created_by' => 'Created By',
     'add_supplier'=>'Add supplier',
+    'edit_supplier' => 'Edit Supplier' ,
     'exchange_rate'=>'Exchange Rate',
     'city'=>'City',
     'country'=>'Country',
@@ -277,14 +293,20 @@ return [
     'get_due_report' => 'get due report',
     // ############ customers_report ############
     'customers_report' => 'customers report',
+    // ############ representative_salary_report ############
+    'representative_salary_report' => 'representative salary report' ,
     // ############ daily_report_summary ############
     'daily_report_summary' => 'daily report summary' ,
     // ###################### preparer #####################
     'preparer' => 'preparer' ,
     // ###################### purchase_order #####################
     'purchase_order' => 'Purchase Order' ,
+    'show_purchase_order' => 'Show Purchase Order' ,
     'create_purchase_order' => 'Create Purchase Order',
     'po_no' => 'Purchase Order Number',
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'Amer' ,
+    'invoice_title2' => 'For General Trading',
 
     'purchase_price'=>'Purchase Price',
     'purchase_price_dollar' => 'dollar purchase price',
@@ -423,8 +445,24 @@ return [
     'sells_return' => 'Sells Return',
     'view_draft' => 'View Draft',
     'customer_name' => 'Customer Name',
-
-
+    'initial_balance' => 'Initial Balance',
+    'add_initial_balance' => 'Add Initial Balance',
+    'required_fields_info' => 'The field labels marked with <span style="color: #dc3545">*</span> are required input fields.',
+    'clear_all_input_form'=>'Keeping data after saving',
+    'this_product_exists_before'=>'This Product Exists Before',
+    'add'=>'Add',
+    'success'=>'Success',
+    'base_unit'=>'Base Unit',
+    'number'=>'Number',
+    'add_sku_with_sku_for_product'=>'Add Sku With Sku For Product',
+    'basic_unit'=>'Basic Unit',
+    'equal'=>'Equal',
+    'new_unit'=>'New Unit',
+    'continue_to_add_stock'=>'Continue To Sdd Stock',
+    'to_get_sell_price'=>'To Get Sell Price',
+    'fill_from_basic_unit'=>'Fill From Basic Unit',
+    'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
+    'permissions'=>'Permissions',
 ];
 
 

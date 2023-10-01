@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_subcategories', function (Blueprint $table) {
-            $table->increments('id');
-			$table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('category_id');
-            $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
-            $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+        // Schema::create('product_subcategories', function (Blueprint $table) {
+        //     $table->increments('id');
+		// 	$table->unsignedBigInteger('product_id');
+        //     $table->unsignedBigInteger('category_id');
+        //     $table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+        //     $table->foreignId('deleted_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
+        //     $table->foreignId('updated_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();
 			
-			$table->timestamps();
-			$table->softDeletes();
-        });
+		// 	$table->timestamps();
+		// 	$table->softDeletes();
+        // });
     }
 
     /**
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_subcategories');
+        // Schema::dropIfExists('product_subcategories');
     }
 };

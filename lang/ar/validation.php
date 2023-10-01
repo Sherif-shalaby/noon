@@ -124,7 +124,7 @@ return [
     'starts_with'          => 'يجب أن يبدأ حقل :attribute بأحد القيم التالية: :values',
     'string'               => 'يجب أن يكون حقل :attribute نصًا.',
     'timezone'             => 'يجب أن يكون حقل :attribute نطاقًا زمنيًا صحيحًا.',
-    'unique'               => 'قيمة حقل :attribute مُستخدمة من قبل.',
+    'unique'               => 'قيمة حقل مُستخدمة من قبل.',
     'uploaded'             => 'فشل في تحميل الـ :attribute.',
     'url'                  => 'صيغة رابط حقل :attribute غير صحيحة.',
 

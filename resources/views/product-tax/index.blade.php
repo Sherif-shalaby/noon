@@ -19,9 +19,10 @@
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a data-href="{{route('product-tax.create')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white" data-toggle="modal">
+                    <a  data-toggle="modal" data-target="#add_product_tax" class="btn btn-primary text-white" data-toggle="modal">
                         @lang('lang.add_product_tax')
                     </a>
+                    @include('product-tax.create')
 
                 </div>
             </div>

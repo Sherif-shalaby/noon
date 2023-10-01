@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Models\Country;
 use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
+use App\Models\System;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -49,17 +51,20 @@ class CustomerController extends Controller
   {
     $customer_types=CustomerType::latest()->pluck('name','id');
 
-      $quick_add = request()->quick_add ?? null;
-      $customers = Customer::getCustomerArrayWithMobile();
+    $quick_add = request()->quick_add ?? null;
+    $customers = Customer::getCustomerArrayWithMobile();
+    // ++++++++++++++++++++ Country , State , Cities Selectbox ++++++++++++++++
+    $countryId = System::getProperty('country_id');
+    $countryName = Country::where('id', $countryId)->pluck('name')->first();
 
       if ($quick_add) {
           return view('customers.quick_add')->with(compact(
               'customer_types',
               'customers',
-              'quick_add'
+              'quick_add',
           ));
       }
-    return view('customers.create',compact('customer_types'));
+    return view('customers.create',compact('customer_types','countryId','countryName'));
 
   }
 
@@ -70,19 +75,33 @@ class CustomerController extends Controller
    */
   public function store(CustomerRequest $request)
   {
-//      dd($request);
-    try {
-      $data = $request->except('_token');
-      $data['created_by']=Auth::user()->id;
-      $customer = Customer::create($data);
+    // return $request;
+    try
+    {
+        $data = $request->except('_token','phone','email');
+        // ++++++++++++++ store phones in array ++++++++++++++++++
+        $data['phone'] = json_encode($request->phone);
+        // ++++++++++++++ store email in array ++++++++++++++++++
+        $data['email'] = json_encode($request->email);
 
-      if (!empty($request->important_dates)) {
-        $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
-      }
-      $output = [
-          'success' => true,
-          'msg' => __('lang.success')
-      ];
+        $data['created_by']=Auth::user()->id;
+        // ========== uploaded image ==========
+        if ($request->file('image'))
+        {
+            $data['image'] = store_file($request->file('image'), 'customers');
+        }
+        // dd($data);
+
+        $customer = Customer::create($data);
+
+        if (!empty($request->important_dates)) {
+            $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
+        }
+
+        $output = [
+            'success' => true,
+            'msg' => __('lang.success')
+        ];
 
 
     } catch (\Exception $e) {
@@ -92,9 +111,9 @@ class CustomerController extends Controller
             'msg' => __('lang.something_went_wrong')
         ];
     }
-      if ($request->quick_add) {
-          return $output;
-      }
+    //   if ($request->quick_add) {
+    //       return $output;
+    //   }
 
     return redirect()->back()->with('status', $output);
   }

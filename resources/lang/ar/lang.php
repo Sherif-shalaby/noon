@@ -33,6 +33,7 @@ return array(
     'stores' =>'المخازن',
     'add_store' => 'أضف مخزن',
     'name' => 'الاسم',
+    'show_hide_columns' => 'اخفاء و إظهار الاعمدة' ,
     'email' => 'بريد إلكتروني',
     'phone_number' => 'رقم التليفون',
     'manager_name' => 'اسم المدير',
@@ -43,6 +44,7 @@ return array(
     'brand_name'=>'اسم العلامة التجارية',
     'update'=>'تعديل',
     'general_settings'=>'الاعدادات العامة',
+    'state' => 'المحافظة' ,
     'developed_by'=>'طور بواسطة',
     'site_title'=>'عنوان الموقع',
     'time_format'=>'تنسيق الوقت',
@@ -142,6 +144,7 @@ return array(
     'add_brand'=>'اضافة علامة تجارية',
     'add_category'=>'اضافة قسم',
     'discount'=>'خصم',
+    // ++++++++++++ customers +++++++++++++++
     'customer_types'=>'أنواع العملاء',
     'customer_type'=>'نوع العميل',
     'add_customer_type'=>'اضافة نوع عميل',
@@ -149,6 +152,26 @@ return array(
     'edit_brand'=>'تعديل العلامة التجارية',
     'phone'=>'رقم التليفون',
     'address'=>'العنوان',
+    // min_amount And max_amount
+    'min_amount_in_dollar' => 'الحد الادني بالدولار' ,
+    'max_amount_in_dollar' => 'الحد الاقصي بالدولار' ,
+    'min_amount_in_dinar' => 'الحد الادني بالدينار' ,
+    'max_amount_in_dinar' => 'الحد الاقصي بالدينار' ,
+    // balance_in_dollar
+    'balance_in_dollar'   => 'الرصيد بالدولار' ,
+    // balance_in_dinar
+    'balance_in_dinar'   => 'الرصيد بالدينار' ,
+    // ++++++++++++++++++ Suppliers ++++++++++++++++
+    // owner_debt_in_dinar
+    'owner_debt_in_dinar'   => 'الدين بالدينار' ,
+    // owner_debt_in_dollar
+    'owner_debt_in_dollar'   => 'الدين بالدولار' ,
+    'edit_supplier' => 'تعديل مورد' ,
+
+    // ++++++++++++ invoice_address +++++++++++++++
+    'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
+    'invoice_address_en' => 'Baghdad - jamila St. - 1st sq.' ,
+    'add_phone' => "اضافة رقم تليفون" ,
     'add_customers'=>'اضافة عميل',
     'balance'=>'الرصيد',
     'purchases'=>'المشتريات',
@@ -220,7 +243,7 @@ return array(
     'please_enter_your_password'=>'من فضلك ادخل كلمة السر !',
     'type_your_password'=>'ادخل كلمة السر',
     'correct_password'=>'كلمة السر صحيحة',
-    'company_name'=>'اسم لشركة',
+    'company_name'=>'اسم الشركة',
     'mobile_number' => 'رقم الهاتف',
     'add_supplier   '=>'اضافة مورد',
     'vat_number' =>'ضريبة الشراء',
@@ -300,15 +323,20 @@ return array(
     'payable_report' => 'تقرير القبض',
     // ############ customers_report ############
     'customers_report' => 'تقرير العملاء',
+    // ############ representative_salary_report ############
+    'representative_salary_report' => 'تقرير مقبوضات المندوبين',
     // ############ daily_report_summary ############
     'daily_report_summary' => 'ملخص التقرير اليومي',
     // ###################### preparer #####################
     'preparer' => 'اسم المٌجهز' ,
     // ###################### purchase_order #####################
     'purchase_order' => 'أمر شراء' ,
+    'show_purchase_order' => 'عرض اوامر الشراء' ,
     'create_purchase_order' => 'انشاء أمر شراء' ,
     'po_no' => 'رقم طلب الشراء' ,
-
+    // +++++++++++++ invoice_title +++++++++++++
+    'invoice_title1' => 'عامر' ,
+    'invoice_title2' => 'للتجارة العامة',
     'add_store_pos' => 'إضافة نقاط بيع للمتجر',
     'create'=>'انشاء',
     'edit'=>'تعديل',
@@ -432,5 +460,23 @@ return array(
     'sells_return' => 'عوده المبيعات',
     'view_draft' => 'عرض المسوده',
     'customer_name' => 'اسم العميل',
+    'initial_balance' => 'الأرصدة الأولية',
+    'add_initial_balance' => 'اضافة رصيد أولي',
+    'required_fields_info' => 'الحقول المميزة بعلامة <span style="color: #dc3545">*</span> هي حقول إدخال مطلوبة.',
+    'clear_all_input_form'=>'الاحتفاظ بالبيانات بعد عملية الإدخال',
+    'this_product_exists_before'=>'هذا المنتج موجود من قبل',
+    'add'=>'اضافة',
+    'success'=>'تم بنجاح',
+    'base_unit'=>'قاعدة الوحدة',
+    'number'=>'عدد',
+    'add_sku_with_sku_for_product'=>'اضف باركود مع وحدة للمنتج',
+    'basic_unit'=>'الوحدة الاساسية',
+    'equal'=>'تساوى',
+    'new_unit'=>'الوحدة الجديدة',
+    'continue_to_add_stock'=>'استمرار لاضافة مخزون',
+    'to_get_sell_price'=>'للحصول على سعر البيع',
+    'fill_from_basic_unit'=>'التعبئة من الوحدة الاساسية',
+    'enter_product_name_to_print_labels' => 'استخدم الماسح الضوئي أو أكتب أول ثلاثة أحرف من المنتج أو أول الباركو',
+    'permissions'=>'الاذونات',
 );
 

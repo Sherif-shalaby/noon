@@ -8,7 +8,8 @@
             <button wire:click='getClient'
                     class="btn btn-sm btn-primary">{{ __('Search') }}</button>
         </div>
-        <div class="mb-1 body-card-app pt-2" wire:ignore>
+        {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+        {{-- <div class="mb-1 body-card-app pt-2" wire:ignore>
             <label for="" class="text-primary">العملاء</label>
             <div class="d-flex justify-content-center">
                 <select class="form-control client" wire:model="client_id" id="Client_Select" wire:change="refreshSelect">
@@ -23,60 +24,84 @@
             <span class="text-danger">{{ $message }}</span>
             @enderror
             @include('customers.quick_add')
-        </div>
+        </div> --}}
+        {{-- +++++++++++++++++ الاجماليات +++++++++++++++++ --}}
         <div class="title-card-app text-start mt-3">
             الاجماليات
         </div>
         <div class="body-card-app pt-2">
             <div class="row ">
+                {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('dollar_grand_total','الاجمالي بالدولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_grand_total', $total_dollar, ['class' => 'form-control', 'data-live-search' => 'true', 'readonly', 'placeholder' => __('lang.dollar_price'), 'wire:model' => 'total_dollar']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('grand_total', 'الاجمالي بالدينار', ['class' => 'text-primary']) !!}
                         {!! Form::number('grand_total', $total, ['class' => 'form-control', 'data-live-search' => 'true', 'readonly', 'placeholder' => __('lang.price'), 'wire:model' => 'total']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ الخصم دولار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('dollar_discount', 'الخصم دولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_discount', null,['class'=>'form-control','','wire:model' => 'discount_dollar','wire:change' => 'changeDollarTotal']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ الخصم دينار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('discount', 'الخصم دينار', ['class' => 'text-primary']) !!}
                         {!! Form::number('discount', null,['class'=>'form-control','wire:model' => 'discount', 'wire:change' => 'changeTotal']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ النهائي دولار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('dollar_final_total', 'النهائي دولار', ['class' => 'text-primary']) !!}
                         {!! Form::number('dollar_final_total', $dollar_final_total,['class'=>'form-control','readonly']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ النهائي دينار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('final_total', 'النهائي دينار', ['class' => 'text-primary']) !!}
                         {!! Form::number('final_total', $final_total,['class'=>'form-control','readonly']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ الواصل دولار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('dollar_amount', 'الواصل دولار', ['class' => 'text-primary']) !!}
-                        {!! Form::number('dollar_amount', null,['class'=>'form-control','','wire:model' => 'dollar_amount']) !!}
+                        {!! Form::number('dollar_amount', null,['class'=>'form-control','wire:model' => 'dollar_amount', 'wire:change' => 'changeReceivedDollar']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ الواصل دينار +++++++++++ --}}
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('amount', 'الواصل دينار', ['class' => 'text-primary']) !!}
-                        {!! Form::number('amount', null,['class'=>'form-control  ','','wire:model' => 'amount']) !!}
+                        {!! Form::number('amount', null,['class'=>'form-control','wire:model' => 'amount', 'wire:change' => 'changeReceivedDinar']) !!}
                     </div>
                 </div>
+                {{-- +++++++++++ الباقي دولار +++++++++++ --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('dollar_remaining', 'الباقي دولار', ['class' => 'text-primary']) !!}
+                        {!! Form::number('dollar_remaining', $dollar_remaining,['class'=>'form-control','readonly','wire:model' => 'dollar_remaining']) !!}
+                    </div>
+                </div>
+                {{-- +++++++++++ الباقي دينار +++++++++++ --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        {!! Form::label('dinar_remaining', 'الباقي دينار', ['class' => 'text-primary']) !!}
+                        {!! Form::number('dinar_remaining', $dinar_remaining ,['class'=>'form-control','readonly','wire:model' => 'dinar_remaining']) !!}
+                    </div>
+                </div>
+
             </div>
 {{--            <div class="d-flex align-items-center gap-2 mb-2 justify-content-end">--}}
 {{--                <label for="" class="text-primary">{{ __('كاش') }}:</label>--}}
@@ -91,6 +116,7 @@
             <div class="row hide-print">
 {{--                <div class="me-auto">--}}
 {{--                    <div class="btns-control row">--}}
+                        {{-- ++++++++++++++++++++++ زرار الدفع ++++++++++++++++++++ --}}
                         <div class="col-md-3">
                             <button data-method="cash" style="width: 100%" type="button"
                                     class="btn btn-success payment-btn"  wire:click="submit"

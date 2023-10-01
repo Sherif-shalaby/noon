@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductTax;
+use App\Utils\Util;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,18 @@ use App\Http\Requests\StoreProductTax;
 
 class ProductTaxController extends Controller
 {
+    protected $Util;
+
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
      /* ++++++++++++++++++++ index() ++++++++++++++++++++ */
      public function index()
      {
@@ -24,8 +37,9 @@ class ProductTaxController extends Controller
          return view('product-tax.create');
      }
      /* ++++++++++++++ store() ++++++++++++++ */
-     public function store(StoreProductTax $request)
+     public function store(Request $request)
      {
+//         dd($request);
          try
          {
              $productTax = new ProductTax();
@@ -39,6 +53,7 @@ class ProductTaxController extends Controller
 
              $output = [
                  'success' => true,
+                 'id' => $productTax->id,
                  'msg' => __('lang.success')
              ];
          }
@@ -50,14 +65,17 @@ class ProductTaxController extends Controller
                  'msg' => __('lang.something_went_wrong')
              ];
          }
-         return redirect()->back()->with('status', $output);
+         if ($request->quick_add) {
+            return $output;
+         }
+         return $output;
      }
 
     /* +++++++++++++++++++++ show() +++++++++++++++++++ */
-    //  public function show(GeneralTax $generalTax)
-    //  {
-    //      //
-    //  }
+      public function show($id)
+      {
+          //
+      }
 
      /* +++++++++++++++++++++ edit() +++++++++++++++++++ */
      public function edit($id)
@@ -128,4 +146,10 @@ class ProductTaxController extends Controller
 
          return $output;
      }
+    public function getDropdown()
+    {
+        $product_tax = ProductTax::orderBy('name', 'desc')->pluck('name', 'id');
+        $product_tax_dp = $this->Util->createDropdownHtml($product_tax, __('lang.please_select'));
+        return $product_tax_dp;
+    }
 }

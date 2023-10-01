@@ -40,7 +40,7 @@
                                     ''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('store', __('lang.paying_currency'), []) !!}: <b>{{$add_stock->paying_currency()->first()->currency ??''}}</b>
+                                    {!! Form::label('store', __('lang.paying_currency'), []) !!}: <b>{{$add_stock->paying_currency_relationship()->first()->currency ??''}}</b>
                                 </div>
                                 <div class="col-md-4">
                                     {!! Form::label('store', __('lang.exchange_rate'), []) !!}: <b>{{$add_stock->transaction_payments()->latest()->first()->exchange_rate ??''}}</b>
