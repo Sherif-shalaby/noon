@@ -36,7 +36,7 @@ class Create extends Component
 {
     use WithPagination;
 
-    public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $status, $order_date, $purchase_type,
+    public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
@@ -45,7 +45,7 @@ class Create extends Component
     protected $rules = [
     'store_id' => 'required',
     'supplier' => 'required',
-    'status' => 'required',
+//    'status' => 'required',
     'paying_currency' => 'required',
     'purchase_type' => 'required',
     'payment_status' => 'required',
@@ -55,6 +55,7 @@ class Create extends Component
 ];
 
     public function mount(){
+        $this->transaction_date = date('Y-m-d\TH:i');
         $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
         if($this->clear_all_input_stock_form ==0){
             $transaction_payment=[];
@@ -66,7 +67,6 @@ class Create extends Component
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ??'' ;
                 $this->supplier = $recent_stock->supplier_id??'';
-                $this->status = $recent_stock->status ??'';
                 $this->transaction_date = $recent_stock->transaction_date ??'';
                 $this->transaction_currency = $recent_stock->transaction_currency ??'';
                 $this->purchase_type = $recent_stock->purchase_type ??'';
@@ -191,7 +191,7 @@ class Create extends Component
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
-            $transaction->status = $this->status;
+            $transaction->status = 'received';
             $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
             $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
             $transaction->purchase_type = $this->purchase_type;

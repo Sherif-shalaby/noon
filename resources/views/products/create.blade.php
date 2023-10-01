@@ -124,8 +124,9 @@
                                     @endif
                                 @endforeach
                             </select>
-                            {{--                            <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#add_product_tax" data-select_category="2"><i class="fas fa-plus"></i></button> --}}
-                            @include('product-tax.create')
+                            <button type="button" class="btn btn-primary btn-sm ml-2"
+                                    data-toggle="modal" data-target="#add_product_tax_modal"
+                                    data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -139,8 +140,8 @@
                                         'id' => 'categoryId',
                                         'required',
                                     ]) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                        data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                                              data-target="#createCategoryModal" href="{{ route('store.create') }}"><i
                                             class="fas fa-plus"></i></button>
                                 </div>
                                 @error('category_id')
@@ -155,9 +156,8 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId1',
                                     ]) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                        data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i
-                                            class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -172,9 +172,8 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId2',
                                     ]) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                        data-toggle="modal" data-target="#createCategoryModal" data-select_category="3"><i
-                                            class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="2"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id2')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -189,9 +188,8 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId3',
                                     ]) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                        data-toggle="modal" data-target="#createCategoryModal"
-                                        data-select_category="4"><i class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -417,12 +415,12 @@
             @include('products.crop-image-modal')
         </div>
     </div>
-    </div>
-    </div>
+    <div class="view_modal no-print"></div>
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
-    @include('categories.create_modal', ['quick_add' => $quick_add])
+    @include('categories.create_modal', ['quick_add' => 1])
+    @include('product-tax.create', ['quick_add' => 1])
 @endsection
 @push('javascripts')
     <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
