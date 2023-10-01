@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\JobType;
-use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -11,8 +10,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class JobTypeController extends Controller
 {
@@ -25,8 +22,8 @@ class JobTypeController extends Controller
   public function index(): View|Factory|Application
   {
       $jobs = JobType::all();
-      $modulePermissionArray = User::modulePermissionArray();
-      return view('jobs.index')->with(compact('jobs','modulePermissionArray'));
+
+      return view('jobs.index')->with(compact('jobs'));
   }
 
   /**
@@ -44,7 +41,7 @@ class JobTypeController extends Controller
    *
    * @return RedirectResponse
    */
-  public function store(Request $request)   : RedirectResponse
+  public function store(Request $request): RedirectResponse
   {
       try {
           $job = new JobType();
@@ -53,25 +50,6 @@ class JobTypeController extends Controller
           $job->date_of_creation = date('Y-m-d');
 
           $job->save();
-          $role = Role::create(['name' => $job->title]);
-          $subModulePermissionArray = User::subModulePermissionArray();
-          foreach($request->permissions as $key=>$permission)
-          {
-            if (!empty($subModulePermissionArray[$key])) {
-                foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
-                    $permission=Permission::where('name', $key)->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
-                    $role->givePermissionTo($permission->id);
-                }
-            }
-          }
           $output = [
               'success' => true,
               'msg' => __('lang.success')
@@ -110,11 +88,8 @@ class JobTypeController extends Controller
   public function edit($id)
   {
       $job = JobType::findOrFail($id);
-      $modulePermissionArray = User::modulePermissionArray();
-      $role = Role::where('name',$job->title)->first();
-      $permissions = $role->permissions;
       return view('jobs.edit')
-          ->with(compact('job','modulePermissionArray','permissions'));
+          ->with(compact('job'));
   }
 
   /**
