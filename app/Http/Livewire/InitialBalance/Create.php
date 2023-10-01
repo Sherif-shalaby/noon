@@ -4,6 +4,7 @@ namespace App\Http\Livewire\InitialBalance;
 
 use App\Models\AddStockLine;
 use App\Models\Category;
+use App\Models\CustomerType;
 use App\Models\Product;
 use App\Models\ProductStore;
 use App\Models\ProductTax;
@@ -43,6 +44,7 @@ class Create extends Component
         'exchange_rate'=>0,
     ]
     ];
+    public $priceRow=[];
     public $subcategories1=[],$subcategories2=[],$subcategories3=[];
     public $quantity = [], $purchase_price =[], $selling_price = [],
         $base_unit = [], $divide_costs , $total_size = [], $total_weight =[],
@@ -108,6 +110,7 @@ class Create extends Component
         $units=Unit::orderBy('created_at', 'desc')->get();
         $basic_units=Unit::orderBy('created_at', 'desc')->pluck('name', 'id');
         $product_taxes = ProductTax::select('name','id','status')->get();
+        $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
 
         return view('livewire.initial-balance.create',
@@ -115,7 +118,7 @@ class Create extends Component
                 'stores',
                 'suppliers',
                 'products','product_taxes',
-                'units','basic_units','categories','subcategories')
+                'units','basic_units','categories','subcategories','customer_types')
         );
     }
     public function mount()
@@ -187,6 +190,7 @@ class Create extends Component
     'equal'=>'',
     ];
     array_unshift($this->rows, $newRow);
+    // $this->dispatchBrowserEvent('initialize-select2');
     }
     public function changeUnit($index){
         $unit=$this->rows[$index]['unit_id'];
@@ -558,5 +562,21 @@ class Create extends Component
         }
 
         return true;
+    }
+    public function addPriceRaw(){
+        $newRow = [
+            'id'=>'',
+            'price_type'=>'',
+            'price_category'=>'',
+            'price'=>'',
+            'quantity'=>'',
+            'bonus_quantity'=>'',
+            'price_customer_types'=>'',
+        ];
+        array_unshift($this->priceRow, $newRow);
+        // $this->dispatchBrowserEvent('initialize-select2');
+    }
+    public function delete_price_raw($index){
+        unset($this->priceRow[$index]);
     }
 }

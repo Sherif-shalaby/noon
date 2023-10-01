@@ -17,7 +17,7 @@
     </td>
     <td>
         <div class="d-flex justify-content-center">
-            <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' id="unit_id" data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
+            <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
                 <option value="">{{__('lang.please_select')}}</option>
                 @foreach($units as $unit)
                     <option value="{{$unit->id}}">{{$unit->name}}</option>
@@ -31,7 +31,7 @@
     </td>
     <td>
 {{--        <div class="d-flex justify-content-center">--}}
-            <select wire:model="rows.{{ $index }}.basic_unit_id" data-name='basic_unit_id' id="basic_unit_id" data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
+            <select wire:model="rows.{{ $index }}.basic_unit_id" data-name='basic_unit_id' data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
                 <option value="">{{__('lang.please_select')}}</option>
                 @foreach($units as $unit)
                     <option value="{{$unit->id}}">{{$unit->name}}</option>
@@ -109,8 +109,4 @@
         </div>
     </td>
 </tr>
-<script>
-    $(document).ready(function () {
-        $('.select2').select2();
-    });
-</script>
+

@@ -283,13 +283,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row text-right">
-                            <div class="col">
-                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
-                                    <i class="fa fa-plus"></i> @lang('lang.add')
-                                </button>
-                            </div>
-                        </div>
+                
                         <br>
                         {{-- add prices --}}
                         <div class="row">
@@ -300,21 +294,18 @@
                                         <table class="table table-bordered" id="consumption_table_price">
                                             <thead>
                                                 <tr>
-                                                    {{-- <th style="width: 20%;">@lang('lang.discount_type')</th> --}}
+                                                    <th style="width: 3%;">#</th>
                                                     <th style="width: 10%;">@lang('lang.type')</th>
                                                     <th style="width: 10%;">@lang('lang.price_category')</th>
                                                     <th style="width: 10%;">@lang('lang.price')</th>
                                                     <th style="width: 10%;">@lang('lang.quantity')</th>
                                                     <th style="width: 11%;">@lang('lang.b_qty')</th>
-                                                    {{-- <th style="width: 3%;"></th> --}}
-                                                    {{-- <th style="width: 17%;">@lang('lang.price_start_date')</th> --}}
-                                                    {{-- <th style="width: 17%;">@lang('lang.price_end_date')</th> --}}
                                                     <th style="width: 20%;">@lang('lang.customer_type')
                                                         <i class="dripicons-question" data-toggle="tooltip"
                                                             title="@lang('lang.discount_customer_info')"></i>
                                                     </th>
                                                     <th style="width: 5%;">
-                                                        <button class="btn btn-xs btn-primary add_price_row"
+                                                        <button class="btn btn-xs btn-primary" wire:click="addPriceRaw()"
                                                             type="button">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
@@ -322,7 +313,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {{-- @include('product.partial.raw_discount', ['row_id' => 0]) --}}
+                                                @foreach ($priceRow as $index => $row)
+                                                    @include('products.product_raw_price', [
+                                                        'index' => $index,
+                                                    ])
+                                                @endforeach
                                             </tbody>
                                         </table>
                                         <input type="hidden" name="raw_price_index" id="raw_price_index"
@@ -332,6 +327,14 @@
                             </div> --}}
                         </div>
                         <br><br>
+                        <div class="row text-right">
+                            <div class="col">
+                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
+                                    <i class="fa fa-plus"></i> @lang('lang.add')
+                                </button>
+                            </div>
+                        </div>
+                        <br>
                         {{-- add prices --}}
                         <div class="row">
                             <div class="table-responsive">
