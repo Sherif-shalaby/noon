@@ -320,7 +320,19 @@ class Create extends Component
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
 
             }
-
+            foreach ($this->priceRow as $index => $row){
+            $data_des=[
+                'price_type' => $this->priceRow[$index]['price_type'],
+                'price' => $this->priceRow[$index]['price'],
+                'quantity' => $this->priceRow[$index]['quantity'],
+                'bonus_quantity' => $this->priceRow[$index]['bonus_quantity'],
+                'price_category' => $this->priceRow[$index]['price_category'],
+                'stock_transaction_id'=>$transaction->id,
+                'price_customer_types' => $this->priceRow[$index]['price_customer_types'],
+                'created_by' => Auth::user()->id,
+            ];
+            ProductPrice::create($data_des);
+            }
              DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => __('lang.success'),]);
             return redirect('/initial-balance/create');
