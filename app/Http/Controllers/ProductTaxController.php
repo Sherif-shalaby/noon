@@ -39,7 +39,6 @@ class ProductTaxController extends Controller
      /* ++++++++++++++ store() ++++++++++++++ */
      public function store(Request $request)
      {
-//         dd($request);
          try
          {
              $productTax = new ProductTax();
@@ -53,7 +52,6 @@ class ProductTaxController extends Controller
 
              $output = [
                  'success' => true,
-                 'id' => $productTax->id,
                  'msg' => __('lang.success')
              ];
          }
@@ -64,9 +62,6 @@ class ProductTaxController extends Controller
                  'success' => false,
                  'msg' => __('lang.something_went_wrong')
              ];
-         }
-         if ($request->quick_add) {
-            return $output;
          }
          return $output;
      }

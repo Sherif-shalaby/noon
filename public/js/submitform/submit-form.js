@@ -26,7 +26,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#brand_id").empty().append(data_html);
-                        $("#brand_id").val(brand_id).trigger();
+                        $("#brand_id").val(brand_id).change();
                     },
                 });
             } else {
@@ -107,7 +107,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#store_id").empty().append(data_html);
-                        $("#store_id").val(store_id).trigger();
+                        $("#store_id").val(store_id).change();
                     },
                 });
             } else {
@@ -143,7 +143,7 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#supplier_id").empty().append(data_html);
-                        $("#supplier_id").val(supplier_id).trigger();
+                        $("#supplier_id").val(supplier_id).change();
                     },
                 });
             } else {
@@ -202,19 +202,19 @@ $(document).on("submit", "#category-form", function (e) {
                         console.log(data_html)
                         if(select_category=="0"){
                             $("#categoryId").empty().append(data_html);
-                            $("#categoryId").val(category_id).trigger();
-                        }else if(select_category=="2"){
-                            $("#subCategoryId2").empty().append(data_html);
-                            $("#subCategoryId2").val(category_id).trigger();
-                        }else if(select_category=="3"){
-                            $("#subCategoryId3").empty().append(data_html);
-                            $("#subCategoryId3").val(category_id).trigger();
-                        }
-                        else if(select_category=="1"){
-                            $("#subCategoryId1").empty().append(data_html);
-                            $("#subCategoryId1").val(category_id).trigger();
-                        }
-                    }
+                            $("#categoryId").val(category_id).change();
+                        // }else if(select_category=="3"){
+                        //     $("#subCategoryId2").empty().append(data_html);
+                        //     $("#subCategoryId2").val(category_id).change();
+                        // }else if(select_category=="4"){
+                        //     $("#subCategoryId3").empty().append(data_html);
+                        //     $("#subCategoryId3").val(category_id).change();
+                        // }
+                        // else{
+                        //     $("#subCategoryId1").empty().append(data_html);
+                        //     $("#subCategoryId1").val(category_id).change();
+                        // }
+                    },
                 });
             } else {
                 Swal.fire("Error", result.msg, "error");
@@ -223,22 +223,14 @@ $(document).on("submit", "#category-form", function (e) {
     });
 });
 
-$(document).ready(function () {
-$("#create-product-tax-btn").click(function (e) {
-    e.preventDefault();
-    setTimeout(() => {
-        $("#quick_add_product_tax_form").submit();
-    }, 500);
-});
-});
 
-// $("#create-product-tax-btn").click(function (e){
-//     e.preventDefault();
-//     setTimeout(()=>{
-//         $("#add_product_tax").submit();
-//     },500)
-// });
-$(document).on("submit", "#quick_add_product_tax_form", function (e) {
+$("#create-product-tax-btn").click(function (e){
+    e.preventDefault();
+    setTimeout(()=>{
+        $("#add_product_tax_form").submit();
+    },500)
+});
+$(document).on("submit", "#add_product_tax_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
     $.ajax({
@@ -249,9 +241,8 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
         success: function (result) {
             if (result.success) {
                 Swal.fire("Success", result.msg, "success");
-                $("#add_product_tax_modal").modal("hide");
+                $("#add_product_tax").modal("hide");
                 var product_tax_id = result.id;
-                console.log(product_tax_id)
                 $.ajax({
                     method: "get",
                     url: "/product-tax/get-dropdown",
@@ -259,7 +250,7 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#product_tax").empty().append(data_html);
-                        $("#product_tax").val(product_tax_id).trigger();
+                        $("#product_tax").val(product_tax_id).change();
                     },
                 });
             } else {

@@ -18,20 +18,7 @@
                             <input type="text" class="form-control" value="{{$job->title}}" name="title" id="title" required>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 pt-2">
-                        <h5>@lang('lang.permissions')</h5>
-                    </div>
-                </div>
-                <div class="row">
-                    @foreach ($modulePermissionArray as $key_module => $moudle)
-                    <div class="col-md-3">
-                        {{$moudle}}
-                        {!! Form::checkbox('permissions[' . $key_module . ']', 1, false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!}
-                        
-                    </div>
-                    @endforeach
+
                 </div>
             </div>
             <div class="modal-footer">
