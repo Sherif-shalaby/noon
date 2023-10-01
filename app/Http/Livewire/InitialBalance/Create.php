@@ -199,9 +199,9 @@ class Create extends Component
                 break;
             }
         }
-        $unit=$this->get_product($index);
-        $this->rows[$index]['equal']=isset($unit->base_unit_multiplier)?$unit->base_unit_multiplier:null;
-        $this->rows[$index]['basic_unit_id']=isset($unit->base_unit_id)?$unit->base_unit_id:null;
+        // $unit=$this->get_product($index);
+        // $this->rows[$index]['equal']=isset($unit->base_unit_multiplier)?$unit->base_unit_multiplier:null;
+        // $this->rows[$index]['basic_unit_id']=isset($unit->base_unit_id)?$unit->base_unit_id:null;
         if($unit_index!==''){
             $this->rows[$index]['equal']=1;
             $this->rows[$index]['fill_type']=$this->rows[$unit_index]['fill_type'];
