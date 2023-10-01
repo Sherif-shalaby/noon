@@ -213,6 +213,7 @@ class Create extends Component
         // $this->rows[$index]['basic_unit_id']=isset($unit->base_unit_id)?$unit->base_unit_id:null;
         if($unit_index!==''){
             $this->rows[$index]['equal']=1;
+            $this->rows[$index]['fill_quantity']=((float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'])-((float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal']);
             $this->rows[$index]['fill_type']=$this->rows[$unit_index]['fill_type'];
             $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
             $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
