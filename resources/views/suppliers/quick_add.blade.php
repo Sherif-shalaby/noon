@@ -270,7 +270,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                <button  id="create-store-btn" class="btn btn-primary">{{__('lang.save')}}</button>
+                <button  id="create-supplier-btn" class="btn btn-primary">{{__('lang.save')}}</button>
             </div>
             {!! Form::close() !!}
         </div>
