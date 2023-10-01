@@ -164,7 +164,6 @@ $("#create-category-btn").click(function (e){
 $(document).on("submit", "#category-form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
-    alert($(this).attr("action"));
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
@@ -205,22 +204,14 @@ $(document).on("submit", "#category-form", function (e) {
     });
 });
 
-$(document).ready(function () {
-$("#create-product-tax-btn").click(function (e) {
-    e.preventDefault();
-    setTimeout(() => {
-        $("#add_product_tax").submit();
-    }, 500);
-});
-});
 
-// $("#create-product-tax-btn").click(function (e){
-//     e.preventDefault();
-//     setTimeout(()=>{
-//         $("#add_product_tax").submit();
-//     },500)
-// });
-$(document).on("submit", "#add_product_tax", function (e) {
+$("#create-product-tax-btn").click(function (e){
+    e.preventDefault();
+    setTimeout(()=>{
+        $("#add_product_tax_form").submit();
+    },500)
+});
+$(document).on("submit", "#add_product_tax_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
     $.ajax({

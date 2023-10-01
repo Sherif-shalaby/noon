@@ -39,7 +39,6 @@ class ProductTaxController extends Controller
      /* ++++++++++++++ store() ++++++++++++++ */
      public function store(Request $request)
      {
-//         dd($request);
          try
          {
              $productTax = new ProductTax();

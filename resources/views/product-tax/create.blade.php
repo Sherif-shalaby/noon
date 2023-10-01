@@ -9,7 +9,7 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => 'product-tax.store', 'method' => 'post', 'files' => true,'id' =>'add_product_tax']) !!}
+            {!! Form::open(['route' => 'product-tax.store', 'files' => true,'id' =>'add_product_tax_form']) !!}
             <div class="modal-body">
                 {{-- +++++++++++++++++++++++ tax_name +++++++++++++++++++++++ --}}
                 <div class="form-group">

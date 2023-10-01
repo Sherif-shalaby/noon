@@ -92,31 +92,7 @@
                             'class' => 'form-control'
                         ]) !!}
                     </div>
-                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
-                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}">
-                            <option value="">{{  __('lang.please_select') }}</option>
-                            <option value="inclusive">{{ __('lang.inclusive') }}</option>
-                            <option value="exclusive">{{ __('lang.exclusive') }}</option>
-                        </select>
-                    </div>
-                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        <label for="product" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
-                        <div class="d-flex justify-content-center">
-                            <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}">
-                                <option value="">{{  __('lang.please_select') }}</option>
-                                @foreach ($product_tax as $tax )
-                                    @if( $tax->status == "active" )
-                                        <option value="{{ $tax->id }}">{{ $tax->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-{{--                            <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#add_product_tax" data-select_category="2"><i class="fas fa-plus"></i></button>--}}
-                            @include('product-tax.create')
-                        </div>
-                    </div>
+
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-3">
@@ -141,7 +117,7 @@
                                         $categories,null,
                                         ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId1']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createSubCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -156,7 +132,7 @@
                                         $categories,null,
                                         ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId2']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="3"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createSubCategoryModal" data-select_category="3"><i class="fas fa-plus"></i></button>
                                 </div>
                                 @error('subcategory_id2')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -171,7 +147,7 @@
                                         $categories,null,
                                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId3']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="4"><i class="fas fa-plus"></i></button>
+                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createSubCategoryModal" data-select_category="4"><i class="fas fa-plus"></i></button>
                                 </div>
                                 @error('subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -190,6 +166,30 @@
                             </div> --}}
                         </div>
                             </div>
+                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
+                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}">
+                            <option value="">{{  __('lang.please_select') }}</option>
+                            <option value="inclusive">{{ __('lang.inclusive') }}</option>
+                            <option value="exclusive">{{ __('lang.exclusive') }}</option>
+                        </select>
+                    </div>
+                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="product" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
+                        <div class="d-flex justify-content-center">
+                            <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}">
+                                <option value="">{{  __('lang.please_select') }}</option>
+                                @foreach ($product_tax as $tax )
+                                    @if( $tax->status == "active" )
+                                        <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#add_product_tax" data-select_category="2"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
@@ -206,9 +206,6 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-
-
-
                             <div class="col-md-3">
                                 {!! Form::label('length', __('lang.length'),['class'=>'h5 pt-3']) !!}
                                 {!! Form::text('length', 0, [
@@ -406,6 +403,8 @@
     @include('units.create',['quick_add'=>$quick_add])
     @include('brands.create',['quick_add'=>$quick_add])
     @include('categories.create_modal',['quick_add'=>$quick_add])
+    @include('categories.create_sub_cat_modal',['quick_add'=>$quick_add])
+    @include('product-tax.create')
 @endsection
 @push('javascripts')
 <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
