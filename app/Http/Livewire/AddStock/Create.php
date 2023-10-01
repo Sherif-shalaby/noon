@@ -55,13 +55,14 @@ class Create extends Component
 ];
 
     public function mount(){
+        $this->transaction_date = date('Y-m-d\TH:i');
         $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
         if($this->clear_all_input_stock_form ==0){
             $transaction_payment=[];
             $recent_stock=[];
-        }else{
+        }
+        else{
             $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
-//dd($recent_stock);
             if(!empty($recent_stock)){
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ??'' ;
@@ -82,8 +83,6 @@ class Create extends Component
                 $this->source_type =$transaction_payment->source_type ??'' ;
                 $this->source_id = $transaction_payment->source_id ??'';
                 $this->paid_on = $transaction_payment->paid_on ??'';
-
-
 
             }
         }
@@ -375,6 +374,7 @@ class Create extends Component
                     $this->addNewProduct($variations,$product,$show_product_data);
                 }
             }
+
             else{
                 $show_product_data = true;
                 $this->addNewProduct($variations,$product,$show_product_data);

@@ -1,19 +1,18 @@
 <!-- Modal -->
-<div class="modal fade" id="add_product_tax_modal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
+<div class="modal fade" id="add_product_tax" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
      aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.product_tax')}}</h5>
+                <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_category')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => 'product-tax.store', 'method' => 'post', 'files' => true,'id' => isset($quick_add)&&$quick_add ? 'quick_add_product_tax_form' : 'product_tax-form']) !!}
+            {!! Form::open(['route' => 'product-tax.store', 'files' => true,'id' =>'add_product_tax_form']) !!}
             <div class="modal-body">
                 {{-- +++++++++++++++++++++++ tax_name +++++++++++++++++++++++ --}}
                 <div class="form-group">
-                    <input type="hidden" name="quick_add" value="{{ isset($quick_add)&&$quick_add?$quick_add:'' }}">
                     <label for="tax_name">{{ __( 'lang.tax_name').':*' }}</label>
                     <input type="text" name="name" class="form-control" placeholder="{{ __( 'lang.tax_name' ) }}" required>
                     {{-- Error Message --}}
@@ -34,7 +33,7 @@
                 {{-- +++++++++++++++++++++++ tax_status +++++++++++++++++++++++ --}}
                 <div class="form-group">
                     <label for="status">{{ __('lang.tax_status').':*' }}</label>
-                    <select name="status" class="form-control select2"
+                    <select name="status" id="status" class="form-control select"
                             data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
                         <option value="">{{  __('lang.please_select') }}</option>
                         <option value="passive">{{ __('lang.passive') }}</option>
