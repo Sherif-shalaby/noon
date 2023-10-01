@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade add-unit" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,22 +31,6 @@
                             'translations' => [],
                             'type' => 'customer_types',
                         ])
-                    </div>
-                    <div class="form-group">
-                        <label for="base_unit_multiplier">@lang('units.base_unit_multiplier')</label>
-                        <input type="number"  class="form-control" step="0.01" min="0"
-                                placeholder="@lang('units.base_unit_multiplier') 0.00" name="base_unit_multiplier"
-                                value="{{ old('base_unit_multiplier') }}">
-                        @error('base_unit_multiplier')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('base_unit_id', __('lang.base_unit') . ':', []) !!}
-                        {!! Form::select('base_unit_id',$unitArray, null, ['class' => 'select2 form-control',  'placeholder' => __('lang.please_select')]) !!}
-                        @error('base_unit_id')
-                        <span class="error text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">

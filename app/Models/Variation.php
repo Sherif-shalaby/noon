@@ -21,6 +21,10 @@ class Variation extends Model
     {
         return $this->belongsTo('App\Models\Unit', 'unit_id');
     }
+    public function basic_unit()
+    {
+        return $this->belongsTo('App\Models\Unit', 'basic_unit_id');
+    }
     public function stock_lines()
     {
         return $this->hasMany(AddStockLine::class,'variation_id');

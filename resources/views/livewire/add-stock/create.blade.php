@@ -37,7 +37,14 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()']) !!}
+                                    <div class="d-flex justify-content-center">
+                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select',
+                                        ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                        'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()'
+                                        ]) !!}
+                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" href="{{route('suppliers.create')}}"><i class="fas fa-plus"></i></button>
+                                        @include('suppliers.quick_add',['quick_add'=>1])
+                                    </div>
                                     @error('supplier')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -61,7 +68,7 @@
                                 <div class="col-md-3">
                                     <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
                                     {!! Form::select('invoice_currency', $selected_currencies, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
-                                    @error('paying_currency')
+                                    @error('transaction_currency')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -96,14 +103,14 @@
                                     <input type="search" name="search_product" id="search_product" wire:model.debounce.500ms="searchProduct"
                                            placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                            class="form-control" autocomplete="off">
-                                    <button type="button" class="btn btn-success  btn-modal"
-                                            data-href="{{ route('products.create') }}?quick_add=1"
-                                            data-container=".view_modal"><i class="fa fa-plus"></i>
-                                    </button>
+{{--                                    <button type="button" class="btn btn-success  btn-modal"--}}
+{{--                                            data-href="{{ route('products.create') }}?quick_add=1"--}}
+{{--                                            data-container=".view_modal"><i class="fa fa-plus"></i>--}}
+{{--                                    </button>--}}
                                     @if(!empty($search_result))
                                         <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                             @foreach($search_result as $product)
-                                                <li class="ui-menu-item" wire:click="fetchProduct({{$product->id}})">
+                                                <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
                                                         <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png" width="50px" height="50px">
                                                         {{$product->sku ?? ''}} - {{$product->name}}
@@ -160,6 +167,8 @@
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.unit')</th>
                                         <th style="width: 10%">@lang('lang.fill')</th>
+                                        <th style="width: 10%">@lang('lang.basic_unit')</th>
+                                        <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
 {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
 {{--                                        @if ($showColumn)--}}
                                             <th style="width: 10%">@lang('lang.purchase_price')$</th>
@@ -246,7 +255,7 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('files', __('lang.files'), []) !!} <br>
-                                    <input type="file" name="files[]" id="files" multiple>
+                                    <input type="file" name="files[]" id="files"  wire:model="files">
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -297,20 +306,20 @@
                             </div>
 
                             @include('add-stock.partials.payment_form')
-                            @if(!empty($amount))
-                                <div class="col-md-3 due_amount_div">
-                                    <label for="due_amount" style="margin-top: 25px;" >@lang('lang.duePaid'):
-                                        <span class="due_amount_span">
-                                            @if($paying_currency == 2)
-                                                {{$this->sum_dollar_total_cost() - $amount ?? ''}}
-                                            @else
-                                                {{$this->sum_total_cost() - $amount ?? ''}}
-                                            @endif
-                                        </span>
-                                    </label>
-                                </div>
-                            @endif
                             @if($payment_status != 'paid' && isset($payment_status) )
+                                @if(!empty($amount))
+                                    <div class="col-md-3 due_amount_div">
+                                        <label for="due_amount" style="margin-top: 25px;" >@lang('lang.duePaid'):
+                                            <span class="due_amount_span">
+                                            @if($paying_currency == 2)
+                                                    {{$this->sum_dollar_total_cost() - $amount ?? ''}}
+                                                @else
+                                                    {{@num_uf($this->sum_total_cost()) - $amount ?? ''}}
+                                                @endif
+                                        </span>
+                                        </label>
+                                    </div>
+                                @endif
                                 <div class="col-md-3 due_amount_div">
                                     <div class="form-group">
                                         <label for="due_date">@lang('lang.due'): </label>
@@ -318,12 +327,20 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 due_fields ">
-                                    <div class="form-group">
-                                        {!! Form::label('notify_before_days', __('lang.due_date') . ':', []) !!} <br>
-                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->due_date)?@format_date($transaction_payment->due_date):(!empty($payment) ? @format_date($payment->due_date) : null), ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'notify_before_days']) !!}
-                                    </div>
+                            <div class="col-md-3 due_fields d-none">
+                                <div class="form-group">
+                                    {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>
+                                    {!! Form::text('due_date', !empty($transaction_payment)&&!empty($transaction_payment->due_date)?@format_date($transaction_payment->due_date):(!empty($payment) ? @format_date($payment->due_date) : null), ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'due_date']) !!}
                                 </div>
+                            </div>
+
+                            <div class="col-md-3 due_fields d-none">
+                                <div class="form-group">
+                                    {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}
+                                    <br>
+                                    {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}
+                                </div>
+                            </div>
 
 {{--                                <div class="col-md-3 due_fields ">--}}
 {{--                                    <div class="form-group">--}}
@@ -353,6 +370,7 @@
         </div>
     </div>
 </section>
+<div class="view_modal no-print"></div>
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 
@@ -407,13 +425,12 @@
             var name = $(this).data('name');
             var index = $(this).data('index');
             var select2 = $(this); // Save a reference to $(this)
-
             Livewire.emit('listenerReferenceHere',{
                 var1 :name,
                 var2 :select2.select2("val") ,
                 var3:index
             });
-            // $('select.select2').select2();
+
         });
     });
 

@@ -18,12 +18,12 @@ class ProductSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         Product::truncate();
-        Product::create(['name' => 'برتقال','category_id'=>1,'image' => '1.jpg','unit_id'=>1]);
-        Product::create(['name' => 'مانجا','category_id'=>1,'image' => '2.jpg','unit_id'=>1]);
-        Product::create(['name' => 'شاورما','category_id'=>2,'image' => '3.jpg','unit_id'=>2]);
-        Product::create(['name' => 'كباب','category_id'=>2,'image' => '4.jpg','unit_id'=>2]);
-        Product::create(['name' => 'فليه','category_id'=>3,'image' => '5.jpg','unit_id'=>3]);
-        Product::create(['name' => 'جمبري','category_id'=>3,'image' => '6.jpg','unit_id'=>3]);
+        Product::create(['name' => 'برتقال','category_id'=>1,'image' => '1.jpg']);
+        Product::create(['name' => 'مانجا','category_id'=>1,'image' => '2.jpg']);
+        Product::create(['name' => 'شاورما','category_id'=>2,'image' => '3.jpg']);
+        Product::create(['name' => 'كباب','category_id'=>2,'image' => '4.jpg']);
+        Product::create(['name' => 'فليه','category_id'=>3,'image' => '5.jpg']);
+        Product::create(['name' => 'جمبري','category_id'=>3,'image' => '6.jpg']);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

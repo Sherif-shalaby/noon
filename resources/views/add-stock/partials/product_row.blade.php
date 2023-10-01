@@ -7,11 +7,16 @@
 {{--        <img src="@if(!empty($product->image)){{asset('uploads/products/'.$product->image)}}@else{{asset('/uploads/'.session('logo'))}}@endif"--}}
 {{--             alt="photo" width="50" height="50">--}}
 {{--    </td>--}}
+
     <td>
-        {{ $product['product']['name'] }}
+        @if($product['show_product_data'])
+            {{ $product['product']['name'] }}
+        @endif
     </td>
     <td>
-        {{ $product['product']['sku'] }}
+        @if($product['show_product_data'])
+            {{ $product['product']['sku'] }}
+        @endif
     </td>
     <td>
         <input type="text" class="form-control quantity" style="width: 61px;" required
@@ -21,11 +26,37 @@
         @enderror
     </td>
     <td>
-        {{$product['unit_name']}}
+{{--        {{$product['variation_id'] ?? 0}}--}}
+        <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+            <option value="" selected>{{__('lang.please_select')}}</option>
+            @foreach($product['variations'] as $variant)
+                <option value="{{$variant['id']}}">{{$variant['basic_unit']['name']}}</option>
+            @endforeach
+        </select>
+        <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
+            <i class="fa fa-plus"></i>
+        </button>
+{{--        {{__('lang.add_a_new_batch')}}--}}
     </td>
     <td>
-        {{$product['base_unit_multiplier']}}
+        <span>{{$product['base_unit_multiplier']}}</span>
     </td>
+    <td>
+        <span>{{$product['unit']}}</span>
+    </td>
+    <td>
+        <div class="d-flex justify-content-between">
+            <select class="custom-select " style="width:55px;" wire:model="items.{{ $index }}.fill_type" wire:change="changeFilling({{$index}})">
+                <option selected value="fixed">-</option>
+                <option  value="percent">%</option>
+            </select>
+            <div class="input-group-prepend">
+                <input type="text" class="form-control" wire:model="items.{{ $index }}.fill_quantity" wire:change="changeFilling({{$index}})" style="width: 100px;" required>
+            </div>
+
+        </div>
+    </td>
+
 {{--    <td>--}}
 {{--        <span class="total_quantity">--}}
 {{--            {{$this->total_quantity($index)}}--}}

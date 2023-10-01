@@ -16,23 +16,29 @@
         @enderror
     </td>
     <td>
-        <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
-            <option value="">{{__('lang.please_select')}}</option>
-            @foreach($units as $unit)
-                <option value="{{$unit->id}}">{{$unit->name}}</option>
-            @endforeach
-        </select>
+        <div class="d-flex justify-content-center">
+            <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' id="unit_id" data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
+                <option value="">{{__('lang.please_select')}}</option>
+                @foreach($units as $unit)
+                    <option value="{{$unit->id}}">{{$unit->name}}</option>
+                @endforeach
+            </select>
+            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+        </div>
     </td>
     <td>
         <input type="text" class="form-control unit_equal"  wire:model="rows.{{ $index }}.equal" style="width: 100px;" required >
     </td>
     <td>
-        <select wire:model="rows.{{ $index }}.basic_unit_id" data-name='basic_unit_id' data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
-            <option value="">{{__('lang.please_select')}}</option>
-            @foreach($units as $unit)
-                <option value="{{$unit->id}}">{{$unit->name}}</option>
-            @endforeach
-        </select>
+{{--        <div class="d-flex justify-content-center">--}}
+            <select wire:model="rows.{{ $index }}.basic_unit_id" data-name='basic_unit_id' id="basic_unit_id" data-index="{{$index}}" required class="form-control select2" style="width: 100px;">
+                <option value="">{{__('lang.please_select')}}</option>
+                @foreach($units as $unit)
+                    <option value="{{$unit->id}}">{{$unit->name}}</option>
+                @endforeach
+            </select>
+{{--            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>--}}
+{{--        </div>--}}
     </td>
     <td>
         <div class="d-flex justify-content-between">
@@ -43,7 +49,7 @@
             <div class="input-group-prepend">
                 <input type="text" class="form-control" wire:model="rows.{{ $index }}.fill_quantity" wire:change="changeFilling({{$index}})" style="width: 100px;" required>
             </div>
-           
+
         </div>
     </td>
         <td>
@@ -52,7 +58,7 @@
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
-       
+
         <td>
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price" wire:change="changeSellingPrice({{$index}})" style="width: 100px;" required>
             @error('dollar_selling_price')

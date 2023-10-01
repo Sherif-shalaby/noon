@@ -25,7 +25,7 @@ class PermissionTableSeeder extends Seeder
         foreach ($modulePermissionArray as $key_module => $moudle) {
             if (!empty($subModulePermissionArray[$key_module])) {
                 foreach ($subModulePermissionArray[$key_module] as $key_sub_module =>  $sub_module) {
-                    $data[] = ['name' => $key_module];
+                    // $data[] = ['name' => $key_module];
                     $data[] = ['name' => $key_module . '.' . $key_sub_module . '.view'];
                     $data[] = ['name' => $key_module . '.' . $key_sub_module . '.create'];
                     $data[] = ['name' => $key_module . '.' . $key_sub_module . '.edit'];

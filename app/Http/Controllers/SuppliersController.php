@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\State;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Utils\Util;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -20,6 +21,19 @@ use Illuminate\Support\Facades\Validator;
 
 class SuppliersController extends Controller
 {
+
+    protected $Util;
+
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -109,9 +123,17 @@ class SuppliersController extends Controller
             $data['image'] = store_file($request->file('image'), 'suppliers');
         }
 
-        Supplier::create($data);
+        $supplier = Supplier::create($data);
+        $output = [
+            'success' => true,
+            'id' => $supplier->id,
+            'msg' => __('lang.success')
+        ];
         // return "test";
         // return response()->json(['status' => __('lang.success')]);
+        if ($request->ajax()) {
+            return $output;
+        }
         return redirect()->back()->with('status', __('lang.success'));
     }
 
@@ -207,5 +229,11 @@ class SuppliersController extends Controller
               ];
           }
           return $output;
+    }
+    public function getDropdown()
+    {
+        $suppliers =Supplier::orderBy('name', 'asc')->pluck('name', 'id');
+        $suppliers_dp = $this->Util->createDropdownHtml($suppliers, __('lang.please_select'));
+        return $suppliers_dp;
     }
 }

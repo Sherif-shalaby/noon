@@ -7,11 +7,14 @@
     </div>
     <div class="col-md-2">
         {!! Form::label('unit', __('lang.new_unit'), ['class'=>'h5 pt-3']) !!}
-            {!! Form::select(
+        <div class="d-flex justify-content-center">
+        {!! Form::select(
                 'new_unit_id['.$index.']',
                 $units,isset($variation->unit_id)?$variation->unit_id:null,
-                ['class' => 'form-control select2 new_unit','placeholder'=>__('lang.please_select')]
+                ['class' => 'form-control select2 new_unit','placeholder'=>__('lang.please_select'), 'id' => 'unit_id']
             ) !!}
+            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+        </div>
     </div>
     <div class="col-md-2">
         {!! Form::label('equal', __('lang.equal'),['class'=>'h5 pt-3']) !!}
@@ -32,5 +35,5 @@
             <i class="fa fa-close"></i>
         </button>
     </div>
-    
+
 </div>
