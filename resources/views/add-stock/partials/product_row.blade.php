@@ -37,7 +37,9 @@
         <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
             <i class="fa fa-plus"></i>
         </button>
-{{--        {{__('lang.add_a_new_batch')}}--}}
+        @error('items.'.$index.'.variation_id')
+        <span class="error text-danger">{{ $message }}</span>
+        @enderror
     </td>
     <td>
         <span>{{$product['base_unit_multiplier']}}</span>
@@ -185,19 +187,7 @@
         </div>
     </td>
 </tr>
-<tr>
-    <th></th>
-{{--    <th style="width: 10%;">@lang('lang.type')</th>--}}
-{{--    <th style="width: 10%;">@lang('lang.price_category')</th>--}}
-    {{--    <th style="width: 10%;">@lang('lang.quantity')</th>--}}
-    {{--    <th style="width: 11%;">@lang('lang.b_qty')</th>--}}
-    {{--    <th style="width: 3%;"></th>--}}
-    {{--    <th style="width: 17%;">@lang('lang.price_start_date')</th>--}}
-    {{--    <th style="width: 17%;">@lang('lang.price_end_date')</th>--}}
-    {{--    <th style="width: 20%;">@lang('lang.customer_type')--}}
-    {{--        <i class="dripicons-question" data-toggle="tooltip"--}}
-    {{--           title="@lang('lang.discount_customer_info')"></i>--}}
-    {{--    </th>--}}
+
 @foreach( $product['prices'] as $key => $price)
     <tr>
         <td></td>
@@ -216,15 +206,15 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-{{--        <td>--}}
-{{--            {!! Form::label('price_category' ,__('lang.price_category')) !!}--}}
-{{--            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >--}}
-{{--        </td>--}}
+        <td colspan="2">
+            {!! Form::label('price_category' ,__('lang.price_category')) !!}
+            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
+        </td>
         <td>
             {!! Form::label('price' ,__('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
         </td>
-        <td>
+        <td colspan="2">
             {!! Form::label('' ,__('lang.price')) !!}
             <input type="text" name="" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price_after_desc" placeholder = "{{__('lang.price')}}" readonly >
         </td>
@@ -238,7 +228,7 @@
             <input type="text" class="form-control bonus_quantity" wire:model="items.{{$index}}.prices.{{$key}}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
 
         </td>
-        <td colspan="1">
+        <td colspan="2">
             {!! Form::label('customer_type',__('lang.customer_type')) !!}
             <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
                 @foreach($customer_types as $type)
