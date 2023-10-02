@@ -48,6 +48,13 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+{{--                                <div class="col-md-3">--}}
+{{--                                    {!! Form::label('status', __('lang.status') . ':*', []) !!}--}}
+{{--                                    {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'data-name' => 'status','wire:model' => 'status']) !!}--}}
+{{--                                    @error('status')--}}
+{{--                                    <span class="error text-danger">{{ $message }}</span>--}}
+{{--                                    @enderror--}}
+{{--                                </div>--}}
                                 <div class="col-md-3">
                                     <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
                                     {!! Form::select('invoice_currency', $selected_currencies, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
@@ -72,6 +79,11 @@
                                     @error('divide_costs')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
+                                    <input type="datetime-local" wire:model="transaction_date"
+                                           value="{{ date('Y-m-d\TH:i') }}" class="form-control">
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
@@ -373,6 +385,7 @@
 <div class="view_modal no-print"></div>
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
+@include('suppliers.quick_add',['quick_add'=>1])
 
 
 @push('javascripts')

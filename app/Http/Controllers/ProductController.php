@@ -67,7 +67,8 @@ class ProductController extends Controller
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
-    return view('products.index',compact('products','categories','brands','units','stores','users'));
+      $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+    return view('products.index',compact('products','categories','brands','units','stores','users','subcategories'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
@@ -469,7 +470,7 @@ class ProductController extends Controller
     {
         $index = request()->row_id ?? 0;
         $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-  
+
         return view('products.product_unit_raw',compact(
             'index',
             'units',

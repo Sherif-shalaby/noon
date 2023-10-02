@@ -92,7 +92,6 @@
                             'class' => 'form-control'
                         ]) !!}
                     </div>
-
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-3">
@@ -190,7 +189,34 @@
                             <button type="button" class="btn btn-primary btn-sm ml-2 select_sub_category" data-toggle="modal" data-target="#add_product_tax" data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
-                    {{-- sizes --}}
+                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
+                        <select name="method" id="method" class='form-control select2' data-live-search='true'
+                                placeholder="{{ __('lang.please_select') }}">
+                            <option value="">{{ __('lang.please_select') }}</option>
+                            <option value="inclusive">{{ __('lang.inclusive') }}</option>
+                            <option value="exclusive">{{ __('lang.exclusive') }}</option>
+                        </select>
+                    </div>
+                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="product" class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label>
+                        <div class="d-flex justify-content-center">
+                            <select name="product_tax_id" id="product_tax" class="form-control select2"
+                                    placeholder="{{ __('lang.please_select') }}">
+                                <option value="">{{ __('lang.please_select') }}</option>
+                                @foreach ($product_tax as $tax)
+                                    @if ($tax->status == 'active')
+                                        <option value="{{ $tax->id }}">{{ $tax->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            <button type="button" class="btn btn-primary btn-sm ml-2"
+                                    data-toggle="modal" data-target="#add_product_tax_modal"
+                                    data-select_category="2"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>                    {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
@@ -397,8 +423,6 @@
                     @include('products.crop-image-modal')
                 </div>
             </div>
-        </div>
-    </div>
     @include('store.create',['quick_add'=>$quick_add])
     @include('units.create',['quick_add'=>$quick_add])
     @include('brands.create',['quick_add'=>$quick_add])
