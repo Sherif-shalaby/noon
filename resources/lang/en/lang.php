@@ -463,6 +463,7 @@ return [
     'fill_from_basic_unit'=>'Fill From Basic Unit',
     'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
     'permissions'=>'Permissions',
+    'percent' => 'Percent',
 ];
 
 

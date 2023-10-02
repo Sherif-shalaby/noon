@@ -70,7 +70,7 @@
                                     <th>@lang('lang.weight')</th>
                                     <th>@lang('lang.stores')</th>
                                     <th>@lang('lang.brand')</th>
-                                    <th>@lang('lang.discount')</th>
+{{--                                    <th>@lang('lang.discount')</th>--}}
                                     <th>@lang('added_by')</th>
                                     <th>@lang('updated_by')</th>
                                     <th>@lang('lang.action')</th>
@@ -101,11 +101,11 @@
                                         @endforeach
                                     </td>
                                     <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
-                                    <td>
-                                        @foreach($product->product_prices as $price)
-                                        {{$price->price_category." : ".$price->price}} <br>
-                                        @endforeach
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        @foreach($product->product_prices as $price)--}}
+{{--                                        {{$price->price_category." : ".$price->price}} <br>--}}
+{{--                                        @endforeach--}}
+{{--                                    </td>--}}
                                     {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
                                     <td>
                                         @if ($product->created_by  > 0 and $product->created_by != null)
