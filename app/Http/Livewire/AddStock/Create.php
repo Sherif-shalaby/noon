@@ -7,6 +7,7 @@ use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\CustomerType;
 use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\MoneySafe;
@@ -62,7 +63,6 @@ class Create extends Component
             $recent_stock=[];
         }else{
             $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
-//dd($recent_stock);
             if(!empty($recent_stock)){
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ??'' ;
@@ -109,9 +109,9 @@ class Create extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-//        $variations=Variation::orderBy('created_at','desc')->get();
         $stores = Store::getDropdown();
         $departments = Category::get();
+        $customer_types = CustomerType::latest()->get();
         $search_result = '';
         if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
@@ -157,7 +157,7 @@ class Create extends Component
             'selected_currencies',
             'preparers' ,
             'products',
-//            'variations',
+            'customer_types',
             'departments',
             'search_result',
             'users'));
@@ -352,10 +352,8 @@ class Create extends Component
             $this->searchProduct = '';
 
         }
-
         $product = Product::find($id);
         $variations = $product->variations;
-
         if($add_via == 'unit'){
             $show_product_data = false;
             $this->addNewProduct($variations,$product,$show_product_data);
@@ -382,6 +380,8 @@ class Create extends Component
         }
 
     }
+
+//    public function getCurrentStock($product_id){
     public function addNewProduct($variations,$product,$show_product_data){
 //        $current_stock = $this->getCurrentStock($product->id);
         $new_item = [
@@ -403,6 +403,16 @@ class Create extends Component
             'total_cost' => 0,
             'current_stock' =>0,
             'total_stock' => 0 + 1,
+            'prices' => [
+                [
+                    'price_type' => null,
+                    'price_category' => null,
+                    'price' => null,
+                    'discount_quantity' => null,
+                    'bonus_quantity' => null,
+                    'price_customer_types' => null,
+                ],
+            ],
         ];
 //    if ($show_product_data){
 //        array_unshift($this->items, $new_item);
@@ -410,16 +420,29 @@ class Create extends Component
 //    else{
         array_push($this->items, $new_item);
 //    }
-
     }
-
-//    public function getCurrentStock($product_id){
 //        $stocks = AddStockLine::where('product_id',$product_id)->get();
 //        foreach ($stocks as $stock){
 //            dd($stock->variation);
 //        }
 //        dd($stocks);
 //    }
+    public function addPriceRow($index){
+          $new_price = [
+              'price_type' => null,
+              'price_category' => null,
+              'price' => null,
+              'discount_quantity' => null,
+              'bonus_quantity' => null,
+              'price_customer_types' => null,
+          ];
+        array_unshift($this->items[$index]['prices'], $new_price);
+    }
+  public function delete_price_raw($index,$key)
+  {
+//      dd($index,$key);
+      unset($this->items[$index]['prices'][$key]);
+  }
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
