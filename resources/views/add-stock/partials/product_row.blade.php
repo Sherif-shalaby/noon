@@ -29,8 +29,9 @@
 {{--        {{$product['variation_id'] ?? 0}}--}}
         <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
             <option value="" selected>{{__('lang.please_select')}}</option>
+
             @foreach($product['variations'] as $variant)
-                <option value="{{$variant['id']}}">{{$variant['basic_unit']['name']}}</option>
+                <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
             @endforeach
         </select>
         <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
@@ -184,13 +185,60 @@
         </div>
     </td>
 </tr>
+@foreach( $product['prices'] as $key => $price)
+    <tr>
+        <td></td>
+        <td>
+            {!! Form::select('price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
+                // 'id' => 'price_type',
+                'class' => ' form-control select2 price_type',
+                'data-name' => 'price_type',
+                'data-index' =>$index,
+                'placeholder' => __('lang.please_select'),
+                'wire:model' => 'items.'.$index.'.prices.'.$index.'.price_type',
+            ]) !!}
+            @error('items.'.$index.'.prices.'.$index.'.price_type')
+            <br>
+            <label class="text-danger error-msg">{{ $message }}</label>
+            @enderror
+        </td>
+        <td>
+            <input type="text" class="form-control price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
+        </td>
+        <td>
+            <input type="text" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" placeholder = "{{__('lang.price')}}" >
+        </td>
+        <td>
+            <input type="text" class="form-control discount_quantity" wire:model="iitems.{{$index}}.prices.{{$key}}.discount_quantity" placeholder = "{{__('lang.quantity')}}" >
 
-{{--<tr>--}}
-{{--    <td></td>--}}
-{{--    <td>--}}
-{{--        {!! Form::label('unit', __('lang.unit'), []) !!} <br>--}}
-{{--<select name="" id=""></select>    </td>--}}
-{{--</tr>--}}
+        </td>
+        <td>
+            <input type="text" class="form-control bonus_quantity" wire:model="items.{{$index}}.prices.{{$key}}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
+
+        </td>
+        <td>
+            <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
+                @foreach($customer_types as $type)
+                    <option value="{{$type->id}}">{{$type->name}}</option>
+                @endforeach
+            </select>
+        </td>
+         <td>
+            <button type="button" class="btn btn-sm btn-primary" wire:click="addPriceRow({{ $index }})">
+                <i class="fa fa-plus"></i>
+            </button>
+            @if($key > 0)
+                <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_price_raw({{ $index }},{{ $key }})">
+                    <i class="fa fa-trash"></i>
+                </div>
+            @endif
+        </td>
+
+
+
+    </tr>
+
+@endforeach
 
 <tr>
     <td></td>
