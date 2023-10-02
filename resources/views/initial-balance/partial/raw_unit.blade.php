@@ -97,16 +97,59 @@
             {{$this->total_quantity($index) ?? 0}}
         </span>
     </td>
-    {{-- <td>
-        <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="customSwitch{{$index}}" wire:model="rows.{{ $index }}.change_price_stock">
-            <label class="custom-control-label" for="customSwitch{{$index}}"></label>
-        </div>
-    </td> --}}
     <td  class="text-center">
         <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_product({{$index}})">
             <i class="fa fa-trash"></i>
         </div>
     </td>
+</tr>
+<tr>
+    <td>
+    </td>
+    <td>
+
+
+        {!! Form::select('price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
+            // 'id' => 'price_type',
+            'class' => ' form-control select2 price_type',
+            'data-name' => 'price_type',
+            'data-index' =>$index,
+            'placeholder' => __('lang.please_select'),
+            'wire:model' => 'rows.'.$index.'.price_type',
+        ]) !!}
+        @error('rows.'.$index.'.price_type')
+        <br>
+            <label class="text-danger error-msg">{{ $message }}</label>
+        @enderror
+    </td>
+    <td>
+        <input type="text" class="form-control price_category" wire:model="rows.{{ $index }}.price_category" maxlength="6" >
+
+    </td>
+    <td>
+        <input type="text" class="form-control price" wire:model="rows.{{ $index }}.price" placeholder = "{{__('lang.price')}}" >
+
+    </td>
+    <td>
+        <input type="text" class="form-control discount_quantity" wire:model="rows.{{ $index }}.discount_quantity" placeholder = "{{__('lang.quantity')}}" >
+
+    </td>
+    <td>
+        <input type="text" class="form-control bonus_quantity" wire:model="rows.{{ $index }}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
+
+    </td>
+    <td>
+        <select wire:model="rows.{{ $index }}.price_customer_types" data-name='price_customer_types' data-index="{{$index}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
+            @foreach($customer_types as $type)
+                <option value="{{$type->id}}">{{$type->name}}</option>
+            @endforeach
+        </select>
+    </td>
+    {{-- <td>
+        <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_price_raw({{$index}})">
+            <i class="fa fa-trash"></i>
+        </div>
+    </td> --}}
+
 </tr>
 

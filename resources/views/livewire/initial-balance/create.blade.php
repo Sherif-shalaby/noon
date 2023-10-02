@@ -186,13 +186,13 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
-                                <select wire:model="item.0.method" id="method" class='form-control select2'
-                                    data-live-search='true' placeholder="{{ __('lang.please_select') }}"
-                                    data-name="method">
-                                    <option value="">{{ __('lang.please_select') }}</option>
-                                    <option value="inclusive">{{ __('lang.inclusive') }}</option>
-                                    <option value="exclusive">{{ __('lang.exclusive') }}</option>
-                                </select>
+                                {!! Form::select('method', ['inclusive'=>__('lang.inclusive'),'exclusive'=>__('lang.exclusive')], $item[0]['method'], [
+                                    'id' => 'method',
+                                    'class' => ' form-control select2 method',
+                                    'data-name' => 'method',
+                                    'placeholder' => __('lang.please_select'),
+                                    'wire:model' => 'item.0.method',
+                                ]) !!}
                             </div>
                             {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
                             <div class="col-md-3">
@@ -231,7 +231,18 @@
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
                             </div>
+
                             <div class="col-md-3">
+                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
+                                <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
+                                    class='form-control weight' />
+                                <br>
+                                @error('item.0.weight')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-1"></div>
+                            <div class="col-md-2">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
                                 <input type="text" wire:model='item.0.height' wire:change='changeSize()'
                                     class='form-control height' />
@@ -243,7 +254,7 @@
 
 
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
                                 <input type="text" wire:model='item.0.length' wire:change='changeSize()'
                                     class='form-control length' />
@@ -253,7 +264,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
                                 <input type="text" wire:model='item.0.width' wire:change='changeSize()'
                                     class='form-control width' />
@@ -262,7 +273,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
                                 <input type="text" wire:model='item.0.size' wire:change='changeSize()'
                                     class='form-control size' />
@@ -271,26 +282,12 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="row">
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('quantity', __('lang.quantity')."*", ['class' => 'h5']) !!}
-                                <input type="number" class="form-control quantity"  name="quantity" required >
-                            </div> --}}
-                            <div class="col-md-3">
-                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5']) !!}
-                                <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
-                                    class='form-control weight' />
-                                <br>
-                                @error('item.0.weight')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
+                            
                         </div>
                 
                         <br>
                         {{-- add prices --}}
-                        <div class="row">
+                       {{-- <div class="row">
                                     <div class="col-md-12 pt-5">
                                         <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
                                     </div>
@@ -327,9 +324,7 @@
                                         <input type="hidden" name="raw_price_index" id="raw_price_index"
                                             value="1">
                                     </div>
-                                {{-- </div>
-                            </div> --}}
-                        </div>
+                        </div> 
                         <br><br>
                         <div class="row text-right">
                             <div class="col">
@@ -340,6 +335,15 @@
                         </div>
                         <br>
                         {{-- add prices --}}
+                        <br>
+                        <div class="row text-right">
+                            <div class="col">
+                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
+                                    <i class="fa fa-plus"></i> @lang('lang.add')
+                                </button>
+                            </div>
+                        </div>
+                        <br>
                         <div class="row">
                             <div class="table-responsive">
                                 <table class="table" style="width: auto">
@@ -391,7 +395,7 @@
                             </h4>
                         </div>
                         <br>
-                    </div>
+                    </div> 
                     {{-- {!! Form::close() !!} --}}
                     <div class="col-sm-12">
                         <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
