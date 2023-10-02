@@ -256,7 +256,7 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                 Swal.fire("Success", result.msg, "success");
                 $("#add_product_tax_modal").modal("hide");
                 var product_tax_id = result.id;
-                console.log(product_tax_id)
+                alert(product_tax_id)
                 $.ajax({
                     method: "get",
                     url: "/product-tax/get-dropdown",
