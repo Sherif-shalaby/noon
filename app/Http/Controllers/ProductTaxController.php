@@ -148,7 +148,7 @@ class ProductTaxController extends Controller
      }
     public function getDropdown()
     {
-        $product_tax = ProductTax::orderBy('name', 'desc')->pluck('name', 'id');
+        $product_tax = ProductTax::orderBy('name', 'desc')->pluck('name', 'id')->toArray();
         $product_tax_dp = $this->Util->createDropdownHtml($product_tax, __('lang.please_select'));
         return $product_tax_dp;
     }

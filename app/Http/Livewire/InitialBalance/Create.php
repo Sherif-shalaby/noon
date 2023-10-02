@@ -80,6 +80,7 @@ class Create extends Component
 
     public function listenerReferenceHere($data)
     {
+        // dd(44);
         if(isset($data['var1'])){
             if(($data['var1']=="unit_id" || $data['var1']=="basic_unit_id") && $data['var3']!==''){
                 $this->rows[$data['var3']][$data['var1']]=$data['var2'];
@@ -95,9 +96,14 @@ class Create extends Component
                     $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if($data['var1']=='subcategory_id1'){
+                    $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
                     $this->subcategories2 = Category::where('parent_id',$this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if($data['var1']=='subcategory_id2'){
+                    $this->subcategories2 = Category::where('parent_id',$this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                if($data['var1']=='subcategory_id3'){
                     $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
 
@@ -229,7 +235,7 @@ class Create extends Component
     }
     public function store()
     {
-        dd($this->rows);
+        dd($this->item);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
