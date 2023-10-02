@@ -53,10 +53,12 @@ class Create extends Component
     'payment_status' => 'required',
     'method' => 'required',
     'amount' => 'required',
-    'transaction_currency' => 'required'
+    'transaction_currency' => 'required',
+    'items.*.variation_id' => 'required',
 ];
 
     public function mount(){
+        $this->paid_on = Carbon::now()->format('Y-m-d');
         $this->transaction_date = date('Y-m-d\TH:i');
         $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
         if($this->clear_all_input_stock_form ==0){
@@ -302,21 +304,6 @@ class Create extends Component
             // add  products to stock lines
             foreach ($this->items as $index => $item){
 
-                // add product Prices
-                if(!empty($item['prices'])){
-                    foreach ($item['prices'] as $price){
-                        $price_data = [
-                            'product_id' => $item['product']['id'],
-                            'price_type' => $price['price_type'],
-                            'price' => $price['price'],
-                            'quantity' => $price['discount_quantity'],
-                            'bonus_quantity' => $price['bonus_quantity'],
-                            'price_customer_types' => $price['price_customer_types'],
-                            'created_by' => Auth::user()->id,
-                        ];
-                        ProductPrice::create($price_data);
-                    }
-                }
                 // change price stock
                 if (isset($this->product['change_price_stock']) && $this->product['change_price_stock']) {
                     if (isset($product->stock_lines)) {
@@ -349,8 +336,26 @@ class Create extends Component
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
-                AddStockLine::create($add_stock_data);
+                $stock_line = AddStockLine::create($add_stock_data);
+
                 $this->updateProductQuantityStore($item['product']['id'], $transaction->store_id, $item['quantity'], 0);
+                // add product Prices
+                if(!empty($item['prices'])){
+                    foreach ($item['prices'] as $price){
+                        $price_data = [
+                            'product_id' => $item['product']['id'],
+                            'price_type' => $price['price_type'],
+                            'price_category' => $price['price_category'],
+                            'price' => $price['price'],
+                            'quantity' => $price['discount_quantity'],
+                            'bonus_quantity' => $price['bonus_quantity'],
+                            'price_customer_types' => $price['price_customer_types'],
+                            'created_by' => Auth::user()->id,
+                            'stock_line_id ' => $stock_line->id,
+                        ];
+                        ProductPrice::create($price_data);
+                    }
+                }
 
             }
 
