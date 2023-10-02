@@ -444,11 +444,13 @@
             console.log(name)
             if (name != undefined) {
                 var index = $(this).data('index');
+                var key = $(this).data('key');
                 var select2 = $(this);
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),
-                    var3: index
+                    var3: index,
+                    var4: key
                 });
             }
 

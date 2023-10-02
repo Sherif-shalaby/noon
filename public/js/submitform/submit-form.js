@@ -256,7 +256,6 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                 Swal.fire("Success", result.msg, "success");
                 $("#add_product_tax_modal").modal("hide");
                 var product_tax_id = result.id;
-                alert(product_tax_id)
                 $.ajax({
                     method: "get",
                     url: "/product-tax/get-dropdown",
@@ -265,7 +264,7 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     success: function (data_html) {
                         console.log(data_html)
                         $("#product_tax").empty().append(data_html);
-                        $("#product_tax").val(product_tax_id).trigger();
+                        $("#product_tax").val(product_tax_id).change();
                     },
                 });
             } else {
