@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Utils\Util;
+use Mockery\Undefined;
+use PhpParser\Node\Expr\FuncCall;
 
 class CategoryController extends Controller
 {
@@ -195,10 +197,21 @@ class CategoryController extends Controller
 
         return $categories_dp;
     }
-    public function getDropdown()
-    {
-        $units = Category::orderBy('name', 'asc')->pluck('name', 'id');
+    public function getDropdown($category_id)
+    {   
+        $units=[];
+        if($category_id==0){
+            $units = Category::whereNull('parent_id')->orderBy('name', 'asc')->pluck('name', 'id');
+        }
+        else{
+            $units = Category::where('parent_id',$category_id)->orderBy('name', 'asc')->pluck('name', 'id');
+        }
         $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
         return $units_dp;
+    }
+    public Function getSubCategoryModal(){
+        $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $quick_add=1;
+        return view('categories.create_sub_cat_modal', compact('subcategories','quick_add'));
     }
 }

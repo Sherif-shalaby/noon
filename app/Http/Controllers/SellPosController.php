@@ -15,6 +15,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SellPosController extends Controller
 {
@@ -73,7 +74,7 @@ class SellPosController extends Controller
             if (empty($transaction->received_currency_id)) {
             }
 
-            $html_content = $this->transactionUtil->getInvoicePrint($transaction, $payment_types);
+            $html_content = $this->transactionUtil->getInvoicePrint($transaction, $payment_types,null);
 
             $output = [
                 'success' => true,

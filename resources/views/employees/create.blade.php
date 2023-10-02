@@ -2,6 +2,12 @@
 @section('title', __('lang.jobs'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
+        <div class="widgetbar">
+            <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
+            {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
+            {{--                            class="dripicons-plus"></i>--}}
+            {{--                        @lang('lang.add_new_employee')</a>--}}
+        </div>
     </div>
 @endsection
 @section('content')
@@ -98,7 +104,7 @@
                                                     <div class="i-checks">
                                                         <input id="number_of_leaves{{ $leave_type->id }}"
                                                                name="number_of_leaves[{{ $leave_type->id }}][enabled]"
-                                                               type="checkbox" value="1" class="form-control-custom">
+                                                               type="checkbox" value="1">
                                                         <label
                                                             for="number_of_leaves{{ $leave_type->id }}"><strong>{{ $leave_type->name }}</strong></label>
                                                         <input type="number" class="form-control"
@@ -140,8 +146,7 @@
                                                                 <div class="i-checks">
                                                                     <input id="working_day_per_week{{ $key }}"
                                                                            name="working_day_per_week[{{ $key }}]"
-                                                                           type="checkbox" value="1"
-                                                                           class="form-control-custom">
+                                                                           type="checkbox" value="1">
                                                                     <label
                                                                         for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
                                                                 </div>

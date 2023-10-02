@@ -26,7 +26,9 @@ class CustomerRequest extends FormRequest
         return [
             'name' => 'required|max:255|unique:customers',
             'customer_type_id'=>'required',
-            'customer_type_id'=>'required'
+            'notes' => 'nullable|max:255',
+            'city_id' => 'nullable',
+            'state_id' => 'nullable',
         ];
     }
     public function messages()
@@ -35,6 +37,7 @@ class CustomerRequest extends FormRequest
         'name.required'=>__('lang.NameRequired'),
         'customer_type_id.required'=>__('lang.NameRequired'),
         'name.unique'=>__('lang.NameUnique'),
+        'notes.max'=>"Max Number of Characters is 255 characters",
         ];
     }
 }

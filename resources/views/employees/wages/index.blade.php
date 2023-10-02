@@ -19,12 +19,12 @@
                       </a>
                 </div>
             </div>
-   </div>
+        </div>
     </div>
 @endsection
 @section('content')
-       <!-- Start Contentbar -->    
-       <div class="contentbar">                
+       <!-- Start Contentbar -->
+       <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
@@ -80,7 +80,8 @@
                                             @endif
                                         @endif
                                    </td>
-                                    <td>{{$wage->employee->job_type->title}}</td>
+                                   <td></td>
+                                    {{-- <td>{{$wage->employee->job_type->title}}</td> --}}
                                     <td>
                                         {{-- {{ $settings['currency'] }} --}}
                                         {{ @num_format($wage->net_amount) }}
@@ -91,11 +92,11 @@
                                         @endif
                                     </td>
                                     <td>{{ @format_date($wage->payment_date) }}</td>
-                                    <td> 
+                                    <td>
                                         @if (!empty($wage->wage_transaction))
                                         {{ $wage->wage_transaction->source->name }}
                                         @endif
-                                    </td> 
+                                    </td>
                                     <td>{{ ucfirst($wage->status) }}</td>
                                     <td>
                                         @if ($wage->created_by  > 0 and $wage->created_by != null)

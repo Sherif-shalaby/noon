@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\City;
+use App\Models\Country;
 use App\Models\Product;
+use App\Models\State;
 use App\Models\Supplier;
+use App\Models\System;
+use App\Utils\Util;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,6 +21,19 @@ use Illuminate\Support\Facades\Validator;
 
 class SuppliersController extends Controller
 {
+
+    protected $Util;
+
+    /**
+     * Constructor
+     *
+     * @param Utils $product
+     * @return void
+     */
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,26 +42,40 @@ class SuppliersController extends Controller
     public function index()
     {
         $suppliers = Supplier::orderBy('id','desc')->get();
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
+        // return $settings;
 
         return view('suppliers.index')->with(compact(
-            'suppliers',
+            'suppliers','countryId' , 'countryName'
         ));
+        // return view('suppliers.index',compact(
+        //     'suppliers','countryId' , 'countryName'
+        // ));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
+    /* ++++++++++++++++++++++++++ create() ++++++++++++++++++++ */
     public function create()
     {
         $supplier_categories = Category::where('parent_id',null)->pluck('name', 'id');
-
+        // ++++++++++++++++++++ Country , State , Cities Selectbox ++++++++++++++++
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
         return view('suppliers.create')->with(compact(
-            'supplier_categories',
+            'supplier_categories','countryId','countryName'
         ));
     }
-
+    // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where('country_id', $request->country_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++++++++++ fetchCity(): to get "cities" of "selected city" selectbox ++++++++++++++
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
+        return response()->json($data);
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -52,14 +84,16 @@ class SuppliersController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => ['required', 'max:30'],
+                'name' => ['nullable', 'max:30'],
+                'notes' => ['nullable', 'max:255'],
                 'company_name' => ['nullable', 'max:30'],
                 'vat_number' => ['nullable', 'max:30'],
-                'email' => ['nullable', 'email'],
-                'mobile_number' => ['nullable', 'max:30'],
+                'email' => ['nullable', 'max:50'],
+                'mobile_number' => ['required', 'max:30'],
                 'address' => ['nullable', 'max:60'],
                 'city' => ['nullable', 'max:30'],
                 'state' => ['nullable', 'max:30'],
@@ -78,16 +112,29 @@ class SuppliersController extends Controller
 
             return redirect()->back()->withInput()->with('status', $output);
         }
-        $data = $request->except('_token');
+        $data = $request->except('_token','mobile_number','email');
+        // ++++++++++++++ store mobile_number in array ++++++++++++++++++
+        $data['mobile_number'] = json_encode($request->mobile_number);
+        // ++++++++++++++ store email in array ++++++++++++++++++
+        $data['email'] = json_encode($request->email);
+
         $data['created_by'] = Auth::user()->id;
         if ($request->file('image')) {
             $data['image'] = store_file($request->file('image'), 'suppliers');
         }
 
-        Supplier::create($data);
+        $supplier = Supplier::create($data);
+        $output = [
+            'success' => true,
+            'id' => $supplier->id,
+            'msg' => __('lang.success')
+        ];
         // return "test";
-        return response()->json(['status' => __('lang.success')]);
-        // return redirect()->back()->with('status', __('lang.success'));
+        // return response()->json(['status' => __('lang.success')]);
+        if ($request->ajax()) {
+            return $output;
+        }
+        return redirect()->back()->with('status', __('lang.success'));
     }
 
     /**
@@ -182,5 +229,11 @@ class SuppliersController extends Controller
               ];
           }
           return $output;
+    }
+    public function getDropdown()
+    {
+        $suppliers =Supplier::orderBy('name', 'asc')->pluck('name', 'id');
+        $suppliers_dp = $this->Util->createDropdownHtml($suppliers, __('lang.please_select'));
+        return $suppliers_dp;
     }
 }
