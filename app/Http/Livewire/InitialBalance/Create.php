@@ -428,10 +428,15 @@ class Create extends Component
         'height' =>$this->edit_product['height'],
         'length'=>$this->edit_product['length'],
         'size' => $this->edit_product['size'],
-        'divide_costs'=>'',
+        'method'=>'',
         'status'=>'',
         'change_current_stock'=>0,
-        'exchange_rate'=>$this->exchange_rate];
+        'exchange_rate'=>$this->exchange_rate,
+        'store_id' => '',
+        'supplier_id' => '','product_tax_id'=>''];
+        
+
+
         $variations=Variation::where('product_id',$this->edit_product['id'])->get();
         foreach($variations as $variation){
             $newRow = [
@@ -447,8 +452,18 @@ class Create extends Component
             'unit_id'=>$variation->unit_id,
             'basic_unit_id'=>$variation->basic_unit_id,
             'change_price_stock'=>'',
-            // 'skuExist'=>0,
             'equal'=>$variation->equal,
+            'prices' => [
+                [
+                    'price_type' => null,
+                    'price_category' => null,
+                    'price' => null,
+                    'discount_quantity' => null,
+                    'bonus_quantity' => null,
+                    'price_customer_types' => null,
+                    'price_after_desc' => null,
+                ],
+            ],
             ];
             $this->rows[] = $newRow;
         }
