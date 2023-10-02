@@ -131,7 +131,7 @@ return array(
     'size'=>'الحجم',
     'add_prices_for_different_users'=>'اضافة سعر لكل زبون',
     'price'=>'السعر',
-    'price_category'=>'اسم مختصر للزبون',
+    'price_category'=>'اسم مختصر للخصم',
     'price_start_date'=>'تاريخ بداية للسعر',
     'price_end_date'=>'تاريخ نهاية للسعر',
     'permenant'=>'دائم',

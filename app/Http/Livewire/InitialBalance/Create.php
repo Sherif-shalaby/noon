@@ -71,7 +71,7 @@ class Create extends Component
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-        'rows.*.price_customer_types' => 'array',
+        'rows.*.prices.*.price_customer_types' => 'array',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -80,15 +80,18 @@ class Create extends Component
 
     public function listenerReferenceHere($data)
     {
-        // dd(44);
         if(isset($data['var1'])){
+            // dd($data['var1']);
             if(($data['var1']=="unit_id" || $data['var1']=="basic_unit_id") && $data['var3']!==''){
                 $this->rows[$data['var3']][$data['var1']]=$data['var2'];
                 if($data['var1']=="unit_id"){
                     $this->changeUnit($data['var3']);
                 }
-            }else if(($data['var1']=="price_customer_types" || $data['var1']=="price_type") && $data['var3']!==''){
-                $this->rows[$data['var3']][$data['var1']]=$data['var2'];
+            }else if($data['var1']=="price_customer_types" && $data['var3']!==''){
+                $row=$this->rows[$data['var3']]['prices'][$data['var4']]['price_customer_types']=$data['var2'];
+                // dd($data['var2']);
+                // $row[$data['var4']]['price_customer_types']=$data['var2'];
+
             }
             else{
                 $this->item[0][$data['var1']]=$data['var2'];
@@ -200,12 +203,17 @@ class Create extends Component
     'basic_unit_id'=>'',
     'change_price_stock'=>'',
     'equal'=>'',
-    'price_type' => '',
-    'price' =>'',
-    'discount_quantity' => '',
-    'bonus_quantity' =>'',
-    'price_category' =>'',
-    'price_customer_types' => '',
+    'prices' => [
+        [
+            'price_type' => null,
+            'price_category' => null,
+            'price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+        ],
+    ],
     ];
     array_unshift($this->rows, $newRow);
     // $this->dispatchBrowserEvent('initialize-select2');
@@ -225,17 +233,19 @@ class Create extends Component
         if($unit_index!==''){
             $this->rows[$index]['equal']=1;
             $this->rows[$index]['fill_type']=$this->rows[$unit_index]['fill_type'];
-            $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['dollar_purchase_price']=(float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['dollar_selling_price']=(float)$this->rows[$unit_index]['dollar_selling_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['fill_quantity']=((float)$this->rows[$index]['dollar_selling_price'])-((float)$this->rows[$index]['dollar_purchase_price']);
-        
+            // dd((float)$this->rows[$unit_index]['equal']);
+            if((float)$this->rows[$unit_index]['equal']!=0){
+                $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
+                $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
+                $this->rows[$index]['dollar_purchase_price']=(float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal'];
+                $this->rows[$index]['dollar_selling_price']=(float)$this->rows[$unit_index]['dollar_selling_price']/(float)$this->rows[$unit_index]['equal'];
+                $this->rows[$index]['fill_quantity']=((float)$this->rows[$index]['dollar_selling_price'])-((float)$this->rows[$index]['dollar_purchase_price']);
+            }
         }
     }
     public function store()
     {
-        dd($this->item);
+        // dd($this->rows);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -312,6 +322,7 @@ class Create extends Component
 
                 $add_stock_data = [
                     'product_id' => $product->id,
+                    'variation_id' => $Variation->id,
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $this->rows[$index]['quantity'],
                     'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null ,
@@ -341,17 +352,22 @@ class Create extends Component
                 //     }
                 // }
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
-                $data_des=[
-                    'price_type' => $this->rows[$index]['price_type'],
-                    'price' => $this->rows[$index]['price'],
-                    'quantity' => $this->rows[$index]['discount_quantity'],
-                    'bonus_quantity' => $this->rows[$index]['bonus_quantity'],
-                    'price_category' => $this->rows[$index]['price_category'],
-                    'stock_line_id'=>$stockLine->id,
-                    'price_customer_types' => $this->rows[$index]['price_customer_types'],
-                    'created_by' => Auth::user()->id,
-                ];
-                ProductPrice::create($data_des);
+                if(!empty($row['prices'])){
+                    foreach ($row['prices'] as $price){
+                        $price_data = [
+                            'variation_id' =>$Variation->id,
+                            'stock_line_id' =>$stockLine->id,
+                            'price_type' => $price['price_type'],
+                            'price' => $price['price'],
+                            'price_category' => $price['price_category'],
+                            'quantity' => $price['discount_quantity'],
+                            'bonus_quantity' => $price['bonus_quantity'],
+                            'price_customer_types' => $price['price_customer_types'],
+                            'created_by' => Auth::user()->id,
+                        ];
+                        ProductPrice::create($price_data);
+                    }
+                }
             }
              DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => __('lang.success'),]);
@@ -592,4 +608,34 @@ class Create extends Component
 
         return true;
     }
+    public function addPriceRow($index){
+        $new_price = [
+            'price_type' => null,
+            'price_category' => null,
+            'price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+        ];
+      array_unshift($this->rows[$index]['prices'], $new_price);
+  }
+public function delete_price_raw($index,$key)
+{
+    unset($this->rows[$index]['prices'][$key]);
+}
+public function changePrice($index,$key)
+{
+    if(!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price']))  {
+        $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :
+            $this->rows[$index]['dollar_selling_price'];
+        if($this->rows[$index]['prices'][$key]['price_type'] == 'fixed'){
+            $this->rows[$index]['prices'][$key]['price_after_desc'] = $sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
+        }
+        elseif($this->rows[$index]['prices'][$key]['price_type'] == 'percentage'){
+            $percent = $this->rows[$index]['prices'][$key]['price'] / 100;
+            $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $this->items[$index]['prices'][$key]['price'] ));
+        }
+    }
+}
 }

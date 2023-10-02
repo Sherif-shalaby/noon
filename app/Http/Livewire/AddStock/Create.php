@@ -455,7 +455,6 @@ class Create extends Component
 
     public function changePrice($index,$key)
     {
-//        dd($this->items[$index]['prices'][$key]['price_type']);
         if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price']))  {
             $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :
                 $this->items[$index]['dollar_selling_price'];
@@ -467,7 +466,6 @@ class Create extends Component
                 $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $this->items[$index]['prices'][$key]['price'] ));
             }
         }
-//        dd($this->items[$index]['prices'][$key]['price_after_desc']);
     }
 
     public function getVariationData($index){
