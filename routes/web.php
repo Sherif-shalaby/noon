@@ -138,8 +138,8 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### General Tax ###########
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
-    Route::resource('product-tax', ProductTaxController::class);
     Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
+    Route::resource('product-tax', ProductTaxController::class);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########

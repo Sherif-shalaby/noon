@@ -166,7 +166,7 @@ $(".openCategoryModal").click(function (e){
         main_category_id= $("#categoryId").val();
     }
     else if(select_category=="2"){
-        main_category_id= $("#subCategoryId1").val();
+        main_category_id= $("#subcategory_id1").val();
     }
     else if(select_category=="3"){
         main_category_id= $("#subCategoryId2").val();
@@ -191,7 +191,7 @@ $(document).on("submit", "#category-form", function (e) {
                 Swal.fire("Success", result.msg, "success");
                 $("#createCategoryModal").modal("hide");
                 $(".createSubCategoryModal").modal("hide");
-                console.log(result);
+                console.log(main_category_id);
                 var category_id = result.id;
                 $.ajax({
                     method: "get",
@@ -199,20 +199,25 @@ $(document).on("submit", "#category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        console.log(data_html)
                         if(select_category=="0"){
                             $("#categoryId").empty().append(data_html);
                             $("#categoryId").val(category_id).trigger();
                         }else if(select_category=="2"){
+                            console.log(data_html);
+
                             $("#subCategoryId2").empty().append(data_html);
-                            $("#subCategoryId2").val(category_id).trigger();
+                            $("#subCategoryId2").val(category_id).change();
+                            // $("#subCategoryId2").val(category_id).trigger();
                         }else if(select_category=="3"){
                             $("#subCategoryId3").empty().append(data_html);
-                            $("#subCategoryId3").val(category_id).trigger();
+                            $("#subCategoryId3").val(category_id).change();
+                            // $("#subCategoryId3").val(category_id).trigger();
                         }
                         else if(select_category=="1"){
-                            $("#subCategoryId1").empty().append(data_html);
-                            $("#subCategoryId1").val(category_id).trigger();
+                            $("#subcategory_id1").empty().append(data_html);
+                            $("#subcategory_id1").val(category_id).change();
+
+                            // $("#subcategory_id1").val(category_id).trigger();
                         }
                     }
                 });
@@ -258,6 +263,7 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
+                        console.log(data_html)
                         $("#product_tax").empty().append(data_html);
                         $("#product_tax").val(product_tax_id).trigger();
                     },
