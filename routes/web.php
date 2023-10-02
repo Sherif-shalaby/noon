@@ -14,6 +14,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\DailyReportSummary;
@@ -34,6 +35,7 @@ use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\SellPosController;
 use App\Http\Controllers\SupplierReportController;
+use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Models\Product;
 use App\Models\PurchaseOrderLine;
 
@@ -156,6 +158,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
@@ -173,7 +176,9 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
-
+    // ################################# Task : customer_price_offer #################################
+    Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
+    Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));

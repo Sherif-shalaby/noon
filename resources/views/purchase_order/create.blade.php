@@ -129,11 +129,13 @@
                                                             <td>{{$product->name}}</td>
                                                             <td>{{$product->sku}}</td>
                                                             <td>{{$product->category->name}}</td>
-                                                            <td>
-                                                                @foreach($product->subcategories as $subcategory)
-                                                                    {{$subcategory->name}}<br>
-                                                                @endforeach
-                                                            </td>
+                                                            {{-- <td>
+                                                                @if( $product->subcategories != null && $product->subcategories != '' )
+                                                                    @foreach($product->subcategories as $subcategory)
+                                                                        {{$subcategory->name}}<br>
+                                                                    @endforeach
+                                                                @endif
+                                                            </td> --}}
                                                             <td>{{$product->height}}</td>
                                                             <td>{{$product->length}}</td>
                                                             <td>{{$product->width}}</td>
