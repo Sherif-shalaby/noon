@@ -466,6 +466,20 @@ return [
     'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
     'permissions'=>'Permissions',
     'percent' => 'Percent',
+    'sell_car'=>'Sell Car',
+    'add_sell_car'=>'Add Sell Car',
+    'edit_sell_car'=>'Edit Sell Car',
+    'driver_name'=>'Driver Name',
+    'car_name'=>'Car Name',
+    'car_number'=>'Car Number',
+    'sell_representative'=>'Sell Representative',
+    'car_type'=>'Car Type',
+    'car_size'=>'Car Size',
+    'car_license'=>'Car License',
+    'car_model'=>'Car Model',
+    'car_license_end_date'=>'Car License End Date',
+    'notify_by_end_car_license'=>'Notify By End Car License',
+    'added_by'=>'Added By',
 ];
 
 

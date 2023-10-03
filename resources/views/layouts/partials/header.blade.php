@@ -240,6 +240,15 @@
                         <li class="scroll"><a href="{{route('suppliers.create')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                     @endif
                 {{-- @endcan --}}
+                {{-- ###################### sell car : عربة بيع ###################### --}}
+                {{-- @can('sell_car_module')  --}}
+                <li>
+                    <a href="{{route('sell-car.index')}}">
+                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                        <span>{{__('lang.sell_car')}}</span>
+                    </a>
+                </li>
+                {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}
                 {{-- @can('settings_module') --}}
                     @if(!empty($module_settings['settings_module']))
