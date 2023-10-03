@@ -41,7 +41,7 @@ class HomeController extends Controller
     public function checkPassword()
     {
         $user = User::find(request()->user()->id);
-        if (Hash::check(request()->value, $user->password)) {
+        if (Hash::check(request()->value['value'], $user->password)) {
             return ['success' => true];
         }
         return ['success' => false];
