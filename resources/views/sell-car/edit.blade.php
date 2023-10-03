@@ -27,7 +27,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('car_no', __('lang.car_number')) !!}
-                            {!! Form::text('car_no',isset($sell_car->car_no)?$sell_car->car_no:null, ['class' => 'form-control' , 'placeholder' => __('lang.car_number')]);  !!}
+                            {!! Form::text('car_no',isset($sell_car->car_no)?$sell_car->car_no:null, ['class' => 'form-control' , 'placeholder' => __('lang.car_number'),'required']);  !!}
                         </div>
                     </div>
                     <div class="col-md-4">

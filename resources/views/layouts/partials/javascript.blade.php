@@ -140,7 +140,7 @@
                                             "{!!__('lang.correct_password')!!}",
                                             'success'
                                         );
-                                        location.reload();
+                                        // location.reload();
                                         $.ajax({
                                             method: 'DELETE',
                                             url: href,
