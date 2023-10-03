@@ -161,12 +161,13 @@ return array(
     'balance_in_dollar'   => 'الرصيد بالدولار' ,
     // balance_in_dinar
     'balance_in_dinar'   => 'الرصيد بالدينار' ,
-    // ++++++++++++++++++ Suppliers ++++++++++++++++
     // owner_debt_in_dinar
     'owner_debt_in_dinar'   => 'الدين بالدينار' ,
     // owner_debt_in_dollar
     'owner_debt_in_dollar'   => 'الدين بالدولار' ,
     'edit_supplier' => 'تعديل مورد' ,
+    // ++++++++++++++++++ customer_price_offer ++++++++++++++++
+    'customer_price_offer' => 'عرض سعر للعميل' ,
 
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,

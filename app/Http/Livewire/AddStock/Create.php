@@ -231,7 +231,8 @@ class Create extends Component
 
 
             // Add payment transaction
-            if(!empty($this->amount)){
+            if(!empty($this->amount))
+            {
                 $payment  = new StockTransactionPayment();
                 $payment->stock_transaction_id  = $transaction->id;
                 $payment->amount  = $this->amount;
@@ -302,12 +303,14 @@ class Create extends Component
             }
 
             // add  products to stock lines
-            foreach ($this->items as $index => $item){
-
-                // change price stock
-                if (isset($this->product['change_price_stock']) && $this->product['change_price_stock']) {
-                    if (isset($product->stock_lines)) {
-                        foreach ($product->stock_lines as $line) {
+            foreach ($this->items as $index => $item)
+            {
+                if (isset($this->product['change_price_stock']) && $this->product['change_price_stock'])
+                {
+                    if (isset($product['stock_lines']))
+                    {
+                        foreach ($product['stock_lines'] as $line)
+                        {
                             $line->sell_price = !empty($item['selling_price']) ? $item['selling_price'] : null;
                             $line->dollar_sell_price = !empty($item['dollar_selling_price']) ? $item['dollar_selling_price'] : null;
                             $line->save();
@@ -315,8 +318,9 @@ class Create extends Component
                     }
                 }
                 $supplier = Supplier::find($this->supplier);
+//                dd($item);
                 $add_stock_data = [
-//                    'variation_id' => $item['variation_id'],
+                    'variation_id' => $item['variation_id'],
                     'variation_id' => $item['variation_id'],
                     'product_id' => $item['product']['id'],
                     'stock_transaction_id' =>$transaction->id ,

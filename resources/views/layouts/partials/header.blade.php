@@ -223,6 +223,17 @@
                     </li>
                     @endif
                 {{-- @endcan --}}
+                {{-- ###################### customer_price_offer : عرض سعر للعملاء ###################### --}}
+                {{-- @can('customer_module')  --}}
+                    @if(!empty($module_settings['customer_module']))
+                        <li>
+                            <a href="{{route('customer_price_offer.create')}}">
+                                <img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts">
+                                <span>{{__('lang.customer_price_offer')}}</span>
+                            </a>
+                        </li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### suppliers : الموردين ###################### --}}
                 {{-- @can('supplier_module')  --}}
                     @if(!empty($module_settings['supplier_module']))
