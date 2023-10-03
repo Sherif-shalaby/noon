@@ -180,12 +180,22 @@ $("#create-category-btn").click(function (e){
 });
 $(document).on("submit", "#category-form", function (e) {
     e.preventDefault();
-    var data = $(this).serialize();
+    var dataArray = $(this).serializeArray();
+    var data = {};
+    // Convert the serialized array into an object
+    $.each(dataArray, function(index, field) {
+        data[field.name] = field.value;
+    });
+    console.log(select_category)
+    console.log(data);
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
         dataType: "json",
-        data: data,
+        data: {
+            data: data,
+            parent_id: main_category_id
+        },
         success: function (result) {
             if (result.success) {
                 Swal.fire("Success", result.msg, "success");
@@ -199,6 +209,7 @@ $(document).on("submit", "#category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
+                        // alert(select_category)
                         if(select_category=="0"){
                             $("#categoryId").empty().append(data_html);
                             $("#categoryId").val(category_id).trigger();
