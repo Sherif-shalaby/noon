@@ -131,7 +131,7 @@ return array(
     'size'=>'الحجم',
     'add_prices_for_different_users'=>'اضافة سعر لكل زبون',
     'price'=>'السعر',
-    'price_category'=>'اسم مختصر للزبون',
+    'price_category'=>'اسم مختصر للخصم',
     'price_start_date'=>'تاريخ بداية للسعر',
     'price_end_date'=>'تاريخ نهاية للسعر',
     'permenant'=>'دائم',
@@ -478,5 +478,7 @@ return array(
     'to_get_sell_price'=>'للحصول على سعر البيع',
     'fill_from_basic_unit'=>'التعبئة من الوحدة الاساسية',
     'enter_product_name_to_print_labels' => 'استخدم الماسح الضوئي أو أكتب أول ثلاثة أحرف من المنتج أو أول الباركو',
+    'permissions'=>'الاذونات',
+    'percent' => 'نسبه',
 );
 

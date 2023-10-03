@@ -1,12 +1,46 @@
+.bg-main-color {
+  background-color: #6e81dc;
+}
 
+.py-60 {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.row-gap-24 {
+  row-gap: 24px;
+}
+
+body {
+  font-family: "Noto Kufi Arabic", sans-serif;
+  color: black;
+  font-size: 14px;
+  background-color: #F0F0F0;
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+a:hover {
+  color: black;
+}
+
+button {
+  border: none;
+  outline: none;
+}
 
 section.app .list-btn {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   gap: 5px;
   background-color: #F8F8F8;
   padding: 10px;
@@ -41,16 +75,10 @@ section.app .cards .card-app .body-card-app td, section.app .cards .card-app .bo
 section.app .cards .card-app .body-card-app .footer-table {
   background-color: #F0F0F0;
   padding: 5px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   font-size: 12px;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   gap: 5px;
 }
 section.app .cards .card-app .body-card-app .footer-table .num {
@@ -65,27 +93,22 @@ section.app .cards .card-app .body-card-app .footer-table .num {
   -o-border-radius: 3px;
 }
 section.app .cards .card-app .body-card-app .list-orders {
-  display: -ms-grid;
   display: grid;
   gap: 12px;
-  -ms-grid-columns: 1fr;
   grid-template-columns: 1fr;
 }
 @media (min-width: 576px) {
   section.app .cards .card-app .body-card-app .list-orders {
-    -ms-grid-columns: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
   }
 }
 @media (min-width: 768px) {
   section.app .cards .card-app .body-card-app .list-orders {
-    -ms-grid-columns: 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 @media (min-width: 992px) {
   section.app .cards .card-app .body-card-app .list-orders {
-    -ms-grid-columns: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
@@ -107,4 +130,4 @@ section.app .cards .card-app .body-card-app .list-orders {
 .box-table table th {
   background-color: #6e81dc !important;
   color: white;
-}
+}/*# sourceMappingURL=main.css.map */

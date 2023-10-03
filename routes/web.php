@@ -92,10 +92,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('stores/get-dropdown', [StoreController::class,'getDropdown']);
     Route::resource('store',StoreController::class);
     //الاقسام
-    Route::get('categories/get-dropdown', [CategoryController::class,'getDropdown']);
+    Route::get('categories/get-dropdown/{category_id}', [CategoryController::class,'getDropdown']);
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
+    Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');
     // colors
     Route::resource('colors', ColorController::class)->except(['show']);
     // sizes
@@ -126,7 +127,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Initial Balance
     Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
     Route::resource('initial-balance', InitialBalanceController::class);
-
+    Route::get('suppliers/get-dropdown', [SuppliersController::class,'getDropdown']);
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
 
 
@@ -139,6 +140,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### General Tax ###########
     Route::resource('general-tax', GeneralTaxController::class);
     // ########### Product Tax ###########
+    Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     Route::resource('product-tax', ProductTaxController::class);
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);

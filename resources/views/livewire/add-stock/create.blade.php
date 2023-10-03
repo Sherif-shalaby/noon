@@ -30,22 +30,54 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                                    {!! Form::select('store_id', $stores, !empty($recent_stock)&&!empty($recent_stock->store_id)?$recent_stock->store_id:session('user.store_id'), ['class' => ' form-control select2','data-name' => 'store_id', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
+                                    {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control select2','data-name' => 'store_id', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
                                     @error('store_id')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
-                                    {!! Form::select('supplier_id', $suppliers, !empty($recent_stock)&&!empty($recent_stock->supplier_id)?$recent_stock->supplier_id:'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()']) !!}
+                                    <div class="d-flex justify-content-center">
+                                    {!! Form::select('supplier_id', $suppliers, $supplier,
+                                        ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                        'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()'
+                                        ]) !!}
+                                        <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button>
+                                    </div>
                                     @error('supplier')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
-                                    {!! Form::label('status', __('lang.status') . ':*', []) !!}
-                                    {!! Form::select('status', ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'data-name' => 'status','wire:model' => 'status']) !!}
-                                    @error('status')
+                                    <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
+                                    {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
+                                        ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
+                                         'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
+                                    @error('transaction_currency')
+                                    <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
+                                    {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')],$purchase_type ,
+                                    ['class' => 'form-control select2', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),
+                                     'data-name' => 'purchase_type', 'wire:model' => 'purchase_type']) !!}
+                                    @error('purchase_type')
+                                    <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    {!! Form::label('divide_costs', __('lang.divide_costs') . ':', []) !!}
+                                    {!! Form::select('divide_costs', ['size' =>  __('lang.size'), 'weight' => __('lang.weight'), 'price' => __('lang.price')],$divide_costs,
+                                    ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'),
+                                     'data-name' => 'divide_costs', 'wire:model' => 'divide_costs']) !!}
+                                    @error('divide_costs')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -53,31 +85,6 @@
                                     {!! Form::label('transaction_date', __('lang.date_and_time'), []) !!}
                                     <input type="datetime-local" wire:model="transaction_date"
                                            value="{{ date('Y-m-d\TH:i') }}" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 mt-2">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
-                                    {!! Form::select('invoice_currency', $selected_currencies, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
-                                    @error('transaction_currency')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
-                                    {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')], !empty($recent_stock)&&!empty($recent_stock->status)?$recent_stock->status: 'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'data-name' => 'purchase_type', 'wire:model' => 'purchase_type']) !!}
-                                    @error('purchase_type')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-3">
-                                    {!! Form::label('divide_costs', __('lang.divide_costs') . ':', []) !!}
-                                    {!! Form::select('divide_costs', ['size' =>  __('lang.size'), 'weight' => __('lang.weight'), 'price' => __('lang.price')], 'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'data-name' => 'divide_costs', 'wire:model' => 'divide_costs']) !!}
-                                    @error('divide_costs')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
@@ -254,44 +261,58 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), []) !!} <br>
-                                    {!! Form::text('invoice_no', !empty($recent_stock)&&!empty($recent_stock->invoice_no)?$recent_stock->invoice_no:null, ['class' => 'form-control', 'placeholder' => __('lang.invoice_no'),'wire:model' => 'invoice_no']) !!}
+                                    {!! Form::text('invoice_no', $invoice_no,
+                                    ['class' => 'form-control', 'placeholder' => __('lang.invoice_no'),
+                                    'wire:model' => 'invoice_no']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
-                                    {!! Form::text('other_expenses', !empty($recent_stock)&&!empty($recent_stock->other_expenses)?@num_format($recent_stock->other_expenses):null, ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses', 'wire:model' => 'other_expenses']) !!}
+                                    {!! Form::text('other_expenses', $other_expenses,
+                                    ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
+                                     'wire:model' => 'other_expenses']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
-                                    {!! Form::text('discount_amount', !empty($recent_stock)&&!empty($recent_stock->discount_amount)?@num_format($recent_stock->discount_amount):null, ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount','wire:model' => 'discount_amount']) !!}
+                                    {!! Form::text('discount_amount',$discount_amount,
+                                    ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount',
+                                    'wire:model' => 'discount_amount']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
-                                    {!! Form::text('other_payments', !empty($recent_stock)&&!empty($recent_stock->other_payments)?@num_format($recent_stock->other_payments):null, ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments', 'wire:model' => 'other_payments']) !!}
+                                    {!! Form::text('other_payments', $other_payments,
+                                    ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
+                                     'wire:model' => 'other_payments']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                    {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], !empty($recent_stock)&&!empty($recent_stock->source_type)?$recent_stock->source_type: 'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'data-name' => 'source_type', 'wire:model' => 'source_type']) !!}
+                                    {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], $source_type,
+                                    ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),
+                                     'data-name' => 'source_type', 'wire:model' => 'source_type']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                                    {!! Form::select('source_id', $users, null, ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required', 'data-name' => 'source_id', 'wire:model' => 'source_id']) !!}
+                                    {!! Form::select('source_id', $users, $source_id,
+                                    ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),
+                                     'id' => 'source_id', 'required', 'data-name' => 'source_id', 'wire:model' => 'source_id']) !!}
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('payment_status', __('lang.payment_status') . ':*', []) !!}
-                                    {!! Form::select('payment_status', $payment_status_array, !empty($recent_stock)&&!empty($recent_stock->payment_status)?$recent_stock->payment_status:'paid', ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'data-name' => 'payment_status', 'wire:model' => 'payment_status']) !!}
+                                    {!! Form::select('payment_status', $payment_status_array, $payment_status,
+                                    ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'),
+                                     'data-name' => 'payment_status', 'wire:model' => 'payment_status']) !!}
                                     @error('payment_status')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -363,8 +384,10 @@
         </div>
     </div>
 </section>
+<div class="view_modal no-print"></div>
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
+@include('suppliers.quick_add',['quick_add'=>1])
 
 
 @push('javascripts')

@@ -1,25 +1,24 @@
 <!-- Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
-     style="display: none;" aria-hidden="true">
+<div class="modal fade" id="add_product_tax_modal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
+     aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
-            {!! Form::open(['url' => route('product-tax.store'), 'method' => 'post']) !!}
-
             <div class="modal-header">
-
-                <h4 class="modal-title">@lang( 'lang.add_general_tax')</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.product_tax')}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
-
+            {!! Form::open(['route' => 'product-tax.store', 'method' => 'post', 'files' => true,'id' => isset($quick_add)&&$quick_add ? 'quick_add_product_tax_form' : 'product_tax-form']) !!}
             <div class="modal-body">
                 {{-- +++++++++++++++++++++++ tax_name +++++++++++++++++++++++ --}}
                 <div class="form-group">
+                    <input type="hidden" name="quick_add" value="{{ isset($quick_add)&&$quick_add?$quick_add:'' }}">
                     <label for="tax_name">{{ __( 'lang.tax_name').':*' }}</label>
                     <input type="text" name="name" class="form-control" placeholder="{{ __( 'lang.tax_name' ) }}" required>
                     {{-- Error Message --}}
                     @error('name')
-                        <span class="text-danger">{{ $message }}</span>
+                    <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 {{-- +++++++++++++++++++++++ tax_rate +++++++++++++++++++++++ --}}
@@ -35,43 +34,33 @@
                 {{-- +++++++++++++++++++++++ tax_status +++++++++++++++++++++++ --}}
                 <div class="form-group">
                     <label for="status">{{ __('lang.tax_status').':*' }}</label>
-                    <select name="status" id="status" class="form-control"
+                    <select name="status" class="form-control select2"
                             data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
                         <option value="">{{  __('lang.please_select') }}</option>
-                        <option value="passive">{{ __('lang.passive') }}</option>
-                        <option value="active">{{ __('lang.active') }}</option>
+                        <option value="passive" >{{ __('lang.passive') }}</option>
+                        <option value="active" selected>{{ __('lang.active') }}</option>
                     </select>
                 </div>
-                {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
-                {{-- <div class="form-group">
-                    <label for="method">{{ __('lang.tax_method').':*' }}</label>
-                    <select name="method" id="method" class="form-control"
-                            data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
-                        <option value="">{{  __('lang.please_select') }}</option>
-                        <option value="inclusive">{{ __('lang.inclusive') }}</option>
-                        <option value="exclusive">{{ __('lang.exclusive') }}</option>
-                    </select>
-                </div> --}}
-
-                {{-- +++++++++++++++++++++++ "products" selectbox +++++++++++++++++++++++ --}}
-                {{-- <div class="form-group">
-                    <label for="product">{{ __('lang.products').':*' }}</label>
-                    <select name="product_id" id="product" class="form-control" placeholder="{{  __('lang.please_select') }}" required>
-                        <option value="">{{  __('lang.please_select') }}</option>
-                        @foreach ($products as $product )
-                            <option value="{{ $product->id }}">{{ $product->name }}</option>
-                        @endforeach
-                    </select>
-                </div> --}}
             </div>
-
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">@lang( 'lang.save' )</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">@lang( 'lang.close' )</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
+                <button  id="create-product-tax-btn" class="btn btn-primary">{{__('lang.save')}}</button>
             </div>
-
             {!! Form::close() !!}
         </div>
     </div>
 </div>
-{!! JsValidator::formRequest('App\Http\Requests\MoneySafeUpdateRequest','#money-safe-update-form'); !!}
+
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}
+<script>
+    {{--$(document).ready(function () {--}}
+    {{--    // Attach a click event handler to the button--}}
+    {{--    $('.select_sub_category').click(function () {--}}
+    {{--        // Get the data-select_category attribute value--}}
+    {{--         {{ $selectCategoryValue }} = $(this).data('select_category');--}}
+    {{--        // Set the value in the modal--}}
+    {{--        $('#selectedCategoryValue').text(selectCategoryValue);--}}
+    {{--    });--}}
+    {{--});--}}
+</script>

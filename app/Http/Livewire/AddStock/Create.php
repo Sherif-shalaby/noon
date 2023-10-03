@@ -7,11 +7,13 @@ use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\CustomerType;
 use App\Models\Employee;
 use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\Product;
+use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
@@ -36,7 +38,7 @@ class Create extends Component
 {
     use WithPagination;
 
-    public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $status, $order_date, $purchase_type,
+    public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
@@ -45,28 +47,29 @@ class Create extends Component
     protected $rules = [
     'store_id' => 'required',
     'supplier' => 'required',
-    'status' => 'required',
+//    'status' => 'required',
     'paying_currency' => 'required',
     'purchase_type' => 'required',
     'payment_status' => 'required',
     'method' => 'required',
     'amount' => 'required',
-    'transaction_currency' => 'required'
+    'transaction_currency' => 'required',
+    'items.*.variation_id' => 'required',
 ];
 
     public function mount(){
+        $this->paid_on = Carbon::now()->format('Y-m-d');
+        $this->transaction_date = date('Y-m-d\TH:i');
         $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
         if($this->clear_all_input_stock_form ==0){
             $transaction_payment=[];
             $recent_stock=[];
         }else{
             $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
-//dd($recent_stock);
             if(!empty($recent_stock)){
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ??'' ;
                 $this->supplier = $recent_stock->supplier_id??'';
-                $this->status = $recent_stock->status ??'';
                 $this->transaction_date = $recent_stock->transaction_date ??'';
                 $this->transaction_currency = $recent_stock->transaction_currency ??'';
                 $this->purchase_type = $recent_stock->purchase_type ??'';
@@ -109,9 +112,9 @@ class Create extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-//        $variations=Variation::orderBy('created_at','desc')->get();
         $stores = Store::getDropdown();
         $departments = Category::get();
+        $customer_types = CustomerType::latest()->get();
         $search_result = '';
         if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
@@ -157,7 +160,7 @@ class Create extends Component
             'selected_currencies',
             'preparers' ,
             'products',
-//            'variations',
+            'customer_types',
             'departments',
             'search_result',
             'users'));
@@ -191,7 +194,7 @@ class Create extends Component
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
-            $transaction->status = $this->status;
+            $transaction->status = 'received';
             $transaction->order_date = !empty($this->order_date) ? $this->order_date : Carbon::now();
             $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
             $transaction->purchase_type = $this->purchase_type;
@@ -291,12 +294,13 @@ class Create extends Component
                         }
                     }
                 }
+
+                //upload Documents
                 if ($this->upload_documents) {
                      $payment->upload_documents = store_file($this->upload_documents, 'stock_transaction_payment');
                 }
                 $payment->save();
             }
-
 
             // add  products to stock lines
             foreach ($this->items as $index => $item)
@@ -314,8 +318,8 @@ class Create extends Component
                     }
                 }
                 $supplier = Supplier::find($this->supplier);
-                $add_stock_data =
-                [
+//                dd($item);
+                $add_stock_data = [
                     'variation_id' => $item['variation_id'],
                     'variation_id' => $item['variation_id'],
                     'product_id' => $item['product']['id'],
@@ -336,8 +340,26 @@ class Create extends Component
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                 ];
-                AddStockLine::create($add_stock_data);
+                $stock_line = AddStockLine::create($add_stock_data);
+
                 $this->updateProductQuantityStore($item['product']['id'], $transaction->store_id, $item['quantity'], 0);
+                // add product Prices
+                if(!empty($item['prices'])){
+                    foreach ($item['prices'] as $price){
+                        $price_data = [
+                            'product_id' => $item['product']['id'],
+                            'price_type' => $price['price_type'],
+                            'price_category' => $price['price_category'],
+                            'price' => $price['price'],
+                            'quantity' => $price['discount_quantity'],
+                            'bonus_quantity' => $price['bonus_quantity'],
+                            'price_customer_types' => $price['price_customer_types'],
+                            'created_by' => Auth::user()->id,
+                            'stock_line_id ' => $stock_line->id,
+                        ];
+                        ProductPrice::create($price_data);
+                    }
+                }
 
             }
 
@@ -357,10 +379,8 @@ class Create extends Component
             $this->searchProduct = '';
 
         }
-
         $product = Product::find($id);
         $variations = $product->variations;
-
         if($add_via == 'unit'){
             $show_product_data = false;
             $this->addNewProduct($variations,$product,$show_product_data);
@@ -387,6 +407,8 @@ class Create extends Component
         }
 
     }
+
+//    public function getCurrentStock($product_id){
     public function addNewProduct($variations,$product,$show_product_data){
 //        $current_stock = $this->getCurrentStock($product->id);
         $new_item = [
@@ -408,23 +430,52 @@ class Create extends Component
             'total_cost' => 0,
             'current_stock' =>0,
             'total_stock' => 0 + 1,
+            'prices' => [
+                [
+                    'price_type' => null,
+                    'price_category' => null,
+                    'price' => null,
+                    'discount_quantity' => null,
+                    'bonus_quantity' => null,
+                    'price_customer_types' => null,
+                    'price_after_desc' => null,
+                ],
+            ],
         ];
-//    if ($show_product_data){
-//        array_unshift($this->items, $new_item);
-//    }
-//    else{
         array_push($this->items, $new_item);
-//    }
-
+    }
+    public function addPriceRow($index){
+          $new_price = [
+              'price_type' => null,
+              'price_category' => null,
+              'price' => null,
+              'discount_quantity' => null,
+              'bonus_quantity' => null,
+              'price_customer_types' => null,
+              'price_after_desc' => null,
+          ];
+        array_unshift($this->items[$index]['prices'], $new_price);
     }
 
-//    public function getCurrentStock($product_id){
-//        $stocks = AddStockLine::where('product_id',$product_id)->get();
-//        foreach ($stocks as $stock){
-//            dd($stock->variation);
-//        }
-//        dd($stocks);
-//    }
+    public function delete_price_raw($index,$key)
+  {
+      unset($this->items[$index]['prices'][$key]);
+  }
+
+    public function changePrice($index,$key)
+    {
+        if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price']))  {
+            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :
+                $this->items[$index]['dollar_selling_price'];
+            if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
+                $this->items[$index]['prices'][$key]['price_after_desc'] = $sell_price - $this->items[$index]['prices'][$key]['price'];
+            }
+            elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
+                $percent = $this->items[$index]['prices'][$key]['price'] / 100;
+                $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $this->items[$index]['prices'][$key]['price'] ));
+            }
+        }
+    }
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);

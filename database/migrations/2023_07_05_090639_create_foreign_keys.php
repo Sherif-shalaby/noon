@@ -119,11 +119,11 @@ class CreateForeignKeys extends Migration {
 		// 				->onDelete('cascade')
 		// 				->onUpdate('cascade');
 		// });
-		Schema::table('product_prices', function(Blueprint $table) {
-			$table->foreign('product_id')->references('id')->on('products')
-						->onDelete('cascade')
-						->onUpdate('cascade');
-		});
+		// Schema::table('product_prices', function(Blueprint $table) {
+		// 	$table->foreign('product_id')->references('id')->on('products')
+		// 				->onDelete('cascade')
+		// 				->onUpdate('cascade');
+		// });
 	}
 
 	public function down()
@@ -194,8 +194,8 @@ class CreateForeignKeys extends Migration {
 		// Schema::table('exchange_rates', function(Blueprint $table) {
 		// 	$table->dropForeign('exchange_rates_default_currency_id_foreign');
 		// });
-		Schema::table('product_prices', function(Blueprint $table) {
-			$table->dropForeign('product_discounts_product_id_foreign');
-		});
+		// Schema::table('product_prices', function(Blueprint $table) {
+		// 	$table->dropForeign('product_discounts_product_id_foreign');
+		// });
 	}
 }

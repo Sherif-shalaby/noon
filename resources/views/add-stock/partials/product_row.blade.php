@@ -29,14 +29,17 @@
 {{--        {{$product['variation_id'] ?? 0}}--}}
         <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
             <option value="" selected>{{__('lang.please_select')}}</option>
+
             @foreach($product['variations'] as $variant)
-                <option value="{{$variant['id']}}">{{$variant['basic_unit']['name']}}</option>
+                <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
             @endforeach
         </select>
         <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
             <i class="fa fa-plus"></i>
         </button>
-{{--        {{__('lang.add_a_new_batch')}}--}}
+        @error('items.'.$index.'.variation_id')
+        <span class="error text-danger">{{ $message }}</span>
+        @enderror
     </td>
     <td>
         <span>{{$product['base_unit_multiplier']}}</span>
@@ -185,12 +188,70 @@
     </td>
 </tr>
 
-{{--<tr>--}}
-{{--    <td></td>--}}
-{{--    <td>--}}
-{{--        {!! Form::label('unit', __('lang.unit'), []) !!} <br>--}}
-{{--<select name="" id=""></select>    </td>--}}
-{{--</tr>--}}
+@foreach( $product['prices'] as $key => $price)
+    <tr>
+        <td></td>
+        <td>
+            {!! Form::label('price_type' ,__('lang.type')) !!}
+            {!! Form::select('price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
+                 'id' => 'price_type',
+                'class' => ' form-control price_type',
+                'data-name' => 'price_type',
+//                'data-index' =>$index,
+                'placeholder' => __('lang.please_select'),
+                'wire:model' => 'items.'.$index.'.prices.'.$key.'.price_type',
+            ]) !!}
+            @error('items.'.$index.'.prices.'.$key.'.price_type')
+            <br>
+            <label class="text-danger error-msg">{{ $message }}</label>
+            @enderror
+        </td>
+        <td colspan="2">
+            {!! Form::label('price_category' ,__('lang.price_category')) !!}
+            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
+        </td>
+        <td>
+            {!! Form::label('price' ,__('lang.percent')) !!}
+            <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
+        </td>
+        <td colspan="2">
+            {!! Form::label('' ,__('lang.price')) !!}
+            <input type="text" name="" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price_after_desc" placeholder = "{{__('lang.price')}}" readonly >
+        </td>
+        <td>
+            {!! Form::label('price' ,__('lang.quantity')) !!}
+            <input type="text" class="form-control discount_quantity" wire:model="items.{{$index}}.prices.{{$key}}.discount_quantity" placeholder = "{{__('lang.quantity')}}" >
+
+        </td>
+        <td colspan="2">
+            {!! Form::label('b_qty',__('lang.b_qty')) !!}
+            <input type="text" class="form-control bonus_quantity" wire:model="items.{{$index}}.prices.{{$key}}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
+
+        </td>
+        <td colspan="2">
+            {!! Form::label('customer_type',__('lang.customer_type')) !!}
+            <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
+                @foreach($customer_types as $type)
+                    <option value="{{$type->id}}">{{$type->name}}</option>
+                @endforeach
+            </select>
+        </td>
+         <td>
+            <button type="button" class="btn btn-sm btn-primary" wire:click="addPriceRow({{ $index }})">
+                <i class="fa fa-plus"></i>
+            </button>
+            @if($key > 0)
+                <button  class="btn btn-sm btn-danger" wire:click="delete_price_raw({{ $index }},{{ $key }})">
+                    <i class="fa fa-trash"></i>
+                </button>
+            @endif
+        </td>
+
+
+
+    </tr>
+
+@endforeach
 
 <tr>
     <td></td>
