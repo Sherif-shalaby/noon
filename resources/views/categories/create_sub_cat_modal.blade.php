@@ -35,19 +35,17 @@
                         'type' => 'category',
                     ])
                 </div>
-                    <div class="form-group">
-                        <label for="parent_id">@lang('categories.parent')</label>
-                        {!! Form::select(
-                            'parent_id',
-                            $subcategories,null,
-                            ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']
-                        ) !!}
-                        @error('parent_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-
+{{--                <div class="form-group">--}}
+{{--                    <label for="parent_id">@lang('categories.parent')</label>--}}
+{{--                    {!! Form::select(--}}
+{{--                        'parent_id',--}}
+{{--                        $subcategories,null,--}}
+{{--                        ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']--}}
+{{--                    ) !!}--}}
+{{--                    @error('parent_id')--}}
+{{--                    <span class="text-danger">{{ $message }}</span>--}}
+{{--                    @enderror--}}
+{{--                </div>--}}
                 <div class="form-group">
                     <label for="status">@lang('categories.status')</label>
                     <select name="status" class="form-control" required>
@@ -66,8 +64,8 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}
+{{--<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>--}}
+{{--{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}--}}
 <script>
     {{--$(document).ready(function () {--}}
     {{--    // Attach a click event handler to the button--}}

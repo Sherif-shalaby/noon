@@ -78,7 +78,7 @@ class Create extends Component
     public function render()
     {
         $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
-            $allproducts = Product::get();
+        $allproducts = Product::get();
         $departments = Category::get();
         $this->customers   = Customer::get();
         $this->store_pos_id = array_key_first($store_pos);
@@ -91,12 +91,15 @@ class Create extends Component
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
         $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
-//        dd($this->draft_transactions);
-//        if (empty($store_pos)) {
-//            return redirect()->route('home');
-//        }
+//        dd(empty($store_pos));
+        if (empty($store_pos)) {
+            $this->dispatchBrowserEvent('showCreateProductConfirmation');
+        }
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
+
+        $this->dispatchBrowserEvent('initialize-select2');
+
         return view('livewire.invoices.create', compact(
             'departments',
             'allproducts',
