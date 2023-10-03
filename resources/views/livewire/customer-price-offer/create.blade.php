@@ -29,14 +29,6 @@
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="row">
-                                    {{-- ++++++++++++++++++++++ store filter ++++++++++++++++++++++ --}}
-                                    {{-- <div class="col-md-3">
-                                        {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                                        {!! Form::select('store_id', $stores, !empty($recent_stock)&&!empty($recent_stock->store_id)?$recent_stock->store_id:session('user.store_id'), ['class' => ' form-control select2','data-name' => 'store_id', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
-                                        @error('store_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div> --}}
                                     {{-- ++++++++++++++++++++++ stores filter ++++++++++++++++++++++ --}}
                                     <div class="col-md-4" wire:ignore>
                                         <label for="store_id" class="text-primary">@lang('lang.store')</label>

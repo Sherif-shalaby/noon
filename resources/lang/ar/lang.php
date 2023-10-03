@@ -16,6 +16,7 @@ return array(
     'save' => 'حفظ',
     'close' => 'الغاء',
     'delete' => 'حذف',
+    'delete_msg' => 'تم الحذف بنجاح',
     'success' => 'تم بنجاح',
     'something_went_wrong' => 'هناك خطأ!',
     'created_by' => 'أُنشئت بواسطة',
@@ -480,5 +481,11 @@ return array(
     'enter_product_name_to_print_labels' => 'استخدم الماسح الضوئي أو أكتب أول ثلاثة أحرف من المنتج أو أول الباركو',
     'permissions'=>'الاذونات',
     'percent' => 'نسبه',
+    'customer_offer_status' => 'حالة المخزون',
+    'quotation_status' => 'حالة عرض السعر',
+    'blocked' => 'محظور' ,
+    'not_blocked' => 'غير محظور' ,
+    'filter' => 'تصفية',
+    'clear_filters' => 'مسح عوامل التصفية',
 );
 

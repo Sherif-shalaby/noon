@@ -19,7 +19,7 @@
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
                   <div class="widgetbar">
-                    <a type="button" class="btn btn-primary" href="{{route('customer_price_offer.index')}}">@lang('lang.customer_price_offer')</a>
+                    <a type="button" class="btn btn-primary" target="_blank" href="{{route('customer_price_offer.index')}}">@lang('lang.customer_price_offer')</a>
                 </div>
                 </div>
             </div>

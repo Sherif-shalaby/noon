@@ -1,20 +1,22 @@
 @extends('layouts.app')
-@section('title', __('site.Sale_Screen'))
-@push('css')
-    <link rel="stylesheet" href="{{ asset('salescreen/css/normalize.css')}}" />
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="{{ asset('salescreen/css/bootstrap.rtl.min.css')}}" />
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{ asset('salescreen/css/all.min.css')}}" />
-    <!-- Main Faile Css  -->
-    <link rel="stylesheet" href="{{ asset('salescreen/css/main.css')}}" />
-@endpush
-@section('content')
-{{--    {{dd($id)}}--}}
-@livewire('invoices.edit', ['id' => $id])
+@section('title', __('lang.customer_price_offer'))
+@section('breadcrumbbar')
+    <div class="breadcrumbbar">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-8">
+                <h4 class="page-title">@lang('lang.customer_price_offer')</h4>
+                <div class="breadcrumb-list">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+{{--                        <li class="breadcrumb-item"><a href="#">@lang('lang.employees')</a></li>--}}
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.customer_price_offer')</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
-@push('js')
-    <script src="{{ asset('salescreen/js/main.js') }}"></script>
-    <script src="{{ asset('salescreen/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('salescreen/js/all.min.js') }}"></script>
-@endpush
+@section('content')
+    <livewire:customer-price-offer.edit :id="$id" />
+@endsection
+

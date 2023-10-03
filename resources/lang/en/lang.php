@@ -17,6 +17,7 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'delete_msg' => 'Deleted Successfully',
     'show_hide_columns' => 'Show/Hide Columns' ,
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong!',
@@ -466,6 +467,13 @@ return [
     'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
     'permissions'=>'Permissions',
     'percent' => 'Percent',
+    'customer_offer_status' => 'Customer Offer Status',
+    'quotation_status' => 'Quotation Status',
+    'blocked' => 'blocked' ,
+    'not_blocked' => 'Not Blocked',
+    'filter' => 'Filter',
+    'clear_filters' => 'Clear Filters',
+
 ];
 
 

@@ -2,50 +2,60 @@
 
 namespace App\Http\Livewire\CustomerPriceOffer;
 
+use App\Models\Customer;
+use App\Models\CustomerOfferPrice;
 use App\Models\Invoice;
+use App\Models\Store;
+use App\Models\TransactionCustomerOfferPrice;
 use Livewire\Component;
 
 class Index extends Component
 {
-    public $filter_status, $from, $to, $searchemployee, $searchinvoiveno, $refund, $refund_status;
-    public $total,$totalcash,$totalcard;
-    public function mount(){
-        $this->total     = Invoice::sum('total');
-        $this->totalcash = Invoice::sum('cash');
-    }
+    public $filter_status, $from, $to, $store_id, $customer_id ;
+    // +++++++++++++++ Date filter +++++++++++++++
     public function between($query)
     {
-        if ($this->from && $this->to) {
+        // Between Two Dates "from" And "to"
+        if ($this->from && $this->to)
+        {
             $query->whereBetween('created_at', [$this->from, $this->to]);
-        } elseif ($this->from) {
-            $query->where('created_at', '>=', $this->from);
-        } elseif ($this->to) {
-            $query->where('created_at', '<=', $this->to);
-        } else {
+            // $query->where('created_at', '>=', $this->from);
+            // $query->where('created_at', '<=', $this->to);
+        }
+        // "from" date only
+        elseif ($this->from)
+        {
+            $query->where('created_at', 'like', '%' . $this->from . '%');
+        }
+        // "to" date only
+        elseif ($this->to)
+        {
+            $query->where('created_at', 'like', '%' . $this->to . '%');
+        }
+        else
+        {
             $query;
         }
     }
-    public function delete(Invoice $invoice)
-    {
-        $invoice->delete();
-        $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'تم حذف الفاتورة بنجاح']);
-    }
     public function render()
     {
-        $invoices = Invoice::with(['user','customer'])->where(function ($q) {
-            $this->between($q);
-            if ($this->filter_status) {
-                $q->where('status', $this->filter_status);
-            }
-            if ($this->searchinvoiveno) {
-                $q->where('id', 'like', '%' . $this->searchinvoiveno . '%');
-            }
-            if ($this->searchemployee) {
-                $q->whereHas('user', function ($q) {
-                    $q->where('name', 'like', '%' . $this->searchemployee . '%');
-                });
-            }
-        })->latest('id')->paginate(10);
-        return view('livewire.invoices.index', compact('invoices'));
+        $customer_offer_prices = TransactionCustomerOfferPrice::with(['customer','store','transaction_customer_offer_price'])
+                                    ->where(function ($q)
+                                    {
+                                        $this->between($q);
+                                        if ($this->customer_id)
+                                        {
+                                            $q->where('customer_id', $this->customer_id);
+                                        }
+                                        if ($this->store_id)
+                                        {
+                                            $q->where('store_id', 'like', '%' . $this->store_id . '%');
+                                        }
+                                    })->paginate(10);
+        $stores = Store::getDropdown();
+        $customers = Customer::get();
+
+        return view('livewire.customer-price-offer.index',
+                compact('customer_offer_prices','stores','customers'));
     }
 }

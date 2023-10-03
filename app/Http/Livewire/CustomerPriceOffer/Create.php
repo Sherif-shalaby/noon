@@ -102,8 +102,10 @@ class Create extends Component
         $stores = Store::getDropdown();
         $departments = Category::get();
         $search_result = '';
-        if(!empty($this->searchProduct)){
-            $search_result = Product::when($this->searchProduct,function ($query){
+        if(!empty($this->searchProduct))
+        {
+            $search_result = Product::when($this->searchProduct,function ($query)
+            {
                 return $query->where('name','like','%'.$this->searchProduct.'%');
             });
             $search_result = $search_result->paginate();
@@ -363,14 +365,6 @@ class Create extends Component
         array_push($this->items, $new_item);
     }
 
-//    public function getCurrentStock($product_id){
-//        $stocks = AddStockLine::where('product_id',$product_id)->get();
-//        foreach ($stocks as $stock){
-//            dd($stock->variation);
-//        }
-//        dd($stocks);
-//    }
-
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
        $this->items[$index]['unit'] = $variant->unit->name;
@@ -401,36 +395,6 @@ class Create extends Component
         return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
     }
 
-    // public function sub_total($index)
-    // {
-    //     if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
-    //         // convert purchase price from Dollar To Dinar
-    //         $purchase_price = $this->convertDollarPrice($index);
-
-    //         $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
-
-    //         return number_format($this->items[$index]['sub_total'], 2);
-    //     }
-    //     else{
-    //         $this->items[$index]['purchase_price'] = null;
-    //     }
-    // }
-
-    // public function dollar_sub_total($index)
-    // {
-    //     if(isset($this->items[$index]['quantity']) && ($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])){
-    //         // convert purchase price from Dinar To Dollar
-    //         $purchase_price = $this->convertDinarPrice($index);
-
-    //         $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
-
-    //         return number_format($this->items[$index]['dollar_sub_total'], 2);
-    //     }
-    //     else{
-    //         $this->items[$index]['dollar_purchase_price'] = null;
-    //     }
-    // }
-
 
     public function total_size($index){
         $this->items[$index]['total_size'] =  (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['size'];
@@ -460,98 +424,6 @@ class Create extends Component
         }
         return $totalWeight;
     }
-
-    // public function cost($index)
-    // {
-
-    //     if($this->paying_currency == 2){
-    //         $cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
-    //     }
-    //     else{
-    //         $cost = (float)$this->other_expenses + (float)$this->other_payments ;
-    //     }
-    //     // convert purchase price from Dollar To Dinar
-    //     $purchase_price = $this->convertDollarPrice($index);
-
-    //     if (isset($this->divide_costs)){
-
-    //         if ($this->divide_costs == 'size'){
-    //             if($this->sum_size() >= 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
-    //                 unset($this->divide_costs);
-    //             }
-    //             else{
-    //                 (float)$this->items[$index]['cost'] = ( ( $cost / $this->sum_size() ) * $this->items[$index]['size'] ) + (float)$purchase_price;
-    //             }
-    //         }
-    //         elseif ($this->divide_costs == 'weight'){
-    //             if($this->sum_weight() >= 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
-    //                 unset($this->divide_costs);
-
-    //             }
-    //             else {
-    //                 (float)$this->items[$index]['cost'] = (($cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
-    //             }
-    //         }
-    //         else{
-    //             (float)$this->items[$index]['cost'] = ( ( $cost / $this->sum_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
-    //         }
-    //     }
-    //     else{
-    //         $this->items[$index]['cost'] = (float)$purchase_price;
-    //     }
-
-    //     return number_format($this->items[$index]['cost'],2);
-    // }
-
-    // public function total_cost($index)
-    // {
-    //     $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
-    //     return number_format($this->items[$index]['total_cost'],2) ;
-    // }
-
-    // public function dollar_cost($index)
-    // {
-    //     if($this->paying_currency == 2){
-    //         $dollar_cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
-    //     }
-    //     else{
-    //         $dollar_cost = (float)$this->other_expenses + (float)$this->other_payments ;
-    //     }
-    //     // convert purchase price from Dinar to Dollar
-    //    $purchase_price = $this->convertDinarPrice($index);
-
-    //     if (isset($this->divide_costs)){
-
-    //         if ($this->divide_costs == 'size'){
-    //             if($this->sum_size() == 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
-    //                 unset($this->divide_costs);
-    //             }
-    //             else{
-    //                 (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_size() ) * $this->items[$index]['size'] ) + (float)$purchase_price;
-    //             }
-    //         }
-    //         elseif ($this->divide_costs == 'weight'){
-    //             if($this->sum_weight() == 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
-    //                 unset($this->divide_costs);
-
-    //             }
-    //             else {
-    //                 (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
-    //             }
-    //         }
-    //         else{
-    //             (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
-    //         }
-    //     }
-    //     else{
-    //         $this->items[$index]['dollar_cost'] = (float)$purchase_price;
-    //     }
-    //     return number_format($this->items[$index]['dollar_cost'],2);
-    // }
     // ++++++++++++++++++++++++++ Task :  $ اجمالي التكاليف ++++++++++++++++++++++++++
     public function dollar_total_cost($index)
     {
@@ -739,40 +611,6 @@ class Create extends Component
 
         return $register;
     }
-
-    // public function convertDollarPrice($index)
-    // {
-    //     if(empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])){
-    //         $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->exchange_rate;
-    //     }
-    //     else{
-    //         $purchase_price = $this->items[$index]['purchase_price'];
-    //     }
-    //     return $purchase_price;
-    // }
-    // ++++++++++++++++++++++++++ sell_price in dollar ++++++++++++++++++++++++++
-    // public function convertDollarPrice($index)
-    // {
-    //     if (!empty($this->items[$index]['selling_price']) && empty($this->items[$index]['dollar_selling_price'])) {
-    //         $purchase_price = $this->items[$index]['selling_price'] / $this->exchange_rate;
-    //     }
-    //     else {
-    //         $purchase_price = $this->items[$index]['dollar_selling_price'];
-    //     }
-    //     return $purchase_price;
-    // }
-
-    // public function convertDinarPrice($index)
-    // {
-    //     if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
-    //         $purchase_price = $this->items[$index]['purchase_price'] / $this->exchange_rate;
-    //     }
-    //     else {
-    //         $purchase_price = $this->items[$index]['dollar_purchase_price'];
-    //     }
-    //     return $purchase_price;
-
-    // }
 
     public function changeExchangeRate()
     {
