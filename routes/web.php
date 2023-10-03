@@ -29,6 +29,7 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\WageController;
 use App\Http\Controllers\SuppliersController;
@@ -200,6 +201,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('moneysafe/get-take-money-to-safe/{id}', [MoneySafeController::class,'getTakeMoneyFromSafe'])->name('moneysafe.get-take-money-to-safe');
     Route::get('moneysafe/watch-money-to-safe-transaction/{id}', [MoneySafeController::class,'getMoneySafeTransactions'])->name('moneysafe.watch-money-to-safe-transaction');
     Route::resource('moneysafe', MoneySafeController::class);
+
+    // ########### General Tax ###########
+    Route::resource('sell-car', SellCarController::class);
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
