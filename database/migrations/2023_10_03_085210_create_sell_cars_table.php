@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('car_name')->nullable();
             $table->string('car_no')->nullable();
 
-            $table->integer('representative_id')->unsigned();
+            $table->integer('representative_id')->unsigned()->nullable();
             $table->foreign('representative_id')->references('id')->on('employees')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');

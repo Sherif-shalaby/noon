@@ -8,14 +8,13 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="#">@lang('lang.settings')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.sell_car')</li>
                     </ol>
                 </div>
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}">@lang('lang.add_store')</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}">@lang('lang.add')</button>
                 </div>
             </div>
         </div>
@@ -56,7 +55,7 @@
                                     <td>{{$sell_car->driver_name}}</td>
                                     <td>{{$sell_car->car_name}}</td>
                                     <td>{{$sell_car->car_no}}</td>
-                                    <td>{{$sell_car->representative->employee_name}}</td>
+                                    <td>{{$sell_car->representative->employee_name??''}}</td>
                                     <td>{{$sell_car->car_type}}</td>
                                     <td>{{$sell_car->car_size}}</td>
                                     <td>{{$sell_car->car_license}}</td>
