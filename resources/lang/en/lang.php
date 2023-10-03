@@ -79,6 +79,8 @@ return [
     'settings_module' =>'Settings',
     'reports_module' =>'Reports',
     'stores' =>'Stores',
+    // ++++++++++++++++++ customer_price_offer ++++++++++++++++
+    'customer_price_offer' => 'customer Price Offer' ,
     'add_store' => 'Add Store',
     'salary_details' => 'Salary Details',
     'enter_the_fixed_wage' => 'Enter the Fixed Wage',
@@ -463,6 +465,7 @@ return [
     'fill_from_basic_unit'=>'Fill From Basic Unit',
     'enter_product_name_to_print_labels' => 'Write first number of the barcode, scan it or write first letters',
     'permissions'=>'Permissions',
+    'percent' => 'Percent',
 ];
 
 

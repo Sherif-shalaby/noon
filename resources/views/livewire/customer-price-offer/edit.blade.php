@@ -1,54 +1,43 @@
 
-<section class="app my-3 no-print" style="margin-top: 35px!important;">
+<section class="app my-3 no-print" style="margin-top: 100px!important;">
     <div class="container-fluid" >
         {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}
         <div class="row">
-            {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                    {!! Form::select('store_id', $stores, null, ['class' => 'select2 form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
+                    {!! Form::select('store_id', $stores, null, ['class' => 'select form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
                     @error('store_id')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-            {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_pos_id', __('lang.pos') . ':*', []) !!}
-                    {!! Form::select('store_pos_id', $store_pos, null, ['class' => 'select2 form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
+                    {!! Form::select('store_pos_id', $store_pos, null, ['class' => 'select form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
                     @error('store_pos_id')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-            {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
-                    {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select2' , 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
-                    @error('payment_status')
+                    {!! Form::label('invoice_lang', __('lang.invoice_lang') . ':', []) !!}
+                    {!! Form::select('invoice_lang', $languages + ['ar_and_en' => 'Arabic and English'], null, ['class' => 'form-control select', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select') , 'wire:model' => 'invoice_lang']) !!}
+                    @error('invoice_lang')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-            {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-            <div class="col-md-2" wire:ignore>
-                <label for="" class="text-primary">العملاء</label>
-                <div class="d-flex justify-content-center">
-                    <select class="form-control client select2" wire:model="client_id" id="Client_Select" wire:change="refreshSelect">
-                        <option  value="0 " readonly selected >اختر </option>
-                        @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+            <div class="col-md-2">
+                <div class="form-group">
+                    {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
+                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select' , 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
+                    @error('payment_status')
+                    <span class="error text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
-                @error('client_id')
-                <span class="text-danger">{{ $message }}</span>
-                @enderror
-                @include('customers.quick_add')
             </div>
         </div>
         <div class="row g-3 cards hide-print ">
@@ -68,8 +57,8 @@
                                             <th >@lang('lang.total_quantity')</th>
                                             <th >@lang('lang.price')</th>
 {{--                                            @if(!empty($showColumn))--}}
-                                                <th >@lang('lang.price') $ </th>
-                                                <th> @lang('lang.exchange_rate')</th>
+                                            <th >@lang('lang.price') $ </th>
+                                            <th> @lang('lang.exchange_rate')</th>
 {{--                                            @endif--}}
                                             <th >@lang('lang.discount')</th>
                                             <th >@lang('lang.discount_category')</th>
@@ -81,10 +70,9 @@
                                             <th >@lang('lang.action')</th>
                                         </tr>
                                         @php
-                                          $total = 0;
+                                            $total = 0;
                                         @endphp
                                         @foreach ($items as $key => $item)
-                                        {{-- {{ dd($item)  }} --}}
                                             <tr>
                                                 <td >
                                                     {{$item['product']['name']}}
@@ -92,16 +80,16 @@
                                                 <td >
                                                     <div class="d-flex align-items-center gap-1 " style="width: 80px">
                                                         <div class=" add-num control-num"
-                                                            wire:click="increment({{$key}})">
+                                                             wire:click="increment({{$key}})">
                                                             <i class="fa-solid fa-plus"></i>
                                                         </div>
                                                         <input class="form-control p-1 text-center" style="width: 50px" type="text" min="1"
-                                                            wire:model="items.{{ $key }}.quantity" Wire:change="subtotal({{$key}})">
+                                                               wire:model="items.{{ $key }}.quantity" Wire:change="subtotal({{$key}})">
                                                         @error("items.$key.quantity")
                                                         <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                         <div class="decrease-num control-num"
-                                                            wire:click="decrement({{ $key }})">
+                                                             wire:click="decrement({{ $key }})">
                                                             <i class="fa-solid fa-minus"></i>
                                                         </div>
                                                     </div>
@@ -114,32 +102,31 @@
                                                     {{$item['price']}}
                                                 </td>
 {{--                                                @if(!empty($showColumn))--}}
-                                                    <td >
-                                                        {{ number_format($item['dollar_price'] , 2)}}
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
-                                                               wire:model="items.{{ $key }}.exchange_rate">
-                                                    </td>
-{{--                                                @endif--}}
-
                                                 <td >
-                                                    <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1" readonly
-                                                                              wire:model="items.{{ $key }}.discount_price">
+                                                    {{ number_format($item['dollar_price'] , 2)}}
                                                 </td>
                                                 <td>
-                                                    <select class="select2 discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount" wire:change="subtotal({{$key}})">
+                                                    <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
+                                                           wire:model="items.{{ $key }}.exchange_rate">
+                                                </td>
+{{--                                                @endif--}}
+                                                <td >
+                                                    <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1" readonly
+                                                           wire:model="items.{{ $key }}.discount_price">
+                                                </td>
+                                                <td >
+                                                    <select class="select discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount" wire:change="subtotal({{$key}})">
                                                         <option selected value="0.00">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
                                                                     @if(in_array($client_id, $discount['price_customer_types']))
-                                                                    <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
+                                                                        <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
                                                                     @endif
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
-                                                                        <option value="{{$discount['id']}}">{{$discount['price_category']}}</option>
+                                                                    <option value="{{$discount['id']}}">{{$discount['price_category']}}</option>
                                                                 @endforeach
                                                             @endif
                                                         @endif
@@ -168,13 +155,12 @@
                                                         <i class="fas fa-undo"></i>
                                                     </div>
                                                     <div class="btn btn-sm btn-danger py-0 px-1"
-                                                        wire:click="delete_item({{ $key }})">
+                                                         wire:click="delete_item({{ $key }})">
                                                         <i class="fas fa-trash-can"></i>
                                                     </div>
 
                                                 </td>
                                             </tr>
-                                            <hr />
                                         @endforeach
                                     </table>
                                 </div>
@@ -196,7 +182,7 @@
     <script>
         document.addEventListener('livewire:load', function () {
             $('.depart').select().on('change', function (e) {
-                @this.set('department_id', $(this).val());
+            @this.set('department_id', $(this).val());
             });
         });
         document.addEventListener('livewire:load', function () {
@@ -225,22 +211,6 @@
             Livewire.on('customerAdded', function ($customer) {
                 // Re-render the Livewire component to refresh the <select>
                 Livewire.emit('refreshSelect');
-            });
-        });
-        window.addEventListener('showCreateProductConfirmation', function() {
-            Swal.fire({
-                title: "{{ __('lang.this_product_exists_before') }}" + "<br>" +
-                    "{{ __('lang.continue_to_add_stock') }}",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.emit('create');
-                } else {
-                    Livewire.emit('cancelCreateProduct');
-                }
             });
         });
     </script>

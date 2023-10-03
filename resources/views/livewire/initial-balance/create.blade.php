@@ -109,10 +109,9 @@
                                         'id' => 'categoryId',
                                         'wire:model' => 'item.0.category_id',
                                     ]) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                        data-target="#createCategoryModal" href="{{ route('store.create') }}"><i
-                                            class="fas fa-plus"></i></button>
-                                    @include('categories.create_modal', ['quick_add' => 1])
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="0"><i class="fas fa-plus"></i></a>
+{{--                                    @include('categories.create_modal', ['quick_add' => 1])--}}
                                 </div>
                                 @error('item.0.category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -122,23 +121,15 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
-                                        'class' => 'form-control select2 subcategory',
+                                    {!! Form::select('subcategory_id1', $subcategories1, null, [
+                                        'class' => 'form-control select2 subcategory1',
                                         'data-name' => 'subcategory_id1',
                                         'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId1',
+                                        'id' => 'subcategory_id1',
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                     data-select_category="1"><i class="fas fa-plus"></i></a>
-                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                        data-toggle="modal" data-target=".createSubCategoryModal"
-                                        data-select_category="1"><i class="fas fa-plus"></i></button> --}}
-                                    {{-- @include('categories.create_sub_cat_modal', [
-                                        'quick_add' => 1,
-                                        'selectCategoryValue' => null,
-                                    ]) --}}
-
                                 </div>
                                 @error('item.0.subcategory_id1')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -282,9 +273,9 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            
+
                         </div>
-                
+
                         <br>
                         {{-- add prices --}}
                        {{-- <div class="row">
@@ -324,7 +315,7 @@
                                         <input type="hidden" name="raw_price_index" id="raw_price_index"
                                             value="1">
                                     </div>
-                        </div> 
+                        </div>
                         <br><br>
                         <div class="row text-right">
                             <div class="col">
@@ -395,7 +386,7 @@
                             </h4>
                         </div>
                         <br>
-                    </div> 
+                    </div>
                     {{-- {!! Form::close() !!} --}}
                     <div class="col-sm-12">
                         <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
@@ -452,11 +443,13 @@
             console.log(name)
             if (name != undefined) {
                 var index = $(this).data('index');
+                var key = $(this).data('key');
                 var select2 = $(this);
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),
-                    var3: index
+                    var3: index,
+                    var4: key
                 });
             }
 

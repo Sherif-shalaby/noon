@@ -50,49 +50,34 @@ class CategoryController extends Controller
         return view('categories.create', compact('cats'));
     }
 
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
-        // return $request->quick_add;
-        // $validator = Validator::make(
-        //     $request->all(),
-        //     [
-        //         'name' => 'required|max:255|unique:categories,id',
-        //         'status' => 'required',
-        //         'parent_id' => 'nullable',
-        //         'cover' => 'nullable',
-        //     ],
-        //     [
-        //         'name.required' => __('categories.categoryNameRequired'),
-        //     ]
-        // );
-        // if ($validator->fails()) {
-        //     return response()->json(['status' => $validator->errors()->first()],[],[
-        //         'name.required' => __('categories.categoryNameRequired')
-        //     ]);
-        // }
-            $input['name']        = $request->name;
-            $input['status']      = $request->status;
-            $input['parent_id']   = $request->parent_id;
-            if ($request->file('cover')) {
-                $input['cover'] = store_file($request->file('cover'), 'categories');
-            }
-            if(!empty($request->translations))
-            {
-                $input['translation']= $request->translations;
-            }else{
-                $input['translation']=[];
-            }
-            $category=Category::create($input);
+//        dd(!empty($request->parent_id));
+        $data = $request['data'];
+//        dd($request['data'],empty($request->parent_id));
+        $input['name']        = $data['name'];
+        $input['status']      = $data['status'];
+        $input['parent_id']   = !empty($request->parent_id) ? $request->parent_id : null;
+        if ($request->file('cover')) {
+            $input['cover'] = store_file($request->file('cover'), 'categories');
+        }
+        if(!empty($data['translations[name']))
+        {
+            $input['translation']= $data['translations[name'];
+        }else{
+            $input['translation']=[];
+        }
+        $category = Category::create($input);
 
-            if ($request->quick_add) {
-                $output = [
-                    'success' => true,
-                    'id' => $category->id,
-                    'msg' => __('lang.success')
-                ];
-                return $output;
-            }
-            return response()->json(['status' => __('categories.addsuccess')]);
+        if ($data['quick_add']) {
+            $output = [
+                'success' => true,
+                'id' => $category->id,
+                'msg' => __('lang.success')
+            ];
+            return $output;
+        }
+        return response()->json(['status' => __('categories.addsuccess')]);
 
     }
 
@@ -198,7 +183,7 @@ class CategoryController extends Controller
         return $categories_dp;
     }
     public function getDropdown($category_id)
-    {   
+    {
         $units=[];
         if($category_id==0){
             $units = Category::whereNull('parent_id')->orderBy('name', 'asc')->pluck('name', 'id');
