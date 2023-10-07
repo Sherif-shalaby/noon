@@ -179,7 +179,7 @@
     </div>
     <!-- Start Containerbar -->
     <div id="containerbar" class="pl-3 pr-3">
-
+        {{--  --}}
         @include('layouts.partials.header')
 
         @include('layouts.partials.leftbar')

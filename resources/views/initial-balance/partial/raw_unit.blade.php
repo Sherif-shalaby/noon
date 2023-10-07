@@ -68,7 +68,7 @@
                  <input type="text" class="form-control" wire:model="rows.{{ $index }}.fill_quantity"
                      wire:change="changeFilling({{ $index }})" style="width: 100px;" required>
              </div>
-
+             {{--  --}}
          </div>
      </div>
 

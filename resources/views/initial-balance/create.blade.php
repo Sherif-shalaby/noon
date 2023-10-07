@@ -22,7 +22,7 @@
         </div>
     </div>
 @endsection
-
+{{--  --}}
 @section('content')
     @livewire('initial-balance.create')
 
