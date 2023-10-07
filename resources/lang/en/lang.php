@@ -480,6 +480,7 @@ return [
     'car_license_end_date'=>'Car License End Date',
     'notify_by_end_car_license'=>'Notify By End Car License',
     'added_by'=>'Added By',
+    'fixed'=>'Fixed',
 ];
 
 

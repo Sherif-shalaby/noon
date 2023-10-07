@@ -53,7 +53,29 @@ class Create extends Component
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
          $current_stock,$totalQuantity=0,$edit_product=[], $current_sub_category , $clear_all_input_stock_form, $product_tax,$subcategories=[];
 
-    public $rows = [];
+    public $rows = [['id'=>'','sku' => '','quantity' => '',
+    'fill_quantity' => '',
+    'fill_type' => 'fixed',
+    'purchase_price'=>'',
+    'selling_price'=>'',
+    'dollar_purchase_price'=>'',
+    'dollar_selling_price'=>'',
+    'unit_id'=>'',
+    'basic_unit_id'=>'',
+    'change_price_stock'=>'',
+    'equal'=>'',
+    'prices' => [
+        [
+            'price_type' => null,
+            'price_category' => null,
+            'price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+        ],
+    ]
+    ]];
     protected $rules = [
         'item.*.name' => 'required',
         'item.*.store_id' => 'required',
@@ -113,8 +135,11 @@ class Create extends Component
 
             }
             $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+            $this->exchange_rate = $this->changeExchangeRate();
+            $this->changeExchangeRateBasedPrices();
 
         }
+
     }
     public function render()
     {
@@ -559,8 +584,8 @@ class Create extends Component
 
     }
     public function changeExchangeRate(){
-        if (isset($this->supplier)){
-            $supplier = Supplier::find($this->supplier);
+        if (isset($this->item[0]['supplier_id'])){
+            $supplier = Supplier::find($this->item[0]['supplier_id']);
             if(isset($supplier->exchange_rate)){
                 return $this->exchangeRate =  str_replace(',' ,'',$supplier->exchange_rate);
             }
@@ -577,7 +602,7 @@ class Create extends Component
         $this->changeFilling($index);
     }
     public function changeExchangeRateBasedPrices(){
-        // dd(55);
+        // $this->exchange_rate=$this->changeExchangeRate();
         foreach ($this->rows as $index=>$row) {
             if($this->rows[$index]['purchase_price']!=""){
                 $this->changePurchasePrice($index);
