@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="{{ $local_code }}">
 {{-- dir="rtl" --}}
+{{--  --}}
 
 <head>
     <meta charset="UTF-8">

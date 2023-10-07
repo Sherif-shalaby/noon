@@ -177,7 +177,7 @@
                              <label class="text-danger error-msg">{{ $message }}</label>
                          @enderror
                      </div>
-
+                     {{--  --}}
                      <div
                          style="width: 180px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 55px">
                          <input type="text" class="form-control price_category"
