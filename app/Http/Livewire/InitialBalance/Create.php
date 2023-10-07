@@ -581,11 +581,15 @@ class Create extends Component
             $purchase_price = $this->rows[$index]['dollar_purchase_price'];
         }
         return $purchase_price;
-
     }
     public function changeExchangeRate(){
         if (isset($this->item[0]['supplier_id'])){
-            $supplier = Supplier::where('id',$this->item[0]['supplier_id'])->where('end_date','>=',Carbon::now())->first();
+            $supplier = Supplier::where('id',$this->item[0]['supplier_id'])
+            ->where(function ($query) {
+                $query->where('end_date', '>=', Carbon::now())
+                      ->orWhereNull('end_date');
+            })->first();
+            // ->where('end_date','>=',Carbon::now())->orWhere('end_date','=',null)->first();
             if(isset($supplier->exchange_rate)){
                 return $this->exchangeRate =  str_replace(',' ,'',$supplier->exchange_rate);
             }
@@ -595,7 +599,6 @@ class Create extends Component
         else{
             return $this->exchangeRate = System::getProperty('dollar_exchange') ;
         }
-
     }
     public function changePurchasePrice($index){
         $this->rows[$index]['purchase_price']=$this->rows[$index]['dollar_purchase_price']*$this->exchange_rate;
