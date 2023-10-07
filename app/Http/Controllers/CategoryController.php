@@ -50,7 +50,7 @@ class CategoryController extends Controller
         return view('categories.create', compact('cats'));
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
 //        dd(!empty($request->parent_id));
         $data = $request['data'];
