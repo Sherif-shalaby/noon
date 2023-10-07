@@ -44,7 +44,8 @@ class JobTypeController extends Controller
    *
    * @return RedirectResponse
    */
-  public function store(Request $request)   : RedirectResponse
+  public function store(Request $request)
+    //  : RedirectResponse
   {
       try {
           $job = new JobType();
@@ -59,16 +60,14 @@ class JobTypeController extends Controller
           {
             if (!empty($subModulePermissionArray[$key])) {
                 foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
-                    $permission=Permission::where('name', $key)->first();
-                    $role->givePermissionTo($permission->id);
                     $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
-                    $role->givePermissionTo($permission->id);
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
                     $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
-                    $role->givePermissionTo($permission->id);
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
                     $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
-                    $role->givePermissionTo($permission->id);
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
                     $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
-                    $role->givePermissionTo($permission->id);
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
                 }
             }
           }
@@ -81,6 +80,7 @@ class JobTypeController extends Controller
       catch (\Exception $e){
           Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
           $output = [
+            
               'success' => false,
               'msg' => __('lang.something_went_wrong')
           ];
@@ -113,8 +113,17 @@ class JobTypeController extends Controller
       $modulePermissionArray = User::modulePermissionArray();
       $role = Role::where('name',$job->title)->first();
       $permissions = $role->permissions;
+
+      $uniqueModuleNames = [];
+
+      foreach ($permissions as $permission) {
+          $moduleName = $permission->module_name;
+          $uniqueModuleNames[$moduleName] = true;
+      }
+      
+      $uniqueModuleNames = array_keys($uniqueModuleNames);
       return view('jobs.edit')
-          ->with(compact('job','modulePermissionArray','permissions'));
+          ->with(compact('job','modulePermissionArray','permissions','uniqueModuleNames'));
   }
 
   /**
@@ -130,11 +139,32 @@ class JobTypeController extends Controller
               'title' => $request->title,
               'updated_by' => Auth::user()->id,
           ];
-          JobType::where('id', $id)->update($data);
-
+          $job=JobType::where('id', $id)->first();
+          $role=Role::where('name',$job->title)->first();
+          $role->update([
+            'name' => $request->title,
+          ]);
+          $job->update($data);
+          $rolePermissions = $role->permissions()->delete();
+          $subModulePermissionArray = User::subModulePermissionArray();
+          foreach($request->permissions as $key=>$permission)
+          {
+            if (!empty($subModulePermissionArray[$key])) {
+                foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                }
+            }
+          }
           $output = [
               'success' => true,
-              'msg' => __('lang.job_updated')
+              'msg' => __('lang.success')
           ];
       } catch (\Exception $e) {
           Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());

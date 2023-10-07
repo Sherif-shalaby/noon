@@ -91,7 +91,7 @@
                                     'wire:model' => 'item.0.sku',
                                 ]) !!}
                             </div> --}}
-                            <div class="col-md-3">
+                            <div class="col-md-3"> 
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                 <input type="text" class="form-control" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
