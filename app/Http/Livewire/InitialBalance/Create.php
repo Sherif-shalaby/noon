@@ -93,7 +93,7 @@ class Create extends Component
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-        'rows.*.prices.*.price_customer_types' => 'array',
+        'rows.*.prices.*.price_customer_types' => 'nullable|array',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -383,12 +383,12 @@ class Create extends Component
                         $price_data = [
                             'variation_id' =>$Variation->id,
                             'stock_line_id' =>$stockLine->id,
-                            'price_type' => $price['price_type'],
-                            'price' => $price['price'],
-                            'price_category' => $price['price_category'],
-                            'quantity' => $price['discount_quantity'],
-                            'bonus_quantity' => $price['bonus_quantity'],
-                            'price_customer_types' => $price['price_customer_types'],
+                            'price_type' => isset($price['price_type'])?$price['price_type']:null,
+                            'price' => isset($price['price'])?$price['price']:null,
+                            'price_category' => isset($price['price_category'])?$price['price_category']:null,
+                            'quantity' => isset($price['discount_quantity'])?$price['discount_quantity']:null,
+                            'bonus_quantity' => isset($price['bonus_quantity'])?$price['bonus_quantity']:null,
+                            'price_customer_types' => !empty($price['price_customer_types'])?$price['price_customer_types']:[],
                             'created_by' => Auth::user()->id,
                         ];
                         ProductPrice::create($price_data);
