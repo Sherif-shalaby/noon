@@ -39,7 +39,7 @@ class Index extends Component
     }
     public function render()
     {
-        $customer_offer_prices = TransactionCustomerOfferPrice::with(['customer','store','transaction_customer_offer_price'])
+        $customer_offer_prices = TransactionCustomerOfferPrice::with(['customer','store','customer_offer_price'])
                                     ->where(function ($q)
                                     {
                                         $this->between($q);

@@ -34,8 +34,11 @@ return new class extends Migration
             $table->decimal('dollar_sell_price', 15, 4)->nullable();
             $table->decimal('total_dollar_sell_price', 15, 4)->default(0.0000);
             // +++++++++++++ foreign key : created_by +++++++++++++
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            // +++++++++++++ foreign key : updated_by +++++++++++++
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
             // +++++++++++++ foreign key : deleted_by +++++++++++++
             $table->unsignedBigInteger('deleted_by')->nullable();
             $table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade');

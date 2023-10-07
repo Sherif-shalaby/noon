@@ -153,13 +153,18 @@ class Edit extends Component
             $transaction->update($transaction_data);
 
             // Add Sell line
-            foreach ($this->items as $item) {
-                if(!empty($item['sell_line_id'])){
+            foreach ($this->items as $item)
+            {
+                if(!empty($item['sell_line_id']))
+                {
                     $sell_line = SellLine::find($item['sell_line_id']);
                     $sell_line->product_id = $item['product']['id'];
-                    if ($transaction_status == 'draft') {
+                    if ($transaction_status == 'draft')
+                    {
                         $old_quantity = 0;
-                    } else {
+                    }
+                    else
+                    {
                         $old_quantity = $sell_line->quantity;
                     }
                     $sell_line->quantity = (float)$item['quantity'];
@@ -178,8 +183,10 @@ class Edit extends Component
                     $keep_sell_lines[] = $item['sell_line_id'];
                     $product = Product::find($item['product']['id']);
                 }
-                else{
-                    if ($item['discount_type'] == 0) {
+                else
+                {
+                    if ($item['discount_type'] == 0)
+                    {
                         $item['discount_type'] = null;
                     }
                     $old_quantity = 0;
@@ -381,8 +388,8 @@ class Edit extends Component
 //        $this->sumSubTotal();
     }
 
-    public function addLineProduct($line){
-//        dd($line);
+    public function addLineProduct($line)
+    {
 
         $product = Product::find($line->product_id);
         $quantity_available = $this->quantityAvailable($product);

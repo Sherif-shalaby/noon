@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.customer_price_offer'))
+@section('title', __('lang.create_customer_price_offer'))
 @push('css')
     <!-- Main Faile Css  -->
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css')}}" />

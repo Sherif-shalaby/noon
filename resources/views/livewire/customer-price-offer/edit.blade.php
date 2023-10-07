@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="card mt-3">
                     <div class="card-header d-flex align-items-center">
-                        <h4>@lang('lang.customer_price_offer')</h4>
+                        <h4>@lang('lang.edit_customer_price_offer')</h4>
                     </div>
                     <div class="row ">
                         <div class="col-md-9">
@@ -132,7 +132,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+
                                         @if(!empty($items))
+
                                             @foreach($items  as $index => $product)
                                                 @include('customer_price_offer.partials.product_row')
                                             @endforeach

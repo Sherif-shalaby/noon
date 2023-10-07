@@ -14,10 +14,14 @@ class TransactionCustomerOfferPrice extends Model
     protected $guarded = [];
     // Relationship => 1:M => "CustomerOfferPrice" And "TransactionCustomerOfferPrice"
     // "one transaction" has "many products"
-    public function transaction_customer_offer_price()
+    public function customer_offer_price()
     {
         return $this->hasMany(CustomerOfferPrice::class,'transaction_customer_offer_id','id');
     }
+    // public function transaction_customer_offer_price()
+    // {
+    //     return $this->hasMany(CustomerOfferPrice::class,'transaction_customer_offer_id','id');
+    // }
     // Relationship => 1:M => "Customer" And "TransactionCustomerOfferPrice"
     // "one transaction" belongs to "one customer"
     public function customer()

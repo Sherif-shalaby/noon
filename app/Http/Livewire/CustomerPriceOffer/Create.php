@@ -161,50 +161,7 @@ class Create extends Component
         $this->validateOnly($propertyName);
     }
     // ++++++++++++++++++++++++++++++++++ store() method ++++++++++++++++++++++++++++++++++
-    // public function store(): Redirector|Application|RedirectResponse
-    // {
-    //     try
-    //     {
-    //         $customer_offer_price['store_id'] = $this->store_id;
-    //         $customer_offer_price['customer_id'] = $this->customer_id;
-    //         $customer_offer_price['is_quotation'] = 1;
-    //         // +++++++++++++++ product +++++++++++++++++++++
-    //         foreach( $this->items as $item )
-    //         {
-    //             $customer_offer_price['product_id'] = !empty($item['product']['id']) ? $item['product']['id'] : null;
-    //             $customer_offer_price['quantity'] = !empty($item['quantity']) ? $item['quantity'] : 0 ;
-    //         }
-    //         // dinar sell_price
-    //         $customer_offer_price['sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-    //         // dollar sell_price
-    //         $customer_offer_price['dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-    //         // dinar total_sell_price
-    //         $customer_offer_price['total_sell_price'] = $this->num_uf($this->sum_dinar_sub_total());
-    //         // dollar total_sell_price
-    //         $customer_offer_price['total_dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-    //         // status = draft : عشان مفيش دفع حيث بيكون عملية حجز
-    //         $customer_offer_price['status'] = 'draft';
-    //         $customer_offer_price['block_qty'] = !empty($this->block_qty) ? 1 : 0;
-    //         $customer_offer_price['block_for_days'] = !empty($this->block_for_days) ? $this->block_for_days : 0; //reverse the block qty handle by command using cron job
-    //         $customer_offer_price['validity_days'] = !empty($this->validity_days) ? $this->validity_days : 0;
-    //         $customer_offer_price['tax_method'] = !empty($this->tax_method) ? $this->tax_method : null;
-    //         $customer_offer_price['discount_type'] = !empty($this->discount_type) ? $this->discount_type : null;
-    //         $customer_offer_price['discount_value'] = !empty($this->discount_value) ? $this->discount_value : null;
-    //         $customer_offer_price['created_by'] = Auth::user()->id;
-    //         $transaction = CustomerPriceOffer::create($customer_offer_price);
-    //         $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
-    //     }
-    //     catch (\Exception $e){
-    //         $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
-    //         dd($e);
-    //     }
-    //     return redirect()->route('customer_price_offer.create');
-    // }
-    // public function someMethod()
-    // {
-    //     // Ensure $this->discount_type is being set correctly before assigning it
-    //     $this->discount_type = 'fixed'; // Example value, set it according to your logic
-    // }
+
     public function store(): Redirector|Application|RedirectResponse
     {
         try
@@ -239,39 +196,27 @@ class Create extends Component
             $transaction_customer_offer->discount_value = !empty($this->discount_value) ? $this->discount_value : null;
             // created_by
             $transaction_customer_offer->created_by = Auth::user()->id;
+            // updated_by
+            $transaction_customer_offer->updated_by = null;
+            // deleted_by
+            $transaction_customer_offer->deleted_by = null;
+            // created_at
             $transaction_customer_offer->created_at = now();
+            // updated_at
+            $transaction_customer_offer->updated_at = null;
+            // deleted_at
+            $transaction_customer_offer->deleted_at = null;
             $transaction_customer_offer->save();
 
             DB::beginTransaction();
             // add  products to stock lines
             $customer_offer_prices = [];
             // ++++++++++++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++++++++++++
-            // foreach ($this->items as $index => $item)
-            // {
-            //     // Check if product id and quantity are available in the item
-            //     if (!empty($item['product']['id']) && !empty($item['quantity']))
-            //     {
-            //         $customer_offer_price['transaction_id'] = $transaction->id ;
-            //         // product
-            //         $customer_offer_price['product_id'] = !empty($item['product']['id']) ? $item['product']['id'] : null ;
-            //         // quantity
-            //         $customer_offer_price['quantity'] = $item['quantity'];
-            //         // dinar sell_price
-            //         $customer_offer_price['sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-            //         // dollar sell_price
-            //         $customer_offer_price['dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-            //         // dinar total_sell_price
-            //         // $customer_offer_price['total_sell_price'] = $this->num_uf($this->sum_dinar_sub_total());
-            //         // dollar total_sell_price
-            //         // $customer_offer_price['total_dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-            //         // Add the customer offer price for this item to the array
-            //         $customer_offer_prices[] = $customer_offer_price;
-            //     }
-            // }
             foreach ($this->items as $index => $item)
             {
                 if (!empty($item['product']['id']) && !empty($item['quantity']))
                 {
+                    // dd($item);
                     // Create a new array for each item
                     $customer_offer_price = [];
 
@@ -279,9 +224,21 @@ class Create extends Component
                     $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
                     $customer_offer_price['product_id'] = $item['product']['id'];
                     $customer_offer_price['quantity'] = $item['quantity'];
-                    $customer_offer_price['sell_price'] = $item['total_cost_var'];
-                    $customer_offer_price['dollar_sell_price'] = $item['dollar_total_cost_var'];
+                    // هنا
+                    $customer_offer_price['sell_price'] = $item['selling_price'];
+                    $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
+                    // created_by
+                    $customer_offer_price['created_by'] = Auth::user()->id;
+                    // updated_by
+                    $customer_offer_price['updated_by'] = null;
+                    // deleted_by
+                    $customer_offer_price['deleted_by'] = null;
+                    // created_at
                     $customer_offer_price['created_at'] = now();
+                    // updated_at
+                    $customer_offer_price['updated_at'] = null;
+                    // deleted_at
+                    $customer_offer_price['deleted_at'] = null;
 
                     // Add the customer offer price for this item to the array
                     $customer_offer_prices[] = $customer_offer_price;
