@@ -585,7 +585,7 @@ class Create extends Component
     }
     public function changeExchangeRate(){
         if (isset($this->item[0]['supplier_id'])){
-            $supplier = Supplier::find($this->item[0]['supplier_id']);
+            $supplier = Supplier::where('id',$this->item[0]['supplier_id'])->where('end_date','>=',Carbon::now())->first();
             if(isset($supplier->exchange_rate)){
                 return $this->exchangeRate =  str_replace(',' ,'',$supplier->exchange_rate);
             }
