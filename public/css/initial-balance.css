@@ -1,0 +1,26 @@
+.select2-selection {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.add-button {
+    background-color: #F9C751;
+    width: 60px;
+    height: 36px;
+    border-radius: 16px;
+    padding: 6px 6px;
+    color: white;
+    border: none
+}
+
+.initial-balance-input {
+    background-color: #dedede;
+    border: none;
+    border-radius: 16px;
+    color: #373737;
+    box-shadow: 0 8px 6px -5px #bbb;
+    width: 100%;
+    margin: auto;
+    flex-wrap: nowrap;
+    margin-bottom: 10px;
+}
