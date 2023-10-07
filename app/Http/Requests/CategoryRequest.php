@@ -24,33 +24,11 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255|unique:categories',
-            'status' => 'required',
+            'name' => 'required|max:255|unique:categories,name,NULL,id,deleted_at,NULL',
+            // 'status' => 'required',
             'parent_id' => 'nullable',
             'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
         ];
-        // switch ($this->method()) {
-        //     case 'POST':
-        //     {
-        //         return [
-        //             'name' => 'required|max:255|unique:categories',
-        //             'status' => 'required',
-        //             'parent_id' => 'nullable',
-        //             'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
-        //         ];
-        //     }
-        //     case 'PUT':
-        //     case 'PATCH':
-        //     {
-        //         return [
-        //             'name' => 'required|max:255|unique:categories,id,'.$this->route()->parameter('id'),
-        //             'status' => 'required',
-        //             'parent_id' => 'nullable',
-        //             'cover' => 'nullable',
-        //         ];
-        //     }
-        //     default: break;
-        // }
     }
 
     public function messages()

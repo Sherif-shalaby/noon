@@ -78,6 +78,41 @@
                             </div>
                         </div>
                     </div>
+                    {{----}}
+                    <div class="col-md-4">
+                        <div class="form-group ">
+                            <label for="start_date">@lang('lang.start_date')</label>
+                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                <input type="date"
+                                       class="form-control"
+                                       placeholder="@lang('lang.start_date')"
+                                       name="start_date"
+                                       style="border-color:#aaa"
+                                       value="{{ date('Y-m-d') }}" >
+                                @error('start_date')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                        {{----}}
+                        <div class="col-md-4">
+                            <div class="form-group ">
+                                <label for="end_date">@lang('lang.end_date')</label>
+                                <div class="select_body d-flex justify-content-between align-items-center" >
+                                    <input type="date"
+                                           class="form-control"
+                                           placeholder="@lang('lang.end_date')"
+                                           name="end_date"
+                                           style="border-color:#aaa"
+                                           value="{{ old('end_date') }}" >
+                                    @error('end_date')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    
                     {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}
                     <div class="col-md-4 ">
                         <div class="form-group ">

@@ -53,7 +53,29 @@ class Create extends Component
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
          $current_stock,$totalQuantity=0,$edit_product=[], $current_sub_category , $clear_all_input_stock_form, $product_tax,$subcategories=[];
 
-    public $rows = [];
+    public $rows = [['id'=>'','sku' => '','quantity' => '',
+    'fill_quantity' => '',
+    'fill_type' => 'fixed',
+    'purchase_price'=>'',
+    'selling_price'=>'',
+    'dollar_purchase_price'=>'',
+    'dollar_selling_price'=>'',
+    'unit_id'=>'',
+    'basic_unit_id'=>'',
+    'change_price_stock'=>'',
+    'equal'=>'',
+    'prices' => [
+        [
+            'price_type' => null,
+            'price_category' => null,
+            'price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+        ],
+    ]
+    ]];
     protected $rules = [
         'item.*.name' => 'required',
         'item.*.store_id' => 'required',
@@ -71,7 +93,7 @@ class Create extends Component
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-        'rows.*.prices.*.price_customer_types' => 'array',
+        'rows.*.prices.*.price_customer_types' => 'nullable|array',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -113,8 +135,11 @@ class Create extends Component
 
             }
             $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+            $this->exchange_rate = $this->changeExchangeRate();
+            $this->changeExchangeRateBasedPrices();
 
         }
+
     }
     public function render()
     {
@@ -358,12 +383,12 @@ class Create extends Component
                         $price_data = [
                             'variation_id' =>$Variation->id,
                             'stock_line_id' =>$stockLine->id,
-                            'price_type' => $price['price_type'],
-                            'price' => $price['price'],
-                            'price_category' => $price['price_category'],
-                            'quantity' => $price['discount_quantity'],
-                            'bonus_quantity' => $price['bonus_quantity'],
-                            'price_customer_types' => $price['price_customer_types'],
+                            'price_type' => isset($price['price_type'])?$price['price_type']:null,
+                            'price' => isset($price['price'])?$price['price']:null,
+                            'price_category' => isset($price['price_category'])?$price['price_category']:null,
+                            'quantity' => isset($price['discount_quantity'])?$price['discount_quantity']:null,
+                            'bonus_quantity' => isset($price['bonus_quantity'])?$price['bonus_quantity']:null,
+                            'price_customer_types' => !empty($price['price_customer_types'])?$price['price_customer_types']:[],
                             'created_by' => Auth::user()->id,
                         ];
                         ProductPrice::create($price_data);
@@ -556,11 +581,15 @@ class Create extends Component
             $purchase_price = $this->rows[$index]['dollar_purchase_price'];
         }
         return $purchase_price;
-
     }
     public function changeExchangeRate(){
-        if (isset($this->supplier)){
-            $supplier = Supplier::find($this->supplier);
+        if (isset($this->item[0]['supplier_id'])){
+            $supplier = Supplier::where('id',$this->item[0]['supplier_id'])
+            ->where(function ($query) {
+                $query->where('end_date', '>=', Carbon::now())
+                      ->orWhereNull('end_date');
+            })->first();
+            // ->where('end_date','>=',Carbon::now())->orWhere('end_date','=',null)->first();
             if(isset($supplier->exchange_rate)){
                 return $this->exchangeRate =  str_replace(',' ,'',$supplier->exchange_rate);
             }
@@ -570,14 +599,13 @@ class Create extends Component
         else{
             return $this->exchangeRate = System::getProperty('dollar_exchange') ;
         }
-
     }
     public function changePurchasePrice($index){
         $this->rows[$index]['purchase_price']=$this->rows[$index]['dollar_purchase_price']*$this->exchange_rate;
         $this->changeFilling($index);
     }
     public function changeExchangeRateBasedPrices(){
-        // dd(55);
+        // $this->exchange_rate=$this->changeExchangeRate();
         foreach ($this->rows as $index=>$row) {
             if($this->rows[$index]['purchase_price']!=""){
                 $this->changePurchasePrice($index);

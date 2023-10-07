@@ -38,8 +38,10 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
 //brand form
 //unit form
 var raw_index=0;
+var type="";
 $(document).on('click','.add_unit_raw',function(){
     raw_index=$(this).data('index');
+    type=$(this).data('type');
 })
 $("#create-unit-btn").click(function (e){
     e.preventDefault();
@@ -67,8 +69,14 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $(".unit_id"+raw_index).empty().append(data_html);
-                        $(".unit_id"+raw_index).val(unit_id).trigger();
+                        if(type=="basic_unit"){
+                            $(".basic_unit_id"+raw_index).empty().append(data_html);
+                            $(".basic_unit_id"+raw_index).val(unit_id).change();
+                        }else{
+                            $(".unit_id"+raw_index).empty().append(data_html);
+                            $(".unit_id"+raw_index).val(unit_id).change();
+                        }
+                        
                     },
                 });
             } else {
@@ -143,7 +151,7 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#supplier_id").empty().append(data_html);
-                        $("#supplier_id").val(supplier_id).trigger();
+                        $("#supplier_id").val(supplier_id).change();
                     },
                 });
             } else {
@@ -180,12 +188,22 @@ $("#create-category-btn").click(function (e){
 });
 $(document).on("submit", "#category-form", function (e) {
     e.preventDefault();
-    var data = $(this).serialize();
+    var dataArray = $(this).serializeArray();
+    var data = {};
+    // Convert the serialized array into an object
+    $.each(dataArray, function(index, field) {
+        data[field.name] = field.value;
+    });
+    console.log(select_category)
+    console.log(data);
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
         dataType: "json",
-        data: data,
+        data: {
+            data: data,
+            parent_id: main_category_id
+        },
         success: function (result) {
             if (result.success) {
                 Swal.fire("Success", result.msg, "success");
@@ -199,6 +217,7 @@ $(document).on("submit", "#category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
+                        // alert(select_category)
                         if(select_category=="0"){
                             $("#categoryId").empty().append(data_html);
                             $("#categoryId").val(category_id).trigger();

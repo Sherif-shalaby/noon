@@ -484,11 +484,5 @@ return array(
     'enter_product_name_to_print_labels' => 'استخدم الماسح الضوئي أو أكتب أول ثلاثة أحرف من المنتج أو أول الباركو',
     'permissions'=>'الاذونات',
     'percent' => 'نسبه',
-    'customer_offer_status' => 'حالة المخزون',
-    'quotation_status' => 'حالة عرض السعر',
-    'blocked' => 'محظور' ,
-    'not_blocked' => 'غير محظور' ,
-    'filter' => 'تصفية',
-    'clear_filters' => 'مسح عوامل التصفية',
 );
 

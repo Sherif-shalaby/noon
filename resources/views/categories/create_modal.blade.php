@@ -1,11 +1,12 @@
 <!-- Modal -->
-<div class="modal fade" id="createCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade createSubCategoryModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
+     aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_category')}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
             {!! Form::open(['route' => 'categories.store', 'method' => 'post', 'files' => true,'id' =>'category-form' ]) !!}
@@ -23,9 +24,9 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                         <button  class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_category"
-                            aria-expanded="false" aria-controls="collapseExample">
-                                {{ __('categories.addtranslations') }}
+                                 data-toggle="collapse" data-target="#translation_table_category"
+                                 aria-expanded="false" aria-controls="collapseExample">
+                            {{ __('categories.addtranslations') }}
                         </button>
                     </div>
                     @include('layouts.translation_inputs', [
@@ -34,34 +35,17 @@
                         'type' => 'category',
                     ])
                 </div>
-{{--                @if(!empty($item[0]['category_id']))--}}
-{{--                    <input type="hidden" name="parent_id" value="{{$item[0]['category_id']}}">--}}
-{{--                @else--}}
-{{--                    <div class="form-group">--}}
-{{--                        <label for="parent_id">@lang('categories.parent')</label>--}}
-{{--                        {!! Form::select(--}}
-{{--                            'parent_id',--}}
-{{--                            $categories,null,--}}
-{{--                            ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select')]--}}
-{{--                        ) !!}--}}
-
-{{--                        --}}{{-- <select name="parent_id" class="form-control select2"  id="my-select">--}}
-{{--                            <option value="" selected disabled readonly>---{{ __('select') }}---</option>--}}
-{{--                            @forelse($categories as $cat)--}}
-{{--                                <option value="{{ $cat->id }}"--}}
-{{--                                    {{ old('parent_id', request()->parent_id ) ==$cat->id?'selected':null }} >--}}
-{{--                                    {{ $cat->name }}--}}
-{{--                                </option>--}}
-{{--                            @empty--}}
-{{--                            @endforelse--}}
-{{--                        </select> --}}
-{{--                        @error('parent_id')--}}
-{{--                        <span class="text-danger">{{ $message }}</span>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-
-
+                {{--                <div class="form-group">--}}
+                {{--                    <label for="parent_id">@lang('categories.parent')</label>--}}
+                {{--                    {!! Form::select(--}}
+                {{--                        'parent_id',--}}
+                {{--                        $subcategories,null,--}}
+                {{--                        ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']--}}
+                {{--                    ) !!}--}}
+                {{--                    @error('parent_id')--}}
+                {{--                    <span class="text-danger">{{ $message }}</span>--}}
+                {{--                    @enderror--}}
+                {{--                </div>--}}
                 <div class="form-group">
                     <label for="status">@lang('categories.status')</label>
                     <select name="status" class="form-control" required>
@@ -82,3 +66,14 @@
 
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}
+<script>
+    {{--$(document).ready(function () {--}}
+    {{--    // Attach a click event handler to the button--}}
+    {{--    $('.select_sub_category').click(function () {--}}
+    {{--        // Get the data-select_category attribute value--}}
+    {{--         {{ $selectCategoryValue }} = $(this).data('select_category');--}}
+    {{--        // Set the value in the modal--}}
+    {{--        $('#selectedCategoryValue').text(selectCategoryValue);--}}
+    {{--    });--}}
+    {{--});--}}
+</script>
