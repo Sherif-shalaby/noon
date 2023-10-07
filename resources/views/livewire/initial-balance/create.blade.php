@@ -1,18 +1,8 @@
-<style>
-    .accordion-button:not(.collapsed) {
-        color: var(--bs-accordion-active-color);
-        background-color: #ffffff;
-        box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
-    }
-</style>
-
-<link rel="stylesheet" href="{{ url('css/initial-balance.css') }}">
-
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card mt-3">
                     <div class="card-header">
 
                         @if (!empty($is_raw_material))
@@ -43,9 +33,10 @@
                     {{-- {!! Form::open(['id' => 'add_stock_form']) !!} --}}
                     <div class="card-body py-0">
                         {{-- <div class="col-md-12"> --}}
-                        <div class='row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif'>
+                        <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
                             <div class="col-md-3">
-                                {!! Form::label('store_id', __('lang.store') . '*', [
+                                {!! Form::label('store_id', __('lang.store') . ':*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end' : '',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
@@ -72,8 +63,9 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
                             <div class="col-md-3">
-                                {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
+                                {!! Form::label('supplier_id ', __('lang.supplier') . ':*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end' : '',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
@@ -92,7 +84,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'wire:model' => 'item.0.supplier_id',
                                     ]) !!}
-                                    <button type="button" class="add-button" data-toggle="modal"
+                                    <button type="button"class="add-button" data-toggle="modal"
                                         data-target=".add-supplier" href="{{ route('suppliers.create') }}"><i
                                             class="fas fa-plus"></i></button>
                                     @include('suppliers.quick_add', ['quick_add' => 1])
@@ -101,6 +93,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
                             <div class="col-md-3">
                                 {!! Form::label('name', __('lang.product_name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5' : 'h5',
@@ -122,10 +115,10 @@
                                 ]) !!}
                             </div> --}}
                             <div class="col-md-3">
-                                {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
+                                {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end' : '',
                                 ]) !!}
-                                <input type="text" class="form-control initial-balance-input" id="exchange_rate"
+                                <input type="text" class="form-control  initial-balance-input" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
                                     placeholder="سعر السوق({{ $exchange_rate }})" wire:model="exchange_rate"
                                     wire:change="changeExchangeRateBasedPrices()">
@@ -150,10 +143,11 @@
                                         'id' => 'categoryId',
                                         'wire:model' => 'item.0.category_id',
                                     ]) !!}
-                                    <button type="button" class="add-button" data-toggle="modal"
-                                        data-target="#createCategoryModal" href="{{ route('store.create') }}"><i
-                                            class="fas fa-plus"></i></button>
-                                    @include('categories.create_modal', ['quick_add' => 1])
+                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                        data-container=".view_modal"
+                                        class="add-button openCategoryModal text-white d-flex justify-content-center align-items-center"
+                                        data-toggle="modal" data-select_category="0"><i class="fas fa-plus"></i></a>
+                                    {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
                                 </div>
                                 @error('item.0.category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -172,26 +166,17 @@
                                         width: 100%;
                                         margin: auto;
                                         flex-wrap: nowrap;">
-                                    {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
-                                        'class' => 'form-control select2 subcategory',
+                                    {!! Form::select('subcategory_id1', $subcategories1, null, [
+                                        'class' => 'form-control select2 subcategory1',
                                         'data-name' => 'subcategory_id1',
                                         'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId1',
+                                        'id' => 'subcategory_id1',
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                         data-container=".view_modal"
-                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-select_category="1"><i
-                                            class="fas fa-plus text-white"></i></a>
-                                    {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
-                                        data-toggle="modal" data-target=".createSubCategoryModal"
-                                        data-select_category="1"><i class="fas fa-plus"></i></button> --}}
-                                    {{-- @include('categories.create_sub_cat_modal', [
-                                        'quick_add' => 1,
-                                        'selectCategoryValue' => null,
-                                    ]) --}}
-
+                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -218,9 +203,8 @@
                                     ]) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                         data-container=".view_modal"
-                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-select_category="2"><i
-                                            class="fas fa-plus text-white"></i></a>
+                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="2"><i class="fas fa-plus"></i></button> --}}
@@ -253,33 +237,35 @@
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                         data-container=".view_modal"
-                                        class="d-flex justify-content-center align-items-center add-button openCategoryModal"
-                                        data-toggle="modal" data-select_category="3"><i
-                                            class="fas fa-plus text-white"></i></a>
+                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
 
+
                             {{-- tax accordion  --}}
-                            <div class="col-md-12 mt-2">
+                            <div class="col-md-12 mt-2 p-0">
                                 <div class="accordion" id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" type="button"
-                                                data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne"
-                                                aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                                            <button class="accordion-button collapsed" style="padding: 5px 15px"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
+                                                aria-controls="panelsStayOpen-collapseOne">
                                                 <h5 class="text-primary">
-                                                    الضرائب
+                                                    {{ __('lang.product_tax') }}
                                                 </h5>
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
                                             <div class="accordion-body d-flex">
+
                                                 <div class="col-md-6">
                                                     <label for="method"
-                                                        class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
+                                                        class="h5 pt-3">{{ __('lang.tax_method') . '*' }}</label>
                                                     <div
                                                         style="background-color: #dedede; border: none;
                                                                 border-radius: 16px;
@@ -288,8 +274,6 @@
                                                                 width: 100%;
                                                                 margin: auto;
                                                                 flex-wrap: nowrap;">
-
-
                                                         {!! Form::select(
                                                             'method',
                                                             ['inclusive' => __('lang.inclusive'), 'exclusive' => __('lang.exclusive')],
@@ -333,107 +317,108 @@
                                                             data-target="#add_product_tax_modal"
                                                             data-select_category="2"><i
                                                                 class="fas fa-plus"></i></button>
-                                                        @include('product-tax.create', ['quick_add' => 1])
+                                                        @include('product-tax.create', [
+                                                            'quick_add' => 1,
+                                                        ])
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                {{--                            <div class="col-md-3"> --}}
+                                {{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!} --}}
+                                {{--                                {!! Form::select('status', --}}
+                                {{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')] --}}
+                                {{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required', --}}
+                                {{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!} --}}
+                                {{--                                @error('item.0.status') --}}
+                                {{--                                <span class="error text-danger">{{ $message }}</span> --}}
+                                {{--                                @enderror --}}
+                                {{--                            </div> --}}
                             </div>
 
+                            {{-- size accordion --}}
+                            <div class="col-md-12 my-2 p-0">
+                                <div class="accordion " id="accordionPanelsStayOpenExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" style="padding: 5px 15px"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                                                aria-controls="panelsStayOpen-collapseTwo">
+                                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
+                                            </button>
+                                        </h2>
 
-                            {{--                            <div class="col-md-3"> --}}
-                            {{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!} --}}
-                            {{--                                {!! Form::select('status', --}}
-                            {{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')] --}}
-                            {{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required', --}}
-                            {{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!} --}}
-                            {{--                                @error('item.0.status') --}}
-                            {{--                                <span class="error text-danger">{{ $message }}</span> --}}
-                            {{--                                @enderror --}}
-                            {{--                            </div> --}}
-                        </div>
+                                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                                            <div class="accordion-body d-flex py-0">
 
-                        {{-- size accordion --}}
-                        <div class="col-md-12 my-2 p-0">
-                            <div class="accordion " id="accordionPanelsStayOpenExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo"
-                                            aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                                            <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
-                                        </button>
-                                    </h2>
+                                                <div class="col-md-3">
+                                                    {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
+                                                    <input type="text" wire:model='item.0.weight'
+                                                        wire:change='changeSize()'
+                                                        class='form-control weight initial-balance-input' />
+                                                    <br>
+                                                    @error('item.0.weight')
+                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
 
-                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-                                        <div class="accordion-body d-flex py-0">
-                                            <div class="col-md-3">
-                                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                                <input type="text" wire:model='item.0.weight'
-                                                    wire:change='changeSize()'
-                                                    class='form-control weight initial-balance-input' />
-                                                <br>
-                                                @error('item.0.weight')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-1"></div>
-                                            <div class="col-md-2">
-                                                {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                                <input type="text" wire:model='item.0.height'
-                                                    wire:change='changeSize()'
-                                                    class='form-control height initial-balance-input' />
-                                                <br>
-                                                @error('item.0.height')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-2">
+                                                    {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
+                                                    <input type="text" wire:model='item.0.height'
+                                                        wire:change='changeSize()'
+                                                        class='form-control height initial-balance-input' />
+                                                    <br>
+                                                    @error('item.0.height')
+                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
 
-                                            {{--  --}}
+                                                <div class="col-md-2">
+                                                    {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
+                                                    <input type="text" wire:model='item.0.length'
+                                                        wire:change='changeSize()'
+                                                        class='form-control length initial-balance-input' />
+                                                    <br>
+                                                    @error('item.0.length')
+                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
 
-                                            <div class="col-md-2">
-                                                {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                                <input type="text" wire:model='item.0.length'
-                                                    wire:change='changeSize()'
-                                                    class='form-control length initial-balance-input' />
-                                                <br>
-                                                @error('item.0.length')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-
-                                            <div class="col-md-2">
-                                                {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                                <input type="text" wire:model='item.0.width'
-                                                    wire:change='changeSize()'
-                                                    class='form-control width initial-balance-input' />
-                                                <br>
-                                                @error('item.0.width')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-                                            <div class="col-md-2">
-                                                {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                                <input type="text" wire:model='item.0.size'
-                                                    wire:change='changeSize()'
-                                                    class='form-control size initial-balance-input' />
-                                                <br>
-                                                @error('item.0.size')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
+                                                <div class="col-md-2">
+                                                    {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
+                                                    <input type="text" wire:model='item.0.width'
+                                                        wire:change='changeSize()'
+                                                        class='form-control width initial-balance-input' />
+                                                    <br>
+                                                    @error('item.0.width')
+                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-2">
+                                                    {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
+                                                    <input type="text" wire:model='item.0.size'
+                                                        wire:change='changeSize()'
+                                                        class='form-control size initial-balance-input' />
+                                                    <br>
+                                                    @error('item.0.size')
+                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
-
                             </div>
-                        </div>
-
-
-                        {{-- add prices --}}
-                        {{-- <div class="row">
+                            {{-- add prices --}}
+                            {{-- <div class="row">
                                     <div class="col-md-12 pt-5">
                                         <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
                                     </div>
@@ -481,48 +466,58 @@
                         </div>
                         <br>
                         {{-- add prices --}}
-                        <div class="row text-right my-2">
-                            <div class="col">
-                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
-                                    <i class="fa fa-plus"></i> @lang('lang.add')
-                                </button>
+                            <div class="row text-right my-1">
+                                <div class="col">
+                                    <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
+                                        <i class="fa fa-plus"></i> @lang('lang.add')
+                                    </button>
+                                </div>
+                            </div>
+
+
+
+                            <div>
+
+
+                                @foreach ($rows as $index => $row)
+                                    @include('initial-balance.partial.raw_unit', [
+                                        'index' => $index,
+                                    ])
+                                @endforeach
+
+                                <div>
+                                    <span colspan="8" style="text-align: right">
+                                        @lang('lang.total')</span>
+                                    {{-- @if ($showColumn) --}}
+                                    <span> {{ $this->sum_dollar_tsub_total() }} </span>
+                                    <span></span>
+                                    <span></span>
+                                    {{-- @endif --}}
+                                    <span> {{ $this->sum_sub_total() }} </span>
+                                    <span></span>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 text-center mt-1 ">
+                                <h4>@lang('lang.items_count'):
+                                    <span class="items_count_span"
+                                        style="margin-right: 15px;">{{ count($rows) }}</span>
+                                    <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
+                                        style="margin-right: 15px;">{{ $totalQuantity }}</span>
+                                </h4>
                             </div>
                         </div>
-
-
-                        <div class="">
-
-                            @foreach ($rows as $index => $row)
-                                @include('initial-balance.partial.raw_unit', [
-                                    'index' => $index,
-                                ])
-                            @endforeach
-
-
-                            {{--  --}}
+                        {{-- {!! Form::close() !!} --}}
+                        <div class="col-sm-12">
+                            <button type="submit" name="submit" id="submit-save" style="margin: 10px"
+                                value="save" class="btn btn-primary pull-right btn-flat submit"
+                                wire:click.prevent="store()">@lang('lang.save')</button>
 
                         </div>
-                        <div class="col-md-12 text-center mt-1 ">
-                            <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                                <br>
-                                @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                    style="margin-right: 15px;">{{ $totalQuantity }}</span>
-                            </h4>
-                        </div>
-                        <br>
-                    </div>
-                    {{-- {!! Form::close() !!} --}}
-                    <div class="col-sm-12">
-                        <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
-                            class="btn btn-primary pull-right btn-flat submit"
-                            wire:click.prevent="store()">@lang('lang.save')</button>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </section>
 {{-- <!-- This will be printed --> --}}
 <div class="view_modal no-print"></div>
@@ -568,11 +563,13 @@
             console.log(name)
             if (name != undefined) {
                 var index = $(this).data('index');
+                var key = $(this).data('key');
                 var select2 = $(this);
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),
-                    var3: index
+                    var3: index,
+                    var4: key
                 });
             }
 
@@ -612,11 +609,5 @@
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
-    <script>
-        let lang = document.documentElement.lang
     </script>
 @endpush
