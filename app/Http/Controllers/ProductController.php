@@ -73,7 +73,7 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
-    $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+    $units=Unit::orderBy('created_at', 'desc')->get();
     $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
     $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');

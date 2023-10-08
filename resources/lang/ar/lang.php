@@ -100,7 +100,7 @@ return array(
     'subcategory'=>'قسم فرعى',
     'brand'=>'علامة تجارية',
     'product_name'=>'اسم المادة',
-    'product_code'=>'كود المادة',
+    'product_code'=>'الباركود',
     'please_select'=>'الرجاء التحديد',
     'salary_details' => 'تفاصيل الراتب',
     'enter_the_fixed_wage' => 'أدخل الأجر الثابت',
