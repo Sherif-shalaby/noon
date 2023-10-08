@@ -482,6 +482,9 @@ return [
     'added_by'=>'Added By',
     'fixed'=>'Fixed',
     'no_units' => 'No Units',
+    'credit_card' => 'Credit Card',
+    'bank_transfer' => 'Bank Transfer',
+    'cheque' => 'Cheque',
 ];
 
 
