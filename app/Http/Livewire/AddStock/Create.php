@@ -55,6 +55,8 @@ class Create extends Component
     'amount' => 'required',
     'transaction_currency' => 'required',
     'items.*.variation_id' => 'required',
+    'source_type' => 'required',
+    'source_id' => 'required'
 ];
 
     public function mount(){
@@ -118,7 +120,9 @@ class Create extends Component
         $search_result = '';
         if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
-                return $query->where('name','like','%'.$this->searchProduct.'%');
+
+                return $query->where('name','like','%'.$this->searchProduct.'%')
+                             ->orWhere('sku','like','%'.$this->searchProduct.'%');
             });
             $search_result = $search_result->paginate();
             if(count($search_result) === 1){
@@ -252,9 +256,6 @@ class Create extends Component
                         if ($this->source_type == 'pos') {
                             $user_id = StorePos::where('id', $this->source_id)->first()->user_id;
                         }
-                        if ($this->source_type == 'user') {
-                            $user_id = $this->source_id;
-                        }
                         if ($this->source_type == 'safe') {
                             $money_safe = MoneySafe::find($this->source_id);
                             $money_safe_Date = [
@@ -320,8 +321,7 @@ class Create extends Component
                 $supplier = Supplier::find($this->supplier);
 //                dd($item);
                 $add_stock_data = [
-                    'variation_id' => $item['variation_id'],
-                    'variation_id' => $item['variation_id'],
+                    'variation_id' => $item['variation_id'] ?? null,
                     'product_id' => $item['product']['id'],
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $item['quantity'],
@@ -339,6 +339,8 @@ class Create extends Component
                     'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
+                    'fill_type' => $item['fill_type'] ?? null,
+                    'fill_quantity' => $item['fill_quantity'] ?? null,
                 ];
                 $stock_line = AddStockLine::create($add_stock_data);
 
@@ -393,7 +395,10 @@ class Create extends Component
                 if (count($newArr) > 0) {
                     $key = array_keys($newArr)[0];
                     ++$this->items[$key]['quantity'];
-        //                $this->items[$key]['sub_total'] = ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -( $this->items[$key]['quantity'] * $this->items[$key]['discount']);
+                    // push index to top
+                    $item = $this->items[$key];
+                    array_splice($this->items, $key, 1);
+                    array_unshift($this->items, $item);
                 }
                 else{
                     $show_product_data = true;
@@ -672,6 +677,7 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
+        $this->changeAmount(number_format($totalCost,2));
         return number_format($this->num_uf($totalCost),2);
     }
 
@@ -683,8 +689,13 @@ class Create extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
+        $this->changeAmount(number_format($totalDollarCost,2));
 //        dd($totalDollarCost);
         return number_format($totalDollarCost,2);
+    }
+
+    public function changeAmount($value){
+        $this->amount = $this->num_uf($value);
     }
 
     public function sum_sub_total(){
