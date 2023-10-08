@@ -672,7 +672,8 @@ class Create extends Component
     }
     public function stayShow($index)
     {
-        $this->rows[$index]['show_prices'] = true;
+        $this->rows[$index]['show_prices'] =
+            !$this->rows[$index]['show_prices'];
     }
     public function addPriceRow($index)
     {
