@@ -61,7 +61,7 @@
                                 $stores,
                                 [],
                                 [
-                                    'class' => 'js-example-basic-multiple',
+                                    'class' => 'form-control select2',
                                     'multiple' => 'multiple',
                                     'placeholder' => __('lang.please_select'),
                                     'id' => 'store_id',
