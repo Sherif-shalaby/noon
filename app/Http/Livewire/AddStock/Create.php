@@ -720,7 +720,7 @@ class Create extends Component
     }
 
     public function changeAmount($value){
-        $this->amount = $this->num_uf($value);
+        $this->amount = $this->num_uf($value) + $this->calcPayment();
     }
 
     public function sum_sub_total(){
@@ -895,5 +895,16 @@ class Create extends Component
      $num = str_replace($decimal_separator, '.', $num);
      return (float)$num;
  }
-
+ public function calcPayment() {
+    // if($this->paying_currency == 2){
+    //     $total_amount=$this->sum_dollar_total_cost() ?? 0.00;
+    // }else{
+    //     $total_amount=$this->sum_total_cost() ?? 0.00;
+    // }
+    $otherExpenses = is_numeric($this->other_expenses) ? (float)$this->other_expenses : 0;
+    $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
+    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
+    return ($otherExpenses - $discountAmount + $otherPayments);
+    // dd($this->amount);
+ }
 }

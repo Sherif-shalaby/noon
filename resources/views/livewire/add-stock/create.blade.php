@@ -271,7 +271,7 @@
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
                                     {!! Form::text('other_expenses', $other_expenses,
                                     ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
-                                     'wire:model' => 'other_expenses']) !!}
+                                     'wire:model' => 'other_expenses' ]) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
