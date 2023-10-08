@@ -177,7 +177,7 @@ class Create extends Component
             $this->rules = [
                 'store_id' => 'required',
                 'supplier' => 'required',
-                'status' => 'required',
+//                'status' => 'required',
                 'transaction_currency' => 'required',
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
