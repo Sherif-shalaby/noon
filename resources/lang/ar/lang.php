@@ -169,6 +169,9 @@ return array(
     'edit_supplier' => 'تعديل مورد' ,
     // ++++++++++++++++++ customer_price_offer ++++++++++++++++
     'customer_price_offer' => 'عرض سعر للعميل' ,
+    'show_customer_price_offer' => 'عروض الاسعار للعملاء' ,
+    'create_customer_price_offer' => 'انشاء عرض سعر للعميل' ,
+    'edit_customer_price_offer' => 'تعديل عرض سعر للعميل' ,
 
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,

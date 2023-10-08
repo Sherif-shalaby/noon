@@ -113,14 +113,25 @@ class CustomerOfferPriceController extends Controller
     /* +++++++++++++++++++++++++ destroy() +++++++++++++++++++++++++ */
     public function destroy($id)
     {
-        // dd($id);
         try
         {
-            $transaction_customer_offer_price = TransactionCustomerOfferPrice::find($id);
+            // Find the TransactionCustomerOfferPrice by ID
+            $transaction_customer_offer_price = TransactionCustomerOfferPrice::findOrFail($id);
+            // Get the related products
+            $products = $transaction_customer_offer_price->transaction_customer_offer_price;
+            // Start a database transaction
             DB::beginTransaction();
+            // Delete the related products
+            foreach ($products as $product)
+            {
+                $product->delete();
+            }
+            // Delete the TransactionCustomerOfferPrice
             $transaction_customer_offer_price->delete();
 
+            // Commit the transaction
             DB::commit();
+
             $output = [
                 'success' => true,
                 'msg' => __('lang.delete_msg')
@@ -135,6 +146,8 @@ class CustomerOfferPriceController extends Controller
             ];
         }
 
+        // Return the output (success/failure message)
         return redirect()->back()->with('status', $output);
-    }
+}
+
 }
