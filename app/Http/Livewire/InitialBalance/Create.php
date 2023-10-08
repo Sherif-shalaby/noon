@@ -255,16 +255,15 @@ class Create extends Component
         }
         if($unit_index!==''){
             $this->rows[$index]['equal']=1;
+            $this->rows[$index]['quantity']=0;
             $this->rows[$index]['fill_type']=$this->rows[$unit_index]['fill_type'];
-            // dd((float)$this->rows[$unit_index]['equal']);
             if((float)$this->rows[$unit_index]['equal']!=0){
-//                dd($this->rows[$unit_index],(float)$this->rows[$unit_index]['purchase_price'] / (float)$this->rows[$unit_index]['equal']);
-//                $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
-//                $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
-                $this->rows[$index]['dollar_purchase_price']=(float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal'];
-//                $this->rows[$index]['dollar_selling_price']= (float)$this->rows[$unit_index]['dollar_selling_price'] / (float)$this->rows[$unit_index]['equal'];
-//                dd((float)$this->rows[$index]['dollar_selling_price'] , (float)$this->rows[$index]['dollar_purchase_price']);
-                $this->rows[$index]['fill_quantity']= (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+                $this->rows[$index]['dollar_purchase_price']=((float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal']);
+                if($this->rows[$index]['fill_type']=="fixed"){
+                    $this->rows[$index]['fill_quantity']= (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+                }else{
+                    $this->rows[$index]['fill_quantity']=$this->rows[$unit_index]['fill_quantity'];
+                }
                 $this->changePurchasePrice($index);
             }
         }
@@ -280,7 +279,7 @@ class Create extends Component
         //////////
         $this->validate();
 
-         try {
+        //  try {
          if(empty($this->rows)){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.add_sku_with_sku_for_product'),]);
         }else{
@@ -350,7 +349,9 @@ class Create extends Component
                     'product_id' => $product->id,
                     'variation_id' => $Variation->id,
                     'stock_transaction_id' =>$transaction->id ,
-                    'quantity' => $this->rows[$index]['quantity'],
+                    'quantity' =>$this->rows[$index]['quantity']!==''?$this->rows[$index]['quantity']:0,
+                    'fill_type' => isset($this->rows[$index]['fill_type'])?$this->rows[$index]['fill_type']:'',
+                    'fill_quantity' => isset($this->rows[$index]['fill_quantity'])?$this->rows[$index]['fill_quantity']:0,
                     'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null ,
                     // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
                     'sub_total' => !empty($this->sub_total[$index]) ? (float)$this->sub_total[$index] : null,
@@ -400,11 +401,11 @@ class Create extends Component
             return redirect('/initial-balance/create');
 
         }
-         }
-         catch (\Exception $e){
-             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-//             dd($e);
-         }
+//          }
+//          catch (\Exception $e){
+//              $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
+// //             dd($e);
+//          }
     }
     public function generateSku($name, $number = 1)
     {
@@ -601,7 +602,7 @@ class Create extends Component
         }
     }
     public function changePurchasePrice($index){
-        $this->rows[$index]['purchase_price']=$this->rows[$index]['dollar_purchase_price']*$this->exchange_rate;
+        $this->rows[$index]['purchase_price']=(float)$this->rows[$index]['dollar_purchase_price']*(float)$this->exchange_rate;
         $this->changeFilling($index);
     }
     public function changeExchangeRateBasedPrices(){
@@ -621,8 +622,8 @@ class Create extends Component
                 $this->rows[$index]['selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity'])*$this->exchange_rate;
             }else{
                 $percent=((float)$this->rows[$index]['dollar_purchase_price']*(float)$this->rows[$index]['fill_quantity'])/100;
-                $this->rows[$index]['dollar_selling_price']=($this->rows[$index]['dollar_purchase_price']+$percent);
-                $this->rows[$index]['selling_price']=($this->rows[$index]['dollar_purchase_price']+$percent)*$this->exchange_rate;
+                $this->rows[$index]['dollar_selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent);
+                $this->rows[$index]['selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent)*$this->exchange_rate;
             }
         }
     }
@@ -659,7 +660,6 @@ class Create extends Component
 public function delete_price_raw($index,$key)
 {
     unset($this->rows[$index]['prices'][$key]);
-//    dd($this->rows[$index]['prices'][$key]);
 }
 public function changePrice($index,$key)
 {

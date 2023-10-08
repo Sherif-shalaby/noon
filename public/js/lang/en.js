@@ -7,4 +7,5 @@ LANG ={
     this_product_exists_before:'This Product Exists Before',
     success:'Success',
     add_sku_with_sku_for_product:'Add Sku With Sku For Product',
+    no_parent_category:'Please Select Parent Category For This Category'
 }

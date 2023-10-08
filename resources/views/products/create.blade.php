@@ -112,7 +112,7 @@
                                         'id' => 'categoryId',
                                         'required',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="0"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
@@ -127,7 +127,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subcategory_id1',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
@@ -143,7 +143,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId2',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="2"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id2')
@@ -159,7 +159,7 @@
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId3',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id3')

@@ -128,7 +128,7 @@
                                         'id' => 'subcategory_id1',
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                     data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
@@ -145,7 +145,7 @@
                                         'id' => 'subCategoryId2',
                                         'wire:model' => 'item.0.subcategory_id2',
                                     ]) !!}
-                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                      data-select_category="2"><i class="fas fa-plus"></i></a>
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
@@ -168,7 +168,7 @@
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary btn-sm ml-2 text-white openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary btn-sm ml-2 text-white openCategoryModal" data-toggle="modal"
                                         data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
