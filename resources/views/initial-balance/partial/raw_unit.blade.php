@@ -176,7 +176,8 @@
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#panelsStayOpen-collapse{{ $index }}" aria-expanded="true"
-                    aria-controls="panelsStayOpen-collapse{{ $index }}">
+                    aria-controls="panelsStayOpen-collapse{{ $index }}"
+                    wire:click="stayShow({{ $index }})">
                     Sales
                 </button>
             </h2>
