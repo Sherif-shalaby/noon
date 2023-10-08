@@ -141,7 +141,7 @@
                                 </div>
                                 <div class="p-2">
                                     @foreach ($products as $product)
-                                        <div class="order-btn" wire:click='add_product({{ $product->id }})' >
+                                        <div class="order-btn" wire:click='add_product({{ $product->id }})' style="cursor: pointer">
 {{--                                            @if ($product->image)--}}
 {{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}"--}}
 {{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" >--}}
@@ -292,19 +292,25 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                    {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], $source_type,
+                                    {!! Form::label('source_type', __('lang.source_type'). ':*', []) !!} <br>
+                                    {!! Form::select('source_type', [ 'pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type,
                                     ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),
                                      'data-name' => 'source_type', 'wire:model' => 'source_type']) !!}
                                 </div>
+                                @error('source_type')
+                                <span class="error text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
+                                    {!! Form::label('source_of_payment', __('lang.source_of_payment'). ':*', []) !!} <br>
                                     {!! Form::select('source_id', $users, $source_id,
                                     ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),
                                      'id' => 'source_id', 'required', 'data-name' => 'source_id', 'wire:model' => 'source_id']) !!}
                                 </div>
+                                @error('source_id')
+                                <span class="error text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="col-md-3">
