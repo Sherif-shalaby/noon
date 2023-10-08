@@ -495,5 +495,6 @@ return array(
     'notify_by_end_car_license'=>'التنبيه قبل موعد انتهاء ترخيص العربة',
     "added_by"=> "مدخل البيان",
     'fixed'=>'ثابت',
+    'no_units' => 'لا يوجد وحدات',
 );
 

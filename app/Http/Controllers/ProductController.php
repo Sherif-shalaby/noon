@@ -144,15 +144,17 @@ class ProductController extends Controller
         }
     }
     foreach ($index_units as $index){
-        $var_data=[
-            'product_id'=>$product->id,
-            'unit_id'=>$request->new_unit_id[$index],
-            'basic_unit_id'=>$request->basic_unit_id[$index],
-            'equal'=>$request->equal[$index],
-            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-            'created_by'=>Auth::user()->id
-        ];
-        Variation::create($var_data);
+        if(isset($request->new_unit_id[$index])){
+            $var_data=[
+                'product_id'=>$product->id,
+                'unit_id'=>$request->new_unit_id[$index],
+                'basic_unit_id'=>$request->basic_unit_id[$index],
+                'equal'=>$request->equal[$index],
+                'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+                'created_by'=>Auth::user()->id
+            ];
+            Variation::create($var_data);
+        }
     }
 
     $index_prices=[];

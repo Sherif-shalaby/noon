@@ -481,6 +481,7 @@ return [
     'notify_by_end_car_license'=>'Notify By End Car License',
     'added_by'=>'Added By',
     'fixed'=>'Fixed',
+    'no_units' => 'No Units',
 ];
 
 

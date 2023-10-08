@@ -1,22 +1,16 @@
 <tr>
     <td>
-{{--        <input type="hidden" name="selectedProductData" value="{{ json_encode($selectedProductData) }}">--}}
         {{$index+1}}
     </td>
-{{--    <td>--}}
-{{--        <img src="@if(!empty($product->image)){{asset('uploads/products/'.$product->image)}}@else{{asset('/uploads/'.session('logo'))}}@endif"--}}
-{{--             alt="photo" width="50" height="50">--}}
-{{--    </td>--}}
-
     <td>
-        @if($product['show_product_data'])
+{{--        @if($product['show_product_data'])--}}
             {{ $product['product']['name'] }}
-        @endif
+{{--        @endif--}}
     </td>
     <td>
-        @if($product['show_product_data'])
+{{--        @if($product['show_product_data'])--}}
             {{ $product['product']['sku'] }}
-        @endif
+{{--        @endif--}}
     </td>
     <td>
         <input type="text" class="form-control quantity" style="width: 61px;" required
@@ -26,17 +20,19 @@
         @enderror
     </td>
     <td>
-{{--        {{$product['variation_id'] ?? 0}}--}}
-        <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
-            <option value="" selected>{{__('lang.please_select')}}</option>
-
-            @foreach($product['variations'] as $variant)
-                <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
-            @endforeach
-        </select>
-        <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
-            <i class="fa fa-plus"></i>
-        </button>
+        @if(count($product['variations']) > 0)
+            <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+                <option value="" selected>{{__('lang.please_select')}}</option>
+                @foreach($product['variations'] as $variant)
+                    <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                @endforeach
+            </select>
+            <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
+                <i class="fa fa-plus"></i>
+            </button>
+        @else
+            <span>@lang('lang.no_units')</span>
+        @endif
         @error('items.'.$index.'.variation_id')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
