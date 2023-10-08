@@ -98,7 +98,7 @@ return array(
     'class'=>'فئة',
     'category'=>'قسم رئيسى',
     'subcategory'=>'قسم فرعى',
-    'brand'=>'غلامة تجارية',
+    'brand'=>'علامة تجارية',
     'product_name'=>'اسم المادة',
     'product_code'=>'كود المادة',
     'please_select'=>'الرجاء التحديد',
