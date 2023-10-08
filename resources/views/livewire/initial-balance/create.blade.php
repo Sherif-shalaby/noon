@@ -121,7 +121,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $subcategories1, null, [
+                                    {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
                                         'class' => 'form-control select2 subcategory1',
                                         'data-name' => 'subcategory_id1',
                                         'placeholder' => __('lang.please_select'),
@@ -365,7 +365,7 @@
                                             ])
                                         @endforeach
                                         <tr>
-                                            <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
+                                            <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
                                             {{-- @if ($showColumn) --}}
                                             <td> {{ $this->sum_dollar_tsub_total() }} </td>
                                             <td></td>
