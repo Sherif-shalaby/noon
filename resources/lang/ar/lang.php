@@ -496,5 +496,8 @@ return array(
     "added_by"=> "مدخل البيان",
     'fixed'=>'ثابت',
     'no_units' => 'لا يوجد وحدات',
+    'credit_card' => 'بطاقة الائتمان',
+    'bank_transfer' => 'التحويل المصرفي',
+    'cheque' => 'شيك',
 );
 
