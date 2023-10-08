@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Product;
+use App\Http\Controllers\SellCarController;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +27,6 @@ use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SalesReportController;
-use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\CustomerTypeController;
 use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\PayableReportController;

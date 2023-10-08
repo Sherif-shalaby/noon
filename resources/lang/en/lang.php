@@ -14,6 +14,8 @@ return [
     'brands'=>'Brands',
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
+    'customer_offer_status' => 'store status' ,
+    'quotation_status' => 'quotation status' ,
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
@@ -473,7 +475,6 @@ return [
     'not_blocked' => 'Not Blocked',
     'filter' => 'Filter',
     'clear_filters' => 'Clear Filters',
-
     'sell_car'=>'Sell Car',
     'add_sell_car'=>'Add Sell Car',
     'edit_sell_car'=>'Edit Sell Car',

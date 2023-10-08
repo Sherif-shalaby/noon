@@ -25,6 +25,8 @@ return array(
     'product_module' =>'المنتجات',
     'stock_module' =>'المخزون',
     'cashier_module' =>'المشتريات',
+    'customer_offer_status' => 'حالة المخزون' ,
+    'quotation_status' => 'حالة عرض السعر' ,
     'return_module' =>'المرتجعات',
     'employee_module' =>'الموظفين',
     'customer_module' =>'العملاء',
@@ -169,6 +171,9 @@ return array(
     'edit_supplier' => 'تعديل مورد' ,
     // ++++++++++++++++++ customer_price_offer ++++++++++++++++
     'customer_price_offer' => 'عرض سعر للعميل' ,
+    'show_customer_price_offer' => 'عروض الاسعار للعملاء' ,
+    'create_customer_price_offer' => 'انشاء عرض سعر للعميل' ,
+    'edit_customer_price_offer' => 'تعديل عرض سعر للعميل' ,
     'show_customer_price_offer' => 'عروض الاسعار للعملاء' ,
     'create_customer_price_offer' => 'انشاء عرض سعر للعميل' ,
     'edit_customer_price_offer' => 'تعديل عرض سعر للعميل' ,
