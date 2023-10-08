@@ -30,9 +30,11 @@
         <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
             <option value="" selected>{{__('lang.please_select')}}</option>
 
-            @foreach($product['variations'] as $variant)
-                <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
-            @endforeach
+            @if(!empty($product['variations']))
+                @foreach($product['variations'] as $variant)
+                    <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                @endforeach
+            @endif
         </select>
         <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
             <i class="fa fa-plus"></i>

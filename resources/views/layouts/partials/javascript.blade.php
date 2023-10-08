@@ -101,21 +101,28 @@
                     var data = $(this).serialize();
 
                     Swal.fire({
-                        title: "{!!__('lang.please_enter_your_password')!!}",
-                        content: {
-                            element: "input",
-                            attributes: {
+                        // title: "{!!__('lang.please_enter_your_password')!!}",
+                        // content: {
+                        //     element: "input",
+                        //     attributes: {
+                        //         placeholder:"{!!__('lang.type_your_password')!!}",
+                        //         type: "password",
+                        //         autocomplete: "off",
+                        //         autofocus: true,
+                        //     },
+                        // },
+                        // inputAttributes: {
+                        //     autocapitalize: 'off',
+                        //     autoComplete: 'off',
+                        // },
+                        // focusConfirm: true
+                            title: "{!!__('lang.please_enter_your_password')!!}",
+                            input: 'password',
+                            inputAttributes: {
                                 placeholder:"{!!__('lang.type_your_password')!!}",
-                                type: "password",
-                                autocomplete: "off",
+                                autocomplete: 'off',
                                 autofocus: true,
                             },
-                        },
-                        inputAttributes: {
-                            autocapitalize: 'off',
-                            autoComplete: 'off',
-                        },
-                        focusConfirm: true
                     }).then((result) => {
                         if (result) {
                             $.ajax({
@@ -133,7 +140,7 @@
                                             "{!!__('lang.correct_password')!!}",
                                             'success'
                                         );
-                                        location.reload();
+                                        // location.reload();
                                         $.ajax({
                                             method: 'DELETE',
                                             url: href,
