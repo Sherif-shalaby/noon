@@ -89,11 +89,11 @@ class Create extends Component
         'item.*.height' => 'numeric',
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
-       'item.*.product_tax_id' => 'required',
+       'item.*.product_tax_id' => 'nullable',
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-        'rows.*.prices.*.price_customer_types' => 'nullable|array',
+//        'rows.*.prices.*.price_customer_types' => 'nullable|array',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -253,25 +253,25 @@ class Create extends Component
                 break;
             }
         }
-        // $unit=$this->get_product($index);
-        // $this->rows[$index]['equal']=isset($unit->base_unit_multiplier)?$unit->base_unit_multiplier:null;
-        // $this->rows[$index]['basic_unit_id']=isset($unit->base_unit_id)?$unit->base_unit_id:null;
         if($unit_index!==''){
             $this->rows[$index]['equal']=1;
             $this->rows[$index]['fill_type']=$this->rows[$unit_index]['fill_type'];
             // dd((float)$this->rows[$unit_index]['equal']);
             if((float)$this->rows[$unit_index]['equal']!=0){
-                $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
-                $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
+//                dd($this->rows[$unit_index],(float)$this->rows[$unit_index]['purchase_price'] / (float)$this->rows[$unit_index]['equal']);
+//                $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
+//                $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
                 $this->rows[$index]['dollar_purchase_price']=(float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal'];
-                $this->rows[$index]['dollar_selling_price']=(float)$this->rows[$unit_index]['dollar_selling_price']/(float)$this->rows[$unit_index]['equal'];
-                $this->rows[$index]['fill_quantity']=((float)$this->rows[$index]['dollar_selling_price'])-((float)$this->rows[$index]['dollar_purchase_price']);
+//                $this->rows[$index]['dollar_selling_price']= (float)$this->rows[$unit_index]['dollar_selling_price'] / (float)$this->rows[$unit_index]['equal'];
+//                dd((float)$this->rows[$index]['dollar_selling_price'] , (float)$this->rows[$index]['dollar_purchase_price']);
+                $this->rows[$index]['fill_quantity']= (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+                $this->changePurchasePrice($index);
             }
         }
     }
     public function store()
     {
-        // dd($this->rows);
+//         dd($this->rows);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -280,7 +280,7 @@ class Create extends Component
         //////////
         $this->validate();
 
-        // try {
+         try {
          if(empty($this->rows)){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.add_sku_with_sku_for_product'),]);
         }else{
@@ -400,11 +400,11 @@ class Create extends Component
             return redirect('/initial-balance/create');
 
         }
-        // }
-        // catch (\Exception $e){
-        //     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-        //     dd($e);
-        // }
+         }
+         catch (\Exception $e){
+             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
+//             dd($e);
+         }
     }
     public function generateSku($name, $number = 1)
     {
@@ -459,7 +459,7 @@ class Create extends Component
         'exchange_rate'=>$this->exchange_rate,
         'store_id' => '',
         'supplier_id' => '','product_tax_id'=>''];
-        
+
 
 
         $variations=Variation::where('product_id',$this->edit_product['id'])->get();
@@ -541,12 +541,12 @@ class Create extends Component
     }
 
     public function total_quantity($index){
-        if (isset($this->rows[$index]['equal'])){
-            return  (float)$this->rows[$index]['equal'] * (int)$this->rows[$index]['quantity'];
-        }
-        else{
+//        if (isset($this->rows[$index]['equal'])){
+//            return  (float)$this->rows[$index]['equal'] * (int)$this->rows[$index]['quantity'];
+//        }
+//        else{
             return  (int)$this->rows[$index]['quantity'];
-        }
+//        }
 
     }
 
@@ -653,20 +653,13 @@ class Create extends Component
         return true;
     }
     public function addPriceRow($index){
-        $new_price = [
-            'price_type' => null,
-            'price_category' => null,
-            'price' => null,
-            'discount_quantity' => null,
-            'bonus_quantity' => null,
-            'price_customer_types' => null,
-            'price_after_desc' => null,
-        ];
+        $new_price = [];
       array_unshift($this->rows[$index]['prices'], $new_price);
   }
 public function delete_price_raw($index,$key)
 {
     unset($this->rows[$index]['prices'][$key]);
+//    dd($this->rows[$index]['prices'][$key]);
 }
 public function changePrice($index,$key)
 {
@@ -678,7 +671,7 @@ public function changePrice($index,$key)
         }
         elseif($this->rows[$index]['prices'][$key]['price_type'] == 'percentage'){
             $percent = $this->rows[$index]['prices'][$key]['price'] / 100;
-            $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $this->items[$index]['prices'][$key]['price'] ));
+            $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $this->rows[$index]['prices'][$key]['price'] ));
         }
     }
 }

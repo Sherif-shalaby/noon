@@ -374,7 +374,7 @@ class Create extends Component
         return redirect('/add-stock/create');
     }
 
-    public function add_product($id, $add_via = null){
+    public function add_product($id, $add_via = null, $index = null){
         if(!empty($this->searchProduct)){
             $this->searchProduct = '';
 
@@ -383,7 +383,7 @@ class Create extends Component
         $variations = $product->variations;
         if($add_via == 'unit'){
             $show_product_data = false;
-            $this->addNewProduct($variations,$product,$show_product_data);
+            $this->addNewProduct($variations,$product,$show_product_data, $index);
         }
         else{
             if(!empty($this->items)){
@@ -409,7 +409,7 @@ class Create extends Component
     }
 
 //    public function getCurrentStock($product_id){
-    public function addNewProduct($variations,$product,$show_product_data){
+    public function addNewProduct($variations,$product,$show_product_data, $index = null){
 //        $current_stock = $this->getCurrentStock($product->id);
         $new_item = [
             'show_product_data' => $show_product_data,
@@ -442,7 +442,7 @@ class Create extends Component
                 ],
             ],
         ];
-        array_push($this->items, $new_item);
+        array_unshift($this->items, $new_item);
     }
     public function addPriceRow($index){
           $new_price = [
