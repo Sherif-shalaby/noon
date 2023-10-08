@@ -1,15 +1,9 @@
 <?php
 
-use App\Models\Product;
-use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GetDueReport;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\UnitController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\ProductController;

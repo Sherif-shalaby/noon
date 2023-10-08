@@ -14,6 +14,8 @@ return [
     'brands'=>'Brands',
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
+    'customer_offer_status' => 'store status' ,
+    'quotation_status' => 'quotation status' ,
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',

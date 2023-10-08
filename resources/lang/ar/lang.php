@@ -25,6 +25,8 @@ return array(
     'product_module' =>'المنتجات',
     'stock_module' =>'المخزون',
     'cashier_module' =>'المشتريات',
+    'customer_offer_status' => 'حالة المخزون' ,
+    'quotation_status' => 'حالة عرض السعر' ,
     'return_module' =>'المرتجعات',
     'employee_module' =>'الموظفين',
     'customer_module' =>'العملاء',
