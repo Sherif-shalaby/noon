@@ -16,6 +16,7 @@ $(() => {
     };
     $("#help_page_content").summernote(usrCfg);
 });
+// ++++++++++++++++++++++++++++++++++++++ Crop Image ++++++++++++++++++++++++++++++++++++++
 $("#submit-btn").on("click", function (e) {
     e.preventDefault();
     setTimeout(() => {
@@ -25,7 +26,7 @@ $("#submit-btn").on("click", function (e) {
         $("#setting_form").submit();
     }, 1000);
 });
-
+// remove image from database
 $(document).on("click", ".remove_image", function () {
     var type = $(this).data("type");
     $.ajax({

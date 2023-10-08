@@ -61,7 +61,7 @@
                                 $stores,
                                 [],
                                 [
-                                    'class' => 'js-example-basic-multiple',
+                                    'class' => 'form-control select2',
                                     'multiple' => 'multiple',
                                     'placeholder' => __('lang.please_select'),
                                     'id' => 'store_id',
@@ -112,9 +112,8 @@
                                         'id' => 'categoryId',
                                         'required',
                                     ]) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                              data-target="#createCategoryModal" href="{{ route('store.create') }}"><i
-                                            class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="0"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -123,10 +122,10 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $categories, null, [
+                                    {!! Form::select('subcategory_id1', $subcategories, null, [
                                         'class' => 'form-control select2 subcategory',
                                         'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId1',
+                                        'id' => 'subcategory_id1',
                                     ]) !!}
                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                        data-select_category="1"><i class="fas fa-plus"></i></a>
@@ -139,7 +138,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id2', $categories, null, [
+                                    {!! Form::select('subcategory_id2', $subcategories, null, [
                                         'class' => 'form-control select2 subcategory2',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId2',
@@ -155,7 +154,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id3', $categories, null, [
+                                    {!! Form::select('subcategory_id3', $subcategories, null, [
                                         'class' => 'form-control select2 subcategory3',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId3',

@@ -53,7 +53,29 @@ class Create extends Component
         $dollar_purchase_price = [], $dollar_selling_price =[], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
          $current_stock,$totalQuantity=0,$edit_product=[], $current_sub_category , $clear_all_input_stock_form, $product_tax,$subcategories=[];
 
-    public $rows = [];
+    public $rows = [['id'=>'','sku' => '','quantity' => '',
+    'fill_quantity' => '',
+    'fill_type' => 'fixed',
+    'purchase_price'=>'',
+    'selling_price'=>'',
+    'dollar_purchase_price'=>'',
+    'dollar_selling_price'=>'',
+    'unit_id'=>'',
+    'basic_unit_id'=>'',
+    'change_price_stock'=>'',
+    'equal'=>'',
+    'prices' => [
+        [
+            'price_type' => null,
+            'price_category' => null,
+            'price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+        ],
+    ]
+    ]];
     protected $rules = [
         'item.*.name' => 'required',
         'item.*.store_id' => 'required',
@@ -67,11 +89,11 @@ class Create extends Component
         'item.*.height' => 'numeric',
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
-       'item.*.product_tax_id' => 'required',
+       'item.*.product_tax_id' => 'nullable',
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-        'rows.*.price_customer_types' => 'array',
+//        'rows.*.prices.*.price_customer_types' => 'nullable|array',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -80,14 +102,19 @@ class Create extends Component
 
     public function listenerReferenceHere($data)
     {
+        // dd(44);
         if(isset($data['var1'])){
+            // dd($data['var1']);
             if(($data['var1']=="unit_id" || $data['var1']=="basic_unit_id") && $data['var3']!==''){
                 $this->rows[$data['var3']][$data['var1']]=$data['var2'];
                 if($data['var1']=="unit_id"){
                     $this->changeUnit($data['var3']);
                 }
-            }else if(($data['var1']=="price_customer_types" || $data['var1']=="price_type") && $data['var3']!==''){
-                $this->rows[$data['var3']][$data['var1']]=$data['var2'];
+            }else if($data['var1']=="price_customer_types" && $data['var3']!==''){
+                $row=$this->rows[$data['var3']]['prices'][$data['var4']]['price_customer_types']=$data['var2'];
+                // dd($data['var2']);
+                // $row[$data['var4']]['price_customer_types']=$data['var2'];
+
             }
             else{
                 $this->item[0][$data['var1']]=$data['var2'];
@@ -95,16 +122,24 @@ class Create extends Component
                     $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if($data['var1']=='subcategory_id1'){
+                    $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
                     $this->subcategories2 = Category::where('parent_id',$this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if($data['var1']=='subcategory_id2'){
+                    $this->subcategories2 = Category::where('parent_id',$this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                if($data['var1']=='subcategory_id3'){
                     $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
 
             }
             $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+            $this->exchange_rate = $this->changeExchangeRate();
+            $this->changeExchangeRateBasedPrices();
 
         }
+
     }
     public function render()
     {
@@ -194,12 +229,17 @@ class Create extends Component
     'basic_unit_id'=>'',
     'change_price_stock'=>'',
     'equal'=>'',
-    'price_type' => '',
-    'price' =>'',
-    'discount_quantity' => '',
-    'bonus_quantity' =>'',
-    'price_category' =>'',
-    'price_customer_types' => '',
+    'prices' => [
+        [
+            'price_type' => null,
+            'price_category' => null,
+            'price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+        ],
+    ],
     ];
     array_unshift($this->rows, $newRow);
     // $this->dispatchBrowserEvent('initialize-select2');
@@ -213,23 +253,25 @@ class Create extends Component
                 break;
             }
         }
-        // $unit=$this->get_product($index);
-        // $this->rows[$index]['equal']=isset($unit->base_unit_multiplier)?$unit->base_unit_multiplier:null;
-        // $this->rows[$index]['basic_unit_id']=isset($unit->base_unit_id)?$unit->base_unit_id:null;
         if($unit_index!==''){
             $this->rows[$index]['equal']=1;
             $this->rows[$index]['fill_type']=$this->rows[$unit_index]['fill_type'];
-            $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['dollar_purchase_price']=(float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['dollar_selling_price']=(float)$this->rows[$unit_index]['dollar_selling_price']/(float)$this->rows[$unit_index]['equal'];
-            $this->rows[$index]['fill_quantity']=((float)$this->rows[$index]['dollar_selling_price'])-((float)$this->rows[$index]['dollar_purchase_price']);
-        
+            // dd((float)$this->rows[$unit_index]['equal']);
+            if((float)$this->rows[$unit_index]['equal']!=0){
+//                dd($this->rows[$unit_index],(float)$this->rows[$unit_index]['purchase_price'] / (float)$this->rows[$unit_index]['equal']);
+//                $this->rows[$index]['purchase_price']=(float)$this->rows[$unit_index]['purchase_price']/(float)$this->rows[$unit_index]['equal'];
+//                $this->rows[$index]['selling_price']=(float)$this->rows[$unit_index]['selling_price']/(float)$this->rows[$unit_index]['equal'];
+                $this->rows[$index]['dollar_purchase_price']=(float)$this->rows[$unit_index]['dollar_purchase_price']/(float)$this->rows[$unit_index]['equal'];
+//                $this->rows[$index]['dollar_selling_price']= (float)$this->rows[$unit_index]['dollar_selling_price'] / (float)$this->rows[$unit_index]['equal'];
+//                dd((float)$this->rows[$index]['dollar_selling_price'] , (float)$this->rows[$index]['dollar_purchase_price']);
+                $this->rows[$index]['fill_quantity']= (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+                $this->changePurchasePrice($index);
+            }
         }
     }
     public function store()
     {
-        dd($this->rows);
+//         dd($this->rows);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -238,7 +280,7 @@ class Create extends Component
         //////////
         $this->validate();
 
-        // try {
+         try {
          if(empty($this->rows)){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.add_sku_with_sku_for_product'),]);
         }else{
@@ -306,6 +348,7 @@ class Create extends Component
 
                 $add_stock_data = [
                     'product_id' => $product->id,
+                    'variation_id' => $Variation->id,
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $this->rows[$index]['quantity'],
                     'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null ,
@@ -335,28 +378,33 @@ class Create extends Component
                 //     }
                 // }
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
-                $data_des=[
-                    'price_type' => $this->rows[$index]['price_type'],
-                    'price' => $this->rows[$index]['price'],
-                    'quantity' => $this->rows[$index]['discount_quantity'],
-                    'bonus_quantity' => $this->rows[$index]['bonus_quantity'],
-                    'price_category' => $this->rows[$index]['price_category'],
-                    'stock_line_id'=>$stockLine->id,
-                    'price_customer_types' => $this->rows[$index]['price_customer_types'],
-                    'created_by' => Auth::user()->id,
-                ];
-                ProductPrice::create($data_des);
+                if(!empty($row['prices'])){
+                    foreach ($row['prices'] as $price){
+                        $price_data = [
+                            'variation_id' =>$Variation->id,
+                            'stock_line_id' =>$stockLine->id,
+                            'price_type' => isset($price['price_type'])?$price['price_type']:null,
+                            'price' => isset($price['price'])?$price['price']:null,
+                            'price_category' => isset($price['price_category'])?$price['price_category']:null,
+                            'quantity' => isset($price['discount_quantity'])?$price['discount_quantity']:null,
+                            'bonus_quantity' => isset($price['bonus_quantity'])?$price['bonus_quantity']:null,
+                            'price_customer_types' => !empty($price['price_customer_types'])?$price['price_customer_types']:[],
+                            'created_by' => Auth::user()->id,
+                        ];
+                        ProductPrice::create($price_data);
+                    }
+                }
             }
              DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => __('lang.success'),]);
             return redirect('/initial-balance/create');
 
         }
-        // }
-        // catch (\Exception $e){
-        //     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-        //     dd($e);
-        // }
+         }
+         catch (\Exception $e){
+             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
+//             dd($e);
+         }
     }
     public function generateSku($name, $number = 1)
     {
@@ -405,10 +453,15 @@ class Create extends Component
         'height' =>$this->edit_product['height'],
         'length'=>$this->edit_product['length'],
         'size' => $this->edit_product['size'],
-        'divide_costs'=>'',
+        'method'=>'',
         'status'=>'',
         'change_current_stock'=>0,
-        'exchange_rate'=>$this->exchange_rate];
+        'exchange_rate'=>$this->exchange_rate,
+        'store_id' => '',
+        'supplier_id' => '','product_tax_id'=>''];
+
+
+
         $variations=Variation::where('product_id',$this->edit_product['id'])->get();
         foreach($variations as $variation){
             $newRow = [
@@ -424,8 +477,18 @@ class Create extends Component
             'unit_id'=>$variation->unit_id,
             'basic_unit_id'=>$variation->basic_unit_id,
             'change_price_stock'=>'',
-            // 'skuExist'=>0,
             'equal'=>$variation->equal,
+            'prices' => [
+                [
+                    'price_type' => null,
+                    'price_category' => null,
+                    'price' => null,
+                    'discount_quantity' => null,
+                    'bonus_quantity' => null,
+                    'price_customer_types' => null,
+                    'price_after_desc' => null,
+                ],
+            ],
             ];
             $this->rows[] = $newRow;
         }
@@ -478,12 +541,12 @@ class Create extends Component
     }
 
     public function total_quantity($index){
-        if (isset($this->rows[$index]['equal'])){
-            return  (float)$this->rows[$index]['equal'] * (int)$this->rows[$index]['quantity'];
-        }
-        else{
+//        if (isset($this->rows[$index]['equal'])){
+//            return  (float)$this->rows[$index]['equal'] * (int)$this->rows[$index]['quantity'];
+//        }
+//        else{
             return  (int)$this->rows[$index]['quantity'];
-        }
+//        }
 
     }
 
@@ -518,11 +581,15 @@ class Create extends Component
             $purchase_price = $this->rows[$index]['dollar_purchase_price'];
         }
         return $purchase_price;
-
     }
     public function changeExchangeRate(){
-        if (isset($this->supplier)){
-            $supplier = Supplier::find($this->supplier);
+        if (isset($this->item[0]['supplier_id'])){
+            $supplier = Supplier::where('id',$this->item[0]['supplier_id'])
+            ->where(function ($query) {
+                $query->where('end_date', '>=', Carbon::now())
+                      ->orWhereNull('end_date');
+            })->first();
+            // ->where('end_date','>=',Carbon::now())->orWhere('end_date','=',null)->first();
             if(isset($supplier->exchange_rate)){
                 return $this->exchangeRate =  str_replace(',' ,'',$supplier->exchange_rate);
             }
@@ -532,14 +599,13 @@ class Create extends Component
         else{
             return $this->exchangeRate = System::getProperty('dollar_exchange') ;
         }
-
     }
     public function changePurchasePrice($index){
         $this->rows[$index]['purchase_price']=$this->rows[$index]['dollar_purchase_price']*$this->exchange_rate;
         $this->changeFilling($index);
     }
     public function changeExchangeRateBasedPrices(){
-        // dd(55);
+        // $this->exchange_rate=$this->changeExchangeRate();
         foreach ($this->rows as $index=>$row) {
             if($this->rows[$index]['purchase_price']!=""){
                 $this->changePurchasePrice($index);
@@ -586,4 +652,27 @@ class Create extends Component
 
         return true;
     }
+    public function addPriceRow($index){
+        $new_price = [];
+      array_unshift($this->rows[$index]['prices'], $new_price);
+  }
+public function delete_price_raw($index,$key)
+{
+    unset($this->rows[$index]['prices'][$key]);
+//    dd($this->rows[$index]['prices'][$key]);
+}
+public function changePrice($index,$key)
+{
+    if(!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price']))  {
+        $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :
+            $this->rows[$index]['dollar_selling_price'];
+        if($this->rows[$index]['prices'][$key]['price_type'] === 'fixed'){
+            $this->rows[$index]['prices'][$key]['price_after_desc'] = $sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
+        }
+        elseif($this->rows[$index]['prices'][$key]['price_type'] === 'percentage'){
+            $percent = $this->rows[$index]['prices'][$key]['price'] / 100;
+            $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $sell_price ));
+        }
+    }
+}
 }

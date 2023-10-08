@@ -223,11 +223,31 @@
                     </li>
                     @endif
                 {{-- @endcan --}}
+                {{-- ###################### customer_price_offer : عرض سعر للعملاء ###################### --}}
+                {{-- @can('customer_module')  --}}
+                    @if(!empty($module_settings['customer_module']))
+                        <li>
+                            <a href="{{route('customer_price_offer.create')}}">
+                                <img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts">
+                                <span>{{__('lang.customer_price_offer')}}</span>
+                            </a>
+                        </li>
+                    @endif
+                {{-- @endcan --}}
                 {{-- ###################### suppliers : الموردين ###################### --}}
                 {{-- @can('supplier_module')  --}}
                     @if(!empty($module_settings['supplier_module']))
                         <li class="scroll"><a href="{{route('suppliers.create')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                     @endif
+                {{-- @endcan --}}
+                {{-- ###################### sell car : عربة بيع ###################### --}}
+                {{-- @can('sell_car_module')  --}}
+                <li>
+                    <a href="{{route('sell-car.index')}}">
+                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                        <span>{{__('lang.sell_car')}}</span>
+                    </a>
+                </li>
                 {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}
                 {{-- @can('settings_module') --}}

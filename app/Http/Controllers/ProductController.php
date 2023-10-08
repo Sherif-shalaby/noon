@@ -63,7 +63,7 @@ class ProductController extends Controller
         })
         ->latest()->get();
     $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
-    $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+    $categories= Category::orderBy('created_at', 'desc')->pluck('name','id');
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
@@ -73,16 +73,17 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
-        $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
-        $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
-        $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
-        $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
-        // product_tax
-        $product_tax = ProductTax::select('name','id','status')->get();
-        $quick_add = 1;
-        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-        return view('products.create',
-        compact('categories','brands','units','stores','product_tax','quick_add','unitArray'));
+    $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+    $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
+    $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
+    $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+    $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+    // product_tax
+    $product_tax = ProductTax::select('name','id','status')->get();
+    $quick_add = 1;
+    $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+    return view('products.create',
+    compact('categories','brands','units','stores','product_tax','quick_add','unitArray','subcategories'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
@@ -143,15 +144,17 @@ class ProductController extends Controller
         }
     }
     foreach ($index_units as $index){
-        $var_data=[
-            'product_id'=>$product->id,
-            'unit_id'=>$request->new_unit_id[$index],
-            'basic_unit_id'=>$request->basic_unit_id[$index],
-            'equal'=>$request->equal[$index],
-            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-            'created_by'=>Auth::user()->id
-        ];
-        Variation::create($var_data);
+        if(isset($request->new_unit_id[$index])){
+            $var_data=[
+                'product_id'=>$product->id,
+                'unit_id'=>$request->new_unit_id[$index],
+                'basic_unit_id'=>$request->basic_unit_id[$index],
+                'equal'=>$request->equal[$index],
+                'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+                'created_by'=>Auth::user()->id
+            ];
+            Variation::create($var_data);
+        }
     }
 
     $index_prices=[];

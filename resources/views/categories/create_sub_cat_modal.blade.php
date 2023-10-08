@@ -9,14 +9,14 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => 'categories.store', 'method' => 'post', 'files' => true,'id' =>'category-form' ]) !!}
+            {!! Form::open(['route' => 'categories.store', 'method' => 'post', 'files' => true,'id' =>'create-category-form' ]) !!}
             <div class="modal-body">
                 <div class="form-group ">
                     <input type="hidden" name="quick_add" value="{{ isset($quick_add)&&$quick_add?$quick_add:'' }}">
                     <label for="name">@lang('categories.categorie_name')</label>
                     <div class="select_body d-flex justify-content-between align-items-center" >
                         <input type="text" required
-                               class="form-control"
+                               class="form-control category-name"
                                placeholder="@lang('categories.categorie_name')"
                                name="name"
                                value="{{ old('name') }}" >
@@ -35,31 +35,19 @@
                         'type' => 'category',
                     ])
                 </div>
-                    <div class="form-group">
-                        <label for="parent_id">@lang('categories.parent')</label>
-                        {!! Form::select(
-                            'parent_id',
-                            $subcategories,null,
-                            ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']
-                        ) !!}
-                        @error('parent_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
 
                 <div class="form-group">
                     <label for="status">@lang('categories.status')</label>
                     <select name="status" class="form-control" required>
-                        <option value="1" {{ old('status') == 1 ? 'selected' : null }}>{{ __('Active') }}</option>
-                        <option value="0" {{ old('status') == 0 ? 'selected' : null }}>{{ __('Inactive') }}</option>
+                        <option value="1" selected>{{ __('Active') }}</option>
+                        <option value="0">{{ __('Inactive') }}</option>
                     </select>
                     @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                <button  id="create-category-btn" class="btn btn-primary">{{__('lang.save')}}</button>
+                <button id="create-category-btn" class="btn btn-primary">{{__('lang.save')}}</button>
             </div>
             {!! Form::close() !!}
         </div>
@@ -67,7 +55,7 @@
 </div>
 
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}
+{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#create-category-form'); !!}
 <script>
     {{--$(document).ready(function () {--}}
     {{--    // Attach a click event handler to the button--}}

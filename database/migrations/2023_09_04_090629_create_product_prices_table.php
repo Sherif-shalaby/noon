@@ -17,6 +17,10 @@ class CreateProductPricesTable extends Migration {
 			$table->text('price_category')->nullable();
 			$table->unsignedBigInteger('stock_line_id')->nullable();
             $table->foreign('stock_line_id')->references('id')->on('add_stock_lines')->onDelete('cascade');
+			// $table->integer('variation_id')->nullable();
+            // $table->foreign('variation_id')->references('id')->on('variations')
+			// 			->onDelete('cascade')
+			// 			->onUpdate('cascade');
 			$table->integer('quantity')->nullable();
 			$table->integer('bonus_quantity')->nullable();
 			$table->integer('created_by')->nullable();

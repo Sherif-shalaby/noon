@@ -40,7 +40,9 @@ class Category extends Model
     }
     public function parentName()
     {
-        return $this->parent->name ?? null;
+        $parents=isset($this->parent->parent_id)?($this->getParentName($this->parent->parent_id).' / '):'';
+        $parents .=$this->parent->name ?? null;
+        return $parents;
     }
     public function created_at()
     {
@@ -72,6 +74,13 @@ class Category extends Model
     public function products()
     {
         return $this->belongsToMany('App\Models\Product', 'product_stores');
+    }
+    public function getParentName($parent_id) {
+        $category=Category::find($parent_id);
+        $categoryName1=$category->name??null ;
+        $category2=isset($category->parent_id)?(Category::find($category->parent_id)):null;
+        $categoryName2=$category2->name??null ;
+        return (isset($categoryName2)?($categoryName2.' / '):'').$categoryName1;
     }
     // public $timestamps = true;
 

@@ -37,8 +37,8 @@
                     <select name="status" class="form-control select2"
                             data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
                         <option value="">{{  __('lang.please_select') }}</option>
-                        <option value="passive">{{ __('lang.passive') }}</option>
-                        <option value="active">{{ __('lang.active') }}</option>
+                        <option value="passive" >{{ __('lang.passive') }}</option>
+                        <option value="active" selected>{{ __('lang.active') }}</option>
                     </select>
                 </div>
             </div>
