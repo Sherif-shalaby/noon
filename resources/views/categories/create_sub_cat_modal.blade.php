@@ -20,9 +20,7 @@
                                placeholder="@lang('categories.categorie_name')"
                                name="name"
                                value="{{ old('name') }}" >
-                        @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
+                       
                         <button  class="btn btn-primary btn-sm ml-2" type="button"
                                  data-toggle="collapse" data-target="#translation_table_category"
                                  aria-expanded="false" aria-controls="collapseExample">
@@ -35,7 +33,13 @@
                         'type' => 'category',
                     ])
                 </div>
-
+                {{-- <div class="form-group">
+                    <input type="hidden"
+                    class="form-control parent_id"
+                    placeholder="@lang('categories.categorie_name')"
+                    name="parent_id"
+                    value="{{ old('parent_id') }}" >
+                </div> --}}
                 <div class="form-group">
                     <label for="status">@lang('categories.status')</label>
                     <select name="status" class="form-control" required>

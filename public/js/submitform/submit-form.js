@@ -179,6 +179,13 @@ $(".openCategoryModal").click(function (e){
     else if(select_category=="3"){
         main_category_id= $("#subCategoryId2").val();
     }
+    console.log(select_category,main_category_id)
+
+    if((main_category_id!=='' && select_category!=0) || main_category_id===0){
+    $(this).addClass('btn-modal');
+    }else{
+        Swal.fire("warning", LANG.no_parent_category, "warning");
+    }
 });
 $("#create-category-btn").click(function (e){
     e.preventDefault();

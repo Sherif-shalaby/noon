@@ -10,8 +10,8 @@
         @enderror
     </td>
     <td>
-        <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"  wire:model="rows.{{ $index }}.quantity" style="width: 100px;" required >
-        @error('quantity')
+        <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"  wire:model="rows.{{ $index }}.quantity" style="width: 100px;">
+        @error('rows.'.$index.'.quantity')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
