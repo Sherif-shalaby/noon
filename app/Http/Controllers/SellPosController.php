@@ -102,14 +102,20 @@ class SellPosController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
+    /* ++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
     public function store(Request $request)
     {
-        dd($request);
+        if (!empty($request->is_quotation))
+        {
+            $transaction_data['is_quotation'] = 1;
+            // status = draft : عشان مفيش دفع حيث بيكون عملية حجز
+            $transaction_data['status'] = 'draft';
+            $transaction_data['invoice_no'] = $this->productUtil->getNumberByType('quotation');
+            $transaction_data['block_qty'] = !empty($request->block_qty) ? 1 : 0;
+            $transaction_data['block_for_days'] = !empty($request->block_for_days) ? $request->block_for_days : 0; //reverse the block qty handle by command using cron job
+            $transaction_data['validity_days'] = !empty($request->validity_days) ? $request->validity_days : 0;
+        }
+        $transaction = TransactionSellLine::create($transaction_data);
     }
 
     /**

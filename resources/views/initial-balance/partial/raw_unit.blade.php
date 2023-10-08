@@ -5,7 +5,6 @@
         style="width: 30px;height: 30px; border-radius: 50%;">
         {{ $index + 1 }}
     </div>
-
     <div style="width: 150px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
         class=" px-0 d-flex justify-content-center align-items-center flex-column">
 
@@ -181,7 +180,8 @@
                     Sales
                 </button>
             </h2>
-            <div id="panelsStayOpen-collapse{{ $index }}" class="accordion-collapse collapse">
+            <div id="panelsStayOpen-collapse{{ $index }}"
+                class="accordion-collapse collapse @if ($rows[$index]['show_prices']) show @endif">
                 @foreach ($rows[$index]['prices'] as $key => $price)
                     <div
                         class="accordion-body d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center">

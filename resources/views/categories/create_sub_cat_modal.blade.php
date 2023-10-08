@@ -35,24 +35,22 @@
                         'type' => 'category',
                     ])
                 </div>
-                    <div class="form-group">
-                        <label for="parent_id">@lang('categories.parent')</label>
-                        {!! Form::select(
-                            'parent_id',
-                            $subcategories,null,
-                            ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']
-                        ) !!}
-                        @error('parent_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-
+{{--                <div class="form-group">--}}
+{{--                    <label for="parent_id">@lang('categories.parent')</label>--}}
+{{--                    {!! Form::select(--}}
+{{--                        'parent_id',--}}
+{{--                        $subcategories,null,--}}
+{{--                        ['class' => 'form-control select2 subcategoriesSelect','placeholder'=>__('lang.please_select'),'wire:model'=>'subcategories']--}}
+{{--                    ) !!}--}}
+{{--                    @error('parent_id')--}}
+{{--                    <span class="text-danger">{{ $message }}</span>--}}
+{{--                    @enderror--}}
+{{--                </div>--}}
                 <div class="form-group">
                     <label for="status">@lang('categories.status')</label>
                     <select name="status" class="form-control" required>
-                        <option value="1" {{ old('status') == 1 ? 'selected' : null }}>{{ __('Active') }}</option>
-                        <option value="0" {{ old('status') == 0 ? 'selected' : null }}>{{ __('Inactive') }}</option>
+                        <option value="1" selected>{{ __('Active') }}</option>
+                        <option value="0">{{ __('Inactive') }}</option>
                     </select>
                     @error('status')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>

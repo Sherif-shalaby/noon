@@ -7,53 +7,27 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                    {!! Form::select('store_id', $stores, null, ['class' => 'select form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
+                    {!! Form::select('store_id', $stores, null, ['class' => 'select2 form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
                     @error('store_id')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-{{--            <div class="col-md-2">--}}
-{{--                <div class="form-group">--}}
-{{--                    {!! Form::label('customer_id', __('lang.customer') . ':*', []) !!}--}}
-{{--                    <div class="d-flex justify-content-center">--}}
-{{--                        <select class="form-control client select" wire:model="client_id">--}}
-{{--                            <option  value="0 " readonly selected >اختر </option>--}}
-{{--                            @foreach ($customers as $customer)--}}
-{{--                                <option value="{{ $customer->id }}">{{ $customer->name }}</option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                        <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>--}}
-{{--                    </div>--}}
-
-{{--                    @error('client_id')<span class="text-danger">{{ $message }}</span>@enderror--}}
-{{--                </div>--}}
-{{--            </div>--}}
             {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_pos_id', __('lang.pos') . ':*', []) !!}
-                    {!! Form::select('store_pos_id', $store_pos, null, ['class' => 'select form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
+                    {!! Form::select('store_pos_id', $store_pos, null, ['class' => 'select2 form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
                     @error('store_pos_id')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
-            {{-- +++++++++++++++++++++++++ لغة الفاتورة +++++++++++++++++++++++++ --}}
-            {{-- <div class="col-md-2">
-                <div class="form-group">
-                    {!! Form::label('invoice_lang', __('lang.invoice_lang') . ':', []) !!}
-                    {!! Form::select('invoice_lang', $languages + ['ar_and_en' => 'Arabic and English'], null, ['class' => 'form-control select', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select') , 'wire:model' => 'invoice_lang']) !!}
-                    @error('invoice_lang')
-                    <span class="error text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div> --}}
             {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select' , 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
+                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select2' , 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
                     @error('payment_status')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
@@ -63,7 +37,7 @@
             <div class="col-md-2" wire:ignore>
                 <label for="" class="text-primary">العملاء</label>
                 <div class="d-flex justify-content-center">
-                    <select class="form-control client" wire:model="client_id" id="Client_Select" wire:change="refreshSelect">
+                    <select class="form-control client select2" wire:model="client_id" id="Client_Select" wire:change="refreshSelect">
                         <option  value="0 " readonly selected >اختر </option>
                         @foreach ($customers as $customer)
                             <option value="{{ $customer->id }}">{{ $customer->name }}</option>
@@ -76,11 +50,6 @@
                 @enderror
                 @include('customers.quick_add')
             </div>
-{{--            <div class="col-md-1">--}}
-{{--                <div class="form-group">--}}
-{{--                    <button type="button" id="dollar_section" class="btn ml-4" style="margin-top: 15px;background-color: #6e81dc;" wire:click="ShowDollarCol">  </button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
         </div>
         <div class="row g-3 cards hide-print ">
             @include('invoices.partials.products')
@@ -93,7 +62,6 @@
                                     <table class="table">
                                         <tr>
                                             <th >@lang('lang.product')</th>
-                                            {{-- <th >@lang('lang.product_image')</th>  --}}
                                             <th >@lang('lang.quantity')</th>
                                             <th >@lang('lang.unit')</th>
                                             <th >@lang('lang.fill')</th>
@@ -121,9 +89,6 @@
                                                 <td >
                                                     {{$item['product']['name']}}
                                                 </td>
-                                                {{-- <td>
-                                                    <img src="{{ asset('uploads/products/' . $item['product']['image']) }}" alt="product image" width="60" height="60"/>
-                                                </td> --}}
                                                 <td >
                                                     <div class="d-flex align-items-center gap-1 " style="width: 80px">
                                                         <div class=" add-num control-num"
@@ -163,7 +128,7 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="select discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount" wire:change="subtotal({{$key}})">
+                                                    <select class="select2 discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount" wire:change="subtotal({{$key}})">
                                                         <option selected value="0.00">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
@@ -220,8 +185,6 @@
             </div>
             @include('invoices.partials.rightSidebar')
         </div>
-
-{{--        <button type="submit" class="btn btn-primary">@lang('lang.save')</button>--}}
         {!! Form::close() !!}
     </div>
 </section>
@@ -262,6 +225,22 @@
             Livewire.on('customerAdded', function ($customer) {
                 // Re-render the Livewire component to refresh the <select>
                 Livewire.emit('refreshSelect');
+            });
+        });
+        window.addEventListener('showCreateProductConfirmation', function() {
+            Swal.fire({
+                title: "{{ __('lang.this_product_exists_before') }}" + "<br>" +
+                    "{{ __('lang.continue_to_add_stock') }}",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('create');
+                } else {
+                    Livewire.emit('cancelCreateProduct');
+                }
             });
         });
     </script>

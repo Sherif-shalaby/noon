@@ -131,7 +131,7 @@ return array(
     'size'=>'الحجم',
     'add_prices_for_different_users'=>'اضافة سعر لكل زبون',
     'price'=>'السعر',
-    'price_category'=>'اسم مختصر للزبون',
+    'price_category'=>'اسم مختصر للخصم',
     'price_start_date'=>'تاريخ بداية للسعر',
     'price_end_date'=>'تاريخ نهاية للسعر',
     'permenant'=>'دائم',
@@ -161,12 +161,13 @@ return array(
     'balance_in_dollar'   => 'الرصيد بالدولار' ,
     // balance_in_dinar
     'balance_in_dinar'   => 'الرصيد بالدينار' ,
-    // ++++++++++++++++++ Suppliers ++++++++++++++++
     // owner_debt_in_dinar
     'owner_debt_in_dinar'   => 'الدين بالدينار' ,
     // owner_debt_in_dollar
     'owner_debt_in_dollar'   => 'الدين بالدولار' ,
     'edit_supplier' => 'تعديل مورد' ,
+    // ++++++++++++++++++ customer_price_offer ++++++++++++++++
+    'customer_price_offer' => 'عرض سعر للعميل' ,
 
     // ++++++++++++ invoice_address +++++++++++++++
     'invoice_address_ar' => 'بغداد - جميلة - شارع المعمل - الفلكة الاولي' ,
@@ -478,5 +479,21 @@ return array(
     'fill_from_basic_unit'=>'التعبئة من الوحدة الاساسية',
     'enter_product_name_to_print_labels' => 'استخدم الماسح الضوئي أو أكتب أول ثلاثة أحرف من المنتج أو أول الباركو',
     'permissions'=>'الاذونات',
+    'percent' => 'نسبه',
+    'sell_car'=>'عربة بيع',
+    'add_sell_car'=>'اضافة عربة بيع',
+    'edit_sell_car'=>'تعديل عربة بيع',
+    'driver_name'=>'السائق',
+    'car_name'=>'اسم العربة',
+    'car_number'=>'رقم العربة',
+    'sell_representative'=>'المندوب',
+    'car_type'=>'نوع العربة',
+    'car_size'=>'حجم العربة',
+    'car_license'=>'ترخيص العربة',
+    'car_model'=>'موديل العربة',
+    'car_license_end_date'=>'تاريخ انتهاء ترخيص العربة',
+    'notify_by_end_car_license'=>'التنبيه قبل موعد انتهاء ترخيص العربة',
+    "added_by"=> "مدخل البيان",
+    'fixed'=>'ثابت',
 );
 
