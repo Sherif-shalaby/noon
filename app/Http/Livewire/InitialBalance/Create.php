@@ -666,12 +666,12 @@ public function changePrice($index,$key)
     if(!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price']))  {
         $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :
             $this->rows[$index]['dollar_selling_price'];
-        if($this->rows[$index]['prices'][$key]['price_type'] == 'fixed'){
+        if($this->rows[$index]['prices'][$key]['price_type'] === 'fixed'){
             $this->rows[$index]['prices'][$key]['price_after_desc'] = $sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
         }
-        elseif($this->rows[$index]['prices'][$key]['price_type'] == 'percentage'){
+        elseif($this->rows[$index]['prices'][$key]['price_type'] === 'percentage'){
             $percent = $this->rows[$index]['prices'][$key]['price'] / 100;
-            $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $this->rows[$index]['prices'][$key]['price'] ));
+            $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ( $percent * $sell_price ));
         }
     }
 }
