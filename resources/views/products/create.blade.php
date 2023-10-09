@@ -60,7 +60,7 @@
                     <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::select('brand_id', $brands, isset($recent_product) ? $recent_product->brand->id : null, [
+                            {!! Form::select('brand_id', $brands, isset($recent_product->brand) ? $recent_product->brand->id : null, [
                                 'class' => 'form-control select2',
                                 'placeholder' => __('lang.please_select'),
                                 'id' => 'brand_id',
@@ -77,7 +77,7 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,
-                                isset($recent_product) ? $recent_product->stores : null,
+                                isset($recent_product->stores) ? $recent_product->stores : null,
                                 [
                                     'class' => 'form-control selectpicker',
                                     'multiple' => 'multiple',
@@ -95,7 +95,7 @@
                     <div class="col-md-3">
                         {!! Form::label('name', __('lang.product_name'), ['class' => 'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::text('name', isset($recent_product) ? $recent_product->name : null, [
+                            {!! Form::text('name', isset($recent_product->name) ? $recent_product->name : null, [
                                 'class' => 'form-control required',
                             ]) !!}
                             <button class="btn btn-primary btn-sm ml-2" type="button" data-toggle="collapse"
@@ -109,13 +109,13 @@
                         @enderror
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',
-                            'translations' => isset($recent_product) ? $recent_product->translations : [],
+                            'translations' => isset($recent_product->translations) ? $recent_product->translations : [],
                             'type' => 'product',
                         ])
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('product_sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('product_sku', isset($recent_product) ? $recent_product->sku : null, [
+                        {!! Form::text('product_sku', isset($recent_product->sku) ? $recent_product->sku : null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>
@@ -124,7 +124,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('category_id', $categories, isset($recent_product) ? $recent_product->category_id : null, [
+                                    {!! Form::select('category_id', $categories, isset($recent_product->category_id) ? $recent_product->category_id : null, [
                                         'class' => 'form-control select2 category',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'categoryId',
@@ -140,7 +140,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $subcategories, isset($recent_product) ? $recent_product->subcategory_id1 : null, [
+                                    {!! Form::select('subcategory_id1', $subcategories, isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
                                         'class' => 'form-control select2 subcategory',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subcategory_id1',
@@ -156,7 +156,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id2', $subcategories, isset($recent_product) ? $recent_product->subcategory_id2 : null, [
+                                    {!! Form::select('subcategory_id2', $subcategories, isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
                                         'class' => 'form-control select2 subcategory2',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId2',
@@ -263,7 +263,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('weight', isset($recent_product) ? $recent_product->weight : 0, [
+                                {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
                                     'class' => 'form-control',
                                 ]) !!}
                                 <br>
@@ -292,7 +292,15 @@
                         @else
                             @include('products.product_unit_raw', ['index' => 0])
                         @endif
-                        <input type="hidden" id="raw_unit_index" value="0" />
+                        @php
+                        if (!empty(($recent_product->variations))){
+                            $index = count($recent_product->variations) - 1;
+                        }
+                        else{
+                            $index = 0;
+                        }
+                        @endphp
+                        <input type="hidden" id="raw_unit_index" value="{{$index}}" />
                     </div>
 
                     {{-- crop image --}}

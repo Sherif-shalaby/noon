@@ -5,7 +5,6 @@
             'class' => 'form-control'
         ]) !!}
     </div>
-{{--    {{dd($variation)}}--}}
     <div class="col-md-2">
         {!! Form::label('unit', __('lang.new_unit'), ['class'=>'h5 pt-3']) !!}
         <div class="d-flex justify-content-center">
