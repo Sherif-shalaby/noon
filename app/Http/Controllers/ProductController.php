@@ -46,11 +46,22 @@ class ProductController extends Controller
   public function index(Request $request)
   {
     $products=Product::
-        when(\request()->category_id != null, function ($query) {
+        when(\request()->dont_show_zero_stocks =="on", function ($query) {
+            $query->whereHas('product_stores', function ($query) {
+                $query->where('quantity_available', '>', 0);
+            });
+        })
+        ->when(\request()->category_id != null, function ($query) {
             $query->where('category_id',\request()->category_id);
         })
-        ->when(\request()->unit_id != null, function ($query) {
-            $query->where('unit_id',\request()->unit_id);
+        ->when(\request()->subcategory_id1 != null, function ($query) {
+            $query->where('subcategory_id1',\request()->subcategory_id1);
+        })
+        ->when(\request()->subcategory_id2 != null, function ($query) {
+            $query->where('subcategory_id2',\request()->subcategory_id2);
+        })
+        ->when(\request()->subcategory_id3 != null, function ($query) {
+            $query->where('subcategory_id3',\request()->subcategory_id3);
         })
         ->when(\request()->store_id != null, function ($query) {
             $query->where('store_id',\request()->store_id);
@@ -63,7 +74,8 @@ class ProductController extends Controller
         })
         ->latest()->get();
     $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
-    $categories= Category::orderBy('created_at', 'desc')->pluck('name','id');
+    $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+    $subcategories= Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');

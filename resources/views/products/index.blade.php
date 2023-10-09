@@ -67,6 +67,7 @@
                                     <th>@lang('lang.product_name')</th>
                                     <th>@lang('lang.sku')</th>
                                     <th>@lang('lang.select_to_delete')</th>
+                                    <th>@lang('lang.stock')</th>
                                     <th>@lang('lang.category')</th>
                                     <th>@lang('lang.subcategories_name')</th>
                                     <th>@lang('lang.height')</th>
@@ -93,6 +94,7 @@
                                     <td>
                                         <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
                                     </td>
+                                    <td>{{$product->product_stores->sum('quantity_available')}}</td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
                                         {{$product->subCategory1->name??''}} <br>
