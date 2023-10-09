@@ -93,7 +93,10 @@ class Create extends Component
         'item.*.change_current_stock' => 'boolean',
         'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-//        'rows.*.prices.*.price_customer_types' => 'nullable|array',
+        'rows.*.purchase_price' => 'required',
+        'rows.*.dollar_purchase_price' => 'required',
+        'rows.*.dollar_selling_price' => 'required',
+        'rows.*.selling_price' => 'required',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -616,14 +619,16 @@ class Create extends Component
         }
     }
     public function changeFilling($index){
-        if($this->rows[$index]['purchase_price']!=""){
-            if($this->rows[$index]['fill_type']=='fixed'){
-                $this->rows[$index]['dollar_selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity']);
-                $this->rows[$index]['selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity'])*$this->exchange_rate;
-            }else{
-                $percent=((float)$this->rows[$index]['dollar_purchase_price']*(float)$this->rows[$index]['fill_quantity'])/100;
-                $this->rows[$index]['dollar_selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent);
-                $this->rows[$index]['selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent)*$this->exchange_rate;
+        if(!empty($this->rows[$index]['fill_quantity'])){
+            if($this->rows[$index]['purchase_price']!=""){
+                if($this->rows[$index]['fill_type']=='fixed'){
+                    $this->rows[$index]['dollar_selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity']);
+                    $this->rows[$index]['selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity'])*$this->exchange_rate;
+                }else{
+                    $percent=((float)$this->rows[$index]['dollar_purchase_price']*(float)$this->rows[$index]['fill_quantity'])/100;
+                    $this->rows[$index]['dollar_selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent);
+                    $this->rows[$index]['selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent)*$this->exchange_rate;
+                }
             }
         }
     }
