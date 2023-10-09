@@ -348,38 +348,13 @@ class ProductController extends Controller
         Variation::create($var_data);
     }
 
-
-
-    $index_prices=[];
-    $product->product_prices()->delete();
-    $index_prices=[];
-    if($request->has('price_category')){
-        if(count($request->price_category)>0){
-            $index_prices=array_keys($request->price_category);
-        }
-    }
-    foreach ($index_prices as $index_price){
-        $data_des=[
-            'product_id' => $product->id,
-            'price_type' => $request->price_type[$index_price],
-            'price_category' => $request->price_category[$index_price],
-            'price' => $request->price[$index_price],
-            'quantity' => $request->quantity[$index_price],
-            'bonus_quantity' => $request->bonus_quantity[$index_price],
-            'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
-            'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
-            'created_by' => Auth::user()->id,
-        ];
-        ProductPrice::create($data_des);
-    }
     $output = [
         'success' => true,
         'msg' => __('lang.success')
     ];
      } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
@@ -481,7 +456,7 @@ class ProductController extends Controller
   public function getRawUnit()
     {
         $index = request()->row_id ?? 0;
-        $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        $units = Unit::orderBy('created_at','desc')->get();
 
         return view('products.product_unit_raw',compact(
             'index',

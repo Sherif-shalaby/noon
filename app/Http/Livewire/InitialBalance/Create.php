@@ -389,7 +389,7 @@ class Create extends Component
                             'variation_id' =>$Variation->id,
                             'stock_line_id' =>$stockLine->id,
                             'price_type' => isset($price['price_type'])?$price['price_type']:null,
-                            'price' => isset($price['price'])?$price['price']:null,
+                            'price' => isset($price['price'])?$price['price']:0,
                             'price_category' => isset($price['price_category'])?$price['price_category']:null,
                             'quantity' => isset($price['discount_quantity'])?$price['discount_quantity']:null,
                             'bonus_quantity' => isset($price['bonus_quantity'])?$price['bonus_quantity']:null,
