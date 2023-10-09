@@ -4,6 +4,15 @@
         <div class="col-2">
             <div class="form-group">
                 {!! Form::select(
+                    'store_id',
+                    $stores,null,
+                    ['class' => 'form-control select2','placeholder'=>__('lang.store')]
+                ) !!}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                {!! Form::select(
                     'category_id',
                     $categories,null,
                     ['class' => 'form-control select2','placeholder'=>__('lang.category')]
@@ -37,24 +46,7 @@
                 ) !!}
             </div>
         </div>
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'store_id',
-                    $stores,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.store')]
-                ) !!}
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'unit_id',
-                    $units,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.unit')]
-                ) !!}
-            </div>
-        </div>
+    
         <div class="col-2">
             <div class="form-group">
                 {!! Form::select(
