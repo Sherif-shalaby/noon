@@ -108,7 +108,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
-
+    Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);

@@ -293,7 +293,7 @@
                             @include('products.product_unit_raw', ['index' => 0])
                         @endif
                         @php
-                        if (count(($recent_product->variations))>0){
+                        if (!empty($recent_product->variations) && count(($recent_product->variations))>0 ){
                             $index = count($recent_product->variations) - 1;
                         }
                         else{

@@ -514,5 +514,7 @@ return array(
     'credit_card' => 'بطاقة الائتمان',
     'bank_transfer' => 'التحويل المصرفي',
     'cheque' => 'شيك',
+    'select_to_delete'=> 'حدد للحذف',
+    'delete_all' => 'حذف جماعي',
 );
 

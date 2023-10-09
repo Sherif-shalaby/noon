@@ -494,6 +494,9 @@ return [
     'credit_card' => 'Credit Card',
     'bank_transfer' => 'Bank Transfer',
     'cheque' => 'Cheque',
+    'select_to_delete'=> 'Select To Delete',
+    'delete_all' => 'Delete All',
+
 ];
 
 

@@ -9,7 +9,7 @@ use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
 use App\Models\ProductPrice;
-use App\Models\ProductTax;
+use App\Models\ProductStore;use App\Models\ProductTax;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\Unit;
@@ -18,7 +18,7 @@ use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
 use App\Utils\Util;
 use Illuminate\Support\Facades\File;
@@ -463,6 +463,45 @@ class ProductController extends Controller
             'units',
         ));
     }
+    public function multiDeleteRow(Request $request){
+        try {
+            DB::beginTransaction();
+            foreach ($request->ids as $id){
+                $product = Product::find($id);
+                if(!empty($product->variations)){
+                    foreach ($product->variations as $variation){
+                        $var = Variation::find($variation->id);
+                        $var->forceDelete();
+                    }
+                }
+                $product_stores = ProductStore::where('product_id', $id)->get();
+                if(!empty($product_stores)){
+                    foreach ($product_stores as $store){
+                        $product_store = ProductStore::find($store->id);
+                        $product_store->forceDelete();
+                    }
+                }
+
+                $product->delete();
+            }
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+
+            DB::commit();
+        } catch (\Exception $e) {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+
+        return $output;
+    }
 }
+
 
 ?>
