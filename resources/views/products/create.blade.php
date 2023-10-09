@@ -172,7 +172,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id3', $subcategories, isset($recent_product) ? $recent_product->subcategory_id3 : null, [
+                                    {!! Form::select('subcategory_id3', $subcategories, isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
                                         'class' => 'form-control select2 subcategory3',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId3',
@@ -219,7 +219,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('height', isset($recent_product) ? $recent_product->height : 0, [
+                                {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
                                     'class' => 'form-control height',
                                 ]) !!}
                                 <br>
@@ -232,7 +232,7 @@
 
                             <div class="col-md-3">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('length', isset($recent_product) ? $recent_product->length : 0, [
+                                {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
                                     'class' => 'form-control length',
                                 ]) !!}
                                 <br>
@@ -243,7 +243,7 @@
 
                             <div class="col-md-3">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('width', isset($recent_product) ? $recent_product->width : 0, [
+                                {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
                                     'class' => 'form-control width',
                                 ]) !!}
                                 <br>
@@ -253,7 +253,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('size', isset($recent_product) ? $recent_product->size : 0, [
+                                {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
                                     'class' => 'form-control size',
                                 ]) !!}
                                 <br>
@@ -375,7 +375,7 @@
                                                 <i class="fas fa-globe"></i>
                                             </button></label>
 
-                                        {!! Form::textarea('details', isset($recent_product) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}
+                                        {!! Form::textarea('details', isset($recent_product->details) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}
                                         @include('layouts.translation_textarea', [
                                             'attribute' => 'details',
                                             'translations' => isset($recent_product) ? $recent_product->details_translations : [],
