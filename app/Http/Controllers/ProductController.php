@@ -64,7 +64,9 @@ class ProductController extends Controller
             $query->where('subcategory_id3',\request()->subcategory_id3);
         })
         ->when(\request()->store_id != null, function ($query) {
-            $query->where('store_id',\request()->store_id);
+            $query->whereHas('product_stores', function ($query) {
+                $query->where('store_id',\request()->store_id);
+            });
         })
         ->when(\request()->brand_id != null, function ($query) {
             $query->where('brand_id',\request()->brand_id);
