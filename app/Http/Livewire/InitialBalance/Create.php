@@ -639,7 +639,7 @@ class Create extends Component
 
     public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
     {
-        $qty_difference = $new_quantity - $old_quantity;
+        $qty_difference = (float)$new_quantity - (float)$old_quantity;
 
         if ($qty_difference != 0) {
             $product_store = ProductStore::where('product_id', $product_id)
