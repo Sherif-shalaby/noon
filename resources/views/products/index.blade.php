@@ -60,6 +60,7 @@
                                     <th>@lang('lang.image')</th>
                                     <th>@lang('lang.product_name')</th>
                                     <th>@lang('lang.sku')</th>
+                                    <th>@lang('lang.stock')</th>
                                     <th>@lang('lang.category')</th>
                                     <th>@lang('lang.subcategories_name')</th>
                                     <th>@lang('lang.height')</th>
@@ -83,6 +84,7 @@
                                     <td><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->sku}}</td>
+                                    <td>{{$product->product_stores->sum('quantity_available')}}</td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
                                         {{$product->subCategory1->name??''}} <br>
