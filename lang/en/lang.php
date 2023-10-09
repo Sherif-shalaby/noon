@@ -4,6 +4,7 @@ return [
     'save' => 'Save',
     'close' => 'Close',
     'delete' => 'Delete',
+    'delete_msg' => 'Deleted Successfully',
     'action' => 'Action',
     'success' => 'Success',
     'something_went_wrong' => 'Something went wrong',
@@ -32,7 +33,8 @@ return [
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
     'update' => 'Update',
-   
+    'close' => 'Close'
+
 ];
 
 

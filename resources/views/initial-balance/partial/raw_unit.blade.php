@@ -10,8 +10,8 @@
         @enderror
     </td>
     <td>
-        <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"  wire:model="rows.{{ $index }}.quantity" style="width: 100px;" required >
-        @error('quantity')
+        <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"  wire:model="rows.{{ $index }}.quantity" style="width: 100px;">
+        @error('rows.'.$index.'.quantity')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
@@ -52,14 +52,14 @@
     </td>
         <td>
             <input type="text" class="form-control" wire:model="rows.{{ $index }}.dollar_purchase_price" wire:change="changePurchasePrice({{$index}})" style="width: 100px;" required>
-            @error('dollar_purchase_price')
+            @error('rows.'.$index.'.dollar_purchase_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
 
         <td>
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price" wire:change="changeSellingPrice({{$index}})" style="width: 100px;" required>
-            @error('dollar_selling_price')
+            @error('rows.'.$index.'.dollar_selling_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
@@ -73,13 +73,13 @@
     {{-- @endif --}}
     <td>
         <input type="text" class="form-control" wire:model="rows.{{ $index }}.purchase_price" style="width: 100px;"  required>
-        @error('purchase_price')
+        @error('rows.'.$index.'.purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td>
         <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price" style="width: 100px;" required>
-        @error('selling_price')
+        @error('rows.'.$index.'.selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>

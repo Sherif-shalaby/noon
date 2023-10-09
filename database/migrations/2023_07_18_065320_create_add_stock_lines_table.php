@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('stock_transaction_id');
             $table->foreign('stock_transaction_id')->references('id')->on('stock_transactions')->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained('products', 'id')->cascadeOnDelete();
-            $table->decimal('quantity', 15, 4);
+            $table->decimal('quantity', 15, 4)->nullable();
             $table->decimal('quantity_sold', 15, 4)->default(0)->comment('quantity sold from this purchase line');
             $table->decimal('quantity_returned', 15, 4)->default(0);
             $table->decimal('expired_qauntity', 15, 4)->default(0);

@@ -43,19 +43,6 @@
 
                         </div>
                     </div>
-                 
-                    {{-- <div class="col-md-3">
-                        {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            @php $selected_subcategories=$product->subcategories->pluck('id'); @endphp
-                            {!! Form::select(
-                                'subcategory_id[]',
-                                $categories,$selected_subcategories,
-                                ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'id'=>'subCategoryId']
-                            ) !!}
-                            <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </div> --}}
 
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class'=>'h5 pt-3']) !!}
@@ -64,7 +51,7 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,$selected_stores,
-                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'id'=>'store_id']
+                                ['class' => 'form-control selectpicker ','multiple'=>"multiple",'id'=>'store_id']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 
@@ -99,32 +86,6 @@
                             'class' => 'form-control'
                         ]) !!}
                     </div>
-                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
-                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
-                            <option value="">{{  __('lang.please_select') }}</option>
-                            <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }} value="inclusive">{{ __('lang.inclusive') }}</option>
-                            <option {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }} value="exclusive">{{ __('lang.exclusive') }}</option>
-                        </select>
-                    </div>
-                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
-                        <select name="product_tax_id" id="product_tax_id" class="form-control select2" placeholder="{{  __('lang.please_select') }}" required>
-                            <option value="">{{  __('lang.please_select') }}</option>
-
-                            @foreach ($product_tax as $x )
-                                @foreach ($product->product_taxes as $y)
-                                    @if ($x->id == $y->pivot->product_tax_id)
-                                        <option value="{{ $x->id }}" selected>{{$x->name}}</option>
-                                    @else
-                                        <option value="{{ $x->id }}">{{$x->name}}</option>
-                                    @endif
-                                @endforeach
-                            @endforeach
-                        </select>
-                    </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-3">
@@ -135,8 +96,8 @@
                                         $categories,$product->category_id,
                                         ['class' => 'form-control select2 category','placeholder'=>__('lang.please_select'),'id'=>'categoryId']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="1"><i class="fas fa-plus"></i></button>
-        
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="0"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -150,13 +111,14 @@
                                         $categories,$product->subcategory_id1,
                                         ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId1']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-        
+
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class'=>'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -165,13 +127,14 @@
                                         $categories,$product->subcategory_id2,
                                         ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId2']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="3"><i class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="2"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id2')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-        
+
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class'=>'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -180,7 +143,8 @@
                                         $categories,$product->subcategory_id3,
                                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.please_select'),'id'=>'subCategoryId3']
                                     ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="4"><i class="fas fa-plus"></i></button>
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                       data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -188,7 +152,38 @@
                             </div>
                         </div>
                     </div>
-                  
+                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method').':*' }}</label>
+                        <select name="method" id="method" class='form-control select2' data-live-search='true' placeholder="{{  __('lang.please_select') }}" required>
+                            <option value="">{{  __('lang.please_select') }}</option>
+                            <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }} value="inclusive">{{ __('lang.inclusive') }}</option>
+                            <option {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }} value="exclusive">{{ __('lang.exclusive') }}</option>
+                        </select>
+                    </div>
+                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax').':*' }}</label>
+                        <div class="d-flex justify-content-center">
+                            <select name="product_tax_id" id="product_tax" class="form-control select2" placeholder="{{  __('lang.please_select') }}" required>
+                                <option value="">{{  __('lang.please_select') }}</option>
+                                @foreach($product_tax as $tax)
+                                    <option @if(isset($product->product_taxes))
+                                        @foreach($product->product_taxes as $product_tax)
+                                               @if($product_tax->id == $tax_id) selected @endif
+                                            @endforeach
+                                       @endif
+                                            value="{{ $tax->id }}"> {{$tax->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button type="button" class="btn btn-primary btn-sm ml-2"
+                                    data-toggle="modal" data-target="#add_product_tax_modal"
+                                    data-select_category="2"><i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
@@ -243,19 +238,6 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('unit', __('lang.unit'), ['class'=>'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select(
-                                        'unit_id',
-                                        $units,$product->unit_id,
-                                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select'),'id'=>'unit_id']
-                                    ) !!}
-                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                </div>
-                            </div> --}}
                             <div class="col-md-3">
                                 {!! Form::label('weight', __('lang.weight'),['class'=>'h5 pt-3']) !!}
                                 {!! Form::text('weight', $product->weight, [
@@ -266,25 +248,12 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select(
-                                        'unit_id',
-                                        $units,$product->unit_id,
-                                        ['class' => 'form-control select2 unit_id','placeholder'=>__('lang.please_select'),'id'=>'unitId']
-                                    ) !!}
-                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                </div>
-                            </div> --}}
                         </div>
                     </div>
                     <div class="col-md-12 pt-5">
                         <div class="col-md-3">
                             <button class="btn btn btn-primary add_unit_row" type="button">
-                                <i class="fa fa-plus"></i> @lang('lang.add') 
+                                <i class="fa fa-plus"></i> @lang('lang.add')
                             </button>
                         </div>
                     </div>
@@ -302,48 +271,6 @@
                      <input type="hidden" id="raw_unit_index" value="0"/>
                     </div>
                     {{-- sizes --}}
-                    {{-- add prices --}}
-                    <div class="col-md-12">
-                        <div class="container-fluid pt-5">
-                            <div class="row ">
-                                <div class="col-md-12 pt-5">
-                                    <h4 class="text-primary">{{__('lang.add_prices_for_different_users')}}</h4>
-                                </div>
-                                <div class="col-md-12 ">
-                                    <table class="table table-bordered" id="consumption_table_price">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 10%;">@lang('lang.type')</th>
-                                            <th style="width: 10%;">@lang('lang.price_category')</th>
-                                            <th style="width: 10%;">@lang('lang.price')</th>
-                                            <th style="width: 10%;">@lang('lang.quantity')</th>
-                                            <th style="width: 11%;">@lang('lang.b_qty')</th>
-                                            <th style="width: 3%;"></th>
-                                            <th style="width: 17%;">@lang('lang.price_start_date')</th>
-                                            <th style="width: 17%;">@lang('lang.price_end_date')</th>
-                                            <th style="width: 20%;">@lang('lang.customer_type') <i class="dripicons-question" data-toggle="tooltip"
-                                                                                                title="@lang('lang.discount_customer_info')"></i></th>
-                                            <th style="width: 5%;"><button class="btn btn-xs btn-primary add_price_row"
-                                                                        type="button"><i class="fa fa-plus"></i></button></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            {{-- @if(!empty($product->product_prices))
-                                                @foreach($product->product_prices as $price)
-                                                    @include('products.product_raw_price', [
-                                                    'row_id' => $loop->index +0,
-                                                    'price'=>$price,
-                                                    ])
-                                                @endforeach
-                                            @endif --}}
-                                        </tbody>
-                                    </table>
-                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="{{count($product->product_prices)}}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- add prices --}}
 
                     {{-- crop image --}}
                     <div class="col-md-12 pt-5">
@@ -444,6 +371,8 @@
     @include('units.create',['quick_add'=>$quick_add])
     @include('brands.create',['quick_add'=>$quick_add])
     @include('categories.create_modal',['quick_add'=>$quick_add])
+    @include('product-tax.create', ['quick_add' => 1])
+
 @endsection
 @push('javascripts')
 <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">

@@ -1,44 +1,44 @@
 <?php
 
-use App\Http\Controllers\AddStockController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ColorController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SellReturnController;
-use App\Http\Controllers\SizeController;
-use App\Http\Controllers\StorePosController;
-use App\Http\Controllers\UnitController;
+use App\Http\Controllers\SellCarController;
+use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\CustomersReportController;
-use App\Http\Controllers\CustomerTypeController;
-use App\Http\Controllers\DailyReportSummary;
-use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\GetDueReport;
-use App\Http\Controllers\GetDueReportController;
-use App\Http\Controllers\InitialBalanceController;
-use App\Http\Controllers\MoneySafeController;
-use App\Http\Controllers\PayableReportController;
-use App\Http\Controllers\ProductTaxController;
-use App\Http\Controllers\PurchaseOrderLineController;
-use App\Http\Controllers\PurchasesReportController;
-use App\Http\Controllers\ReceivableController;
-use App\Http\Controllers\RepresentativeSalaryReportController;
-use App\Http\Controllers\SalesReportController;
-use App\Http\Controllers\SellCarController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SizeController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\WageController;
-use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ColorController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellPosController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AddStockController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DailyReportSummary;
+use App\Http\Controllers\StorePosController;
+use App\Http\Controllers\MoneySafeController;
+use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\ProductTaxController;
+use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\SellReturnController;
+use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\PayableReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
+use App\Http\Controllers\CustomersReportController;
+use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\PurchaseOrderLineController;
+use App\Http\Controllers\CustomerOfferPriceController;
+use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
-use App\Models\Product;
-use App\Models\PurchaseOrderLine;
+use App\Http\Controllers\RepresentativeSalaryReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -182,6 +182,10 @@ Route::group(['middleware' => ['auth']], function () {
     // ################################# Task : customer_price_offer #################################
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
+    Route::view('customer_price_offer/edit/{id}', 'customer_price_offer.edit')->name('customer_price_offer.edit');
+    // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
+    Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
+
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));

@@ -27,11 +27,11 @@ class DatabaseSeeder extends Seeder
             StatesSeeder::class ,
             CitySeeder::class ,
             CurrenciesTableSeeder::class ,
-//            SizeSeeder::class ,
-//            ColorSeeder::class ,
-//            SizeSeeder::class ,
-//            ProductSeeder::class ,
-//            CategorySeeder::class,
+           SizeSeeder::class ,
+           ColorSeeder::class ,
+           SizeSeeder::class ,
+           ProductSeeder::class ,
+           CategorySeeder::class,
 
         ]);
 
