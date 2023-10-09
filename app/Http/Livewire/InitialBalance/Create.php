@@ -385,11 +385,12 @@ class Create extends Component
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
                 if(!empty($row['prices'])){
                     foreach ($row['prices'] as $price){
+//                        dd(!empty($price['price']));
                         $price_data = [
                             'variation_id' =>$Variation->id,
                             'stock_line_id' =>$stockLine->id,
                             'price_type' => isset($price['price_type'])?$price['price_type']:null,
-                            'price' => isset($price['price'])?$price['price']:null,
+                            'price' => !empty($price['price']) ? $price['price'] : null,
                             'price_category' => isset($price['price_category'])?$price['price_category']:null,
                             'quantity' => isset($price['discount_quantity'])?$price['discount_quantity']:null,
                             'bonus_quantity' => isset($price['bonus_quantity'])?$price['bonus_quantity']:null,
