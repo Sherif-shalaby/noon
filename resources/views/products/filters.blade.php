@@ -15,7 +15,7 @@
                 {!! Form::select(
                     'category_id',
                     $categories,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.category')]
+                    ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
                 ) !!}
             </div>
         </div>
@@ -24,7 +24,7 @@
                 {!! Form::select(
                     'subcategory_id1',
                     $subcategories,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.subcategory')." 1"]
+                    ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
                 ) !!}
             </div>
         </div>
@@ -33,7 +33,7 @@
                 {!! Form::select(
                     'subcategory_id2',
                     $subcategories,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.subcategory')." 2" ]
+                    ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subCategoryId2' ]
                 ) !!}
             </div>
         </div>
@@ -42,7 +42,7 @@
                 {!! Form::select(
                     'subcategory_id3',
                     $subcategories,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.subcategory')." 3" ]
+                    ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subCategoryId3']
                 ) !!}
             </div>
         </div>

@@ -182,6 +182,7 @@
     <!-- End Contentbar -->
 @endsection
 @push('javascripts')
+<script src="{{ asset('js/product/product.js') }}"></script>
     <script>
         $(document).on('click', '#delete_all', function() {
             var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
