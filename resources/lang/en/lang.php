@@ -494,6 +494,8 @@ return [
     'credit_card' => 'Credit Card',
     'bank_transfer' => 'Bank Transfer',
     'cheque' => 'Cheque',
+    'filter'=>'Filter',
+    'dont_show_zero_stocks'=>'Dont Show Zero Stocks',
 ];
 
 

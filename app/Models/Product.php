@@ -87,6 +87,10 @@ class Product extends Model
     {
         return $this->hasMany('App\Models\ProductPrice');
     }
+    public function product_stores()
+    {
+        return $this->hasMany(ProductStore::class);
+    }
     public function variations()
     {
         return $this->hasMany('App\Models\Variation');

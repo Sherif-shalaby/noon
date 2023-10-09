@@ -514,5 +514,8 @@ return array(
     'credit_card' => 'بطاقة الائتمان',
     'bank_transfer' => 'التحويل المصرفي',
     'cheque' => 'شيك',
+    'filter'=>'تصفية',
+    'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
+
 );
 
