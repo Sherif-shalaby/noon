@@ -338,7 +338,7 @@ class Create extends Component
                     $Variation=new Variation();
 
                     $Variation->sku=!empty($this->rows[$index]['sku'])?$this->rows[$index]['sku']:$this->generateSku($product->name);
-                    $Variation->equal=$this->rows[$index]['equal'];
+                    $Variation->equal= !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
                     $Variation->product_id=$product->id;
                     $Variation->unit_id=$this->rows[$index]['unit_id']!==""?$this->rows[$index]['unit_id']:null;
                     $Variation->basic_unit_id=$this->rows[$index]['basic_unit_id']!==""?$this->rows[$index]['basic_unit_id']:null;
