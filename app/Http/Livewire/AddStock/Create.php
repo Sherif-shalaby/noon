@@ -236,7 +236,7 @@ class Create extends Component
             $transaction->grand_total = $this->num_uf($this->sum_total_cost());
             $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             $transaction->dollar_grand_total = $this->num_uf($this->sum_dollar_total_cost());
-            $transaction->dollar_final_total = $this->dollar_final_total();
+            $transaction->dollar_final_total = $this->num_uf($this->dollar_final_total());
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
             $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
             $transaction->notify_me = !empty($this->notify_before_days) ? 1 : 0;
@@ -517,24 +517,27 @@ class Create extends Component
     }
 
     public function changeFilling($index){
-        if(!empty($this->items[$index]['purchase_price'])){
-            if($this->items[$index]['fill_type']=='fixed'){
-                $this->items[$index]['selling_price']= ($this->items[$index]['purchase_price'] + (float)$this->items[$index]['fill_quantity']);
-            }else{
-                $percent=((float)$this->items[$index]['purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                $this->items[$index]['selling_price']= (float)($this->items[$index]['purchase_price'] + $percent);
+        if(!empty($this->items[$index]['fill_quantity'])){
+            if(!empty($this->items[$index]['purchase_price'])){
+                if($this->items[$index]['fill_type']=='fixed'){
+                    $this->items[$index]['selling_price']= ($this->items[$index]['purchase_price'] + (float)$this->items[$index]['fill_quantity']);
+                }else{
+                    $percent=((float)$this->items[$index]['purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                    $this->items[$index]['selling_price']= (float)($this->items[$index]['purchase_price'] + $percent);
+                }
             }
-        }
-        if(!empty($this->items[$index]['dollar_purchase_price'])){
-            if($this->items[$index]['fill_type']=='fixed'){
-                $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
-            }
-        else{
-                $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                $this->items[$index]['dollar_selling_price'] = ((float)$this->items[$index]['dollar_purchase_price'] + $percent);
-            }
+            if(!empty($this->items[$index]['dollar_purchase_price'])){
+                if($this->items[$index]['fill_type']=='fixed'){
+                    $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+                }
+                else{
+                    $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                    $this->items[$index]['dollar_selling_price'] = ((float)$this->items[$index]['dollar_purchase_price'] + $percent);
+                }
 
+            }
         }
+
     }
     public function get_product($index){
         return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
