@@ -323,8 +323,9 @@ class Create extends Component
                 }
 
                 //upload Documents
-                if ($this->upload_documents) {
-                     $payment->upload_documents = store_file($this->upload_documents, 'stock_transaction_payment');
+                if ($this->upload_documents)
+                {
+                    $payment->upload_documents = store_file($this->upload_documents, 'stock_transaction_payment');
                 }
                 $payment->save();
             }
