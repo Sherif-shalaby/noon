@@ -21,19 +21,19 @@
                     wire:click='$set("department_id",{{ $depart->id }})'>{{ $depart->name }}</button>
                 @endforeach --}}
 
-                @if($variations and $variations != null)
-                    @forelse ($variations as $variation)
-                        <div class="order-btn" wire:click='add_product({{ $variation }})' >
-                            @if ($variation->product->image)
+                @if($allproducts and $allproducts != null)
+                    @forelse ($allproducts as $product)
+                        <div class="order-btn" wire:click='add_product({{ $product->id }})' >
+                            @if ($product->image)
                                 <img src="{{ asset('uploads/products/' . $variation->product->image) }}"
-                                     alt="{{ $variation->product->name }}" class="img-thumbnail" width="100px">
+                                     alt="{{ $product->name }}" class="img-thumbnail" width="100px">
                             @else
-                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $variation->product->name }}"
+                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
                                      class="img-thumbnail" width="100px">
                             @endif
                             <div>
-                                <span>{{ $variation->sku }} </span>
-                                <span>{{ $variation->product->name }}</span>
+                                <span>{{ $product->sku }} </span>
+                                <span>{{ $product->name }}</span>
                                 {{--                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
                                 {{--                                                {{ $product->store?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
                                 {{--                                            </span>--}}
