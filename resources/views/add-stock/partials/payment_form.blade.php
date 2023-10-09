@@ -5,7 +5,7 @@
         <div class="col-md-2 payment_fields hide">
             <div class="form-group">
                 {!! Form::label('amount', __('lang.amount'), []) !!} <br>
-                <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model="amount">
+                <input type="number" placeholder="{{__('lang.amount')}}" class="form-control"  wire:model="total_amount" >
                 @error('amount')
                 <span class="error text-danger">{{ $message }}</span>
                 @enderror
@@ -27,7 +27,7 @@
             <label for="paying_currency">@lang('lang.paying_currency') </label>
             {!! Form::select('paying_currency', $selected_currencies, $paying_currency,
             ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'required',
-            'data-name' => 'paying_currency', 'wire:model' => 'paying_currency']) !!}
+            'data-name' => 'paying_currency', 'wire:model' => 'paying_currency' ,'wire:change'=>'changeTotalAmount()']) !!}
             @error('paying_currency')
             <span class="error text-danger">{{ $message }}</span>
             @enderror

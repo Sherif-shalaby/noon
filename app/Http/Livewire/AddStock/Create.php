@@ -43,7 +43,7 @@ class Create extends Component
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
-        $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name;
+        $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount=0;
 
     protected $rules = [
     'store_id' => 'required',
@@ -159,8 +159,6 @@ class Create extends Component
 
         $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
-
-
         return view('livewire.add-stock.create',
             compact('status_array',
             'payment_status_array',
@@ -183,7 +181,6 @@ class Create extends Component
     {
         $this->validateOnly($propertyName);
     }
-
     public function store(): Redirector|Application|RedirectResponse
     {
         if (!empty($this->other_expenses) || !empty($this->other_payments)){
@@ -537,6 +534,7 @@ class Create extends Component
 
             }
         }
+        $this->changeTotalAmount();
 
     }
     public function get_product($index){
@@ -684,7 +682,6 @@ class Create extends Component
                 }
             }
             else{
-//                dd($this->sum_dollar_sub_total());
                 (float)$this->items[$index]['dollar_cost'] =$this->num_uf( ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price ) ;
             }
         }
@@ -725,7 +722,10 @@ class Create extends Component
     }
 
     public function changeAmount($value){
-        $this->amount = $this->num_uf($value) + $this->calcPayment();
+        $this->amount = $this->num_uf($value);
+    }
+    public function changeTotalAmount(){
+            $this->total_amount = $this->amount +$this->calcPayment();
     }
 
     public function sum_sub_total(){

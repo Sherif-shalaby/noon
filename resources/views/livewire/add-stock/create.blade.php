@@ -271,7 +271,7 @@
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
                                     {!! Form::text('other_expenses', $other_expenses,
                                     ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
-                                     'wire:model' => 'other_expenses' ]) !!}
+                                     'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -279,7 +279,7 @@
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
                                     {!! Form::text('discount_amount',$discount_amount,
                                     ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount',
-                                    'wire:model' => 'discount_amount']) !!}
+                                    'wire:model' => 'discount_amount','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -287,7 +287,7 @@
                                     {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
                                     {!! Form::text('other_payments', $other_payments,
                                     ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
-                                     'wire:model' => 'other_payments']) !!}
+                                     'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
