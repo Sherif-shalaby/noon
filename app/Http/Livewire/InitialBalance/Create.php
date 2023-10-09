@@ -90,8 +90,8 @@ class Create extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
        'item.*.product_tax_id' => 'nullable',
-        'item.*.change_current_stock' => 'boolean',
-        'item.*.exchange_rate' => 'numeric',
+        // 'item.*.change_current_stock' => 'boolean',
+        // 'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
         'rows.*.purchase_price' => 'required',
         'rows.*.dollar_purchase_price' => 'required',
@@ -273,7 +273,7 @@ class Create extends Component
     }
     public function store()
     {
-//         dd($this->rows);
+        // dd($this->rows);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -286,6 +286,7 @@ class Create extends Component
          if(empty($this->rows)){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.add_sku_with_sku_for_product'),]);
         }else{
+            // dd(77);
              DB::beginTransaction();
             // Add stock transaction
             $transaction = new StockTransaction();
