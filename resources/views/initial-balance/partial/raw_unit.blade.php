@@ -10,8 +10,8 @@
         @enderror
     </td>
     <td>
-        <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"  wire:model="rows.{{ $index }}.quantity" style="width: 100px;" required >
-        @error('quantity')
+        <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"  wire:model="rows.{{ $index }}.quantity" style="width: 100px;">
+        @error('rows.'.$index.'.quantity')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
@@ -106,10 +106,10 @@
         <td></td>
         <td>
             {!! Form::label('price_type' ,__('lang.type')) !!}
-            {!! Form::select('price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
-                 'id' => 'price_type',
+            {!! Form::select('rows.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
+//                 'id' => 'price_type',
                 'class' => ' form-control price_type',
-                'data-name' => 'price_type',
+//                'data-name' => 'price_type',
 //                'data-index' =>$index,
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
@@ -119,7 +119,7 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-       <td>
+        <td>
            {!! Form::label('price_category' ,__('lang.price_category'),['style' => 'font-size: 10px;','class'=>'pt-2']) !!}
            <input type="text" class="form-control price_category" name="price_category" wire:model="rows.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
        </td>
@@ -149,7 +149,7 @@
                 @endforeach
             </select>
         </td>
-         <td>
+        <td>
             <button type="button" class="btn btn-sm btn-primary" wire:click="addPriceRow({{ $index }})">
                 <i class="fa fa-plus"></i>
             </button>

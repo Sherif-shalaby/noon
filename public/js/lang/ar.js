@@ -7,4 +7,5 @@ LANG = {
     add_sku_with_sku_for_product:'اضف باركود مع ةحدة للمنتج',
     this_product_exists_before:'هذا المنتج موجود من قبل',
     success:'تم بنجاح',
+    no_parent_category:'برجاء اختيار قسم رئيسى لهذا القسم',
 };

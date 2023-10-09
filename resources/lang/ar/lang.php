@@ -101,9 +101,9 @@ return array(
     'class'=>'فئة',
     'category'=>'قسم رئيسى',
     'subcategory'=>'قسم فرعى',
-    'brand'=>'غلامة تجارية',
+    'brand'=>'علامة تجارية',
     'product_name'=>'اسم المادة',
-    'product_code'=>'كود المادة',
+    'product_code'=>'الباركود',
     'please_select'=>'الرجاء التحديد',
     'salary_details' => 'تفاصيل الراتب',
     'enter_the_fixed_wage' => 'أدخل الأجر الثابت',
@@ -510,5 +510,9 @@ return array(
     'notify_by_end_car_license'=>'التنبيه قبل موعد انتهاء ترخيص العربة',
     "added_by"=> "مدخل البيان",
     'fixed'=>'ثابت',
+    'no_units' => 'لا يوجد وحدات',
+    'credit_card' => 'بطاقة الائتمان',
+    'bank_transfer' => 'التحويل المصرفي',
+    'cheque' => 'شيك',
 );
 
