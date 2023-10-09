@@ -25,7 +25,7 @@
                     @forelse ($allproducts as $product)
                         <div class="order-btn" wire:click='add_product({{ $product->id }})' >
                             @if ($product->image)
-                                <img src="{{ asset('uploads/products/' . $variation->product->image) }}"
+                                <img src="{{ asset('uploads/products/' . $product->image) }}"
                                      alt="{{ $product->name }}" class="img-thumbnail" width="100px">
                             @else
                                 <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
@@ -46,8 +46,8 @@
                     <p>جميع المنتجات</p>
                     @foreach ($variations as $variation)
                         <div class="order-btn" wire:click='add_product({{ $variation->id }})' >
-                            @if ($variation->product->image)
-                                <img src="{{ asset('uploads/products/' . $variation->product->image) }}"
+                            @if ($product->image)
+                                <img src="{{ asset('uploads/products/' . $product->image) }}"
                                      alt="{{ $variation->product->name }}" class="img-thumbnail" width="100px">
                             @else
                                 <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $variation->product->name }}"
