@@ -353,16 +353,16 @@ class Create extends Component
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $item['quantity'],
                     'purchase_price' => !empty($item['purchase_price']) ? $item['purchase_price'] : null ,
-                    'final_cost' => !empty($item['total_cost']) ? $item['total_cost'] : null,
-                    'sub_total' => !empty($item['sub_total']) ? $item['sub_total'] : null,
-                    'sell_price' => !empty($item['selling_price']) ? $item['selling_price'] : null,
-                    'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $item['dollar_purchase_price'] : null,
-                    'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $item['dollar_total_cost'] : 0,
-                    'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $item['dollar_sub_total']: null,
-                    'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $item['dollar_selling_price'] : null,
+                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
+                    'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
+                    'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
+                    'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
+                    'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $this->num_uf($item['dollar_total_cost']) : 0,
+                    'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total']) : null,
+                    'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $this->num_uf($item['dollar_selling_price']) : null,
                     'cost' => !empty($item['cost']) ?  $item['cost'] : null,
-                    'dollar_cost' => !empty($item['dollar_cost']) ? $item['dollar_cost'] : null,
-                    'expiry_date' => !empty($item['expiry_date']) ? $item['expiry_date'] : null,
+                    'dollar_cost' => !empty($item['dollar_cost']) ? $this->num_uf($item['dollar_cost']) : null,
+                    'expiry_date' => !empty($item['expiry_date']) ? $this->num_uf($item['expiry_date']) : null,
                     'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
@@ -684,7 +684,8 @@ class Create extends Component
                 }
             }
             else{
-                (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
+//                dd($this->sum_dollar_sub_total());
+                (float)$this->items[$index]['dollar_cost'] =$this->num_uf( ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price ) ;
             }
         }
         else{
@@ -695,7 +696,7 @@ class Create extends Component
 
     public function dollar_total_cost($index){
         $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        return $this->num_uf($this->items[$index]['dollar_total_cost']);
 
     }
 
@@ -707,7 +708,7 @@ class Create extends Component
             }
         }
         $this->changeAmount(number_format($totalCost,2));
-        return number_format($this->num_uf($totalCost),2);
+        return $this->num_uf($totalCost);
     }
 
     public function sum_dollar_total_cost(){
@@ -720,7 +721,7 @@ class Create extends Component
         }
         $this->changeAmount(number_format($totalDollarCost,2));
 //        dd($totalDollarCost);
-        return number_format($totalDollarCost,2);
+        return $this->num_uf($totalDollarCost);
     }
 
     public function changeAmount($value){
@@ -733,7 +734,7 @@ class Create extends Component
         foreach ($this->items as $item) {
             $totalSubTotal += $item['sub_total'];
         }
-        return number_format($this->num_uf($totalSubTotal),2);
+        return $this->num_uf($totalSubTotal);
     }
 
     public function sum_dollar_sub_total(){
@@ -742,7 +743,7 @@ class Create extends Component
         foreach ($this->items as $item) {
             $totalDollarSubTotal += $item['dollar_sub_total'];
         }
-        return number_format($this->num_uf($totalDollarSubTotal),2);
+        return $this->num_uf($totalDollarSubTotal);
     }
 
     public function changeCurrentStock($index){
