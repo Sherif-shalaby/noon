@@ -494,8 +494,11 @@ return [
     'credit_card' => 'Credit Card',
     'bank_transfer' => 'Bank Transfer',
     'cheque' => 'Cheque',
+    'select_to_delete'=> 'Select To Delete',
+    'delete_all' => 'Delete All',
     'filter'=>'Filter',
     'dont_show_zero_stocks'=>'Dont Show Zero Stocks',
+
 ];
 
 

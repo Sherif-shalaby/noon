@@ -345,7 +345,6 @@ class Create extends Component
             else {
                 $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price,2) : 0;
                 $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,2) : 0;
-//                dd($price);
                 $this->items[] = [
                     'variation' => $product->variations,
                     'product' => $product,
