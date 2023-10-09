@@ -235,7 +235,7 @@ return array(
     'notes' => 'ملاحظات',
     'wages'=>' الاجور',
     'add_wages'=>'اضافة اجر',
-    'other_payment'=>'مدفوعات أخرى',
+    'other_payment'=>'(المبلغ)مدفوعات أخرى',
     'account_period'=>'فترة الحساب',
     'acount_period_start_date'=>'تاريخ بدء فترة الحساب',
     'acount_period_end_date'=>'تاريخ انتهاء فترة الحساب',
@@ -514,5 +514,11 @@ return array(
     'credit_card' => 'بطاقة الائتمان',
     'bank_transfer' => 'التحويل المصرفي',
     'cheque' => 'شيك',
+    'block_qty' => 'حظر الكمية',
+    'block_for_days' => 'حظر لأيام',
+    'validity_days' => 'الصلاحية',
+    'discount_type' => 'نوع الخصم',
+    'discount_value' => 'قيمة الخصم',
+    'tax' => 'ضريبة',
 );
 

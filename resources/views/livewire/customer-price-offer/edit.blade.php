@@ -31,7 +31,9 @@
                                 <div class="row">
                                     {{-- ++++++++++++++++++++++ stores filter ++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
-                                        <label for="store_id" class="text-primary">@lang('lang.store')</label>
+                                        <label for="store_id" class="text-primary">
+                                            @lang('lang.store'):<span style="color:#dc3545;">*</span>
+                                        </label>
                                         <div class="d-flex justify-content-center">
                                             <select class="form-control" name="store_id" id="store_id" wire:model='store_id'>
                                                 <option value="" selected>{{ __('lang.please_select') }}</option>
@@ -40,10 +42,15 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                        @error('store_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-4" wire:ignore>
-                                        <label for="customer_id" class="text-primary">@lang('lang.customers')</label>
+                                    <div class="col-md-4">
+                                        <label for="customer_id" class="text-primary">
+                                            @lang('lang.customers'):<span style="color:#dc3545;">*</span>
+                                        </label>
                                         <div class="d-flex justify-content-center">
                                             <select class="form-control" name="customer_id" id="customer_id" wire:model='customer_id'>
                                                 <option value="" selected>{{ __('lang.please_select') }}</option>
@@ -52,6 +59,9 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                        @error('customer_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -251,15 +261,23 @@
                                 {{-- ========= block_for_days ========= --}}
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {!! Form::label('block_for_days', __('lang.block_for_days') . ':') !!}
+                                        {{-- {!! Form::label('block_for_days', __('lang.block_for_days') . ':') !!} --}}
+                                        {!! Form::label('block_for_days', __('lang.block_for_days') .':<span style="color:#dc3545;">*</span>', [], false) !!}
                                         {!! Form::text('block_for_days', 1, ['class' => 'form-control', 'placeholder' => __('lang.block_for_days') , 'wire:model' => 'block_for_days']) !!}
+                                        @error('block_for_days')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 {{-- ========= validity_days ========= --}}
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {!! Form::label('validity_days', __('lang.validity_days') . ':') !!}
+                                        {{-- {!! Form::label('validity_days', __('lang.validity_days') . ':') !!} --}}
+                                        {!! Form::label('validity_days', __('lang.validity_days') . ':<span style="color:#dc3545;">*</span>', [], false) !!}
                                         {!! Form::text('validity_days', null, ['class' => 'form-control', 'placeholder' => __('lang.validity_days') , 'wire:model' => 'validity_days']) !!}
+                                        @error('validity_days')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 {{-- ========= tax ========= --}}
