@@ -1,7 +1,7 @@
 @forelse ($products as $product)
     <tr class="product_row">
         <td style="width: 30%">
-            {{$product->product->name}}
+            <span >{{$product->product->name}}</span>
             <input type="hidden" name="transaction_sell_line[{{$loop->index}}][transaction_sell_line_id]"
                    class="transaction_sell_line_id" value="{{$product->id}}" wire:model = "transaction_sell_line_id" >
             <input type="hidden" name="transaction_sell_line[{{$loop->index}}][product_id]" class="product_id"
@@ -25,14 +25,14 @@
             <input type="hidden" name="transaction_sell_line[{{$loop->index}}][item_tax]" class="item_tax"
                    value="{{$product->item_tax}}">
         </td>
-        <td style="width: 20%">
+        <td style="width: 20%" title="{{__('lang.sku')}}">
 {{--            {{$product->variation->sub_sku}}--}}
         </td>
         <td>@if(isset($product->quantity)){{ preg_match('/\.\d*[1-9]+/', (string)$product->quantity) ? $product->quantity : @num_format($product->quantity)}}@else{{1}}@endif</td>
         <td style="width: 15%">
-            <div class="input-group">
+            <div class="input-group" >
                 <input type="text" class="form-control quantity" min=0 max="{{preg_match('/\.\d*[1-9]+/', (string)$product->quantity) ? $product->quantity : @num_format($product->quantity)}}"
-                       required wire:model="quantity.{{$loop->index}}" wire:change="changeAmount({{$loop->index}})">
+                       required wire:model="quantity.{{$loop->index}}" wire:change="changeAmount({{$loop->index}})" >
             </div>
 
         </td>
