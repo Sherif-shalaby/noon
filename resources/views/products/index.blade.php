@@ -53,6 +53,12 @@
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
+                            <div class="col-sm-4 pt-4 my-2" style="padding: 0 3.5rem">
+                                <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
+                                   data-check_password="{{url('user/check-password')}}"
+                                   class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                                    @lang('lang.delete_all')</a>
+                            </div>
                             <table id="datatable-buttons" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
@@ -60,6 +66,8 @@
                                     <th>@lang('lang.image')</th>
                                     <th>@lang('lang.product_name')</th>
                                     <th>@lang('lang.sku')</th>
+                                    <th>@lang('lang.select_to_delete')</th>
+                                    <th>@lang('lang.stock')</th>
                                     <th>@lang('lang.category')</th>
                                     <th>@lang('lang.subcategories_name')</th>
                                     <th>@lang('lang.height')</th>
@@ -83,6 +91,10 @@
                                     <td><img src="{{!empty($product->image)?'/uploads/products/'.$product->image:'/uploads/'.$settings['logo']}}" style="width: 50px; height: 50px;" alt="{{ $product->name }}" ></td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->sku}}</td>
+                                    <td>
+                                        <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
+                                    </td>
+                                    <td>{{$product->product_stores->sum('quantity_available')}}</td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
                                         {{$product->subCategory1->name??''}} <br>
@@ -169,3 +181,107 @@
     </div>
     <!-- End Contentbar -->
 @endsection
+@push('javascripts')
+<script src="{{ asset('js/product/product.js') }}"></script>
+    <script>
+        $(document).on('click', '#delete_all', function() {
+            var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
+            var selected_delete_ids = [];
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selected_delete_ids.push(checkboxes[i].value);
+
+                }
+            }
+            console.log(selected_delete_ids)
+            if (selected_delete_ids.length == 0){
+                alert(1)
+                swal.fire({
+                    title: 'Warning',
+                    text: LANG.sorry_you_should_select_products_to_continue_delete,
+                    icon: 'warning',
+                })
+            }else{
+                swal.fire({
+                    title: 'Are you sure?',
+                    text: LANG.all_transactions_related_to_this_products_will_be_deleted,
+                    icon: 'warning',
+                }).then(willDelete => {
+                    if (willDelete) {
+                        var check_password = $(this).data('check_password');
+                        var href = $(this).data('href');
+                        var data = $(this).serialize();
+
+                        swal.fire({
+                            title: "{!!__('lang.please_enter_your_password')!!}",
+                            input: 'password',
+                            inputAttributes: {
+                                placeholder:"{!!__('lang.type_your_password')!!}",
+                                autocomplete: 'off',
+                                autofocus: true,
+                            },
+                        }).then((result) => {
+                            if (result) {
+                                $.ajax({
+                                    url: check_password,
+                                    method: 'POST',
+                                    data: {
+                                        value: result
+                                    },
+                                    dataType: 'json',
+                                    success: (data) => {
+
+                                        if (data.success == true) {
+                                            swal.fire(
+                                                'Success',
+                                                'Correct Password!',
+                                                'success'
+                                            );
+                                            $.ajax({
+                                                method: 'POST',
+                                                url: "/product/multiDeleteRow",
+                                                dataType: 'json',
+                                                data: {
+                                                    "ids": selected_delete_ids
+                                                },
+                                                success: function(result) {
+                                                    if (result.success == true) {
+                                                        swal.fire(
+                                                            'Success',
+                                                            result.msg,
+                                                            'success'
+                                                        );
+                                                        setTimeout(() => {
+                                                            location
+                                                                .reload();
+                                                        }, 1500);
+                                                        location.reload();
+                                                    } else {
+                                                        swal.fire(
+                                                            'Error',
+                                                            result.msg,
+                                                            'error'
+                                                        );
+                                                    }
+                                                },
+                                            });
+
+                                        } else {
+                                            swal.fire(
+                                                'Failed!',
+                                                'Wrong Password!',
+                                                'error'
+                                            )
+
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+
+        });
+    </script>
+@endpush

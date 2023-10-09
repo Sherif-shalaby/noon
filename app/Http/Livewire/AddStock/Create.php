@@ -43,7 +43,7 @@ class Create extends Component
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
-        $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name;
+        $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount=0;
 
     protected $rules = [
     'store_id' => 'required',
@@ -159,8 +159,6 @@ class Create extends Component
 
         $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
-
-
         return view('livewire.add-stock.create',
             compact('status_array',
             'payment_status_array',
@@ -183,7 +181,6 @@ class Create extends Component
     {
         $this->validateOnly($propertyName);
     }
-
     public function store(): Redirector|Application|RedirectResponse
     {
         if (!empty($this->other_expenses) || !empty($this->other_payments)){
@@ -236,7 +233,7 @@ class Create extends Component
             $transaction->grand_total = $this->num_uf($this->sum_total_cost());
             $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             $transaction->dollar_grand_total = $this->num_uf($this->sum_dollar_total_cost());
-            $transaction->dollar_final_total = $this->dollar_final_total();
+            $transaction->dollar_final_total = $this->num_uf($this->dollar_final_total());
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
             $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
             $transaction->notify_me = !empty($this->notify_before_days) ? 1 : 0;
@@ -353,16 +350,16 @@ class Create extends Component
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $item['quantity'],
                     'purchase_price' => !empty($item['purchase_price']) ? $item['purchase_price'] : null ,
-                    'final_cost' => !empty($item['total_cost']) ? $item['total_cost'] : null,
-                    'sub_total' => !empty($item['sub_total']) ? $item['sub_total'] : null,
-                    'sell_price' => !empty($item['selling_price']) ? $item['selling_price'] : null,
-                    'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $item['dollar_purchase_price'] : null,
-                    'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $item['dollar_total_cost'] : 0,
-                    'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $item['dollar_sub_total']: null,
-                    'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $item['dollar_selling_price'] : null,
+                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
+                    'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
+                    'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
+                    'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
+                    'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $this->num_uf($item['dollar_total_cost']) : 0,
+                    'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total']) : null,
+                    'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $this->num_uf($item['dollar_selling_price']) : null,
                     'cost' => !empty($item['cost']) ?  $item['cost'] : null,
-                    'dollar_cost' => !empty($item['dollar_cost']) ? $item['dollar_cost'] : null,
-                    'expiry_date' => !empty($item['expiry_date']) ? $item['expiry_date'] : null,
+                    'dollar_cost' => !empty($item['dollar_cost']) ? $this->num_uf($item['dollar_cost']) : null,
+                    'expiry_date' => !empty($item['expiry_date']) ? $this->num_uf($item['expiry_date']) : null,
                     'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
@@ -517,24 +514,28 @@ class Create extends Component
     }
 
     public function changeFilling($index){
-        if(!empty($this->items[$index]['purchase_price'])){
-            if($this->items[$index]['fill_type']=='fixed'){
-                $this->items[$index]['selling_price']= ($this->items[$index]['purchase_price'] + (float)$this->items[$index]['fill_quantity']);
-            }else{
-                $percent=((float)$this->items[$index]['purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                $this->items[$index]['selling_price']= (float)($this->items[$index]['purchase_price'] + $percent);
+        if(!empty($this->items[$index]['fill_quantity'])){
+            if(!empty($this->items[$index]['purchase_price'])){
+                if($this->items[$index]['fill_type']=='fixed'){
+                    $this->items[$index]['selling_price']= ($this->items[$index]['purchase_price'] + (float)$this->items[$index]['fill_quantity']);
+                }else{
+                    $percent=((float)$this->items[$index]['purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                    $this->items[$index]['selling_price']= (float)($this->items[$index]['purchase_price'] + $percent);
+                }
             }
-        }
-        if(!empty($this->items[$index]['dollar_purchase_price'])){
-            if($this->items[$index]['fill_type']=='fixed'){
-                $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
-            }
-        else{
-                $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                $this->items[$index]['dollar_selling_price'] = ((float)$this->items[$index]['dollar_purchase_price'] + $percent);
-            }
+            if(!empty($this->items[$index]['dollar_purchase_price'])){
+                if($this->items[$index]['fill_type']=='fixed'){
+                    $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+                }
+                else{
+                    $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                    $this->items[$index]['dollar_selling_price'] = ((float)$this->items[$index]['dollar_purchase_price'] + $percent);
+                }
 
+            }
         }
+        $this->changeTotalAmount();
+
     }
     public function get_product($index){
         return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
@@ -681,7 +682,7 @@ class Create extends Component
                 }
             }
             else{
-                (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
+                (float)$this->items[$index]['dollar_cost'] =$this->num_uf( ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price ) ;
             }
         }
         else{
@@ -692,7 +693,7 @@ class Create extends Component
 
     public function dollar_total_cost($index){
         $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['dollar_total_cost'], 2);
+        return $this->num_uf($this->items[$index]['dollar_total_cost']);
 
     }
 
@@ -704,7 +705,7 @@ class Create extends Component
             }
         }
         $this->changeAmount(number_format($totalCost,2));
-        return number_format($this->num_uf($totalCost),2);
+        return $this->num_uf($totalCost);
     }
 
     public function sum_dollar_total_cost(){
@@ -717,11 +718,14 @@ class Create extends Component
         }
         $this->changeAmount(number_format($totalDollarCost,2));
 //        dd($totalDollarCost);
-        return number_format($totalDollarCost,2);
+        return $this->num_uf($totalDollarCost);
     }
 
     public function changeAmount($value){
-        $this->amount = $this->num_uf($value) + $this->calcPayment();
+        $this->amount = $this->num_uf($value);
+    }
+    public function changeTotalAmount(){
+            $this->total_amount = $this->amount +$this->calcPayment();
     }
 
     public function sum_sub_total(){
@@ -730,7 +734,7 @@ class Create extends Component
         foreach ($this->items as $item) {
             $totalSubTotal += $item['sub_total'];
         }
-        return number_format($this->num_uf($totalSubTotal),2);
+        return $this->num_uf($totalSubTotal);
     }
 
     public function sum_dollar_sub_total(){
@@ -739,7 +743,7 @@ class Create extends Component
         foreach ($this->items as $item) {
             $totalDollarSubTotal += $item['dollar_sub_total'];
         }
-        return number_format($this->num_uf($totalDollarSubTotal),2);
+        return $this->num_uf($totalDollarSubTotal);
     }
 
     public function changeCurrentStock($index){
@@ -897,15 +901,9 @@ class Create extends Component
      return (float)$num;
  }
  public function calcPayment() {
-    // if($this->paying_currency == 2){
-    //     $total_amount=$this->sum_dollar_total_cost() ?? 0.00;
-    // }else{
-    //     $total_amount=$this->sum_total_cost() ?? 0.00;
-    // }
     $otherExpenses = is_numeric($this->other_expenses) ? (float)$this->other_expenses : 0;
     $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
     $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
     return ($otherExpenses - $discountAmount + $otherPayments);
-    // dd($this->amount);
  }
 }

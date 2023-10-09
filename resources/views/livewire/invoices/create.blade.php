@@ -7,7 +7,9 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                    {!! Form::select('store_id', $stores, null, ['class' => 'select2 form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
+                    {!! Form::select('store_id', $stores, $store_id,
+                    ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'store_id', 'required', 'placeholder' => __('lang.please_select'),
+                     'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeStorePos']) !!}
                     @error('store_id')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
@@ -17,7 +19,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_pos_id', __('lang.pos') . ':*', []) !!}
-                    {!! Form::select('store_pos_id', $store_pos, null, ['class' => 'select2 form-control', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
+                    {!! Form::select('store_pos_id', $store_pos, $store_pos_id, ['class' => 'select2 form-control','data-name'=>'store_pos_id', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
                     @error('store_pos_id')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
@@ -27,7 +29,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select2' , 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
+                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
                     @error('payment_status')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
@@ -128,7 +130,7 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="select2 discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount" wire:change="subtotal({{$key}})">
+                                                    <select class="select discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}})">
                                                         <option selected value="0.00">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
@@ -207,6 +209,13 @@
             });
         });
         document.addEventListener('livewire:load', function () {
+            $('#store_id').select();
+            // Trigger Livewire updates when the select2 value changes
+            $('#store_id').on('change', function (e) {
+            @this.set('store_id', $(this).val());
+            });
+        });
+        document.addEventListener('livewire:load', function () {
             Livewire.on('printInvoice', function (htmlContent) {
                 // Set the generated HTML content
                 $("#receipt_section").html(htmlContent);
@@ -227,20 +236,34 @@
                 Livewire.emit('refreshSelect');
             });
         });
-        window.addEventListener('showCreateProductConfirmation', function() {
-            Swal.fire({
-                title: "{{ __('lang.this_product_exists_before') }}" + "<br>" +
-                    "{{ __('lang.continue_to_add_stock') }}",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.emit('create');
-                } else {
-                    Livewire.emit('cancelCreateProduct');
-                }
+        {{--window.addEventListener('showCreateProductConfirmation', function() {--}}
+        {{--    Swal.fire({--}}
+        {{--        title: "{{ __('lang.this_product_exists_before') }}" + "<br>" +--}}
+        {{--            "{{ __('lang.continue_to_add_stock') }}",--}}
+        {{--        icon: 'warning',--}}
+        {{--        showCancelButton: true,--}}
+        {{--        confirmButtonText: 'Yes',--}}
+        {{--        cancelButtonText: 'No',--}}
+        {{--    }).then((result) => {--}}
+        {{--        if (result.isConfirmed) {--}}
+        {{--            Livewire.emit('create');--}}
+        {{--        } else {--}}
+        {{--            Livewire.emit('cancelCreateProduct');--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--});--}}
+        $(document).ready(function() {
+            $('select').on('change', function(e) {
+
+                var name = $(this).data('name');
+                var index = $(this).data('index');
+                var select2 = $(this); // Save a reference to $(this)
+                Livewire.emit('listenerReferenceHere',{
+                    var1 :name,
+                    var2 :select2.select2("val") ,
+                    var3:index
+                });
+
             });
         });
     </script>

@@ -90,10 +90,13 @@ class Create extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
        'item.*.product_tax_id' => 'nullable',
-        'item.*.change_current_stock' => 'boolean',
-        'item.*.exchange_rate' => 'numeric',
+        // 'item.*.change_current_stock' => 'boolean',
+        // 'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-//        'rows.*.prices.*.price_customer_types' => 'nullable|array',
+        'rows.*.purchase_price' => 'required',
+        'rows.*.dollar_purchase_price' => 'required',
+        'rows.*.dollar_selling_price' => 'required',
+        'rows.*.selling_price' => 'required',
     ];
     public function changeSize(){
         $this->item[0]['size']=$this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -270,7 +273,7 @@ class Create extends Component
     }
     public function store()
     {
-//         dd($this->rows);
+        // dd($this->rows);
         //for variation valid sku
         if($this->item[0]['isExist']==1){
             $product=Product::find($this->item[0]['id']);
@@ -283,6 +286,7 @@ class Create extends Component
          if(empty($this->rows)){
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.add_sku_with_sku_for_product'),]);
         }else{
+            // dd(77);
              DB::beginTransaction();
             // Add stock transaction
             $transaction = new StockTransaction();
@@ -334,7 +338,7 @@ class Create extends Component
                     $Variation=new Variation();
 
                     $Variation->sku=!empty($this->rows[$index]['sku'])?$this->rows[$index]['sku']:$this->generateSku($product->name);
-                    $Variation->equal=$this->rows[$index]['equal'];
+                    $Variation->equal= !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
                     $Variation->product_id=$product->id;
                     $Variation->unit_id=$this->rows[$index]['unit_id']!==""?$this->rows[$index]['unit_id']:null;
                     $Variation->basic_unit_id=$this->rows[$index]['basic_unit_id']!==""?$this->rows[$index]['basic_unit_id']:null;
@@ -381,11 +385,12 @@ class Create extends Component
                 $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
                 if(!empty($row['prices'])){
                     foreach ($row['prices'] as $price){
+//                        dd(!empty($price['price']));
                         $price_data = [
                             'variation_id' =>$Variation->id,
                             'stock_line_id' =>$stockLine->id,
                             'price_type' => isset($price['price_type'])?$price['price_type']:null,
-                            'price' => isset($price['price'])?$price['price']:null,
+                            'price' => !empty($price['price']) ? $price['price'] : null,
                             'price_category' => isset($price['price_category'])?$price['price_category']:null,
                             'quantity' => isset($price['discount_quantity'])?$price['discount_quantity']:null,
                             'bonus_quantity' => isset($price['bonus_quantity'])?$price['bonus_quantity']:null,
@@ -616,14 +621,16 @@ class Create extends Component
         }
     }
     public function changeFilling($index){
-        if($this->rows[$index]['purchase_price']!=""){
-            if($this->rows[$index]['fill_type']=='fixed'){
-                $this->rows[$index]['dollar_selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity']);
-                $this->rows[$index]['selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity'])*$this->exchange_rate;
-            }else{
-                $percent=((float)$this->rows[$index]['dollar_purchase_price']*(float)$this->rows[$index]['fill_quantity'])/100;
-                $this->rows[$index]['dollar_selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent);
-                $this->rows[$index]['selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent)*$this->exchange_rate;
+        if(!empty($this->rows[$index]['fill_quantity'])){
+            if($this->rows[$index]['purchase_price']!=""){
+                if($this->rows[$index]['fill_type']=='fixed'){
+                    $this->rows[$index]['dollar_selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity']);
+                    $this->rows[$index]['selling_price']=($this->rows[$index]['dollar_purchase_price']+(float)$this->rows[$index]['fill_quantity'])*$this->exchange_rate;
+                }else{
+                    $percent=((float)$this->rows[$index]['dollar_purchase_price']*(float)$this->rows[$index]['fill_quantity'])/100;
+                    $this->rows[$index]['dollar_selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent);
+                    $this->rows[$index]['selling_price']=((float)$this->rows[$index]['dollar_purchase_price']+$percent)*$this->exchange_rate;
+                }
             }
         }
     }
@@ -633,7 +640,7 @@ class Create extends Component
 
     public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
     {
-        $qty_difference = $new_quantity - $old_quantity;
+        $qty_difference = (float)$new_quantity - (float)$old_quantity;
 
         if ($qty_difference != 0) {
             $product_store = ProductStore::where('product_id', $product_id)

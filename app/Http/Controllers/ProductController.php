@@ -9,7 +9,7 @@ use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
 use App\Models\ProductPrice;
-use App\Models\ProductTax;
+use App\Models\ProductStore;use App\Models\ProductTax;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\Unit;
@@ -18,7 +18,7 @@ use App\Models\Variation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
 use App\Utils\Util;
 use Illuminate\Support\Facades\File;
@@ -46,14 +46,27 @@ class ProductController extends Controller
   public function index(Request $request)
   {
     $products=Product::
-        when(\request()->category_id != null, function ($query) {
+        when(\request()->dont_show_zero_stocks =="on", function ($query) {
+            $query->whereHas('product_stores', function ($query) {
+                $query->where('quantity_available', '>', 0);
+            });
+        })
+        ->when(\request()->category_id != null, function ($query) {
             $query->where('category_id',\request()->category_id);
         })
-        ->when(\request()->unit_id != null, function ($query) {
-            $query->where('unit_id',\request()->unit_id);
+        ->when(\request()->subcategory_id1 != null, function ($query) {
+            $query->where('subcategory_id1',\request()->subcategory_id1);
+        })
+        ->when(\request()->subcategory_id2 != null, function ($query) {
+            $query->where('subcategory_id2',\request()->subcategory_id2);
+        })
+        ->when(\request()->subcategory_id3 != null, function ($query) {
+            $query->where('subcategory_id3',\request()->subcategory_id3);
         })
         ->when(\request()->store_id != null, function ($query) {
-            $query->where('store_id',\request()->store_id);
+            $query->whereHas('product_stores', function ($query) {
+                $query->where('store_id',\request()->store_id);
+            });
         })
         ->when(\request()->brand_id != null, function ($query) {
             $query->where('brand_id',\request()->brand_id);
@@ -63,7 +76,8 @@ class ProductController extends Controller
         })
         ->latest()->get();
     $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
-    $categories= Category::orderBy('created_at', 'desc')->pluck('name','id');
+    $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+    $subcategories= Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
@@ -73,21 +87,30 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
+    $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
+//    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
+     if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
+         $recent_product = Product::orderBy('created_at', 'desc')->first();
+     }
+//     dd(isset($recent_product));
     $units=Unit::orderBy('created_at', 'desc')->get();
     $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
     $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     // product_tax
-    $product_tax = ProductTax::select('name','id','status')->get();
+    $product_tax = ProductTax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
     return view('products.create',
-    compact('categories','brands','units','stores','product_tax','quick_add','unitArray','subcategories'));
+    compact('categories','brands','units','stores',
+        'product_tax','quick_add','unitArray','subcategories',
+        'clear_all_input_form','recent_product'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
+//      dd($request);
     // return $request->all();
     try
     {
@@ -249,7 +272,7 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-      $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+      $units=Unit::orderBy('created_at', 'desc')->get();
       $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
@@ -339,38 +362,13 @@ class ProductController extends Controller
         Variation::create($var_data);
     }
 
-
-
-    $index_prices=[];
-    $product->product_prices()->delete();
-    $index_prices=[];
-    if($request->has('price_category')){
-        if(count($request->price_category)>0){
-            $index_prices=array_keys($request->price_category);
-        }
-    }
-    foreach ($index_prices as $index_price){
-        $data_des=[
-            'product_id' => $product->id,
-            'price_type' => $request->price_type[$index_price],
-            'price_category' => $request->price_category[$index_price],
-            'price' => $request->price[$index_price],
-            'quantity' => $request->quantity[$index_price],
-            'bonus_quantity' => $request->bonus_quantity[$index_price],
-            'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
-            'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
-            'created_by' => Auth::user()->id,
-        ];
-        ProductPrice::create($data_des);
-    }
     $output = [
         'success' => true,
         'msg' => __('lang.success')
     ];
      } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
@@ -472,13 +470,52 @@ class ProductController extends Controller
   public function getRawUnit()
     {
         $index = request()->row_id ?? 0;
-        $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        $units = Unit::orderBy('created_at','desc')->get();
 
         return view('products.product_unit_raw',compact(
             'index',
             'units',
         ));
     }
+    public function multiDeleteRow(Request $request){
+        try {
+            DB::beginTransaction();
+            foreach ($request->ids as $id){
+                $product = Product::find($id);
+                if(!empty($product->variations)){
+                    foreach ($product->variations as $variation){
+                        $var = Variation::find($variation->id);
+                        $var->forceDelete();
+                    }
+                }
+                $product_stores = ProductStore::where('product_id', $id)->get();
+                if(!empty($product_stores)){
+                    foreach ($product_stores as $store){
+                        $product_store = ProductStore::find($store->id);
+                        $product_store->forceDelete();
+                    }
+                }
+
+                $product->delete();
+            }
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+
+            DB::commit();
+        } catch (\Exception $e) {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+
+        return $output;
+    }
 }
+
 
 ?>

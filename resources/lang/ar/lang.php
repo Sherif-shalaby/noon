@@ -520,5 +520,9 @@ return array(
     'discount_type' => 'نوع الخصم',
     'discount_value' => 'قيمة الخصم',
     'tax' => 'ضريبة',
+    'select_to_delete'=> 'حدد للحذف',
+    'delete_all' => 'حذف جماعي',
+    'filter'=>'تصفية',
+    'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
 );
 
