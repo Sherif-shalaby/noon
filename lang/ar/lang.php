@@ -5,6 +5,7 @@ return [
     'save' => 'حفظ',
     'close' => 'الغاء',
     'delete' => 'حذف',
+    'delete_msg' => 'تم الحذف بنجاح',
     'success' => 'تم بنجاح',
     'something_went_wrong' => 'هناك خطأ!',
     'created_by' => 'أُنشئت بواسطة',

@@ -49,7 +49,7 @@ class Edit extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
-        $old_products = [] , $selling_price , $dollar_selling_price , $deleted_ids = [];
+        $old_products = [] , $selling_price , $dollar_selling_price;
 
     protected $rules =
     [
@@ -79,19 +79,19 @@ class Edit extends Component
         // +++++++++ get "all stores" +++++++++
         $this->loadStores();
         // +++++++++++++++++++++++++ Put "Old value" on "selectboxes" and "inputFields" +++++++++++++++++++++++++
-        $transaction_customer_offer_price = $this->transaction_customer_offer_price;
-        // dd($transaction_customer_offer_price);
-        $this->selling_price = $transaction_customer_offer_price->sell_price;
-        $this->dollar_selling_price = $transaction_customer_offer_price->dollar_sell_price;
-        // dd($transaction_customer_offer_price->dollar_sell_price);
-        $this->block_qty = $transaction_customer_offer_price->block_qty;
-        $this->block_for_days = $transaction_customer_offer_price->block_for_days;
-        $this->validity_days = $transaction_customer_offer_price->validity_days;
-        $this->tax_method = $transaction_customer_offer_price->tax_method;
-        $this->discount_type = $transaction_customer_offer_price->discount_type;
-        $this->discount_value = $transaction_customer_offer_price->discount_value;
-        $this->store_id = $transaction_customer_offer_price->store_id;
-        $this->customer_id = $transaction_customer_offer_price->customer_id;
+        $customer_offer_price = $this->transaction_customer_offer_price;
+        // dd($customer_offer_price);
+        $this->selling_price = $customer_offer_price->sell_price;
+        $this->dollar_selling_price = $customer_offer_price->dollar_sell_price;
+        // dd($customer_offer_price->dollar_sell_price);
+        $this->block_qty = $customer_offer_price->block_qty;
+        $this->block_for_days = $customer_offer_price->block_for_days;
+        $this->validity_days = $customer_offer_price->validity_days;
+        $this->tax_method = $customer_offer_price->tax_method;
+        $this->discount_type = $customer_offer_price->discount_type;
+        $this->discount_value = $customer_offer_price->discount_value;
+        $this->store_id = $customer_offer_price->store_id;
+        $this->customer_id = $customer_offer_price->customer_id;
     }
     // +++++++++ Get "customers" +++++++++
     public function loadCustomers()
@@ -106,7 +106,7 @@ class Edit extends Component
     // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
-        $transaction_customer_offer_price = $this->transaction_customer_offer_price;
+        $customer_offer_price = $this->transaction_customer_offer_price;
         // dd($customer_offer_price);
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
@@ -166,7 +166,7 @@ class Edit extends Component
             compact('status_array',
             'payment_status_array',
             'payment_type_array',
-            'transaction_customer_offer_price',
+            'customer_offer_price',
             'stores',
             'stock_lines' ,
             'product_id',
@@ -251,12 +251,11 @@ class Edit extends Component
                 'updated_at' => now() ,
                 'deleted_at' => null ,
             ];
-            $transaction_customer_offer_price = $this->transaction_customer_offer_price;
+            $customer_offer_price = $this->transaction_customer_offer_price;
             // dd($customer_offer_price);
-            $transaction_customer_offer_price->update($transaction_data);
+            $customer_offer_price->update($transaction_data);
             // ++++++++++++++++++++++ "Customer Offer Price" table : "Update" And "Insert" ++++++++++++++++++++++
             $keep_line_ids = [];
-            // dd($this->deleted_ids);
             foreach ( $this->items as $index => $item)
             {
                 // +++++++++++++++++ update Exsiting Products +++++++++++++++++++++
@@ -266,8 +265,8 @@ class Edit extends Component
                     // Set values for the new array
                     $prdouct_customer_offer['product_id'] = $item['product']['id'];
                     $prdouct_customer_offer['quantity'] = $item['quantity'];
-                    $prdouct_customer_offer['sell_price'] = $item['selling_price'];
-                    $prdouct_customer_offer['dollar_sell_price'] = $item['dollar_selling_price'];
+                    $prdouct_customer_offer['sell_price'] = $item['total_cost_var'];
+                    $prdouct_customer_offer['dollar_sell_price'] = $item['dollar_total_cost_var'];
                     // created_by
                     $prdouct_customer_offer['created_by'] = null;
                     // updated_by
@@ -281,9 +280,10 @@ class Edit extends Component
                     // deleted_at
                     $prdouct_customer_offer['deleted_at'] = null;
                     // +++ save "customer_offer_price id" +++++++++++++++
-                    // $keep_line_ids[] = $prdouct_customer_offer->id;
+                    $keep_line_ids[] = $prdouct_customer_offer->id;
                     // update the customer offer price for this item to the array
                     $prdouct_customer_offer->save();
+
                 }
                 // +++++++++++++++++ Insert New Products +++++++++++++++++++++
                 else
@@ -293,11 +293,11 @@ class Edit extends Component
                         // Create a new array for each item
                         $customer_offer_price_array = [];
                         // Set values for the new array
-                        $customer_offer_price_array['transaction_customer_offer_id'] = $transaction_customer_offer_price->id;
+                        $customer_offer_price_array['transaction_customer_offer_id'] = $customer_offer_price->id;
                         $customer_offer_price_array['product_id'] = $item['product']['id'];
                         $customer_offer_price_array['quantity'] = $item['quantity'];
-                        $customer_offer_price_array['sell_price'] = $item['selling_price'];
-                        $customer_offer_price_array['dollar_sell_price'] = $item['dollar_selling_price'];
+                        $customer_offer_price_array['sell_price'] = $item['total_cost_var'];
+                        $customer_offer_price_array['dollar_sell_price'] = $item['dollar_total_cost_var'];
                         $customer_offer_price_array['created_at'] = now();
                         // created_by
                         $customer_offer_price_array['created_by'] = Auth::user()->id;
@@ -316,20 +316,23 @@ class Edit extends Component
                     }
                     // Create multiple CustomerOfferPrice records in the database
                     $customer_offer_price_ids_var = CustomerOfferPrice::insert($customer_offer_prices);
-                    // dd($customer_offer_price_ids_var);
+                    dd($customer_offer_price_ids_var);
                     // +++++++++++++++ save "all customer_offer_price_ids" +++++++++++++++
-                    // $keep_line_ids[] = $customer_offer_prices->id ;
-                    // dd($keep_line_ids);
+                    // $keep_line_ids[] = $customer_offer_price_ids_var->id ;
                 }
             }
-            // Delete "all customer_offer_lines" which are deleted in "Edit" Page
-            if( !empty($this->deleted_ids) )
+            if( !empty($keep_line_ids) )
             {
-                for ($i=0; $i < count($this->deleted_ids) ; $i++)
-                {
-                    $prdouct_customer_offer = CustomerOfferPrice::find($this->deleted_ids[$i]);
-                    $prdouct_customer_offer->delete();
-                }
+                // $deleted_lines = CustomerOfferPrice::where('transaction_customer_offer_id') ;
+                // foreach ($deleted_lines as $deleted_line)
+                // {
+                //     if ($deleted_line->quantity_sold != 0) {
+                //         $product_name = Product::find($deleted_line->product_id)->name ?? '';
+                //         return ['mismatch' => true, 'product_name' => $product_name, 'quantity' => 0];
+                //     }
+                //     $this->decreaseProductQuantity($deleted_line['product_id'], $deleted_line['variation_id'], $transaction->store_id, $deleted_line['quantity'], 0);
+                //     $deleted_line->delete();
+                // }
             }
             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success']);
@@ -578,9 +581,8 @@ class Edit extends Component
     // +++++++++++++++++ When Click on "delete button" in products table : delete "product row" ++++++++++++++++
     public function delete_product($index)
     {
-        $customer_offer_price = CustomerOfferPrice::find($this->items[$index]['customer_offer_id']);
-        // Store "ids" of "All deleted customer_offer_price" items
-        $this->deleted_ids[] = $customer_offer_price->id;
+        // dd($this->items[$index]);
+        // $customer_offer_price = CustomerOfferPrice::find($this->items[$index]['customer_offer_id']);
         // Delete From DB "customer_offer_prices table"
         // $customer_offer_price->delete();
         // Delete From View "Edit Page"

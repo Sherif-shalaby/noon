@@ -73,21 +73,30 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
-    $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+    $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
+//    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
+     if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
+         $recent_product = Product::orderBy('created_at', 'desc')->first();
+     }
+//     dd(isset($recent_product));
+    $units=Unit::orderBy('created_at', 'desc')->get();
     $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
     $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     // product_tax
-    $product_tax = ProductTax::select('name','id','status')->get();
+    $product_tax = ProductTax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
     return view('products.create',
-    compact('categories','brands','units','stores','product_tax','quick_add','unitArray','subcategories'));
+    compact('categories','brands','units','stores',
+        'product_tax','quick_add','unitArray','subcategories',
+        'clear_all_input_form','recent_product'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
+//      dd($request);
     // return $request->all();
     try
     {
@@ -249,7 +258,7 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-      $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+      $units=Unit::orderBy('created_at', 'desc')->get();
       $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
