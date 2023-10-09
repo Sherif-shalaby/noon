@@ -51,7 +51,7 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,$selected_stores,
-                                ['class' => 'js-example-basic-multiple','multiple'=>"multiple",'id'=>'store_id']
+                                ['class' => 'form-control selectpicker ','multiple'=>"multiple",'id'=>'store_id']
                             ) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-store" href="{{route('store.create')}}"><i class="fas fa-plus"></i></button>
 

@@ -27,7 +27,7 @@
     <div class="col-md-2">
         {!! Form::label('basic_unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
         <div class="d-flex justify-content-center">
-            <select name="basic_unit_id[{{$index}}]'" data-name='basic_unit_id' data-index="{{$index}}" required class="form-control select2 basic_unit_id{{$index}}" style="width: 100px;">
+            <select name="basic_unit_id[{{$index}}]'" data-name='basic_unit_id' data-index="{{$index}}" class="form-control select2 basic_unit_id{{$index}}" style="width: 100px;">
                 <option value="">{{__('lang.please_select')}}</option>
                 @foreach($units as $unit)
                     <option @if($variation->basic_unit_id == $unit->id) selected @endif value="{{$unit->id}}">{{$unit->name}}</option>
