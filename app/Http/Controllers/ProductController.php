@@ -96,6 +96,7 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
+//      dd($request);
     // return $request->all();
     try
     {

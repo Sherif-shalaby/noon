@@ -60,7 +60,6 @@
                     <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-{{--                            {{dd(isset($recent_product) ? $recent_product->stores: null)}}--}}
                             {!! Form::select('brand_id', $brands, isset($recent_product) ? $recent_product->brand->id : null, [
                                 'class' => 'form-control select2',
                                 'placeholder' => __('lang.please_select'),
@@ -80,7 +79,7 @@
                                 $stores,
                                 isset($recent_product) ? $recent_product->stores : null,
                                 [
-                                    'class' => 'form-control select2',
+                                    'class' => 'form-control selectpicker',
                                     'multiple' => 'multiple',
                                     'placeholder' => __('lang.please_select'),
                                     'id' => 'store_id',
