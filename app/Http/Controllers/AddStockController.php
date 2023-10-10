@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\AddStockLine;
 use App\Models\CashRegisterTransaction;
 use App\Models\Currency;
 use App\Models\MoneySafe;
+use App\Models\MoneySafeTransaction;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
@@ -14,6 +16,7 @@ use App\Models\Supplier;
 use App\Models\System;
 use App\Models\User;
 use App\Utils\MoneySafeUtil;
+use App\Utils\ProductUtil;
 use App\Utils\StockTransactionUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
@@ -29,13 +32,15 @@ class AddStockController extends Controller
 
     protected $commonUtil;
     protected $moneysafeUtil;
+    protected $productUtil;
     protected $stockTransactionUtil;
 
 
-    public function __construct(Util $commonUtil,MoneySafeUtil $moneySafeUtil, StockTransactionUtil $stockTransactionUtil)
+    public function __construct(Util $commonUtil,ProductUtil $productUtil,MoneySafeUtil $moneySafeUtil, StockTransactionUtil $stockTransactionUtil)
     {
         $this->commonUtil = $commonUtil;
         $this->moneysafeUtil = $moneySafeUtil;
+        $this->productUtil = $productUtil;
         $this->stockTransactionUtil = $stockTransactionUtil;
 
     }
@@ -53,6 +58,51 @@ class AddStockController extends Controller
             'users',
 //            'taxes'
         ));
+    }
+    public function destroy($id)
+    {
+        try {
+            $add_stock = StockTransaction::find($id);
+
+            $add_stock_lines = $add_stock->add_stock_lines;
+
+            DB::beginTransaction();
+
+            if ($add_stock->status != 'received') {
+                $add_stock_lines->delete();
+            } else {
+                $delete_add_stock_line_ids = [];
+                foreach ($add_stock_lines as $line) {
+                    $delete_add_stock_line_ids[] = $line->id;
+                    $this->productUtil->decreaseProductQuantity($line->product_id, $line->variation_id, $add_stock->store_id, $line->quantity);
+                }
+
+                if (!empty($delete_add_stock_line_ids)) {
+                    AddStockLine::where('stock_transaction_id', $id)->whereIn('id', $delete_add_stock_line_ids)->delete();
+                }
+            }
+
+            $add_stock->delete();
+            CashRegisterTransaction::where('transaction_id', $id)
+                ->where('type','add_stock')->delete();
+            MoneySafeTransaction::where('transaction_id', $id)
+                ->where('type','add_stock')->delete();
+
+            DB::commit();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+
+        return $output;
     }
 
     public function addPayment($transaction_id){

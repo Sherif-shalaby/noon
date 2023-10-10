@@ -21,15 +21,17 @@
     </td>
     <td title="{{__('lang.unit')}}">
         @if(count($product['variations']) > 0)
-            <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
-                <option value="" selected>{{__('lang.please_select')}}</option>
-                @foreach($product['variations'] as $variant)
-                    <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
-                @endforeach
-            </select>
-            <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
-                <i class="fa fa-plus"></i>
-            </button>
+            <div class="d-flex justify-content-center">
+                <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+                    <option value="" selected>{{__('lang.please_select')}}</option>
+                    @foreach($product['variations'] as $variant)
+                        <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                    @endforeach
+                </select>
+                <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
         @else
             <span>@lang('lang.no_units')</span>
         @endif
@@ -38,7 +40,7 @@
         @enderror
     </td>
     <td title="{{__('lang.fill')}}">
-        <span>{{$product['base_unit_multiplier']}}</span>
+
     </td>
     <td title="{{__('lang.basic_unit')}}">
         <span>{{$product['unit']}}</span>
@@ -70,7 +72,8 @@
             @enderror
         </td>
         <td title="{{__('lang.selling_price')}} $">
-            <input type="text" class="form-control " wire:model="items.{{ $index }}.dollar_selling_price" style="width: 61px;" required>
+            <input type="text" class="form-control"  style="width: 61px;" required
+                   wire:model="items.{{ $index }}.dollar_selling_price">
             @error('selling_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -188,23 +191,24 @@
     <tr>
         <td></td>
         <td>
+            {!! Form::label('price_category' ,__('lang.price_category')) !!}
+            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
+        </td>
+        <td colspan="2">
             {!! Form::label('price_type' ,__('lang.type')) !!}
             {!! Form::select('items.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
                 'class' => ' form-control price_type',
 //                'data-index' =>$index,
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'items.'.$index.'.prices.'.$key.'.price_type',
+                'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
             @error('items.'.$index.'.prices.'.$key.'.price_type')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-        <td colspan="2">
-            {!! Form::label('price_category' ,__('lang.price_category')) !!}
-            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
-        </td>
-        <td>
+        <td >
             {!! Form::label('price' ,__('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
         </td>

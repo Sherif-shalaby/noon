@@ -18,5 +18,9 @@ class ProductPrice extends Model
     {
         return $this->belongsTo('Product\Product', 'product_id');
     }
+    public function stock_lines()
+    {
+        return $this->hasMany(AddStockLine::class,'add_stock_line','id');
+    }
 
 }
