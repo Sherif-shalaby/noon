@@ -6,9 +6,11 @@
                     <div class="card-header">
 
                         @if (!empty($is_raw_material))
-                            <h4>@lang('lang.add_stock_for_raw_material')</h4>
+                            <h4 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.add_stock_for_raw_material')</h4>
                         @else
-                            <h4>@lang('lang.add_initial_balance')</h4>
+                            <h4 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.add_initial_balance')</h4>
                         @endif
                     </div>
                     @php
@@ -35,17 +37,19 @@
                         {{-- <div class="col-md-12"> --}}
                         <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                            <div class="col-md-3">
-                                {!! Form::label('store_id', __('lang.store') . ':*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end' : '',
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('store_id', __('lang.store') . '*', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
+                                        width: 60%;
                                         margin: auto;
+                                        height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('store_id', $stores, $item[0]['store_id'], [
                                         'class' => ' form-control select2 store_id',
@@ -64,17 +68,19 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
-                                {!! Form::label('supplier_id ', __('lang.supplier') . ':*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end' : '',
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
+                                        width: 60%;
                                         margin: auto;
+                                        height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('supplier_id', $suppliers, $item[0]['supplier_id'], [
                                         'id' => 'supplier_id',
@@ -94,12 +100,13 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('name', __('lang.product_name'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5' : 'h5',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
                                 {!! Form::text('name', $item[0]['name'], [
-                                    'class' => 'form-control required initial-balance-input',
+                                    'class' => 'form-control required initial-balance-input my-0',
                                     'wire:model' => 'item.0.name',
                                     'wire:change' => 'confirmCreateProduct()',
                                 ]) !!}
@@ -114,27 +121,30 @@
                                     'wire:model' => 'item.0.sku',
                                 ]) !!}
                             </div> --}}
-                            <div class="col-md-3">
-                                {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end' : '',
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('exchange_rate', __('lang.exchange_rate') . '', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
-                                <input type="text" class="form-control  initial-balance-input" id="exchange_rate"
-                                    value="{{ $item[0]['exchange_rate'] }}"
+                                <input type="text" class="form-control  initial-balance-input my-0"
+                                    id="exchange_rate" value="{{ $item[0]['exchange_rate'] }}"
                                     placeholder="سعر السوق({{ $exchange_rate }})" wire:model="exchange_rate"
                                     wire:change="changeExchangeRateBasedPrices()">
                             </div>
 
-                            <div class="col-md-3">
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('category', __('lang.category'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5' : 'h5',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
+                                        width: 60%;
                                         margin: auto;
+                                        height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('category_id', $categories, $item[0]['category_id'], [
                                         'class' => 'form-control select2 category_id',
@@ -143,9 +153,10 @@
                                         'id' => 'categoryId',
                                         'wire:model' => 'item.0.category_id',
                                     ]) !!}
+
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                         data-container=".view_modal"
-                                        class="add-button openCategoryModal text-white d-flex justify-content-center align-items-center"
+                                        class="add-button btn-modal openCategoryModal text-white d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="0"><i class="fas fa-plus"></i></a>
                                     {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
                                 </div>
@@ -154,17 +165,19 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5' : 'h5',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
+                                        width: 60%;
                                         margin: auto;
+                                        height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('subcategory_id1', $subcategories1, null, [
                                         'class' => 'form-control select2 subcategory1',
@@ -174,25 +187,27 @@
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
-                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-container=".view_modal" style="cursor: pointer;"
+                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center text-white"
                                         data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5' : 'h5',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
+                                        width: 60%;
                                         margin: auto;
+                                        height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
                                         'class' => 'form-control select2 subcategory2',
@@ -202,8 +217,8 @@
                                         'wire:model' => 'item.0.subcategory_id2',
                                     ]) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
-                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-container=".view_modal" style="cursor: pointer;"
+                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center text-white"
                                         data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
@@ -213,17 +228,19 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5' : 'h5',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
+                                        width: 60%;
                                         margin: auto;
+                                        height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('subcategory_id3', $subcategories3, $item[0]['subcategory_id3'], [
                                         'class' => 'form-control select2 subcategory3',
@@ -236,8 +253,8 @@
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
-                                        class="add-button openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-container=".view_modal" style="cursor: pointer;"
+                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center text-white"
                                         data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
@@ -247,7 +264,7 @@
 
 
                             {{-- tax accordion  --}}
-                            <div class="col-md-12 mt-2 p-0">
+                            <div class="col-md-12 my-3 p-0">
                                 <div class="accordion" id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -255,23 +272,25 @@
                                                 type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
                                                 aria-controls="panelsStayOpen-collapseOne">
-                                                <h5 class="text-primary">
+                                                <h6>
                                                     {{ __('lang.product_tax') }}
-                                                </h5>
+                                                </h6>
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
                                             <div class="accordion-body d-flex">
 
-                                                <div class="col-md-6">
+                                                <div
+                                                    class="col-md-6  mb-2 mb-lg-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <label for="method"
-                                                        class="h5 pt-3">{{ __('lang.tax_method') . '*' }}</label>
+                                                        class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
+                                                        style="width: 25%">{{ __('lang.tax_method') . '*' }}</label>
                                                     <div
                                                         style="background-color: #dedede; border: none;
                                                                 border-radius: 16px;
                                                                 color: #373737;
                                                                 box-shadow: 0 8px 6px -5px #bbb;
-                                                                width: 100%;
+                                                                width: 60%;
                                                                 margin: auto;
                                                                 flex-wrap: nowrap;">
                                                         {!! Form::select(
@@ -289,15 +308,18 @@
                                                     </div>
                                                 </div>
                                                 {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
-                                                <div class="col-md-6">
+                                                <div
+                                                    class="col-md-6 d-flex mb-2 mb-lg-1 justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <label for="product"
-                                                        class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label>
+                                                        class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
+                                                        style="width: 25%">{{ __('lang.product_tax') . '*' }}</label>
                                                     <div class="d-flex justify-content-center align-items-center"
                                                         style="background-color: #dedede; border: none;
                                                                 border-radius: 16px;
                                                                 color: #373737;
                                                                 box-shadow: 0 8px 6px -5px #bbb;
-                                                                width: 100%;
+                                                                width: 60%;
+                                                                height: 30px;
                                                                 margin: auto;
                                                                 flex-wrap: nowrap;">
                                                         <select id="product_tax" class="form-control select2"
@@ -342,7 +364,7 @@
                             </div>
 
                             {{-- size accordion --}}
-                            <div class="col-md-12 my-2 p-0">
+                            <div class="col-md-12 my-3 p-0">
                                 <div class="accordion " id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -350,18 +372,21 @@
                                                 type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
                                                 aria-controls="panelsStayOpen-collapseTwo">
-                                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
+                                                <h6>{{ __('lang.product_dimensions') }}</h6>
                                             </button>
                                         </h2>
 
                                         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-                                            <div class="accordion-body d-flex py-0">
+                                            <div class="accordion-body d-flex">
 
-                                                <div class="col-md-3">
-                                                    {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
+                                                <div
+                                                    class="col-md-3 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    {!! Form::label('weight', __('lang.weight'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                    ]) !!}
                                                     <input type="text" wire:model='item.0.weight'
                                                         wire:change='changeSize()'
-                                                        class='form-control weight initial-balance-input' />
+                                                        class='form-control weight initial-balance-input m-0' />
                                                     <br>
                                                     @error('item.0.weight')
                                                         <label class="text-danger error-msg">{{ $message }}</label>
@@ -369,43 +394,57 @@
                                                 </div>
 
                                                 <div class="col-md-1"></div>
-                                                <div class="col-md-2">
-                                                    {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
+
+                                                <div
+                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    {!! Form::label('height', __('lang.height'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                    ]) !!}
                                                     <input type="text" wire:model='item.0.height'
                                                         wire:change='changeSize()'
-                                                        class='form-control height initial-balance-input' />
+                                                        class='form-control height initial-balance-input m-0' />
                                                     <br>
                                                     @error('item.0.height')
                                                         <label class="text-danger error-msg">{{ $message }}</label>
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-2">
-                                                    {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
+                                                <div
+                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    {!! Form::label('length', __('lang.length'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                    ]) !!}
                                                     <input type="text" wire:model='item.0.length'
                                                         wire:change='changeSize()'
-                                                        class='form-control length initial-balance-input' />
+                                                        class='form-control length initial-balance-input m-0' />
                                                     <br>
                                                     @error('item.0.length')
                                                         <label class="text-danger error-msg">{{ $message }}</label>
                                                     @enderror
                                                 </div>
 
-                                                <div class="col-md-2">
-                                                    {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
+                                                <div
+                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    {!! Form::label('width', __('lang.width'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                    ]) !!}
                                                     <input type="text" wire:model='item.0.width'
                                                         wire:change='changeSize()'
-                                                        class='form-control width initial-balance-input' />
+                                                        class='form-control width initial-balance-input m-0' />
                                                     <br>
                                                     @error('item.0.width')
                                                         <label class="text-danger error-msg">{{ $message }}</label>
                                                     @enderror
                                                 </div>
-                                                <div class="col-md-2">
-                                                    {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
+
+                                                <div
+                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    {!! Form::label('size', __('lang.size'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                    ]) !!}
                                                     <input type="text" wire:model='item.0.size'
                                                         wire:change='changeSize()'
-                                                        class='form-control size initial-balance-input' />
+                                                        class='form-control size initial-balance-input m-0' />
                                                     <br>
                                                     @error('item.0.size')
                                                         <label class="text-danger error-msg">{{ $message }}</label>
@@ -485,26 +524,33 @@
                                     ])
                                 @endforeach
 
-                                <div>
-                                    <span colspan="8" style="text-align: right">
-                                        @lang('lang.total')</span>
-                                    {{-- @if ($showColumn) --}}
-                                    <span> {{ $this->sum_dollar_tsub_total() }} </span>
-                                    <span></span>
-                                    <span></span>
+                                <div class="fw-bold text-center">
+                                    <div class=" mx-3">
+
+                                        <span>
+                                            $@lang('lang.total')</span>
+                                        {{-- @if ($showColumn) --}}
+                                        <span> {{ $this->sum_dollar_tsub_total() }} </span>
+                                    </div>
+
                                     {{-- @endif --}}
-                                    <span> {{ $this->sum_sub_total() }} </span>
-                                    <span></span>
+                                    <div class="mx-3">
+
+                                        <span>
+                                            @lang('lang.total')</span>
+                                        <span> {{ $this->sum_sub_total() }} </span>
+                                    </div>
+
                                 </div>
 
                             </div>
-                            <div class="col-md-12 text-center mt-1 ">
-                                <h4>@lang('lang.items_count'):
-                                    <span class="items_count_span"
-                                        style="margin-right: 15px;">{{ count($rows) }}</span>
-                                    <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                        style="margin-right: 15px;">{{ $totalQuantity }}</span>
-                                </h4>
+                            <div class="col-md-12 text-center mt-1 d-flex justify-content-evenly align-items-center">
+                                <h5 class=" fw-bold">@lang('lang.items_count'):
+                                    <span class="items_count_span">{{ count($rows) }}</span>
+                                </h5>
+                                <h5 class=" fw-bold"> @lang('lang.items_quantity'): <span
+                                        class="items_quantity_span">{{ $totalQuantity }}</span>
+                                </h5>
                             </div>
                         </div>
                         {{-- {!! Form::close() !!} --}}
