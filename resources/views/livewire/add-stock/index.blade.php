@@ -56,7 +56,21 @@
                                                 @lang('lang.view') </a>
                                         </li>
                                         <li class="divider"></li>
+                                        <li>
+                                            <a href="{{route('stocks.edit', $stock->id)}}"
+                                               class="btn"><i
+                                                    class="fa fa-edit"></i>
+                                                @lang('lang.edit') </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a data-href="{{route('stocks.delete', $stock->id)}}"
+                                               {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                               class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                @lang('lang.delete')</a>
+                                        </li>
                                         @if ($stock->payment_status != 'paid')
+                                        <li class="divider"></li>
                                        <li>
                                            <a data-href="{{route('stocks.addPayment', $stock->id)}}" data-container=".view_modal"
                                               class="btn btn-modal">

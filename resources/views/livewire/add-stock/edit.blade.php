@@ -8,7 +8,7 @@
                         <h4>@lang('lang.add-stock')</h4>
                     </div>
                     <div class="row ">
-                        <div class="col-md-7">
+                        <div class="col-md-9">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
                         </div>
                         <div class="col-md-2">
@@ -16,18 +16,6 @@
                                 <label>
                                     {!! Form::checkbox('change_exchange_rate_to_supplier', 1, false,['wire:model' => 'change_exchange_rate_to_supplier']) !!}
                                     @lang('lang.change_exchange_rate_to_supplier')
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="i-checks">
-                                <input id="clear_all_input_form" name="clear_all_input_form"
-                                       type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif
-                                       class="">
-                                <label for="clear_all_input_form" style="font-size: 0.75rem">
-                                    <strong>
-                                        @lang('lang.clear_all_input_form')
-                                    </strong>
                                 </label>
                             </div>
                         </div>
@@ -46,10 +34,10 @@
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
                                     <div class="d-flex justify-content-center">
-                                    {!! Form::select('supplier_id', $suppliers, $supplier,
-                                        ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
-                                        'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()'
-                                        ]) !!}
+                                        {!! Form::select('supplier_id', $suppliers, $supplier,
+                                            ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'supplier', 'wire:model' => 'supplier', 'wire:change' => 'changeExchangeRate()'
+                                            ]) !!}
                                         <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button>
                                     </div>
                                     @error('supplier')
@@ -120,10 +108,10 @@
                                     <input type="search" name="search_product" id="search_product" wire:model.debounce.500ms="searchProduct"
                                            placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                            class="form-control" autocomplete="off">
-{{--                                    <button type="button" class="btn btn-success  btn-modal"--}}
-{{--                                            data-href="{{ route('products.create') }}?quick_add=1"--}}
-{{--                                            data-container=".view_modal"><i class="fa fa-plus"></i>--}}
-{{--                                    </button>--}}
+                                    {{--                                    <button type="button" class="btn btn-success  btn-modal"--}}
+                                    {{--                                            data-href="{{ route('products.create') }}?quick_add=1"--}}
+                                    {{--                                            data-container=".view_modal"><i class="fa fa-plus"></i>--}}
+                                    {{--                                    </button>--}}
                                     @if(!empty($search_result))
                                         <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                             @foreach($search_result as $product)
@@ -136,7 +124,7 @@
                                             @endforeach
                                         </ul>
                                     @endif
-{{--                                    {{$search_result->links()}}--}}
+                                    {{--                                    {{$search_result->links()}}--}}
                                 </div>
 
                             </div>
@@ -159,13 +147,13 @@
                                 <div class="p-2">
                                     @foreach ($products as $product)
                                         <div class="order-btn" wire:click='add_product({{ $product->id }})' style="cursor: pointer">
-{{--                                            @if ($product->image)--}}
-{{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}"--}}
-{{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" >--}}
-{{--                                            @else--}}
-{{--                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"--}}
-{{--                                                     class="img-thumbnail" width="100px">--}}
-{{--                                            @endif--}}
+                                            {{--                                            @if ($product->image)--}}
+                                            {{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}"--}}
+                                            {{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" >--}}
+                                            {{--                                            @else--}}
+                                            {{--                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"--}}
+                                            {{--                                                     class="img-thumbnail" width="100px">--}}
+                                            {{--                                            @endif--}}
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
@@ -178,7 +166,7 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-{{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th>--}}
+                                        {{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th>--}}
                                         <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
                                         <th style="width: 10%" >@lang('lang.sku')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
@@ -186,12 +174,12 @@
                                         <th style="width: 10%">@lang('lang.fill')</th>
                                         <th style="width: 10%">@lang('lang.basic_unit')</th>
                                         <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
-{{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
-{{--                                        @if ($showColumn)--}}
-                                            <th style="width: 10%">@lang('lang.purchase_price')$</th>
-                                            <th style="width: 10%">@lang('lang.selling_price')$</th>
-                                            <th style="width: 10%">@lang('lang.sub_total')$</th>
-{{--                                        @endif--}}
+                                        {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
+                                        {{--                                        @if ($showColumn)--}}
+                                        <th style="width: 10%">@lang('lang.purchase_price')$</th>
+                                        <th style="width: 10%">@lang('lang.selling_price')$</th>
+                                        <th style="width: 10%">@lang('lang.sub_total')$</th>
+                                        {{--                                        @endif--}}
                                         <th style="width: 10%">@lang('lang.purchase_price')  </th>
                                         <th style="width: 10%">@lang('lang.selling_price') </th>
                                         <th style="width: 10%">@lang('lang.sub_total')</th>
@@ -199,10 +187,10 @@
                                         <th style="width: 10%">@lang('lang.total_size')</th>
                                         <th style="width: 10%">@lang('lang.weight')</th>
                                         <th style="width: 10%">@lang('lang.total_weight')</th>
-{{--                                        @if ($showColumn)--}}
-                                            <th style="width: 10%">@lang('lang.cost')$</th>
-                                            <th style="width: 10%">@lang('lang.total_cost')$</th>
-{{--                                        @endif--}}
+                                        {{--                                        @if ($showColumn)--}}
+                                        <th style="width: 10%">@lang('lang.cost')$</th>
+                                        <th style="width: 10%">@lang('lang.total_cost')$</th>
+                                        {{--                                        @endif--}}
                                         <th style="width: 10%">@lang('lang.cost') </th>
                                         <th style="width: 10%">@lang('lang.total_cost')</th>
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
@@ -217,11 +205,11 @@
                                         @endforeach
                                         <tr>
                                             <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
-{{--                                            @if ($showColumn)--}}
-                                                <td> {{$this->sum_dollar_sub_total()}} </td>
-                                                <td></td>
-                                                <td></td>
-{{--                                            @endif--}}
+                                            {{--                                            @if ($showColumn)--}}
+                                            <td> {{$this->sum_dollar_sub_total()}} </td>
+                                            <td></td>
+                                            <td></td>
+                                            {{--                                            @endif--}}
                                             <td> {{$this->sum_sub_total()}} </td>
                                             <td></td>
                                             <td style="">
@@ -232,12 +220,12 @@
                                                 {{$this->sum_weight() ?? 0}}
                                             </td>
                                             <td></td>
-{{--                                            @if ($showColumn)--}}
-                                                <td>
-                                                    {{$this->sum_dollar_total_cost() ?? 0}}
-                                                </td>
-                                                <td></td>
-{{--                                            @endif--}}
+                                            {{--                                            @if ($showColumn)--}}
+                                            <td>
+                                                {{$this->sum_dollar_total_cost() ?? 0}}
+                                            </td>
+                                            <td></td>
+                                            {{--                                            @endif--}}
                                             <td  style=";">
                                                 {{$this->sum_total_cost() ?? 0}}
                                             </td>
@@ -379,13 +367,13 @@
                                     </div>
                                 </div>
 
-    {{--                                <div class="col-md-3 due_fields ">--}}
-    {{--                                    <div class="form-group">--}}
-    {{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}--}}
-    {{--                                        <br>--}}
-    {{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}--}}
-    {{--                                    </div>--}}
-{{--                                </div>--}}
+                                {{--                                <div class="col-md-3 due_fields ">--}}
+                                {{--                                    <div class="form-group">--}}
+                                {{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}--}}
+                                {{--                                        <br>--}}
+                                {{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}--}}
+                                {{--                                    </div>--}}
+                                {{--                                </div>--}}
                             @endif
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -414,63 +402,63 @@
 
 
 @push('javascripts')
-<script>
-    document.addEventListener('livewire:load', function () {
-        Livewire.hook('message.processed', (message, component) => {
-            if (message.updateQueue && message.updateQueue.some(item => item.payload.event === 'updated:selectedProducts')) {
-                $('.product_selected').on('click', function (event) {
-                    event.stopPropagation();
-                    var value = $(this).prop('checked');
-                    var productId = $(this).val();
-                    Livewire.find(component.fingerprint).set('selectedProducts.' + productId, value);
-                });
-            }
-        });
-    });
-    document.addEventListener('livewire:load', function () {
-        Livewire.on('closeModal', function () {
-            // Close the modal using Bootstrap's modal API
-            $('#select_products_modal').modal('hide');
-        });
-    });
-
-    document.addEventListener('livewire:load', function () {
-        Livewire.on('printInvoice', function (htmlContent) {
-            // Set the generated HTML content
-            // $("#receipt_section").html(htmlContent);
-
-            // Trigger the print action
-            window.print();
-        });
-    });
-    $(document).on("click", "#clear_all_input_form", function () {
-        var value = $('#clear_all_input_form').is(':checked')?1:0;
-        $.ajax({
-            method: "get",
-            url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
-            contentType: "html",
-            success: function (result) {
-                if (result.success) {
-                    Swal.fire("Success", response.msg, "success");
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.hook('message.processed', (message, component) => {
+                if (message.updateQueue && message.updateQueue.some(item => item.payload.event === 'updated:selectedProducts')) {
+                    $('.product_selected').on('click', function (event) {
+                        event.stopPropagation();
+                        var value = $(this).prop('checked');
+                        var productId = $(this).val();
+                        Livewire.find(component.fingerprint).set('selectedProducts.' + productId, value);
+                    });
                 }
-            },
-        });
-    });
-
-    $(document).ready(function() {
-        $('select').on('change', function(e) {
-
-            var name = $(this).data('name');
-            var index = $(this).data('index');
-            var select2 = $(this); // Save a reference to $(this)
-            Livewire.emit('listenerReferenceHere',{
-                var1 :name,
-                var2 :select2.select2("val") ,
-                var3:index
             });
-
         });
-    });
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('closeModal', function () {
+                // Close the modal using Bootstrap's modal API
+                $('#select_products_modal').modal('hide');
+            });
+        });
 
-</script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('printInvoice', function (htmlContent) {
+                // Set the generated HTML content
+                // $("#receipt_section").html(htmlContent);
+
+                // Trigger the print action
+                window.print();
+            });
+        });
+        $(document).on("click", "#clear_all_input_form", function () {
+            var value = $('#clear_all_input_form').is(':checked')?1:0;
+            $.ajax({
+                method: "get",
+                url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
+                contentType: "html",
+                success: function (result) {
+                    if (result.success) {
+                        Swal.fire("Success", response.msg, "success");
+                    }
+                },
+            });
+        });
+
+        $(document).ready(function() {
+            $('select').on('change', function(e) {
+
+                var name = $(this).data('name');
+                var index = $(this).data('index');
+                var select2 = $(this); // Save a reference to $(this)
+                Livewire.emit('listenerReferenceHere',{
+                    var1 :name,
+                    var2 :select2.select2("val") ,
+                    var3:index
+                });
+
+            });
+        });
+
+    </script>
 @endpush
