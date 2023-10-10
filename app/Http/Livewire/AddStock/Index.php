@@ -14,7 +14,8 @@ class Index extends Component
 
     public function render()
     {
-        $stocks =  StockTransaction::all();
+        $stocks =  StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->get();
+//        dd($stocks);
         return view('livewire.add-stock.index')->with(compact('stocks'));
     }
 

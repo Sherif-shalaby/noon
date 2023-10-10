@@ -176,26 +176,27 @@ class Create extends Component
             if(!empty($recent_stock)) {
                 $this->item[0]['store_id'] = $recent_stock->store_id;
                 $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
-                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name;
+//                dd($recent_stock->add_stock_lines->first()->product);
+                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
                 $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
-                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id;
+                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
                 if(!empty($this->item[0]['category_id'])){
                     $this->subcategories1 = Category::where('parent_id',$this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
-                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1;
+                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
                 if(!empty($this->item[0]['subcategory_id1'])){
                     $this->subcategories2 = Category::where('parent_id',$this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
-                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2;
+                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
                 if(!empty($this->item[0]['subcategory_id2'])){
                     $this->subcategories3 = Category::where('parent_id',$this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
-                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3;
-                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height;
-                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length;
-                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width;
-                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight;
-                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size;
+                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height ?? null;
+                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length ?? null;
+                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width ?? null;
+                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
+                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
