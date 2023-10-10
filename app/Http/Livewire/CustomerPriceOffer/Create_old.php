@@ -2,54 +2,52 @@
 
 namespace App\Http\Livewire\CustomerPriceOffer;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Store;
-use App\Models\System;
-use App\Models\JobType;
-use App\Models\Product;
-use Livewire\Component;
+use App\Models\AddStockLine;
+use App\Models\CashRegister;
+use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\Employee;
-use App\Models\SellLine;
-use App\Models\StorePos;
-use App\Models\Supplier;
-use App\Models\MoneySafe;
-use App\Models\Variation;
-use App\Models\GeneralTax;
-use App\Models\AddStockLine;
-use App\Models\CashRegister;
-use App\Models\ProductStore;
-use Livewire\WithPagination;
-use App\Models\StockTransaction;
 use App\Models\CustomerOfferPrice;
 use App\Models\CustomerPriceOffer;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\DB;
-use App\Models\TransactionSellLine;
-use Illuminate\Contracts\View\View;
+use App\Models\Employee;
+use App\Models\GeneralTax;
+use App\Models\JobType;
+use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use App\Models\CashRegisterTransaction;
+use App\Models\Product;
+use App\Models\ProductStore;
+use App\Models\SellLine;
+use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
-use App\Models\PaymentTransactionSellLine;
+use App\Models\Store;
+use App\Models\StorePos;
+use App\Models\Supplier;
+use App\Models\System;
 use App\Models\TransactionCustomerOfferPrice;
+use App\Models\TransactionSellLine;
+use App\Models\User;
+use App\Models\Variation;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
+use Livewire\WithPagination;
 
-class Edit extends Component
+class Create extends Component
 {
     use WithPagination;
 
-    public $transaction_customer_offer_price , $divide_costs , $other_expenses = 0, $other_payments = 0 , $block_for_days , $tax_method , $validity_days , $store_id,$block_qty, $customer_id , $customers,$stores, $status, $order_date, $purchase_type,
+    public $divide_costs , $other_expenses = 0, $other_payments = 0 , $block_for_days , $tax_method , $validity_days , $store_id,$block_qty, $customer_id , $customers,$stores, $status, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
-        $files, $upload_documents , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
-        $old_products = [] , $selling_price , $dollar_selling_price , $deleted_ids = [];
+        $files, $upload_documents , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ;
 
     protected $rules =
     [
@@ -65,33 +63,12 @@ class Edit extends Component
         'transaction_currency' => 'required'
     ];
     // Get "customers" and "stores"
-    public function mount($id)
+    public function mount()
     {
-        $this->transaction_customer_offer_price = TransactionCustomerOfferPrice::with('customer_offer_price.product')->find($id);
-        // dd($this->transaction_customer_offer_price);
-        foreach ($this->transaction_customer_offer_price->customer_offer_price as  $line)
-        {
-            $this->addLineProduct($line);
-        }
-        // dd($this- >customer_offer_price);
         // +++++++++ get "all customers" +++++++++
         $this->loadCustomers();
         // +++++++++ get "all stores" +++++++++
         $this->loadStores();
-        // +++++++++++++++++++++++++ Put "Old value" on "selectboxes" and "inputFields" +++++++++++++++++++++++++
-        $transaction_customer_offer_price = $this->transaction_customer_offer_price;
-        // dd($transaction_customer_offer_price);
-        $this->selling_price = $transaction_customer_offer_price->sell_price;
-        $this->dollar_selling_price = $transaction_customer_offer_price->dollar_sell_price;
-        // dd($transaction_customer_offer_price->dollar_sell_price);
-        $this->block_qty = $transaction_customer_offer_price->block_qty;
-        $this->block_for_days = $transaction_customer_offer_price->block_for_days;
-        $this->validity_days = $transaction_customer_offer_price->validity_days;
-        $this->tax_method = $transaction_customer_offer_price->tax_method;
-        $this->discount_type = $transaction_customer_offer_price->discount_type;
-        $this->discount_value = $transaction_customer_offer_price->discount_value;
-        $this->store_id = $transaction_customer_offer_price->store_id;
-        $this->customer_id = $transaction_customer_offer_price->customer_id;
     }
     // +++++++++ Get "customers" +++++++++
     public function loadCustomers()
@@ -106,19 +83,18 @@ class Edit extends Component
     // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
-        $transaction_customer_offer_price = $this->transaction_customer_offer_price;
-        // dd($customer_offer_price);
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
         $payment_types = $payment_type_array;
         $product_id = request()->get('product_id');
         $suppliers  = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
-        // ++++++++++++++ stores filter ++++++++++++++
-        $stores   = Store::get();
-        // ++++++++++++++ customers filter ++++++++++++++
-        $customers   = Customer::get();
+
         $stock_lines = AddStockLine::get();
+
+        $customers   = Customer::get();
+        $stores   = Store::get();
+
         $taxes      = GeneralTax::get();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
@@ -156,17 +132,14 @@ class Edit extends Component
             $products = Product::paginate();
         }
 
-        // dd($old_products);
-
         $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
 
 
-        return view('livewire.customer-price-offer.edit',
+        return view('livewire.customer-price-offer.create',
             compact('status_array',
             'payment_status_array',
             'payment_type_array',
-            'transaction_customer_offer_price',
             'stores',
             'stock_lines' ,
             'product_id',
@@ -187,157 +160,95 @@ class Edit extends Component
     {
         $this->validateOnly($propertyName);
     }
-    // +++++++++++++++++++++++++ addLineProduct($line) : Add line product information +++++++++++++++++++++++++
-    public function addLineProduct($line)
-    {
-        $product = Product::find($line->product_id);
-        // dd($line);
-        $this->items[] =
-        [
-            'product' => $product,
-            'quantity' => number_format($line->quantity,2),
-            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,2)) : 0,
-            'category_id' => $product->category?->id,
-            'customer_id' => $product->customer?->id,
-            'discount' => null,
-            'discount_price' => $line->discount_amount,
-            'discount_type' =>  $line->discount_type,
-            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,2) : 0  ,
-            'customer_offer_id' => $line->id,
-            'selling_price' => $line->sell_price ,
-            'dollar_selling_price' => $line->dollar_sell_price,
-        ];
-    }
-    // ++++++++++++++++++++++++++++++++++ store() method : new ++++++++++++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++++++++++ store() method ++++++++++++++++++++++++++++++++++
+
     public function store(): Redirector|Application|RedirectResponse
     {
-        $this->validate([
-            'store_id' => 'required',
-            'customer_id' => 'required',
-            'block_for_days' => 'required',
-            'validity_days' => 'required',
-        ]);
         try
         {
-            DB::beginTransaction();
+            // ++++++++++++++++++++++++++++ TransactionCustomerOfferPrice table ++++++++++++++++++++++++++++
+            // Add stock transaction
+            $transaction_customer_offer = new TransactionCustomerOfferPrice();
+            // store_id
+            $transaction_customer_offer->store_id = $this->store_id;
+            // customer_id
+            $transaction_customer_offer->customer_id = $this->customer_id;
+            // is_quotation
+            $transaction_customer_offer->is_quotation = 1 ;
+            // transaction_date
+            $transaction_customer_offer->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
+            // dinar_sell_price
+            $transaction_customer_offer->sell_price = $this->num_uf($this->sum_total_cost());
+            // $transaction_customer_offer->total_sell_price = isset($this->discount_value) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_value) : $this->num_uf($this->sum_dollar_total_cost());
+            $transaction_customer_offer->total_sell_price = isset($this->discount_value) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_value) : $this->num_uf($this->sum_total_cost());
+            // dollar_sell_price
+            $transaction_customer_offer->dollar_sell_price = $this->num_uf($this->sum_dollar_total_cost());
+            $transaction_customer_offer->total_dollar_sell_price = $this->dollar_final_total();
+            // status
+            $transaction_customer_offer->status = "draft";
+            // block_qty , block_for_days , validity_days , tax_method
+            $transaction_customer_offer->block_qty = !empty($this->block_qty) ? 1 : 0;
+            $transaction_customer_offer->block_for_days = !empty($this->block_for_days) ? $this->block_for_days : 0; //reverse the block qty handle by command using cron job
+            $transaction_customer_offer->validity_days = !empty($this->validity_days) ? $this->validity_days : 0;
+            $transaction_customer_offer->tax_method = !empty($this->tax_method) ? $this->tax_method : null;
+            // discount_type , discount_value
+            $transaction_customer_offer->discount_type = !empty($this->discount_type) ? $this->discount_type : null;
+            $transaction_customer_offer->discount_value = !empty($this->discount_value) ? $this->discount_value : null;
+            // created_by
+            $transaction_customer_offer->created_by = Auth::user()->id;
+            // updated_by
+            $transaction_customer_offer->updated_by = null;
+            // deleted_by
+            $transaction_customer_offer->deleted_by = null;
+            // created_at
+            $transaction_customer_offer->created_at = now();
+            // updated_at
+            $transaction_customer_offer->updated_at = null;
+            // deleted_at
+            $transaction_customer_offer->deleted_at = null;
+            $transaction_customer_offer->save();
 
-            // ++++++++++++++++++++++ update "Transaction Customer Offer Price" table ++++++++++++++++++++++
-            $transaction_data =
-            [
-                // store_id
-                'store_id' => $this->store_id,
-                // customer_id
-                'customer_id' => $this->customer_id,
-                 // is_quotation
-                'is_quotation' => 1 ,
-                // transaction_date
-                'transaction_date' => !empty($this->transaction_date) ? $this->transaction_date : Carbon::now() ,
-                'status' => $this->status,
-                // dinar_sell_price
-                'sell_price' => $this->num_uf($this->sum_total_cost()) ,
-                'total_sell_price' => isset( $this->discount_value) ? ( $this->num_uf($this->sum_total_cost()) - $this->discount_value) :  $this->num_uf($this->sum_total_cost() ) ,
-                // dollar_sell_price
-                'dollar_sell_price' => $this->num_uf($this->sum_dollar_total_cost()) ,
-                'total_dollar_sell_price' => isset($this->discount_value) ? ($this->num_uf($this->sum_dollar_total_cost()) - $this->discount_value) : $this->num_uf($this->sum_dollar_total_cost()) ,
-                // status
-                'status' => "draft" ,
-                // block_qty , block_for_days , validity_days , tax_method
-                'block_qty' => !empty($this->block_qty) ? 1 : 0 ,
-                'block_for_days' => !empty($this->block_for_days) ? $this->block_for_days : 0 , //reverse the block qty handle by command using cron job
-                'validity_days' => !empty($this->validity_days) ? $this->validity_days : 0 ,
-                'tax_method' => !empty($this->tax_method) ? $this->tax_method : null ,
-                // discount_type , discount_value
-                'discount_type' => !empty($this->discount_type) ? $this->discount_type : null ,
-                'discount_value' => !empty($this->discount_value) ? $this->discount_value : null ,
-                // created_by
-                'created_by' => $this->transaction_customer_offer_price->created_by ,
-                'updated_by' => Auth::user()->id ,
-                'deleted_by' => null ,
-                'created_at' => $this->transaction_customer_offer_price->created_at  ,
-                'updated_at' => now() ,
-                'deleted_at' => null ,
-            ];
-            $transaction_customer_offer_price = $this->transaction_customer_offer_price;
-            // dd($customer_offer_price);
-            $transaction_customer_offer_price->update($transaction_data);
-            // ++++++++++++++++++++++ "Customer Offer Price" table : "Update" And "Insert" ++++++++++++++++++++++
-            $keep_line_ids = [];
-            // dd($this->deleted_ids);
-            foreach ( $this->items as $index => $item)
+            DB::beginTransaction();
+            // add  products to stock lines
+            $customer_offer_prices = [];
+            // ++++++++++++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++++++++++++
+            foreach ($this->items as $index => $item)
             {
-                // +++++++++++++++++ update Exsiting Products +++++++++++++++++++++
-                if( !empty( $item['customer_offer_id'] ) )
+                if (!empty($item['product']['id']) && !empty($item['quantity']))
                 {
-                    $prdouct_customer_offer = CustomerOfferPrice::find($item['customer_offer_id']);
+                    // dd($item);
+                    // Create a new array for each item
+                    $customer_offer_price = [];
+
                     // Set values for the new array
-                    $prdouct_customer_offer['product_id'] = $item['product']['id'];
-                    $prdouct_customer_offer['quantity'] = $item['quantity'];
-                    $prdouct_customer_offer['sell_price'] = $item['selling_price'];
-                    $prdouct_customer_offer['dollar_sell_price'] = $item['dollar_selling_price'];
+                    $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
+                    $customer_offer_price['product_id'] = $item['product']['id'];
+                    $customer_offer_price['quantity'] = $item['quantity'];
+                    $customer_offer_price['sell_price'] = $item['selling_price'];
+                    $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
                     // created_by
-                    $prdouct_customer_offer['created_by'] = null;
+                    $customer_offer_price['created_by'] = Auth::user()->id;
                     // updated_by
-                    $prdouct_customer_offer['updated_by'] = Auth::user()->id;
+                    $customer_offer_price['updated_by'] = null;
                     // deleted_by
-                    $prdouct_customer_offer['deleted_by'] = null;
+                    $customer_offer_price['deleted_by'] = null;
                     // created_at
-                    $prdouct_customer_offer['created_at'] = null;
+                    $customer_offer_price['created_at'] = now();
                     // updated_at
-                    $prdouct_customer_offer['updated_at'] = now();
+                    $customer_offer_price['updated_at'] = null;
                     // deleted_at
-                    $prdouct_customer_offer['deleted_at'] = null;
-                    // +++ save "customer_offer_price id" +++++++++++++++
-                    // $keep_line_ids[] = $prdouct_customer_offer->id;
-                    // update the customer offer price for this item to the array
-                    $prdouct_customer_offer->save();
-                }
-                // +++++++++++++++++ Insert New Products +++++++++++++++++++++
-                else
-                {
-                    if (!empty($item['product']['id']) && !empty($item['quantity']))
-                    {
-                        // Create a new array for each item
-                        $customer_offer_price_array = [];
-                        // Set values for the new array
-                        $customer_offer_price_array['transaction_customer_offer_id'] = $transaction_customer_offer_price->id;
-                        $customer_offer_price_array['product_id'] = $item['product']['id'];
-                        $customer_offer_price_array['quantity'] = $item['quantity'];
-                        $customer_offer_price_array['sell_price'] = $item['selling_price'];
-                        $customer_offer_price_array['dollar_sell_price'] = $item['dollar_selling_price'];
-                        $customer_offer_price_array['created_at'] = now();
-                        // created_by
-                        $customer_offer_price_array['created_by'] = Auth::user()->id;
-                        // updated_by
-                        $customer_offer_price_array['updated_by'] = null;
-                        // deleted_by
-                        $customer_offer_price_array['deleted_by'] = null;
-                        // created_at
-                        $customer_offer_price_array['created_at'] = now();
-                        // updated_at
-                        $customer_offer_price_array['updated_at'] = null;
-                        // deleted_at
-                        $customer_offer_price_array['deleted_at'] = null;
-                        // Add the customer offer price for this item to the array
-                        $customer_offer_prices[] = $customer_offer_price_array;
-                    }
-                    // Create multiple CustomerOfferPrice records in the database
-                    $customer_offer_price_ids_var = CustomerOfferPrice::insert($customer_offer_prices);
-                    // dd($customer_offer_price_ids_var);
-                    // +++++++++++++++ save "all customer_offer_price_ids" +++++++++++++++
-                    // $keep_line_ids[] = $customer_offer_prices->id ;
-                    // dd($keep_line_ids);
+                    $customer_offer_price['deleted_at'] = null;
+
+                    // Add the customer offer price for this item to the array
+                    $customer_offer_prices[] = $customer_offer_price;
                 }
             }
-            // Delete "all customer_offer_lines" which are deleted in "Edit" Page
-            if( !empty($this->deleted_ids) )
-            {
-                for ($i=0; $i < count($this->deleted_ids) ; $i++)
-                {
-                    $prdouct_customer_offer = CustomerOfferPrice::find($this->deleted_ids[$i]);
-                    $prdouct_customer_offer->delete();
-                }
-            }
+
+            // Create multiple CustomerOfferPrice records in the database
+            CustomerOfferPrice::insert($customer_offer_prices);
+
             DB::commit();
+
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success']);
         }
         catch (\Exception $e)
@@ -347,6 +258,7 @@ class Edit extends Component
         }
         return redirect()->route('customer_price_offer.create');
     }
+
     public function add_product($id, $add_via = null)
     {
         if(!empty($this->searchProduct)){
@@ -381,6 +293,7 @@ class Edit extends Component
                 $this->addNewProduct($variations,$product,$show_product_data);
             }
         }
+
     }
     // +++++++++++++++++++++++ addNewProduct() +++++++++++++++++++++++
     public function addNewProduct($variations,$product,$show_product_data)
@@ -414,9 +327,30 @@ class Edit extends Component
        $this->items[$index]['base_unit_multiplier'] = $variant->equal;
     }
 
+    public function changeFilling($index){
+        if(!empty($this->items[$index]['purchase_price'])){
+            if($this->items[$index]['fill_type']=='fixed'){
+                $this->items[$index]['selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+            }else{
+                $percent=((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                $this->items[$index]['selling_price']=($this->items[$index]['dollar_purchase_price']+$percent);
+            }
+        }
+        if(!empty($this->items[$index]['dollar_purchase_price'])){
+            if($this->items[$index]['fill_type']=='fixed'){
+                $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+            }
+        else{
+                $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
+                $this->items[$index]['dollar_selling_price'] = ($this->items[$index]['dollar_purchase_price'] + $percent);
+            }
+
+        }
+    }
     public function get_product($index){
         return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
     }
+
 
     public function total_size($index){
         $this->items[$index]['total_size'] =  (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['size'];
@@ -506,21 +440,21 @@ class Edit extends Component
     public function sum_dollar_total_cost()
     {
         $totalDollarCost = 0;
-        if(!empty($this->items))
-        {
+        if(!empty($this->items)){
             foreach ($this->items as $item)
             {
+//                dd($item['dollar_total_cost']);
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
+//        dd($totalDollarCost);
         return number_format($totalDollarCost,2);
     }
-    // ++++++++++++++++++++ sum_sub_total() : sum all "sell_price" values ++++++++++++++++
-    public function sum_sub_total()
-    {
+
+    public function sum_sub_total(){
         $totalSubTotal = 0;
-        foreach ($this->items as $item)
-        {
+
+        foreach ($this->items as $item) {
             $totalSubTotal += $item['sub_total'];
         }
         return number_format($totalSubTotal,2);
@@ -548,10 +482,10 @@ class Edit extends Component
         return number_format($totalDinarSubTotal,2);
     }
 
-    // public function changeCurrentStock($index)
-    // {
-    //     $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
-    // }
+    public function changeCurrentStock($index)
+    {
+        $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
+    }
 
     public function total_quantity(){
         $totalQuantity = 0;
@@ -581,15 +515,8 @@ class Edit extends Component
         else
             return $this->sum_dollar_total_cost();
     }
-    // +++++++++++++++++ When Click on "delete button" in products table : delete "product row" ++++++++++++++++
-    public function delete_product($index)
-    {
-        $customer_offer_price = CustomerOfferPrice::find($this->items[$index]['customer_offer_id']);
-        // Store "ids" of "All deleted customer_offer_price" items
-        $this->deleted_ids[] = $customer_offer_price->id;
-        // Delete From DB "customer_offer_prices table"
-        // $customer_offer_price->delete();
-        // Delete From View "Edit Page"
+
+    public function delete_product($index){
         unset($this->items[$index]);
     }
 

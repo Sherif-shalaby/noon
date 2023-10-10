@@ -52,16 +52,11 @@ class WageController extends Controller
         $users = User::Notview()->pluck('name', 'id');
         return view('employees.wages.create',compact('employees','payment_types','users'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    /* +++++++++++++++++++++ store() +++++++++++++++++++++ */
     public function store(Request $request)
     {
-        try {
+        try
+        {
             $data = $request->except('_token', 'submit');
             $data['net_amount'] = (float)($data['net_amount']);
             $data['date_of_creation'] = Carbon::now();

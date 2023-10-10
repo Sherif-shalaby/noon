@@ -31,7 +31,7 @@
                 wire:model="items.{{ $index }}.dollar_selling_price" style="width: 100%;"
                 wire:keyup="convert_dinar_price({{ $index }})" required>
         @error('selling_price')
-        <span class="error text-danger">{{ $message }}</span>
+            <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     {{-- +++++++++++++++++++++ column 6 : المجموع الفرعي بالدولار +++++++++++++++++++++ --}}

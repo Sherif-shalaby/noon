@@ -33,7 +33,8 @@ return [
     'brand_name'=>'Brand Name',
     'add_brand_name'=>'Add Brand',
     'update' => 'Update',
-    'close' => 'Close'
+    'close' => 'Close' ,
+    'delete' => 'Delete' ,
 
 ];
 
