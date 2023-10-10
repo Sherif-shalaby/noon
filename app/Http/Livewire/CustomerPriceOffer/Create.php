@@ -404,15 +404,16 @@ class Create extends Component
     // ++++++++++++++++++++++++++ Task :  $ اجمالي التكاليف ++++++++++++++++++++++++++
     public function dollar_total_cost($index)
     {
-        $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
-        $this->items[$index]['dollar_total_cost_var'] = $this->items[$index]['dollar_total_cost'];
+        $this->items[$index]['dollar_total_cost'] = (float)($this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity']);
+        // $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
+        $this->items[$index]['dollar_total_cost_var'] = (float)($this->items[$index]['dollar_total_cost']);
         return number_format($this->items[$index]['dollar_total_cost'], 2);
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
-        $this->items[$index]['total_cost'] = $this->items[$index]['selling_price'] * $this->items[$index]['quantity'];
-        $this->items[$index]['total_cost_var'] = $this->items[$index]['total_cost'] ;
+        $this->items[$index]['total_cost'] = (float)($this->items[$index]['selling_price'] * $this->items[$index]['quantity']);
+        $this->items[$index]['total_cost_var'] = (float)($this->items[$index]['total_cost']) ;
         return number_format($this->items[$index]['total_cost'],2) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
@@ -420,11 +421,11 @@ class Create extends Component
     {
         if (!empty($this->items[$index]['dollar_selling_price']) )
         {
-            $this->items[$index]['selling_price'] = $this->items[$index]['dollar_selling_price'] * $this->exchange_rate;
+            $this->items[$index]['selling_price'] = (float)($this->items[$index]['dollar_selling_price'] * $this->exchange_rate);
         }
         else
         {
-            $this->items[$index]['selling_price'] = $this->items[$index]['dollar_selling_price'];
+            $this->items[$index]['selling_price'] = (float)($this->items[$index]['dollar_selling_price']);
         }
         // return $selling_price;
     }
@@ -434,11 +435,11 @@ class Create extends Component
         // dd($this->exchange_rate);
         if (!empty($this->items[$index]['selling_price']) )
         {
-            $this->items[$index]['dollar_selling_price'] = $this->items[$index]['selling_price'] / $this->exchange_rate;
+            $this->items[$index]['dollar_selling_price'] = (float)($this->items[$index]['selling_price'] / $this->exchange_rate);
         }
         else
         {
-            $this->items[$index]['dollar_selling_price'] = $this->items[$index]['selling_price'];
+            $this->items[$index]['dollar_selling_price'] = (float)($this->items[$index]['selling_price']);
         }
         // return $selling_price;
     }
