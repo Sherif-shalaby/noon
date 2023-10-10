@@ -115,7 +115,7 @@
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('product_sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('product_sku', isset($recent_product->sku) ? $recent_product->sku : null, [
+                        {!! Form::text('product_sku',null, [
                             'class' => 'form-control',
                         ]) !!}
                     </div>

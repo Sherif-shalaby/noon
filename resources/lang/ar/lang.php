@@ -140,7 +140,7 @@ return array(
     'permenant'=>'دائم',
     'subcategories_name'=>'الاقسام الفرعية',
     'image'=>'الصورة',
-    'sku'=>'الكود',
+    'sku'=>'الباركود',
     'currency_change'=>'تغيير العملة الى',
     'dollar_exchange'=>'سعر صرف الدولار',
     'edit_products'=>'تعديل المنتج',
