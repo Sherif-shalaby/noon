@@ -78,7 +78,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Wages
     Route::resource('wages',WageController::class);
-    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission'])->name('calculateSalaryAndCommission');
+    Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++

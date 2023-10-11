@@ -52,6 +52,11 @@ class WageController extends Controller
         $users = User::Notview()->pluck('name', 'id');
         return view('employees.wages.create',compact('employees','payment_types','users'));
     }
+    // +++++++++++++++++ ajax request : get_other_payment() +++++++++++++++++
+    public function get_other_payment(Request $request)
+    {
+
+    }
     /* +++++++++++++++++++++ store() +++++++++++++++++++++ */
     public function store(Request $request)
     {
@@ -237,6 +242,25 @@ class WageController extends Controller
         }
         return $output;
     }
+    public function update_other_payment(Request $request)
+    {
+        // Retrieve employee_id and payment_type from the request
+        $employeeId = $request->input('employee_id');
+        $paymentType = $request->input('payment_type');
+        $employee = Employee::find($employeeId);
+        // For example, let's assume $otherPaymentValue holds the calculated other_payment value
+        if ($paymentType === "salary")
+        {
+            $otherPaymentValue = $employee->fixed_wage_value; // Replace this with your actual logic
+        }
+        if ($paymentType == 'commission')
+        {
+            $otherPaymentValue = $employee->commission_value; // Replace this with your actual logic
+        }
+        // Return the other_payment value as JSON response
+        return response()->json(['other_payment' => $otherPaymentValue]);
+    }
+
     public function calculateSalaryAndCommission($employee_id, $payment_type)
     {
         $employee = Employee::find($employee_id);
@@ -245,9 +269,11 @@ class WageController extends Controller
 //        dd($employee->fixed_wage);
 
 
-        if ($payment_type === "salary") {
+        if ($payment_type === "salary")
+        {
 //            dd('salary');
-            if ($employee->fixed_wage == 1) {
+            if ($employee->fixed_wage == 1)
+            {
                 $fixed_wage_value = $employee->fixed_wage_value;
                 $payment_cycle = $employee->payment_cycle;
 
@@ -264,7 +290,8 @@ class WageController extends Controller
                     $amount = $fixed_wage_value * 1;}
             }
         }
-        if ($payment_type == 'commission') {
+        if ($payment_type == 'commission')
+        {
             $start_date = request()->acount_period_start_date;
             $end_date = request()->acount_period_end_date;
 
