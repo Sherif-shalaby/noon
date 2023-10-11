@@ -90,8 +90,6 @@ class Create extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
        'item.*.product_tax_id' => 'nullable',
-        // 'item.*.change_current_stock' => 'boolean',
-        // 'item.*.exchange_rate' => 'numeric',
         'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
         'rows.*.purchase_price' => 'required',
         'rows.*.dollar_purchase_price' => 'required',
