@@ -505,7 +505,7 @@ return [
     'delete_all' => 'Delete All',
     'filter'=>'Filter',
     'dont_show_zero_stocks'=>'Dont Show Zero Stocks',
-
+    'sku_required'=>'The product SKU has already been taken',
 ];
 
 

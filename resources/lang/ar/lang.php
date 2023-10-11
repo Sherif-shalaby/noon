@@ -524,5 +524,6 @@ return array(
     'delete_all' => 'حذف جماعي',
     'filter'=>'تصفية',
     'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
+    'sku_required'=>'الباركود موجود من قبل',
 );
 
