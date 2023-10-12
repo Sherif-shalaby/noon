@@ -9,7 +9,7 @@ return new class extends Migration
     /* +++++++++++++++++++++ up() ++++++++++++++++++++++++++++ */
     public function up()
     {
-        Schema::create('product_taxes', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('rate');
@@ -21,14 +21,7 @@ return new class extends Migration
 			$table->string('updated_by')->nullable();
             // created_at , updated_at
 
-               // ========= foreign key : product_id =========
-               $table->unsignedBigInteger('product_id')->nullable();
-               $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-   
-               // ========= foreign key : product_tax_id =========
-               $table->unsignedBigInteger('product_tax_id')->nullable();
-               $table->foreign('product_tax_id')->references('id')->on('product_taxes')->onDelete('cascade');
-   
+         
             $table->timestamps();
             // soft delete
             $table->softDeletes();
@@ -42,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_taxes');
+        Schema::dropIfExists('taxes');
     }
 };

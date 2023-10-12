@@ -13,11 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('products_taxes', function (Blueprint $table) {
-        //     $table->id();
-         
-        //     $table->timestamps();
-        // });
+        Schema::create('products_taxes', function (Blueprint $table) {
+            $table->id();
+               // ========= foreign key : product_id =========
+               $table->unsignedBigInteger('product_id')->nullable();
+               $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+   
+               // ========= foreign key : product_tax_id =========
+               $table->unsignedBigInteger('product_tax_id')->nullable();
+               $table->foreign('product_tax_id')->references('id')->on('taxes')->onDelete('cascade');
+   
+            $table->timestamps();
+        });
     }
 
     /**

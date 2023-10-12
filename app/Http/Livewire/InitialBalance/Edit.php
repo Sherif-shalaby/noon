@@ -13,6 +13,7 @@ use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\Variation;
 use Carbon\Carbon;
@@ -59,7 +60,8 @@ class Edit extends Component
         $deleted_items = [], $deleted_prices = [];
 
     public $rows = [];
-    protected function rules(){
+    protected function rules()
+    {
         return [
             'item.*.name' => 'required',
             'item.*.store_id' => 'required',
@@ -134,7 +136,7 @@ class Edit extends Component
         $stores = Store::getDropdown();
         $units = Unit::orderBy('created_at', 'desc')->get();
         $basic_units = Unit::orderBy('created_at', 'desc')->pluck('name', 'id');
-        $product_taxes = ProductTax::select('name', 'id', 'status')->get();
+        $product_taxes = Tax::select('name', 'id', 'status')->get();
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
 
@@ -184,7 +186,7 @@ class Edit extends Component
             $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
             $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
             $this->item[0]['method'] = $recent_stock->add_stock_lines->first()->product->method ?? null;
-            $this->item[0]['product_tax_id'] = ProductTax::where('product_id', $this->item[0]['id'])->first()->id ?? null;
+            $this->item[0]['product_tax_id'] = ProductTax::where('product_id', $this->item[0]['id'])->first()->product_tax_id ?? null;
             foreach ($recent_stock->add_stock_lines as $stock) {
                 $newRow = [
                     'stock_line_id' => $stock->id,
@@ -349,7 +351,19 @@ class Edit extends Component
                 $product->method = $this->item[0]['method'];
                 $product->save();
                 // add  products to stock lines
-
+                if (!empty($this->item[0]['product_tax_id'])) {
+                    $product_tax = ProductTax::where('product_tax_id',$this->item[0]['product_tax_id'])->first();
+                    if (!empty($product_tax)) {
+                        $product_tax->update([
+                            'product_tax_id' => $this->item[0]['product_tax_id'],
+                        ]);
+                    } else {
+                        ProductTax::create([
+                            'product_tax_id' => $this->item[0]['product_tax_id'],
+                            'product_id' => $this->item[0]['id'],
+                        ]);
+                    }
+                }
                 foreach ($this->rows as $index => $row) {
                     $Variation = [];
                     if (isset($this->rows[$index]['id'])) {

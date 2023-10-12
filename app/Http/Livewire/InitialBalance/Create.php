@@ -13,6 +13,7 @@ use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\Variation;
 use Carbon\Carbon;
@@ -66,6 +67,7 @@ class Create extends Component
         'basic_unit_id' => '',
         'change_price_stock' => '',
         'equal' => '',
+        'method'=>'',
         'prices' => [
             [
                 'price_type' => null,
@@ -150,7 +152,7 @@ class Create extends Component
         $stores = Store::getDropdown();
         $units = Unit::orderBy('created_at', 'desc')->get();
         $basic_units = Unit::orderBy('created_at', 'desc')->pluck('name', 'id');
-        $product_taxes = ProductTax::select('name', 'id', 'status')->get();
+        $product_taxes = Tax::select('name', 'id', 'status')->get();
         $customer_types = CustomerType::latest()->get();
         $this->dispatchBrowserEvent('initialize-select2');
 
@@ -237,6 +239,7 @@ class Create extends Component
             'basic_unit_id' => '',
             'change_price_stock' => '',
             'equal' => '',
+            'method'=>'',
             'prices' => [
                 [
                     'price_type' => null,
@@ -320,6 +323,7 @@ class Create extends Component
                 $product->width = $this->item[0]['width'];
                 $product->weight = $this->item[0]['weight'];
                 $product->size = $this->item[0]['size'];
+                $product->method = $this->item[0]['method'];
                 $product->save();
                 // $product->variations()->delete();
             } else {
@@ -335,7 +339,12 @@ class Create extends Component
                 $product->width = $this->item[0]['width'] ?? null;
                 $product->weight = $this->item[0]['weight'] ?? null;
                 $product->size = $this->item[0]['size'] ?? null;
+                $product->method = $this->item[0]['method'];
                 $product->save();
+                ProductTax::create([
+                    'product_tax_id' => $this->item[0]['product_tax_id'],
+                    'product_id' => $this->item[0]['id'],
+                ]);
             }
             // add  products to stock lines
             foreach ($this->rows as $index => $row) {
