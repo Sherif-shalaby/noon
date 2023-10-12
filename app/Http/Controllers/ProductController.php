@@ -12,6 +12,7 @@ use App\Models\ProductPrice;
 use App\Models\ProductStore;use App\Models\ProductTax;
 use App\Models\Store;
 use App\Models\System;
+use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Variation;
@@ -89,7 +90,8 @@ class ProductController extends Controller
   {
     $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
 //    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
-     if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
+    $recent_product=[];
+    if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
          $recent_product = Product::orderBy('created_at', 'desc')->first();
      }
 //     dd(isset($recent_product));
@@ -99,7 +101,7 @@ class ProductController extends Controller
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     // product_tax
-    $product_tax = ProductTax::where('status','active')->get();
+    $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
     return view('products.create',
@@ -139,7 +141,11 @@ class ProductController extends Controller
     // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
     if(!empty($request->product_tax_id))
     {
-        $product->product_taxes()->attach($request->product_tax_id) ;
+        ProductTax::create([
+            'product_tax_id' => $request->product_tax_id,
+            'product_id' => $product->id,
+        ]);
+        // $product->product_taxes()->attach($request->product_tax_id) ;
     }
 
     // if(!empty($request->subcategory_id)){
@@ -277,11 +283,12 @@ class ProductController extends Controller
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
-      $product=Product::with('product_taxes')->findOrFail($id);
+      $product=Product::findOrFail($id);
+      $product_tax_id=ProductTax::where('product_id',$product->id)->first()->product_tax_id;
       $customer_types = CustomerType::pluck('name', 'id');
-      $product_tax = ProductTax::all();
+      $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
+      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax','product_tax_id'));
   }
 
   /**

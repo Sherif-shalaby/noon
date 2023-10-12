@@ -55,7 +55,20 @@
                                                     class="fa fa-eye"></i>
                                                 @lang('lang.view') </a>
                                         </li>
-
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="{{route('initial-balance.edit', $stock->id)}}"
+                                               class="btn"><i
+                                                    class="fa fa-edit"></i>
+                                                @lang('lang.edit') </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a data-href="{{route('initial-balance.destroy', $stock->id)}}"
+                                               {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                               class="btn text-red delete_item" data-deletetype="1"><i class="fa fa-trash"></i>
+                                                @lang('lang.delete')</a>
+                                        </li>
                                         @if ( !empty($stock->payment_status) && $stock->payment_status != 'paid')
                                             <li class="divider"></li>
                                             <li>

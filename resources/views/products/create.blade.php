@@ -382,7 +382,7 @@
                                         {!! Form::textarea('details', isset($recent_product->details) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}
                                         @include('layouts.translation_textarea', [
                                             'attribute' => 'details',
-                                            'translations' => isset($recent_product) ? $recent_product->details_translations : [],
+                                            'translations' => !empty($recent_product) ? $recent_product->details_translations : [],
                                             'type' => 'product',
                                         ])
                                     </div>
