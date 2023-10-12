@@ -82,6 +82,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    // Get "مصدر الاموال" depending on "طريقة الدفع"
+    Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
+
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
     // // general_setting : fetch "state" of selected "country" selectbox

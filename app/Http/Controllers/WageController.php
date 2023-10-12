@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
-use App\Models\System;
+use Carbon\Carbon;
+use App\Utils\Util;
 use App\Models\User;
 use App\Models\Wage;
-use App\Models\WageTransaction;
-use App\Models\WageTransactionPayment;
+use App\Models\System;
+use App\Models\Employee;
+use App\Models\StorePos;
+use App\Models\MoneySafe;
+use App\Models\Store;
+use App\Models\WageAttachments;
 use Illuminate\Http\Request;
-use App\Utils\Util;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Models\WageTransaction;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\WageTransactionPayment;
 
 class WageController extends Controller
 {
     protected $Util;
+    protected $commonUtil;
+
 
     /**
      * Constructor
@@ -24,9 +30,10 @@ class WageController extends Controller
      * @param Utils $product
      * @return void
      */
-    public function __construct(Util $Util)
+    public function __construct(Util $Util,Util $commonUtil)
     {
         $this->Util = $Util;
+        $this->commonUtil = $commonUtil;
     }
     /**
      * Display a listing of the resource.
@@ -52,14 +59,28 @@ class WageController extends Controller
         $users = User::Notview()->pluck('name', 'id');
         return view('employees.wages.create',compact('employees','payment_types','users'));
     }
-    // +++++++++++++++++ ajax request : get_other_payment() +++++++++++++++++
-    public function get_other_payment(Request $request)
+    // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
+    public function getSourceByTypeDropdown($type = null)
     {
+        if ($type == 'user') {
+            $array = User::Notview()->pluck('name', 'id');
+        }
+        if ($type == 'pos') {
+            $array = StorePos::pluck('name', 'id');
+        }
+        // if ($type == 'store') {
+        //     $array = Store::pluck('name', 'id');
+        // }
+        if ($type == 'safe') {
+            $array = MoneySafe::pluck('name', 'id');
+        }
 
+        return $this->commonUtil->createDropdownHtml($array, __('lang.please_select'));
     }
     /* +++++++++++++++++++++ store() +++++++++++++++++++++ */
     public function store(Request $request)
     {
+        // dd($request);
         try
         {
             $data = $request->except('_token', 'submit');
@@ -72,9 +93,30 @@ class WageController extends Controller
             $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
             $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
             $data['amount'] = !empty($data['amount']) ? (float)($data['amount']) : 0;
-
             $wage=Wage::create($data);
-
+            // +++++++++++++ upload_files validation +++++++++++++++++++++
+            $validatedData = $request->validate([
+                'upload_files.*' => 'file|mimes:pdf,jpg,png|max:2048', // Example validation rules for JPG and PNG files with a maximum size of 2MB
+            ]);
+            // ========== upload "attachments" in "uploads folder" And Store Them in "wage_attachments" table ==========
+            if ($request->hasFile('upload_files'))
+            {
+                $files = $request->file('upload_files');
+                // Loop through each file and create a new WageAttachments instance for each
+                foreach ($files as $file)
+                {
+                    // Create a new instance of WageAttachments
+                    $attachments = new WageAttachments();
+                    // Upload file and get the file path
+                    $filePath = store_file($file, 'wage_attachments/' . time());
+                    $name = time() . $file->getClientOriginalName();
+                    // Set file details
+                    $attachments->file_name = $name;
+                    $attachments->wage_id = $wage->id; // Associate with the wage record
+                    // Save the WageAttachments instance
+                    $attachments->save();
+                }
+            }
 
             $employee = Employee::find($wage->employee_id);
             $transaction_data = [
@@ -111,6 +153,7 @@ class WageController extends Controller
                     $transaction_payment = WageTransactionPayment::create($payment_data);
                 }
             }
+
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
