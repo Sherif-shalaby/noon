@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Create extends Component
+class CreateOld extends Component
 {
     use WithPagination;
 

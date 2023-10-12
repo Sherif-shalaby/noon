@@ -40,7 +40,7 @@ use App\Models\PaymentTransactionSellLine;
 use App\Models\TransactionCustomerOfferPrice;
 use Illuminate\Contracts\Foundation\Application;
 
-class Edit extends Component
+class EditOLdFile extends Component
 {
     use WithPagination;
 
