@@ -20,6 +20,15 @@ return new class extends Migration
 			$table->string('deleted_by')->nullable();
 			$table->string('updated_by')->nullable();
             // created_at , updated_at
+
+               // ========= foreign key : product_id =========
+               $table->unsignedBigInteger('product_id')->nullable();
+               $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+   
+               // ========= foreign key : product_tax_id =========
+               $table->unsignedBigInteger('product_tax_id')->nullable();
+               $table->foreign('product_tax_id')->references('id')->on('product_taxes')->onDelete('cascade');
+   
             $table->timestamps();
             // soft delete
             $table->softDeletes();

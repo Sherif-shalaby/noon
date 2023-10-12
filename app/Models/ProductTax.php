@@ -12,8 +12,13 @@ class ProductTax extends Model
     use SoftDeletes;
 
     protected $table = "product_taxes";
-    protected $fillable = ['name', 'rate','status','details', 'created_by', 'deleted_by', 'updated_by'];
+    protected $guarded = [];
     public $timestamps = true;
+
+    public function products()
+    {
+        return $this->belongsToMany('App\Models\Product','products');
+    }
     // soft delete
     protected $dates = ['deleted_at'];
 }

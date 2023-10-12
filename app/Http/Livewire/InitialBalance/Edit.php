@@ -16,12 +16,13 @@ use App\Models\System;
 use App\Models\Unit;
 use App\Models\Variation;
 use Carbon\Carbon;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Create extends Component
+class Edit extends Component
 {
     use WithPagination;
     public $item = [
@@ -44,60 +45,43 @@ class Create extends Component
             'change_current_stock' => 0,
             'method' => '',
             'exchange_rate' => 0,
+            'stockId' => ''
         ]
     ];
+    public $stockId;
     public $subcategories1 = [], $subcategories2 = [], $subcategories3 = [];
     public $quantity = [], $purchase_price = [], $selling_price = [],
         $base_unit = [], $divide_costs, $total_size = [], $total_weight = [],
         $sub_total = [], $change_price_stock = [], $store_id, $status,
         $supplier, $exchange_rate, $exchangeRate, $transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-        $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $clear_all_input_stock_form, $product_tax, $subcategories = [];
+        $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
+        $deleted_items = [], $deleted_prices = [];
 
-    public $rows = [[
-        'id' => '', 'sku' => '', 'quantity' => '',
-        'fill_quantity' => '',
-        'fill_type' => 'fixed',
-        'purchase_price' => '',
-        'selling_price' => '',
-        'dollar_purchase_price' => '',
-        'dollar_selling_price' => '',
-        'unit_id' => '',
-        'basic_unit_id' => '',
-        'change_price_stock' => '',
-        'equal' => '',
-        'prices' => [
-            [
-                'price_type' => null,
-                'price_category' => null,
-                'price' => null,
-                'discount_quantity' => null,
-                'bonus_quantity' => null,
-                'price_customer_types' => null,
-                'price_after_desc' => null,
-            ],
-        ]
-    ]];
-    protected $rules = [
-        'item.*.name' => 'required',
-        'item.*.store_id' => 'required',
-        'item.*.supplier_id' => 'required',
-        'item.*.category_id' => 'required',
-        'item.*.subcategory_id' => 'nullable',
-        'item.*.subcategory_id2' => 'nullable',
-        'item.*.subcategory_id3' => 'nullable',
-        'item.*.weight' => 'numeric',
-        'item.*.width' => 'numeric',
-        'item.*.height' => 'numeric',
-        'item.*.length' => 'numeric',
-        'item.*.size' => 'numeric',
-        'item.*.product_tax_id' => 'nullable',
-        'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-        'rows.*.purchase_price' => 'required',
-        'rows.*.dollar_purchase_price' => 'required',
-        'rows.*.dollar_selling_price' => 'required',
-        'rows.*.selling_price' => 'required',
-    ];
+    public $rows = [];
+    protected function rules(){
+        return [
+            'item.*.name' => 'required',
+            'item.*.store_id' => 'required',
+            'item.*.supplier_id' => 'required',
+            'item.*.category_id' => 'required',
+            'item.*.subcategory_id' => 'nullable',
+            'item.*.subcategory_id2' => 'nullable',
+            'item.*.subcategory_id3' => 'nullable',
+            'item.*.weight' => 'numeric',
+            'item.*.width' => 'numeric',
+            'item.*.height' => 'numeric',
+            'item.*.length' => 'numeric',
+            'item.*.size' => 'numeric',
+            'item.*.product_tax_id' => 'nullable',
+            'rows.*.sku' => 'required',
+            // 'rows.*.sku' => 'required|max:255|unique:variations,sku,'."rows.*.id".',id,deleted_at,NULL',
+            'rows.*.purchase_price' => 'required',
+            'rows.*.dollar_purchase_price' => 'required',
+            'rows.*.dollar_selling_price' => 'required',
+            'rows.*.selling_price' => 'required',
+        ];
+    }
     public function changeSize()
     {
         $this->item[0]['size'] = $this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
@@ -155,7 +139,7 @@ class Create extends Component
         $this->dispatchBrowserEvent('initialize-select2');
 
         return view(
-            'livewire.initial-balance.create',
+            'livewire.initial-balance.edit',
             compact(
                 'stores',
                 'suppliers',
@@ -168,38 +152,87 @@ class Create extends Component
             )
         );
     }
-    public function mount()
+
+
+    public function mount($stockId)
     {
-        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
-        if ($this->clear_all_input_stock_form == 0) {
-            $recent_stock = [];
-        } else {
-            $recent_stock = StockTransaction::where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
-            if (!empty($recent_stock)) {
-                $this->item[0]['store_id'] = $recent_stock->store_id;
-                $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
-                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
-                $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
-                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
-                if (!empty($this->item[0]['category_id'])) {
-                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+        $this->stockId = $stockId;
+        $recent_stock = StockTransaction::where('id', $stockId)->where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
+        if (!empty($recent_stock)) {
+            $this->item[0]['stockId'] = $stockId;
+            $this->item[0]['id'] = $recent_stock->add_stock_lines->first()->product->id;
+            $this->item[0]['store_id'] = $recent_stock->store_id;
+            $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
+            $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
+            $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
+            $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
+            if (!empty($this->item[0]['category_id'])) {
+                $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+            }
+            $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
+            if (!empty($this->item[0]['subcategory_id1'])) {
+                $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+            }
+            $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
+            if (!empty($this->item[0]['subcategory_id2'])) {
+                $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+            }
+            $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+            $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height ?? null;
+            $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length ?? null;
+            $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width ?? null;
+            $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
+            $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
+            $this->item[0]['method'] = $recent_stock->add_stock_lines->first()->product->method ?? null;
+            $this->item[0]['product_tax_id'] = ProductTax::where('product_id', $this->item[0]['id'])->first()->id ?? null;
+            foreach ($recent_stock->add_stock_lines as $stock) {
+                $newRow = [
+                    'stock_line_id' => $stock->id,
+                    'id' => $stock->variation->id, 'sku' => $stock->variation->sku, 'quantity' => $stock->quantity,
+                    'fill_quantity' => $stock->fill_quantity,
+                    'fill_type' => $stock->fill_type,
+                    'purchase_price' => $stock->purchase_price,
+                    'selling_price' => $stock->sell_price,
+                    'dollar_purchase_price' => $stock->dollar_purchase_price,
+                    'dollar_selling_price' => $stock->dollar_sell_price,
+                    'unit_id' => $stock->variation->unit_id,
+                    'basic_unit_id' => $stock->variation->basic_unit_id,
+                    'change_price_stock' => '',
+                    'equal' => $stock->variation->equal,
+                    'prices' => [],
+                ];
+                // $new_price=[];
+                if (!empty($stock->prices)) {
+                    foreach ($stock->prices as $price) {
+                        $new_price = [
+                            'id' => $price->id,
+                            'price_type' => $price->price_type,
+                            'price_category' => $price->price_category,
+                            'price' => $price->price,
+                            'discount_quantity' => $price->quantity,
+                            'bonus_quantity' => $price->bonus_quantity,
+                            'price_customer_types' => $price->price_customer_types,
+                            'price_after_desc' => $price->price_customers,
+                            'product_price_id' => $price->id,
+                        ];
+                        array_unshift($newRow['prices'], $new_price);
+                    }
+                } else {
+                    $new_price = [
+                        'price_type' => null,
+                        'price_category' => null,
+                        'price' => null,
+                        'discount_quantity' => null,
+                        'bonus_quantity' => null,
+                        'price_customer_types' => null,
+                        'price_after_desc' => null,
+                    ];
+                    array_unshift($newRow['prices'], $new_price);
                 }
-                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
-                if (!empty($this->item[0]['subcategory_id1'])) {
-                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
-                if (!empty($this->item[0]['subcategory_id2'])) {
-                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
-                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height ?? null;
-                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length ?? null;
-                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width ?? null;
-                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
-                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
+                array_unshift($this->rows, $newRow);
             }
         }
+        $this->calculateTotalQuantity();
         $this->exchange_rate = $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
     }
@@ -226,6 +259,7 @@ class Create extends Component
     public function addRaw()
     {
         $newRow = [
+            'stock_line_id' => '',
             'id' => '', 'sku' => '', 'quantity' => '',
             'fill_quantity' => '',
             'fill_type' => 'fixed',
@@ -239,6 +273,7 @@ class Create extends Component
             'equal' => '',
             'prices' => [
                 [
+                    'id' => null,
                     'price_type' => null,
                     'price_category' => null,
                     'price' => null,
@@ -277,37 +312,28 @@ class Create extends Component
             }
         }
     }
-    public function store()
+    public function edit()
     {
-        // dd($this->rows);
-        //for variation valid sku
-        if ($this->item[0]['isExist'] == 1) {
-            $product = Product::find($this->item[0]['id']);
-            $product->variations()->forceDelete();
-        }
         //////////
         $this->validate();
 
-        //  try {
-        if (empty($this->rows)) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
-        } else {
-            // dd(77);
-            DB::beginTransaction();
-            // Add stock transaction
-            $transaction = new StockTransaction();
-            $transaction->store_id = $this->item[0]['store_id'];
-            $transaction->status = 'received';
-            $transaction->order_date = Carbon::now();
-            $transaction->transaction_date =  Carbon::now();
-            $transaction->purchase_type = 'local';
-            $transaction->type = 'initial_balance';
-            $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
-            $transaction->created_by = Auth::user()->id;
-            $transaction->save();
-            //Add Product
-            $product = [];
-            if ($this->item[0]['isExist'] == 1) {
+        try {
+            if (empty($this->rows)) {
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
+            } else {
+                DB::beginTransaction();
+                // Add stock transaction
+                $transaction = StockTransaction::find($this->item[0]['stockId']);
+                $transaction->store_id = $this->item[0]['store_id'];
+                $transaction->status = 'received';
+                $transaction->order_date = Carbon::now();
+                $transaction->transaction_date =  Carbon::now();
+                $transaction->purchase_type = 'local';
+                $transaction->type = 'initial_balance';
+                $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
+                $transaction->created_by = Auth::user()->id;
+                $transaction->save();
+                //Edit Product
                 $product = Product::find($this->item[0]['id']);
                 $product->name = $this->item[0]['name'];
                 $product->sku = "Default";
@@ -320,102 +346,98 @@ class Create extends Component
                 $product->width = $this->item[0]['width'];
                 $product->weight = $this->item[0]['weight'];
                 $product->size = $this->item[0]['size'];
+                $product->method = $this->item[0]['method'];
                 $product->save();
-                // $product->variations()->delete();
-            } else {
-                $product = new Product();
-                $product->name = $this->item[0]['name'];
-                $product->sku = "Default";
-                $product->category_id = $this->item[0]['category_id'];
-                $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ? $this->item[0]['subcategory_id1'] : null;
-                $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
-                $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
-                $product->height = $this->item[0]['height'] ?? null;
-                $product->length = $this->item[0]['length'] ?? null;
-                $product->width = $this->item[0]['width'] ?? null;
-                $product->weight = $this->item[0]['weight'] ?? null;
-                $product->size = $this->item[0]['size'] ?? null;
-                $product->save();
-            }
-            // add  products to stock lines
-            foreach ($this->rows as $index => $row) {
+                // add  products to stock lines
 
-                // if($this->rows[$index]['skuExist']!==1){
-                $Variation = new Variation();
+                foreach ($this->rows as $index => $row) {
+                    $Variation = [];
+                    if (isset($this->rows[$index]['id'])) {
+                        $Variation = Variation::find($this->rows[$index]['id']);
+                    } else {
+                        $Variation = new Variation();
+                    }
+                    $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
+                    $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
+                    $Variation->product_id = $product->id;
+                    $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
+                    $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
+                    $Variation->created_by = Auth::user()->id;
+                    $Variation->save();
+                    ////////////////
 
-                $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
-                $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
-                $Variation->product_id = $product->id;
-                $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
-                $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
-                $Variation->created_by = Auth::user()->id;
-                $Variation->save();
-                // }else{
-                //     $product=Variation::where('sku',$this->rows[$index]['sku'])->first();
-                // }
-                ////////////////
+                    $add_stock_data = [
+                        'product_id' => $product->id,
+                        'variation_id' => $Variation->id,
+                        'stock_transaction_id' => $transaction->id,
+                        'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->rows[$index]['quantity'] : 0,
+                        'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
+                        'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->rows[$index]['fill_quantity'] : 0,
+                        'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
+                        // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+                        'sub_total' => !empty($this->sub_total[$index]) ? (float)$this->sub_total[$index] : null,
+                        'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
+                        'dollar_purchase_price' => !empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
+                        // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                        'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? (float)$this->dollar_sub_total($index) : null,
+                        'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null,
+                        // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
+                        // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
+                        'exchange_rate' => !empty($this->exchange_rate) ? $this->exchange_rate : null,
+                    ];
+                    if (!empty($this->rows[$index]['stock_line_id'])) {
+                        $stock_line = AddStockLine::find($this->rows[$index]['stock_line_id']);
+                        $stock_line->update($add_stock_data);
+                    } else {
+                        $stock_line = AddStockLine::create($add_stock_data);
+                    }
+                    $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
+                    if (!empty($this->deleted_items)) {
+                        foreach ($this->deleted_items as $delete_line) {
+                            $line = AddStockLine::find($delete_line);
+                            $line->forceDelete();
+                            $price = ProductPrice::where('stock_line_id', $delete_line)->delete();
+                        }
+                    }
+                    if (!empty($row['prices'])) {
+                        foreach ($row['prices'] as $price) {
+                            $price_data = [
+                                'variation_id' => $Variation->id,
+                                'stock_line_id' => $stock_line->id,
+                                'price_type' => isset($price['price_type']) ? $price['price_type'] : null,
+                                'price' => !empty($price['price']) ? $price['price'] : null,
+                                'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
+                                'quantity' => isset($price['discount_quantity']) ? $price['discount_quantity'] : null,
+                                'bonus_quantity' => isset($price['bonus_quantity']) ? $price['bonus_quantity'] : null,
+                                'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : [],
+                                'created_by' => Auth::user()->id,
+                            ];
 
-                $add_stock_data = [
-                    'product_id' => $product->id,
-                    'variation_id' => $Variation->id,
-                    'stock_transaction_id' => $transaction->id,
-                    'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->rows[$index]['quantity'] : 0,
-                    'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
-                    'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->rows[$index]['fill_quantity'] : 0,
-                    'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
-                    // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
-                    'sub_total' => !empty($this->sub_total[$index]) ? (float)$this->sub_total[$index] : null,
-                    'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
-                    'dollar_purchase_price' => !empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
-                    // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
-                    'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? (float)$this->dollar_sub_total($index) : null,
-                    'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null,
-                    // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
-                    // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-                    'exchange_rate' => !empty($this->exchange_rate) ? $this->exchange_rate : null,
-                ];
-                $stockLine = AddStockLine::create($add_stock_data);
-                // if (isset($this->rows[$index]['change_price_stock']) && ($this->rows[$index]['change_price_stock']!=='' || $this->rows[$index]['change_price_stock']!='true')) {
-                //     $stockLines=AddStockLine::where('product_id',$product->id)->get();
-                //     if(!empty($stockLine)){
-                //         foreach ($stockLines as $index => $stockLine) {
-                //             $stockLine->update([
-                //                 'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
-                //                 'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
-                //                 'dollar_purchase_price' => empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
-                //                 'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null
-                //             ]);
-                //         }
-                //     }
-                // }
-                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
-                if (!empty($row['prices'])) {
-                    foreach ($row['prices'] as $price) {
-                        $price_data = [
-                            'variation_id' => $Variation->id,
-                            'stock_line_id' => $stockLine->id,
-                            'price_type' => isset($price['price_type']) ? $price['price_type'] : null,
-                            'price' => !empty($price['price']) ? $price['price'] : null,
-                            'price_customers'=>!empty($price['price_after_desc']) ? $price['price_after_desc'] : null,
-                            'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
-                            'quantity' => isset($price['discount_quantity']) ? $price['discount_quantity'] : null,
-                            'bonus_quantity' => isset($price['bonus_quantity']) ? $price['bonus_quantity'] : null,
-                            'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : [],
-                            'created_by' => Auth::user()->id,
-                        ];
-                        ProductPrice::create($price_data);
+                            if (!empty($price['id'])) {
+                                $product_price = ProductPrice::find($price['id']);
+                                $product_price->update($price_data);
+                            } else {
+                                $product_price = ProductPrice::create($price_data);
+                            }
+                            if (!empty($this->deleted_prices)) {
+                                foreach ($this->deleted_prices as $delete_price) {
+                                    $price = ProductPrice::find($delete_price);
+                                    if (!empty($price)) {
+                                        $price->delete();
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
+                DB::commit();
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
+                return redirect('/initial-balance/' . $this->stockId . '/edit');
             }
-            DB::commit();
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-            return redirect('/initial-balance/create');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
+            dd($e);
         }
-        //          }
-        //          catch (\Exception $e){
-        //              $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-        // //             dd($e);
-        //          }
     }
     public function generateSku($name, $number = 1)
     {
@@ -575,6 +597,9 @@ class Create extends Component
 
     public function delete_product($index)
     {
+        if (!empty($this->rows[$index]['stock_line_id'])) {
+            $this->deleted_items[] = $this->rows[$index]['stock_line_id'];
+        }
         unset($this->rows[$index]);
     }
 
@@ -679,6 +704,9 @@ class Create extends Component
     }
     public function delete_price_raw($index, $key)
     {
+        if (!empty($this->rows[$index]['prices'][$key]['id'])) {
+            $this->deleted_prices[] = $this->rows[$index]['prices'][$key]['id'];
+        }
         unset($this->rows[$index]['prices'][$key]);
     }
     public function changePrice($index, $key)
