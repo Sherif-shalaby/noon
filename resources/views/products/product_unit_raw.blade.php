@@ -1,9 +1,13 @@
 <div class="row unit-row">
     <div class="col-md-2 pl-5">
         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-        {!! Form::text('sku['.$index.']',  isset($variation->sku)?$variation->sku:null, [
+        {!! Form::text('sku['.$index.']',null, [
             'class' => 'form-control'
         ]) !!}
+         <br>
+         @error('sku.'.$index)
+             <label class="text-danger error-msg">{{ $message }}</label>
+         @enderror
     </div>
     <div class="col-md-2">
         {!! Form::label('unit', __('lang.new_unit'), ['class'=>'h5 pt-3']) !!}

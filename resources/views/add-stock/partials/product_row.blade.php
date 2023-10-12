@@ -58,11 +58,6 @@
         </div>
     </td>
 
-{{--    <td>--}}
-{{--        <span class="total_quantity">--}}
-{{--            {{$this->total_quantity($index)}}--}}
-{{--        </span>--}}
-{{--    </td>--}}
 {{--    @if ($showColumn)--}}
         <td title="{{__('lang.purchase_price')}} $">
             <input type="text" class="form-control" style="width: 61px;" required
@@ -209,7 +204,8 @@
             @enderror
         </td>
         <td >
-            {!! Form::label('price' ,__('lang.percent')) !!}
+
+            {!! Form::label('price' ,$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
         </td>
         <td colspan="2">

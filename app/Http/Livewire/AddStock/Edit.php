@@ -466,6 +466,7 @@ class Edit extends Component
             'stock_line_id' => $line->id,
             'prices' => []
         ];
+        $new_price=[];
         $product_prices = ProductPrice::where('stock_line_id', $line->id)->get();
         if(!empty($product_prices)){
             foreach ($product_prices as $price){

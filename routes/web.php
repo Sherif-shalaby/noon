@@ -113,6 +113,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
     Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
+    Route::get('product/remove_damage/{id}', [ProductController::class,'get_remove_damage'])->name('get_remove_damage');
+    Route::get('product/create/{id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);

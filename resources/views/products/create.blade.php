@@ -115,9 +115,13 @@
                     </div>
                     <div class="col-md-3">
                         {!! Form::label('product_sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('product_sku', isset($recent_product->sku) ? $recent_product->sku : null, [
+                        {!! Form::text('product_sku',  null, [
                             'class' => 'form-control',
                         ]) !!}
+                        <br>
+                        @error('product_sku')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
                     </div>
                     <div class="col-md-12">
                         <div class="row">
@@ -378,7 +382,7 @@
                                         {!! Form::textarea('details', isset($recent_product->details) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}
                                         @include('layouts.translation_textarea', [
                                             'attribute' => 'details',
-                                            'translations' => isset($recent_product) ? $recent_product->details_translations : [],
+                                            'translations' => !empty($recent_product) ? $recent_product->details_translations : [],
                                             'type' => 'product',
                                         ])
                                     </div>

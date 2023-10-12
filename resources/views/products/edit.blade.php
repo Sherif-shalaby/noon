@@ -181,10 +181,8 @@
                                 <option value="">{{ __('lang.please_select') }}</option>
                                 @foreach ($product_tax as $tax)
                                     <option
-                                        @if (isset($product->product_taxes)) @foreach ($product->product_taxes as $product_tax)
-                                               @if ($product_tax->id == $tax->id) selected @endif
-                                        @endforeach
-                                @endif
+                                     @if ($product_tax_id == $tax->id) selected @endif
+        
                                 value="{{ $tax->id }}"> {{ $tax->name }}
                                 </option>
                                 @endforeach

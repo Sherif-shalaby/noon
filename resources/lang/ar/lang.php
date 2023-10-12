@@ -140,7 +140,7 @@ return array(
     'permenant'=>'دائم',
     'subcategories_name'=>'الاقسام الفرعية',
     'image'=>'الصورة',
-    'sku'=>'الكود',
+    'sku'=>'الباركود',
     'currency_change'=>'تغيير العملة الى',
     'dollar_exchange'=>'سعر صرف الدولار',
     'edit_products'=>'تعديل المنتج',
@@ -528,5 +528,20 @@ return array(
     'delete_all' => 'حذف جماعي',
     'filter'=>'تصفية',
     'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
+    'sku_required'=>'الباركود موجود من قبل',
+    'remove_damage' => 'ازاله منتج تالف',
+    'product_damage' => 'توالف المنتج المزالة',
+    'quantity_of_expired_stock_removed' => 'كميه المخزون التالف المحذوف',
+    'value_of_the_removed_stocks' => 'قيمه المخزون التالف ',
+    'date_of_the_removal' => 'تاريخ الحذف',
+    'date_of_purchase_of_the_expired_stock_removed' => 'تاريخ شراء المخزون التالف المحذوف',
+    'deleted_by' => 'حذف بواسطة',
+    'quantity_to_be_removed' => 'الكميه المراد حذفها',
+    'date_of_expired_stock' => 'تاريخ انتهاء صلاحية المخزون',
+    'date_of_purchase_of_the_expired_stock' => 'تاريخ شراء المخزون المنتهي',
+    'avg_purchase_price' => 'متوسط سعر الشراء',
+    'value_of_removed_stock' => 'قيمه المخزون المحذوف',
+
+
 );
 

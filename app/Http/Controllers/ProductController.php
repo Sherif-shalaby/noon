@@ -3,19 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductExpiryDamage;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;use App\Models\ProductTax;
 use App\Models\Store;
 use App\Models\System;
+use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Variation;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
@@ -89,7 +95,8 @@ class ProductController extends Controller
   {
     $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
 //    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
-     if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
+    $recent_product=[];
+    if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
          $recent_product = Product::orderBy('created_at', 'desc')->first();
      }
 //     dd(isset($recent_product));
@@ -99,7 +106,7 @@ class ProductController extends Controller
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     // product_tax
-    $product_tax = ProductTax::where('status','active')->get();
+    $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
     return view('products.create',
@@ -139,7 +146,11 @@ class ProductController extends Controller
     // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
     if(!empty($request->product_tax_id))
     {
-        $product->product_taxes()->attach($request->product_tax_id) ;
+        ProductTax::create([
+            'product_tax_id' => $request->product_tax_id,
+            'product_id' => $product->id,
+        ]);
+        // $product->product_taxes()->attach($request->product_tax_id) ;
     }
 
     // if(!empty($request->subcategory_id)){
@@ -257,10 +268,17 @@ class ProductController extends Controller
    * Display the specified resource.
    *
    * @param  int  $id
-   * @return Response
+   * @return Application|Factory|View
    */
   public function show($id)
   {
+      $product = Product::find($id);
+      $stock_detials = ProductStore::where('product_id', $id)->get();
+      return view('products.show')->with(compact(
+          'product',
+          'stock_detials',
+//          'add_stocks',
+      ));
 
   }
 
@@ -277,11 +295,12 @@ class ProductController extends Controller
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
-      $product=Product::with('product_taxes')->findOrFail($id);
+      $product=Product::findOrFail($id);
+      $product_tax_id=ProductTax::where('product_id',$product->id)->first()->product_tax_id;
       $customer_types = CustomerType::pluck('name', 'id');
-      $product_tax = ProductTax::all();
+      $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
+      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax','product_tax_id'));
   }
 
   /**
@@ -505,7 +524,6 @@ class ProductController extends Controller
 
             DB::commit();
         } catch (\Exception $e) {
-            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
@@ -514,6 +532,41 @@ class ProductController extends Controller
         }
 
         return $output;
+    }
+
+    public function get_remove_damage(Request $request,$id){
+        $product_damages = ProductExpiryDamage::where("product_id",$id)->where("status","damage")->get();
+        $status = "damage";
+        return view('product_expiry_damage.index')
+            ->with(compact( 'product_damages', 'status' ,'id' ));
+    }
+    public function getDamageProduct(Request $request,$id){
+            $addStockLines = AddStockLine::
+            where("add_stock_lines.product_id",$id)
+                ->where("add_stock_lines.quantity",">",0 )
+                ->leftjoin('variations', function ($join) {
+                    $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+                });
+            $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+            $store_query = '';
+            if (!empty($store_id)) {
+                // $products->where('product_stores.store_id', $store_id);
+                $store_query = 'AND store_id=' . $store_id;
+            }
+            $addStockLines = $addStockLines->select(
+                'add_stock_lines.*',
+                'add_stock_lines.expiry_date as exp_date',
+                'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
+                'add_stock_lines.purchase_price as add_stock_line_purchase_price',
+                'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
+                'variations.sub_sku',
+                'variations.name as variation_name',
+                DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
+                DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
+                DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
+            )->groupBy('add_stock_lines.id');
+
+        return view("product_expiry_damage.add");
     }
 }
 

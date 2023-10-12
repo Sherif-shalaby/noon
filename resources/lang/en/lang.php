@@ -509,6 +509,21 @@ return [
     'delete_all' => 'Delete All',
     'filter'=>'Filter',
     'dont_show_zero_stocks'=>'Dont Show Zero Stocks',
+    'sku_required'=>'The product SKU has already been taken',
+    'remove_damage' => 'Remove Damage',
+    'product_damage' => 'Product Damage',
+    'quantity_of_expired_stock_removed' => 'quantity_of_expired_stock_removed',
+    'value_of_the_removed_stocks' => 'value_of_the_removed_stocks',
+    'date_of_the_removal' => 'date_of_the_removal',
+    'date_of_purchase_of_the_expired_stock_removed' => 'date_of_purchase_of_the_expired_stock_removed',
+    'deleted_by' => 'Deleted By',
+    'quantity_to_be_removed' => 'Quantity To Be Removed',
+    'date_of_expired_stock' => 'Date Of Expired Stock',
+    'date_of_purchase_of_the_expired_stock' => 'Date Of Purchase Of The Expired Stock',
+    'avg_purchase_price' => 'Avg Purchase Price',
+    'value_of_removed_stock' => 'Removed Stock',
+
+
 
 ];
 

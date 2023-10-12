@@ -25,12 +25,15 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255|unique:products',
+            'product_sku' => 'nullable|max:255|unique:products,sku',
             'height'=>'nullable|numeric|between:0,99999999999.99',
             'length'=>'nullable|numeric|between:0,99999999999.99',
             'width'=>'nullable|numeric|between:0,99999999999.99',
             'size'=>'nullable|numeric|between:0,99999999999.99',
             'weight'=>'nullable|numeric|between:0,99999999999.99',
             'category_id'=>'required',
+            'sku.*' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
+
         ];
     }
     public function messages()
@@ -38,6 +41,8 @@ class ProductRequest extends FormRequest
         return [
         'name.required'=>__('lang.NameRequired'),
         'name.unique'=>__('lang.NameUnique'),
+        'product_sku.unique'=>__('lang.sku_required'),
+        'sku.*.unique'=>__('lang.sku_required'),
         'height.numeric'=>__('lang.enter_correct_decimal_number'),
         'length.numeric'=>__('lang.enter_correct_decimal_number'),
         'width.numeric'=>__('lang.enter_correct_decimal_number'),
