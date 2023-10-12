@@ -8,6 +8,7 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('products.create')}}">@lang('lang.add_products')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.products')</li>
                     </ol>
                 </div>
@@ -23,16 +24,6 @@
     </div>
 @endsection
 @section('content')
-    {{-- <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
-            <div class="card m-b-30 p-2">
-
-
-            </div>
-        </div>
-    </div> --}}
        <!-- Start Contentbar -->
        <div class="contentbar">
         <!-- Start row -->
