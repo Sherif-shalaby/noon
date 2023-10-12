@@ -1,56 +1,54 @@
 <tr>
     <td>
-{{--        <input type="hidden" name="selectedProductData" value="{{ json_encode($selectedProductData) }}">--}}
         {{$index+1}}
     </td>
-{{--    <td>--}}
-{{--        <img src="@if(!empty($product->image)){{asset('uploads/products/'.$product->image)}}@else{{asset('/uploads/'.session('logo'))}}@endif"--}}
-{{--             alt="photo" width="50" height="50">--}}
-{{--    </td>--}}
-
-    <td>
-        @if($product['show_product_data'])
+    <td title="{{__('lang.products')}}">
+{{--        @if($product['show_product_data'])--}}
             {{ $product['product']['name'] }}
-        @endif
+{{--        @endif--}}
     </td>
-    <td>
-        @if($product['show_product_data'])
+    <td title="{{__('lang.sku')}}">
+{{--        @if($product['show_product_data'])--}}
             {{ $product['product']['sku'] }}
-        @endif
+{{--        @endif--}}
     </td>
-    <td>
+    <td title="{{__('lang.quantity')}}">
         <input type="text" class="form-control quantity" style="width: 61px;" required
                wire:model="items.{{ $index }}.quantity" wire:change="changeCurrentStock({{ $index }})">
         @error('items.{{ $index }}.quantity')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
-    <td>
-{{--        {{$product['variation_id'] ?? 0}}--}}
-        <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
-            <option value="" selected>{{__('lang.please_select')}}</option>
-
-            @foreach($product['variations'] as $variant)
-                <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
-            @endforeach
-        </select>
-        <button type="button" class="btn btn-primary btn-sm mt-2" wire:click="add_product({{$product['product']['id']}},'unit')">
-            <i class="fa fa-plus"></i>
-        </button>
+    <td title="{{__('lang.unit')}}">
+        @if(count($product['variations']) > 0)
+            <div class="d-flex justify-content-center">
+                <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+                    <option value="" selected>{{__('lang.please_select')}}</option>
+                    @foreach($product['variations'] as $variant)
+                        <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                    @endforeach
+                </select>
+                <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        @else
+            <span>@lang('lang.no_units')</span>
+        @endif
         @error('items.'.$index.'.variation_id')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
-    <td>
-        <span>{{$product['base_unit_multiplier']}}</span>
+    <td title="{{__('lang.fill')}}">
+
     </td>
-    <td>
+    <td title="{{__('lang.basic_unit')}}">
         <span>{{$product['unit']}}</span>
     </td>
-    <td>
+    <td title="{{__('lang.to_get_sell_price')}}">
         <div class="d-flex justify-content-between">
-            <select class="custom-select " style="width:55px;" wire:model="items.{{ $index }}.fill_type" wire:change="changeFilling({{$index}})">
-                <option selected value="fixed">-</option>
+            <select class="custom-select " style="width:65px;font-size:10px;height:38px;" wire:model="items.{{ $index }}.fill_type" wire:change="changeFilling({{$index}})">
+                <option selected value="fixed">@lang('lang.fixed')</option>
                 <option  value="percent">%</option>
             </select>
             <div class="input-group-prepend">
@@ -60,26 +58,22 @@
         </div>
     </td>
 
-{{--    <td>--}}
-{{--        <span class="total_quantity">--}}
-{{--            {{$this->total_quantity($index)}}--}}
-{{--        </span>--}}
-{{--    </td>--}}
 {{--    @if ($showColumn)--}}
-        <td>
+        <td title="{{__('lang.purchase_price')}} $">
             <input type="text" class="form-control" style="width: 61px;" required
-                   wire:model="items.{{ $index }}.dollar_purchase_price">
+                   wire:model="items.{{ $index }}.dollar_purchase_price" wire:change="changeFilling({{$index}})">
             @error('purchase_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
-        <td>
-            <input type="text" class="form-control " wire:model="items.{{ $index }}.dollar_selling_price" style="width: 61px;" required>
+        <td title="{{__('lang.selling_price')}} $">
+            <input type="text" class="form-control"  style="width: 61px;" required
+                   wire:model="items.{{ $index }}.dollar_selling_price">
             @error('selling_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
-        <td>
+        <td title="{{__('lang.sub_total')}} $">
             @if(isset($product['quantity']) &&  (isset($product['dollar_purchase_price']) || isset($product['purchase_price'])))
                 <span class="sub_total_span" >
                     {{$this->dollar_sub_total($index)}}
@@ -87,31 +81,31 @@
             @endif
         </td>
 {{--    @endif--}}
-    <td>
-        <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" style="width: 61px;"  required>
+    <td title="{{__('lang.purchase_price')}}">
+        <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" wire:change="changeFilling({{$index}})" style="width: 61px;"  required>
         @error('purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
-    <td>
+    <td title="{{__('lang.selling_price')}}">
         <input type="text" class="form-control " wire:model="items.{{ $index }}.selling_price" style="width: 61px;" required>
         @error('selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
-    <td>
+    <td title="{{__('lang.sub_total')}}">
         @if(isset($product['quantity']) && (isset($product['purchase_price']) || isset($product['dollar_purchase_price'])))
             <span class="sub_total_span" >
                 {{$this->sub_total($index)}}
             </span>
         @endif
     </td>
-    <td>
+    <td title="{{__('lang.size')}} ">
         <span class="size">
             {{ $product['size'] }}
         </span>
     </td>
-    <td>
+    <td title="{{__('lang.total_size')}}">
        @if(isset($product['quantity']))
             <span class="total_size">
                 {{$this->total_size($index) }}
@@ -120,12 +114,12 @@
            {{0.00}}
         @endif
     </td>
-    <td>
+    <td title="{{__('lang.weight')}}">
         <span class="weight">
             {{ $product['weight'] }}
         </span>
     </td>
-    <td>
+    <td title="{{__('lang.total_weight')}}">
        @if(isset($product['quantity']))
             <span class="total_weight">
                 {{$this->total_weight($index) }}
@@ -135,7 +129,7 @@
         @endif
     </td>
 {{--    @if ($showColumn)--}}
-        <td>
+        <td title="{{__('lang.cost')}} $">
             @if(isset($product['quantity']) &&( isset($product['dollar_purchase_price']) || isset($product['purchase_price'])))
                 <span class="dollar_cost">
                     {{ $this->dollar_cost($index) }}
@@ -144,7 +138,7 @@
                 {{0.00}}
             @endif
         </td>
-        <td>
+        <td title="{{__('lang.total_cost')}} $">
             @if(isset($product['quantity']) &&( isset($product['dollar_purchase_price']) || isset($product['purchase_price'])))
                 <span class="dollar_total_cost">
                     {{$this->dollar_total_cost($index) }}
@@ -154,7 +148,7 @@
             @endif
         </td>
 {{--    @endif--}}
-    <td>
+    <td title="{{__('lang.cost')}}">
         @if(isset($product['quantity']) &&( isset($product['purchase_price']) ||  isset($product['dollar_purchase_price'])))
             <span class="cost">
                 {{$this->cost($index) }}
@@ -163,7 +157,7 @@
             {{0.00}}
         @endif
     </td>
-    <td>
+    <td title="{{__('lang.total_cost')}}">
         @if(isset($product['quantity']) &&( isset($product['purchase_price']) ||  isset($product['dollar_purchase_price'])))
             <span class="total_cost">
                 {{$this->total_cost($index) }}
@@ -172,15 +166,15 @@
             {{0.00}}
         @endif
     </td>
-    <td>
+    <td title="{{__('lang.new_stock')}}">
         <span class="current_stock_text">
             {{$product['total_stock'] }}
         </span>
     </td>
-    <td>
+    <td title="{{__('lang.change_current_stock')}}">
        <input type="checkbox" name="change_price"  wire:model="items.{{ $index }}.change_price_stock">
     </td>
-    <td  class="text-center">
+    <td  title="{{__('lang.action')}}" class="text-center">
         <div class="btn btn-sm btn-danger py-0 px-1"
              wire:click="delete_product({{ $index }})">
             <i class="fa fa-trash"></i>
@@ -192,26 +186,26 @@
     <tr>
         <td></td>
         <td>
+            {!! Form::label('price_category' ,__('lang.price_category')) !!}
+            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
+        </td>
+        <td colspan="2">
             {!! Form::label('price_type' ,__('lang.type')) !!}
-            {!! Form::select('price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
-                 'id' => 'price_type',
+            {!! Form::select('items.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
                 'class' => ' form-control price_type',
-                'data-name' => 'price_type',
 //                'data-index' =>$index,
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'items.'.$index.'.prices.'.$key.'.price_type',
+                'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
             @error('items.'.$index.'.prices.'.$key.'.price_type')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-        <td colspan="2">
-            {!! Form::label('price_category' ,__('lang.price_category')) !!}
-            <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
-        </td>
-        <td>
-            {!! Form::label('price' ,__('lang.percent')) !!}
+        <td >
+
+            {!! Form::label('price' ,$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
         </td>
         <td colspan="2">

@@ -179,17 +179,25 @@ $(".openCategoryModal").click(function (e){
     else if(select_category=="3"){
         main_category_id= $("#subCategoryId2").val();
     }
+    console.log(select_category,main_category_id)
+
+    if((main_category_id!=='' && select_category!=0) || main_category_id===0){
+    $(this).addClass('btn-modal');
+    }else{
+        Swal.fire("warning", LANG.no_parent_category, "warning");
+    }
 });
 $("#create-category-btn").click(function (e){
     e.preventDefault();
     setTimeout(()=>{
-        $("#category-form").submit();
+        $("#create-category-form").submit();
     },500)
 });
-$(document).on("submit", "#category-form", function (e) {
+$(document).on("submit", "#create-category-form", function (e) {
     e.preventDefault();
     var dataArray = $(this).serializeArray();
     var data = {};
+    var name = $('.category-name').val();
     // Convert the serialized array into an object
     $.each(dataArray, function(index, field) {
         data[field.name] = field.value;
@@ -202,7 +210,8 @@ $(document).on("submit", "#category-form", function (e) {
         dataType: "json",
         data: {
             data: data,
-            parent_id: main_category_id
+            parent_id: main_category_id,
+            name:name
         },
         success: function (result) {
             if (result.success) {
@@ -217,10 +226,9 @@ $(document).on("submit", "#category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        // alert(select_category)
                         if(select_category=="0"){
                             $("#categoryId").empty().append(data_html);
-                            $("#categoryId").val(category_id).trigger();
+                            $("#categoryId").val(category_id).change();
                         }else if(select_category=="2"){
                             console.log(data_html);
 

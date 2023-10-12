@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
+                    {{--  --}}
                     <div class="card-header">
-
                         @if (!empty($is_raw_material))
                             <h4 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.add_stock_for_raw_material')</h4>
@@ -155,7 +155,7 @@
                                     ]) !!}
 
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
+                                        data-container=".view_modal" style="cursor: pointer"
                                         class="add-button btn-modal openCategoryModal text-white d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="0"><i class="fas fa-plus"></i></a>
                                     {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
@@ -269,7 +269,7 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" style="padding: 5px 15px"
-                                                type="button" data-bs-toggle="collapse"
+                                                type="button" wire:click="showHideTax()" data-bs-toggle="collapse"
                                                 data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
                                                 aria-controls="panelsStayOpen-collapseOne">
                                                 <h6>
@@ -277,7 +277,8 @@
                                                 </h6>
                                             </button>
                                         </h2>
-                                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
+                                        <div id="panelsStayOpen-collapseOne"
+                                            class="accordion-collapse collapse @if ($item[0]['show_tax']) show @endif">
                                             <div class="accordion-body d-flex">
 
                                                 <div
@@ -369,14 +370,15 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" style="padding: 5px 15px"
-                                                type="button" data-bs-toggle="collapse"
+                                                type="button" data-bs-toggle="collapse" wire:click="showHideSize()"
                                                 data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
                                                 aria-controls="panelsStayOpen-collapseTwo">
                                                 <h6>{{ __('lang.product_dimensions') }}</h6>
                                             </button>
                                         </h2>
 
-                                        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                                        <div id="panelsStayOpen-collapseTwo"
+                                            class="accordion-collapse collapse @if ($item[0]['show_size']) show @endif">
                                             <div class="accordion-body d-flex">
 
                                                 <div

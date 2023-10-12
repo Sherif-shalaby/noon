@@ -36,6 +36,7 @@
                 ]) !!}
                 <div class="container-fluid">
                     <div class="row pt-5">
+                        {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('employee_id', __('lang.employee') . ':*') !!}
@@ -49,6 +50,7 @@
                                 @enderror
                             </div>
                         </div>
+                        {{-- +++++++++++++++++ طريقة الدفع +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('payment_type', __('lang.payment_type') . ':*') !!}
@@ -62,13 +64,14 @@
                                 @enderror
                             </div>
                         </div>
-
+                        {{-- +++++++++++++++++ مدفوعات اخري (المبلغ) +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('other_payment', __('lang.other_payment')) !!}
                                 {!! Form::text('other_payment', null, [
-                                    'class' => 'form-control',
+                                    'class' => 'form-control', 'id' => 'other_payment',
                                 ]) !!}
+                                <span id="otherPaymentResult"></span> <!-- New span element for displaying the result -->
                                 @error('other_payment')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
@@ -170,4 +173,63 @@
 @endsection
 @push('js')
     <script src="{{ asset('js/product/wage.js') }}"></script>
+    {{-- ++++++++++++++++ Ajax Request ++++++++++++++++ --}}
+    {{-- get "other_payment" according to "employee_id" , "payment_type" --}}
+    <script>
+        $(document).ready(function()
+        {
+            // Event handler for employee_id dropdown change
+            $('#employee_id').on('change', function()
+            {
+                updateOtherPayment();
+            });
+
+            // Event handler for payment_type dropdown change
+            $('#payment_type').on('change', function()
+            {
+                updateOtherPayment();
+            });
+            // ++++++++++ updateOtherPayment() +++++++++++++
+            function updateOtherPayment()
+            {
+                var employeeId = $('#employee_id').val();
+                var paymentType = $('#payment_type').val();
+                // Make an AJAX request to fetch other_payment based on employee_id and payment_type
+                $.ajax({
+                    url: '{{ route('update_other_payment') }}', // Using the named route
+                    type: 'POST',
+                    data: {
+                        employee_id: employeeId,
+                        payment_type: paymentType
+                    },
+                    success: function(response) {
+                        console.log(response.other_payment);
+                        // Update the other_payment field with the fetched value
+                        $('#other_payment').val(response.other_payment);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+            // +++++++++++++++++ Calculate "net_value" : When Change "الخصومات" +++++++++++++++++
+            $('#deductibles').on('keyup', function()
+            {
+                // console.log("keyup keyup keyup keyup");
+                let deductibles = parseFloat($('#deductibles').val());
+                let other_payment = parseFloat($('#other_payment').val());
+                let net_val = 0.00 ;
+                if ( $('#deductibles').val() != '' && $('#deductibles').val() != undefined )
+                {
+                    net_val = other_payment - deductibles;
+                    $('#net_amount').val(net_val);
+                }
+                else
+                {
+                    $('#net_amount').val(other_payment);
+                }
+            })
+        });
+    </script>
+
 @endpush

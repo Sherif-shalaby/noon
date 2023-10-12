@@ -5,16 +5,14 @@
     </td>
     {{-- ++++++++++++++ column 2 : product_name ++++++++++++++ --}}
     <td>
-        @if($product['show_product_data'])
+        {{-- @if($product['show_product_data']) --}}
             {{ $product['product']['name'] }}
-            {{-- <input type="hidden" class="form-control quantity" style="width: 61px;" required
-               wire:model="items.{{ $index }}.product_id" > --}}
-        @endif
+        {{-- @endif --}}
     </td>
     {{-- +++++++++++++++++++++ column 3 : quantity +++++++++++++++++++++ --}}
     <td>
         <input type="text" class="form-control quantity" style="width: 61px;" required
-               wire:model="items.{{ $index }}.quantity" wire:change="changeCurrentStock({{ $index }})">
+               wire:model="items.{{ $index }}.quantity">
         @error('items.{{ $index }}.quantity')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
@@ -33,7 +31,7 @@
                 wire:model="items.{{ $index }}.dollar_selling_price" style="width: 100%;"
                 wire:keyup="convert_dinar_price({{ $index }})" required>
         @error('selling_price')
-        <span class="error text-danger">{{ $message }}</span>
+            <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     {{-- +++++++++++++++++++++ column 6 : المجموع الفرعي بالدولار +++++++++++++++++++++ --}}

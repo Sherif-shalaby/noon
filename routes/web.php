@@ -1,44 +1,44 @@
 <?php
 
-use App\Http\Controllers\AddStockController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ColorController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SellReturnController;
-use App\Http\Controllers\SizeController;
-use App\Http\Controllers\StorePosController;
-use App\Http\Controllers\UnitController;
+use App\Http\Controllers\SellCarController;
+use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SettingController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\CustomersReportController;
-use App\Http\Controllers\CustomerTypeController;
-use App\Http\Controllers\DailyReportSummary;
-use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\GetDueReport;
-use App\Http\Controllers\GetDueReportController;
-use App\Http\Controllers\InitialBalanceController;
-use App\Http\Controllers\MoneySafeController;
-use App\Http\Controllers\PayableReportController;
-use App\Http\Controllers\ProductTaxController;
-use App\Http\Controllers\PurchaseOrderLineController;
-use App\Http\Controllers\PurchasesReportController;
-use App\Http\Controllers\ReceivableController;
-use App\Http\Controllers\RepresentativeSalaryReportController;
-use App\Http\Controllers\SalesReportController;
-use App\Http\Controllers\SellCarController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SizeController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\WageController;
-use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ColorController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SellPosController;
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\AddStockController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DailyReportSummary;
+use App\Http\Controllers\StorePosController;
+use App\Http\Controllers\MoneySafeController;
+use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\ProductTaxController;
+use App\Http\Controllers\ReceivableController;
+use App\Http\Controllers\SellReturnController;
+use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\PayableReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
+use App\Http\Controllers\CustomersReportController;
+use App\Http\Controllers\PurchasesReportController;
+use App\Http\Controllers\PurchaseOrderLineController;
+use App\Http\Controllers\CustomerOfferPriceController;
+use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
-use App\Models\Product;
-use App\Models\PurchaseOrderLine;
+use App\Http\Controllers\RepresentativeSalaryReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +78,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Wages
     Route::resource('wages',WageController::class);
-    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission'])->name('calculateSalaryAndCommission');
+    Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
@@ -108,7 +109,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
-
+    Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
+    Route::get('product/remove_damage/{id}', [ProductController::class,'get_remove_damage'])->name('get_remove_damage');
+    Route::get('product/create/{id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
@@ -116,14 +119,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customertypes', CustomerTypeController::class);
 
     // stocks
-//    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
-//    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
-//    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
+    Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
+    Route::delete('add-stock/{id}/delete',[AddStockController::class , 'destroy'])->name('stocks.delete');
 
     // Initial Balance
     Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
@@ -182,6 +184,10 @@ Route::group(['middleware' => ['auth']], function () {
     // ################################# Task : customer_price_offer #################################
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
+    Route::view('customer_price_offer/edit/{id}', 'customer_price_offer.edit')->name('customer_price_offer.edit');
+    // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
+    Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
+
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));

@@ -1,7 +1,7 @@
 @php
     $config_langs = config('constants.langs');
 @endphp
-<div class="position-absolute" style="z-index: 1;top: 100%;right: 40%;">
+<div class="col-md-12 position-absolute" style="top: 35px">
     <table class="table hide collapse {{ !empty($open_input) && $open_input == true ? 'editTogle' : '' }}"
         @if (!empty($type)) id="translation_table_{{ $type }}" @else id="translation_table_company" @endif>
         <tbody>

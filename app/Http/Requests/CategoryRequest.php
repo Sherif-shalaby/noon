@@ -25,8 +25,7 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255|unique:categories,name,NULL,id,deleted_at,NULL',
-            // 'status' => 'required',
-            'parent_id' => 'nullable',
+            // 'parent_id' => 'required',
             'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
         ];
     }

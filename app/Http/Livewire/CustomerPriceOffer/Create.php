@@ -102,9 +102,13 @@ class Create extends Component
         $stores = Store::getDropdown();
         $departments = Category::get();
         $search_result = '';
-        if(!empty($this->searchProduct)){
-            $search_result = Product::when($this->searchProduct,function ($query){
-                return $query->where('name','like','%'.$this->searchProduct.'%');
+        if(!empty($this->searchProduct))
+        {
+            $search_result = Product::when($this->searchProduct,function ($query)
+            {
+                // return $query->where('name','like','%'.$this->searchProduct.'%');
+                return $query->where('name', 'like', '%' . $this->searchProduct . '%')
+                             ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
             });
             $search_result = $search_result->paginate();
             if(count($search_result) === 1){
@@ -159,52 +163,15 @@ class Create extends Component
         $this->validateOnly($propertyName);
     }
     // ++++++++++++++++++++++++++++++++++ store() method ++++++++++++++++++++++++++++++++++
-    // public function store(): Redirector|Application|RedirectResponse
-    // {
-    //     try
-    //     {
-    //         $customer_offer_price['store_id'] = $this->store_id;
-    //         $customer_offer_price['customer_id'] = $this->customer_id;
-    //         $customer_offer_price['is_quotation'] = 1;
-    //         // +++++++++++++++ product +++++++++++++++++++++
-    //         foreach( $this->items as $item )
-    //         {
-    //             $customer_offer_price['product_id'] = !empty($item['product']['id']) ? $item['product']['id'] : null;
-    //             $customer_offer_price['quantity'] = !empty($item['quantity']) ? $item['quantity'] : 0 ;
-    //         }
-    //         // dinar sell_price
-    //         $customer_offer_price['sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-    //         // dollar sell_price
-    //         $customer_offer_price['dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-    //         // dinar total_sell_price
-    //         $customer_offer_price['total_sell_price'] = $this->num_uf($this->sum_dinar_sub_total());
-    //         // dollar total_sell_price
-    //         $customer_offer_price['total_dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-    //         // status = draft : عشان مفيش دفع حيث بيكون عملية حجز
-    //         $customer_offer_price['status'] = 'draft';
-    //         $customer_offer_price['block_qty'] = !empty($this->block_qty) ? 1 : 0;
-    //         $customer_offer_price['block_for_days'] = !empty($this->block_for_days) ? $this->block_for_days : 0; //reverse the block qty handle by command using cron job
-    //         $customer_offer_price['validity_days'] = !empty($this->validity_days) ? $this->validity_days : 0;
-    //         $customer_offer_price['tax_method'] = !empty($this->tax_method) ? $this->tax_method : null;
-    //         $customer_offer_price['discount_type'] = !empty($this->discount_type) ? $this->discount_type : null;
-    //         $customer_offer_price['discount_value'] = !empty($this->discount_value) ? $this->discount_value : null;
-    //         $customer_offer_price['created_by'] = Auth::user()->id;
-    //         $transaction = CustomerPriceOffer::create($customer_offer_price);
-    //         $this->dispatchBrowserEvent('swal:modal', ['type' => 'success','message' => 'lang.success',]);
-    //     }
-    //     catch (\Exception $e){
-    //         $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
-    //         dd($e);
-    //     }
-    //     return redirect()->route('customer_price_offer.create');
-    // }
-    // public function someMethod()
-    // {
-    //     // Ensure $this->discount_type is being set correctly before assigning it
-    //     $this->discount_type = 'fixed'; // Example value, set it according to your logic
-    // }
+
     public function store(): Redirector|Application|RedirectResponse
     {
+        $this->validate([
+            'store_id' => 'required',
+            'customer_id' => 'required',
+            'block_for_days' => 'required',
+            'validity_days' => 'required',
+        ]);
         try
         {
             // ++++++++++++++++++++++++++++ TransactionCustomerOfferPrice table ++++++++++++++++++++++++++++
@@ -237,39 +204,27 @@ class Create extends Component
             $transaction_customer_offer->discount_value = !empty($this->discount_value) ? $this->discount_value : null;
             // created_by
             $transaction_customer_offer->created_by = Auth::user()->id;
+            // updated_by
+            $transaction_customer_offer->updated_by = null;
+            // deleted_by
+            $transaction_customer_offer->deleted_by = null;
+            // created_at
             $transaction_customer_offer->created_at = now();
+            // updated_at
+            $transaction_customer_offer->updated_at = null;
+            // deleted_at
+            $transaction_customer_offer->deleted_at = null;
             $transaction_customer_offer->save();
 
             DB::beginTransaction();
             // add  products to stock lines
             $customer_offer_prices = [];
             // ++++++++++++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++++++++++++
-            // foreach ($this->items as $index => $item)
-            // {
-            //     // Check if product id and quantity are available in the item
-            //     if (!empty($item['product']['id']) && !empty($item['quantity']))
-            //     {
-            //         $customer_offer_price['transaction_id'] = $transaction->id ;
-            //         // product
-            //         $customer_offer_price['product_id'] = !empty($item['product']['id']) ? $item['product']['id'] : null ;
-            //         // quantity
-            //         $customer_offer_price['quantity'] = $item['quantity'];
-            //         // dinar sell_price
-            //         $customer_offer_price['sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-            //         // dollar sell_price
-            //         $customer_offer_price['dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-            //         // dinar total_sell_price
-            //         // $customer_offer_price['total_sell_price'] = $this->num_uf($this->sum_dinar_sub_total());
-            //         // dollar total_sell_price
-            //         // $customer_offer_price['total_dollar_sell_price'] = $this->num_uf($this->sum_dollar_sub_total());
-            //         // Add the customer offer price for this item to the array
-            //         $customer_offer_prices[] = $customer_offer_price;
-            //     }
-            // }
             foreach ($this->items as $index => $item)
             {
                 if (!empty($item['product']['id']) && !empty($item['quantity']))
                 {
+                    // dd($item);
                     // Create a new array for each item
                     $customer_offer_price = [];
 
@@ -277,9 +232,20 @@ class Create extends Component
                     $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
                     $customer_offer_price['product_id'] = $item['product']['id'];
                     $customer_offer_price['quantity'] = $item['quantity'];
-                    $customer_offer_price['sell_price'] = $item['total_cost_var'];
-                    $customer_offer_price['dollar_sell_price'] = $item['dollar_total_cost_var'];
+                    $customer_offer_price['sell_price'] = $item['selling_price'];
+                    $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
+                    // created_by
+                    $customer_offer_price['created_by'] = Auth::user()->id;
+                    // updated_by
+                    $customer_offer_price['updated_by'] = null;
+                    // deleted_by
+                    $customer_offer_price['deleted_by'] = null;
+                    // created_at
                     $customer_offer_price['created_at'] = now();
+                    // updated_at
+                    $customer_offer_price['updated_at'] = null;
+                    // deleted_at
+                    $customer_offer_price['deleted_at'] = null;
 
                     // Add the customer offer price for this item to the array
                     $customer_offer_prices[] = $customer_offer_price;
@@ -340,6 +306,13 @@ class Create extends Component
     // +++++++++++++++++++++++ addNewProduct() +++++++++++++++++++++++
     public function addNewProduct($variations,$product,$show_product_data)
     {
+        // Task_9_10_2023 : dollar_selling_price
+        $dollar_sell = AddStockLine::select('dollar_sell_price')->where('product_id', $product['id'])->latest()->first();
+        // Task_9_10_2023 : dinar_selling_price
+        $dinar_sell = AddStockLine::select('sell_price')->where('product_id', $product['id'])->latest()->first();
+        // Task_9_10_2023 : quantity
+        $quantity = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // dd($quantity);
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -354,6 +327,12 @@ class Create extends Component
             'weight' => !empty($product->weight) ? $product->weight : 0,
             'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
             'dollar_cost' => 0,
+            // get "dollar_selling_price" from "add_stock_line" table
+            'dollar_selling_price' => isset($dollar_sell->dollar_sell_price) ? $dollar_sell->dollar_sell_price : 0 ,
+            // get "selling_price" from "add_stock_line" table
+            'selling_price' => isset($dinar_sell->sell_price) ? $dinar_sell->sell_price : 0 ,
+            // get sum of all "quantity" of "product" from "add_stock_line" table
+            'quantity' => isset($quantity) ? $quantity : 0 ,
             'cost' => 0,
             'dollar_total_cost' => 0,
             'total_cost' => 0,
@@ -362,14 +341,6 @@ class Create extends Component
         ];
         array_push($this->items, $new_item);
     }
-
-//    public function getCurrentStock($product_id){
-//        $stocks = AddStockLine::where('product_id',$product_id)->get();
-//        foreach ($stocks as $stock){
-//            dd($stock->variation);
-//        }
-//        dd($stocks);
-//    }
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
@@ -401,36 +372,6 @@ class Create extends Component
         return Variation::where('id' ,$this->selectedProductData[$index]->id)->first();
     }
 
-    // public function sub_total($index)
-    // {
-    //     if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
-    //         // convert purchase price from Dollar To Dinar
-    //         $purchase_price = $this->convertDollarPrice($index);
-
-    //         $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
-
-    //         return number_format($this->items[$index]['sub_total'], 2);
-    //     }
-    //     else{
-    //         $this->items[$index]['purchase_price'] = null;
-    //     }
-    // }
-
-    // public function dollar_sub_total($index)
-    // {
-    //     if(isset($this->items[$index]['quantity']) && ($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])){
-    //         // convert purchase price from Dinar To Dollar
-    //         $purchase_price = $this->convertDinarPrice($index);
-
-    //         $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
-
-    //         return number_format($this->items[$index]['dollar_sub_total'], 2);
-    //     }
-    //     else{
-    //         $this->items[$index]['dollar_purchase_price'] = null;
-    //     }
-    // }
-
 
     public function total_size($index){
         $this->items[$index]['total_size'] =  (int)$this->items[$index]['quantity'] * (float)$this->items[$index]['size'];
@@ -460,123 +401,31 @@ class Create extends Component
         }
         return $totalWeight;
     }
-
-    // public function cost($index)
-    // {
-
-    //     if($this->paying_currency == 2){
-    //         $cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
-    //     }
-    //     else{
-    //         $cost = (float)$this->other_expenses + (float)$this->other_payments ;
-    //     }
-    //     // convert purchase price from Dollar To Dinar
-    //     $purchase_price = $this->convertDollarPrice($index);
-
-    //     if (isset($this->divide_costs)){
-
-    //         if ($this->divide_costs == 'size'){
-    //             if($this->sum_size() >= 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
-    //                 unset($this->divide_costs);
-    //             }
-    //             else{
-    //                 (float)$this->items[$index]['cost'] = ( ( $cost / $this->sum_size() ) * $this->items[$index]['size'] ) + (float)$purchase_price;
-    //             }
-    //         }
-    //         elseif ($this->divide_costs == 'weight'){
-    //             if($this->sum_weight() >= 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
-    //                 unset($this->divide_costs);
-
-    //             }
-    //             else {
-    //                 (float)$this->items[$index]['cost'] = (($cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
-    //             }
-    //         }
-    //         else{
-    //             (float)$this->items[$index]['cost'] = ( ( $cost / $this->sum_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
-    //         }
-    //     }
-    //     else{
-    //         $this->items[$index]['cost'] = (float)$purchase_price;
-    //     }
-
-    //     return number_format($this->items[$index]['cost'],2);
-    // }
-
-    // public function total_cost($index)
-    // {
-    //     $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
-    //     return number_format($this->items[$index]['total_cost'],2) ;
-    // }
-
-    // public function dollar_cost($index)
-    // {
-    //     if($this->paying_currency == 2){
-    //         $dollar_cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->exchange_rate;
-    //     }
-    //     else{
-    //         $dollar_cost = (float)$this->other_expenses + (float)$this->other_payments ;
-    //     }
-    //     // convert purchase price from Dinar to Dollar
-    //    $purchase_price = $this->convertDinarPrice($index);
-
-    //     if (isset($this->divide_costs)){
-
-    //         if ($this->divide_costs == 'size'){
-    //             if($this->sum_size() == 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_sizes_less_equal_zero']);
-    //                 unset($this->divide_costs);
-    //             }
-    //             else{
-    //                 (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_size() ) * $this->items[$index]['size'] ) + (float)$purchase_price;
-    //             }
-    //         }
-    //         elseif ($this->divide_costs == 'weight'){
-    //             if($this->sum_weight() == 0){
-    //                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.sum_weights_less_equal_zero']);
-    //                 unset($this->divide_costs);
-
-    //             }
-    //             else {
-    //                 (float)$this->items[$index]['dollar_cost'] = (($dollar_cost / $this->sum_weight()) * $this->items[$index]['weight']) + (float)$purchase_price;
-    //             }
-    //         }
-    //         else{
-    //             (float)$this->items[$index]['dollar_cost'] = ( ( $dollar_cost / $this->sum_dollar_sub_total() ) * (float)$purchase_price ) + (float)$purchase_price;
-    //         }
-    //     }
-    //     else{
-    //         $this->items[$index]['dollar_cost'] = (float)$purchase_price;
-    //     }
-    //     return number_format($this->items[$index]['dollar_cost'],2);
-    // }
     // ++++++++++++++++++++++++++ Task :  $ اجمالي التكاليف ++++++++++++++++++++++++++
     public function dollar_total_cost($index)
     {
-        $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
-        $this->items[$index]['dollar_total_cost_var'] = $this->items[$index]['dollar_total_cost'];
+        $this->items[$index]['dollar_total_cost'] = (float)($this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity']);
+        // $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
+        $this->items[$index]['dollar_total_cost_var'] = (float)($this->items[$index]['dollar_total_cost']);
         return number_format($this->items[$index]['dollar_total_cost'], 2);
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
-        $this->items[$index]['total_cost'] = $this->items[$index]['selling_price'] * $this->items[$index]['quantity'];
-        $this->items[$index]['total_cost_var'] = $this->items[$index]['total_cost'] ;
+        $this->items[$index]['total_cost'] = (float)($this->items[$index]['selling_price'] * $this->items[$index]['quantity']);
+        $this->items[$index]['total_cost_var'] = (float)($this->items[$index]['total_cost']) ;
         return number_format($this->items[$index]['total_cost'],2) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
     public function convert_dinar_price($index)
     {
-        // dd($this->exchange_rate);
         if (!empty($this->items[$index]['dollar_selling_price']) )
         {
-            $this->items[$index]['selling_price'] = $this->items[$index]['dollar_selling_price'] * $this->exchange_rate;
+            $this->items[$index]['selling_price'] = (float)($this->items[$index]['dollar_selling_price'] * $this->exchange_rate);
         }
         else
         {
-            $this->items[$index]['selling_price'] = $this->items[$index]['dollar_selling_price'];
+            $this->items[$index]['selling_price'] = (float)($this->items[$index]['dollar_selling_price']);
         }
         // return $selling_price;
     }
@@ -586,11 +435,11 @@ class Create extends Component
         // dd($this->exchange_rate);
         if (!empty($this->items[$index]['selling_price']) )
         {
-            $this->items[$index]['dollar_selling_price'] = $this->items[$index]['selling_price'] / $this->exchange_rate;
+            $this->items[$index]['dollar_selling_price'] = (float)($this->items[$index]['selling_price'] / $this->exchange_rate);
         }
         else
         {
-            $this->items[$index]['dollar_selling_price'] = $this->items[$index]['selling_price'];
+            $this->items[$index]['dollar_selling_price'] = (float)($this->items[$index]['selling_price']);
         }
         // return $selling_price;
     }
@@ -739,40 +588,6 @@ class Create extends Component
 
         return $register;
     }
-
-    // public function convertDollarPrice($index)
-    // {
-    //     if(empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])){
-    //         $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->exchange_rate;
-    //     }
-    //     else{
-    //         $purchase_price = $this->items[$index]['purchase_price'];
-    //     }
-    //     return $purchase_price;
-    // }
-    // ++++++++++++++++++++++++++ sell_price in dollar ++++++++++++++++++++++++++
-    // public function convertDollarPrice($index)
-    // {
-    //     if (!empty($this->items[$index]['selling_price']) && empty($this->items[$index]['dollar_selling_price'])) {
-    //         $purchase_price = $this->items[$index]['selling_price'] / $this->exchange_rate;
-    //     }
-    //     else {
-    //         $purchase_price = $this->items[$index]['dollar_selling_price'];
-    //     }
-    //     return $purchase_price;
-    // }
-
-    // public function convertDinarPrice($index)
-    // {
-    //     if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
-    //         $purchase_price = $this->items[$index]['purchase_price'] / $this->exchange_rate;
-    //     }
-    //     else {
-    //         $purchase_price = $this->items[$index]['dollar_purchase_price'];
-    //     }
-    //     return $purchase_price;
-
-    // }
 
     public function changeExchangeRate()
     {

@@ -28,6 +28,7 @@ use App\Models\Variation;
 use App\Utils\pos;
 use App\Utils\Util;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -38,7 +39,7 @@ class Create extends Component
         $client_id, $client, $cash = 0, $rest, $invoice,$invoice_id, $date, $payment_status,
          $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id,
          $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note,$payment_types,
-        $discount = 0.00, $total_dollar, $add_customer=[], $customers = [],$discount_dollar,
+        $discount = 0.00, $total_dollar, $add_customer=[], $customers = [],$discount_dollar, $store_pos,
         // "الباقي دولار" , "الباقي دينار"
         $dollar_remaining=0 , $dinar_remaining=0 ,
 
@@ -55,12 +56,24 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['refreshSelect' => 'refreshSelect'];
-
+    protected $listeners = ['listenerReferenceHere'];
+    public function listenerReferenceHere($data)
+    {
+        if(isset($data['var1'])) {
+            $this->{$data['var1']} = $data['var2'];
+        }
+//        dd(11);
+    }
     public function mount(Util $commonUtil)
     {
         $this->payment_types = $commonUtil->getPaymentTypeArrayForPos();
         $this->department_id = null;
+        $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
+        $stores = Store::getDropdown();
+        $this->store_id = array_key_first($stores);
+        $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
+        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+        $this->store_pos_id = array_key_first($this->store_pos);
         $this->loadCustomers();
     }
 
@@ -77,21 +90,15 @@ class Create extends Component
 
     public function render()
     {
-        $store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $allproducts = Product::get();
         $departments = Category::get();
         $this->customers   = Customer::get();
-        $this->store_pos_id = array_key_first($store_pos);
-        $store_poses = [];
         $languages = System::getLanguageDropdown();
-        $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $currenciesId = [System::getProperty('currency'), 2];
+        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types=CustomerType::latest()->pluck('name','id');
         $stores = Store::getDropdown();
-        $this->store_id = array_key_first($stores);
-        $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
-//        dd(empty($store_pos));
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('showCreateProductConfirmation');
         }
@@ -99,13 +106,9 @@ class Create extends Component
         // $this->variations=Variation::all();
 
         $this->dispatchBrowserEvent('initialize-select2');
-
         return view('livewire.invoices.create', compact(
             'departments',
             'allproducts',
-//            'customers',
-            'store_poses',
-            'store_pos',
             'languages',
             'selected_currencies',
             'stores',
@@ -113,8 +116,9 @@ class Create extends Component
             ));
     }
 
-    public function emptyStorePos(){
-        return redirect()->route('home');
+    public function changeStorePos(){
+        dd($this->store_id);
+        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
     }
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
     public function submit(){
@@ -304,7 +308,7 @@ class Create extends Component
     public function add_product($id)
     {
 
-        $product = Variation::where('id',$id)->first();
+        $product = Product::where('id',$id)->first();
         $quantity_available = $this->quantityAvailable($product);
         if ( $quantity_available < 1) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
@@ -316,7 +320,8 @@ class Create extends Component
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
 //            dd($product_stores);
-            $discount = $this->getProductDiscount($id);
+//            dd($current_stock->prices);
+//            $discount = $this->getProductDiscount($current_stock);
             if(isset($discount)){
                 $discounts = $discount;
             }
@@ -340,10 +345,9 @@ class Create extends Component
             else {
                 $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price,2) : 0;
                 $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,2) : 0;
-//                dd($price);
                 $this->items[] = [
-                    'variation' => $product,
-                    'product' => $product->product,
+                    'variation' => $product->variations,
+                    'product' => $product,
                     'quantity' => 1,
                     'price' => $this->num_uf($price),
                     'category_id' => $product->category?->id,
@@ -354,7 +358,8 @@ class Create extends Component
                     'sub_total' => !empty($product->unit) ? (float)($product->unit->base_unit_multiplier * $this->num_uf($price)) : (float) 1 * $this->num_uf($price),
                     'dollar_sub_total' => !empty($product->unit) ? $product->unit->base_unit_multiplier * $dollar_price : 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
-                    'discount_categories' =>  $discounts,
+//                    'discount_categories' =>  $discounts,
+                    'discount_categories' =>  null,
                     'discount' => null,
                     'discount_price' => 0,
                     'discount_type' =>  null,
@@ -556,7 +561,8 @@ class Create extends Component
         return $quantity_available;
     }
 
-    public function getProductDiscount($pid){
+    public function getProductDiscount($sid){
+        dd($sid);
         $product  = ProductPrice::where('product_id', $pid);
         if(isset($product)){
             $product->where(function($query){

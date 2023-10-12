@@ -9,7 +9,7 @@ class Index extends Component
 {
     public function render()
     {
-        $stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])->get();
+        $stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])->orderBy('created_at', 'desc')->get();
 //        dd($stocks->last()->created_by_relationship->name);
         return view('livewire.initial-balance.index',compact('stocks'));
     }

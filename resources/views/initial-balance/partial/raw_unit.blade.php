@@ -5,10 +5,10 @@
         style="width: 30px;height: 30px; border-radius: 50%;background-color: #596fd7">
         {{ $index + 1 }}
     </div>
-
+    {{--  --}}
     <div
-        class="d-flex col-md-11 flex-grow-1 flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
-
+        class="d-flex col-md-11 flex-grow-1 flex-wrap justify-content-start
+         align-items-center p-2 rounded-3 text-center mb-3 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
 
 
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
@@ -32,6 +32,9 @@
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
+
+
+
 
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
@@ -57,6 +60,9 @@
             <input type="text" class="form-control unit_equal" wire:model="rows.{{ $index }}.equal"
                 style="width: 70px;" required>
         </div>
+
+
+
 
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
@@ -96,6 +102,9 @@
         </div>
 
 
+
+
+
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span class="mb-2">@lang('lang.purchase_price')$</span>
@@ -106,7 +115,6 @@
             @enderror
         </div>
 
-
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span class="mb-2">@lang('lang.selling_price')$</span>
@@ -116,6 +124,9 @@
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
+
+
+
 
 
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
@@ -141,6 +152,8 @@
             @enderror
         </div>
 
+
+
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span class="mb-2">@lang('lang.selling_price')</span>
@@ -163,6 +176,7 @@
         </div>
 
 
+
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span class="mb-2">@lang('lang.new_stock')</span>
@@ -178,15 +192,15 @@
                 <i class="fa fa-trash"></i>
             </div>
         </div>
+
     </div>
 
+</div>
 
-
-
-
-    <div style="width: 100%" class="accordion mt-1 p-3" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
+<div style="width: 100%" class="accordion mt-1 p-3" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            @if ($rows[$index]['show_price_button'] == true)
                 <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
                     data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
                     aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
@@ -195,14 +209,18 @@
                         @lang('lang.discount')
                     </h6>
                 </button>
-            </h2>
-            <div id="panelsStayOpen-collapse{{ $index }}"
-                class="accordion-collapse collapse @if ($rows[$index]['show_prices']) show @endif">
-                @foreach ($rows[$index]['prices'] as $key => $price)
+            @endif
+        </h2>
+        <div id="panelsStayOpen-collapse{{ $index }}"
+            class="accordion-collapse collapse @if ($rows[$index]['show_prices']) show @endif">
+            @foreach ($rows[$index]['prices'] as $key => $price)
+                <div
+                    class="accordion-body p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center">
                     <div
-                        class="accordion-body d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center">
+                        class="d-flex flex-wrap @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
                             {!! Form::label('price_type', __('lang.type')) !!}
                             {!! Form::select('price_type', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], null, [
                                 'id' => 'price_type',
@@ -220,7 +238,7 @@
 
 
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-size: 10px;', 'class' => 'pt-2']) !!}
                             <input type="text" class="form-control price_category" name="price_category"
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price_category"
@@ -229,7 +247,7 @@
 
 
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('price', __('lang.percent')) !!}
                             <input type="text" name="price" class="form-control price"
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price"
@@ -238,7 +256,7 @@
                         </div>
 
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('', __('lang.price')) !!}
                             <input type="text" name="" class="form-control price"
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price_after_desc"
@@ -247,7 +265,7 @@
                         </div>
 
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('price', __('lang.quantity')) !!}
                             <input type="text" class="form-control discount_quantity"
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.discount_quantity"
@@ -256,7 +274,7 @@
                         </div>
 
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('b_qty', __('lang.b_qty')) !!}
                             <input type="text" class="form-control bonus_quantity"
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.bonus_quantity"
@@ -267,7 +285,7 @@
 
 
                         <div
-                            style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('customer_type', __('lang.customer_type')) !!}
                             <select
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
@@ -281,22 +299,23 @@
                             </select>
                         </div>
 
-                        <div style="width: 120px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
-                            class="d-flex justify-content-around align-items-center">
-                            <button type="button" class="btn btn-sm btn-primary"
-                                wire:click="addPriceRow({{ $index }})">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            @if ($key > 0)
-                                <button class="btn btn-sm btn-danger"
-                                    wire:click="delete_price_raw({{ $index }},{{ $key }})">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            @endif
-                        </div>
                     </div>
-                @endforeach
-            </div>
+                    <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
+                        class="d-flex justify-content-around align-items-center">
+                        <button type="button" class="btn btn-sm btn-primary"
+                            wire:click="addPriceRow({{ $index }})">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        @if ($key > 0)
+                            <button class="btn btn-sm btn-danger"
+                                wire:click="delete_price_raw({{ $index }},{{ $key }})">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
+</div>
 </div>
