@@ -59,7 +59,8 @@
                                    class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
                                     @lang('lang.delete_all')</a>
                             </div>
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
+                            <div id="status"></div>
+                            <table id="example" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -149,16 +150,31 @@
                                             </button>
                                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                 <li>
-
-                                                    <a href="{{route('products.edit', $product->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
-
+                                                    <a data-href="{{route('products.show', $product->id)}}" data-container=".view_modal" class="btn btn-modal">
+                                                        <i class="fa fa-eye"></i>
+                                                        @lang('lang.view')
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a target="_blank" href="{{route('get_remove_damage',$product->id)}}"
+                                                       class="btn"><i class="fa fa-filter"></i>
+                                                         @lang('lang.remove_damage')
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="{{route('products.edit', $product->id)}}" class="btn" target="_blank">
+                                                        <i class="dripicons-document-edit"></i>
+                                                        @lang('lang.update')
+                                                    </a>
                                                 </li>
                                                 <li class="divider"></li>
                                                     <li>
-                                                        <a  data-href="{{route('products.destroy', $product->id)}}"
-                                                            {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
-                                                            class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                            @lang('lang.delete')</a>
+                                                        <a  data-href="{{route('products.destroy', $product->id)}}" class="btn text-red delete_item">
+                                                            <i class="fa fa-trash"></i>
+                                                            @lang('lang.delete')
+                                                        </a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -167,9 +183,13 @@
                                 {{-- @include('products.edit',$product) --}}
                                 @endforeach
                                 </tbody>
-                            </table>
-                            <div class="view_modal no-print" >
+                                <tfoot>
 
+                                    <td colspan="5" style="text-align: right">@lang('lang.total')</td>
+                                    <td id="sum"></td>
+                                    <td colspan="12"></tdcol>
+                                </tfoot>
+                            </table>
                             </div>
                         </div>
                     </div>
@@ -178,11 +198,50 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-    </div>
-    <!-- End Contentbar -->
-@endsection
+<div class="view_modal no-print" >@endsection
 @push('javascripts')
 <script src="{{ asset('js/product/product.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            dom: "<'row'<'col-md-3 'l><'col-md-5 text-center 'B><'col-md-4'f>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+            lengthMenu: [10, 25, 50, 75, 100,200,300,400],
+            pageLength: 10 ,
+            buttons:
+                ['copy', 'csv', 'excel', 'pdf',
+                    {
+                        extend: 'print',
+                        exportOptions: {columns: ":visible:not(.notexport)"}
+                    }
+                    // ,'colvis'
+                ],
+            "fnDrawCallback": function ( row, data, start, end, display ) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function ( i ) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '')*1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column( 5 )
+                    .data()
+                    .reduce( function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0 );
+
+                // Update status DIV
+                $('#sum').html('<span>'+ total + '<span/>');
+            }
+        });
+    });
+</script>
     <script>
         $(document).on('click', '#delete_all', function() {
             var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
@@ -284,4 +343,5 @@
 
         });
     </script>
+
 @endpush

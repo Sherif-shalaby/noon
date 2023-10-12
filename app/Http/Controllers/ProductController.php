@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductExpiryDamage;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;use App\Models\ProductTax;
 use App\Models\Store;
@@ -16,6 +18,9 @@ use App\Models\Unit;
 use App\Models\User;
 use App\Models\Variation;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
@@ -257,10 +262,17 @@ class ProductController extends Controller
    * Display the specified resource.
    *
    * @param  int  $id
-   * @return Response
+   * @return Application|Factory|View
    */
   public function show($id)
   {
+      $product = Product::find($id);
+      $stock_detials = ProductStore::where('product_id', $id)->get();
+      return view('products.show')->with(compact(
+          'product',
+          'stock_detials',
+//          'add_stocks',
+      ));
 
   }
 
@@ -505,7 +517,6 @@ class ProductController extends Controller
 
             DB::commit();
         } catch (\Exception $e) {
-            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
@@ -514,6 +525,41 @@ class ProductController extends Controller
         }
 
         return $output;
+    }
+
+    public function get_remove_damage(Request $request,$id){
+        $product_damages = ProductExpiryDamage::where("product_id",$id)->where("status","damage")->get();
+        $status = "damage";
+        return view('product_expiry_damage.index')
+            ->with(compact( 'product_damages', 'status' ,'id' ));
+    }
+    public function getDamageProduct(Request $request,$id){
+            $addStockLines = AddStockLine::
+            where("add_stock_lines.product_id",$id)
+                ->where("add_stock_lines.quantity",">",0 )
+                ->leftjoin('variations', function ($join) {
+                    $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+                });
+            $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+            $store_query = '';
+            if (!empty($store_id)) {
+                // $products->where('product_stores.store_id', $store_id);
+                $store_query = 'AND store_id=' . $store_id;
+            }
+            $addStockLines = $addStockLines->select(
+                'add_stock_lines.*',
+                'add_stock_lines.expiry_date as exp_date',
+                'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
+                'add_stock_lines.purchase_price as add_stock_line_purchase_price',
+                'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
+                'variations.sub_sku',
+                'variations.name as variation_name',
+                DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
+                DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
+                DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
+            )->groupBy('add_stock_lines.id');
+
+        return view("product_expiry_damage.add");
     }
 }
 
