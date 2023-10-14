@@ -44,6 +44,22 @@
         <!-- Start col -->
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
+                <div class="row align-items-center">
+                    <div class="col-md-9">
+                        <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="i-checks">
+                            <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
+                                @if (isset($clear_all_input_form) && $clear_all_input_form == '1') checked @endif class="">
+                            <label for="clear_all_input_form" style="font-size: 0.75rem">
+                                <strong>
+                                    @lang('lang.clear_all_input_form')
+                                </strong>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 {!! Form::open([
                     'route' => 'products.store',
                     'method' => 'post',
@@ -65,7 +81,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                            {!! Form::select('brand_id', $brands, null, [
+                            {!! Form::select('brand_id', $brands, isset($recent_product->brand) ? $recent_product->brand->id : null, [
                                 'class' => 'form-control select2',
                                 'placeholder' => __('lang.please_select'),
                                 'id' => 'brand_id',
@@ -90,17 +106,12 @@
                                         height: 30px;
                                         margin: auto;
                                         flex-wrap: nowrap;">
-                            {!! Form::select(
-                                'store_id[]',
-                                $stores,
-                                [],
-                                [
-                                    'class' => 'js-example-basic-multiple',
-                                    'multiple' => 'multiple',
-                                    'placeholder' => __('lang.please_select'),
-                                    'id' => 'store_id',
-                                ],
-                            ) !!}
+                            {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
+                                'class' => 'js-example-basic-multiple',
+                                'multiple' => 'multiple',
+                                'placeholder' => __('lang.please_select'),
+                                'id' => 'store_id',
+                            ]) !!}
                             <button type="button" class="add-button d-flex justify-content-center align-items-center"
                                 data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
                                     class="fas fa-plus"></i></button>
@@ -125,7 +136,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
 
-                            {!! Form::text('name', null, [
+                            {!! Form::text('name', isset($recent_product->name) ? $recent_product->name : null, [
                                 'class' => 'form-control required mater-name-input',
                             ]) !!}
                             <button class="add-button d-flex justify-content-center align-items-center" type="button"
@@ -139,7 +150,9 @@
                         @enderror
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',
-                            'translations' => [],
+                            'translations' => isset($recent_product->translations)
+                                ? $recent_product->translations
+                                : [],
                             'type' => 'product',
                         ])
                     </div>
@@ -153,6 +166,9 @@
                         {!! Form::text('product_sku', null, [
                             'class' => 'form-control initial-balance-input m-auto',
                         ]) !!}
+                        @error('product_sku')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
                     </div>
 
                     <div class="col-md-12">
@@ -172,15 +188,21 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    {!! Form::select('category_id', $categories, null, [
-                                        'class' => 'form-control select2 category',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'categoryId',
-                                        'required',
-                                    ]) !!}
+                                    {!! Form::select(
+                                        'category_id',
+                                        $categories,
+                                        isset($recent_product->category_id) ? $recent_product->category_id : null,
+                                        [
+                                            'class' => 'form-control select2 category',
+                                            'placeholder' => __('lang.please_select'),
+                                            'id' => 'categoryId',
+                                            'required',
+                                        ],
+                                    ) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
                                         class="add-button btn-modal text-white openCategoryModal d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-select_category="0"><i class="fas fa-plus"></i></a>
+                                        style="cursor: pointer" data-toggle="modal" data-select_category="0"><i
+                                            class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -201,14 +223,20 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    {!! Form::select('subcategory_id1', $subcategories, null, [
-                                        'class' => 'form-control select2 subcategory',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subcategory_id1',
-                                    ]) !!}
+                                    {!! Form::select(
+                                        'subcategory_id1',
+                                        $subcategories,
+                                        isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null,
+                                        [
+                                            'class' => 'form-control select2 subcategory',
+                                            'placeholder' => __('lang.please_select'),
+                                            'id' => 'subcategory_id1',
+                                        ],
+                                    ) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
                                         class=" btn-modal text-white add-button openCategoryModal d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
+                                        style="cursor: pointer" data-toggle="modal" data-select_category="1"><i
+                                            class="fas fa-plus"></i></a>
                                 </div>
                                 @error('category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -229,12 +257,18 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    {!! Form::select('subcategory_id2', $subcategories, null, [
-                                        'class' => 'form-control select2 subcategory2',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId2',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
+                                    {!! Form::select(
+                                        'subcategory_id2',
+                                        $subcategories,
+                                        isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null,
+                                        [
+                                            'class' => 'form-control select2 subcategory2',
+                                            'placeholder' => __('lang.please_select'),
+                                            'id' => 'subCategoryId2',
+                                        ],
+                                    ) !!}
+                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                        data-container=".view_modal" style="cursor: pointer"
                                         class="add-button text-white btn-modal openCategoryModal d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
                                 </div>
@@ -257,15 +291,21 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    {!! Form::select('subcategory_id3', $subcategories, null, [
-                                        'class' => 'form-control select2 subcategory3',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId3',
-                                    ]) !!}
+                                    {!! Form::select(
+                                        'subcategory_id3',
+                                        $subcategories,
+                                        isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null,
+                                        [
+                                            'class' => 'form-control select2 subcategory3',
+                                            'placeholder' => __('lang.please_select'),
+                                            'id' => 'subCategoryId3',
+                                        ],
+                                    ) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                         data-container=".view_modal"
                                         class="add-button text-white btn-modal d-flex justify-content-center align-items-center openCategoryModal"
-                                        data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
+                                        style="cursor: pointer" data-toggle="modal" data-select_category="3"><i
+                                            class="fas fa-plus"></i></a>
                                 </div>
                                 @error('subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -290,9 +330,10 @@
                         <div class="accordion" id="accordionPanelsStayOpenExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne"
-                                        aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                                    <button class="accordion-button tax-button collapsed" style="padding: 5px 15px"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
+                                        aria-controls="panelsStayOpen-collapseOne">
                                         <h6>
                                             {{ __('lang.product_tax') }}
                                         </h6>
@@ -319,8 +360,10 @@
                                                 <select name="method" id="method" class='form-control select2'
                                                     data-live-search='true' placeholder="{{ __('lang.please_select') }}">
                                                     <option value="">{{ __('lang.please_select') }}</option>
-                                                    <option value="inclusive">{{ __('lang.inclusive') }}</option>
-                                                    <option value="exclusive">{{ __('lang.exclusive') }}</option>
+                                                    <option @if (isset($recent_product->method) && $recent_product->method == 'inclusive') selected @endif
+                                                        value="inclusive">{{ __('lang.inclusive') }}</option>
+                                                    <option @if (isset($recent_product->method) && $recent_product->method == 'exclusive') selected @endif
+                                                        value="exclusive">{{ __('lang.exclusive') }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -366,9 +409,10 @@
                         <div class="accordion " id="accordionPanelsStayOpenExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo"
-                                        aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                    <button class="accordion-button size-button collapsed" style="padding: 5px 15px"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                                        aria-controls="panelsStayOpen-collapseTwo">
                                         <h6>{{ __('lang.product_dimensions') }}</h6>
                                     </button>
                                 </h2>
@@ -382,7 +426,7 @@
                                             {!! Form::label('weight', __('lang.weight'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('weight', 0, [
+                                            {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
                                                 'class' => 'form-control initial-balance-input m-0',
                                             ]) !!}
 
@@ -398,7 +442,7 @@
                                             {!! Form::label('height', __('lang.height'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('height', 0, [
+                                            {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
                                                 'class' => 'form-control height initial-balance-input m-0',
                                             ]) !!}
 
@@ -412,7 +456,7 @@
                                             {!! Form::label('length', __('lang.length'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('length', 0, [
+                                            {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
                                                 'class' => 'form-control length initial-balance-input m-0',
                                             ]) !!}
 
@@ -426,7 +470,7 @@
                                             {!! Form::label('width', __('lang.width'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('width', 0, [
+                                            {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
                                                 'class' => 'form-control width initial-balance-input m-0',
                                             ]) !!}
                                             <br>
@@ -440,7 +484,7 @@
                                             {!! Form::label('size', __('lang.size'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('size', 0, [
+                                            {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
                                                 'class' => 'form-control size initial-balance-input m-0',
                                             ]) !!}
                                             <br>
@@ -477,8 +521,24 @@
                     </div>
 
                     <div class="col-md-12 product_unit_raws mx-auto" style="width: 95%">
-                        @include('products.product_unit_raw', ['index' => 0])
-                        <input type="hidden" id="raw_unit_index" value="0" />
+                        @if (!empty($recent_product->variations))
+                            @foreach ($recent_product->variations as $index => $variation)
+                                @include('products.product_unit_raw', [
+                                    'index' => $index,
+                                    'variation' => $variation,
+                                ])
+                            @endforeach
+                        @else
+                            @include('products.product_unit_raw', ['index' => 0])
+                        @endif
+                        @php
+                            if (!empty($recent_product->variations) && count($recent_product->variations) > 0) {
+                                $index = count($recent_product->variations) - 1;
+                            } else {
+                                $index = 0;
+                            }
+                        @endphp
+                        <input type="hidden" id="raw_unit_index" value="{{ $index }}" />
                     </div>
                     {{-- sizes --}}
                     {{-- add prices --}}
@@ -523,9 +583,9 @@
                     {{-- add prices --}}
 
                     {{-- crop image --}}
-                    <div class="col-md-12 ">
+                    <div class="col-md-12 pt-5">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-12 pt-5">
                                 <div class="form-group">
                                     <div class="container-fluid mt-3">
                                         <div class="row mx-0" style="border: 1px dashed #ddd;">
@@ -559,6 +619,20 @@
                                                 </div>
                                                 <div>
                                                     <div class="preview-image-container">
+                                                        @if (!empty($recent_product->image))
+                                                            <div class="preview">
+                                                                <img src="{{ asset('uploads/products/' . $recent_product->image) }}"
+                                                                    id="image_footer" alt="">
+                                                                <button type="button"
+                                                                    class="btn btn-xs btn-danger delete-btn remove_image "
+                                                                    data-type="image"><i style="font-size: 25px;"
+                                                                        class="fa fa-trash"></i></button>
+                                                                <span class="btn btn-xs btn-primary  crop-btn"
+                                                                    id="crop-image-btn" data-toggle="modal"
+                                                                    data-target="#imageModal"><i style="font-size: 25px;"
+                                                                        class="fas fa-crop"></i></span>
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
@@ -568,7 +642,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="cropped_images"></div>
+                    {{-- <div id="cropped_images"></div>  --}}
                     {{-- crop image --}}
 
                     {{-- product description --}}
@@ -585,10 +659,15 @@
                                                 <i class="fas fa-globe"></i>
                                             </button></label>
 
-                                        {!! Form::textarea('details', null, ['class' => 'form-control', 'id' => 'product_details']) !!}
+                                        {!! Form::textarea('details', isset($recent_product->details) ? $recent_product->details : null, [
+                                            'class' => 'form-control',
+                                            'id' => 'product_details',
+                                        ]) !!}
                                         @include('layouts.translation_textarea', [
                                             'attribute' => 'details',
-                                            'translations' => [],
+                                            'translations' => !empty($recent_product)
+                                                ? $recent_product->details_translations
+                                                : [],
                                             'type' => 'product',
                                         ])
                                     </div>
@@ -617,4 +696,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-image.js') }}"></script>
+    <script>
+        $('.tax-button').on("click", function() {
+            $('#panelsStayOpen-collapseOne').toggleClass('show')
+        })
+        $('.size-button').on("click", function() {
+            $('#panelsStayOpen-collapseTwo').toggleClass('show')
+        })
+    </script>
 @endpush
