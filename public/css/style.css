@@ -36483,11 +36483,13 @@ element.style {
     border-top: 1px solid #dee2e6;
 }
 
-@media (min-width: 576px) .col-sm-8 {
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 66.666667%;
-    flex: 0 0 66.666667%;
-    max-width: 66.666667%;
+@media (min-width: 576px) {
+    .col-sm-8 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 66.666667%;
+        flex: 0 0 66.666667%;
+        max-width: 66.666667%;
+    }
 }
 
 .col,
