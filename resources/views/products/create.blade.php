@@ -39,7 +39,7 @@
 @endsection
 @section('content')
     <!-- Start row -->
-    <div class="row d-flex justify-content-center">
+    <div class="d-flex justify-content-center">
 
         <!-- Start col -->
         <div class="col-lg-12">
@@ -68,7 +68,7 @@
                 <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
                     <div
-                        class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::label('brand', __('lang.brand'), [
                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                         ]) !!}
@@ -107,14 +107,14 @@
                                         margin: auto;
                                         flex-wrap: nowrap;">
                             {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
-                                'class' => 'js-example-basic-multiple',
+                                'class' => 'js-example-basic-multiple height-fit',
                                 'multiple' => 'multiple',
                                 'placeholder' => __('lang.please_select'),
                                 'id' => 'store_id',
                             ]) !!}
                             <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                                data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
-                                    class="fas fa-plus"></i></button>
+                                style="z-index: 10" data-toggle="modal" data-target=".add-store"
+                                href="{{ route('store.create') }}"><i class="fas fa-plus"></i></button>
 
                         </div>
                     </div>
@@ -422,22 +422,6 @@
                                         class="accordion-body d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                         <div
-                                            class="col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            {!! Form::label('weight', __('lang.weight'), [
-                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                            ]) !!}
-                                            {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
-                                                'class' => 'form-control initial-balance-input m-0',
-                                            ]) !!}
-
-                                            @error('weight')
-                                                <label class="text-danger error-msg">{{ $message }}</label>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col-md-1"></div>
-
-                                        <div
                                             class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('height', __('lang.height'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
@@ -473,7 +457,6 @@
                                             {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
                                                 'class' => 'form-control width initial-balance-input m-0',
                                             ]) !!}
-                                            <br>
                                             @error('width')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
@@ -487,8 +470,23 @@
                                             {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
                                                 'class' => 'form-control size initial-balance-input m-0',
                                             ]) !!}
-                                            <br>
                                             @error('size')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-1"></div>
+
+                                        <div
+                                            class="col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('weight', __('lang.weight'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                            ]) !!}
+                                            {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
+                                                'class' => 'form-control initial-balance-input m-0',
+                                            ]) !!}
+
+                                            @error('weight')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
                                         </div>
@@ -515,7 +513,7 @@
 
                     <div
                         class="d-flex my-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <button class="btn btn btn-primary add_unit_row " type="button">
+                        <button class="btn btn-primary add_unit_row " type="button">
                             <i class="fa fa-plus"></i> @lang('lang.add')
                         </button>
                     </div>
@@ -583,9 +581,9 @@
                     {{-- add prices --}}
 
                     {{-- crop image --}}
-                    <div class="col-md-12 pt-5">
+                    <div class="col-md-12">
                         <div class="row">
-                            <div class="col-md-12 pt-5">
+                            <div class="col-md-12">
                                 <div class="form-group">
                                     <div class="container-fluid mt-3">
                                         <div class="row mx-0" style="border: 1px dashed #ddd;">
@@ -642,7 +640,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div id="cropped_images"></div>  --}}
+                    <div id="cropped_images"></div>
                     {{-- crop image --}}
 
                     {{-- product description --}}

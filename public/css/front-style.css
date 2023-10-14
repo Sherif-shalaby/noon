@@ -3,6 +3,23 @@
     border: none !important;
 }
 
+
+
+.input-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #dedede;
+    border: none;
+    border-radius: 16px;
+    color: #373737;
+    box-shadow: 0 8px 6px -5px #bbb;
+    width: 60%;
+    margin: auto;
+    height: 30px;
+    flex-wrap: nowrap;
+}
+
 .add-button {
     background-color: #F9C751;
     width: 60px;
@@ -174,6 +191,14 @@ select.form-control {
     width: fit-content;
 }
 
+.width-full {
+    width: 100%;
+}
+
+.height-fit {
+    height: fit-content;
+}
+
 .width-30 {
     width: 30%;
 }
@@ -214,4 +239,23 @@ select.form-control {
 
 .modal-label-width {
     width: 120px;
+}
+
+.dir-rtl {
+    direction: rtl;
+}
+
+.btn-indigo {
+    background-color: #596fd7;
+}
+
+.breadcrumbbar .breadcrumb-item+.breadcrumb-item::before {
+    display: none;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li {
+    list-style: none;
+    width: 45px;
+    overflow: hidden;
+    height: 21px;
 }

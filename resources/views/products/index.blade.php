@@ -8,12 +8,12 @@
                 <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.products')
                 </h4>
                 <div class="breadcrumb-list">
-                    <ul class="breadcrumb">
+                    <ul class="breadcrumb" style="list-style: none">
                         <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">
                                 @lang('lang.dashboard')</a></li>
                         <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                            aria-current="page">@lang('lang.products')</li>
+                            aria-current="page">/ @lang('lang.products')</li>
                     </ul>
                 </div>
             </div>
@@ -59,14 +59,23 @@
                             </div>
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                        <div class="table-responsive">
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
+                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="my-2">
+                                <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
+                                    data-check_password="{{ url('user/check-password') }}"
+                                    class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                                    @lang('lang.delete_all')</a>
+                            </div>
+                            <div id="status"></div>
+                            <table id="datatable-buttons" class="table table-striped table-bordered ">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>@lang('lang.image')</th>
                                         <th>@lang('lang.product_name')</th>
                                         <th>@lang('lang.sku')</th>
+                                        <th>@lang('lang.select_to_delete')</th>
+                                        <th>@lang('lang.stock')</th>
                                         <th>@lang('lang.category')</th>
                                         <th>@lang('lang.subcategories_name')</th>
                                         <th>@lang('lang.height')</th>
@@ -91,6 +100,12 @@
                                                     style="width: 50px; height: 50px;" alt="{{ $product->name }}"></td>
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->sku }}</td>
+                                            <td>
+                                                <input type="checkbox" name="product_selected_delete"
+                                                    class="product_selected_delete" value=" {{ $product->id }} "
+                                                    data-product_id="{{ $product->id }}" />
+                                            </td>
+                                            <td>{{ $product->product_stores->sum('quantity_available') }}</td>
                                             <td>{{ $product->category->name ?? '' }}</td>
                                             <td>
                                                 {{ $product->subCategory1->name ?? '' }} <br>
@@ -151,19 +166,35 @@
                                                         user="menu" x-placement="bottom-end"
                                                         style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <li>
-
+                                                            <a data-href="{{ route('products.show', $product->id) }}"
+                                                                data-container=".view_modal" class="btn btn-modal">
+                                                                <i class="fa fa-eye"></i>
+                                                                @lang('lang.view')
+                                                            </a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                            <a target="_blank"
+                                                                href="{{ route('get_remove_damage', $product->id) }}"
+                                                                class="btn"><i class="fa fa-filter"></i>
+                                                                @lang('lang.remove_damage')
+                                                            </a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
                                                             <a href="{{ route('products.edit', $product->id) }}"
-                                                                class="btn" target="_blank"><i
-                                                                    class="dripicons-document-edit"></i>
-                                                                @lang('lang.update')</a>
-
+                                                                class="btn" target="_blank">
+                                                                <i class="dripicons-document-edit"></i>
+                                                                @lang('lang.update')
+                                                            </a>
                                                         </li>
                                                         <li class="divider"></li>
                                                         <li>
                                                             <a data-href="{{ route('products.destroy', $product->id) }}"
-                                                                {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}} class="btn text-red delete_item"><i
-                                                                    class="fa fa-trash"></i>
-                                                                @lang('lang.delete')</a>
+                                                                class="btn text-red delete_item">
+                                                                <i class="fa fa-trash"></i>
+                                                                @lang('lang.delete')
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -172,6 +203,13 @@
                                         {{-- @include('products.edit',$product) --}}
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+
+                                    <td colspan="5" style="text-align: right">@lang('lang.total')</td>
+                                    <td id="sum"></td>
+                                    <td colspan="12">
+                                    </td>
+                                </tfoot>
                             </table>
                             <div class="view_modal no-print">
 
