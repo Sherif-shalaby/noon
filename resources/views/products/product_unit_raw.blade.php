@@ -1,5 +1,6 @@
 <div class="d-flex align-items-center unit-row justify-content-between py-2 mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
     style="background-color: #ededed; border-radius: 7px">
+
     <div
         class="col-md-11 d-flex justify-content-between py-2  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
         <div
@@ -10,6 +11,9 @@
             {!! Form::text('sku[' . $index . ']', isset($variation->sku) ? $variation->sku : null, [
                 'class' => 'form-control mater-name-input m-0',
             ]) !!}
+            @error('sku.' . $index)
+                <label class="text-danger error-msg">{{ $message }}</label>
+            @enderror
         </div>
 
         <div
@@ -26,14 +30,16 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                {!! Form::select(
-                    'new_unit_id[' . $index . ']',
-                    $units,
-                    isset($variation->unit_id) ? $variation->unit_id : null,
-                    ['class' => 'form-control select2 new_unit', 'placeholder' => __('lang.please_select'), 'id' => 'unit_id'],
-                ) !!}
-                <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                    data-toggle="modal" data-target=".add-unit" href="{{ route('units.create') }}"><i
+                <select name="new_unit_id[{{ $index }}]" data-name='unit_id' data-index="{{ $index }}"
+                    required class="form-control select2 unit_id{{ $index }}" style="width: 100px;">
+                    <option value="">{{ __('lang.please_select') }}</option>
+                    @foreach ($units as $unit)
+                        <option @if (isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif value="{{ $unit->id }}">
+                            {{ $unit->name }}</option>
+                    @endforeach
+                </select>
+                <button type="button" class="add-button add_unit_raw" data-toggle="modal"
+                    data-index="{{ $index }}" data-target=".add-unit" href="{{ route('units.create') }}"><i
                         class="fas fa-plus"></i></button>
             </div>
         </div>
@@ -51,12 +57,28 @@
             {!! Form::label('basic_unit', __('lang.basic_unit'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end mb-0 width-65' : ' mb-0 width-65',
             ]) !!}
-            {!! Form::select(
-                'basic_unit_id[' . $index . ']',
-                $units,
-                isset($variation->basic_unit_id) ? $variation->basic_unit_id : null,
-                ['class' => 'form-control select2 basic_unit_id  mater-name-input m-0', 'placeholder' => __('lang.please_select')],
-            ) !!}
+            <div class="d-flex justify-content-center align-items-center"
+                style="background-color: #dedede; border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 60%;
+                                        margin: auto;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                <select name="basic_unit_id[{{ $index }}]'" data-name='basic_unit_id'
+                    data-index="{{ $index }}" class="form-control select2 basic_unit_id{{ $index }}"
+                    style="width: 100px;">
+                    <option value="">{{ __('lang.please_select') }}</option>
+                    @foreach ($units as $unit)
+                        <option @if (isset($variation->basic_unit_id) && $variation->basic_unit_id == $unit->id) selected @endif value="{{ $unit->id }}">
+                            {{ $unit->name }}</option>
+                    @endforeach
+                </select>
+                <button type="button" class="add-button add_unit_raw" data-toggle="modal"
+                    data-index="{{ $index }}" data-target=".add-unit" data-type="basic_unit"
+                    href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
+            </div>
         </div>
     </div>
 
