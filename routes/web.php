@@ -78,7 +78,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Wages
     Route::resource('wages',WageController::class);
-    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission'])->name('calculateSalaryAndCommission');
+    Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
@@ -109,6 +110,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
     Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
+    Route::get('product/remove_damage/{id}', [ProductController::class,'get_remove_damage'])->name('get_remove_damage');
+    Route::get('product/create/{id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);

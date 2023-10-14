@@ -119,6 +119,8 @@
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
+            {!! Form::label('price_category' ,__('lang.price_category'),['style' => 'font-size: 10px;','class'=>'pt-2']) !!}
+            <input type="text" class="form-control price_category" name="price_category" wire:model="rows.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
         </td>
         <td>
             {!! Form::label('price_type' ,__('lang.type')) !!}
@@ -135,12 +137,9 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
+
         <td>
-           {!! Form::label('price_category' ,__('lang.price_category'),['style' => 'font-size: 10px;','class'=>'pt-2']) !!}
-           <input type="text" class="form-control price_category" name="price_category" wire:model="rows.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
-       </td>
-        <td>
-            {!! Form::label('price' ,__('lang.percent')) !!}
+            {!! Form::label('price' ,$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
         </td>
         <td>
