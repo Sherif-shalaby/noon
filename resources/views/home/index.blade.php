@@ -21,6 +21,7 @@
 {{--        </div> --}}
 {{-- </div> --}}
 {{-- @endsection --}}
+
 @section('content')
     <div class="contentbar">
         <!-- Start row -->

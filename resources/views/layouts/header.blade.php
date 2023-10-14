@@ -125,6 +125,7 @@
     <!-- Start container-fluid -->
     <div class="container-fluid"> --}}
 <!-- Start Horizontal Nav -->
+
 <nav class="horizontal-nav mobile-navbar fixed-navbar px-2 py-4 navbar-responsive">
     <div class="collapse navbar-collapse d-flex  justify-content-between" id="navbar-menu">
         <ul style="width: 100%"
