@@ -608,6 +608,9 @@ class Create extends Component
     public function delete_product($index)
     {
         unset($this->rows[$index]);
+        // dd(array_key_exists($index, $this->rows));
+        // array_key_exists(string|int $key, array $array): bool
+
     }
 
     public function convertDollarPrice($index)

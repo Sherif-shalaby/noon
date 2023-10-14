@@ -197,19 +197,19 @@
 
 </div>
 
+{{-- {{ dd($rows[$index]) }} --}}
+
 <div style="width: 100%" class="accordion mt-1 p-3" id="accordionPanelsStayOpenExample">
     <div class="accordion-item">
         <h2 class="accordion-header">
-            @if ($rows[$index]['show_price_button'] == true)
-                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
-                    aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
-                    wire:click="stayShow({{ $index }})">
-                    <h6>
-                        @lang('lang.discount')
-                    </h6>
-                </button>
-            @endif
+            <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
+                data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
+                aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
+                wire:click="stayShow({{ $index }})">
+                <h6>
+                    @lang('lang.discount')
+                </h6>
+            </button>
         </h2>
         <div id="panelsStayOpen-collapse{{ $index }}"
             class="accordion-collapse collapse @if ($rows[$index]['show_prices']) show @endif">
