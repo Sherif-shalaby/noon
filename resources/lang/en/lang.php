@@ -522,7 +522,7 @@ return [
     'date_of_purchase_of_the_expired_stock' => 'Date Of Purchase Of The Expired Stock',
     'avg_purchase_price' => 'Avg Purchase Price',
     'value_of_removed_stock' => 'Removed Stock',
-
+    'evening_shift' => 'Evening Shift'
 
 
 ];

@@ -87,7 +87,7 @@ class EmployeeController extends Controller
    */
   public function store(Request $request)
   {
-      // return response($request);
+    //   return response($request);
       $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
@@ -109,21 +109,27 @@ class EmployeeController extends Controller
               'password' => Hash::make($data['password']),
 
           ];
-          $user = User::create($user_data);
+        $user = User::create($user_data);
 
-          $employee = new Employee();
-          $employee->employee_name = $data['name'];
-          $employee->user_id = $user->id;
-          $employee->pass_string = Crypt::encrypt($data['password']);
-          $employee->date_of_start_working = $data['date_of_start_working'];
-          $employee->date_of_birth = $data['date_of_birth'];
-          $employee->job_type_id = $data['job_type_id'];
-          $employee->mobile = $data['mobile'];
-          $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
-          $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
-          $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
-          $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
-          $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
+        $employee = new Employee();
+        $employee->employee_name = $data['name'];
+        $employee->user_id = $user->id;
+        $employee->pass_string = Crypt::encrypt($data['password']);
+        $employee->date_of_start_working = $data['date_of_start_working'];
+        $employee->date_of_birth = $data['date_of_birth'];
+        $employee->job_type_id = $data['job_type_id'];
+        $employee->mobile = $data['mobile'];
+        $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
+        $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
+        // Working per week
+        $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
+        $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
+        $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
+        // Evening shift
+        $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox']) ?  $data['evening_shift_checkbox'] : []) ;
+        $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in']) ?  $data['evening_shift_check_in'] : []) ;
+        $employee->evening_shift_check_out = json_encode(!empty($data['evening_shift_check_out']) ?  $data['evening_shift_check_out'] : []);
+
           $employee->fixed_wage = $data['fixed_wage'];
           $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
           $employee->payment_cycle = $data['payment_cycle'];

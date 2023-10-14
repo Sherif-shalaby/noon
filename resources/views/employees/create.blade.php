@@ -126,40 +126,69 @@
                                     </div>
                                     <br>
                                     <br>
+                                    {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label
                                                 for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
                                             <table>
                                                 <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>@lang('lang.check_in')</th>
-                                                    <th> @lang('lang.check_out')</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>@lang('lang.check_in')</th>
+                                                        <th>@lang('lang.check_out')</th>
+                                                        <th>@lang('lang.evening_shift')</th>
+                                                        <th id="label1" class="hidden">@lang('lang.check_in')</th>
+                                                        <th id="label2" class="hidden">@lang('lang.check_out')</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach ($week_days as $key => $week_day)
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <div class="i-checks">
-                                                                    <input id="working_day_per_week{{ $key }}"
-                                                                           name="working_day_per_week[{{ $key }}]"
-                                                                           type="checkbox" value="1">
-                                                                    <label
-                                                                        for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                    @foreach ($week_days as $key => $week_day)
+                                                        <tr>
+                                                            {{-- "working_day_per_week" checkbox --}}
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <div class="i-checks">
+                                                                        <input id="working_day_per_week{{ $key }}" name="working_day_per_week[{{ $key }}]" type="checkbox" value="1">
+                                                                        <label for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker',]) !!}
-                                                        </td>
-                                                        <td>
-                                                            {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker',]) !!}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                            </td>
+                                                            {{-- "check_in" inputField --}}
+                                                            <td>
+                                                                {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
+                                                                {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]">  --}}
+                                                                <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}">
+
+                                                            </td>
+                                                            {{-- "check_out" inputField --}}
+                                                            <td>
+                                                                {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]">  --}}
+                                                                <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}">
+                                                                {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
+                                                            </td>
+                                                            {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
+                                                            <td >
+                                                                <input type="checkbox" class="checkbox-toggle" id="checkbox2{{ $key }}" name="evening_shift_checkbox[{{ $key }}]">
+                                                            </td>
+                                                            {{--  "تسجيل الدخول" , "تسجيل الخروج" --}}
+                                                            <td>
+                                                                <table class="hidden inputFields_evening_shift" id="inputFields_evening_shift{{ $key }}">
+                                                                    <tr>
+                                                                        {{-- تسجيل الدخول --}}
+                                                                        <td>
+                                                                            <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}">
+                                                                        </td>
+                                                                        {{-- تسجيل الخروج --}}
+                                                                        <td>
+                                                                            <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            {{-- <br/>  --}}
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -267,7 +296,6 @@
                     $('.check_box_delete').prop('checked', false);
                 }
             });
-
             $(document).on('focusout', '.check_in', function() {
                 $('.check_in').val($(this).val())
             })
@@ -275,6 +303,53 @@
                 $('.check_out').val($(this).val())
             })
         });
+        // +++++++++++++++++ Evening Shift +++++++++++++++++
+        // Get all the checkboxes and input fields
+        const checkboxes = document.querySelectorAll('.checkbox-toggle');
+        const inputFields = document.querySelectorAll('.inputFields_evening_shift');
+        const label1 = document.getElementById('label1');
+        const label2 = document.getElementById('label2');
+        // when checkbox of "evening shift" is "checked" then appear "two input fields"
+        checkboxes.forEach((checkbox, index) =>
+        {
+            checkbox.addEventListener('change', function ()
+            {
+                if (checkbox.checked){
+                    inputFields[index].classList.remove('hidden');
+                    updateLabelsVisibility();
+                }else{
+                    inputFields[index].classList.add('hidden');
+                    updateLabelsVisibility();
+                }
+            });
+            // Check the initial state of checkboxes and show/hide labels accordingly
+            if (checkbox.checked) {
+                label1.classList.remove('hidden');
+                label2.classList.remove('hidden');
+            }else{
+                label1.classList.add('hidden');
+                label2.classList.add('hidden');
+            }
+            // ++++++++++++++++++++ updateLabelsVisibility() ++++++++++++++++++++
+            function updateLabelsVisibility()
+            {
+                let anyCheckboxChecked = false;
+                checkboxes.forEach(function(checkbox)
+                {
+                    if (checkbox.checked) {
+                        anyCheckboxChecked = true;
+                    }
+                });
+                if (anyCheckboxChecked) {
+                    label1.classList.remove('hidden');
+                    label2.classList.remove('hidden');
+                }else {
+                    label1.classList.add('hidden');
+                    label2.classList.add('hidden');
+                }
+            }
+            // Initially update labels visibility based on the checked state of checkboxes
+            updateLabelsVisibility();
+        });
     </script>
-
 @endsection
