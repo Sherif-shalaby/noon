@@ -4,9 +4,9 @@
     <div class="breadcrumbbar">
         <div class="widgetbar">
             <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
-            {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
-            {{--                            class="dripicons-plus"></i>--}}
-            {{--                        @lang('lang.add_new_employee')</a>--}}
+            {{--  <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
+            {{--             class="dripicons-plus"></i>--}}
+            {{--              @lang('lang.add_new_employee')</a>--}}
         </div>
     </div>
 @endsection
@@ -200,7 +200,55 @@
                                             @include('employees.partials.permission')
                                         </div>
                                     </div>
-
+                                    {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
+                                    <div class="row mt-4 m-auto">
+                                        <div class="col-lg-12">
+                                            <div class="container-fluid">
+                                                @include('employees.partials.filters')
+                                            </div>
+                                        </div>
+                                        {{-- <div class="col-sm-4" style="padding: 0 3.5rem">
+                                            <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
+                                               data-check_password="{{url('user/check-password')}}"
+                                               class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                                                @lang('lang.delete_all')
+                                            </a>
+                                        </div> --}}
+                                        {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
+                                        <table id="productTable" class="table table-striped table-bordered m-auto">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>@lang('lang.select_to_add')</th>
+                                                    <th>@lang('lang.product_name')</th>
+                                                    <th>@lang('lang.sku')</th>
+                                                    <th>@lang('lang.category')</th>
+                                                    <th>@lang('lang.subcategories_name')</th>
+                                                    <th>@lang('lang.brand')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($employee_products as $index=>$product)
+                                                    <tr>
+                                                        <td>{{ $index+1 }}</td>
+                                                        <td>
+                                                            <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
+                                                        </td>
+                                                        <td>{{$product->name}}</td>
+                                                        <td>{{$product->sku}}</td>
+                                                        <td>{{$product->category->name??''}}</td>
+                                                        <td>
+                                                            {{$product->subCategory1->name??''}} <br>
+                                                            {{$product->subCategory2->name??''}} <br>
+                                                            {{$product->subCategory3->name??''}}
+                                                        </td>
+                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {{-- +++++++++++++ save Button +++++++++++ --}}
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
                                             <div class="text-right">
@@ -219,10 +267,11 @@
     </div>
 
 @endsection
+
 @section('javascript')
 
     <script>
-        $( document ).ready(function() {
+        $(document ).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
                 var checked_all = $(this).prop('checked');
@@ -299,54 +348,106 @@
             $(document).on('focusout', '.check_out', function() {
                 $('.check_out').val($(this).val())
             })
-        });
-        // +++++++++++++++++ Evening Shift +++++++++++++++++
-        // Get all the checkboxes and input fields
-        const checkboxes = document.querySelectorAll('.checkbox-toggle');
-        const inputFields = document.querySelectorAll('.inputFields_evening_shift');
-        const label1 = document.getElementById('label1');
-        const label2 = document.getElementById('label2');
-        // when checkbox of "evening shift" is "checked" then appear "two input fields"
-        checkboxes.forEach((checkbox, index) =>
-        {
-            checkbox.addEventListener('change', function ()
+            // +++++++++++++++++ Evening Shift +++++++++++++++++
+            // Get all the checkboxes and input fields
+            const checkboxes = document.querySelectorAll('.checkbox-toggle');
+            const inputFields = document.querySelectorAll('.inputFields_evening_shift');
+            const label1 = document.getElementById('label1');
+            const label2 = document.getElementById('label2');
+            // when checkbox of "evening shift" is "checked" then appear "two input fields"
+            checkboxes.forEach((checkbox, index) =>
             {
-                if (checkbox.checked){
-                    inputFields[index].classList.remove('hidden');
-                    updateLabelsVisibility();
-                }else{
-                    inputFields[index].classList.add('hidden');
-                    updateLabelsVisibility();
-                }
-            });
-            // Check the initial state of checkboxes and show/hide labels accordingly
-            if (checkbox.checked) {
-                label1.classList.remove('hidden');
-                label2.classList.remove('hidden');
-            }else{
-                label1.classList.add('hidden');
-                label2.classList.add('hidden');
-            }
-            // ++++++++++++++++++++ updateLabelsVisibility() ++++++++++++++++++++
-            function updateLabelsVisibility()
-            {
-                let anyCheckboxChecked = false;
-                checkboxes.forEach(function(checkbox)
+                checkbox.addEventListener('change', function ()
                 {
-                    if (checkbox.checked) {
-                        anyCheckboxChecked = true;
+                    if (checkbox.checked){
+                        inputFields[index].classList.remove('hidden');
+                        updateLabelsVisibility();
+                    }else{
+                        inputFields[index].classList.add('hidden');
+                        updateLabelsVisibility();
                     }
                 });
-                if (anyCheckboxChecked) {
+                // Check the initial state of checkboxes and show/hide labels accordingly
+                if (checkbox.checked) {
                     label1.classList.remove('hidden');
                     label2.classList.remove('hidden');
-                }else {
+                }else{
                     label1.classList.add('hidden');
                     label2.classList.add('hidden');
                 }
+                // ++++++++++++++++++++ updateLabelsVisibility() ++++++++++++++++++++
+                function updateLabelsVisibility()
+                {
+                    let anyCheckboxChecked = false;
+                    checkboxes.forEach(function(checkbox)
+                    {
+                        if (checkbox.checked) {
+                            anyCheckboxChecked = true;
+                        }
+                    });
+                    if (anyCheckboxChecked) {
+                        label1.classList.remove('hidden');
+                        label2.classList.remove('hidden');
+                    }else {
+                        label1.classList.add('hidden');
+                        label2.classList.add('hidden');
+                    }
+                }
+                // Initially update labels visibility based on the checked state of checkboxes
+                updateLabelsVisibility();
+            });
+            // ======================================== Employee Products Table ========================================
+            // +++++++++++++++ updateSubcategories() +++++++++++++++
+            // Function to update subcategories based on the selected category ID
+            function updateSubcategories()
+            {
+                console.log( $('body').find('.category option:selected').val() );
+                $.ajax({
+                    method : "get",
+                    url: "/employees/create/",
+                    // get "all inputFields of form that have name and value"
+                    // data: $('#filter_form').serialize(),
+                    data : {
+                        category_id : $('body').find('.category option:selected').val(),
+                        subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
+                        subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
+                        subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
+                        brand_id : $('body').find('.brand option:selected').val(),
+                    },
+                    success: function (response) {
+                        console.log("The Response Data : ");
+                        console.log(response)
+                        // Clear existing table content
+                        $('#productTable tbody').empty();
+                        // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
+                        // Assuming response.products is the array of products received from the server response
+                        $.each(response, function(index, product) {
+                            console.log(product);
+                            var row = '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + product.name + '</td>' +
+                                '<td>' + product.sku + '</td>' +
+                                '<td><input type="checkbox" name="product_selected_delete" class="product_selected_delete" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
+                                '<td>' + (product.category ? product.category.name : '') + '</td>' +
+                                '<td>' +
+                                (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
+                                (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
+                                (product.subCategory3 ? product.subCategory3.name : '') +
+                                '</td>' +
+                                '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
+                                '</tr>';
+                            $('#productTable tbody').append(row);
+                        });
+
+                    },
+                    error: function (error) {
+                        console.error("Error fetching filtered products:", error);
+                    }
+                });
             }
-            // Initially update labels visibility based on the checked state of checkboxes
-            updateLabelsVisibility();
+            $('#filter_btn').click(function(){
+                updateSubcategories();
+            });
         });
     </script>
 @endsection

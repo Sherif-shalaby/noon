@@ -506,6 +506,7 @@ return [
     'tax' => 'Tax',
     'create_customer_price_offer' => 'Create Customer Price Offer' ,
     'select_to_delete'=> 'Select To Delete',
+    'select_to_add'=> 'Select To Add',
     'delete_all' => 'Delete All',
     'filter'=>'Filter',
     'dont_show_zero_stocks'=>'Dont Show Zero Stocks',

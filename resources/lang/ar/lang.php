@@ -525,6 +525,7 @@ return array(
     'discount_value' => 'قيمة الخصم',
     'tax' => 'ضريبة',
     'select_to_delete'=> 'حدد للحذف',
+    'select_to_add' => 'حدد للاضافة' ,
     'delete_all' => 'حذف جماعي',
     'filter'=>'تصفية',
     'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
