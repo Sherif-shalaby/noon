@@ -126,26 +126,26 @@ class EmployeeController extends Controller
         $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
         $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
         // Evening shift
-        $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox']) ?  $data['evening_shift_checkbox'] : []) ;
-        $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in']) ?  $data['evening_shift_check_in'] : []) ;
+        $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox'])  ?  $data['evening_shift_checkbox'] : []) ;
+        $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in'])  ?  $data['evening_shift_check_in'] : []) ;
         $employee->evening_shift_check_out = json_encode(!empty($data['evening_shift_check_out']) ?  $data['evening_shift_check_out'] : []);
 
-          $employee->fixed_wage = $data['fixed_wage'];
-          $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
-          $employee->payment_cycle = $data['payment_cycle'];
-          $employee->commission = $data['commission'];
-          $employee->commission_value = $this->commonUtil->num_uf($data['commission_value']) ?? 0;
-          $employee->commission_type = $data['commission_type'];
-          $employee->commision_calculation_period = $data['commission_calculation_period'];
-          $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
-          $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
-          $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
-          $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
-          if ($request->hasFile('photo')) {
-              $employee->photo = store_file($request->file('photo'), 'employees');
-          }
-          $employee->save();
-          $employee->stores()->sync($data['store_id']);
+        $employee->fixed_wage = $data['fixed_wage'];
+        $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
+        $employee->payment_cycle = $data['payment_cycle'];
+        $employee->commission = $data['commission'];
+        $employee->commission_value = $this->commonUtil->num_uf($data['commission_value']) ?? 0;
+        $employee->commission_type = $data['commission_type'];
+        $employee->commision_calculation_period = $data['commission_calculation_period'];
+        $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
+        $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
+        $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
+        $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
+        if ($request->hasFile('photo')) {
+            $employee->photo = store_file($request->file('photo'), 'employees');
+        }
+        $employee->save();
+        $employee->stores()->sync($data['store_id']);
 
 
 

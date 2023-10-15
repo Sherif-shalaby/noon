@@ -157,13 +157,10 @@
                                                             {{-- "check_in" inputField --}}
                                                             <td>
                                                                 {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
-                                                                {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]">  --}}
                                                                 <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}">
-
                                                             </td>
                                                             {{-- "check_out" inputField --}}
                                                             <td>
-                                                                {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]">  --}}
                                                                 <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}">
                                                                 {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
                                                             </td>
