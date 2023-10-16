@@ -202,24 +202,18 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
                                     <div class="row mt-4 m-auto">
-                                        <div class="col-lg-12">
+                                        {{-- <div class="col-lg-12">
                                             <div class="container-fluid">
                                                 @include('employees.partials.filters')
                                             </div>
-                                        </div>
-                                        {{-- <div class="col-sm-4" style="padding: 0 3.5rem">
-                                            <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
-                                               data-check_password="{{url('user/check-password')}}"
-                                               class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
-                                                @lang('lang.delete_all')
-                                            </a>
                                         </div> --}}
                                         {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
                                         <table id="productTable" class="table table-striped table-bordered m-auto">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
-                                                    <th>@lang('lang.select_to_add')</th>
+                                                    {{-- "select_all" checkbox --}}
+                                                    <th> <input type="checkbox" id="select_all_ids"/> </th>
                                                     <th>@lang('lang.product_name')</th>
                                                     <th>@lang('lang.sku')</th>
                                                     <th>@lang('lang.category')</th>
@@ -231,8 +225,10 @@
                                                 @foreach($employee_products as $index=>$product)
                                                     <tr>
                                                         <td>{{ $index+1 }}</td>
+                                                        {{-- "select" checkbox --}}
                                                         <td>
-                                                            <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
+                                                            {{-- get "all checked products" --}}
+                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
                                                         </td>
                                                         <td>{{$product->name}}</td>
                                                         <td>{{$product->sku}}</td>
@@ -445,9 +441,16 @@
                     }
                 });
             }
+            // when clicking on "filter button" , call "updateSubcategories()" method
             $('#filter_btn').click(function(){
                 updateSubcategories();
             });
+            // ======================================== Checkboxes of "products" ========================================
+            // when click on "all checkboxs" , it will checked "all checkboxes"
+            $('#select_all_ids').click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'));
+            });
+
         });
     </script>
 @endsection

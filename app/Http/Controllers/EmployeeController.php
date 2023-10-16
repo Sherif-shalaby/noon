@@ -15,6 +15,7 @@ use App\Models\Employee;
 use App\Models\LeaveType;
 use App\Models\Attendance;
 use App\Models\CustomerType;
+use App\Models\EmployeeProducts;
 use App\Utils\MoneySafeUtil;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
@@ -110,7 +111,6 @@ class EmployeeController extends Controller
         // ++++++++++++++++++++++++++++ start : for "employee's products" Filters +++++++++++++++++++++++++++++
         $employee_products=Product::query();
         if( request()->ajax() ){
-            // dd("0000000000000000000000000000000000000000000000000000000000000");
             $employee_products = $employee_products->when( $request->category_id != null, function ($query) use ( $request ) {
                 $query->where('category_id', $request->category_id);
             })
@@ -151,7 +151,7 @@ class EmployeeController extends Controller
   /* =========================== store() =========================== */
   public function store(Request $request)
   {
-      return response($request);
+    //   return response($request);
       $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
@@ -209,6 +209,27 @@ class EmployeeController extends Controller
             $employee->photo = store_file($request->file('photo'), 'employees');
         }
         $employee->save();
+        // for ($i = 0; $i < count($data['ids']); $i++)
+        // {
+            // $product = $data['ids'][$i] ;
+            // $employee = $employee->id ;
+            // $product->employees()->attach($employee);
+            // dd($data['ids'][$i]);
+            // EmployeeProducts::create([
+            //     'product_id'  => $employee->id ,
+            //     'employee_id' => $data['ids'][$i] ,
+            //     'created_at' => now() ,
+            //     'updated_at' => null ,
+
+            // ]);
+            for($i = 0; $i < count($data['ids']); $i++) {
+                $product = Product::find($data['ids'][$i]);
+                if($product) {
+                    // Assuming $employee is already defined or fetched from somewhere
+                    $employee->products()->attach($product->id);
+                }
+            }
+        // }
         $employee->stores()->sync($data['store_id']);
 
 
