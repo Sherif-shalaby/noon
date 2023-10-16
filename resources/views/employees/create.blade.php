@@ -202,6 +202,7 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
                                     <div class="row mt-4 m-auto">
+                                        {{-- ======== Filters ======== --}}
                                         {{-- <div class="col-lg-12">
                                             <div class="container-fluid">
                                                 @include('employees.partials.filters')
