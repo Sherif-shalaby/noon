@@ -148,7 +148,7 @@ class EmployeeController extends Controller
 
     }
 
-  /* =========================== store() =========================== */
+ /* =========================== store() =========================== */
   public function store(Request $request)
   {
     //   return response($request);
@@ -164,63 +164,62 @@ class EmployeeController extends Controller
 
           $data = $request->except('_token');
 //          dd($data['commission_type']);
-          $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
-          $data['commission'] = !empty($data['commission']) ? 1 : 0;
+          $data['fixed_wage'] = !empty($request->input('fixed_wage')) ? 1 : 0;
+          $data['commission'] = !empty($request->input('commission')) ? 1 : 0;
 
           $user_data = [
-              'name' => $data['name'],
-              'email' => $data['email'],
-              'password' => Hash::make($data['password']),
+              'name' => $request->input('name'),
+              'email' => $request->input('email'),
+              'password' => Hash::make($request->input('password') ),
 
           ];
         $user = User::create($user_data);
 
         $employee = new Employee();
-        $employee->employee_name = $data['name'];
+        $employee->employee_name = $request->input('name');
         $employee->user_id = $user->id;
-        $employee->pass_string = Crypt::encrypt($data['password']);
-        $employee->date_of_start_working = $data['date_of_start_working'];
-        $employee->date_of_birth = $data['date_of_birth'];
-        $employee->job_type_id = $data['job_type_id'];
+        $employee->pass_string = Crypt::encrypt($request->input('password'));
+        $employee->date_of_start_working = $request->input('date_of_start_working');
+        $employee->date_of_birth = $request->input('date_of_birth');
+        $employee->job_type_id = $request->input('job_type_id');
         $employee->mobile = $data['mobile'];
-        $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
-        $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
+        $employee->annual_leave_per_year = !empty($request->input('annual_leave_per_year')) ?  $request->input('annual_leave_per_year') : 0;
+        $employee->number_of_days_any_leave_added = !empty($request->input('number_of_days_any_leave_added')) ?  $request->input('number_of_days_any_leave_added') : 0;
         // Working per week
-        $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
-        $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
-        $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
+        $employee->working_day_per_week =json_encode(!empty($request->input('working_day_per_week')) ?  $request->input('working_day_per_week') : []) ;
+        $employee->check_in =json_encode(!empty($request->input('check_in')) ?  $request->input('check_in') : []) ;
+        $employee->check_out = json_encode(!empty($request->input('check_out')) ?  $request->input('check_out') : []);
         // Evening shift
-        $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox'])  ?  $data['evening_shift_checkbox'] : []) ;
-        $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in'])  ?  $data['evening_shift_check_in'] : []) ;
-        $employee->evening_shift_check_out = json_encode(!empty($data['evening_shift_check_out']) ?  $data['evening_shift_check_out'] : []);
+        $employee->evening_shift_checkbox  = json_encode(!empty($request->input('evening_shift_checkbox'))  ?  $request->input('evening_shift_checkbox') : []) ;
+        $employee->evening_shift_check_in  = json_encode(!empty($request->input('evening_shift_check_in'))  ?  $request->input('evening_shift_check_in') : []) ;
+        $employee->evening_shift_check_out = json_encode(!empty($request->input('evening_shift_check_out')) ?  $request->input('evening_shift_check_out') : []);
 
-        $employee->fixed_wage = $data['fixed_wage'];
-        $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
-        $employee->payment_cycle = $data['payment_cycle'];
-        $employee->commission = $data['commission'];
-        $employee->commission_value = $this->commonUtil->num_uf($data['commission_value']) ?? 0;
-        $employee->commission_type = $data['commission_type'];
-        $employee->commision_calculation_period = $data['commission_calculation_period'];
-        $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
-        $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
-        $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
-        $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
+        $employee->fixed_wage = $request->input('fixed_wage');
+        $employee->fixed_wage_value = $request->input('fixed_wage_value') ?? 0;
+        $employee->payment_cycle = $request->input('payment_cycle');
+        $employee->commission = $request->input('commission');
+        $employee->commission_value = $this->commonUtil->num_uf($request->input('commission_value')) ?? 0;
+        $employee->commission_type = $request->input('commission_type');
+        $employee->commision_calculation_period = $request->input('commission_calculation_period');
+        $employee->comissioned_products = json_encode(!empty($request->input('commissioned_products')) ? $request->input('commissioned_products') : []);
+        $employee->comission_customer_types = json_encode(!empty($request->input('commission_customer_types')) ? $request->input('commission_customer_types') : []);
+        $employee->comission_stores = json_encode(!empty($request->input('commission_stores')) ? $request->input('commission_stores') : []);
+        $employee->comission_cashier = json_encode(!empty($request->input('commission_cashiers')) ? $request->input('commission_cashiers') : []);
         if ($request->hasFile('photo')) {
             $employee->photo = store_file($request->file('photo'), 'employees');
         }
         $employee->save();
-        // insert "employee_id" and "product_id" of employee's product into "employee_product" table
-        for($i = 0; $i < count($data['ids']); $i++) {
-            $product = Product::find($data['ids'][$i]);
-            if($product) {
-                // Assuming $employee is already defined or fetched from somewhere
-                $employee->products()->attach($product->id);
+        // ++++++++++++++ store "employee_id" and "product_ids" in "employee_product" table ++++++++++++++
+            for($i = 0; $i < count($request->input('ids')); $i++) {
+                $product = Product::find($request->input('ids')[$i]);
+                if($product)
+                {
+                    // Assuming $employee is already defined or fetched from somewhere
+                    $employee->products()->attach($product->id);
+                }
             }
-        }
-        $employee->stores()->sync($data['store_id']);
-
-
-
+        // }
+        $employee->stores()->sync($request->input('store_id'));
         //   if ($request->hasFile('upload_files')) {
         //       foreach ($request->file('upload_files') as $file) {
         //           $employee->addMedia($file)->toMediaCollection('employee_files');
@@ -231,9 +230,9 @@ class EmployeeController extends Controller
           $this->createOrUpdateNumberofLeaves($request, $employee->id);
 
           //assign permissions to employee
-//          dd($data['permissions']);
-          if (!empty($data['permissions'])) {
-              foreach ($data['permissions'] as $key => $value) {
+//          dd($request->input('permissions'));
+          if (!empty($request->input('permissions'))) {
+              foreach ($request->input('permissions') as $key => $value) {
                   $permissions[] = $key;
               }
 
@@ -248,7 +247,8 @@ class EmployeeController extends Controller
               'msg' => __('lang.employee_added')
           ];
 
-          return redirect()->route('employees.index')->with('status', $output);
+        //   return redirect()->route('employees.index')->with('status', $output);
+        return response()->json(['message' => 'Product created successfully']);
       }
       catch (\Exception $e) {
           dd($e);
@@ -258,7 +258,9 @@ class EmployeeController extends Controller
               'msg' => __('lang.something_went_wrong')
           ];
 
-          return redirect()->back()->with('status', $output);
+        //   return redirect()->back()->with('status', $output);
+        return response()->json(['message' => 'Failed to create']);
+
 
       }
 
@@ -473,20 +475,3 @@ class EmployeeController extends Controller
 //      dd('test');
       return view('employees.add_point');
   }
-
-  public function createOrUpdateNumberofLeaves($request, $employee_id)
-  {
-      if (!empty($request->number_of_leaves)) {
-          foreach ($request->number_of_leaves as $key => $value) {
-              NumberOfLeave::updateOrCreate(
-                  ['employee_id' => $employee_id, 'leave_type_id' => $key],
-                  ['number_of_days' => $value['number_of_days'], 'created_by' => Auth::user()->id, 'enabled' => !empty($value['enabled']) ? 1 : 0]
-              );
-          }
-      }
-  }
-
-
-}
-
-?>

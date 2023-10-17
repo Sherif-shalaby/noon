@@ -78,6 +78,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('add_point', [App\Http\Controllers\EmployeeController::class,'addPoints'])->name('employees.add_points');
     // +++++++++++++++++++++++ filters of "employees products" +++++++++++++++++++++
     Route::get('/employees/filter/{id}', [App\Http\Controllers\EmployeeController::class,'filterProducts']);
+    // store() method
+    // Route::post('/products', 'ProductController@store');
 
     // Wages
     Route::resource('wages',WageController::class);

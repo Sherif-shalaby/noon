@@ -2,6 +2,18 @@
 @section('title', __('lang.jobs'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
+        {{-- ///////// left side //////////// --}}
+        <div class="col-md-8 col-lg-8">
+            <h4 class="page-title">@lang('lang.add_employee')</h4>
+            <div class="breadcrumb-list">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                    <li class="breadcrumb-item active"><a href="{{route('employees.index')}}">@lang('lang.employees')</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@lang('lang.add_employee')</li>
+                </ol>
+            </div>
+        </div>
+        {{-- ///////// right side //////////// --}}
         <div class="widgetbar">
             <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
             {{--  <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
@@ -21,7 +33,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form class="form-group" id="new_employee_form"
+                                <form class="form-group" id="productForm"
                                       action="{{ route('employees.store') }}" method="POST"
                                       enctype="multipart/form-data">
                                     @csrf
@@ -192,6 +204,7 @@
                                     </div>
                                     <br>
                                     <br>
+                                    {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <h3>@lang('lang.user_rights')</h3>
@@ -202,6 +215,9 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
                                     <div class="row mt-4 m-auto">
+                                        <div class="col-md-12 text-center">
+                                            <h3>@lang('lang.employee_products')</h3>
+                                        </div>
                                         {{-- ======== Filters ======== --}}
                                         {{-- <div class="col-lg-12">
                                             <div class="container-fluid">
@@ -393,64 +409,88 @@
                 // Initially update labels visibility based on the checked state of checkboxes
                 updateLabelsVisibility();
             });
-            // ======================================== Employee Products Table ========================================
-            // +++++++++++++++ updateSubcategories() +++++++++++++++
-            // Function to update subcategories based on the selected category ID
-            function updateSubcategories()
-            {
-                console.log( $('body').find('.category option:selected').val() );
-                $.ajax({
-                    method : "get",
-                    url: "/employees/create/",
-                    // get "all inputFields of form that have name and value"
-                    // data: $('#filter_form').serialize(),
-                    data : {
-                        category_id : $('body').find('.category option:selected').val(),
-                        subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
-                        subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
-                        subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
-                        brand_id : $('body').find('.brand option:selected').val(),
-                    },
-                    success: function (response) {
-                        console.log("The Response Data : ");
-                        console.log(response)
-                        // Clear existing table content
-                        $('#productTable tbody').empty();
-                        // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
-                        // Assuming response.products is the array of products received from the server response
-                        $.each(response, function(index, product) {
-                            console.log(product);
-                            var row = '<tr>' +
-                                '<td>' + (index + 1) + '</td>' +
-                                '<td>' + product.name + '</td>' +
-                                '<td>' + product.sku + '</td>' +
-                                '<td><input type="checkbox" name="product_selected_delete" class="product_selected_delete" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
-                                '<td>' + (product.category ? product.category.name : '') + '</td>' +
-                                '<td>' +
-                                (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
-                                (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
-                                (product.subCategory3 ? product.subCategory3.name : '') +
-                                '</td>' +
-                                '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
-                                '</tr>';
-                            $('#productTable tbody').append(row);
-                        });
+            // // ======================================== Employee Products Table ========================================
+            // // +++++++++++++++ updateSubcategories() +++++++++++++++
+            // // Function to update subcategories based on the selected category ID
+            // function updateSubcategories()
+            // {
+            //     console.log( $('body').find('.category option:selected').val() );
+            //     $.ajax({
+            //         method : "get",
+            //         url: "/employees/create/",
+            //         // get "all inputFields of form that have name and value"
+            //         // data: $('#filter_form').serialize(),
+            //         data : {
+            //             category_id : $('body').find('.category option:selected').val(),
+            //             subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
+            //             subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
+            //             subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
+            //             brand_id : $('body').find('.brand option:selected').val(),
+            //         },
+            //         success: function (response) {
+            //             console.log("The Response Data : ");
+            //             console.log(response)
+            //             // Clear existing table content
+            //             $('#productTable tbody').empty();
+            //             // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
+            //             // Assuming response.products is the array of products received from the server response
+            //             $.each(response, function(index, product) {
+            //                 console.log(product);
+            //                 var row = '<tr>' +
+            //                     '<td>' + (index + 1) + '</td>' +
+            //                     '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
+            //                     '<td>' + product.name + '</td>' +
+            //                     '<td>' + product.sku + '</td>' +
+            //                     '<td>' + (product.category ? product.category.name : '') + '</td>' +
+            //                     '<td>' +
+            //                     (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
+            //                     (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
+            //                     (product.subCategory3 ? product.subCategory3.name : '') +
+            //                     '</td>' +
+            //                     '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
+            //                     '</tr>';
+            //                 $('#productTable tbody').append(row);
+            //             });
 
-                    },
-                    error: function (error) {
-                        console.error("Error fetching filtered products:", error);
-                    }
-                });
-            }
-            // when clicking on "filter button" , call "updateSubcategories()" method
-            $('#filter_btn').click(function(){
-                updateSubcategories();
-            });
-            // ======================================== Checkboxes of "products" ========================================
+            //         },
+            //         error: function (error) {
+            //             console.error("Error fetching filtered products:", error);
+            //         }
+            //     });
+            // }
+            // // when clicking on "filter button" , call "updateSubcategories()" method
+            // $('#filter_btn').click(function(){
+            //     updateSubcategories();
+            // });
+            // ======================================== Checkboxes of "products" table ========================================
             // when click on "all checkboxs" , it will checked "all checkboxes"
             $('#select_all_ids').click(function() {
                 $('.checkbox_ids').prop('checked', $(this).prop('checked'));
             });
+            // ++++++++++++++++++++++++++++ submit button +++++++++++++++++++++++++
+            // $('#submit-btn').click(function(event) {
+
+            //     // Prevent the default form submission behavior
+            //     event.preventDefault();
+            //     // Serialize the form data from the form with ID 'productForm'
+            //     var formData = $('#productForm').serialize();
+
+            //     // Make the AJAX request
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/products',
+            //         data: formData,
+            //         dataType: 'json',
+            //         success: function(response) {
+            //             console.log(response.message); // Output success message
+            //             // Handle success, for example, show a success message to the user
+            //         },
+            //         error: function(error) {
+            //             console.error('Error:', error);
+            //             // Handle errors, for example, show an error message to the user
+            //         }
+            //     });
+            // });
 
         });
     </script>

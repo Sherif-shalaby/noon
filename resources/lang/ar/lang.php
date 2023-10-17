@@ -543,6 +543,6 @@ return array(
     'avg_purchase_price' => 'متوسط سعر الشراء',
     'value_of_removed_stock' => 'قيمه المخزون المحذوف',
     'evening_shift' => 'شيفت مسائي' ,
-
+    'employee_products' => 'المنتجات المسئول عنها الموظف',
 );
 

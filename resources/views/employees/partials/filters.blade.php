@@ -65,6 +65,60 @@
         //     $('#subcategory_id3').val('').trigger('change'); // Reset sub3_category select box
         //     $('#brand_id').val('').trigger('change'); // Reset brand select box
         // });
+        // ======================================== Employee Products Table ========================================
+        // +++++++++++++++ updateSubcategories() +++++++++++++++
+        // Function to update subcategories based on the selected category ID
+        function updateSubcategories()
+        {
+            console.log( $('body').find('.category option:selected').val() );
+            $.ajax({
+                method : "get",
+                url: "/employees/create/",
+                // get "all inputFields of form that have name and value"
+                // data: $('#filter_form').serialize(),
+                data : {
+                    category_id : $('body').find('.category option:selected').val(),
+                    subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
+                    subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
+                    subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
+                    brand_id : $('body').find('.brand option:selected').val(),
+                },
+                success: function (response) {
+                    console.log("The Response Data : ");
+                    console.log(response)
+                    // Clear existing table content
+                    $('#productTable tbody').empty();
+                    // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
+                    // Assuming response.products is the array of products received from the server response
+                    $.each(response, function(index, product) {
+                        console.log(product);
+                        var row = '<tr>' +
+                            '<td>' + (index + 1) + '</td>' +
+                            '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
+                            '<td>' + product.name + '</td>' +
+                            '<td>' + product.sku + '</td>' +
+                            '<td>' + (product.category ? product.category.name : '') + '</td>' +
+                            '<td>' +
+                            (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
+                            (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
+                            (product.subCategory3 ? product.subCategory3.name : '') +
+                            '</td>' +
+                            '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
+                            '</tr>';
+                        $('#productTable tbody').append(row);
+                    });
+
+                },
+                error: function (error) {
+                    console.error("Error fetching filtered products:", error);
+                }
+            });
+        }
+        // when clicking on "filter button" , call "updateSubcategories()" method
+        $('#filter_btn').click(function(){
+            updateSubcategories();
+        });
+
     });
 </script>
 
