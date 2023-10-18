@@ -397,7 +397,7 @@ class Create extends Component
                 //         }
                 //     }
                 // }
-                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
+                $this->updateProductQuantityStore($product->id,$Variation->id, $transaction->store_id,  $this->rows[$index]['quantity']);
                 if (!empty($row['prices'])) {
                     foreach ($row['prices'] as $price) {
                         $price_data = [
@@ -659,22 +659,69 @@ class Create extends Component
         $this->rows[$index]['selling_price'] = (float)$this->rows[$index]['dollar_selling_price'] * (float)$this->exchange_rate;
     }
 
-    public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
+    public function updateProductQuantityStore($product_id,$variation_id, $store_id, $new_quantity)
     {
-        $qty_difference = (float)$new_quantity - (float)$old_quantity;
-
+        $product_store = ProductStore::where('product_id', $product_id)
+            ->where('store_id', $store_id)
+            ->first();
+        $product_variations = Variation::where('product_id',$product_id)->get();
+        $unit = Variation::where('id',$variation_id)->first();
+        $qty_difference = 0;
+        $qtyByUnit = 1 ;
+        if(!empty($product_store) && !empty($product_store->variation_id)){
+            $store_variation = Variation::find($product_store->variation_id);
+            if($store_variation->unit_id == $unit->unit_id){
+                $qty_difference = $new_quantity;
+            }
+            elseif($store_variation->basic_unit_id == $unit->unit_id){
+                $qtyByUnit = 1 / $store_variation->equal;
+                $qty_difference = $qtyByUnit * $new_quantity;
+            }
+            else{
+                foreach ($product_variations as $key => $product_variation){
+                    if (!empty($product_variations[$key+1])) {
+                        if ($store_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                            if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
+                                $qtyByUnit = $store_variation->equal * $product_variations[$key + 1]->equal;
+                                $qty_difference = $new_quantity / $qtyByUnit;
+                                break;
+                            } else {
+                                $qtyByUnit = $product_variation->equal;
+                            }
+                        }
+                        else{
+                            if ($product_variation->basic_unit_id == $product_variations[$key+1]->unit_id){
+                                $qtyByUnit *= $product_variation->equal;
+                            }
+                            if ($product_variation->basic_unit_id == $variation_id || $product_variation->unit_id == $variation_id){
+                                $qty_difference = $new_quantity / $qtyByUnit;
+                                break;
+                            }
+                        }
+                    }
+                    else{
+                        if ($product_variation->basic_unit_id == $variation_id){
+                            $qtyByUnit *= $product_variation->equal;
+                            $qty_difference = $new_quantity / $qtyByUnit;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            $qty_difference = $new_quantity;
+        }
         if ($qty_difference != 0) {
-            $product_store = ProductStore::where('product_id', $product_id)
-                ->where('store_id', $store_id)
-                ->first();
-
             if (empty($product_store)) {
                 $product_store = new ProductStore();
                 $product_store->product_id = $product_id;
                 $product_store->store_id = $store_id;
                 $product_store->quantity_available = 0;
             }
-
+            if(empty($product_store->variation_id) && !empty($variation_id)){
+                $product_store->variation_id = $variation_id;
+            }
             $product_store->quantity_available += $qty_difference;
             $product_store->save();
         }
