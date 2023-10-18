@@ -44,51 +44,69 @@ class JobTypeController extends Controller
    *
    * @return RedirectResponse
    */
-  public function store(Request $request)   : RedirectResponse
-  {
-      try {
-          $job = new JobType();
-          $job->title=$request->title;
-          $job->created_by = Auth::user()->id;
-          $job->date_of_creation = date('Y-m-d');
-
-          $job->save();
-          $role = Role::create(['name' => $job->title]);
-          $subModulePermissionArray = User::subModulePermissionArray();
-          foreach($request->permissions as $key=>$permission)
-          {
-            if (!empty($subModulePermissionArray[$key])) {
-                foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
-                    $permission=Permission::where('name', $key)->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
-                    $role->givePermissionTo($permission->id);
-                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
-                    $role->givePermissionTo($permission->id);
+    public function store(Request $request)
+        //  : RedirectResponse
+    {
+        $output = []; // Initialize the $output variable
+        try
+        {
+            $job = new JobType();
+            $job->title=$request->title;
+            $job->created_by = Auth::user()->id;
+            $job->date_of_creation = date('Y-m-d');
+            $job->save();
+            $existingRole = Role::where('name', $job->title)->first();
+            // +++++++ Check if the Role Exists : Before creating a new role, check if a role with the same name already exists. If it does, you can use the existing role instead of creating a duplicate
+            if (!$existingRole)
+            {
+                // Role does not exist, create a new one
+                $role = Role::create(['name' => $job->title]);
+            }
+            else
+            {
+                // Use the existing role
+                $role = $existingRole;
+            }
+            //   $role = Role::create(['name' => $job->title]);
+            $subModulePermissionArray = User::subModulePermissionArray();
+            // Check if $request->permissions is not null before looping through it
+            if (!is_null($request->permissions))
+            {
+                dd("True");
+                foreach($request->permissions as $key=>$permission)
+                {
+                    if (!empty($subModulePermissionArray[$key]))
+                    {
+                        foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
+                            $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
+                            if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                            $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
+                            if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                            $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
+                            if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                            $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
+                            if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                        }
+                    }
                 }
             }
-          }
-          $output = [
-              'success' => true,
-              'msg' => __('lang.success')
-          ];
-
-      }
-      catch (\Exception $e){
-          Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-          $output = [
-              'success' => false,
-              'msg' => __('lang.something_went_wrong')
-          ];
-          dd($e);
-      }
-      return redirect()->back()->with('status',$output);
-
-  }
+            $output =
+                [
+                    'success' => true,
+                    'msg' => __('lang.success')
+                ];
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+        return redirect()->back()->with('status',$output);
+    }
 
   /**
    * Display the specified resource.
@@ -113,8 +131,17 @@ class JobTypeController extends Controller
       $modulePermissionArray = User::modulePermissionArray();
       $role = Role::where('name',$job->title)->first();
       $permissions = $role->permissions;
+
+      $uniqueModuleNames = [];
+      foreach ($permissions as $permission)
+      {
+          $moduleName = $permission->module_name;
+          $uniqueModuleNames[$moduleName] = true;
+      }
+
+      $uniqueModuleNames = array_keys($uniqueModuleNames);
       return view('jobs.edit')
-          ->with(compact('job','modulePermissionArray','permissions'));
+          ->with(compact('job','modulePermissionArray','permissions','uniqueModuleNames'));
   }
 
   /**
@@ -130,11 +157,32 @@ class JobTypeController extends Controller
               'title' => $request->title,
               'updated_by' => Auth::user()->id,
           ];
-          JobType::where('id', $id)->update($data);
-
+          $job=JobType::where('id', $id)->first();
+          $role=Role::where('name',$job->title)->first();
+          $role->update([
+            'name' => $request->title,
+          ]);
+          $job->update($data);
+          $rolePermissions = $role->permissions()->delete();
+          $subModulePermissionArray = User::subModulePermissionArray();
+          foreach($request->permissions as $key=>$permission)
+          {
+            if (!empty($subModulePermissionArray[$key])) {
+                foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                    $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
+                    if (!empty($permission)) {$role->givePermissionTo($permission->id);}
+                }
+            }
+          }
           $output = [
               'success' => true,
-              'msg' => __('lang.job_updated')
+              'msg' => __('lang.success')
           ];
       } catch (\Exception $e) {
           Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());

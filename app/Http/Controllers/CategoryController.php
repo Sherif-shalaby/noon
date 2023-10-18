@@ -50,20 +50,22 @@ class CategoryController extends Controller
         return view('categories.create', compact('cats'));
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
+        // return $request->all();
+
 //        dd(!empty($request->parent_id));
-        $data = $request['data'];
+        $data =  $request->data;
 //        dd($request['data'],empty($request->parent_id));
-        $input['name']        = $data['name'];
+        $input['name']        = $request->name;
         $input['status']      = $data['status'];
         $input['parent_id']   = !empty($request->parent_id) ? $request->parent_id : null;
         if ($request->file('cover')) {
             $input['cover'] = store_file($request->file('cover'), 'categories');
         }
-        if(!empty($data['translations[name']))
+        if(!empty($data['translations[name]']))
         {
-            $input['translation']= $data['translations[name'];
+            $input['translation']= $data['translations[name]'];
         }else{
             $input['translation']=[];
         }

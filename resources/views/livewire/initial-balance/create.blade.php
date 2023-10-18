@@ -91,7 +91,7 @@
                                     'wire:model' => 'item.0.sku',
                                 ]) !!}
                             </div> --}}
-                            <div class="col-md-3">
+                            <div class="col-md-3"> 
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                 <input type="text" class="form-control" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
@@ -121,14 +121,14 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $subcategories1, null, [
+                                    {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
                                         'class' => 'form-control select2 subcategory1',
                                         'data-name' => 'subcategory_id1',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subcategory_id1',
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                     data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
@@ -145,7 +145,7 @@
                                         'id' => 'subCategoryId2',
                                         'wire:model' => 'item.0.subcategory_id2',
                                     ]) !!}
-                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                                      data-select_category="2"><i class="fas fa-plus"></i></a>
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
@@ -168,7 +168,7 @@
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary btn-sm ml-2 text-white openCategoryModal" data-toggle="modal"
+                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary btn-sm ml-2 text-white openCategoryModal" data-toggle="modal"
                                         data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
@@ -365,7 +365,7 @@
                                             ])
                                         @endforeach
                                         <tr>
-                                            <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
+                                            <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
                                             {{-- @if ($showColumn) --}}
                                             <td> {{ $this->sum_dollar_tsub_total() }} </td>
                                             <td></td>

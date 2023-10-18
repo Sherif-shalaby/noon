@@ -26,8 +26,8 @@
 @endsection
 @section('content')
      <!-- End Breadcrumbbar -->
-            <!-- Start Contentbar -->    
-            <div class="contentbar">                
+            <!-- Start Contentbar -->
+            <div class="contentbar">
                 <!-- Start row -->
                 <div class="row">
                     <!-- Start col -->

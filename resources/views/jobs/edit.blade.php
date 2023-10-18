@@ -28,7 +28,7 @@
                     @foreach ($modulePermissionArray as $key_module => $moudle)
                     <div class="col-md-3">
                         {{$moudle}}
-                        {!! Form::checkbox('permissions[' . $key_module . ']', 1, false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!}
+                        {!! Form::checkbox('permissions[' . $key_module . ']', 1,in_array($key_module,$uniqueModuleNames)?true:false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!}
                         
                     </div>
                     @endforeach

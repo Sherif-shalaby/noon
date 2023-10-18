@@ -64,8 +64,8 @@
     </div>
 </div>
 
-{{--<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>--}}
-{{--{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}--}}
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#category-form'); !!}
 <script>
     {{--$(document).ready(function () {--}}
     {{--    // Attach a click event handler to the button--}}

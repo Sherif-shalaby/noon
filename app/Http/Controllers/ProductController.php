@@ -3,22 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductExpiryDamage;
 use App\Models\ProductPrice;
-use App\Models\ProductTax;
+use App\Models\ProductStore;use App\Models\ProductTax;
 use App\Models\Store;
 use App\Models\System;
+use App\Models\Tax;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Variation;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
 use App\Utils\Util;
 use Illuminate\Support\Facades\File;
@@ -46,14 +52,27 @@ class ProductController extends Controller
   public function index(Request $request)
   {
     $products=Product::
-        when(\request()->category_id != null, function ($query) {
+        when(\request()->dont_show_zero_stocks =="on", function ($query) {
+            $query->whereHas('product_stores', function ($query) {
+                $query->where('quantity_available', '>', 0);
+            });
+        })
+        ->when(\request()->category_id != null, function ($query) {
             $query->where('category_id',\request()->category_id);
         })
-        ->when(\request()->unit_id != null, function ($query) {
-            $query->where('unit_id',\request()->unit_id);
+        ->when(\request()->subcategory_id1 != null, function ($query) {
+            $query->where('subcategory_id1',\request()->subcategory_id1);
+        })
+        ->when(\request()->subcategory_id2 != null, function ($query) {
+            $query->where('subcategory_id2',\request()->subcategory_id2);
+        })
+        ->when(\request()->subcategory_id3 != null, function ($query) {
+            $query->where('subcategory_id3',\request()->subcategory_id3);
         })
         ->when(\request()->store_id != null, function ($query) {
-            $query->where('store_id',\request()->store_id);
+            $query->whereHas('product_stores', function ($query) {
+                $query->where('store_id',\request()->store_id);
+            });
         })
         ->when(\request()->brand_id != null, function ($query) {
             $query->where('brand_id',\request()->brand_id);
@@ -63,7 +82,8 @@ class ProductController extends Controller
         })
         ->latest()->get();
     $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
-    $categories= Category::orderBy('created_at', 'desc')->pluck('name','id');
+    $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+    $subcategories= Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
@@ -73,21 +93,31 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
   {
-    $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+    $clear_all_input_form = System::getProperty('clear_all_input_stock_form');
+//    dd($clear_all_input_product_form, isset($clear_all_input_product_form) && $clear_all_input_product_form == '1');
+    $recent_product=[];
+    if(isset($clear_all_input_form) && $clear_all_input_form == '1') {
+         $recent_product = Product::orderBy('created_at', 'desc')->first();
+     }
+//     dd(isset($recent_product));
+    $units=Unit::orderBy('created_at', 'desc')->get();
     $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
     $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     // product_tax
-    $product_tax = ProductTax::select('name','id','status')->get();
+    $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
     return view('products.create',
-    compact('categories','brands','units','stores','product_tax','quick_add','unitArray','subcategories'));
+    compact('categories','brands','units','stores',
+        'product_tax','quick_add','unitArray','subcategories',
+        'clear_all_input_form','recent_product'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
+//      dd($request);
     // return $request->all();
     try
     {
@@ -116,7 +146,11 @@ class ProductController extends Controller
     // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
     if(!empty($request->product_tax_id))
     {
-        $product->product_taxes()->attach($request->product_tax_id) ;
+        ProductTax::create([
+            'product_tax_id' => $request->product_tax_id,
+            'product_id' => $product->id,
+        ]);
+        // $product->product_taxes()->attach($request->product_tax_id) ;
     }
 
     // if(!empty($request->subcategory_id)){
@@ -144,15 +178,17 @@ class ProductController extends Controller
         }
     }
     foreach ($index_units as $index){
-        $var_data=[
-            'product_id'=>$product->id,
-            'unit_id'=>$request->new_unit_id[$index],
-            'basic_unit_id'=>$request->basic_unit_id[$index],
-            'equal'=>$request->equal[$index],
-            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-            'created_by'=>Auth::user()->id
-        ];
-        Variation::create($var_data);
+        if(isset($request->new_unit_id[$index])){
+            $var_data=[
+                'product_id'=>$product->id,
+                'unit_id'=>$request->new_unit_id[$index],
+                'basic_unit_id'=>$request->basic_unit_id[$index],
+                'equal'=>$request->equal[$index],
+                'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
+                'created_by'=>Auth::user()->id
+            ];
+            Variation::create($var_data);
+        }
     }
 
     $index_prices=[];
@@ -232,10 +268,17 @@ class ProductController extends Controller
    * Display the specified resource.
    *
    * @param  int  $id
-   * @return Response
+   * @return Application|Factory|View
    */
   public function show($id)
   {
+      $product = Product::find($id);
+      $stock_detials = ProductStore::where('product_id', $id)->get();
+      return view('products.show')->with(compact(
+          'product',
+          'stock_detials',
+//          'add_stocks',
+      ));
 
   }
 
@@ -247,16 +290,18 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-      $units=Unit::orderBy('created_at', 'desc')->pluck('name','id');
+      $units=Unit::orderBy('created_at', 'desc')->get();
       $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
       $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
-      $product=Product::with('product_taxes')->findOrFail($id);
+      $product=Product::findOrFail($id);
+//      dd($product_tax_id);
+      $product_tax_id = ProductTax::where('product_id',$product->id)->first();
       $customer_types = CustomerType::pluck('name', 'id');
-      $product_tax = ProductTax::all();
+      $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax'));
+      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax','product_tax_id'));
   }
 
   /**
@@ -337,38 +382,13 @@ class ProductController extends Controller
         Variation::create($var_data);
     }
 
-
-
-    $index_prices=[];
-    $product->product_prices()->delete();
-    $index_prices=[];
-    if($request->has('price_category')){
-        if(count($request->price_category)>0){
-            $index_prices=array_keys($request->price_category);
-        }
-    }
-    foreach ($index_prices as $index_price){
-        $data_des=[
-            'product_id' => $product->id,
-            'price_type' => $request->price_type[$index_price],
-            'price_category' => $request->price_category[$index_price],
-            'price' => $request->price[$index_price],
-            'quantity' => $request->quantity[$index_price],
-            'bonus_quantity' => $request->bonus_quantity[$index_price],
-            'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
-            'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
-            'created_by' => Auth::user()->id,
-        ];
-        ProductPrice::create($data_des);
-    }
     $output = [
         'success' => true,
         'msg' => __('lang.success')
     ];
      } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
@@ -470,13 +490,86 @@ class ProductController extends Controller
   public function getRawUnit()
     {
         $index = request()->row_id ?? 0;
-        $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        $units = Unit::orderBy('created_at','desc')->get();
 
         return view('products.product_unit_raw',compact(
             'index',
             'units',
         ));
     }
+    public function multiDeleteRow(Request $request){
+        try {
+            DB::beginTransaction();
+            foreach ($request->ids as $id){
+                $product = Product::find($id);
+                if(!empty($product->variations)){
+                    foreach ($product->variations as $variation){
+                        $var = Variation::find($variation->id);
+                        $var->forceDelete();
+                    }
+                }
+                $product_stores = ProductStore::where('product_id', $id)->get();
+                if(!empty($product_stores)){
+                    foreach ($product_stores as $store){
+                        $product_store = ProductStore::find($store->id);
+                        $product_store->forceDelete();
+                    }
+                }
+
+                $product->delete();
+            }
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+
+            DB::commit();
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+
+        return $output;
+    }
+
+    public function get_remove_damage(Request $request,$id){
+        $product_damages = ProductExpiryDamage::where("product_id",$id)->where("status","damage")->get();
+        $status = "damage";
+        return view('product_expiry_damage.index')
+            ->with(compact( 'product_damages', 'status' ,'id' ));
+    }
+    public function getDamageProduct(Request $request,$id){
+            $addStockLines = AddStockLine::
+            where("add_stock_lines.product_id",$id)
+                ->where("add_stock_lines.quantity",">",0 )
+                ->leftjoin('variations', function ($join) {
+                    $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+                });
+            $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+            $store_query = '';
+            if (!empty($store_id)) {
+                // $products->where('product_stores.store_id', $store_id);
+                $store_query = 'AND store_id=' . $store_id;
+            }
+            $addStockLines = $addStockLines->select(
+                'add_stock_lines.*',
+                'add_stock_lines.expiry_date as exp_date',
+                'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
+                'add_stock_lines.purchase_price as add_stock_line_purchase_price',
+                'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
+                'variations.sub_sku',
+                'variations.name as variation_name',
+                DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
+                DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
+                DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
+            )->groupBy('add_stock_lines.id');
+
+        return view("product_expiry_damage.add");
+    }
 }
+
 
 ?>

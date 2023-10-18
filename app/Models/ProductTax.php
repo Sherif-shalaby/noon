@@ -9,11 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ProductTax extends Model
 {
     use HasFactory;
-    use SoftDeletes;
+    // use SoftDeletes;
 
-    protected $table = "product_taxes";
-    protected $fillable = ['name', 'rate','status','details', 'created_by', 'deleted_by', 'updated_by'];
+    protected $table = "products_taxes";
+    protected $guarded = [];
     public $timestamps = true;
-    // soft delete
-    protected $dates = ['deleted_at'];
 }

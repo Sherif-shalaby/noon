@@ -8,8 +8,16 @@
                         <h4>@lang('lang.add-stock')</h4>
                     </div>
                     <div class="row ">
-                        <div class="col-md-9">
+                        <div class="col-md-7">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>
+                                    {!! Form::checkbox('change_exchange_rate_to_supplier', 1, false,['wire:model' => 'change_exchange_rate_to_supplier']) !!}
+                                    @lang('lang.change_exchange_rate_to_supplier')
+                                </label>
+                            </div>
                         </div>
                         <div class="col-md-3">
                             <div class="i-checks">
@@ -88,8 +96,17 @@
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
-                                    <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate" value="{{number_format($exchange_rate,2)}}" disabled>
+                                    <input type="text"  class="form-control" id="exchange_rate" name="exchange_rate"
+                                           wire:model="exchange_rate"  wire:change="changeExchangeRateBasedPrices()">
                                 </div>
+                                @if(!empty($change_exchange_rate_to_supplier))
+                                    <div class="col-md-3">
+                                        {!! Form::label('exchange_rate', __('lang.end_date') . ':', []) !!}
+                                        <input type="date"  class="form-control" id="end_date" name="end_date"
+                                               wire:model="end_date">
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
                         <br>
@@ -141,7 +158,7 @@
                                 </div>
                                 <div class="p-2">
                                     @foreach ($products as $product)
-                                        <div class="order-btn" wire:click='add_product({{ $product->id }})' >
+                                        <div class="order-btn" wire:click='add_product({{ $product->id }})' style="cursor: pointer">
 {{--                                            @if ($product->image)--}}
 {{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}"--}}
 {{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" >--}}
@@ -271,7 +288,7 @@
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
                                     {!! Form::text('other_expenses', $other_expenses,
                                     ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
-                                     'wire:model' => 'other_expenses']) !!}
+                                     'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -279,7 +296,7 @@
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
                                     {!! Form::text('discount_amount',$discount_amount,
                                     ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount',
-                                    'wire:model' => 'discount_amount']) !!}
+                                    'wire:model' => 'discount_amount','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -287,24 +304,30 @@
                                     {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
                                     {!! Form::text('other_payments', $other_payments,
                                     ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
-                                     'wire:model' => 'other_payments']) !!}
+                                     'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                    {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], $source_type,
+                                    {!! Form::label('source_type', __('lang.source_type'). ':*', []) !!} <br>
+                                    {!! Form::select('source_type', [ 'pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type,
                                     ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),
                                      'data-name' => 'source_type', 'wire:model' => 'source_type']) !!}
                                 </div>
+                                @error('source_type')
+                                <span class="error text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
+                                    {!! Form::label('source_of_payment', __('lang.source_of_payment'). ':*', []) !!} <br>
                                     {!! Form::select('source_id', $users, $source_id,
                                     ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'),
                                      'id' => 'source_id', 'required', 'data-name' => 'source_id', 'wire:model' => 'source_id']) !!}
                                 </div>
+                                @error('source_id')
+                                <span class="error text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="col-md-3">
@@ -341,27 +364,27 @@
                                     </div>
                                 </div>
 
-                            <div class="col-md-3 due_fields d-none">
-                                <div class="form-group">
-                                    {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>
-                                    {!! Form::text('due_date', !empty($transaction_payment)&&!empty($transaction_payment->due_date)?@format_date($transaction_payment->due_date):(!empty($payment) ? @format_date($payment->due_date) : null), ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'due_date']) !!}
+                                <div class="col-md-3 due_fields d-none">
+                                    <div class="form-group">
+                                        {!! Form::label('due_date', __('lang.due_date') . ':', []) !!} <br>
+                                        {!! Form::text('due_date', !empty($transaction_payment)&&!empty($transaction_payment->due_date)?@format_date($transaction_payment->due_date):(!empty($payment) ? @format_date($payment->due_date) : null), ['class' => 'form-control', 'placeholder' => __('lang.due_date'), 'wire:model' => 'due_date']) !!}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-3 due_fields d-none">
-                                <div class="form-group">
-                                    {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}
-                                    <br>
-                                    {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}
+                                <div class="col-md-3 due_fields d-none">
+                                    <div class="form-group">
+                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}
+                                        <br>
+                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}
+                                    </div>
                                 </div>
-                            </div>
 
-{{--                                <div class="col-md-3 due_fields ">--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}--}}
-{{--                                        <br>--}}
-{{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}--}}
-{{--                                    </div>--}}
+    {{--                                <div class="col-md-3 due_fields ">--}}
+    {{--                                    <div class="form-group">--}}
+    {{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}--}}
+    {{--                                        <br>--}}
+    {{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}--}}
+    {{--                                    </div>--}}
 {{--                                </div>--}}
                             @endif
                             <div class="col-md-12">

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.customer_price_offer'))
+@section('title', __('lang.create_customer_price_offer'))
 @push('css')
     <!-- Main Faile Css  -->
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css')}}" />
@@ -19,7 +19,7 @@
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
                   <div class="widgetbar">
-                    <a type="button" class="btn btn-primary" href="{{route('customer_price_offer.index')}}">@lang('lang.customer_price_offer')</a>
+                    <a type="button" class="btn btn-primary" target="_blank" href="{{route('customer_price_offer.index')}}">@lang('lang.customer_price_offer')</a>
                 </div>
                 </div>
             </div>

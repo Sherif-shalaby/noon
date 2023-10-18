@@ -24,9 +24,8 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|max:255|unique:categories',
-            'status' => 'required',
-            'parent_id' => 'nullable',
+            'name' => 'required|max:255|unique:categories,name,NULL,id,deleted_at,NULL',
+            // 'parent_id' => 'required',
             'cover' => 'nullable|mimes:jpg,jpeg,png|max:2000',
         ];
     }
