@@ -90,7 +90,9 @@
                                                 <li>
                                                     <a data-href="{{route('sell-car.edit', $sell_car->id)}}"
                                                        data-container=".view_modal" class="btn btn-modal"><i
-                                                            class="dripicons-document-edit"></i> @lang('lang.edit')</a>                                                </li>
+                                                            class="dripicons-document-edit"></i> @lang('lang.edit')
+                                                    </a>
+                                                </li>
                                                 <li class="divider"></li>
                                                 <li>
                                                     <a data-href="{{route('sell-car.destroy', $sell_car->id)}}"
@@ -111,8 +113,7 @@
             </div>
         </div>
     </div>
-
-            {{--     create sell_car modal      --}}
-            @include('sell-car.create')
+    {{--     create sell_car modal      --}}
+    @include('sell-car.create')
 @endsection
 <div class="view_modal no-print" ></div>

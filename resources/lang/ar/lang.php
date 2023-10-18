@@ -544,5 +544,6 @@ return array(
     'value_of_removed_stock' => 'قيمه المخزون المحذوف',
     'evening_shift' => 'شيفت مسائي' ,
     'employee_products' => 'المنتجات المسئول عنها الموظف',
+    'days_number_notify' => 'عدد الايام قبل التنبيه' ,
 );
 

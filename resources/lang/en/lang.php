@@ -525,7 +525,7 @@ return [
     'value_of_removed_stock' => 'Removed Stock',
     'evening_shift' => 'Evening Shift' ,
     'employee_products' => 'Products For Which The Employee is Responsible',
-
+    'days_number_notify' => 'days number notify' ,
 ];
 
 
