@@ -164,7 +164,7 @@
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
                         <select name="method" id="method" class='form-control select2' data-live-search='true'
-                            placeholder="{{ __('lang.please_select') }}" required>
+                            placeholder="{{ __('lang.please_select') }}" >
                             <option value="">{{ __('lang.please_select') }}</option>
                             <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }}
                                 value="inclusive">{{ __('lang.inclusive') }}</option>
@@ -177,12 +177,12 @@
                         <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label>
                         <div class="d-flex justify-content-center">
                             <select name="product_tax_id" id="product_tax" class="form-control select2"
-                                placeholder="{{ __('lang.please_select') }}" required>
+                                placeholder="{{ __('lang.please_select') }}" >
                                 <option value="">{{ __('lang.please_select') }}</option>
                                 @foreach ($product_tax as $tax)
                                     <option
                                      @if ($product_tax_id == $tax->id) selected @endif
-        
+
                                 value="{{ $tax->id }}"> {{ $tax->name }}
                                 </option>
                                 @endforeach

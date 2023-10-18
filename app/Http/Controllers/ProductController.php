@@ -296,7 +296,8 @@ class ProductController extends Controller
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
       $product=Product::findOrFail($id);
-      $product_tax_id=ProductTax::where('product_id',$product->id)->first()->product_tax_id;
+//      dd($product_tax_id);
+      $product_tax_id = ProductTax::where('product_id',$product->id)->first();
       $customer_types = CustomerType::pluck('name', 'id');
       $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
