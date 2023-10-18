@@ -99,6 +99,8 @@ class Create extends Component
         'rows.*.dollar_purchase_price' => 'required',
         'rows.*.dollar_selling_price' => 'required',
         'rows.*.selling_price' => 'required',
+        'rows.*.prices.*.discount_quantity' => 'required',
+        'rows.*.prices.*.bonus_quantity' => 'required',
     ];
     public function changeSize()
     {
