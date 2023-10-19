@@ -72,13 +72,13 @@
         </td>
     {{-- @endif --}}
     <td>
-        <input type="text" class="form-control" wire:model="rows.{{ $index }}.purchase_price" style="width: 100px;"  required>
+        <input type="text" class="form-control" wire:model="rows.{{ $index }}.purchase_price" style="width: 100px;"  required wire:change="changeDollarPurchasePrice({{$index}})">
         @error('rows.'.$index.'.purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td>
-        <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price" style="width: 100px;" required>
+        <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price" style="width: 100px;" required >
         @error('rows.'.$index.'.selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
@@ -112,6 +112,10 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
+        <td>
+            {!! Form::label('price_category' ,__('lang.price_category'),['style' => 'font-size: 10px;','class'=>'pt-2']) !!}
+            <input type="text" class="form-control price_category" name="price_category" wire:model="rows.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
+        </td>
         <td >
             {!! Form::label('b_qty',__('lang.b_qty')) !!}
             <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
@@ -119,16 +123,11 @@
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
-            {!! Form::label('price_category' ,__('lang.price_category'),['style' => 'font-size: 10px;','class'=>'pt-2']) !!}
-            <input type="text" class="form-control price_category" name="price_category" wire:model="rows.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
         </td>
         <td>
             {!! Form::label('price_type' ,__('lang.type')) !!}
             {!! Form::select('rows.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
-//                 'id' => 'price_type',
                 'class' => ' form-control price_type',
-//                'data-name' => 'price_type',
-//                'data-index' =>$index,
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
             ]) !!}
@@ -137,15 +136,35 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-
         <td>
-            {!! Form::label('price' ,$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
+            {!! Form::label('price' ,isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount').' $' : __('lang.percent').' $') !!}
             <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
+            <p>
+                {{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->rows[$index]['prices'][$key]['dinar_price']??''}}
+            </p>
         </td>
         <td>
-            {!! Form::label('' ,__('lang.price')) !!}
+            {!! Form::label('' ,__('lang.price').' $') !!}
             <input type="text" name="" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.price_after_desc" placeholder = "{{__('lang.price')}}" >
+            <p>
+                {{__('lang.price')}}:{{$this->rows[$index]['prices'][$key]['dinar_price_after_desc']??''}}
+            </p>
         </td>
+        <td>
+            {!! Form::label('total_price' , __('lang.total_price').' $') !!}
+            <input type="text" name="total_price" class="form-control total_price" wire:model="rows.{{$index}}.prices.{{$key}}.total_price" placeholder = "{{__('lang.total_price')}}" >
+            <p>
+                {{__('lang.total_price')}}:{{$this->rows[$index]['prices'][$key]['dinar_total_price']??''}}
+            </p>
+        </td>
+        <td>
+            {!! Form::label('piece_price' , __('lang.piece_price').' $') !!}
+            <input type="text" name="piece_price" class="form-control piece_price" wire:model="rows.{{$index}}.prices.{{$key}}.piece_price" placeholder = "{{__('lang.total_price')}}" >
+            <p>
+                {{ __('lang.piece_price')}}:{{$this->rows[$index]['prices'][$key]['dinar_piece_price']??''}}
+            </p>
+        </td>
+        
         <td colspan="2">
             {!! Form::label('customer_type',__('lang.customer_type')) !!}
             <select wire:model="rows.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$index}}" data-key="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">

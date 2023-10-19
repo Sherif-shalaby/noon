@@ -402,11 +402,18 @@ class Edit extends Component
                             'price_type' => $price['price_type'],
                             'price_category' => $price['price_category'],
                             'price' => $price['price'],
+                            'dinar_price' => $price['dinar_price'],
                             'quantity' => $price['discount_quantity'],
                             'bonus_quantity' => $price['bonus_quantity'],
+                            'price_customers'=>!empty($price['price_after_desc']) ? $price['price_after_desc'] : null,
+                            'dinar_price_customers'=>!empty($price['dinar_price_after_desc']) ? $price['dinar_price_after_desc'] : null,
                             'price_customer_types' => $price['price_customer_types'],
                             'created_by' => Auth::user()->id,
                             'stock_line_id' => $stock_line->id,
+                            'dinar_total_price' => isset($price['dinar_total_price']) ? $price['total_price'] : null,
+                            'total_price' => isset($price['total_price']) ? $price['total_price'] : null,
+                            'dinar_piece_price' => isset($price['dinar_piece_price']) ? $price['dinar_piece_price'] : null,
+                            'piece_price' => isset($price['piece_price']) ? $price['piece_price'] : null,
                         ];
                         if(!empty($item['product_price_id'])){
                             $product_price = ProductPrice::find($item['product_price_id']);
@@ -474,10 +481,16 @@ class Edit extends Component
                     'price_type' => $price->price_type,
                     'price_category' => $price->price_category,
                     'price' => $price->price,
+                    'dinar_price' => $price->dinar_price,
                     'discount_quantity' => $price->discount_quantity,
                     'bonus_quantity' => $price->bonus_quantity,
                     'price_customer_types' => $price->price_customer_types,
-                    'price_after_desc' => $price->price_after_desc,
+                    'price_after_desc' => $price->price_customers,
+                    'dinar_price_after_desc' => $price->dinar_price_customers,
+                    'dinar_total_price'=> $price->dinar_total_price,
+                    'total_price'=> $price->total_price,
+                    'piece_price'=> $price->piece_price,
+                    'dinar_piece_price'=> $price->dinar_piece_price,
                     'product_price_id' => $price->id,
                 ];
             }
@@ -487,10 +500,16 @@ class Edit extends Component
                 'price_type' => null,
                 'price_category' => null,
                 'price' => null,
+                'dinar_price' => null,
                 'discount_quantity' => null,
                 'bonus_quantity' => null,
                 'price_customer_types' => null,
                 'price_after_desc' => null,
+                'dinar_price_after_desc' => null,
+                'total_price' => null,
+                'dinar_total_price' =>null,
+                'piece_price' => null,
+                'dinar_piece_price' => null,
             ];
         }
         array_unshift($new_item['prices'],$new_price);
@@ -563,10 +582,16 @@ class Edit extends Component
                     'price_type' => null,
                     'price_category' => null,
                     'price' => null,
+                    'dinar_price' => null,
                     'discount_quantity' => null,
                     'bonus_quantity' => null,
                     'price_customer_types' => null,
                     'price_after_desc' => null,
+                    'dinar_price_after_desc' => null,
+                    'total_price' => null,
+                    'dinar_total_price' =>null,
+                    'piece_price' => null,
+                    'dinar_piece_price' => null,
                 ],
             ],
         ];
@@ -577,10 +602,16 @@ class Edit extends Component
             'price_type' => null,
             'price_category' => null,
             'price' => null,
+            'dinar_price' => null,
             'discount_quantity' => null,
             'bonus_quantity' => null,
             'price_customer_types' => null,
             'price_after_desc' => null,
+            'dinar_price_after_desc' => null,
+            'total_price' => null,
+            'dinar_total_price' =>null,
+            'piece_price' => null,
+            'dinar_piece_price' => null,
         ];
         array_unshift($this->items[$index]['prices'], $new_price);
     }
@@ -597,15 +628,26 @@ class Edit extends Component
     {
         if(!empty($this->items[$index]['prices'][$key]['price'])){
             if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price']))  {
-                $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :
-                    $this->items[$index]['dollar_selling_price'];
+                $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :0;
+                $dollar_selling_price = !empty($this->items[$index]['dollar_selling_price']) ? $this->items[$index]['dollar_selling_price'] :0;
+                $this->items[$index]['dollar_selling_price'];
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = $sell_price - $this->items[$index]['prices'][$key]['price'];
+                    $this->items[$index]['prices'][$key]['dinar_price_after_desc'] =  (float)$sell_price - (float)$this->items[$index]['prices'][$key]['dinar_price'];
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$dollar_selling_price -  (float)$this->items[$index]['prices'][$key]['price'];
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - $percent);
+                    $this->items[$index]['prices'][$key]['dinar_price_after_desc'] = (float)($sell_price - $percent);
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($dollar_selling_price - ($percent * $dollar_selling_price));
+                
                 }
+                if(!empty($this->items[$index]['prices'][$key]['price_after_desc'])){
+                    $this->items[$index]['prices'][$key]['total_price']=(float)$this->items[$index]['prices'][$key]['price_after_desc'] * ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
+                    $this->items[$index]['prices'][$key]['dinar_total_price']=(float)$this->items[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
+                    $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
+                    $this->items[$index]['prices'][$key]['dinar_piece_price']=(float)$this->items[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );                
+                }
+                $this->items[$index]['prices'][$key]['dinar_price']=$this->items[$index]['prices'][$key]['price']* $this->exchange_rate;
             }
         }
     }

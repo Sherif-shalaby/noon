@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use function PHPSTORM_META\map;
+
 class Edit extends Component
 {
     use WithPagination;
@@ -46,7 +48,9 @@ class Edit extends Component
             'change_current_stock' => 0,
             'method' => '',
             'exchange_rate' => 0,
-            'stockId' => ''
+            'stockId' => '',
+            'product_symbol'=>'',
+            'balance_return_request'=>null
         ]
     ];
     public $stockId;
@@ -60,29 +64,39 @@ class Edit extends Component
         $deleted_items = [], $deleted_prices = [];
 
     public $rows = [];
-    protected function rules()
+    public function messages()
     {
         return [
-            'item.*.name' => 'required',
-            'item.*.store_id' => 'required',
-            'item.*.supplier_id' => 'required',
-            'item.*.category_id' => 'required',
-            'item.*.subcategory_id' => 'nullable',
-            'item.*.subcategory_id2' => 'nullable',
-            'item.*.subcategory_id3' => 'nullable',
-            'item.*.weight' => 'numeric',
-            'item.*.width' => 'numeric',
-            'item.*.height' => 'numeric',
-            'item.*.length' => 'numeric',
-            'item.*.size' => 'numeric',
-            'item.*.product_tax_id' => 'nullable',
-            'rows.*.sku' => 'required',
-            // 'rows.*.sku' => 'required|max:255|unique:variations,sku,'."rows.*.id".',id,deleted_at,NULL',
-            'rows.*.purchase_price' => 'required',
-            'rows.*.dollar_purchase_price' => 'required',
-            'rows.*.dollar_selling_price' => 'required',
-            'rows.*.selling_price' => 'required',
+            'rows.0.prices.0.discount_quantity.required_if' => __('lang.required')
         ];
+    }
+    public function updatedInputs()
+    {
+        $this->validate([
+        'item.*.name' => 'required',
+        'item.*.store_id' => 'required',
+        'item.*.supplier_id' => 'required',
+        'item.*.category_id' => 'required',
+        'item.*.subcategory_id' => 'nullable',
+        'item.*.subcategory_id2' => 'nullable',
+        'item.*.subcategory_id3' => 'nullable',
+        'item.*.weight' => 'numeric',
+        'item.*.width' => 'numeric',
+        'item.*.height' => 'numeric',
+        'item.*.length' => 'numeric',
+        'item.*.size' => 'numeric',
+        'item.*.product_tax_id' => 'nullable',
+        'item.*.product_symbol'=>   'required|string|max:255|unique:products,product_symbol,'.$this->item[0]['id'].',id,deleted_at,NULL',
+        'rows.*.sku' => 'required',
+        // 'rows.*.sku' => 'required|unique:variations,sku,rows.*.id,id,deleted_at,NULL',
+        'rows.*.purchase_price' => 'required',
+        'rows.*.dollar_purchase_price' => 'required',
+        'rows.*.dollar_selling_price' => 'required',
+        'rows.*.selling_price' => 'required',
+        'rows.*.prices.*.discount_quantity' => 'required_if:rows.*.prices.*.bonus_quantity,' . $this->rows[0]['prices'][0]['bonus_quantity'],
+        // 'rows.*.prices.*.bonus_quantity' => 'required',
+        ]);
+        $this->messages();
     }
     public function changeSize()
     {
@@ -167,7 +181,9 @@ class Edit extends Component
             $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
             $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
             $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
+            $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request;
             $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
+            $this->item[0]['product_symbol'] = $recent_stock->add_stock_lines->first()->product->product_symbol ?? null;
             if (!empty($this->item[0]['category_id'])) {
                 $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
             }
@@ -215,7 +231,13 @@ class Edit extends Component
                             'bonus_quantity' => $price->bonus_quantity,
                             'price_customer_types' => $price->price_customer_types,
                             'price_after_desc' => $price->price_customers,
+                            'dinar_price_after_desc' => $price->dinar_price_customers,
                             'product_price_id' => $price->id,
+                            'total_price'=>$price->total_price,
+                            'piece_price'=>$price->piece_price,
+                            'dinar_price' => $price->dinar_price,
+                            'dinar_total_price'=>$price->dinar_total_price,
+                            'dinar_piece_price'=>$price->dinar_piece_price,
                         ];
                         array_unshift($newRow['prices'], $new_price);
                     }
@@ -228,6 +250,12 @@ class Edit extends Component
                         'bonus_quantity' => null,
                         'price_customer_types' => null,
                         'price_after_desc' => null,
+                        'dinar_price_after_desc' => null,
+                        'total_price'=>null,
+                        'piece_price'=>null,
+                        'dinar_price' => null,
+                        'dinar_total_price'=>null,
+                        'dinar_piece_price'=>null,
                     ];
                     array_unshift($newRow['prices'], $new_price);
                 }
@@ -238,10 +266,10 @@ class Edit extends Component
         $this->exchange_rate = $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
     }
-    public function updated($propertyName)
-    {
-        $this->validateOnly($propertyName);
-    }
+    // public function updated($propertyName)
+    // {
+    //     $this->validateOnly($propertyName);
+    // }
 
     public function setSubCategoryValue($value)
     {
@@ -279,10 +307,17 @@ class Edit extends Component
                     'price_type' => null,
                     'price_category' => null,
                     'price' => null,
+                    'dinar_price' => null,
                     'discount_quantity' => null,
                     'bonus_quantity' => null,
                     'price_customer_types' => null,
                     'price_after_desc' => null,
+                    'dinar_price_after_desc' => null,
+                    'total_price'=>null,
+                    'piece_price'=>null,
+                    'dinar_price' => null,
+                    'dinar_total_price'=>null,
+                    'dinar_piece_price'=>null,
                 ],
             ],
         ];
@@ -317,7 +352,7 @@ class Edit extends Component
     public function edit()
     {
         //////////
-        $this->validate();
+        $this->updatedInputs();
 
         try {
             if (empty($this->rows)) {
@@ -349,6 +384,8 @@ class Edit extends Component
                 $product->weight = $this->item[0]['weight'];
                 $product->size = $this->item[0]['size'];
                 $product->method = $this->item[0]['method'];
+                $product->product_symbol = $this->item[0]['product_symbol'];
+                $product->balance_return_request=$this->item[0]['balance_return_request']??0;
                 $product->save();
                 // add  products to stock lines
                 if (!empty($this->item[0]['product_tax_id'])) {
@@ -377,6 +414,7 @@ class Edit extends Component
                     $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
                     $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
                     $Variation->created_by = Auth::user()->id;
+                    $Variation->product_symbol = $this->item[0]['product_symbol'] .($index+1) ;
                     $Variation->save();
                     ////////////////
 
@@ -420,11 +458,18 @@ class Edit extends Component
                                 'stock_line_id' => $stock_line->id,
                                 'price_type' => isset($price['price_type']) ? $price['price_type'] : null,
                                 'price' => !empty($price['price']) ? $price['price'] : null,
+                                'dinar_price' => !empty($price['dinar_price']) ? $price['dinar_price'] : null,
                                 'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
+                                'price_customers'=>!empty($price['price_after_desc']) ? $price['price_after_desc'] : null,
+                                'dinar_price_customers'=>!empty($price['dinar_price_after_desc']) ? $price['dinar_price_after_desc'] : null,
                                 'quantity' => isset($price['discount_quantity']) ? $price['discount_quantity'] : null,
                                 'bonus_quantity' => isset($price['bonus_quantity']) ? $price['bonus_quantity'] : null,
                                 'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : [],
                                 'created_by' => Auth::user()->id,
+                                'total_price'=>isset($price['total_price']) ? $price['total_price'] : null,
+                                'dinar_total_price'=>isset($price['dinar_total_price']) ? $price['dinar_total_price'] : null,
+                                'piece_price'=>isset($price['piece_price']) ? $price['piece_price'] : null,
+                                'dinar_piece_price'=>isset($price['dinar_piece_price']) ? $price['dinar_piece_price'] : null,
                             ];
 
                             if (!empty($price['id'])) {
@@ -531,10 +576,16 @@ class Edit extends Component
                         'price_type' => null,
                         'price_category' => null,
                         'price' => null,
+                        'dinar_price' => null,
                         'discount_quantity' => null,
                         'bonus_quantity' => null,
                         'price_customer_types' => null,
                         'price_after_desc' => null,
+                        'dinar_price_after_desc' => null,
+                        'total_price'=>null,
+                        'piece_price'=>null,
+                        'dinar_total_price'=>null,
+                        'dinar_piece_price'=>null,
                     ],
                 ],
             ];
@@ -682,6 +733,7 @@ class Edit extends Component
                     $this->rows[$index]['selling_price'] = ((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate;
                 }
             }
+            
         }
     }
     public function changeSellingPrice($index)
@@ -726,14 +778,23 @@ class Edit extends Component
     public function changePrice($index, $key)
     {
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
-            $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :
-                $this->rows[$index]['dollar_selling_price'];
+            $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :0;
+            $dollar_sell_price = !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] :0;
             if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed') {
-                $this->rows[$index]['prices'][$key]['price_after_desc'] = $sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
+                $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = $sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
+                $this->rows[$index]['prices'][$key]['price_after_desc'] = $dollar_sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
             } elseif ($this->rows[$index]['prices'][$key]['price_type'] === 'percentage') {
                 $percent = $this->rows[$index]['prices'][$key]['price'] / 100;
-                $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
+                $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
+                $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($dollar_sell_price - ($percent * $dollar_sell_price));
             }
+            if(!empty($this->rows[$index]['prices'][$key]['price_after_desc'])){
+                $this->rows[$index]['prices'][$key]['total_price']=(float)$this->rows[$index]['prices'][$key]['price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
+                $this->rows[$index]['prices'][$key]['dinar_total_price']=(float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
+                $this->rows[$index]['prices'][$key]['piece_price']=(float)$this->rows[$index]['prices'][$key]['total_price'] / ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
+                $this->rows[$index]['prices'][$key]['dinar_piece_price']=(float)$this->rows[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
+            }
+            $this->rows[$index]['prices'][$key]['dinar_price']=$this->rows[$index]['prices'][$key]['price']* $this->exchange_rate;
         }
     }
 }

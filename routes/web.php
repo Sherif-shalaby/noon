@@ -35,7 +35,6 @@ use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
 // use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\PayableReportController;
-// use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;

@@ -117,8 +117,6 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(ProductRequest $request)
   {
-//      dd($request);
-    // return $request->all();
     try
     {
       $product_data = [
@@ -140,6 +138,8 @@ class ProductController extends Controller
         'active' => !empty($request->active) ? 1 : 0,
         'created_by' => Auth::user()->id,
         'method' => !empty($request->method) ? $request->method :null,
+        'product_symbol'=>!empty($request->product_symbol) ? $request->product_symbol :null,
+        'balance_return_request' => !empty($request->balance_return_request) ?$request->balance_return_request:null,
     ];
     $product = Product::create($product_data);
 
@@ -296,8 +296,7 @@ class ProductController extends Controller
       $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
       $quick_add=1;
       $product=Product::findOrFail($id);
-//      dd($product_tax_id);
-      $product_tax_id = ProductTax::where('product_id',$product->id)->first();
+      $product_tax_id=ProductTax::where('product_id',$product->id)->first()->product_tax_id??null;
       $customer_types = CustomerType::pluck('name', 'id');
       $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
@@ -313,6 +312,9 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     // return $request->all();
+       $request->validate([
+        'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
+       ]);
     try{
       $product_data = [
         'name' => $request->name,
@@ -334,6 +336,9 @@ class ProductController extends Controller
         'edited_by' => Auth::user()->id,
         // method column
         'method' => $request->method,
+        'product_symbol'=>!empty($request->product_symbol) ? $request->product_symbol :null,
+        'balance_return_request' => !empty($request->balance_return_request) ?$request->balance_return_request:null,
+
     ];
     $product = Product::find($id);
     $product->update($product_data);
