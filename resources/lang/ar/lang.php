@@ -548,6 +548,7 @@ return array(
     'plan'=>'خطة المندوب',
     'add_plan'=>'اضافة خطة',
     'edit_plan'=>'تعديل الخطة',
+    'enter_product_symbol' => 'البحث برمز المنتج',
 
 );
 
