@@ -35,6 +35,12 @@ return [
     'update' => 'Update',
     'close' => 'Close' ,
     'delete' => 'Delete' ,
+    'delivery' =>'Delivery',
+    'plans'=>'Plans',
+    'plan'=>'Plan',
+    'add_plan'=>'Add Plan',
+    'edit_plan'=>'Edit Plan',
+
 
 ];
 
