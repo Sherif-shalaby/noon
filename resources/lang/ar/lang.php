@@ -543,6 +543,11 @@ return array(
     'balance_return_request'=>'رصيد اعادة الطلب',
     'total_price'=>'السعر الكلى',
     'piece_price'=>'سعر القطعة',
+    'delivery' =>'المناديب',
+    'plans'=>'خطط المناديب',
+    'plan'=>'خطة المندوب',
+    'add_plan'=>'اضافة خطة',
+    'edit_plan'=>'تعديل الخطة',
 
 );
 
