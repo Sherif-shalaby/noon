@@ -60,7 +60,7 @@
                     <div class="col-md-3">
                         {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::select('brand_id', $brands, isset($recent_product) ? $recent_product->brand->id : null, [
+                            {!! Form::select('brand_id', $brands, isset($recent_product->brand) ? $recent_product->brand->id : null, [
                                 'class' => 'form-control select2',
                                 'placeholder' => __('lang.please_select'),
                                 'id' => 'brand_id',
@@ -77,7 +77,7 @@
                             {!! Form::select(
                                 'store_id[]',
                                 $stores,
-                                isset($recent_product) ? $recent_product->stores : null,
+                                isset($recent_product->stores) ? $recent_product->stores : null,
                                 [
                                     'class' => 'form-control selectpicker',
                                     'multiple' => 'multiple',
@@ -95,7 +95,7 @@
                     <div class="col-md-3">
                         {!! Form::label('name', __('lang.product_name'), ['class' => 'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::text('name', isset($recent_product) ? $recent_product->name : null, [
+                            {!! Form::text('name', isset($recent_product->name) ? $recent_product->name : null, [
                                 'class' => 'form-control required',
                             ]) !!}
                             <button class="btn btn-primary btn-sm ml-2" type="button" data-toggle="collapse"
@@ -109,22 +109,36 @@
                         @enderror
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',
-                            'translations' => isset($recent_product) ? $recent_product->translations : [],
+                            'translations' => isset($recent_product->translations) ? $recent_product->translations : [],
                             'type' => 'product',
                         ])
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-1">
+                        {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text('product_symbol',  null, [
+                            'class' => 'form-control','required'
+                        ]) !!}
+                        <br>
+                        @error('product_symbol')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="col-md-2">
                         {!! Form::label('product_sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('product_sku', isset($recent_product) ? $recent_product->sku : null, [
+                        {!! Form::text('product_sku',  null, [
                             'class' => 'form-control',
                         ]) !!}
+                        <br>
+                        @error('product_sku')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
                     </div>
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-3">
                                 {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('category_id', $categories, isset($recent_product) ? $recent_product->category_id : null, [
+                                    {!! Form::select('category_id', $categories, isset($recent_product->category_id) ? $recent_product->category_id : null, [
                                         'class' => 'form-control select2 category',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'categoryId',
@@ -140,7 +154,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $subcategories, isset($recent_product) ? $recent_product->subcategory_id1 : null, [
+                                    {!! Form::select('subcategory_id1', $subcategories, isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
                                         'class' => 'form-control select2 subcategory',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subcategory_id1',
@@ -156,7 +170,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id2', $subcategories, isset($recent_product) ? $recent_product->subcategory_id2 : null, [
+                                    {!! Form::select('subcategory_id2', $subcategories, isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
                                         'class' => 'form-control select2 subcategory2',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId2',
@@ -172,7 +186,7 @@
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id3', $subcategories, isset($recent_product) ? $recent_product->subcategory_id3 : null, [
+                                    {!! Form::select('subcategory_id3', $subcategories, isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
                                         'class' => 'form-control select2 subcategory3',
                                         'placeholder' => __('lang.please_select'),
                                         'id' => 'subCategoryId3',
@@ -211,7 +225,15 @@
                                     data-toggle="modal" data-target="#add_product_tax_modal"
                                     data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
-                    </div>                    {{-- sizes --}}
+                    </div>  
+                    {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text('balance_return_request',  null, [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div>                 
+                    {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
@@ -219,7 +241,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('height', isset($recent_product) ? $recent_product->height : 0, [
+                                {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
                                     'class' => 'form-control height',
                                 ]) !!}
                                 <br>
@@ -232,7 +254,7 @@
 
                             <div class="col-md-3">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('length', isset($recent_product) ? $recent_product->length : 0, [
+                                {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
                                     'class' => 'form-control length',
                                 ]) !!}
                                 <br>
@@ -243,7 +265,7 @@
 
                             <div class="col-md-3">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('width', isset($recent_product) ? $recent_product->width : 0, [
+                                {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
                                     'class' => 'form-control width',
                                 ]) !!}
                                 <br>
@@ -253,7 +275,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('size', isset($recent_product) ? $recent_product->size : 0, [
+                                {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
                                     'class' => 'form-control size',
                                 ]) !!}
                                 <br>
@@ -263,7 +285,7 @@
                             </div>
                             <div class="col-md-3">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('weight', isset($recent_product) ? $recent_product->weight : 0, [
+                                {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
                                     'class' => 'form-control',
                                 ]) !!}
                                 <br>
@@ -292,7 +314,15 @@
                         @else
                             @include('products.product_unit_raw', ['index' => 0])
                         @endif
-                        <input type="hidden" id="raw_unit_index" value="0" />
+                        @php
+                        if (!empty($recent_product->variations) && count(($recent_product->variations))>0 ){
+                            $index = count($recent_product->variations) - 1;
+                        }
+                        else{
+                            $index = 0;
+                        }
+                        @endphp
+                        <input type="hidden" id="raw_unit_index" value="{{$index}}" />
                     </div>
 
                     {{-- crop image --}}
@@ -367,10 +397,10 @@
                                                 <i class="fas fa-globe"></i>
                                             </button></label>
 
-                                        {!! Form::textarea('details', isset($recent_product) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}
+                                        {!! Form::textarea('details', isset($recent_product->details) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}
                                         @include('layouts.translation_textarea', [
                                             'attribute' => 'details',
-                                            'translations' => isset($recent_product) ? $recent_product->details_translations : [],
+                                            'translations' => !empty($recent_product) ? $recent_product->details_translations : [],
                                             'type' => 'product',
                                         ])
                                     </div>

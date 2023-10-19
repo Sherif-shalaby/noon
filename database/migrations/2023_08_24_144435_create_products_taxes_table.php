@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('products_taxes', function (Blueprint $table) {
             $table->id();
-            // ========= foreign key : product_id =========
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-
-            // ========= foreign key : product_tax_id =========
-            $table->unsignedBigInteger('product_tax_id')->nullable();
-            $table->foreign('product_tax_id')->references('id')->on('product_taxes')->onDelete('cascade');
-
+               // ========= foreign key : product_id =========
+               $table->unsignedBigInteger('product_id')->nullable();
+               $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+   
+               // ========= foreign key : product_tax_id =========
+               $table->unsignedBigInteger('product_tax_id')->nullable();
+               $table->foreign('product_tax_id')->references('id')->on('taxes')->onDelete('cascade');
+   
             $table->timestamps();
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products_taxes');
+        // Schema::dropIfExists('products_taxes');
     }
 };

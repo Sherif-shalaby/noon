@@ -211,6 +211,12 @@ class Edit extends Component
     // ++++++++++++++++++++++++++++++++++ store() method : new ++++++++++++++++++++++++++++++++++
     public function store(): Redirector|Application|RedirectResponse
     {
+        $this->validate([
+            'store_id' => 'required',
+            'customer_id' => 'required',
+            'block_for_days' => 'required',
+            'validity_days' => 'required',
+        ]);
         try
         {
             DB::beginTransaction();

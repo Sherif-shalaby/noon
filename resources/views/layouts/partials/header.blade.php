@@ -239,6 +239,17 @@
                     @if(!empty($module_settings['supplier_module']))
                         <li class="scroll"><a href="{{route('suppliers.create')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.suppliers')}}</span></a></li>
                     @endif
+
+                    <li class="dropdown">
+                        <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/customer-feedback.png')}}" class="img-fluid" alt="layouts"><span>{{__('lang.delivery')}}</span></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="{{route('delivery.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.index')}}</a></li>
+                        <li><a href="{{route('delivery_plan.plansList')}}"><i class="mdi mdi-circle"></i>{{__('lang.plans')}}</a></li>
+                        {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
+                        {{-- <a href="{{route('delivery.maps')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
+                        </ul>
+                    </li>
+
                 {{-- @endcan --}}
                 {{-- ###################### sell car : عربة بيع ###################### --}}
                 {{-- @can('sell_car_module')  --}}

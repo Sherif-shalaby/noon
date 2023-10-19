@@ -19,18 +19,19 @@ use App\Http\Controllers\AddStockController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DailyReportSummary;
+use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
-use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
-use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\PayableReportController;
-use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
@@ -78,7 +79,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Wages
     Route::resource('wages',WageController::class);
-    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission']);
+    Route::get('wages/calculate-salary-and-commission/{employee_id}/{payment_type}', [WageController::class,'calculateSalaryAndCommission'])->name('calculateSalaryAndCommission');
+    Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
@@ -108,7 +110,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
-
+    Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
+    Route::get('product/remove_damage/{id}', [ProductController::class,'get_remove_damage'])->name('get_remove_damage');
+    Route::get('product/create/{id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
@@ -116,25 +120,37 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customertypes', CustomerTypeController::class);
 
     // stocks
-//    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
-//    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
-//    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
+
+    //    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
+    //    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
+    //    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
+    Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');
     Route::get('add-stock/add-payment/{id}',[AddStockController::class , 'addPayment'])->name('stocks.addPayment');
     Route::post('add-stock/post-payment/{id}',[AddStockController::class , 'storePayment'])->name('stocks.storePayment');
+    Route::delete('add-stock/{id}/delete',[AddStockController::class , 'destroy'])->name('stocks.delete');
 
     // Initial Balance
     Route::get('initial-balance/get-raw-unit', [InitialBalanceController::class,'getRawUnit']);
     Route::resource('initial-balance', InitialBalanceController::class);
     Route::get('suppliers/get-dropdown', [SuppliersController::class,'getDropdown']);
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
+    //delivery
+    Route::resource('delivery',  DeliveryController::class);
+    // Route::get('delivery/edit/{id}',   [DeliveryController::class,'edit'])->name('delivery.edit');
+    Route::get('delivery/create/{id}', [DeliveryController::class,'create'])->name('delivery.create');
+    Route::get('plans', [DeliveryController::class,'plansList'])->name('delivery_plan.plansList');
+    Route::post('delivery_plan/sign-in', [DeliveryController::class,'signIn']);
+    Route::post('delivery_plan/sign-out', [DeliveryController::class,'signOut']);
+
+    // Route::get('delivery/maps', [DeliveryController::class,'index'])->name('delivery.maps');
 
 
-//    Route::get('add-stock/add-payment/{id}', function ($id) {
-//        return view('add-stock.add-payment', compact('id'));
-//    })->name('stocks.addPayment');
+    //    Route::get('add-stock/add-payment/{id}', function ($id) {
+    //        return view('add-stock.add-payment', compact('id'));
+    //    })->name('stocks.addPayment');
 
     // store pos
     Route::resource('store-pos', StorePosController::class);
@@ -213,6 +229,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     // ########### General Tax ###########
     Route::resource('sell-car', SellCarController::class);
+
+
+    Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

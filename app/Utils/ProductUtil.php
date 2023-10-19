@@ -1614,35 +1614,28 @@ class ProductUtil extends Util
      *
      * @return boolean
      */
-    // public function decreaseProductQuantity($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
-    // {
-    //     $qtyByUnit=Variation::find($variation_id)->number_vs_base_unit==0?1:Variation::find($variation_id)->number_vs_base_unit;
-    //     $qty_difference = ($qtyByUnit?$qtyByUnit*$new_quantity:$new_quantity) - $old_quantity;
-    //     $product = Product::find($product_id);
+     public function decreaseProductQuantity($product_id, $variation_id, $store_id, $new_quantity, $old_quantity = 0)
+     {
+         $qty_difference = $new_quantity - $old_quantity;
 
-    //     //Check if add-stock is enabled or not.
-    //     if ($product->is_service != 1) {
-    //         //Decrement Quantity in variations store table
-    //         $details = ProductStore::where('variation_id', $variation_id)
-    //             ->where('product_id', $product_id)
-    //             ->where('store_id', $store_id)
-    //             ->first();
+         //Decrement Quantity in variations store table
+         $details = ProductStore::where('product_id', $product_id)
+             ->where('store_id', $store_id)
+             ->first();
 
-    //         //If store details not exists create new one
-    //         if (empty($details)) {
-    //             $details = ProductStore::create([
-    //                 'product_id' => $product_id,
-    //                 'store_id' => $store_id,
-    //                 'variation_id' => $variation_id,
-    //                 'qty_available' => 0
-    //             ]);
-    //         }
+         //If store details not exists create new one
+         if (empty($details)) {
+             $details = ProductStore::create([
+                 'product_id' => $product_id,
+                 'store_id' => $store_id,
+                 'quantity_available' => 0
+             ]);
+         }
 
-    //         $details->decrement('qty_available', $qty_difference);
-    //     }
+         $details->decrement('quantity_available', $qty_difference);
 
-    //     return true;
-    // }
+         return true;
+     }
 
     /**
      * update the block quantity for quotations

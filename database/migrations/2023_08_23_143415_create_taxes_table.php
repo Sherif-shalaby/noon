@@ -9,7 +9,7 @@ return new class extends Migration
     /* +++++++++++++++++++++ up() ++++++++++++++++++++++++++++ */
     public function up()
     {
-        Schema::create('product_taxes', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->integer('rate');
@@ -20,6 +20,8 @@ return new class extends Migration
 			$table->string('deleted_by')->nullable();
 			$table->string('updated_by')->nullable();
             // created_at , updated_at
+
+         
             $table->timestamps();
             // soft delete
             $table->softDeletes();
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_taxes');
+        Schema::dropIfExists('taxes');
     }
 };

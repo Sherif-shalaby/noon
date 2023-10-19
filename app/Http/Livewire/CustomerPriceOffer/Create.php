@@ -106,7 +106,9 @@ class Create extends Component
         {
             $search_result = Product::when($this->searchProduct,function ($query)
             {
-                return $query->where('name','like','%'.$this->searchProduct.'%');
+                // return $query->where('name','like','%'.$this->searchProduct.'%');
+                return $query->where('name', 'like', '%' . $this->searchProduct . '%')
+                             ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
             });
             $search_result = $search_result->paginate();
             if(count($search_result) === 1){
@@ -164,6 +166,12 @@ class Create extends Component
 
     public function store(): Redirector|Application|RedirectResponse
     {
+        $this->validate([
+            'store_id' => 'required',
+            'customer_id' => 'required',
+            'block_for_days' => 'required',
+            'validity_days' => 'required',
+        ]);
         try
         {
             // ++++++++++++++++++++++++++++ TransactionCustomerOfferPrice table ++++++++++++++++++++++++++++
@@ -224,7 +232,6 @@ class Create extends Component
                     $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
                     $customer_offer_price['product_id'] = $item['product']['id'];
                     $customer_offer_price['quantity'] = $item['quantity'];
-                    // هنا
                     $customer_offer_price['sell_price'] = $item['selling_price'];
                     $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
                     // created_by
@@ -299,6 +306,13 @@ class Create extends Component
     // +++++++++++++++++++++++ addNewProduct() +++++++++++++++++++++++
     public function addNewProduct($variations,$product,$show_product_data)
     {
+        // Task_9_10_2023 : dollar_selling_price
+        $dollar_sell = AddStockLine::select('dollar_sell_price')->where('product_id', $product['id'])->latest()->first();
+        // Task_9_10_2023 : dinar_selling_price
+        $dinar_sell = AddStockLine::select('sell_price')->where('product_id', $product['id'])->latest()->first();
+        // Task_9_10_2023 : quantity
+        $quantity = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // dd($quantity);
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -313,6 +327,12 @@ class Create extends Component
             'weight' => !empty($product->weight) ? $product->weight : 0,
             'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
             'dollar_cost' => 0,
+            // get "dollar_selling_price" from "add_stock_line" table
+            'dollar_selling_price' => isset($dollar_sell->dollar_sell_price) ? $dollar_sell->dollar_sell_price : 0 ,
+            // get "selling_price" from "add_stock_line" table
+            'selling_price' => isset($dinar_sell->sell_price) ? $dinar_sell->sell_price : 0 ,
+            // get sum of all "quantity" of "product" from "add_stock_line" table
+            'quantity' => isset($quantity) ? $quantity : 0 ,
             'cost' => 0,
             'dollar_total_cost' => 0,
             'total_cost' => 0,
@@ -384,28 +404,28 @@ class Create extends Component
     // ++++++++++++++++++++++++++ Task :  $ اجمالي التكاليف ++++++++++++++++++++++++++
     public function dollar_total_cost($index)
     {
-        $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
-        $this->items[$index]['dollar_total_cost_var'] = $this->items[$index]['dollar_total_cost'];
+        $this->items[$index]['dollar_total_cost'] = (float)($this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity']);
+        // $this->items[$index]['dollar_total_cost'] = $this->items[$index]['dollar_selling_price'] * $this->items[$index]['quantity'];
+        $this->items[$index]['dollar_total_cost_var'] = (float)($this->items[$index]['dollar_total_cost']);
         return number_format($this->items[$index]['dollar_total_cost'], 2);
     }
     // ++++++++++++++++++++++++++ Task : اجمالي التكاليف بالدينار ++++++++++++++++++++++++++
     public function total_cost($index)
     {
-        $this->items[$index]['total_cost'] = $this->items[$index]['selling_price'] * $this->items[$index]['quantity'];
-        $this->items[$index]['total_cost_var'] = $this->items[$index]['total_cost'] ;
+        $this->items[$index]['total_cost'] = (float)($this->items[$index]['selling_price'] * $this->items[$index]['quantity']);
+        $this->items[$index]['total_cost_var'] = (float)($this->items[$index]['total_cost']) ;
         return number_format($this->items[$index]['total_cost'],2) ;
     }
     // ++++++++++++++++++++++++++ Task : convert_dinar_price() : سعر البيع بالدينار ++++++++++++++++++++++++++
     public function convert_dinar_price($index)
     {
-        // dd($this->exchange_rate);
         if (!empty($this->items[$index]['dollar_selling_price']) )
         {
-            $this->items[$index]['selling_price'] = $this->items[$index]['dollar_selling_price'] * $this->exchange_rate;
+            $this->items[$index]['selling_price'] = (float)($this->items[$index]['dollar_selling_price'] * $this->exchange_rate);
         }
         else
         {
-            $this->items[$index]['selling_price'] = $this->items[$index]['dollar_selling_price'];
+            $this->items[$index]['selling_price'] = (float)($this->items[$index]['dollar_selling_price']);
         }
         // return $selling_price;
     }
@@ -415,11 +435,11 @@ class Create extends Component
         // dd($this->exchange_rate);
         if (!empty($this->items[$index]['selling_price']) )
         {
-            $this->items[$index]['dollar_selling_price'] = $this->items[$index]['selling_price'] / $this->exchange_rate;
+            $this->items[$index]['dollar_selling_price'] = (float)($this->items[$index]['selling_price'] / $this->exchange_rate);
         }
         else
         {
-            $this->items[$index]['dollar_selling_price'] = $this->items[$index]['selling_price'];
+            $this->items[$index]['dollar_selling_price'] = (float)($this->items[$index]['selling_price']);
         }
         // return $selling_price;
     }

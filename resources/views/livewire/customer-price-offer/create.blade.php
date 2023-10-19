@@ -30,32 +30,43 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     {{-- ++++++++++++++++++++++ stores filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-4" wire:ignore>
-                                        <label for="store_id" class="text-primary">@lang('lang.store')</label>
+                                    <div class="col-md-4">
+                                        <label for="store_id" class="text-primary">
+                                            @lang('lang.store'):<span style="color:#dc3545;">*</span>
+                                        </label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="store_id" id="Client_Select">
-                                                <option  value="0 " readonly selected> {{ __('lang.please_select') }} </option>
+                                            <select class="form-control client" wire:model="store_id" id="Client_Select" required>
+                                                <option  value="" readonly selected> {{ __('lang.please_select') }} </option>
                                                 @foreach ($stores as $store)
                                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
+                                        @error('store_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-4" wire:ignore>
-                                        <label for="customer_id" class="text-primary">@lang('lang.customers')</label>
+                                    <div class="col-md-4">
+                                        <label for="customer_id" class="text-primary">
+                                            @lang('lang.customers'):<span style="color:#dc3545;">*</span>
+                                        </label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="customer_id" id="Client_Select">
-                                                <option  value="0 " readonly selected > {{ __('lang.please_select') }} </option>
+                                            <select class="form-control client" wire:model="customer_id" id="Client_Select" required>
+                                                <option  value="" readonly selected > {{ __('lang.please_select') }} </option>
                                                 @foreach ($customers as $customer)
                                                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
+                                        @error('customer_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
                             <br><br>
+                            {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
                             <div class="row">
                                 <div class="col-md-8 m-t-15 offset-md-2">
                                     <div class="search-box input-group">
@@ -84,6 +95,7 @@
                                 </div>
                             </div>
                             <br>
+                            {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row">
                                 <div class="col-md-2 border border-1 mr-3 p-0">
                                     {{-- +++++++++++++++++++++ الأقسام الرئيسيه ++++++++++++++++++++++ --}}
@@ -180,68 +192,13 @@
                                 </div>
                             </div>
                             <br>
-                            {{-- ++++++++++++++++++++++++++++++++++ الفاتورة ++++++++++++++++++++++++++++++++++ --}}
-                            {{-- <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('files', __('lang.files'), []) !!} <br>
-                                        <input type="file" name="files[]" id="files"  wire:model="files">
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('invoice_no', __('lang.invoice_no'), []) !!} <br>
-                                        {!! Form::text('invoice_no', !empty($recent_stock)&&!empty($recent_stock->invoice_no)?$recent_stock->invoice_no:null, ['class' => 'form-control', 'placeholder' => __('lang.invoice_no'),'wire:model' => 'invoice_no']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
-                                        {!! Form::text('other_expenses', !empty($recent_stock)&&!empty($recent_stock->other_expenses)?@num_format($recent_stock->other_expenses):null, ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses', 'wire:model' => 'other_expenses']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
-                                        {!! Form::text('discount_amount', !empty($recent_stock)&&!empty($recent_stock->discount_amount)?@num_format($recent_stock->discount_amount):null, ['class' => 'form-control', 'placeholder' => __('lang.discount'), 'id' => 'discount_amount','wire:model' => 'discount_amount']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
-                                        {!! Form::text('other_payments', !empty($recent_stock)&&!empty($recent_stock->other_payments)?@num_format($recent_stock->other_payments):null, ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments', 'wire:model' => 'other_payments']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                        {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], !empty($recent_stock)&&!empty($recent_stock->source_type)?$recent_stock->source_type: 'Please Select', ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'data-name' => 'source_type', 'wire:model' => 'source_type']) !!}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                                        {!! Form::select('source_id', $users, null, ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required', 'data-name' => 'source_id', 'wire:model' => 'source_id']) !!}
-                                    </div>
-                                </div>
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('payment_status', __('lang.payment_status') . ':*', []) !!}
-                                        {!! Form::select('payment_status', $payment_status_array, !empty($recent_stock)&&!empty($recent_stock->payment_status)?$recent_stock->payment_status:'paid', ['class' => 'form-control select2', 'data-live-search' => 'true', 'required',  'placeholder' => __('lang.please_select'), 'data-name' => 'payment_status', 'wire:model' => 'payment_status']) !!}
-                                        @error('payment_status')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                            </div> --}}
                             <div class="row">
+                                {{-- ========= block_qty ========= --}}
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {{-- ========= block_qty ========= --}}
                                         <div class="i-checks">
-                                            <input type="checkbox" id="block_qty" name="block_qty" class="form-control-custom" value="" wire:model="block_qty"/>
+                                            <input type="checkbox" id="block_qty" name="block_qty" class="form-control-custom" value="" wire:model="block_qty" required/>
                                             <label for="block_qty"><strong>@lang('lang.block_qty')</strong></label>
                                         </div>
                                     </div>
@@ -249,15 +206,22 @@
                                 {{-- ========= block_for_days ========= --}}
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {!! Form::label('block_for_days', __('lang.block_for_days') . ':') !!}
-                                        {!! Form::text('block_for_days', 1, ['class' => 'form-control', 'placeholder' => __('lang.block_for_days') , 'wire:model' => 'block_for_days']) !!}
+                                        {!! Form::label('block_for_days', __('lang.block_for_days') .':<span style="color:#dc3545;">*</span>', [], false) !!}
+                                        {!! Form::text('block_for_days', 1, ['class' => 'form-control', 'placeholder' => __('lang.block_for_days') , 'wire:model' => 'block_for_days' , 'required']) !!}
+                                        @error('block_for_days')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 {{-- ========= validity_days ========= --}}
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        {!! Form::label('validity_days', __('lang.validity_days') . ':') !!}
-                                        {!! Form::text('validity_days', null, ['class' => 'form-control', 'placeholder' => __('lang.validity_days') , 'wire:model' => 'validity_days']) !!}
+                                        {!! Form::label('validity_days', __('lang.validity_days') . ':<span style="color:#dc3545;">*</span>', [], false) !!}
+                                        {{-- {!! Form::label('validity_days', __('lang.validity_days') . ':') !!} --}}
+                                        {!! Form::text('validity_days', null, ['class' => 'form-control', 'placeholder' => __('lang.validity_days') , 'wire:model' => 'validity_days','required']) !!}
+                                        @error('validity_days')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 {{-- ========= tax ========= --}}

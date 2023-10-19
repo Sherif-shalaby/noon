@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProductTax;
+use App\Models\Tax;
 
 class ProductTaxController extends Controller
 {
@@ -28,7 +29,7 @@ class ProductTaxController extends Controller
      /* ++++++++++++++++++++ index() ++++++++++++++++++++ */
      public function index()
      {
-        $product_taxes = ProductTax::get();
+        $product_taxes = Tax::get();
         return view('product-tax.index',compact('product_taxes'));
      }
      /* ++++++++++++++++++++ create() ++++++++++++++++++++ */
@@ -42,7 +43,7 @@ class ProductTaxController extends Controller
 //         dd($request);
          try
          {
-             $productTax = new ProductTax();
+             $productTax = new Tax();
              $productTax->name = $request->name ;
              $productTax->rate = $request->rate ;
              $productTax->details = $request->details ;
@@ -80,7 +81,7 @@ class ProductTaxController extends Controller
      /* +++++++++++++++++++++ edit() +++++++++++++++++++ */
      public function edit($id)
      {
-         $product_tax = ProductTax::findOrFail($id);
+         $product_tax = Tax::findOrFail($id);
          return view('product-tax.edit')
              ->with(compact('product_tax'));
      }
@@ -90,7 +91,7 @@ class ProductTaxController extends Controller
          try
          {
              // Get "Upated Section" data
-             $updated_product_tax = ProductTax::findOrFail($id);
+             $updated_product_tax = Tax::findOrFail($id);
              // +++++++++++++ update ++++++++++++++
              $updated_product_tax->update([
                  // update "name"
@@ -125,7 +126,7 @@ class ProductTaxController extends Controller
      {
          try
          {
-            $deleted_product_tax = ProductTax::findOrFail($id);
+            $deleted_product_tax = Tax::findOrFail($id);
             $deleted_product_tax->update([
                 "deleted_by" => Auth::user()->name
             ]);
@@ -148,7 +149,7 @@ class ProductTaxController extends Controller
      }
     public function getDropdown()
     {
-        $product_tax = ProductTax::orderBy('name', 'desc')->pluck('name', 'id')->toArray();
+        $product_tax = Tax::orderBy('name', 'desc')->pluck('name', 'id')->toArray();
         $product_tax_dp = $this->Util->createDropdownHtml($product_tax, __('lang.please_select'));
         return $product_tax_dp;
     }
