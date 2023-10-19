@@ -130,6 +130,7 @@
                 'class' => ' form-control price_type',
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
+                'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem"
