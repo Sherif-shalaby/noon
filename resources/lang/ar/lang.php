@@ -549,6 +549,9 @@ return array(
     'add_plan'=>'اضافة خطة',
     'edit_plan'=>'تعديل الخطة',
     'enter_product_symbol' => 'البحث برمز المنتج',
+    'discount_from_original_price' => 'خصم من السعر الأصلي',
+    'price_after_discounting_quantity' => 'السعر بعد خصم الكميه',
+
 
 );
 
