@@ -368,7 +368,6 @@ class ProductController extends Controller
 
 
     $index_units=[];
-    $product->variations()->delete();
 
     if($request->has('new_unit_id')){
         if(count($request->new_unit_id)>0){
@@ -384,7 +383,13 @@ class ProductController extends Controller
             'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
             'edited_by'=>Auth::user()->id
         ];
+        if(!empty($request->variation_ids[$index])){
+            $variation = Variation::find($request->variation_ids[$index]);
+            $variation->update($var_data);
+        }
+        else{
         Variation::create($var_data);
+        }
     }
 
     $output = [
