@@ -113,7 +113,17 @@
                             'type' => 'product',
                         ])
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-1">
+                        {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text('product_symbol',  null, [
+                            'class' => 'form-control','required'
+                        ]) !!}
+                        <br>
+                        @error('product_symbol')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="col-md-2">
                         {!! Form::label('product_sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('product_sku',  null, [
                             'class' => 'form-control',
@@ -215,7 +225,15 @@
                                     data-toggle="modal" data-target="#add_product_tax_modal"
                                     data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
-                    </div>                    {{-- sizes --}}
+                    </div>  
+                    {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text('balance_return_request',  null, [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div>                 
+                    {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
