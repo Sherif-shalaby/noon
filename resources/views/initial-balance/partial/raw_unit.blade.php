@@ -106,7 +106,7 @@
         <td></td>
         <td>
             {!! Form::label('price' ,__('lang.quantity')) !!}
-            <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" placeholder = "{{__('lang.quantity')}}" >
+            <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.quantity')}}" >
             @error('rows.'.$index.'.prices.'.$key.'.discount_quantity')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -118,7 +118,7 @@
         </td>
         <td >
             {!! Form::label('b_qty',__('lang.b_qty')) !!}
-            <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
+            <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.b_qty')}}" >
             @error('rows.'.$index.'.prices.'.$key.'.bonus_quantity')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -131,6 +131,11 @@
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
             ]) !!}
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem"
+                       @if( isset($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif>
+                <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+            </div>
             @error('rows.'.$index.'.prices.'.$key.'.price_type')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -164,7 +169,7 @@
                 {{ __('lang.piece_price')}}:{{$this->rows[$index]['prices'][$key]['dinar_piece_price']??''}}
             </p>
         </td>
-        
+
         <td colspan="2">
             {!! Form::label('customer_type',__('lang.customer_type')) !!}
             <select wire:model="rows.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$index}}" data-key="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">

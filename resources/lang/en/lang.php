@@ -524,6 +524,7 @@ return [
     'total_price'=>'Total Price',
     'piece_price'=>'Piece Price',
     'enter_product_symbol' => 'Enter Product Symbol',
+    'price_after_discounting_quantity' => 'Price after discounting quantity',
 ];
 
 
