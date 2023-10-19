@@ -83,7 +83,17 @@
                             'open_input' => true,
                         ])
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-1">
+                        {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text('product_symbol',  isset($product->product_symbol)?$product->product_symbol:null, [
+                            'class' => 'form-control','required'
+                        ]) !!}
+                        <br>
+                        @error('product_symbol')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="col-md-2">
                         {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('product_sku', $product->sku, [
                             'class' => 'form-control',
@@ -164,7 +174,7 @@
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
                         <select name="method" id="method" class='form-control select2' data-live-search='true'
-                            placeholder="{{ __('lang.please_select') }}" required>
+                            placeholder="{{ __('lang.please_select') }}">
                             <option value="">{{ __('lang.please_select') }}</option>
                             <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }}
                                 value="inclusive">{{ __('lang.inclusive') }}</option>
@@ -177,7 +187,7 @@
                         <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label>
                         <div class="d-flex justify-content-center">
                             <select name="product_tax_id" id="product_tax" class="form-control select2"
-                                placeholder="{{ __('lang.please_select') }}" required>
+                                placeholder="{{ __('lang.please_select') }}">
                                 <option value="">{{ __('lang.please_select') }}</option>
                                 @foreach ($product_tax as $tax)
                                     <option
@@ -192,7 +202,13 @@
                             </button>
                         </div>
                     </div>
-
+                    {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
+                        {!! Form::text('balance_return_request',  isset($product->balance_return_request)?$product->balance_return_request:null, [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div> 
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">

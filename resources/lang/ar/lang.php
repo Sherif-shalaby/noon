@@ -538,7 +538,11 @@ return array(
     'date_of_purchase_of_the_expired_stock' => 'تاريخ شراء المخزون المنتهي',
     'avg_purchase_price' => 'متوسط سعر الشراء',
     'value_of_removed_stock' => 'قيمه المخزون المحذوف',
-
+    'required'=>'هذا الحقل مطلوب',
+    'product_symbol'=>'رمز المادة',
+    'balance_return_request'=>'رصيد اعادة الطلب',
+    'total_price'=>'السعر الكلى',
+    'piece_price'=>'سعر القطعة',
 
 );
 
