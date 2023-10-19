@@ -223,8 +223,8 @@ class Create extends Component
                 $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
                 $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
                 $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request ?? null;
-            
-                
+
+
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
@@ -318,7 +318,7 @@ class Create extends Component
         $i=0;
         foreach ($name_array as $w) {
             if (!empty($w)) {
-                if (!preg_match('/[^A-Za-z0-9]/', 
+                if (!preg_match('/[^A-Za-z0-9]/',
                 $w)) {
                     $symbol .= $w[0];
                     $i++;
@@ -402,9 +402,9 @@ class Create extends Component
                 $product->product_symbol = $this->item[0]['product_symbol'];
                 $product->balance_return_request=$this->item[0]['balance_return_request'];
                 $product->save();
-                if(isset($this->item[0]['product_tax_id'])){
+                if(!empty($this->item[0]['product_tax_id'])){
                     ProductTax::create([
-                        'product_tax_id' => $this->item[0]['product_tax_id'],
+                        'product_tax_id' => $this->item[0]['product_tax_id'] ,
                         'product_id' => $product->id,
                     ]);
                 }
@@ -448,8 +448,9 @@ class Create extends Component
                     'exchange_rate' => !empty($this->exchange_rate) ? $this->exchange_rate : null,
                 ];
                 $stockLine = AddStockLine::create($add_stock_data);
-    
-                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity'], 0);
+
+//                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity']);
+                $this->updateProductQuantityStore($product->id,$Variation->id, $transaction->store_id, $this->rows[$index]['quantity']);
 
                 if (!empty($row['prices'])) {
                     foreach ($row['prices'] as $price) {
@@ -743,8 +744,7 @@ class Create extends Component
     {
         $this->rows[$index]['selling_price'] = (float)$this->rows[$index]['dollar_selling_price'] * (float)$this->exchange_rate;
     }
-    public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
-
+    public function updateProductQuantityStore($product_id,$variation_id, $store_id, $new_quantity)
     {
         $product_store = ProductStore::where('product_id', $product_id)
             ->where('store_id', $store_id)
