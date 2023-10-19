@@ -551,6 +551,8 @@ class Create extends Component
     public function changePrice($index,$key)
     {
         if(!empty($this->items[$index]['prices'][$key]['price'])){
+            $this->items[$index]['prices'][$key]['dinar_price']=$this->items[$index]['prices'][$key]['price']* $this->exchange_rate;
+
             if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price']))  {
                 $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :0;
                 $dollar_selling_price = !empty($this->items[$index]['dollar_selling_price']) ? $this->items[$index]['dollar_selling_price'] :0;
@@ -571,11 +573,8 @@ class Create extends Component
                     $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
                     $this->items[$index]['prices'][$key]['dinar_piece_price']=(float)$this->items[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );                
                 }
-                $this->items[$index]['prices'][$key]['dinar_price']=$this->items[$index]['prices'][$key]['price']* $this->exchange_rate;
-                // $this->dinar_price_after_desc=$this->items[$index]['prices'][$key]['dinar_price_after_desc'];
             }
         }
-    //    $this->changePrice($index,$key);
     }
 
     public function getVariationData($index){
