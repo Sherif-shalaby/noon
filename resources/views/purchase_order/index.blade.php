@@ -5,30 +5,30 @@
 @endpush
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
-        <div class="row align-items-center">
+       <div class="row align-items-center">
             <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.show_purchase_order')</h4> <br />
+                <h4 class="page-title">@lang('lang.show_purchase_order')</h4> <br/>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">@lang('lang.purchase_order')</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('products.index')}}">@lang('lang.purchase_order')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.show_purchase_order')</li>
                     </ol>
                 </div>
-                <br />
+                <br/>
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a href="{{ route('purchase_order.create') }}" class="btn btn-primary">
+                    <a href="{{route('purchase_order.create')}}" class="btn btn-primary">
                         @lang('lang.create_purchase_order')
-                    </a>
+                      </a>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('content')
-    <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+    <div class="table-responsive">
         <table class="table dataTable">
             <thead>
                 <tr>
@@ -44,25 +44,23 @@
 
             <tbody>
                 @foreach ($purchase_orders as $purchase_order)
-                    <tr>
-                        <td>{{ $purchase_order->transaction->po_no }}</td>
-                        <td> {{ @format_date($purchase_order->transaction->transaction_date) }}</td>
+                <tr>
+                    <td>{{$purchase_order->transaction->po_no}}</td>
+                    <td> {{@format_date($purchase_order->transaction->transaction_date)}}</td>
 
-                        <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}</td>
+                    <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}</td>
 
-                        <td>
-                            @if (!empty($purchase_order->transaction->supplier))
-                                {{ $purchase_order->transaction->supplier->name }}
-                            @endif
-                        </td>
-                        <td>
-                            {{ @num_format($purchase_order->transaction->final_total) }}
-                        </td>
-                        <td>
-                            {{ $purchase_order->transaction->status }}
-                        </td>
+                    <td>
+                        @if(!empty($purchase_order->transaction->supplier)){{$purchase_order->transaction->supplier->name}}@endif
+                    </td>
+                    <td>
+                        {{@num_format($purchase_order->transaction->final_total)}}
+                    </td>
+                    <td>
+                        {{ $purchase_order->transaction->status }}
+                    </td>
 
-                        {{-- <td>
+                    {{-- <td>
 
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -103,16 +101,17 @@
                             </ul>
                         </div>
                     </td> --}}
-                    </tr>
-                @endforeach
-            <tfoot>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
-            </tfoot>
+
+                @endforeach
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
             </tbody>
             <tfoot>
 

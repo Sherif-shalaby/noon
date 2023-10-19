@@ -2,33 +2,28 @@
 <div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div
-                class="modal-header mb-4 d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{ __('Add') }}</h5>
-                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form class="form" action="{{ route('colors.store') }}" method="POST">
                 @csrf
-                <div class="modal-body p-0">
-                    <div
-                        class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <label class="modal-label-width" for="name">@lang('colors.colorname')</label>
-                        <div
-                            class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <input type="text" required style="width: 100%"
-                                class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @else text-start @endif"
+                <div class="modal-body">
+                    <div class="form-group ">
+                        <label for="name">@lang('colors.colorname')</label>
+                        <div class="select_body d-flex justify-content-between align-items-center">
+                            <input type="text" required class="form-control"
                                 placeholder="@lang('colors.colorname')" name="name" value="{{ old('name') }}">
-                            <button class="add-button d-flex justify-content-center align-items-center"
-                                style="font-weight: 700;font-size: 26px" type="button" data-toggle="collapse"
-                                data-target="#translation_table_color" aria-expanded="false"
-                                aria-controls="collapseExample">
-                                <i class="fas fa-globe"></i>
-                            </button>
                             @error('name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
+                            <button class="btn btn-primary btn-sm ml-2" type="button"
+                                data-toggle="collapse" data-target="#translation_table_color"
+                                aria-expanded="false" aria-controls="collapseExample">
+                                {{ __('categories.addtranslations') }}
+                            </button>
                         </div>
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',

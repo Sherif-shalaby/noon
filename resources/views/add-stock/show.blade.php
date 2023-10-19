@@ -1,30 +1,21 @@
 @extends('layouts.app')
 @section('title', __('lang.invoice_no'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar m-0 px-3 py-0">
-        <div
-            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div>
-                <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.stock')
-                </h4>
+    <div class="breadcrumbbar">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-8">
+                <h4 class="page-title">@lang('lang.stock')</h4>
                 <div class="breadcrumb-list">
-                    <ul style=" list-style: none;"
-                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                @lang('lang.dashboard')</a>
-                        </li>
-                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                style="text-decoration: none;color: #596fd7" href="{{ route('stocks.index') }}">/
-                                @lang('lang.stock')</a></li>
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
-                            aria-current="page">@lang('lang.view')</li>
-                    </ul>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('stocks.index')}}">@lang('lang.stock')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.view')</li>
+                    </ol>
                 </div>
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a type="button" class="btn btn-primary" href="{{ route('stocks.index') }}">@lang('lang.stock')</a>
+                    <a type="button" class="btn btn-primary" href="{{route('stocks.index')}}">@lang('lang.stock')</a>
                 </div>
             </div>
         </div>
@@ -35,45 +26,43 @@
     <section class="forms">
         <div class="container-fluid">
             <div class="col-md-12 print-only">
-                {{--                @include('layouts.partials.print_header') --}}
+{{--                @include('layouts.partials.print_header')--}}
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header d-flex align-items-center no-print">
-                            <h4>@lang('lang.invoice_no'): {{ $add_stock->invoice_no }}</h4>
+                            <h4>@lang('lang.invoice_no'): {{$add_stock->invoice_no}}</h4>
                         </div>
 
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     {!! Form::label('supplier_name', __('lang.supplier_name'), []) !!}:
-                                    <b>{{ $add_stock->supplier->name ?? '' }}</b>
+                                    <b>{{$add_stock->supplier->name ?? ''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('email', __('lang.email'), []) !!}: <b>{{ $add_stock->supplier->email ?? '' }}</b>
+                                    {!! Form::label('email', __('lang.email'), []) !!}: <b>{{$add_stock->supplier->email ?? ''}}</b>
                                 </div>
                                 <div class="col-md-4">
                                     {!! Form::label('mobile_number', __('lang.mobile_number'), []) !!}:
-                                    <b>{{ $add_stock->supplier->mobile_number ?? '' }}</b>
+                                    <b>{{$add_stock->supplier->mobile_number ?? ''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('address', __('lang.address'), []) !!}: <b>{{ $add_stock->supplier->address ?? '' }}</b>
+                                    {!! Form::label('address', __('lang.address'), []) !!}: <b>{{$add_stock->supplier->address ?? ''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('store', __('lang.store'), []) !!}:
-                                    <b>{{ $add_stock->store->name ?? '' }}</b>
+                                    {!! Form::label('store', __('lang.store'), []) !!}: <b>{{$add_stock->store->name ??
+                                    ''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('store', __('lang.paying_currency'), []) !!}:
-                                    <b>{{ $add_stock->paying_currency_relationship()->first()->currency ?? '' }}</b>
+                                    {!! Form::label('store', __('lang.paying_currency'), []) !!}: <b>{{$add_stock->paying_currency_relationship()->first()->currency ??''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('store', __('lang.exchange_rate'), []) !!}:
-                                    <b>{{ $add_stock->transaction_payments()->latest()->first()->exchange_rate ?? '' }}</b>
+                                    {!! Form::label('store', __('lang.exchange_rate'), []) !!}: <b>{{$add_stock->transaction_payments()->latest()->first()->exchange_rate ??''}}</b>
                                 </div>
                                 <div class="col-md-4">
-                                    {!! Form::label('store', __('lang.divide_costs'), []) !!}: <b>{{ $add_stock->divide_costs ?? '' }}</b>
+                                    {!! Form::label('store', __('lang.divide_costs'), []) !!}: <b>{{$add_stock->divide_costs ??''}}</b>
                                 </div>
                             </div>
                             <br>
@@ -81,85 +70,74 @@
                                 <div class="col-md-12">
                                     <table class="table table-bordered table-striped table-condensed" id="product_table">
                                         <thead>
-                                            <tr>
-                                                <th style="width: 15%" class="col-sm-8">@lang('lang.products')</th>
-                                                <th style="width: 15%" class="col-sm-4">@lang('lang.sku')</th>
-                                                <th style="width: 10%" class="col-sm-4">@lang('lang.quantity')</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.purchase_price')</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.purchase_price') $</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.final_cost')</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.final_cost') $</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.sub_total')</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.sub_total') $</th>
-                                                {{--                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.batch_number' )</th> --}}
-                                                {{--                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.manufacturing_date' ) --}}
-                                                </th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.expiry_date')</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.days_before_the_expiry_date')</th>
-                                                <th style="width: 12%" class="col-sm-4">@lang('lang.convert_status_expire')</th>
-                                            </tr>
+                                        <tr>
+                                            <th style="width: 15%" class="col-sm-8">@lang( 'lang.products' )</th>
+                                            <th style="width: 15%" class="col-sm-4">@lang( 'lang.sku' )</th>
+                                            <th style="width: 10%" class="col-sm-4">@lang( 'lang.quantity' )</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.purchase_price' )</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.purchase_price' ) $</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.final_cost' )</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.final_cost' ) $</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.sub_total' )</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.sub_total' ) $</th>
+{{--                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.batch_number' )</th>--}}
+{{--                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.manufacturing_date' )--}}
+                                            </th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.expiry_date' )</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang(
+                                                'lang.days_before_the_expiry_date' )</th>
+                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.convert_status_expire'
+                                                )</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($add_stock->add_stock_lines as $line)
-                                                <tr>
-                                                    <td>
-                                                        {{ $line->product->name ?? '' }}
+                                        @foreach ($add_stock->add_stock_lines as $line)
+                                            <tr>
+                                                <td>
+                                                    {{$line->product->name ?? ''}}
 
-                                                        @if (!empty($line->variation))
-                                                            @if ($line->variation->name != 'Default')
-                                                                <b>{{ $line->variation->name }}</b>
-                                                            @endif
+                                                    @if(!empty($line->variation))
+                                                        @if($line->variation->name != "Default")
+                                                            <b>{{$line->variation->name}}</b>
                                                         @endif
-                                                        @if (empty($line->variation) && empty($line->product))
-                                                            <span class="text-red">@lang('lang.deleted')</span>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        {{ $line->product->sku }}
-                                                    </td>
-                                                    <td>
-                                                        @if (isset($line->quantity))
-                                                            {{ number_format($line->quantity, App\Models\System::getProperty('numbers_length_after_dot')) }}@else{{ 1 }}
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (isset($line->purchase_price))
-                                                            {{ @num_format($line->purchase_price) }}@else{{ 0 }}
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (isset($line->dollar_purchase_price))
-                                                            {{ @num_format($line->dollar_purchase_price) }}@else{{ 0 }}
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (isset($line->final_cost))
-                                                            {{ @num_format($line->final_cost) }}@else{{ 0 }}
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (isset($line->dollar_final_cost))
-                                                            {{ @num_format($line->dollar_final_cost) }}@else{{ 0 }}
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        {{ number_format($line->sub_total, 2) }}
-                                                    </td>
-                                                    <td>
-                                                        {{ number_format($line->dollar_sub_total, 2) }}
-                                                    </td>
-                                                    {{--                                                <td>{{$line->batch_number}}</td> --}}
-                                                    {{--                                                <td>@if (!empty($line->manufacturing_date)){{@format_date($line->manufacturing_date)}}@endif --}}
-                                                    </td>
-                                                    <td>
-                                                        @if (!empty($line->expiry_date))
-                                                            {{ @format_date($line->expiry_date) }}
-                                                        @endif
-                                                    </td>
-                                                    <td>{{ $line->expiry_warning }}</td>
-                                                    <td>{{ $line->convert_status_expire }}</td>
-                                                </tr>
-                                            @endforeach
+                                                    @endif
+                                                    @if(empty($line->variation) && empty($line->product))
+                                                        <span class="text-red">@lang('lang.deleted')</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{$line->product->sku}}
+                                                </td>
+                                                <td>
+                                                    @if(isset($line->quantity)){{number_format($line->quantity,App\Models\System::getProperty('numbers_length_after_dot'))}}@else{{1}}@endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($line->purchase_price)){{@num_format($line->purchase_price)}}@else{{0}}@endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($line->dollar_purchase_price)){{@num_format($line->dollar_purchase_price)}}@else{{0}}@endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($line->final_cost)){{@num_format($line->final_cost)}}@else{{0}}@endif
+                                                </td>
+                                                <td>
+                                                    @if(isset($line->dollar_final_cost)){{@num_format($line->dollar_final_cost)}}@else{{0}}@endif
+                                                </td>
+                                                <td>
+                                                    {{number_format($line->sub_total,2) }}
+                                                </td>
+                                                <td>
+                                                    {{number_format($line->dollar_sub_total,2) }}
+                                                </td>
+{{--                                                <td>{{$line->batch_number}}</td>--}}
+{{--                                                <td>@if(!empty($line->manufacturing_date)){{@format_date($line->manufacturing_date)}}@endif--}}
+                                                </td>
+                                                <td>@if(!empty($line->expiry_date)){{@format_date($line->expiry_date)}}@endif
+                                                </td>
+                                                <td>{{$line->expiry_warning}}</td>
+                                                <td>{{$line->convert_status_expire}}</td>
+                                            </tr>
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -168,7 +146,7 @@
                             <div class="col-md-12">
                                 <div class="col-md-3 offset-md-8 text-right">
                                     <h3> @lang('lang.total'): <span
-                                            class="final_total_span">{{ @num_format($add_stock->add_stock_lines->sum('sub_total')) }}</span>
+                                            class="final_total_span">{{@num_format($add_stock->add_stock_lines->sum('sub_total'))}}</span>
                                     </h3>
 
                                 </div>
@@ -178,32 +156,30 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!}:
-                                    <b>{{ @num_format($add_stock->other_expenses) }}</b>
+                                    <b>{{@num_format($add_stock->other_expenses)}}</b>
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!}:
-                                    <b>{{ @num_format($add_stock->discount_amount) }}</b>
+                                    <b>{{@num_format($add_stock->discount_amount)}}</b>
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('other_payments', __('lang.other_payments'), []) !!}:
-                                    <b>{{ @num_format($add_stock->other_payments) }}</b>
+                                    <b>{{@num_format($add_stock->other_payments)}}</b>
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!}:
-                                    <b>{{ $add_stock->source_name }}</b>
+                                    <b>{{$add_stock->source_name}}</b>
                                 </div>
                             </div>
                             <br>
                             <br>
-                            @include('transaction_payment.partials.payment_table', [
-                                'payments' => $add_stock->transaction_payments,
-                            ])
+                            @include('transaction_payment.partials.payment_table', ['payments' =>$add_stock->transaction_payments])
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         {!! Form::label('notes', __('lang.notes'), []) !!}: <br>
-                                        {{ $add_stock->notes }}
+                                        {{$add_stock->notes}}
 
                                     </div>
                                 </div>
@@ -212,15 +188,15 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         {!! Form::label('files', __('lang.files'), []) !!}: <br>
-                                        {{--                                        @php --}}
-                                        {{--                                            $mediaItems = $add_stock->getMedia('add_stock'); --}}
-                                        {{--                                        @endphp --}}
-                                        {{--                                        @if (!empty($mediaItems)) --}}
-                                        {{--                                            @foreach ($mediaItems as $item) --}}
-                                        {{--                                                <a href="{{$item->getUrl()}}">{{$item->name}}</a> <br> --}}
-                                        {{--                                            @endforeach --}}
+{{--                                        @php--}}
+{{--                                            $mediaItems = $add_stock->getMedia('add_stock');--}}
+{{--                                        @endphp--}}
+{{--                                        @if(!empty($mediaItems))--}}
+{{--                                            @foreach ($mediaItems as $item)--}}
+{{--                                                <a href="{{$item->getUrl()}}">{{$item->name}}</a> <br>--}}
+{{--                                            @endforeach--}}
 
-                                        {{--                                        @endif --}}
+{{--                                        @endif--}}
 
                                     </div>
                                 </div>
@@ -230,7 +206,7 @@
                 </div>
             </div>
             <div class="col-md-12 print-only">
-                {{--                @include('layouts.partials.print_footer') --}}
+{{--                @include('layouts.partials.print_footer')--}}
             </div>
         </div>
 
@@ -240,12 +216,12 @@
 
 @section('javascript')
     <script type="text/javascript">
-        @if (!empty(request()->print))
-            $(document).ready(function() {
-                setTimeout(() => {
-                    window.print();
-                }, 1000);
-            })
+        @if(!empty(request()->print))
+        $(document).ready(function(){
+            setTimeout(() => {
+                window.print();
+            }, 1000);
+        })
         @endif
     </script>
 @endsection

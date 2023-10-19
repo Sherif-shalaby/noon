@@ -7,7 +7,7 @@
                 <h4 class="page-title">@lang('lang.returns')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.returns')</li>
                     </ol>
                 </div>
@@ -31,8 +31,7 @@
                     <div class="card-body">
                         <div class="row">
                             <ul>
-                                <li><a class="font-weight-bold text-decoration-none text-dark font-18"
-                                        href="{{ route('sell_return.index') }}"> @lang('lang.sells_return') </a></li>
+                                <li><a class="font-weight-bold text-decoration-none text-dark font-18" href="{{route('sell_return.index')}}"> @lang('lang.sells_return') </a></li>
                             </ul>
                         </div>
                     </div>

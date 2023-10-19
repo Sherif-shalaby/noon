@@ -4,21 +4,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
-    <div class="breadcrumbbar m-0 px-3 py-0">
-        <div
-            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div>
-                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.general_settings')
-                </h4>
-                <div class="breadcrumb-list mb-3">
-                    <ul style=" list-style: none;"
-                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  "><a
-                                style="text-decoration: none;color: #596fd7"
-                                href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif   active"
-                            aria-current="page">@lang('lang.general_settings')</li>
-                    </ul>
+    <div class="breadcrumbbar pb-3">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-8">
+                <h4 class="page-title">@lang('lang.general_settings')</h4>
+                <div class="breadcrumb-list">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.general_settings')</li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -35,158 +29,94 @@
                     'method' => 'post',
                     'enctype' => 'multipart/form-data',
                 ]) !!}
-                <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="row">
 
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('site_title', __('lang.site_title'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
+                    <div class="col-md-3">
+                        {!! Form::label('site_title', __('lang.site_title'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('site_title', !empty($settings['site_title']) ? $settings['site_title'] : null, [
-                            'class' => 'form-control required initial-balance-input my-0',
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
-
-                    <div
-                        class="col-md-3 hide d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('developed_by', __('lang.developed_by'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
+                    <div class="col-md-3 hide">
+                        {!! Form::label('developed_by', __('lang.developed_by'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('developed_by', !empty($settings['developed_by']) ? $settings['developed_by'] : null, [
-                            'class' => 'form-control required initial-balance-input my-0',
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('time_format', __('lang.time_format'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
-                        <div class="input-wrapper">
-                            {!! Form::select(
-                                'time_format',
-                                ['12' => '12 hours', '24' => '24 hours'],
-                                !empty($settings['time_format']) ? $settings['time_format'] : null,
-                                ['class' => 'form-control select2'],
-                            ) !!}
-                        </div>
+                    <div class="col-md-3">
+                        {!! Form::label('time_format', __('lang.time_format'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select(
+                            'time_format',
+                            ['12' => '12 hours', '24' => '24 hours'],
+                            !empty($settings['time_format']) ? $settings['time_format'] : null,
+                            ['class' => 'form-control select2'],
+                        ) !!}
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('language', __('lang.language'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                    <div class="col-md-3">
+                        {!! Form::label('language', __('lang.language'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select('language', $languages, !empty($settings['language']) ? $settings['language'] : null, [
+                            'class' => 'form-control select2',
                         ]) !!}
-                        <div class="input-wrapper">
-                            {!! Form::select('language', $languages, !empty($settings['language']) ? $settings['language'] : null, [
-                                'class' => 'form-control select2',
-                            ]) !!}
-                        </div>
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('currency', __('lang.currency'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                    <div class="col-md-3">
+                        {!! Form::label('currency', __('lang.currency'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency']: null, [
+                            'class' => 'form-control select2','placholder'=>__('lang.please_select')
                         ]) !!}
-                        <div class="input-wrapper">
-
-                            {!! Form::select('currency', $currencies, !empty($settings['currency']) ? $settings['currency'] : null, [
-                                'class' => 'form-control select2',
-                                'placholder' => __('lang.please_select'),
-                            ]) !!}
-                        </div>
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
+                    <div class="col-md-3">
+                        {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
-                            'class' => 'form-control required initial-balance-input my-0',
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('default_payment_type', __('lang.default_payment_type'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                    <div class="col-md-3">
+                        {!! Form::label('default_payment_type', __('lang.default_payment_type'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select('default_payment_type',['cash'=>__('lang.cash'),'later'=>__('lang.later')], !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null, [
+                            'class' => 'form-control select2',
                         ]) !!}
-                        <div class="input-wrapper">
-
-                            {!! Form::select(
-                                'default_payment_type',
-                                ['cash' => __('lang.cash'), 'later' => __('lang.later')],
-                                !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null,
-                                [
-                                    'class' => 'form-control select2',
-                                ],
-                            ) !!}
-                        </div>
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('tax', __('lang.tax'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
+                    <div class="col-md-3">
+                        {!! Form::label('tax', __('lang.tax'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::text('tax', !empty($settings['tax']) ? $settings['tax'] : null, [
-                            'class' => 'form-control required initial-balance-input my-0',
+                            'class' => 'form-control',
                         ]) !!}
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
-                        <div class="input-wrapper">
-
-                            {!! Form::select(
-                                'invoice_lang',
-                                $languages + ['ar_and_en' => 'Arabic and English'],
-                                !empty($settings['invoice_lang']) ? $settings['invoice_lang'] : null,
-                                ['class' => 'form-control select2'],
-                            ) !!}
-                        </div>
+                    <div class="col-md-3">
+                        {!! Form::label('invoice_lang', __('lang.invoice_lang'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select(
+                            'invoice_lang',
+                            $languages + ['ar_and_en' => 'Arabic and English'],
+                            !empty($settings['invoice_lang']) ? $settings['invoice_lang'] : null,
+                            ['class' => 'form-control select2'],
+                        ) !!}
                     </div>
-
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
-                        ]) !!}
+                    <div class="col-md-3">
+                        {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'),['class'=>'h5 pt-3']) !!}
                         {!! Form::text('watsapp_numbers', !empty($settings['watsapp_numbers']) ? $settings['watsapp_numbers'] : null, [
-                            'class' => 'form-control required initial-balance-input my-0',
+                            'class' => 'form-control'
                         ]) !!}
                     </div>
-
                     {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <label for="country-dd"
-                            class=" mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('lang.country')</label>
-                        <div class="input-wrapper">
-                            <select id="country-dd" name="country" class=" initial-balance-input my-0"
-                                style="width: 100%;border-radius: 12px;border:2px solid #ccc">
-                                @foreach ($countries as $data)
-                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="col-md-3">
+                        <label for="country-dd" class="h5 pt-3">@lang('lang.country')</label>
+                        <select id="country-dd" name="country" class="form-control">
+                            @foreach ( $countries as $data )
+                                <option value="{{ $data->id }}">{{ $data->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-
+                    <br>
+                    <hr>
                     <div class="col-md-12 pt-5">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group">
 
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                             <div class="col-12">
-                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex">
-                                                    {{ __('lang.letter_header') }}</label>
+                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex"> {{ __('lang.letter_header') }}</label>
                                             </div>
                                             <div class="col-5">
                                                 <div class="mt-3">
@@ -233,13 +163,12 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12 pt-5">
                                 <div class="form-group">
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                             <div class="col-12 p3 justify-content-center d-flex">
-                                                <label for="projectinput2" class='h5'>
-                                                    {{ __('lang.letter_footer') }}</label>
+                                            <label for="projectinput2" class='h5'> {{ __('lang.letter_footer') }}</label>
 
                                             </div>
                                             <div class="col-5">
@@ -286,7 +215,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 p-0">
+                            <div class="col-md-12 pt-5">
                                 <div class="form-group">
                                     <div class="container mt-3">
                                         <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
@@ -342,9 +271,9 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-1"></div>
-                            <div class="col-md-10">
+                                <div class="col-md-10">
                                 <div class="form-group">
-                                    {!! Form::label('help_page_content', __('lang.help_page_content'), ['class' => 'h5 pt-5']) !!}
+                                    {!! Form::label('help_page_content', __('lang.help_page_content'), ['class'=>'h5 pt-5']) !!}
                                     {!! Form::textarea(
                                         'help_page_content',
                                         !empty($settings['help_page_content']) ? $settings['help_page_content'] : null,

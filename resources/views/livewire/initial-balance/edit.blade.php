@@ -71,14 +71,17 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5']) !!}
-                                {!! Form::text('sku', null, [
+                            <div class="col-md-1">
+                                {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5']) !!}
+                                {!! Form::text('product_symbol', $item[0]['product_symbol'], [
                                     'class' => 'form-control',
-                                    'wire:model' => 'item.0.sku',
+                                    'wire:model' => 'item.0.product_symbol',
                                 ]) !!}
-                            </div> --}}
-                            <div class="col-md-3">
+                                @error('item.0.product_symbol')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                 <input type="text" class="form-control" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
@@ -207,7 +210,16 @@
                                     @include('product-tax.create', ['quick_add' => 1])
                                 </div>
                             </div>
+                            {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                            <div class="col-md-3">
+                                {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
+                                    'wire:model' => 'item.0.balance_return_request',
+                                    'class' => 'form-control',
+                                ]) !!}
+                            </div>
                         </div>
+
                         {{-- sizes --}}
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
@@ -327,7 +339,7 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="table-responsive">
                                 <table class="table" style="width: auto">
                                     <thead>
                                         <tr>

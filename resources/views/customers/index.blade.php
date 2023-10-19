@@ -3,78 +3,71 @@
 @section('breadcrumbbar')
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
     <style>
-        .selectBox {
+            .selectBox {
             position: relative;
-        }
+            }
 
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #fff;
-            border: 1px solid #596fd7;
-            background-color: #596fd7;
-            height: 39px !important;
-        }
+            /* selectbox style */
+            .selectBox select
+            {
+                width: 100%;
+                padding: 0 !important;
+                padding-left: 4px;
+                padding-right: 4px;
+                color: #fff;
+                border: 1px solid #596fd7;
+                background-color: #596fd7;
+                height: 39px !important;
+            }
 
-        .overSelect {
+            .overSelect {
             position: absolute;
             left: 0;
             right: 0;
             top: 0;
             bottom: 0;
-        }
+            }
 
-        #checkboxes {
+            #checkboxes {
             display: none;
             border: 1px #dadada solid;
             height: 125px;
             overflow: auto;
             padding-top: 10px;
             /* text-align: end;  */
-        }
+            }
 
-        #checkboxes label {
+            #checkboxes label {
             display: block;
             padding: 5px;
 
-        }
+            }
 
-        #checkboxes label:hover {
+            #checkboxes label:hover {
             background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
-        }
+            }
+            #checkboxes label span
+            {
+                font-weight: normal;
+            }
     </style>
 
-    <div class="breadcrumbbar m-0 px-3 py-0">
-        <div
-            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div>
-                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.customers')
-                </h4>
+    <div class="breadcrumbbar">
+       <div class="row align-items-center">
+            <div class="col-md-8 col-lg-8">
+                <h4 class="page-title">@lang('lang.customers')</h4>
                 <div class="breadcrumb-list">
-                    <ul style=" list-style: none;"
-                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                @lang('lang.dashboard')</a>
-                        </li>
-                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                            aria-current="page">@lang('lang.customers')</li>
-                    </ul>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.customers')</li>
+                    </ol>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div
-                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <a href="{{ route('customers.create') }}" class="btn btn-primary">
+            <div class="col-md-4 col-lg-4">
+                <div class="widgetbar">
+                    <a href="{{route('customers.create')}}" class="btn btn-primary">
                         @lang('lang.add_customers')
-                    </a>
+                      </a>
                 </div>
             </div>
         </div>
@@ -89,8 +82,7 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            @lang('lang.customers')</h5>
+                        <h5 class="card-title">@lang('lang.customers')</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -207,7 +199,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <br /><br />
+                            <br/><br/>
                             {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
                             <table id="datatable-buttons" class="table table-striped table-bordered hideShowTable">
                                 <thead>
@@ -234,22 +226,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($customers as $index => $customer)
+                                    @foreach($customers as $index=>$customer)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td class="col1">{{ $customer->name }}</td>
-                                            <td class="col2">{{ $customer->customer_type->name }}</td>
+                                            <td>{{ $index+1 }}</td>
+                                            <td class="col1">{{$customer->name}}</td>
+                                            <td class="col2">{{$customer->customer_type->name}}</td>
                                             {{-- Convert the email and phone strings to arrays --}}
                                             @php
                                                 $emailArray = explode(',', $customer->email);
                                                 $phoneArray = explode(',', $customer->phone);
                                                 // Remove square brackets from each element in the emailArray
-                                                foreach ($emailArray as $key => $email) {
-                                                    $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                foreach ($emailArray as $key => $email)
+                                                {
+                                                    $emailArray[$key] = str_replace(['[', ']','"'], '', $email);
                                                 }
                                                 // Remove square brackets from each element in the emailArray
-                                                foreach ($phoneArray as $key => $phone) {
-                                                    $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
+                                                foreach ($phoneArray as $key => $phone)
+                                                {
+                                                    $phoneArray[$key] = str_replace(['[', ']','"'], '', $phone);
                                                 }
                                             @endphp
                                             <td class="col3">
@@ -277,55 +271,45 @@
                                             <td class="col10">{{ $customer->max_amount_in_dollar }}</td>
                                             <td class="col11">{{ $customer->balance_in_dinar }}</td>
                                             <td class="col12">{{ $customer->balance_in_dollar }}</td>
-                                            <td class="col13">{{ $customer->added_balance }}</td>
-                                            <td class="col14">{{ $customer->added_balance }}</td>
-                                            <td class="col15">{{ $customer->added_balance }}</td>
+                                            <td class="col13">{{$customer->added_balance}}</td>
+                                            <td class="col14">{{$customer->added_balance}}</td>
+                                            <td class="col15">{{$customer->added_balance}}</td>
                                             <td class="col16">
-                                                @if ($customer->created_by > 0 and $customer->created_by != null)
+                                                @if ($customer->created_by  > 0 and $customer->created_by != null)
                                                     {{ $customer->created_at->diffForHumans() }} <br>
                                                     {{ $customer->created_at->format('Y-m-d') }}
                                                     ({{ $customer->created_at->format('h:i') }})
-                                                    {{ $customer->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
+                                                    {{ ($customer->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
                                                     {{ $customer->createBy?->name }}
                                                 @else
-                                                    {{ __('no_update') }}
+                                                {{ __('no_update') }}
                                                 @endif
                                             </td>
                                             <td class="col17">
-                                                @if ($customer->updated_by > 0 and $customer->updated_by != null)
+                                                @if ($customer->updated_by  > 0 and $customer->updated_by != null)
                                                     {{ $customer->updated_at->diffForHumans() }} <br>
                                                     {{ $customer->updated_at->format('Y-m-d') }}
                                                     ({{ $customer->updated_at->format('h:i') }})
-                                                    {{ $customer->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
+                                                    {{ ($customer->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
                                                     {{ $customer->updateBy?->name }}
                                                 @else
-                                                    {{ __('no_update') }}
+                                                {{ __('no_update') }}
                                                 @endif
                                             </td>
                                             <td class="col18">
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">خيارات <span class="caret"></span>
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                     </button>
-                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                        user="menu" x-placement="bottom-end"
-                                                        style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <li>
-                                                            <a href="{{ route('customers.edit', $customer->id) }}"
-                                                                class="btn" target="_blank"><i
-                                                                    class="dripicons-document-edit"></i>
-                                                                @lang('lang.update')</a>
+                                                            <a href="{{route('customers.edit', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
                                                         </li>
                                                         <li class="divider"></li>
-                                                        <li>
-                                                            <a data-href="{{ route('customers.destroy', $customer->id) }}"
-                                                                class="btn text-red delete_item"><i
-                                                                    class="fa fa-trash"></i>
-                                                                @lang('lang.delete')</a>
+                                                            <li>
+                                                                <a data-href="{{route('customers.destroy', $customer->id)}}"
+                                                                    class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                                    @lang('lang.delete')</a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -352,14 +336,14 @@
             $(column).hide();
         });
 
-        $("input:checkbox").click(function() {
+        $("input:checkbox").click(function(){
             var column = "table ." + $(this).attr("name");
             $(column).toggle();
         });
         // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
         var expanded = false;
-
-        function showCheckboxes() {
+        function showCheckboxes()
+        {
             var checkboxes = document.getElementById("checkboxes");
             if (!expanded) {
                 checkboxes.style.display = "block";
@@ -369,5 +353,6 @@
                 expanded = false;
             }
         }
+
     </script>
 @endsection
