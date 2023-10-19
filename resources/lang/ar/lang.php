@@ -543,6 +543,7 @@ return array(
     'balance_return_request'=>'رصيد اعادة الطلب',
     'total_price'=>'السعر الكلى',
     'piece_price'=>'سعر القطعة',
+    'enter_product_symbol' => 'البحث برمز المنتج',
 
 );
 
