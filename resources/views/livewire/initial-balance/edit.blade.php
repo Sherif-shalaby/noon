@@ -78,7 +78,7 @@
                                     'wire:model' => 'item.0.sku',
                                 ]) !!}
                             </div> --}}
-                            <div class="col-md-3"> 
+                            <div class="col-md-3">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                 <input type="text" class="form-control" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
@@ -96,9 +96,11 @@
                                         'id' => 'categoryId',
                                         'wire:model' => 'item.0.category_id',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                       data-select_category="0"><i class="fas fa-plus"></i></a>
-{{--                                    @include('categories.create_modal', ['quick_add' => 1])--}}
+                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                        data-container=".view_modal"
+                                        class="btn btn-modal btn-primary text-white btn-sm ml-2 openCategoryModal"
+                                        data-toggle="modal" data-select_category="0"><i class="fas fa-plus"></i></a>
+                                    {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
                                 </div>
                                 @error('item.0.category_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -115,8 +117,10 @@
                                         'id' => 'subcategory_id1',
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                    data-select_category="1"><i class="fas fa-plus"></i></a>
+                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                        data-container=".view_modal"
+                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal"
+                                        data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -132,8 +136,10 @@
                                         'id' => 'subCategoryId2',
                                         'wire:model' => 'item.0.subcategory_id2',
                                     ]) !!}
-                                     <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                     data-select_category="2"><i class="fas fa-plus"></i></a>
+                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                        data-container=".view_modal"
+                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal"
+                                        data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="2"><i class="fas fa-plus"></i></button> --}}
@@ -155,8 +161,10 @@
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
-                                    <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary btn-sm ml-2 text-white openCategoryModal" data-toggle="modal"
-                                        data-select_category="3"><i class="fas fa-plus"></i></a>
+                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                        data-container=".view_modal"
+                                        class="btn btn-primary btn-sm ml-2 text-white openCategoryModal"
+                                        data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -164,25 +172,32 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
-                                {!! Form::select('method', ['inclusive'=>__('lang.inclusive'),'exclusive'=>__('lang.exclusive')], $item[0]['method'], [
-                                    'id' => 'method',
-                                    'class' => ' form-control select2 method',
-                                    'data-name' => 'method',
-                                    'placeholder' => __('lang.please_select'),
-                                    'wire:model' => 'item.0.method',
-                                ]) !!}
+                                {!! Form::select(
+                                    'method',
+                                    ['inclusive' => __('lang.inclusive'), 'exclusive' => __('lang.exclusive')],
+                                    $item[0]['method'],
+                                    [
+                                        'id' => 'method',
+                                        'class' => ' form-control select2 method',
+                                        'data-name' => 'method',
+                                        'placeholder' => __('lang.please_select'),
+                                        'wire:model' => 'item.0.method',
+                                    ],
+                                ) !!}
                             </div>
                             {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
                             <div class="col-md-3">
                                 <label for="product" class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label>
                                 <div class="d-flex justify-content-center">
                                     <select id="product_tax" class="form-control select2"
-                                        wire:model="item.0.product_tax_id"
-                                        placeholder="{{ __('lang.please_select') }}" data-name="product_tax_id">
+                                        wire:model="item.0.product_tax_id" placeholder="{{ __('lang.please_select') }}"
+                                        data-name="product_tax_id">
                                         <option value="">{{ __('lang.please_select') }}</option>
                                         @foreach ($product_taxes as $tax)
                                             @if ($tax->status == 'active')
-                                                <option value="{{ $tax->id }}" {{$item[0]['product_tax_id']==$tax->id?'selected':''}}>{{ $tax->name }}</option>
+                                                <option value="{{ $tax->id }}"
+                                                    {{ $item[0]['product_tax_id'] == $tax->id ? 'selected' : '' }}>
+                                                    {{ $tax->name }}</option>
                                             @endif
                                         @endforeach
                                     </select>
@@ -254,7 +269,7 @@
 
                         <br>
                         {{-- add prices --}}
-                       {{-- <div class="row">
+                        {{-- <div class="row">
                                     <div class="col-md-12 pt-5">
                                         <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
                                     </div>
@@ -312,7 +327,7 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="table-responsive">
+                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <table class="table" style="width: auto">
                                     <thead>
                                         <tr>
@@ -447,19 +462,21 @@
             });
         });
 
-        $(document).on("click", ".add_price_row", function () {
+        $(document).on("click", ".add_price_row", function() {
             let row_id = parseInt($("#raw_price_index").val());
             $("#raw_price_index").val(row_id + 1);
             $.ajax({
                 method: "get",
                 url: "/product/get-raw-price",
-                data: { row_id: row_id },
-                success: function (result) {
+                data: {
+                    row_id: row_id
+                },
+                success: function(result) {
                     $("#consumption_table_price > tbody").prepend(result);
                 },
             });
         });
-        $(document).on("click", ".remove_row", function () {
+        $(document).on("click", ".remove_row", function() {
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
         });

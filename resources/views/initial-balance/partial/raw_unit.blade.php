@@ -300,6 +300,9 @@
                         </div>
 
                     </div>
+
+
+
                     <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
                         class="d-flex justify-content-around align-items-center">
                         <button type="button" class="btn btn-sm btn-primary"

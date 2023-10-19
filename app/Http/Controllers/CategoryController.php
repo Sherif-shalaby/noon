@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\App;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CategoryupdateRequest;
@@ -27,21 +28,20 @@ class CategoryController extends Controller
         $this->Util = $Util;
     }
 
-      public function index()
-      {
+    public function index()
+    {
         // $categories = Category::latest()->paginate(10);
-        $categories=Category::
-            when(\request()->keyword != null, function ($query) {
-                $query->where('name', 'like', '%' . \request()->keyword . '%')
-                ->orWhere('translation->name->'.App::getLocale(), 'like', '%' . \request()->keyword . '%');
-            })
+        $categories = Category::when(\request()->keyword != null, function ($query) {
+            $query->where('name', 'like', '%' . \request()->keyword . '%')
+                ->orWhere('translation->name->' . App::getLocale(), 'like', '%' . \request()->keyword . '%');
+        })
             ->when(\request()->status != null, function ($query) {
-                $query->whereStatus(\request()->status)??'';
+                $query->whereStatus(\request()->status) ?? '';
             })
             ->orderBy(\request()->sort_by ?? 'id', \request()->order_by ?? 'desc')
             ->paginate(\request()->limit_by ?? 10);
-        return view('categories.index',compact('categories'));
-      }
+        return view('categories.index', compact('categories'));
+    }
 
     public function create()
     {
@@ -53,21 +53,19 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         // return $request->all();
-
-//        dd(!empty($request->parent_id));
+        //        dd(!empty($request->parent_id));
         $data =  $request->data;
-//        dd($request['data'],empty($request->parent_id));
+        //        dd($request['data'],empty($request->parent_id));
         $input['name']        = $request->name;
         $input['status']      = $data['status'];
         $input['parent_id']   = !empty($request->parent_id) ? $request->parent_id : null;
         if ($request->file('cover')) {
             $input['cover'] = store_file($request->file('cover'), 'categories');
         }
-        if(!empty($data['translations[name]']))
-        {
-            $input['translation']= $data['translations[name]'];
-        }else{
-            $input['translation']=[];
+        if (!empty($data['translations[name]'])) {
+            $input['translation'] = $data['translations[name]'];
+        } else {
+            $input['translation'] = [];
         }
         $category = Category::create($input);
 
@@ -80,7 +78,6 @@ class CategoryController extends Controller
             return $output;
         }
         return response()->json(['status' => __('categories.addsuccess')]);
-
     }
 
 
@@ -117,11 +114,10 @@ class CategoryController extends Controller
             }
             $input['cover'] = store_file($request->file('cover'), 'categories');
         }
-        if(!empty($request->translations))
-        {
-            $input['translation']= $request->translations;
-        }else{
-            $input['translation']=[];
+        if (!empty($request->translations)) {
+            $input['translation'] = $request->translations;
+        } else {
+            $input['translation'] = [];
         }
         $category->update($input);
         return response()->json(['status' => __('categories.updatesuccess')]);
@@ -156,7 +152,7 @@ class CategoryController extends Controller
             $categories = $category->subCategories()
                 ->when(\request()->keyword != null, function ($query) {
                     $query->where('name', 'like', '%' . \request()->keyword . '%')
-                    ->orWhere('translation->name->'.App::getLocale(), 'like', '%' . \request()->keyword . '%');
+                        ->orWhere('translation->name->' . App::getLocale(), 'like', '%' . \request()->keyword . '%');
                 })
                 ->when(\request()->status != null, function ($query) {
                     $query->whereStatus(\request()->status) ?? '';
@@ -166,8 +162,8 @@ class CategoryController extends Controller
         } else {
             $categories = Category::when(\request()->keyword != null, function ($query) {
                 $query->where('name', 'like', '%' . \request()->keyword . '%')
-                ->orWhere('translation->name->'.App::getLocale(), 'like', '%' . \request()->keyword . '%');
-                })
+                    ->orWhere('translation->name->' . App::getLocale(), 'like', '%' . \request()->keyword . '%');
+            })
                 ->when(\request()->status != null, function ($query) {
                     $query->whereStatus(\request()->status) ?? '';
                 })
@@ -177,28 +173,29 @@ class CategoryController extends Controller
 
         return view('categories.index', compact('categories'));
     }
-    public function getSubcategories($id){
-        $categories=[];
-        $categories = Category::where('parent_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
+    public function getSubcategories($id)
+    {
+        $categories = [];
+        $categories = Category::where('parent_id', $id)->orderBy('name', 'asc')->pluck('name', 'id');
         $categories_dp = $this->Util->createDropdownHtml($categories, __('lang.please_select'));
 
         return $categories_dp;
     }
     public function getDropdown($category_id)
     {
-        $units=[];
-        if($category_id==0){
+        $units = [];
+        if ($category_id == 0) {
             $units = Category::whereNull('parent_id')->orderBy('name', 'asc')->pluck('name', 'id');
-        }
-        else{
-            $units = Category::where('parent_id',$category_id)->orderBy('name', 'asc')->pluck('name', 'id');
+        } else {
+            $units = Category::where('parent_id', $category_id)->orderBy('name', 'asc')->pluck('name', 'id');
         }
         $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
         return $units_dp;
     }
-    public Function getSubCategoryModal(){
+    public function getSubCategoryModal()
+    {
         $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-        $quick_add=1;
-        return view('categories.create_sub_cat_modal', compact('subcategories','quick_add'));
+        $quick_add = 1;
+        return view('categories.create_sub_cat_modal', compact('subcategories', 'quick_add'));
     }
 }

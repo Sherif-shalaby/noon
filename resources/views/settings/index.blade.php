@@ -7,7 +7,9 @@
                 <h4 class="page-title">@lang('lang.settings')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a class="font-weight-bold text-decoration-none text-dark font-18"href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a
+                                class="font-weight-bold text-decoration-none text-dark font-18"href="{{ url('/') }}">@lang('lang.dashboard')</a>
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.settings')</li>
                     </ol>
                 </div>
@@ -33,75 +35,87 @@
                             <ul>
                                 {{-- ////// اخفاء واظهار اقسام البرنامج ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('getModules')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('getModules') }}">
                                         @lang('lang.modules')
                                     </a>
                                 </li>
                                 {{-- ////// الاعدادات العامة ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('settings.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('settings.index') }}">
                                         @lang('lang.general_settings')
                                     </a>
                                 </li>
                                 {{-- ////// الخزائن ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('moneysafe.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('moneysafe.index') }}">
                                         @lang('lang.moneysafes')
                                     </a>
                                 </li>
 
                                 {{-- ////// المخازن ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('store.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('store.index') }}">
                                         @lang('lang.stores')
                                     </a>
                                 </li>
                                 {{-- ////// العلامة التجاية ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('brands.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('brands.index') }}">
                                         @lang('lang.brands')
                                     </a>
                                 </li>
                                 {{-- ////// الاقسام ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('sub-categories', 'category')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('sub-categories', 'category') }}">
                                         @lang('categories.categories')
                                     </a>
                                 </li>
                                 {{-- ////// الالوان ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('colors.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('colors.index') }}">
                                         @lang('colors.colors')
                                     </a>
                                 </li>
                                 {{-- ////// المقاسات ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('sizes.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('sizes.index') }}">
                                         @lang('sizes.sizes')
                                     </a>
                                 </li>
                                 {{-- ////// الوحدات ////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('units.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('units.index') }}">
                                         @lang('units.units')
                                     </a>
                                 </li>
 
                                 {{-- ////////// نقاط البيع للصرافين ////////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('store-pos.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('store-pos.index') }}">
                                         @lang('lang.store_pos')
                                     </a>
                                 </li>
                                 {{-- ////////// الضرائب العامة ////////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('general-tax.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('general-tax.index') }}">
                                         @lang('lang.general_tax')
                                     </a>
                                 </li>
                                 {{-- ////////// ضرائب المنتجات ////////// --}}
                                 <li>
-                                    <a class="font-weight-bold text-decoration-none text-dark font-18"href="{{route('product-tax.index')}}">
+                                    <a
+                                        class="font-weight-bold text-decoration-none text-dark font-18"href="{{ route('product-tax.index') }}">
                                         @lang('lang.product_tax')
                                     </a>
                                 </li>

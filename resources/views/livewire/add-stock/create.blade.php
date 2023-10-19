@@ -186,7 +186,7 @@
                             </div>
                         </div>
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-8 m-t-15 offset-md-2">
+                            <div style="width: 70%" class="mx-auto mb-3">
                                 <div class="search-box input-group">
                                     <button type="button" class="btn btn-secondary" id="search_button"><i
                                             class="fa fa-search"></i>
@@ -220,7 +220,7 @@
                         </div>
 
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-2 border border-1 mr-3 p-0">
+                            <div class="col-md-2 border border-1 mr-3 p-0" style="height: 60vh;overflow: scroll">
                                 <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                     الأقسام الرئيسيه
                                     <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
@@ -252,80 +252,42 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div
-                                class="table-responsive col-md-9 border border-1 @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <table class="table" style="width: auto">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            {{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th> --}}
-                                            <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
-                                            <th style="width: 10%">@lang('lang.sku')</th>
-                                            <th style="width: 10%">@lang('lang.quantity')</th>
-                                            <th style="width: 10%">@lang('lang.unit')</th>
-                                            <th style="width: 10%">@lang('lang.fill')</th>
-                                            <th style="width: 10%">@lang('lang.basic_unit')</th>
-                                            <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
-                                            {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th> --}}
-                                            {{--                                        @if ($showColumn) --}}
-                                            <th style="width: 10%">@lang('lang.purchase_price')$</th>
-                                            <th style="width: 10%">@lang('lang.selling_price')$</th>
-                                            <th style="width: 10%">@lang('lang.sub_total')$</th>
-                                            {{--                                        @endif --}}
-                                            <th style="width: 10%">@lang('lang.purchase_price') </th>
-                                            <th style="width: 10%">@lang('lang.selling_price') </th>
-                                            <th style="width: 10%">@lang('lang.sub_total')</th>
-                                            <th style="width: 10%">@lang('lang.size')</th>
-                                            <th style="width: 10%">@lang('lang.total_size')</th>
-                                            <th style="width: 10%">@lang('lang.weight')</th>
-                                            <th style="width: 10%">@lang('lang.total_weight')</th>
-                                            {{--                                        @if ($showColumn) --}}
-                                            <th style="width: 10%">@lang('lang.cost')$</th>
-                                            <th style="width: 10%">@lang('lang.total_cost')$</th>
-                                            {{--                                        @endif --}}
-                                            <th style="width: 10%">@lang('lang.cost') </th>
-                                            <th style="width: 10%">@lang('lang.total_cost')</th>
-                                            <th style="width: 10%">@lang('lang.new_stock')</th>
-                                            <th style="width: 10%">@lang('lang.change_current_stock')</th>
-                                            <th style="width: 10%">@lang('lang.action')</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @if (!empty($items))
-                                            @foreach ($items as $index => $product)
-                                                @include('add-stock.partials.product_row')
-                                            @endforeach
-                                            <tr>
-                                                <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
-                                                {{--                                            @if ($showColumn) --}}
-                                                <td> {{ $this->sum_dollar_sub_total() }} </td>
-                                                <td></td>
-                                                <td></td>
-                                                {{--                                            @endif --}}
-                                                <td> {{ $this->sum_sub_total() }} </td>
-                                                <td></td>
-                                                <td style="">
-                                                    {{ $this->sum_size() ?? 0 }}
-                                                </td>
-                                                <td></td>
-                                                <td style=";">
-                                                    {{ $this->sum_weight() ?? 0 }}
-                                                </td>
-                                                <td></td>
-                                                {{--                                            @if ($showColumn) --}}
-                                                <td>
-                                                    {{ $this->sum_dollar_total_cost() ?? 0 }}
-                                                </td>
-                                                <td></td>
-                                                {{--                                            @endif --}}
-                                                <td style=";">
-                                                    {{ $this->sum_total_cost() ?? 0 }}
-                                                </td>
+                            <div class="table-responsive col-md-9 border border-1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="height: 60vh;overflow: scroll">
 
-                                            </tr>
-                                        @endif
-                                    </tbody>
-                                </table>
+                                @if (!empty($items))
+                                    @foreach ($items as $index => $product)
+                                        @include('add-stock.partials.product_row')
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
+                                        {{--                                            @if ($showColumn) --}}
+                                        <td> {{ $this->sum_dollar_sub_total() }} </td>
+                                        <td></td>
+                                        <td></td>
+                                        {{--                                            @endif --}}
+                                        <td> {{ $this->sum_sub_total() }} </td>
+                                        <td></td>
+                                        <td style="">
+                                            {{ $this->sum_size() ?? 0 }}
+                                        </td>
+                                        <td></td>
+                                        <td style=";">
+                                            {{ $this->sum_weight() ?? 0 }}
+                                        </td>
+                                        <td></td>
+                                        {{--                                            @if ($showColumn) --}}
+                                        <td>
+                                            {{ $this->sum_dollar_total_cost() ?? 0 }}
+                                        </td>
+                                        <td></td>
+                                        {{--                                            @endif --}}
+                                        <td style=";">
+                                            {{ $this->sum_total_cost() ?? 0 }}
+                                        </td>
+
+                                    </tr>
+                                @endif
                             </div>
                         </div>
 

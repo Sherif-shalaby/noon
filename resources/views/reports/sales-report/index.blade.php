@@ -1,16 +1,24 @@
 @extends('layouts.app')
 @section('title', __('lang.sales_report'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-       <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.sales_report')</h4>
+    <div class="breadcrumbbar m-0 px-3 py-0">
+        <div
+            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div>
+                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.sales_report')
+                </h4>
                 <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.reports')</li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.sales_report')</li>
-                    </ol>
+                    <ul style=" list-style: none;"
+                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                @lang('lang.dashboard')</a>
+                        </li>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                            aria-current="page">/ @lang('lang.reports')</li>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                            aria-current="page">@lang('lang.sales_report')</li>
+                    </ul>
                 </div>
             </div>
             {{-- <div class="col-md-4 col-lg-4">
@@ -20,7 +28,7 @@
                       </a>
                 </div>
             </div> --}}
-   </div>
+        </div>
     </div>
 @endsection
 @section('content')
@@ -34,15 +42,16 @@
             </div>
         </div>
     </div> --}}
-       <!-- Start Contentbar -->
-       <div class="contentbar">
+    <!-- Start Contentbar -->
+    <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title">@lang('lang.products')</h5>
+                        <h5 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            @lang('lang.products')</h5>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -53,24 +62,24 @@
                             </div>
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                        <div class="table-responsive">
+                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                             <table id="datatable-buttons" class="table table-striped table-bordered">
                                 <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>اسم المنتج</th>
-                                    <th>مبلغ المبيعات</th>
-                                    <th>الكمية المباعة</th>
-                                    <th>في المخزن</th>
-                                    {{-- <th>@lang('lang.action')</th>  --}}
-                                </tr>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>اسم المنتج</th>
+                                        <th>مبلغ المبيعات</th>
+                                        <th>الكمية المباعة</th>
+                                        <th>في المخزن</th>
+                                        {{-- <th>@lang('lang.action')</th>  --}}
+                                    </tr>
                                 </thead>
 
                                 <tbody>
-                                    @foreach($all_products as $index=>$product)
+                                    @foreach ($all_products as $index => $product)
                                         <tr>
-                                            <td>{{ $index+1 }}</td>
-                                            <td>{{$product->name}}</td>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $product->name }}</td>
 
                                             @php
                                                 // ++++++++++++++++++++ sell_price_var ++++++++++++++++++++
@@ -80,36 +89,31 @@
                                                 $sell_quantity = 0;
                                                 // ++++++++++++++++++++ sell_store_var ++++++++++++++++++++
                                                 $sell_store = 0;
-                                                foreach ($product->sell_lines as $key => $sellLine)
-                                                {
+                                                foreach ($product->sell_lines as $key => $sellLine) {
                                                     // =========== sell_quantity ===========
                                                     $sell_quantity = $sell_quantity + ($sellLine->quantity - $sellLine->quantity_returned);
                                                     // =========== sell_price ===========
-                                                    if (!empty($sellLine->sell_price))
-                                                    {
+                                                    if (!empty($sellLine->sell_price)) {
                                                         $sell_price_var = $sell_price_var + $sellLine->sell_price;
-                                                    }
-                                                    else
-                                                    {
-                                                        $sell_price_var = $sell_price_var + ($sellLine->dollar_sell_price * $sellLine->exchange_rate);
+                                                    } else {
+                                                        $sell_price_var = $sell_price_var + $sellLine->dollar_sell_price * $sellLine->exchange_rate;
                                                     }
                                                     // =========== store ===========
-                                                    foreach ($product->stock_lines as $key => $stock_line)
-                                                    {
-                                                        $sell_store = ($stock_line->quantity - $stock_line->quantity_sold ) + ( $stock_line->quantity_returned );
+                                                    foreach ($product->stock_lines as $key => $stock_line) {
+                                                        $sell_store = $stock_line->quantity - $stock_line->quantity_sold + $stock_line->quantity_returned;
                                                     }
                                                 }
-                                             @endphp
+                                            @endphp
                                             {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                            <td> {{ number_format($sell_price_var,2) }}</td>
+                                            <td> {{ number_format($sell_price_var, 2) }}</td>
                                             {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
                                             <td> {{ $sell_quantity }} </td>
                                             {{-- ++++++++++ في المخزن ++++++++++ --}}
                                             <td>{{ $sell_store }}</td>
-                                            {{-- @foreach ( $product->stock_lines as $stockLine )
+                                            {{-- @foreach ($product->stock_lines as $stockLine)
                                                 {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                                {{-- <td>
-                                                    @if( !empty($stockLine->purchase_price) )
+                                            {{-- <td>
+                                                    @if (!empty($stockLine->purchase_price))
                                                         @php
                                                             $purchase_price_var = $purchase_price_var + $stockLine->purchase_price;
                                                         @endphp
@@ -122,12 +126,12 @@
                                                         {{  number_format( ( $purchase_price_var ) , 2 ) }}
                                                     @endif
                                                 </td> --}}
-                                                {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
-                                                {{-- <td>
+                                            {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
+                                            {{-- <td>
                                                     {{ number_format($stockLine->quantity,2) }}
                                                 </td> --}}
-                                                {{-- ++++++++++ في المخزن ++++++++++ --}}
-                                                {{-- <td>
+                                            {{-- ++++++++++ في المخزن ++++++++++ --}}
+                                            {{-- <td>
                                                     {{ number_format( ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned ) , 2 ) }}
                                                 </td> --}}
                                             {{-- @endforeach  --}}
@@ -164,11 +168,11 @@
                                                 </div>
                                             </td> --}}
                                         </tr>
-                                    {{-- @include('products.edit',$product) --}}
+                                        {{-- @include('products.edit',$product) --}}
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="view_modal no-print" >
+                            <div class="view_modal no-print">
 
                             </div>
                         </div>
@@ -181,5 +185,3 @@
     </div>
     <!-- End Contentbar -->
 @endsection
-
-

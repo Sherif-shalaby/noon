@@ -1,29 +1,37 @@
 <!-- Modal -->
-<div class="modal fade" id="createCustomerTypesModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+<div class="modal fade" id="createCustomerTypesModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_customer_type')}}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
+            <div
+                class="modal-header mb-4 d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <h5 class="modal-title" id="exampleStandardModalLabel">{{ __('lang.add_customer_type') }}</h5>
+                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
                 </button>
             </div>
-            {!! Form::open(['route' => 'customertypes.store', 'method' => 'post', 'files' => true,'id' =>'customer-type-form' ]) !!}
-            <div class="modal-body">
-                <div class="form-group ">
-                    <label for="name">@lang('lang.name')</label>
-                    <div class="select_body d-flex justify-content-between align-items-center" >
+            {!! Form::open([
+                'route' => 'customertypes.store',
+                'method' => 'post',
+                'files' => true,
+                'id' => 'customer-type-form',
+            ]) !!}
+            <div class="modal-body p-0">
+                <div
+                    class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <label class="modal-label-width" for="name">@lang('lang.name')</label>
+                    <div
+                        class="select_body input-wrapper d-flex justify-content-between align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <input type="text" required
-                               class="form-control"
-                               placeholder="@lang('lang.name')"
-                               name="name"
-                               value="{{ old('name') }}" >
+                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end  @else text-start @endif"
+                            style="width: 100%" placeholder="@lang('lang.name')" name="name"
+                            value="{{ old('name') }}">
                         @error('name')
-                        <span class="text-danger">{{ $message }}</span>
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
-                        <button  class="btn btn-primary btn-sm ml-2" type="button"
-                            data-toggle="collapse" data-target="#translation_table_customertype"
-                            aria-expanded="false" aria-controls="collapseExample">
+                        <button class="add-button d-flex justify-content-center align-items-center" type="button"
+                            data-toggle="collapse" data-target="#translation_table_customertype" aria-expanded="false"
+                            aria-controls="collapseExample">
                             <i class="fas fa-globe"></i>
                         </button>
                     </div>
@@ -48,12 +56,12 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
+                <button type="submit" class="btn btn-primary">{{ __('lang.save') }}</button>
             </div>
             {!! Form::close() !!}
         </div>
     </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\CustomerTypeRequest','#customer-type-form'); !!}
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\CustomerTypeRequest', '#customer-type-form') !!}

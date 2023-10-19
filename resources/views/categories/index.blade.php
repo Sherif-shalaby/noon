@@ -1,25 +1,33 @@
 @extends('layouts.app')
 @section('title', __('categories.categories'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('categories.categories')</h4>
+    <div class="breadcrumbbar m-0 px-3 py-0">
+        <div
+            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div>
+                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('categories.categories')
+                </h4>
                 <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                    <ul style=" list-style: none;"
+                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                @lang('lang.dashboard')</a>
+                        </li>
                         {{-- <li class="breadcrumb-item"><a href="#">categories</a></li> --}}
-                        <li class="breadcrumb-item active" aria-current="page">@lang('categories.categories')</li>
-                    </ol>
+                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                            aria-current="page">@lang('categories.categories')</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{ route('categories.create') }}" class="btn btn-primary">
+            <div class="col-md-4">
+                <div
+                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                    <a href="{{ route('categories.create') }}" class="btn btn-primary mx-1">
                         <i class="fa fa-plus"></i>
                         @lang('categories.add_categorie_name')
                     </a>
-                    <a href="{{route('sub-categories', 'category')}}" class="btn btn-info">
+                    <a href="{{ route('sub-categories', 'category') }}" class="btn btn-primary mx-1">
                         <i class="fa fa-arrow-left"></i>
                         @lang('categories.allcategories')
                     </a>
@@ -34,9 +42,9 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-body">
-                        @if (@isset($categories) && !@empty($categories) && count($categories) > 0 )
-                           @include('categories.filter')
-                            <div class="table-responsive">
+                        @if (@isset($categories) && !@empty($categories) && count($categories) > 0)
+                            @include('categories.filter')
+                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <table id="" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
@@ -52,37 +60,42 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($categories as $index=>$categorie)
+                                        @foreach ($categories as $index => $categorie)
                                             <tr>
-                                                <td>{{ $index+1 }}</td>
-                                                <td><img src="{{$categorie->imagepath}}" style="width: 50px; height: 50px;" alt="{{ $categorie->name }}" ></td>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td><img src="{{ $categorie->imagepath }}"
+                                                        style="width: 50px; height: 50px;" alt="{{ $categorie->name }}">
+                                                </td>
                                                 <td>{{ $categorie->name }}</td>
-                                                <td>{{ $categorie->parentName()}}</td>
+                                                <td>{{ $categorie->parentName() }}</td>
                                                 <td>
-                                                    <a href="{{ route('sub-categories', $categorie->id) }}" class="btn btn-sm btn-primary">
+                                                    <a href="{{ route('sub-categories', $categorie->id) }}"
+                                                        class="btn btn-sm btn-primary">
                                                         {{ $categorie->subCategories->count() }}</a>
                                                 </td>
-                                                <td>{{ __($categorie->status())}}</td>
+                                                <td>{{ __($categorie->status()) }}</td>
                                                 <td>
-                                                    @if ($categorie->user_id  > 0 and $categorie->user_id != null)
+                                                    @if ($categorie->user_id > 0 and $categorie->user_id != null)
                                                         {{ $categorie->created_at->diffForHumans() }} <br>
                                                         {{ $categorie->created_at->format('Y-m-d') }}
                                                         ({{ $categorie->created_at->format('h:i') }})
-                                                        {{ ($categorie->created_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                                        {{ $categorie->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                        <br>
                                                         {{ $categorie->createBy?->name }}
                                                     @else
-                                                    {{ __('no_update') }}
+                                                        {{ __('no_update') }}
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if ($categorie->last_update  > 0 and $categorie->last_update != null)
+                                                    @if ($categorie->last_update > 0 and $categorie->last_update != null)
                                                         {{ $categorie->updated_at->diffForHumans() }} <br>
                                                         {{ $categorie->updated_at->format('Y-m-d') }}
                                                         ({{ $categorie->updated_at->format('h:i') }})
-                                                        {{ ($categorie->updated_at->format('A')=='AM'?__('am') : __('pm')) }}  <br>
+                                                        {{ $categorie->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                        <br>
                                                         {{ $categorie->updateBy?->name }}
                                                     @else
-                                                       {{ __('no_update') }}
+                                                        {{ __('no_update') }}
                                                     @endif
                                                 </td>
                                                 <td>
@@ -104,9 +117,9 @@
                                 </tfoot>
                             </div>
                         @else
-                        <div class="alert alert-danger">
-                            {{ __('categories.data_no_found') }}
-                        </div>
+                            <div class="alert alert-danger">
+                                {{ __('categories.data_no_found') }}
+                            </div>
                         @endif
                     </div>
                 </div>

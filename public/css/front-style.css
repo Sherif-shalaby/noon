@@ -187,6 +187,10 @@ select.form-control {
     width: 65%;
 }
 
+.width-140 {
+    width: 140px;
+}
+
 .width-fit {
     width: fit-content;
 }

@@ -338,8 +338,8 @@
                                                         </select>
                                                         <button type="button" class="add-button" data-toggle="modal"
                                                             data-target="#add_product_tax_modal"
-                                                            data-select_category="2"><i
-                                                                class="fas fa-plus"></i></button>
+                                                            data-select_category="2"><i class="fas fa-plus"></i>
+                                                        </button>
                                                         @include('product-tax.create', [
                                                             'quick_add' => 1,
                                                         ])
@@ -515,10 +515,7 @@
                                 </div>
                             </div>
 
-
-
                             <div>
-
 
                                 @foreach ($rows as $index => $row)
                                     @include('initial-balance.partial.raw_unit', [

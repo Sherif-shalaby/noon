@@ -26,9 +26,7 @@
             <div class="col-md-4">
                 <div
                     class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <div class="widgetbar">
-                        <a type="button" class="btn btn-primary" href="{{ route('stocks.index') }}">@lang('lang.stock')</a>
-                    </div>
+                    <a type="button" class="btn btn-primary" href="{{ route('stocks.index') }}">@lang('lang.stock')</a>
                 </div>
             </div>
         </div>

@@ -247,7 +247,8 @@
                         class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
                         data-toggle="dropdown"><img src="{{ asset('images/topbar/customer-feedback.png') }}"
                             class="img-fluid pl-1" alt="layouts"><span>{{ __('lang.customers') }}</span></a>
-                    <ul class="dropdown-menu">
+                    <ul
+                        class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         <li><a href="{{ route('customers.create') }}"><i
                                     class="mdi mdi-circle"></i>{{ __('lang.customers') }}</a></li>
                         <li><a href="{{ route('customertypes.index') }}"><i
