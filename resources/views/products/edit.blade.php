@@ -192,7 +192,7 @@
                                 @foreach ($product_tax as $tax)
                                     <option
                                      @if ($product_tax_id == $tax->id) selected @endif
-        
+
                                 value="{{ $tax->id }}"> {{ $tax->name }}
                                 </option>
                                 @endforeach
