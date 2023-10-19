@@ -540,8 +540,11 @@ class Create extends Component
                 'change_current_stock' => 0,
                 'exchange_rate' => $this->exchange_rate,
                 'store_id' => '',
-                'supplier_id' => '', 'product_tax_id' => ''
+                'supplier_id' => '', 'product_tax_id' => '',
+                'balance_return_request' => $this->edit_product['balance_return_request'],
+                'product_symbol' => $this->edit_product['product_symbol'],
             ];
+//        dd($this->item[0]);
 
 
 
