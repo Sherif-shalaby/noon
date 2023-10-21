@@ -1,4 +1,5 @@
 <div class="row unit-row">
+    <input type="hidden" name="variation_ids[{{$index}}]" value="{{$variation->id ?? null}}">
     <div class="col-md-2 pl-5">
         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
         {!! Form::text('sku['.$index.']',null, [

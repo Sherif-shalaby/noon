@@ -25,7 +25,6 @@ use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
-use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
@@ -144,7 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('plans', [DeliveryController::class,'plansList'])->name('delivery_plan.plansList');
     Route::post('delivery_plan/sign-in', [DeliveryController::class,'signIn']);
     Route::post('delivery_plan/sign-out', [DeliveryController::class,'signOut']);
-   
+
     // Route::get('delivery/maps', [DeliveryController::class,'index'])->name('delivery.maps');
 
 

@@ -626,28 +626,30 @@ class Edit extends Component
 
     public function changePrice($index,$key)
     {
-        if(!empty($this->items[$index]['prices'][$key]['price'])){
-            if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price']))  {
-                $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :0;
-                $dollar_selling_price = !empty($this->items[$index]['dollar_selling_price']) ? $this->items[$index]['dollar_selling_price'] :0;
-                $this->items[$index]['dollar_selling_price'];
+        if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price'])){
+            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] : $this->items[$index]['dollar_selling_price'];
+            $total_quantity = (float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'];
+            if(!empty($this->items[$index]['prices'][$key]['price'])){
+                if (empty($this->discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
+                    $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
+                    $sell_price = $total_sell_price / $total_quantity ;
+                }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['dinar_price_after_desc'] =  (float)$sell_price - (float)$this->items[$index]['prices'][$key]['dinar_price'];
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$dollar_selling_price -  (float)$this->items[$index]['prices'][$key]['price'];
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'];
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['dinar_price_after_desc'] = (float)($sell_price - $percent);
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($dollar_selling_price - ($percent * $dollar_selling_price));
-                
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
                 }
-                if(!empty($this->items[$index]['prices'][$key]['price_after_desc'])){
-                    $this->items[$index]['prices'][$key]['total_price']=(float)$this->items[$index]['prices'][$key]['price_after_desc'] * ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
-                    $this->items[$index]['prices'][$key]['dinar_total_price']=(float)$this->items[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
-                    $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
-                    $this->items[$index]['prices'][$key]['dinar_piece_price']=(float)$this->items[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );                
-                }
-                $this->items[$index]['prices'][$key]['dinar_price']=$this->items[$index]['prices'][$key]['price']* $this->exchange_rate;
+            }
+            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
+            if(empty($this->discount_from_original_price)){
+                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($total_quantity) ? $total_quantity : 1);
+                $this->items[$index]['prices'][$key]['piece_price'] = $this->items[$index]['prices'][$key]['price_after_desc'];
+            }
+            else{
+                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1);
+                $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
             }
         }
     }

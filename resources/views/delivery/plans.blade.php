@@ -130,12 +130,12 @@
                                                     <a href="{{route('delivery.show', $plan->id)}}"
                                                        class="btn"><i
                                                             class="fa fa-pencil-square-o"></i>
-                                                         @lang('lang.show') </a>
+                                                         @lang('lang.view_details') </a>
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
                                                     <a href="{{route('delivery.edit', $plan->id)}}"
-                                                        class="btn text-red "><i class="fa fa-trash"></i>
+                                                        class="btn text-red "><i class="fa fa-pencil-square-o"></i>
                                                         @lang('lang.edit')</a>
                                                 </li>
                                                 <li class="divider"></li>

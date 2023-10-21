@@ -137,7 +137,60 @@ class DeliveryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+
+            // Find the DeliveryCustomerPlan and DeliveryLocation by their IDs
+            $deliveryLocation = DeliveryLocation::findOrFail($id); // Assuming city_id corresponds to delivery_location_id
+            $deliveryCustomerPlan = DeliveryCustomerPlan::where('delivery_location_id',$id)->get();
+
+            // Update the deliveryLocation data
+            $deliveryLocation->date = $request->input('date');
+            $deliveryLocation->city_id = $request->input('city_id');
+
+            // Update other fields as needed
+            $deliveryLocation->save();
+            
+            
+        
+            // Get the existing customer IDs from the database records
+            $existingCustomerIds = $deliveryCustomerPlan->pluck('customers_id')->toArray();
+
+            // Get the new customer IDs from the request
+            $newCustomerIds = $request->customers;
+
+            // Find customer IDs that need to be added (present in the request but not in the database)
+            $customerIdsToAdd = array_diff($newCustomerIds, $existingCustomerIds);
+
+            // Find customer IDs that need to be deleted (present in the database but not in the request)
+            $customerIdsToDelete = array_diff($existingCustomerIds, $newCustomerIds);
+
+            // Add new customers
+            foreach ($customerIdsToAdd as $customerId) {
+                $newDeliveryCustomerPlan = new DeliveryCustomerPlan();
+                $newDeliveryCustomerPlan->delivery_location_id = $id;
+                $newDeliveryCustomerPlan->customers_id = $customerId;
+                $newDeliveryCustomerPlan->save();
+            }
+
+            // Delete customers that are not in the request
+            DeliveryCustomerPlan::where('delivery_location_id', $id)
+                ->whereIn('customers_id', $customerIdsToDelete)
+                ->delete();
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        }catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+    
+        // Redirect to a success page or return a response
+        return redirect()->route('delivery_plan.plansList')->with('status', $output);
     }
 
     /**
@@ -148,7 +201,8 @@ class DeliveryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $delivery_plan = DeliveryLocation::find($id);
+        $delivery_plan->delete();
     }
 
     public function plansList(Request $request)
