@@ -359,7 +359,7 @@ class Create extends Component
                     'dollar_sub_total' => !empty($product->unit) ? $product->unit->base_unit_multiplier * $dollar_price : 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
 //                    'discount_categories' =>  $discounts,
-                    'discount_categories' =>  null,
+                    'discount_categories' => null,
                     'discount' => null,
                     'discount_price' => 0,
                     'discount_type' =>  null,
@@ -369,6 +369,7 @@ class Create extends Component
                     'base_unit_multiplier' =>!empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
+                    'unit_id'=>''
 //                    'store' => $product_stores->first()->store->name,
                 ];
 
@@ -847,6 +848,9 @@ class Create extends Component
 //            'deposit' => __('lang.use_the_balance'),
 //            'paypal' => __('lang.paypal'),
         ];
+    }
+    public function changeUnit($key){
+        // dd($this->item);
     }
 
 }

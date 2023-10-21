@@ -20,7 +20,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\StorePosController;
