@@ -125,7 +125,10 @@ class Create extends Component
     }
     public function changeSize()
     {
-        $this->item[0]['size'] = $this->item[0]['height'] * $this->item[0]['length'] * $this->item[0]['width'];
+        $height=$this->item[0]['height']??0;
+        $length=$this->item[0]['length']??0;
+        $width=$this->item[0]['width']??0;
+        $this->item[0]['size'] = (float)$height * (float)$length * (float)$width;
     }
     protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct'];
 
@@ -141,9 +144,6 @@ class Create extends Component
                 }
             } else if ($data['var1'] == "price_customer_types" && $data['var3'] !== '') {
                 $row = $this->rows[$data['var3']]['prices'][$data['var4']]['price_customer_types'] = $data['var2'];
-                // dd($data['var2']);
-                // $row[$data['var4']]['price_customer_types']=$data['var2'];
-
             } else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
@@ -377,11 +377,11 @@ class Create extends Component
                 $product->subcategory_id1 = $this->item[0]['subcategory_id1'];
                 $product->subcategory_id2 = $this->item[0]['subcategory_id2'];
                 $product->subcategory_id3 = $this->item[0]['subcategory_id3'];
-                $product->height = $this->item[0]['height'];
-                $product->length = $this->item[0]['length'];
-                $product->width = $this->item[0]['width'];
-                $product->weight = $this->item[0]['weight'];
-                $product->size = $this->item[0]['size'];
+                $product->height = isset($this->item[0]['height'])?$this->item[0]['height']:0;
+                $product->length = isset($this->item[0]['length'])?$this->item[0]['length']:0;
+                $product->width = isset($this->item[0]['width'])?$this->item[0]['width']:0;
+                $product->weight = isset($this->item[0]['weight'])?$this->item[0]['weight']:0;
+                $product->size = isset($this->item[0]['size'])?$this->item[0]['size']:0;
                 $product->method = $this->item[0]['method'];
                 $product->product_symbol = !empty($this->item[0]['product_symbol'])?$this->item[0]['product_symbol']:$this->generateSymbol();
                 $product->balance_return_request=$this->item[0]['balance_return_request']??0;
@@ -395,14 +395,14 @@ class Create extends Component
                 $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ? $this->item[0]['subcategory_id1'] : null;
                 $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
                 $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
-                $product->height = $this->item[0]['height'] ?? null;
-                $product->length = $this->item[0]['length'] ?? null;
-                $product->width = $this->item[0]['width'] ?? null;
-                $product->weight = $this->item[0]['weight'] ?? null;
-                $product->size = $this->item[0]['size'] ?? null;
-                $product->method = $this->item[0]['method'];
+                $product->height = !empty($this->item[0]['height'])?$this->item[0]['height']:0;
+                $product->length = !empty($this->item[0]['length'])?$this->item[0]['length']:0;
+                $product->width = !empty($this->item[0]['width'])?$this->item[0]['width']:0;
+                $product->weight = !empty($this->item[0]['weight'])?$this->item[0]['weight']:0;
+                $product->size = !empty($this->item[0]['size'])?$this->item[0]['size']:0;
+                $product->method = !empty($this->item[0]['method'])?$this->item[0]['method']:null;
                 $product->product_symbol = $this->item[0]['product_symbol'];
-                $product->balance_return_request=$this->item[0]['balance_return_request'];
+                $product->balance_return_request=!empty($this->item[0]['balance_return_request'])?$this->item[0]['balance_return_request']:0;
                 $product->save();
                 if(!empty($this->item[0]['product_tax_id'])){
                     ProductTax::create([
