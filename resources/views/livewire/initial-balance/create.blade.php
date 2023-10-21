@@ -306,6 +306,13 @@
                                                 <h6>
                                                     {{ __('lang.product_tax') }}
                                                 </h6>
+                                                <span class="accordion-arrow">
+                                                    @if ($item[0]['show_tax'])
+                                                        <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                                                    @else
+                                                        <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                    @endif
+                                                </span>
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseOne"
@@ -405,6 +412,13 @@
                                                 data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
                                                 aria-controls="panelsStayOpen-collapseTwo">
                                                 <h6>{{ __('lang.product_dimensions') }}</h6>
+                                                <span class="accordion-arrow">
+                                                    @if ($item[0]['show_size'])
+                                                        <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                                                    @else
+                                                        <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                    @endif
+                                                </span>
                                             </button>
                                         </h2>
 

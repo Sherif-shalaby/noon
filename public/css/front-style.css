@@ -125,7 +125,7 @@ select.form-control {
     position: absolute;
     top: -10px;
     border-radius: 6px;
-    left: 25px;
+    right: 25px;
     padding: 4px 20px;
     display: flex;
     width: 185px;
@@ -146,8 +146,8 @@ select.form-control {
     background-repeat: no-repeat;
     background-size: var(--bs-accordion-btn-icon-width);
     transition: var(--bs-accordion-btn-icon-transition);
-    top: -5px;
-    left: 180px;
+    top: -7px;
+    right: 170px;
     position: absolute;
     font-weight: 700;
     width: 20px;
@@ -155,7 +155,30 @@ select.form-control {
     background-color: white;
     border-radius: 50%;
     padding: 5px;
+    display: none;
+}
 
+.accordion-arrow {
+    flex-shrink: 0;
+    width: var(--bs-accordion-btn-icon-width);
+    height: var(--bs-accordion-btn-icon-width);
+    margin-left: auto;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: var(--bs-accordion-btn-icon-width);
+    transition: var(--bs-accordion-btn-icon-transition);
+    top: -7px;
+    right: 170px;
+    position: absolute;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-primary {
@@ -257,9 +280,22 @@ select.form-control {
     display: none;
 }
 
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    list-style: none;
+    width: 100%;
+    overflow-y: auto;
+    height: 30px;
+}
+
 .select2-container--default .select2-selection--multiple .select2-selection__rendered li {
     list-style: none;
-    width: 45px;
+    width: 100%;
     overflow: hidden;
     height: 21px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li input {
+
+    width: 100% !important;
+
 }

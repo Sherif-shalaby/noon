@@ -108,6 +108,7 @@
                                         flex-wrap: nowrap;">
                             {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
                                 'class' => 'js-example-basic-multiple height-fit',
+                                'style' => 'width:100%',
                                 'multiple' => 'multiple',
                                 'placeholder' => __('lang.please_select'),
                                 'id' => 'store_id',
