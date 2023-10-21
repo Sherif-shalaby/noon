@@ -280,6 +280,18 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+                            {{-- +++++++++++++++++++++++ "balance return request +++++++++++++++++++++++ --}}
+                            <div
+                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                ]) !!}
+
+                                {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
+                                    'wire:model' => 'item.0.balance_return_request',
+                                    'class' => 'form-control initial-balance-input m-0',
+                                ]) !!}
+                            </div>
 
 
                             {{-- tax accordion  --}}
@@ -301,7 +313,7 @@
                                             <div class="accordion-body d-flex">
 
                                                 <div
-                                                    class="col-md-4  mb-2 mb-lg-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-6  mb-2 mb-lg-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <label for="method"
                                                         class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
                                                         style="width: 25%">{{ __('lang.tax_method') . '*' }}</label>
@@ -329,7 +341,7 @@
                                                 </div>
                                                 {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
                                                 <div
-                                                    class="col-md-4 d-flex mb-2 mb-lg-1 justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-6 d-flex mb-2 mb-lg-1 justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <label for="product"
                                                         class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
                                                         style="width: 25%">{{ __('lang.product_tax') . '*' }}</label>
@@ -364,19 +376,6 @@
                                                         ])
 
                                                     </div>
-                                                </div>
-                                                {{-- +++++++++++++++++++++++ "balance return request +++++++++++++++++++++++ --}}
-                                                <div
-                                                    class="col-md-4 d-flex mb-2 mb-lg-1 justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                    {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
-                                                        'class' => "app()->isLocale('ar') ? d-block text-end h5 mb-0 : h5 mb-0",
-                                                        'style' => 'width: 25%',
-                                                    ]) !!}
-
-                                                    {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
-                                                        'wire:model' => 'item.0.balance_return_request',
-                                                        'class' => 'form-control initial-balance-input m-0',
-                                                    ]) !!}
                                                 </div>
                                             </div>
                                         </div>

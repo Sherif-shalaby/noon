@@ -105,6 +105,14 @@
             </div>
         </div>
 
+        <div style="font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
+            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+            <div class="btn btn-sm btn-danger py-2 px-1 " style="width: 50%;"
+                wire:click="delete_product({{ $index }})">
+                <i class="fa fa-trash"></i>
+            </div>
+        </div>
+
         <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.purchase_price')$</span>
@@ -181,13 +189,7 @@
             </span>
         </div>
 
-        <div style="font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
-            <div class="btn btn-sm btn-danger py-2 px-1 " style="width: 50%;"
-                wire:click="delete_product({{ $index }})">
-                <i class="fa fa-trash"></i>
-            </div>
-        </div>
+
 
     </div>
 
@@ -210,6 +212,20 @@
             @foreach ($rows[$index]['prices'] as $key => $price)
                 <div
                     class="accordion-body p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
+                        class="d-flex justify-content-around align-items-center">
+                        <button type="button" class="btn btn-sm btn-primary"
+                            wire:click="addPriceRow({{ $index }})">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        @if ($key > 0)
+                            <button class="btn btn-sm btn-danger"
+                                wire:click="delete_price_raw({{ $index }},{{ $key }})">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        @endif
+                    </div>
+
                     <div
                         class="d-flex flex-wrap  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
@@ -219,6 +235,18 @@
                             <input type="text" class="form-control price_category" name="price_category"
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price_category"
                                 maxlength="6">
+                        </div>
+                        <div
+                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                            {!! Form::label('price', __('lang.quantity'), ['style' => 'font-size: 10px;', 'class' => 'pt-2']) !!}
+                            <input type="text" class="form-control discount_quantity"
+                                wire:model="rows.{{ $index }}.prices.{{ $key }}.discount_quantity"
+                                wire:change="changePrice({{ $index }}, {{ $key }})"
+                                placeholder = "{{ __('lang.quantity') }}">
+                            @error('rows.' . $index . '.prices.' . $key . '.discount_quantity')
+                                <br>
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div
@@ -250,8 +278,10 @@
                                 <input type="checkbox" class="custom-control-input"
                                     name="discount_from_original_price" id="discount_from_original_price"
                                     style="font-size: 0.75rem" @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif>
-                                <label class="custom-control-label" style="font-size: 11px"
-                                    for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+                                <label class="custom-control-label" id="custom-control-label" style="font-size: 8px"
+                                    for="discount_from_original_price">
+                                    @lang('lang.discount_from_original_price_with_free_quantity')
+                                </label>
                             </div>
                             @error('rows.' . $index . '.prices.' . $key . '.price_type')
                                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -321,7 +351,7 @@
                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
                                 data-name='price_customer_types' data-index="{{ $index }}"
                                 data-key="{{ $key }}" class="form-control js-example-basic-multiple"
-                                multiple='multiple' style="border: 2px solid gray"
+                                multiple='multiple' style="border-radius:6px !important; border: 2px solid gray"
                                 placeholder="{{ __('lang.please_select') }}">
                                 @foreach ($customer_types as $type)
                                     <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -330,25 +360,22 @@
                         </div>
 
                     </div>
-
-
-
-                    <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
-                        class="d-flex justify-content-around align-items-center">
-                        <button type="button" class="btn btn-sm btn-primary"
-                            wire:click="addPriceRow({{ $index }})">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        @if ($key > 0)
-                            <button class="btn btn-sm btn-danger"
-                                wire:click="delete_price_raw({{ $index }},{{ $key }})">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        @endif
-                    </div>
                 </div>
             @endforeach
         </div>
     </div>
 </div>
 </div>
+
+<script>
+    const checkbox = document.getElementById('discount_from_original_price');
+    const label = document.getElementById('custom-control-label');
+
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            label.textContent = "@lang('lang.discount_from_original_price')";
+        } else {
+            label.textContent = "@lang('lang.discount_from_original_price_with_free_quantity')";
+        }
+    });
+</script>
