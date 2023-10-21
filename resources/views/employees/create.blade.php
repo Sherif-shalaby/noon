@@ -3,10 +3,10 @@
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="widgetbar">
-            <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
-            {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
-            {{--                            class="dripicons-plus"></i>--}}
-            {{--                        @lang('lang.add_new_employee')</a>--}}
+            <a class="btn btn-primary mb-2" href="{{ route('employees.index') }}">@lang('lang.employee')</a>
+            {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i --}}
+            {{--                            class="dripicons-plus"></i> --}}
+            {{--                        @lang('lang.add_new_employee')</a> --}}
         </div>
     </div>
 @endsection
@@ -21,25 +21,29 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form class="form-group" id="new_employee_form"
-                                      action="{{ route('employees.store') }}" method="POST"
-                                      enctype="multipart/form-data">
+                                <form class="form-group" id="new_employee_form" action="{{ route('employees.store') }}"
+                                    method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="fname">@lang('lang.name'):*</label>
-                                            <input type="text" class="form-control" name="name" id="name" required
-                                                   placeholder="Name">
+                                            <input type="text" class="form-control" name="name" id="name"
+                                                required placeholder="Name">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                            {!! Form::select(
+                                                'store_id[]',
+                                                $stores,
+                                                !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false,
+                                                ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id'],
+                                            ) !!}
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
                                                 <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
-                                            <input type="email" class="form-control" name="email" id="email" required
-                                                   placeholder="Email">
+                                            <input type="email" class="form-control" name="email" id="email"
+                                                required placeholder="Email">
                                         </div>
                                     </div>
 
@@ -48,12 +52,12 @@
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
-                                                   required placeholder="Create New Password">
+                                                required placeholder="Create New Password">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
-                                                   name="password_confirmation" required placeholder="Conform Password">
+                                                name="password_confirmation" required placeholder="Conform Password">
                                         </div>
 
                                     </div>
@@ -61,14 +65,13 @@
 
                                         <div class="col-sm-6">
                                             <label for="date_of_start_working">@lang('lang.date_of_start_working')</label>
-                                            <input type="date" class="form-control"
-                                                   name="date_of_start_working" id="date_of_start_working"
-                                                   placeholder="@lang('lang.date_of_start_working')">
+                                            <input type="date" class="form-control" name="date_of_start_working"
+                                                id="date_of_start_working" placeholder="@lang('lang.date_of_start_working')">
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="date_of_birth">@lang('lang.date_of_birth')</label>
                                             <input type="date" class="form-control" name="date_of_birth"
-                                                   id="date_of_birth" placeholder="@lang('lang.date_of_birth')">
+                                                id="date_of_birth" placeholder="@lang('lang.date_of_birth')">
                                         </div>
 
                                     </div>
@@ -76,12 +79,16 @@
 
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
-                                            {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
+                                            {!! Form::select('job_type_id', $jobs, null, [
+                                                'class' => 'form-control selectpicker',
+                                                'placeholder' => __('lang.select_job_type'),
+                                                'data-live-search' => 'true',
+                                            ]) !!}
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="mobile">@lang('lang.phone_number'):*</label>
-                                            <input type="mobile" class="form-control" name="mobile" id="mobile" required
-                                                   placeholder="@lang('lang.mobile')">
+                                            <input type="mobile" class="form-control" name="mobile" id="mobile"
+                                                required placeholder="@lang('lang.mobile')">
                                         </div>
 
                                     </div>
@@ -103,14 +110,14 @@
                                                 <div class="form-group">
                                                     <div class="i-checks">
                                                         <input id="number_of_leaves{{ $leave_type->id }}"
-                                                               name="number_of_leaves[{{ $leave_type->id }}][enabled]"
-                                                               type="checkbox" value="1">
+                                                            name="number_of_leaves[{{ $leave_type->id }}][enabled]"
+                                                            type="checkbox" value="1">
                                                         <label
                                                             for="number_of_leaves{{ $leave_type->id }}"><strong>{{ $leave_type->name }}</strong></label>
                                                         <input type="number" class="form-control"
-                                                               name="number_of_leaves[{{ $leave_type->id }}][number_of_days]"
-                                                               id="number_of_leaves" placeholder="{{ $leave_type->name }}"
-                                                               readonly value="{{ $leave_type->number_of_days_per_year }}">
+                                                            name="number_of_leaves[{{ $leave_type->id }}][number_of_days]"
+                                                            id="number_of_leaves" placeholder="{{ $leave_type->name }}"
+                                                            readonly value="{{ $leave_type->number_of_days_per_year }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -119,7 +126,7 @@
                                     <div class="row mt-4">
                                         <!-- Button salary modal -->
                                         <button type="button" style="margin-left: 15px;" class="btn btn-primary"
-                                                data-toggle="modal" data-target="#salary_details">
+                                            data-toggle="modal" data-target="#salary_details">
                                             @lang('lang.salary_details')
                                         </button>
                                         @include('employees.partials.salary_details')
@@ -128,38 +135,37 @@
                                     <br>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label
-                                                for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
+                                            <label for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
                                             <table>
                                                 <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>@lang('lang.check_in')</th>
-                                                    <th> @lang('lang.check_out')</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>@lang('lang.check_in')</th>
+                                                        <th> @lang('lang.check_out')</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach ($week_days as $key => $week_day)
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <div class="i-checks">
-                                                                    <input id="working_day_per_week{{ $key }}"
-                                                                           name="working_day_per_week[{{ $key }}]"
-                                                                           type="checkbox" value="1">
-                                                                    <label
-                                                                        for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                    @foreach ($week_days as $key => $week_day)
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <div class="i-checks">
+                                                                        <input id="working_day_per_week{{ $key }}"
+                                                                            name="working_day_per_week[{{ $key }}]"
+                                                                            type="checkbox" value="1">
+                                                                        <label
+                                                                            for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker',]) !!}
-                                                        </td>
-                                                        <td>
-                                                            {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker',]) !!}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                            </td>
+                                                            <td>
+                                                                {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}
+                                                            </td>
+                                                            <td>
+                                                                {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -179,7 +185,7 @@
                                         <div class="col-sm-12">
                                             <div class="text-right">
                                                 <input type="submit" id="submit-btn" class="btn btn-primary"
-                                                       value="@lang('lang.save')" name="submit">
+                                                    value="@lang('lang.save')" name="submit">
                                             </div>
                                         </div>
                                     </div>
@@ -196,7 +202,7 @@
 @section('javascript')
 
     <script>
-        $( document ).ready(function() {
+        $(document).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
                 var checked_all = $(this).prop('checked');

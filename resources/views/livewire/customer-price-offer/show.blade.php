@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <section class="invoice-section" >
+    <section class="invoice-section">
         <div class="invoice-content bg-white shadow rounded-3 pb-2">
             <h1 class="invoice-name text-center rounded-3 fw-bold mb-0 pt-2">
                 {{ __('site.Bill_Number') }}
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="logo-holder m-auto text-center  rounded-3 mb-3">
-                <img class="the_image mx-auto  h-auto rounded-3" src="{{ display_file($setting['logo'])}}"
-                    width="150" alt="logo">
+                <img class="the_image mx-auto  h-auto rounded-3" src="{{ display_file($setting['logo']) }}" width="150"
+                    alt="logo">
             </div>
             <div class="me-2">
                 <div class="tax-number  mb-2 fw-bold">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                 <table class="table main-table text-center rounded-3 w-100">
                     <thead class="border-0">
                         <tr>
@@ -71,7 +71,7 @@
                                     {{ $item->quantity }}
                                 </td>
                                 <td>
-                                    {{ $item->tax??0 }}
+                                    {{ $item->tax ?? 0 }}
                                 </td>
                                 <td>
                                     {{ $item->total }}
@@ -82,7 +82,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="table-responsive second-table mt-2">
+            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif second-table mt-2">
                 <table class="table main-table" id="data-table">
                     <tbody>
                         <tr>
@@ -146,7 +146,7 @@
                 {!! $qrCode !!}
             </div> --}}
             <div class="d-flex justify-content-center not-print mt-3">
-                <button class="btn btn-sm btn-info"  onclick="print()">{{ __('site.Print') }}</button>
+                <button class="btn btn-sm btn-info" onclick="print()">{{ __('site.Print') }}</button>
             </div>
 
         </div>

@@ -1,21 +1,31 @@
 @extends('layouts.app')
 @section('title', __('lang.add_wages'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.add_wages')</h4>
+    <div class="breadcrumbbar m-0 px-3 py-0">
+        <div
+            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div>
+                <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.add_wages')
+                </h4>
                 <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('wages.index') }}">@lang('lang.wages')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.add_wages')</li>
-                    </ol>
+                    <ul style=" list-style: none;"
+                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                @lang('lang.dashboard')</a>
+                        </li>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                style="text-decoration: none;color: #596fd7" href="{{ route('wages.index') }}">/
+                                @lang('lang.wages')</a></li>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                            aria-current="page">@lang('lang.add_wages')</li>
+                    </ul>
                 </div>
             </div>
             <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{route('wages.index')}}" class="btn btn-primary">
+                <div
+                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                    <a href="{{ route('wages.index') }}" class="btn btn-primary">
                         @lang('lang.wages')
                     </a>
                 </div>
@@ -69,7 +79,8 @@
                             <div class="form-group">
                                 {!! Form::label('other_payment', __('lang.other_payment')) !!}
                                 {!! Form::text('other_payment', null, [
-                                    'class' => 'form-control', 'id' => 'other_payment',
+                                    'class' => 'form-control',
+                                    'id' => 'other_payment',
                                 ]) !!}
                                 <span id="otherPaymentResult"></span> <!-- New span element for displaying the result -->
                                 @error('other_payment')
@@ -114,38 +125,63 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="deductibles">@lang('lang.deductibles')</label>
-                                {!! Form::text('deductibles', null, ['class' => 'form-control', 'placeholder' => __('lang.deductibles'), 'id' => 'deductibles']) !!}
+                                {!! Form::text('deductibles', null, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.deductibles'),
+                                    'id' => 'deductibles',
+                                ]) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="reasons_of_deductibles">@lang('lang.reasons_of_deductibles')</label>
-                                {!! Form::text('reasons_of_deductibles', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => __('lang.reasons_of_deductibles')]) !!}
+                                {!! Form::text('reasons_of_deductibles', null, [
+                                    'class' => 'form-control',
+                                    'rows' => 3,
+                                    'placeholder' => __('lang.reasons_of_deductibles'),
+                                ]) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="net_amount">@lang('lang.net_amount')</label>
-                                {!! Form::text('net_amount', null, ['class' => 'form-control', 'placeholder' => __('lang.net_amount'), 'id' => 'net_amount']) !!}
+                                {!! Form::text('net_amount', null, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.net_amount'),
+                                    'id' => 'net_amount',
+                                ]) !!}
                             </div>
                         </div>
                         <input type="hidden" name="amount" id="amount">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="payment_date">@lang('lang.payment_date')</label>
-                                {!! Form::text('payment_date', @format_date(date('Y-m-d')), ['class' => 'form-control datepicker', 'placeholder' => __('lang.payment_date')]) !!}
+                                {!! Form::text('payment_date', @format_date(date('Y-m-d')), [
+                                    'class' => 'form-control datepicker',
+                                    'placeholder' => __('lang.payment_date'),
+                                ]) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                                {!! Form::select('source_id', $users, null, ['class' => 'select2 form-control', 'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
+                                {!! Form::select('source_id', $users, null, [
+                                    'class' => 'select2 form-control',
+                                    'placeholder' => __('lang.please_select'),
+                                    'id' => 'source_id',
+                                    'required',
+                                ]) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], null, ['class' => 'select2 form-control','placeholder' => __('lang.please_select')]) !!}
+                                {!! Form::select(
+                                    'source_type',
+                                    ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')],
+                                    null,
+                                    ['class' => 'select2 form-control', 'placeholder' => __('lang.please_select')],
+                                ) !!}
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -176,22 +212,18 @@
     {{-- ++++++++++++++++ Ajax Request ++++++++++++++++ --}}
     {{-- get "other_payment" according to "employee_id" , "payment_type" --}}
     <script>
-        $(document).ready(function()
-        {
+        $(document).ready(function() {
             // Event handler for employee_id dropdown change
-            $('#employee_id').on('change', function()
-            {
+            $('#employee_id').on('change', function() {
                 updateOtherPayment();
             });
 
             // Event handler for payment_type dropdown change
-            $('#payment_type').on('change', function()
-            {
+            $('#payment_type').on('change', function() {
                 updateOtherPayment();
             });
             // ++++++++++ updateOtherPayment() +++++++++++++
-            function updateOtherPayment()
-            {
+            function updateOtherPayment() {
                 var employeeId = $('#employee_id').val();
                 var paymentType = $('#payment_type').val();
                 // Make an AJAX request to fetch other_payment based on employee_id and payment_type
@@ -213,23 +245,18 @@
                 });
             }
             // +++++++++++++++++ Calculate "net_value" : When Change "الخصومات" +++++++++++++++++
-            $('#deductibles').on('keyup', function()
-            {
+            $('#deductibles').on('keyup', function() {
                 // console.log("keyup keyup keyup keyup");
                 let deductibles = parseFloat($('#deductibles').val());
                 let other_payment = parseFloat($('#other_payment').val());
-                let net_val = 0.00 ;
-                if ( $('#deductibles').val() != '' && $('#deductibles').val() != undefined )
-                {
+                let net_val = 0.00;
+                if ($('#deductibles').val() != '' && $('#deductibles').val() != undefined) {
                     net_val = other_payment - deductibles;
                     $('#net_amount').val(net_val);
-                }
-                else
-                {
+                } else {
                     $('#net_amount').val(other_payment);
                 }
             })
         });
     </script>
-
 @endpush

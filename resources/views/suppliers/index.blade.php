@@ -1,20 +1,28 @@
 @extends('layouts.app')
 @section('title', __('lang.suppliers'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-       <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.suppliers')</h4>
+    <div class="breadcrumbbar m-0 px-3 py-0">
+        <div
+            class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div>
+                <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.suppliers')
+                </h4>
                 <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                    <ul style=" list-style: none;"
+                        class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                @lang('lang.dashboard')</a>
+                        </li>
                         {{-- <li class="breadcrumb-item"><a href="#">Brands</a></li> --}}
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.suppliers')</li>
-                    </ol>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                            aria-current="page">@lang('lang.suppliers')</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
+            <div class="col-md-4">
+                <div
+                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                     <a href="{{ route('suppliers.create') }}" class="btn btn-primary">
                         <i class="fa fa-plus"></i>
                         @lang('lang.add_supplier')
@@ -26,12 +34,11 @@
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
     <style>
         .selectBox {
-        position: relative;
+            position: relative;
         }
 
         /* selectbox style */
-        .selectBox select
-        {
+        .selectBox select {
             width: 100%;
             padding: 0 !important;
             padding-left: 4px;
@@ -43,36 +50,36 @@
         }
 
         .overSelect {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
         }
 
         #checkboxes {
-        display: none;
-        border: 1px #dadada solid;
-        height: 125px;
-        overflow: auto;
-        padding-top: 10px;
-        /* text-align: end;  */
+            display: none;
+            border: 1px #dadada solid;
+            height: 125px;
+            overflow: auto;
+            padding-top: 10px;
+            /* text-align: end;  */
         }
 
         #checkboxes label {
-        display: block;
-        padding: 5px;
+            display: block;
+            padding: 5px;
 
         }
 
         #checkboxes label:hover {
-        background-color: #ddd;
+            background-color: #ddd;
         }
-        #checkboxes label span
-        {
+
+        #checkboxes label span {
             font-weight: normal;
         }
-</style>
+    </style>
 @endsection
 @section('content')
     <!-- Start Contentbar -->
@@ -83,11 +90,12 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title">@lang('lang.suppliers')</h5>
+                        <h5 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            @lang('lang.suppliers')</h5>
                     </div>
                     <div class="card-body">
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                        <div class="table-responsive">
+                        <div class="table-responsive ">
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                             <div class="col-md-3 col-lg-3">
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
@@ -162,92 +170,95 @@
                                     </div>
                                 </div>
                             </div>
-                            <br/><br/>
+                            <br /><br />
                             {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
+                            <table id="datatable-buttons"
+                                class="table table-striped table-bordered @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <thead>
-                                <tr>
-                                    <th class="col1">@lang('lang.name')</th>
-                                    <th class="col2">@lang('lang.company_name')</th>
-                                    <th class="col3">@lang('lang.email')</th>
-                                    <th class="col4">@lang('lang.mobile_number')</th>
-                                    <th class="col5">@lang('lang.state')</th>
-                                    <th class="col6">@lang('lang.city')</th>
-                                    <th class="col7">@lang('lang.exchange_rate')</th>
-                                    <th class="col8">@lang('lang.owner_debt_in_dinar')</th>
-                                    <th class="col9">@lang('lang.owner_debt_in_dollar')</th>
-                                    <th class="col10">@lang('lang.created_by')</th>
-                                    <th class="col11">@lang('lang.updated_by')</th>
-                                    <th class="col12">@lang('lang.action')</th>
-                                </tr>
+                                    <tr>
+                                        <th class="col1">@lang('lang.name')</th>
+                                        <th class="col2">@lang('lang.company_name')</th>
+                                        <th class="col3">@lang('lang.email')</th>
+                                        <th class="col4">@lang('lang.mobile_number')</th>
+                                        <th class="col5">@lang('lang.state')</th>
+                                        <th class="col6">@lang('lang.city')</th>
+                                        <th class="col7">@lang('lang.exchange_rate')</th>
+                                        <th class="col8">@lang('lang.owner_debt_in_dinar')</th>
+                                        <th class="col9">@lang('lang.owner_debt_in_dollar')</th>
+                                        <th class="col10">@lang('lang.created_by')</th>
+                                        <th class="col11">@lang('lang.updated_by')</th>
+                                        <th class="col12">@lang('lang.action')</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($suppliers as $supplier)
-                                <tr>
-                                    <td class="col1">{{$supplier->name}}</td>
-                                    <td class="col2">{{$supplier->company_name}}</td>
-                                    {{-- Convert the email and phone strings to arrays --}}
-                                    @php
-                                        $emailArray = explode(',', $supplier->email);
-                                        $phoneArray = explode(',', $supplier->mobile_number);
-                                        // Remove square brackets from each element in the emailArray
-                                        foreach ($emailArray as $key => $email)
-                                        {
-                                            $emailArray[$key] = str_replace(['[', ']','"'], '', $email);
-                                        }
-                                        // Remove square brackets from each element in the emailArray
-                                        foreach ($phoneArray as $key => $phone)
-                                        {
-                                            $phoneArray[$key] = str_replace(['[', ']','"'], '', $phone);
-                                        }
-                                    @endphp
-                                    <td class="col3">
-                                        {{-- Iterate over the email array elements --}}
-                                        @foreach ($emailArray as $email)
-                                            {{ $email }}<br>
-                                        @endforeach
-                                    </td>
-                                    <td class="col4">
-                                        {{-- Iterate over the phone array elements --}}
-                                        @foreach ($phoneArray as $phone)
-                                            {{ $phone }}<br>
-                                        @endforeach
-                                    </td>
-                                    @php
-                                        $state = \App\Models\State::find($supplier->state_id);
-                                        $city = \App\Models\City::find($supplier->city_id);
-                                    @endphp
-                                    <td class="col5">{{ $state ? $state->name : '' }}</td>
-                                    <td class="col6">{{ $city  ? $city->name : '' }}</td>
-                                    <td class="col7">{{$supplier->exchange_rate}}</td>
-                                    <td class="col8">{{$supplier->owner_debt_in_dinar}}</td>
-                                    <td class="col9">{{$supplier->owner_debt_in_dollar}}</td>
-                                    <td class="col10">{{$supplier->created_by_user->name}}</td>
-                                    <td class="col11">{{$supplier->updated_by_user->name ?? ''}}</td>
-                                    <td class="col12">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                <li>
+                                    @foreach ($suppliers as $supplier)
+                                        <tr>
+                                            <td class="col1">{{ $supplier->name }}</td>
+                                            <td class="col2">{{ $supplier->company_name }}</td>
+                                            {{-- Convert the email and phone strings to arrays --}}
+                                            @php
+                                                $emailArray = explode(',', $supplier->email);
+                                                $phoneArray = explode(',', $supplier->mobile_number);
+                                                // Remove square brackets from each element in the emailArray
+                                                foreach ($emailArray as $key => $email) {
+                                                    $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                }
+                                                // Remove square brackets from each element in the emailArray
+                                                foreach ($phoneArray as $key => $phone) {
+                                                    $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
+                                                }
+                                            @endphp
+                                            <td class="col3">
+                                                {{-- Iterate over the email array elements --}}
+                                                @foreach ($emailArray as $email)
+                                                    {{ $email }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td class="col4">
+                                                {{-- Iterate over the phone array elements --}}
+                                                @foreach ($phoneArray as $phone)
+                                                    {{ $phone }}<br>
+                                                @endforeach
+                                            </td>
+                                            @php
+                                                $state = \App\Models\State::find($supplier->state_id);
+                                                $city = \App\Models\City::find($supplier->city_id);
+                                            @endphp
+                                            <td class="col5">{{ $state ? $state->name : '' }}</td>
+                                            <td class="col6">{{ $city ? $city->name : '' }}</td>
+                                            <td class="col7">{{ $supplier->exchange_rate }}</td>
+                                            <td class="col8">{{ $supplier->owner_debt_in_dinar }}</td>
+                                            <td class="col9">{{ $supplier->owner_debt_in_dollar }}</td>
+                                            <td class="col10">{{ $supplier->created_by_user->name }}</td>
+                                            <td class="col11">{{ $supplier->updated_by_user->name ?? '' }}</td>
+                                            <td class="col12">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">خيارات <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                        user="menu" x-placement="bottom-end"
+                                                        style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                        <li>
 
-                                                    <a href="{{route('suppliers.edit', $supplier->id)}}" target="_blank" class="btn edit_supplier">
-                                                        <i class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
-                                                </li>
-                                                <li class="divider"></li>
-                                                    <li>
-                                                        <a data-href="{{route('suppliers.destroy', $supplier->id)}}"
-                                                            {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
-                                                            class="btn text-red delete_item"><i class="fa fa-trash"></i>
-                                                            @lang('lang.delete')</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                @endforeach
+                                                            <a href="{{ route('suppliers.edit', $supplier->id) }}"
+                                                                target="_blank" class="btn edit_supplier">
+                                                                <i class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                            <a data-href="{{ route('suppliers.destroy', $supplier->id) }}"
+                                                                {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}} class="btn text-red delete_item"><i
+                                                                    class="fa fa-trash"></i>
+                                                                @lang('lang.delete')</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -258,7 +269,7 @@
         </div>
         <!-- End row -->
     </div>
-        <!-- End Contentbar -->
+    <!-- End Contentbar -->
     </div>
     <!-- End Rightbar -->
     <!-- jQuery -->
@@ -270,14 +281,14 @@
             $(column).hide();
         });
 
-        $("input:checkbox").click(function(){
+        $("input:checkbox").click(function() {
             var column = "table ." + $(this).attr("name");
             $(column).toggle();
         });
         // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
         var expanded = false;
-        function showCheckboxes()
-        {
+
+        function showCheckboxes() {
             var checkboxes = document.getElementById("checkboxes");
             if (!expanded) {
                 checkboxes.style.display = "block";
@@ -287,6 +298,5 @@
                 expanded = false;
             }
         }
-
     </script>
 @endsection
