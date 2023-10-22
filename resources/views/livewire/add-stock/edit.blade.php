@@ -196,7 +196,6 @@
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
-                                        <hr />
                                     @endforeach
                                 </div>
                             </div>

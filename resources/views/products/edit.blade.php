@@ -100,15 +100,36 @@
                             'open_input' => true,
                         ])
                     </div>
-                    <div
-                        class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('sku', __('lang.product_code'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                        ]) !!}
-                        {!! Form::text('product_sku', $product->sku, [
-                            'class' => 'form-control initial-balance-input m-auto',
-                        ]) !!}
+                    <div class="col-md-3 d-flex">
+                        <div
+                            class="mb-2 p-0 col-md-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            {!! Form::label('product_symbol', __('lang.product_symbol'), [
+                                'class' => app()->isLocale('ar')
+                                    ? 'd-block text-end  ml-2 mr-0 mb-0 width-quarter'
+                                    : 'ml-2 mr-0 mb-0 width-quarter',
+                            ]) !!}
+                            {!! Form::text('product_symbol', isset($product->product_symbol) ? $product->product_symbol : null, [
+                                'class' => 'form-control initial-balance-input m-auto',
+                                'required',
+                            ]) !!}
+                            <br>
+                            @error('product_symbol')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        <div
+                            class="mb-2 p-0 col-md-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            {!! Form::label('sku', __('lang.product_code'), [
+                                'class' => app()->isLocale('ar')
+                                    ? 'd-block text-end  ml-2 mr-0 mb-0 width-quarter'
+                                    : 'ml-2 mr-0 mb-0 width-quarter',
+                            ]) !!}
+                            {!! Form::text('product_sku', $product->sku, [
+                                'class' => 'form-control initial-balance-input m-auto',
+                            ]) !!}
+                        </div>
                     </div>
+
                     <div class="col-md-12">
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <div
@@ -194,6 +215,22 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+
+                            {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                            <div
+                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                ]) !!}
+                                {!! Form::text(
+                                    'balance_return_request',
+                                    isset($product->balance_return_request) ? $product->balance_return_request : null,
+                                    [
+                                        'class' => 'form-control initial-balance-input m-auto',
+                                    ],
+                                ) !!}
+                            </div>
+
                         </div>
                     </div>
 
@@ -209,6 +246,9 @@
                                         <h6>
                                             {{ __('lang.product_tax') }}
                                         </h6>
+                                        <span class="tax-accordion-arrow">
+                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                        </span>
                                     </button>
                                 </h2>
                                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
@@ -274,6 +314,9 @@
                                         data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
                                         aria-controls="panelsStayOpen-collapseTwo">
                                         <h6>{{ __('lang.product_dimensions') }}</h6>
+                                        <span class="size-accordion-arrow">
+                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                        </span>
                                     </button>
                                 </h2>
 
@@ -518,9 +561,23 @@
     <script>
         $('.tax-button').on("click", function() {
             $('#panelsStayOpen-collapseOne').toggleClass('show')
+            $('.tax-accordion-arrow i').remove();
+            if ($('#panelsStayOpen-collapseOne').hasClass('show')) {
+                $('.tax-accordion-arrow').append(`<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
+            } else {
+                // $('.tax-accordion-arrow').children('1').remove();
+                $('.tax-accordion-arrow').append(`<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
+            }
         })
         $('.size-button').on("click", function() {
             $('#panelsStayOpen-collapseTwo').toggleClass('show')
+            $('.size-accordion-arrow i').remove();
+
+            if ($('#panelsStayOpen-collapseTwo').hasClass('show')) {
+                $('.size-accordion-arrow').append(`<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
+            } else {
+                $('.size-accordion-arrow').append(`<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
+            }
         })
     </script>
 @endpush

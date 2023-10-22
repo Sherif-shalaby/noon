@@ -221,6 +221,143 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-    </div>
-    <!-- End Contentbar -->
-@endsection
+    <div class="view_modal no-print">@endsection
+        @push('javascripts')
+            <script src="{{ asset('js/product/product.js') }}"></script>
+            <script>
+                $(document).ready(function() {
+                    $('#example').DataTable({
+                        dom: "<'row'<'col-md-3 'l><'col-md-5 text-center 'B><'col-md-4'f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-4'i><'col-sm-4'p>>",
+                        lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],
+                        pageLength: 10,
+                        buttons: ['copy', 'csv', 'excel', 'pdf',
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ":visible:not(.notexport)"
+                                }
+                            }
+                            // ,'colvis'
+                        ],
+                        "fnDrawCallback": function(row, data, start, end, display) {
+                            var api = this.api(),
+                                data;
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function(i) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '') * 1 :
+                                    typeof i === 'number' ?
+                                    i : 0;
+                            };
+                            // Total over all pages
+                            total = api
+                                .column(5)
+                                .data()
+                                .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+                            // Update status DIV
+                            $('#sum').html('<span>' + total + '<span/>');
+                        }
+                    });
+                });
+            </script>
+            <script>
+                $(document).on('click', '#delete_all', function() {
+                    var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
+                    var selected_delete_ids = [];
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        if (checkboxes[i].checked) {
+                            selected_delete_ids.push(checkboxes[i].value);
+                        }
+                    }
+                    console.log(selected_delete_ids)
+                    if (selected_delete_ids.length == 0) {
+                        alert(1)
+                        swal.fire({
+                            title: 'Warning',
+                            text: LANG.sorry_you_should_select_products_to_continue_delete,
+                            icon: 'warning',
+                        })
+                    } else {
+                        swal.fire({
+                            title: 'Are you sure?',
+                            text: LANG.all_transactions_related_to_this_products_will_be_deleted,
+                            icon: 'warning',
+                        }).then(willDelete => {
+                            if (willDelete) {
+                                var check_password = $(this).data('check_password');
+                                var href = $(this).data('href');
+                                var data = $(this).serialize();
+                                swal.fire({
+                                    title: "{!! __('lang.please_enter_your_password') !!}",
+                                    input: 'password',
+                                    inputAttributes: {
+                                        placeholder: "{!! __('lang.type_your_password') !!}",
+                                        autocomplete: 'off',
+                                        autofocus: true,
+                                    },
+                                }).then((result) => {
+                                    if (result) {
+                                        $.ajax({
+                                            url: check_password,
+                                            method: 'POST',
+                                            data: {
+                                                value: result
+                                            },
+                                            dataType: 'json',
+                                            success: (data) => {
+                                                if (data.success == true) {
+                                                    swal.fire(
+                                                        'Success',
+                                                        'Correct Password!',
+                                                        'success'
+                                                    );
+                                                    $.ajax({
+                                                        method: 'POST',
+                                                        url: "/product/multiDeleteRow",
+                                                        dataType: 'json',
+                                                        data: {
+                                                            "ids": selected_delete_ids
+                                                        },
+                                                        success: function(result) {
+                                                            if (result.success ==
+                                                                true) {
+                                                                swal.fire(
+                                                                    'Success',
+                                                                    result.msg,
+                                                                    'success'
+                                                                );
+                                                                setTimeout(() => {
+                                                                    location
+                                                                        .reload();
+                                                                }, 1500);
+                                                                location.reload();
+                                                            } else {
+                                                                swal.fire(
+                                                                    'Error',
+                                                                    result.msg,
+                                                                    'error'
+                                                                );
+                                                            }
+                                                        },
+                                                    });
+                                                } else {
+                                                    swal.fire(
+                                                        'Failed!',
+                                                        'Wrong Password!',
+                                                        'error'
+                                                    )
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            </script>
+        @endpush

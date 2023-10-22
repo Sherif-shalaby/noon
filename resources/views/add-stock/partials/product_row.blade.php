@@ -369,10 +369,19 @@
     <div style="width: 100%" class="accordion mt-1 p-3" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button">
+                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
+                    aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ $index }}">
                     <h6>
                         @lang('lang.discount')
                     </h6>
+                    <span class="accordion-arrow">
+                        @if (true)
+                            <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                        @else
+                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                        @endif
+                    </span>
                 </button>
                 {{-- <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
                     data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
@@ -383,8 +392,7 @@
                     </h6>
                 </button> --}}
             </h2>
-            <div id="panelsStayOpen-collapse{{ $index }}" {{-- class="accordion-collapse collapse @if ($product['show_prices']) show @endif show"> --}}
-                class="accordion-collapse collapse show">
+            <div id="panelsStayOpen-collapse{{ $index }}" class="accordion-collapse collapse show">
                 @foreach ($product['prices'] as $key => $price)
                     <div
                         class="accordion-body p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center">
@@ -529,3 +537,20 @@
 
     </div>
 </div>
+{{--
+<script>
+    // Select all elements with the class "my-class" and add a click event listener to each element
+    const elements = document.querySelectorAll(".accordion-button");
+    for (const element of elements) {
+        element.addEventListener("click", function() {
+            // Do something when the element is clicked
+            const dataIndex = element.getAttribute("data-index");
+            let accs = document.querySelectorAll(".accordion-collapse")
+            for (const acc of accs) {
+                if (acc.getAttribute('data-index') == dataIndex) {
+                    acc.classList.toggle('show')
+                }
+            }
+        });
+    }
+</script> --}}

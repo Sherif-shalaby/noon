@@ -130,6 +130,7 @@
     <div class="collapse navbar-collapse d-flex  justify-content-between" id="navbar-menu">
         <ul style="width: 100%"
             class="horizontal-menu d-flex justify-content-evenly @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
             {{-- ###################### Dashboard : نظرة عامة ###################### --}}
             {{-- @can('dashboard')  --}}
             @if (!empty($module_settings['dashboard']))

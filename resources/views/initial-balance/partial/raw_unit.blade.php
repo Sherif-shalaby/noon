@@ -372,16 +372,28 @@
                                 <select
                                     wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
                                     data-name='price_customer_types' data-index="{{ $index }}"
-                                    data-key="{{ $key }}" class="height-fit js-example-basic-multiple"
-                                    multiple='multiple' style="border-radius:6px !important; border: 2px solid gray"
-                                    placeholder="{{ __('lang.please_select') }}">
+                                    data-key="{{ $key }}" class="form-control js-example-basic-multiple"
+                                    multiple='multiple' placeholder="{{ __('lang.please_select') }}">
                                     @foreach ($customer_types as $type)
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select>
-                            </div>
 
+                                {{-- <select class="selectpicker" data-live-search="true"
+                                    wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
+                                    data-name='price_customer_types' data-index="{{ $index }}"
+                                    data-key="{{ $key }}" multiple='multiple'
+                                    style="border-radius:6px !important; border: 2px solid gray"
+                                    title="{{ __('lang.please_select') }}">
+                                    @foreach ($customer_types as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
+                                </select> --}}
+
+
+                            </div>
                         </div>
+
                     </div>
                 </div>
             @endforeach

@@ -47,4 +47,5 @@ return [
     'plan' => 'خطة المندوب',
     'add_plan' => 'اضافة خطة',
     'edit_plan' => 'تعديل الخطة',
+    'No data available in table' => 'لا يوجد بيانات في الجدول'
 ];

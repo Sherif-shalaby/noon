@@ -3,8 +3,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
-                    <div class="card-header d-flex align-items-center">
-                        <h4 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.add-stock')
+                    <div
+                        class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                        <h4>@lang('lang.add-stock')
                         </h4>
                     </div>
                     <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -186,7 +187,30 @@
                             </div>
                         </div>
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div style="width: 70%" class="mx-auto mb-3">
+                            <div class="col-md-4">
+                                <div class="search-box input-group">
+                                    <input type="search" name="search_by_product_symbol" id="search_by_product_symbol"
+                                        wire:model.debounce.500ms="search_by_product_symbol"
+                                        placeholder="@lang('lang.enter_product_symbol')" class="form-control" autocomplete="off">
+
+                                    @if (!empty($search_result) && !empty($search_by_product_symbol))
+                                        <ul id="ui-id-1" tabindex="0"
+                                            class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                            style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                            @foreach ($search_result as $product)
+                                                <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
+                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                        <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png"
+                                                            width="50px" height="50px">
+                                                        {{ $product->sku ?? '' }} - {{ $product->name }}
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-8 mb-3">
                                 <div class="search-box input-group">
                                     <button type="button" class="btn btn-secondary" id="search_button"><i
                                             class="fa fa-search"></i>
@@ -198,12 +222,13 @@
                                     {{--                                            data-href="{{ route('products.create') }}?quick_add=1" --}}
                                     {{--                                            data-container=".view_modal"><i class="fa fa-plus"></i> --}}
                                     {{--                                    </button> --}}
-                                    @if (!empty($search_result))
+                                    @if (!empty($search_result) && !empty($searchProduct))
                                         <ul id="ui-id-1" tabindex="0"
                                             class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
                                             style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                             @foreach ($search_result as $product)
-                                                <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
+                                                <li class="ui-menu-item"
+                                                    wire:click="add_product({{ $product->id }})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
                                                         <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png"
                                                             width="50px" height="50px">
@@ -223,7 +248,8 @@
                             <div class="col-md-2 border border-1 mr-3 p-0" style="height: 60vh;overflow: scroll">
                                 <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                     الأقسام الرئيسيه
-                                    <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                                    <div for="" class="d-flex align-items-center text-nowrap gap-1"
+                                        wire:ignore>
                                         {{-- الاقسام --}}
                                         <select class="form-control select2" data-name="department_id"
                                             wire:model="department_id">
@@ -236,8 +262,8 @@
                                 </div>
                                 <div class="p-2">
                                     @foreach ($products as $product)
-                                        <div class="order-btn" wire:click='add_product({{ $product->id }})'
-                                            style="cursor: pointer">
+                                        <div class="order-btn py-2 border-bottom"
+                                            wire:click='add_product({{ $product->id }})' style="cursor: pointer">
                                             {{--                                            @if ($product->image) --}}
                                             {{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}" --}}
                                             {{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" > --}}
@@ -248,7 +274,6 @@
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
-                                        <hr />
                                     @endforeach
                                 </div>
                             </div>
@@ -259,34 +284,42 @@
                                     @foreach ($items as $index => $product)
                                         @include('add-stock.partials.product_row')
                                     @endforeach
-                                    <tr>
-                                        <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
-                                        {{--                                            @if ($showColumn) --}}
-                                        <td> {{ $this->sum_dollar_sub_total() }} </td>
-                                        <td></td>
-                                        <td></td>
-                                        {{--                                            @endif --}}
-                                        <td> {{ $this->sum_sub_total() }} </td>
-                                        <td></td>
-                                        <td style="">
-                                            {{ $this->sum_size() ?? 0 }}
-                                        </td>
-                                        <td></td>
-                                        <td style=";">
-                                            {{ $this->sum_weight() ?? 0 }}
-                                        </td>
-                                        <td></td>
-                                        {{--                                            @if ($showColumn) --}}
-                                        <td>
-                                            {{ $this->sum_dollar_total_cost() ?? 0 }}
-                                        </td>
-                                        <td></td>
-                                        {{--                                            @endif --}}
-                                        <td style=";">
-                                            {{ $this->sum_total_cost() ?? 0 }}
-                                        </td>
 
-                                    </tr>
+                                    <div class="d-flex justify-content-between align-items-center">
+
+                                        <div>
+                                            <span>$@lang('lang.total')</span>
+                                            <span> {{ $this->sum_dollar_sub_total() }} </span>
+                                        </div>
+
+                                        <div>
+
+                                            <span>@lang('lang.total')</span>
+                                            <td> {{ $this->sum_sub_total() }} </td>
+                                        </div>
+
+                                        <div>
+                                            <span>$@lang('lang.total_size')</span>
+                                            <span>{{ $this->sum_size() ?? 0 }}</span>
+                                        </div>
+
+                                        <div>
+                                            <span>$@lang('lang.total_weight')</span>
+                                            <span>{{ $this->sum_weight() ?? 0 }}</span>
+                                        </div>
+
+                                        <div>
+                                            <span>$@lang('lang.total_cost')</span>
+                                            <span>{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
+                                        </div>
+
+                                        <div>
+                                            <span>@lang('lang.total_cost')</span>
+                                            <span>{{ $this->sum_total_cost() ?? 0 }}</span>
+                                        </div>
+                                    </div>
+
+
                                 @endif
                             </div>
                         </div>
@@ -616,7 +649,7 @@
                 contentType: "html",
                 success: function(result) {
                     if (result.success) {
-                        Swal.fire("Success", response.msg, "success");
+                        Swal.fire("Success", response.msg, "success", 1000);
                     }
                 },
             });

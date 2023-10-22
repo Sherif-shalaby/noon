@@ -2,8 +2,10 @@
 <section class="">
     <div class="col-md-22">
         <div class="card mt-3">
-            <div class="card-header d-flex align-items-center">
-                <h3 class="print-title">@lang('lang.stock')</h3>
+            <div
+                class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                <h3 class="print-title ">
+                    @lang('lang.stock')</h3>
             </div>
             <div class="card-body">
                 <div class="table-responsive  @if (app()->isLocale('ar')) dir-rtl @endif">
