@@ -53,7 +53,7 @@
                         {{-- +++++++++++++++++ طريقة الدفع +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                {!! Form::label('payment_type', __('lang.payment_type') . ':*') !!}
+                                {!! Form::label('payment_type', __('lang.wage_payment_type') . ':*') !!}
                                 {!! Form::select('payment_type', $payment_types, null, [
                                     'class' => 'form-control select2',
                                     'required',
@@ -136,23 +136,34 @@
                                 {!! Form::text('payment_date', @format_date(date('Y-m-d')), ['class' => 'form-control datepicker', 'placeholder' => __('lang.payment_date')]) !!}
                             </div>
                         </div>
+                        {{-- ++++++++++++++++++++ source_type +++++++++++++++++  --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                                {!! Form::select('source_id', $users, null, ['class' => 'select2 form-control', 'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
+                                {!! Form::label('source_type', __('lang.wage_source_type'), []) !!} <br>
+                                {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos') , 'safe' => __('lang.safe')], null,
+                                                                ['class' => 'select2 form-control','placeholder' => __('lang.please_select')]) !!}
                             </div>
                         </div>
+                        {{-- ++++++++++++++++ اسم الموظف ++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], null, ['class' => 'select2 form-control','placeholder' => __('lang.please_select')]) !!}
+                                {!! Form::label('source_of_payment', __('lang.wage_source_of_payment'), []) !!} <br>
+                                {!! Form::select('source_id',[], null, ['class' => 'select2 form-control', 'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
                             </div>
                         </div>
+                        {{-- ++++++++++++++++++ upload_files ++++++++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="upload_files">@lang('lang.upload_files')</label>
+                                {!! Form::file('upload_files[]', ['class' => 'form-control', 'multiple']) !!}
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++++ notes ++++++++++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('notes', __('lang.notes')) !!}
                                 {!! Form::textarea('notes', null, [
-                                    'class' => 'form-control',
+                                    'class' => 'form-control','rows' => '3',
                                 ]) !!}
                                 @error('notes')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -229,6 +240,20 @@
                     $('#net_amount').val(other_payment);
                 }
             })
+            // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
+            $('#source_type').change(function() {
+            if ($(this).val() !== '') {
+                $.ajax({
+                    method: 'get',
+                    url: '/wage/get-source-by-type-dropdown/' + $(this).val(),
+                    data: {},
+                    success: function(result) {
+                        $("#source_id").empty().append(result);
+                        $("#source_id").selectpicker("refresh");
+                    },
+                });
+            }
+        });
         });
     </script>
 

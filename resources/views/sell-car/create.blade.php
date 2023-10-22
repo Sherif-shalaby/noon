@@ -51,24 +51,30 @@
                                 {!! Form::text('car_size',null, ['class' => 'form-control' , 'placeholder' => __('lang.car_size')]);  !!}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- ++++++ car_license ++++++ --}}
+                        {{-- <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('car_license', __('lang.car_license')) !!}
                                 {!! Form::text('car_license',null, ['class' => 'form-control' , 'placeholder' => __('lang.car_license')]);  !!}
                             </div>
-                        </div>
+                        </div> --}}
+                        {{-- ++++++ car_model ++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('car_model', __('lang.car_model')) !!}
                                 {!! Form::text('car_model',null, ['class' => 'form-control' , 'placeholder' => __('lang.car_model')]);  !!}
                             </div>
                         </div>
+                        {{-- ++++++ car_license_end_date ++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('car_license_end_date', __('lang.car_license_end_date')) !!}
                                 {!! Form::date('car_license_end_date',null, ['class' => 'form-control' , 'placeholder' => __('lang.car_license_end_date')]);  !!}
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        {{-- ++++++ التنبيه قبل موعد انتهاء ترخيص العربة ++++++ --}}
                         <div class="col-md-4 pt-3">
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
@@ -77,10 +83,15 @@
                                 </div>
                             </div>
                         </div>
-
+                         {{-- ++++++ days_number_notify ++++++ --}}
+                         <div class="col-md-4 mt-2">
+                            <div class="form-group hidden" id="days_number_notify">
+                                {!! Form::number('days_number_notify', null, ['class' => 'form-control', 'placeholder' =>  __('lang.days_number_notify') , 'min' => '0']) !!}
+                            </div>
+                        </div>
                     </div>
                 </div>
-
+                {{-- ++++++++ save button ++++++++ --}}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
                     <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
@@ -89,3 +100,16 @@
         </div>
     </div>
 </div>
+<script>
+    // jQuery code to toggle the input field based on checkbox state
+    $(document).ready(function() {
+        // when check "التنبيه قبل موعد انتهاء ترخيص العربة" checkbox Then appear "days_number_notify" inputField
+        $('#customSwitch1').change(function() {
+            if($(this).is(':checked')) {
+                $('#days_number_notify').show(); // Show the input field
+            } else {
+                $('#days_number_notify').hide(); // Hide the input field
+            }
+        });
+    });
+</script>

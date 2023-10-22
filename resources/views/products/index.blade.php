@@ -178,7 +178,7 @@
 
                                     <td colspan="5" style="text-align: right">@lang('lang.total')</td>
                                     <td id="sum"></td>
-                                    <td colspan="12"></tdcol>
+                                    <td colspan="12"></td>
                                 </tfoot>
                             </table>
                             </div>

@@ -37,6 +37,7 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
@@ -75,6 +76,10 @@ Route::group(['middleware' => ['auth']], function () {
     //employees
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
     Route::get('add_point', [App\Http\Controllers\EmployeeController::class,'addPoints'])->name('employees.add_points');
+    // +++++++++++++++++++++++ filters of "employees products" +++++++++++++++++++++
+    Route::get('/employees/filter/{id}', [App\Http\Controllers\EmployeeController::class,'filterProducts']);
+    // store() method
+    // Route::post('/products', 'ProductController@store');
 
     // Wages
     Route::resource('wages',WageController::class);
@@ -82,6 +87,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('wages/update-other-payment/', [WageController::class,'update_other_payment'])->name('update_other_payment');
     Route::get('settings/modules', [SettingController::class, 'getModuleSettings'])->name('getModules');
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
+    // Get "مصدر الاموال" depending on "طريقة الدفع"
+    Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
+
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
     // // general_setting : fetch "state" of selected "country" selectbox
@@ -96,6 +104,8 @@ Route::group(['middleware' => ['auth']], function () {
     //الاقسام
     Route::get('categories/get-dropdown/{category_id}', [CategoryController::class,'getDropdown']);
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
+    // employees subcategory
+    Route::get('employees/get-subcategories/{id}', [EmployeeController::class, 'getSubcategories']);
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
     Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');

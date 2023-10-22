@@ -8,9 +8,9 @@
         'placeholder' => __('lang.important_date'), 'required']) !!}
     </td>
     <td>
-        {!! Form::text('important_dates['.$index.'][date]', !empty($important_date) ?
+        {!! Form::date('important_dates['.$index.'][date]', !empty($important_date) ?
         @format_date($important_date->date) : null,
-        ['class' => 'form-control datepicker',
+        ['class' => 'form-control',
         'placeholder' => __('lang.date'), 'required']) !!}
     </td>
     <td>

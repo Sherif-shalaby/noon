@@ -32,60 +32,11 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            {{-- ////////////////////// employee's products ////////////////////// --}}
-                            <div class="col-md-12 text-center">
-                                <h3>@lang('lang.employee_products')</h3>
-                            </div>
-                            {{-- ======== Filters ======== --}}
-                            <div class="col-lg-12">
-                                <div class="container-fluid">
-                                    @include('employees.partials.filters')
-                                </div>
-                            </div>
                             <div class="col-sm-12">
-                                <form class="form-group" id="productForm" action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
+                                <form class="form-group" id="productForm"
+                                      action="{{ route('employees.store') }}" method="POST"
+                                      enctype="multipart/form-data">
                                     @csrf
-                                    {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
-                                    <div class="row mt-4 m-auto">
-                                        {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
-                                        <table id="productTable" class="table table-striped table-bordered m-auto">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    {{-- "select_all" checkbox --}}
-                                                    <th> <input type="checkbox" id="select_all_ids"/> </th>
-                                                    <th>@lang('lang.product_name')</th>
-                                                    <th>@lang('lang.sku')</th>
-                                                    <th>@lang('lang.category')</th>
-                                                    <th>@lang('lang.subcategories_name')</th>
-                                                    <th>@lang('lang.brand')</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($employee_products as $index=>$product)
-                                                    <tr>
-                                                        <td>{{ $index+1 }}</td>
-                                                        {{-- "select" checkbox --}}
-                                                        <td>
-                                                            {{-- get "all checked products" --}}
-                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
-                                                        </td>
-                                                        <td>{{$product->name}}</td>
-                                                        <td>{{$product->sku}}</td>
-                                                        <td>{{$product->category->name??''}}</td>
-                                                        <td>
-                                                            {{$product->subCategory1->name??''}} <br>
-                                                            {{$product->subCategory2->name??''}} <br>
-                                                            {{$product->subCategory3->name??''}}
-                                                        </td>
-                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <br/>
-                                    {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <label for="fname">@lang('lang.name'):*</label>
@@ -262,7 +213,54 @@
                                             @include('employees.partials.permission')
                                         </div>
                                     </div>
-
+                                    {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
+                                    <div class="row mt-4 m-auto">
+                                        <div class="col-md-12 text-center">
+                                            <h3>@lang('lang.employee_products')</h3>
+                                        </div>
+                                        {{-- ======== Filters ======== --}}
+                                        {{-- <div class="col-lg-12">
+                                            <div class="container-fluid">
+                                                @include('employees.partials.filters')
+                                            </div>
+                                        </div> --}}
+                                        {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
+                                        <table id="productTable" class="table table-striped table-bordered m-auto">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    {{-- "select_all" checkbox --}}
+                                                    <th> <input type="checkbox" id="select_all_ids"/> </th>
+                                                    <th>@lang('lang.product_name')</th>
+                                                    <th>@lang('lang.sku')</th>
+                                                    <th>@lang('lang.category')</th>
+                                                    <th>@lang('lang.subcategories_name')</th>
+                                                    <th>@lang('lang.brand')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($employee_products as $index=>$product)
+                                                    <tr>
+                                                        <td>{{ $index+1 }}</td>
+                                                        {{-- "select" checkbox --}}
+                                                        <td>
+                                                            {{-- get "all checked products" --}}
+                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
+                                                        </td>
+                                                        <td>{{$product->name}}</td>
+                                                        <td>{{$product->sku}}</td>
+                                                        <td>{{$product->category->name??''}}</td>
+                                                        <td>
+                                                            {{$product->subCategory1->name??''}} <br>
+                                                            {{$product->subCategory2->name??''}} <br>
+                                                            {{$product->subCategory3->name??''}}
+                                                        </td>
+                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     {{-- +++++++++++++ save Button +++++++++++ --}}
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
