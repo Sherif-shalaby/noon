@@ -44,7 +44,7 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date;
+        $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price;
 
     protected $rules = [
     'store_id' => 'required',
@@ -111,6 +111,7 @@ class Create extends Component
 
     public function render(): Factory|View|Application
     {
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
@@ -124,6 +125,18 @@ class Create extends Component
         $departments = Category::get();
         $customer_types = CustomerType::latest()->get();
         $search_result = '';
+        if (!empty($this->search_by_product_symbol)){
+            $search_result = Product::when($this->search_by_product_symbol,function ($query){
+                return $query->where('product_symbol','like','%'.$this->search_by_product_symbol.'%');
+            });
+            $search_result = $search_result->paginate();
+            if(count($search_result) === 1){
+                $this->add_product($search_result->first()->id);
+                $search_result = '';
+                $this->search_by_product_symbol = '';
+            }
+
+        }
         if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
                 return $query->where('name','like','%'.$this->searchProduct.'%')
@@ -413,13 +426,22 @@ class Create extends Component
                             'price_type' => $price['price_type'],
                             'price_category' => $price['price_category'],
                             'price' => $price['price'],
+                            'dinar_price' => $price['dinar_price'],
                             'quantity' => $price['discount_quantity'],
                             'bonus_quantity' => $price['bonus_quantity'],
+                            'price_customers'=>!empty($price['price_after_desc']) ? $price['price_after_desc'] : null,
+                            'dinar_price_customers'=>!empty($price['dinar_price_after_desc']) ? $price['dinar_price_after_desc'] : null,
                             'price_customer_types' => $price['price_customer_types'],
                             'created_by' => Auth::user()->id,
+                            'stock_line_id ' => $stock_line->id,
+                            'dinar_total_price' => !empty($item['selling_price']) ? $price['total_price'] : null,
+                            'total_price' => !empty($item['dollar_selling_price']) ? $price['total_price'] : null,
+                            'dinar_piece_price' => !empty($item['selling_price']) ? $price['piece_price'] : null,
+                            'piece_price' => !empty($item['dollar_selling_price']) ? $price['piece_price'] : null,
                             'stock_line_id' => $stock_line->id,
                         ];
                         ProductPrice::create($price_data);
+
                     }
                 }
             }
@@ -500,10 +522,16 @@ class Create extends Component
                     'price_type' => null,
                     'price_category' => null,
                     'price' => null,
+                    'dinar_price' => null,
                     'discount_quantity' => null,
                     'bonus_quantity' => null,
                     'price_customer_types' => null,
                     'price_after_desc' => null,
+                    'dinar_price_after_desc' => null,
+                    'total_price' => null,
+                    'dinar_total_price' =>null,
+                    'piece_price' => null,
+                    'dinar_piece_price' => null,
                 ],
             ],
         ];
@@ -514,10 +542,16 @@ class Create extends Component
               'price_type' => null,
               'price_category' => null,
               'price' => null,
+              'dinar_price' => null,
               'discount_quantity' => null,
               'bonus_quantity' => null,
               'price_customer_types' => null,
               'price_after_desc' => null,
+              'dinar_price_after_desc' => null,
+              'dinar_total_price' => null,
+              'total_price' => null,
+              'piece_price' => null,
+              'dinar_piece_price' => null,
           ];
         array_unshift($this->items[$index]['prices'], $new_price);
     }
@@ -529,17 +563,31 @@ class Create extends Component
 
     public function changePrice($index,$key)
     {
-        if(!empty($this->items[$index]['prices'][$key]['price'])){
-            if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price']))  {
-                $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] :
-                    $this->items[$index]['dollar_selling_price'];
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
+        if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price'])){
+            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] : $this->items[$index]['dollar_selling_price'];
+            $total_quantity = (float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'];
+            if(!empty($this->items[$index]['prices'][$key]['price'])){
+                if (empty($this->discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
+                    $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
+                    $sell_price = $total_sell_price / $total_quantity ;
+                }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = $sell_price - $this->items[$index]['prices'][$key]['price'];
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'];
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - $percent);
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
                 }
+            }
+            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
+            if(empty($this->discount_from_original_price)){
+                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($total_quantity) ? $total_quantity : 1);
+                $this->items[$index]['prices'][$key]['piece_price'] = $this->items[$index]['prices'][$key]['price_after_desc'];
+            }
+            else{
+                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1);
+                $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
             }
         }
     }

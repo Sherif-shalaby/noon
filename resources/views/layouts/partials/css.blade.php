@@ -2,9 +2,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 {{-- <link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">  --}}
 <!-- Start css -->
-<!-- Switchery css -->
-{{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
-<link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
+<link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css">
 <!-- Select2 css -->
 <link href="{{asset('plugins/select2/select2.min.css')}}" rel="stylesheet" type="text/css">
 <!-- Tagsinput css -->
@@ -39,6 +37,8 @@
 <script type="text/javascript" src="{{asset('js/toastr/toastr.min.js')}}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <link rel="stylesheet" href="{{asset('js/jquery-ui.css')}}">
+<!-- Switchery css -->
+<link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
 <style>
     .error-help-block{
         color:red;

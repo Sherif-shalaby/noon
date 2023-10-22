@@ -545,5 +545,18 @@ return array(
     'evening_shift' => 'شيفت مسائي' ,
     'employee_products' => 'المنتجات المسئول عنها الموظف',
     'days_number_notify' => 'عدد الايام قبل التنبيه' ,
+    'required'=>'هذا الحقل مطلوب',
+    'product_symbol'=>'رمز المادة',
+    'balance_return_request'=>'رصيد اعادة الطلب',
+    'total_price'=>'السعر الكلى',
+    'piece_price'=>'سعر القطعة',
+    'delivery' =>'المناديب',
+    'plans'=>'خطط المناديب',
+    'plan'=>'خطة المندوب',
+    'add_plan'=>'اضافة خطة',
+    'edit_plan'=>'تعديل الخطة',
+    'enter_product_symbol' => 'البحث برمز المنتج',
+    'discount_from_original_price' => 'خصم من السعر الأصلي',
+    'price_after_discounting_quantity' => 'السعر بعد خصم الكميه',
 );
 

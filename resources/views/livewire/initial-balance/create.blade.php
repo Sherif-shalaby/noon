@@ -84,14 +84,17 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5']) !!}
-                                {!! Form::text('sku', null, [
+                            <div class="col-md-1">
+                                {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5']) !!}
+                                {!! Form::text('product_symbol', null, [
                                     'class' => 'form-control',
-                                    'wire:model' => 'item.0.sku',
+                                    'wire:model' => 'item.0.product_symbol',
                                 ]) !!}
-                            </div> --}}
-                            <div class="col-md-3"> 
+                                @error('item.0.product_symbol')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2"> 
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                 <input type="text" class="form-control" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
@@ -206,16 +209,14 @@
                                 </div>
                             </div>
 
-                            {{--                            <div class="col-md-3"> --}}
-                            {{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!} --}}
-                            {{--                                {!! Form::select('status', --}}
-                            {{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')] --}}
-                            {{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required', --}}
-                            {{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!} --}}
-                            {{--                                @error('item.0.status') --}}
-                            {{--                                <span class="error text-danger">{{ $message }}</span> --}}
-                            {{--                                @enderror --}}
-                            {{--                            </div> --}}
+                            {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                            <div class="col-md-3">
+                                {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
+                                    'wire:model' => 'item.0.balance_return_request',
+                                    'class' => 'form-control',
+                                ]) !!}
+                            </div> 
                         </div>
                         {{-- sizes --}}
                         <div class="row">

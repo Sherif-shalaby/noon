@@ -526,6 +526,17 @@ return [
     'evening_shift' => 'Evening Shift' ,
     'employee_products' => 'Products For Which The Employee is Responsible',
     'days_number_notify' => 'days number notify' ,
-];
+    'required'=>'Required',
+    'product_symbol'=>'Product Symbol',
+    'balance_return_request'=>'Balance Return Request',
+    'total_price'=>'Total Price',
+    'piece_price'=>'Piece Price',
+    'delivery' =>'Delivery',
+    'plans'=>'Plans',
+    'plan'=>'Plan',
+    'add_plan'=>'Add Plan',
+    'edit_plan'=>'Edit Plan',
+    'enter_product_symbol' => 'Enter Product Symbol',
+    'price_after_discounting_quantity' => 'Price after discounting quantity',];
 
 
