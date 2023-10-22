@@ -130,7 +130,7 @@ class Create extends Component
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
                 'store_pos_id' => $this->store_pos_id,
-                'exchange_rate' => 0,
+                'exchange_rate' => System::getProperty('dollar_exchange')??0,
                 'type' => 'sell',
 //                'transaction_currency' => $this->transaction_currency,
                 'final_total' => $this->num_uf($this->final_total),
@@ -166,6 +166,7 @@ class Create extends Component
 
             // Add Sell line
             foreach ($this->items as $item) {
+                // dd($item);
                 if ($item['discount_type'] == 0) {
                     $item['discount_type'] = null;
                 }
@@ -173,7 +174,7 @@ class Create extends Component
                 $sell_line = new SellLine();
                 $sell_line->transaction_id = $transaction->id;
                 $sell_line->product_id = $item['product']['id'];
-                $sell_line->variation_id = $item['variation']['id'];
+                $sell_line->variation_id = $item['unit_id'];
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
                 $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
                 $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
@@ -245,7 +246,7 @@ class Create extends Component
                 // Emit a browser event to trigger the invoice printing
                 $this->emit('printInvoice', $html_content);
             }
-            dd($this->items);
+            // dd($this->items);
 
             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
