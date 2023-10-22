@@ -142,6 +142,11 @@ class Create extends Component
                 if ($data['var1'] == "unit_id") {
                     $this->changeUnit($data['var3']);
                 }
+                if ($data['var1'] == "basic_unit_id") {
+                // dd($data['var1']);
+                  
+                    $this->changeBaseUnit($data['var3']);
+                }
             } else if ($data['var1'] == "price_customer_types" && $data['var3'] !== '') {
                 $row = $this->rows[$data['var3']]['prices'][$data['var4']]['price_customer_types'] = $data['var2'];
             } else {
@@ -306,6 +311,37 @@ class Create extends Component
                 $this->rows[$index]['dollar_purchase_price'] = ((float)$this->rows[$unit_index]['dollar_purchase_price'] / (float)$this->rows[$unit_index]['equal']);
                 if ($this->rows[$index]['fill_type'] == "fixed") {
                     $this->rows[$index]['fill_quantity'] = (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+                } else {
+                    $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
+                }
+                $this->changePurchasePrice($index);
+            }
+        }
+    }
+    public function changeBaseUnit($index)
+    {
+        // dd($index);
+        $unit = $this->rows[$index]['unit_id'];
+        $base_unit = $this->rows[$index]['basic_unit_id'];
+        $unit_index = '';
+        foreach ($this->rows as $i => $item) {
+            if($i !=$index){
+                if ($item['basic_unit_id'] === $base_unit) {
+                    $unit_index = $i;
+                    break;
+                }
+            }
+        }
+        // dd($unit_index);
+        if ($unit_index !== '') {
+            // $this->rows[$index]['equal'] = 1;
+            $this->rows[$index]['quantity'] = 0;
+            $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
+            if ((float)$this->rows[$unit_index]['equal'] != 0) {
+                $this->rows[$index]['dollar_purchase_price'] = ((float)$this->rows[$unit_index]['dollar_purchase_price'] / (float)$this->rows[$unit_index]['equal']) * (float)$this->rows[$index]['equal'];
+                // dd($this->rows[$unit_index]);
+                if ($this->rows[$index]['fill_type'] == "fixed") {
+                    $this->rows[$index]['fill_quantity'] = ((float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'])*(float)$this->rows[$index]['equal'];
                 } else {
                     $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
                 }

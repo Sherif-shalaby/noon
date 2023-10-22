@@ -67,7 +67,7 @@
                                             <th >@lang('lang.quantity')</th>
                                             <th >@lang('lang.unit')</th>
                                             {{-- <th >@lang('lang.fill')</th> --}}
-                                            <th >@lang('lang.total_quantity')</th>
+                                            {{-- <th >@lang('lang.total_quantity')</th> --}}
                                             <th >@lang('lang.price')</th>
 {{--                                            @if(!empty($showColumn))--}}
                                                 <th >@lang('lang.price') $ </th>
@@ -86,7 +86,7 @@
                                           $total = 0;
                                         @endphp
                                         @foreach ($items as $key => $item)
-                                        {{-- {{ dd($item)  }} --}}
+                                        {{ $item['price'] }}
                                             <tr>
                                                 <td >
                                                     {{$item['product']['name']}}
@@ -110,23 +110,25 @@
                                                 </td>
 
                                                 <td>
-                                                    <select class="select discount_category " style="height:30% !important" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
+                                                    <select class="select" style="height:30% !important" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
                                                         <option selected value="0.00">select</option>
                                                         @if(!empty($item['variation']))
-                                                                @foreach($item['variation'] as $item)
-                                                                    <option value="{{$item['id']}}" >{{$item->unit->name}}</option>
-                                                                @endforeach
+                                                            @foreach($item['variation'] as $item)
+                                                                <option value="{{$item['id']}}" >
+                                                                    {{$item['unit']['name']??''}}
+                                                                </option>
+                                                            @endforeach
                                                         @endif
                                                     </select>
                                                 </td>
                                                 {{-- <td>{{$item['base_unit_multiplier'] ?? 1}}</td> --}}
-                                                <td>{{$item['total_quantity'] ?? 1}}</td>
+                                                {{-- <td>{{$item['total_quantity'] ?? 1}}</td> --}}
                                                 <td >
-                                                    {{$item['price']}}
+                                                    {{$item['price']??''}}
                                                 </td>
 {{--                                                @if(!empty($showColumn))--}}
                                                     <td >
-                                                        {{ number_format($item['dollar_price'] , 2)}}
+                                                        {{ number_format($item['dollar_price']??0 , 2)}}
                                                     </td>
                                                     <td>
                                                         <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
@@ -157,10 +159,10 @@
                                                     </select>
                                                 </td>
                                                 <td >
-                                                    {{ $item['sub_total'] }}
+                                                    {{ $item['sub_total']??0 }}
                                                 </td>
                                                 <td>
-                                                    {{$item['dollar_sub_total']}}
+                                                    {{$item['dollar_sub_total']??0}}
                                                 </td>
 {{--                                                <td>--}}
 {{--                                                    <select class="select" style="height:30% !important" wire:model="items.{{ $key }}.store" >--}}
@@ -171,7 +173,7 @@
 {{--                                                    </select>--}}
 {{--                                                </td>--}}
                                                 <td >
-                                                    <span class="current_stock"> {{$item['quantity_available']}} </span>
+                                                    <span class="current_stock"> {{$item['quantity_available']??0}} </span>
                                                 </td>
                                                 <td  class="text-center">
                                                     <div class="btn btn-sm btn-success py-0 px-1 my-1"
