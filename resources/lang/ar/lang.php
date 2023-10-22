@@ -551,6 +551,7 @@ return array(
     'enter_product_symbol' => 'البحث برمز المنتج',
     'discount_from_original_price' => 'خصم من السعر الأصلي',
     'price_after_discounting_quantity' => 'السعر بعد خصم الكميه',
+    'extra'=>'اضافى',
 
 
 );
