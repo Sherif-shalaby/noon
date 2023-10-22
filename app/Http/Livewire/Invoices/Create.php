@@ -104,7 +104,7 @@ class Create extends Component
         }
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
-
+        $this->client_id=1;
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.invoices.create', compact(
             'departments',

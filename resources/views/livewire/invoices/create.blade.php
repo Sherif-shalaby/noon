@@ -29,7 +29,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
+                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
                     @error('payment_status')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
@@ -39,10 +39,10 @@
             <div class="col-md-2" wire:ignore>
                 <label for="" class="text-primary">العملاء</label>
                 <div class="d-flex justify-content-center">
-                    <select class="form-control client select2" wire:model="client_id" id="Client_Select" wire:change="refreshSelect">
-                        <option  value="0 " readonly selected >اختر </option>
+                    <select class="form-control client select2" wire:model="client_id" id="Client_Select">
+                        <option  value="0 " readonly >اختر </option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                            <option value="{{ $customer->id }}" {{ $client_id==$customer->id?'selected':'' }}>{{ $customer->name }}</option>
                         @endforeach
                     </select>
                     <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
