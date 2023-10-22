@@ -462,6 +462,10 @@ class Create extends Component
             $this->searchProduct = '';
 
         }
+        if(!empty($this->search_by_product_symbol)){
+            $this->search_by_product_symbol = '';
+
+        }
         $product = Product::find($id);
         $variations = $product->variations;
         if($add_via == 'unit'){

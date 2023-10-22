@@ -124,7 +124,7 @@
                                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
                                                         <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png" width="50px" height="50px">
-                                                        {{$product->sku ?? ''}} - {{$product->name}}
+                                                        {{$product->product_symbol ?? ''}} - {{$product->name}}
                                                     </div>
                                                 </li>
                                             @endforeach
