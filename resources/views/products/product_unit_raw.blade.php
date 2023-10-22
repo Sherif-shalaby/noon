@@ -1,8 +1,9 @@
 <div class="row unit-row">
-    <input type="hidden" name="variation_ids[{{$index}}]" value="{{$variation->id ?? null}}">
+    <input type="hidden" name="variation_ids[{{$index ?? 0 }}]" value="{{$variation->id ?? null}}">
+    @if(!empty($index))
     <div class="col-md-2 pl-5">
         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-        {!! Form::text('sku['.$index.']',null, [
+        {!! Form::text('sku['.$index.']',$variation->sku ?? null, [
             'class' => 'form-control'
         ]) !!}
          <br>
@@ -45,4 +46,5 @@
             <i class="fa fa-close"></i>
         </button>
     </div>
+    @endif
 </div>
