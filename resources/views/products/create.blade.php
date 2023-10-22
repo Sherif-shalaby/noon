@@ -390,9 +390,8 @@
                                                     border-radius: 16px;
                                                     color: #373737;
                                                     box-shadow: 0 8px 6px -5px #bbb;
-                                                    width: 60%;
+                                                    width: 25%;
                                                     height: 30px;
-                                                    margin: auto;
                                                     flex-wrap: nowrap;">
                                             <select name="method" id="method" class='form-control select2'
                                                 data-live-search='true' placeholder="{{ __('lang.please_select') }}">
@@ -417,8 +416,7 @@
                                                         border-radius: 16px;
                                                         color: #373737;
                                                         box-shadow: 0 8px 6px -5px #bbb;
-                                                        width: 40%;
-                                                        margin: auto;
+                                                        width: 25%;
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
                                             <select name="product_tax_id" id="product_tax" class="form-control select2"

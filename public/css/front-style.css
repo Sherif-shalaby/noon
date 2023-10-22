@@ -350,6 +350,7 @@ select.form-control {
 
 .select2-results__option {
     position: relative;
+    width: 150px;
 }
 
 .select2-results__option[aria-selected="true"]::before {
@@ -363,5 +364,5 @@ select.form-control {
 }
 
 .select2-search__field {
-    width: 97px !important;
+    width: 140px !important;
 }

@@ -329,8 +329,7 @@
                                                                 border-radius: 16px;
                                                                 color: #373737;
                                                                 box-shadow: 0 8px 6px -5px #bbb;
-                                                                width: 60%;
-                                                                margin: auto;
+                                                                width: 25%;
                                                                 flex-wrap: nowrap;">
                                                         {!! Form::select(
                                                             'method',
@@ -357,9 +356,8 @@
                                                                 border-radius: 16px;
                                                                 color: #373737;
                                                                 box-shadow: 0 8px 6px -5px #bbb;
-                                                                width: 60%;
+                                                                width: 25%;
                                                                 height: 30px;
-                                                                margin: auto;
                                                                 flex-wrap: nowrap;">
                                                         <select id="product_tax" class="form-control select2"
                                                             wire:model="item.0.product_tax_id"
