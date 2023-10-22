@@ -239,7 +239,6 @@ class Create extends Component
         }
 
         $this->validate();
-        dd($this->items[0]['dollar_purchase_price']);
 
         try {
 
