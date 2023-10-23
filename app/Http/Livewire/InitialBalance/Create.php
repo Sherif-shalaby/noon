@@ -775,8 +775,8 @@ class Create extends Component
                     $this->rows[$index]['selling_price'] =  number_format(($this->rows[$index]['purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
                 } else {
                     $percent = ((float)$this->rows[$index]['purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
-                    $this->rows[$index]['dollar_selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) ,3) ;
                     $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['purchase_price'] + $percent),3) ;
+                    $this->rows[$index]['dollar_selling_price'] =  number_format(((float)$this->rows[$index]['purchase_price'] + $percent) / $this->exchange_rate  ,3) ;
                 }
 
             }
@@ -868,12 +868,12 @@ class Create extends Component
     {
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
-            $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :0;
-            $dollar_sell_price = !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] :0;
+            $sell_price = $this->num_uf(!empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :0);
+            $dollar_sell_price = $this->num_uf(!empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] :0);
             $total_quantity = (float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'];
             if(empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
-                $total_sell_price = $sell_price * $this->rows[$index]['prices'][$key]['discount_quantity'];
-                $total_dollar_sell_price = $dollar_sell_price * $this->rows[$index]['prices'][$key]['discount_quantity'];
+                $total_sell_price = (float)$sell_price * (float)$this->rows[$index]['prices'][$key]['discount_quantity'];
+                $total_dollar_sell_price = (float)$dollar_sell_price * (float)$this->rows[$index]['prices'][$key]['discount_quantity'];
                 $sell_price = $total_sell_price / $total_quantity ;
                 $dollar_sell_price = $total_dollar_sell_price / $total_quantity ;
             }
@@ -903,5 +903,12 @@ class Create extends Component
             }
             $this->rows[$index]['prices'][$key]['dinar_price'] = number_format($this->rows[$index]['prices'][$key]['price']* $this->exchange_rate,3) ;
         }
+    }
+    public function num_uf($input_number, $currency_details = null){
+        $thousand_separator  = ',';
+        $decimal_separator  = '.';
+        $num = str_replace($thousand_separator, '', $input_number);
+        $num = str_replace($decimal_separator, '.', $num);
+        return (float)$num;
     }
 }
