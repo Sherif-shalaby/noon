@@ -179,11 +179,11 @@
 
         @include('layouts.partials.header')
 
-        @php
+        {{-- @php
         $notifications=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->get();
         $notification_count=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->where('isread',0)->count();
-        @endphp
-        @include('layouts.partials.leftbar',['notifications'=>$notifications])
+        @endphp --}}
+        @include('layouts.partials.leftbar')
 
         <!-- Start Rightbar -->
         <div class="rightbar">
