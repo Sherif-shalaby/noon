@@ -77,7 +77,7 @@ class Create extends Component
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
     
-        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+        $this->store_pos = StorePos::where('store_id', $this->store_id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->client_id=1;
     }
