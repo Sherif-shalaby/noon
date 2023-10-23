@@ -68,6 +68,10 @@ class Create extends Component
             else
                 $this->{$data['var1']} = $data['var2'];
         }
+        if(isset($data['var1'])&& $data['var1']=="store_id"){
+        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+
+        }
     }
     public function mount(Util $commonUtil)
     {
@@ -77,7 +81,7 @@ class Create extends Component
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
     
-        $this->store_pos = StorePos::where('store_id', $this->store_id)->pluck('name','id')->toArray();
+        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->client_id=1;
     }
@@ -95,7 +99,7 @@ class Create extends Component
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
         $languages = System::getLanguageDropdown();
         $currenciesId = [System::getProperty('currency'), 2];
-        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+        // $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types=CustomerType::latest()->pluck('name','id');
         $stores = Store::getDropdown();
