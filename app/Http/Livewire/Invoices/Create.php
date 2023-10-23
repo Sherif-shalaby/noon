@@ -60,9 +60,13 @@ class Create extends Component
     public function listenerReferenceHere($data)
     {
         if(isset($data['var1'])) {
-            $this->{$data['var1']} = $data['var2'];
+            if($data['var1'] == 'client_id'){
+                $this->{$data['var1']} = (int)$data['var2'];
+            }
+
+            else
+                $this->{$data['var1']} = $data['var2'];
         }
-//        dd(11);
     }
     public function mount(Util $commonUtil)
     {
@@ -74,12 +78,6 @@ class Create extends Component
         $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
-        $this->loadCustomers();
-    }
-
-    public function loadCustomers()
-    {
-        $this->customers = Customer::all();
     }
 
     public function updated($propertyName)
@@ -139,9 +137,9 @@ class Create extends Component
     }
 
     public function changeStorePos(){
-        dd($this->store_id);
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
     }
+
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
     public function submit(){
         $this->validate();
@@ -188,7 +186,6 @@ class Create extends Component
 
             // Add Sell line
             foreach ($this->items as $item) {
-                // dd($item);
                 if ($item['discount_type'] == 0) {
                     $item['discount_type'] = null;
                 }
@@ -268,7 +265,6 @@ class Create extends Component
                 // Emit a browser event to trigger the invoice printing
                 $this->emit('printInvoice', $html_content);
             }
-            // dd($this->items);
 
             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
@@ -346,8 +342,6 @@ class Create extends Component
 //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
-//            dd($product_stores);
-//            dd($current_stock->prices);
 //            $discount = $this->getProductDiscount($current_stock);
             if(isset($discount)){
                 $discounts = $discount;
@@ -372,7 +366,7 @@ class Create extends Component
             else {
                 $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price,2) : 0;
                 $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,2) : 0;
-                $this->items[] = [
+                $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
                     'quantity' => 1,
@@ -400,6 +394,7 @@ class Create extends Component
                     'unit_id'=>$product->variations()->first()->id
 //                    'store' => $product_stores->first()->store->name,
                 ];
+                array_unshift($this->items,$new_item);
 
             }
         }
@@ -450,11 +445,11 @@ class Create extends Component
     public function decrement($key){
         if($this->items[$key]['quantity'] > 1 ){
             $this->items[$key]['quantity']--;
-            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
+//            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
+            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
                 ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['total_quantity'] ) -
-                ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
+            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['quantity'] ) -
+                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
         }
 
         $this->computeForAll();
@@ -521,6 +516,7 @@ class Create extends Component
         // Task : dollar_remaining : الباقي دولار
         $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
     }
+
     // ++++++++++ When change in "الواصل دولار" : calculate dollar_remaining : "الباقي دولار" ++++++++++
     // public function changeReceivedDollar()
     // {
@@ -531,7 +527,6 @@ class Create extends Component
     //         $this->dollar_remaining = $this->dollar_amount - $this->dollar_final_total;
     //         // Task : dollar_remaining : الباقي دينار = الواصل دولار - النهائي دولار
     //         $this->dinar_remaining = parseFloat($this->dollar_remaining * System::getProperty('dollar_exchange')  - $this->final_total );
-    //         dd( $this->final_total);
     //    }
     // }
     //
@@ -551,7 +546,6 @@ class Create extends Component
     // ++++++++++ When change in "الواصل دينار" : calculate dinar_remaining : "الباقي دينار" ++++++++++
     // public function changeReceivedDinar()
     // {
-    //     //   dd(00000000000000);
     //    // Task : dollar_remaining : الباقي دينار
     //    $this->dinar_remaining = $this->amount - $this->final_total;
     // }
@@ -587,7 +581,6 @@ class Create extends Component
     }
 
     public function getProductDiscount($sid){
-        dd($sid);
         $product  = ProductPrice::where('product_id', $pid);
         if(isset($product)){
             $product->where(function($query){
@@ -615,7 +608,6 @@ class Create extends Component
 
     public function getProductStores($product){
         $stores = ProductStore::where('product_id',$product->id)->get();
-//        dd($stores->first()->store);
         return $stores;
     }
 
@@ -623,7 +615,6 @@ class Create extends Component
         if(!empty($this->items[$key]['store'])){
             $store = ProductStore::where('store_id', $this->items[$key]['store'])
                 ->where('product_id',$this->items[$key]['product']['id'])->get()->first();
-//        dd($store);
             $this->items[$key]['quantity_available'] = $store->quantity_available;
         }
     }

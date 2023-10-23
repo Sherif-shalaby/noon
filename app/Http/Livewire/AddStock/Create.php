@@ -591,21 +591,21 @@ class Create extends Component
                     $sell_price = $total_sell_price / $total_quantity ;
                 }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'];
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'],3) ;
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - ($percent * $sell_price)),3) ;
                 }
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($total_quantity) ? $total_quantity : 1);
-                $this->items[$index]['prices'][$key]['piece_price'] = $this->items[$index]['prices'][$key]['price_after_desc'];
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($total_quantity) ? $total_quantity : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->items[$index]['prices'][$key]['price_after_desc'],3) ;
             }
             else{
-                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1);
-                $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format((float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
             }
         }
     }
@@ -652,7 +652,7 @@ class Create extends Component
 
             $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
 
-            return number_format($this->items[$index]['sub_total'], 2);
+            return number_format($this->items[$index]['sub_total'], 3);
         }
         else{
             $this->items[$index]['purchase_price'] = null;
@@ -667,7 +667,7 @@ class Create extends Component
 
             $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
 
-            return number_format($this->items[$index]['dollar_sub_total'], 2);
+            return number_format($this->items[$index]['dollar_sub_total'], 3);
         }
         else{
             $this->items[$index]['dollar_purchase_price'] = null;
@@ -743,12 +743,12 @@ class Create extends Component
         else{
             $this->items[$index]['cost'] = (float)$purchase_price;
         }
-        return number_format($this->num_uf($this->items[$index]['cost']),2);
+        return number_format($this->num_uf($this->items[$index]['cost']),3);
     }
 
     public function total_cost($index){
         $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['total_cost'],2) ;
+        return number_format($this->items[$index]['total_cost'],3) ;
 }
 
     public function dollar_cost($index){
@@ -791,7 +791,7 @@ class Create extends Component
         else{
             $this->items[$index]['dollar_cost'] = (float)$purchase_price;
         }
-        return number_format($this->items[$index]['dollar_cost'],2);
+        return number_format($this->items[$index]['dollar_cost'],3);
     }
 
     public function dollar_total_cost($index){
@@ -807,7 +807,7 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalCost,2));
+        $this->changeAmount(number_format($totalCost,3));
         return $this->num_uf($totalCost);
     }
 
@@ -819,7 +819,7 @@ class Create extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalDollarCost,2));
+        $this->changeAmount(number_format($totalDollarCost,3));
 //        dd($totalDollarCost);
         return $this->num_uf($totalDollarCost);
     }
@@ -959,11 +959,11 @@ class Create extends Component
                         ->orWhereNull('end_date');
                 })->first();
             if (isset($supplier->exchange_rate)) {
-                return $this->exchangeRate = number_format(str_replace(',', '', $supplier->exchange_rate),2);
+                return $this->exchangeRate = number_format(str_replace(',', '', $supplier->exchange_rate),3);
             } else
-                return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),2);
+                return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),3);
         } else {
-            return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),2);
+            return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),3);
         }
     }
     public function changeExchangeRateBasedPrices(){
