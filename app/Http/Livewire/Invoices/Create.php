@@ -42,7 +42,7 @@ class Create extends Component
         $discount = 0.00, $total_dollar, $add_customer=[], $customers = [],$discount_dollar, $store_pos,
         // "الباقي دولار" , "الباقي دينار"
         $dollar_remaining=0 , $dinar_remaining=0 ,
-
+        $searchProduct,
         $final_total, $dollar_final_total, $dollar_amount = 0 , $amount = 0 ,$redirectToHome = false, $status = 'final',
         $draft_transactions, $show_modal = false;
 
@@ -99,8 +99,29 @@ class Create extends Component
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types=CustomerType::latest()->pluck('name','id');
         $stores = Store::getDropdown();
+        $search_result = '';
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('showCreateProductConfirmation');
+        }
+        if(!empty($this->searchProduct)){
+            $search_result = Product::when($this->searchProduct,function ($query){
+                return $query->where('name','like','%'.$this->searchProduct.'%')
+                             ->orWhere('sku','like','%'.$this->searchProduct.'%');
+            });
+            $search_result = $search_result->paginate();
+            if(count($search_result) == 0){
+                $variation = Variation::when($this->searchProduct,function ($query){
+                    return $query->where('sku','like','%'.$this->searchProduct.'%');
+                })->pluck('product_id');
+                $search_result = Product::whereIn('id',$variation);
+                $search_result = $search_result->paginate();
+            }
+
+            if(count($search_result) === 1){
+                $this->add_product($search_result->first()->id);
+                $search_result = '';
+                $this->searchProduct = '';
+            }
         }
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
@@ -112,7 +133,8 @@ class Create extends Component
             'languages',
             'selected_currencies',
             'stores',
-            'customer_types'
+            'customer_types',
+            'search_result',
             ));
     }
 
@@ -309,6 +331,10 @@ class Create extends Component
     public function add_product($id)
     {
 
+        if(!empty($this->searchProduct)){
+            $this->searchProduct = '';
+
+        }
         $product = Product::where('id',$id)->first();
         $quantity_available = $this->quantityAvailable($product);
         if ( $quantity_available < 1) {

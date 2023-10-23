@@ -52,7 +52,8 @@
                 @enderror
             </div>
         </div>
-        <div class="row g-3 cards hide-print">
+        @include('invoices.partials.search')
+        <div class="row g-3 cards hide-print ">
             @include('invoices.partials.products')
             <div class="col-xl-7 special-medal-col">
                 <div class="card-app ">
@@ -119,7 +120,7 @@
                                                 <td >
                                                     {{$item['price']??''}}
                                                 </td>
-{{--                                                @if(!empty($showColumn))--}}
+                                                    {{-- @if(!empty($showColumn))--}}
                                                     <td >
                                                         {{ number_format($item['dollar_price']??0 , 2)}}
                                                     </td>
@@ -127,7 +128,7 @@
                                                         <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
                                                                wire:model="items.{{ $key }}.exchange_rate">
                                                     </td>
-{{--                                                @endif--}}
+                                                    {{--  @endif--}}
 
                                                 <td >
                                                     <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1" readonly
