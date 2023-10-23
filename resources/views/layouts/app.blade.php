@@ -268,12 +268,8 @@
         });
         
     </script>
-<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+{{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // $('.online-balance-badge').hide();
-    })
-    // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
     var obj = new Object();
     var notificationContents = [];
@@ -293,7 +289,7 @@
 
         }
     });
-</script>
+</script> --}}
 
 </body>
 

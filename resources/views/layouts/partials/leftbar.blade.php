@@ -59,14 +59,15 @@
                 </div>
             </div>
         </div>
-        <div class="languagebar">
+        {{-- <div class="languagebar">
             <div class="dropdown">
                 <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="dripicons-web" style="width: 26px;height: 26px;"></i>&nbsp; <span class="online-balance-badge badge bg-danger {{$notification_count>0?'show':'hide'}}">{{$notification_count}}</span></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">
                     @foreach($notifications as $index => $notification)
                     <a class="notification_item"
-                        data-mark-read-action=""
-                        data-href="">
+                        data-mark-read-action="{{action('NotificationController@markAsRead', $notification->id)}}"
+                        data-href="{{action('ProductController@index')}}?product_id={{$notification->product->id}}"
+                        >
                         <p style="margin:0px"><i class="fa fa-exclamation-triangle " style="color: rgb(255, 187, 60)"></i>
                             @lang('lang.alert_quantity')
                             {{$notification->product->name??''}} ({{$notification->variation->sku??''}})</p>
@@ -79,7 +80,7 @@
                     @endforeach
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <!-- End Profilebar -->

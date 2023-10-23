@@ -13,16 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('balance_request_notifications', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+        // Schema::create('balance_request_notifications', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('product_id')->unsigned();
+        //     $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             
-            $table->unsignedBigInteger('variation_id')->unsigned();
-            $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
-            $table->integer('isread')->default(0)->nullable();
-            $table->timestamps();
-        });
+        //     $table->unsignedBigInteger('variation_id')->unsigned();
+        //     $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
+        //     $table->integer('isread')->default(0)->nullable();
+        //     $table->string('type')->nullable(); 
+        //     $table->decimal('alert_quantity',15,2)->nullable();
+        //     $table->decimal('qty_available',15,2)->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('balance_request_notifications');
+        // Schema::dropIfExists('balance_request_notifications');
     }
 };
