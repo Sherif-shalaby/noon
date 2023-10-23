@@ -559,5 +559,7 @@ return array(
     'discount_from_original_price' => 'خصم من السعر الأصلي',
     'price_after_discounting_quantity' => 'السعر بعد خصم الكميه',
     'extra'=>'اضافى',
+    'draft_transactions'=>'العمليات محفوظة فى المسودة',
+
 );
 

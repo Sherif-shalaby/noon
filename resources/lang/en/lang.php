@@ -540,6 +540,7 @@ return [
     'price_after_discounting_quantity' => 'Price after discounting quantity',
     'extra'=>'Extra',
     'price_after_discounting_quantity' => 'Price after discounting quantity',
+    'draft_transactions'=>'Draft Transactions',
 ];
 
 
