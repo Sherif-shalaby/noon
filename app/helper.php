@@ -29,3 +29,9 @@ function num_uf($input_number, $currency_details = null){
     return (float)$num;
 }
 
+function round_250($input_number){
+    $number = round($input_number / 250) * 250;
+    return  $number;
+
+}
+

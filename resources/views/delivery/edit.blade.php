@@ -40,8 +40,8 @@
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
                 {!! Form::open([
-                    'route' => 'delivery.store',
-                    'method' => 'post',
+                    'route' => ['delivery.update',$plan->id],
+                    'method' => 'put',
                     'enctype' => 'multipart/form-data',
                     'id' => 'customer-form'
                 ]) !!}
@@ -98,7 +98,11 @@
                     </div>
                     <div id="map"></div>
 
-                   
+                    <div class="row pb-5">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                        </div>
+                    </div>
                 </div>
                 {!! Form::close() !!}
             </div>

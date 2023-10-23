@@ -47,30 +47,27 @@
             <div class="input-group-prepend">
                 <input type="text" class="form-control" wire:model="rows.{{ $index }}.fill_quantity" wire:change="changeFilling({{$index}})" style="width: 100px;" required>
             </div>
-
         </div>
     </td>
-        <td>
-            <input type="text" class="form-control" wire:model="rows.{{ $index }}.dollar_purchase_price" wire:change="changePurchasePrice({{$index}})" style="width: 100px;" required>
-            @error('rows.'.$index.'.dollar_purchase_price')
-            <span class="error text-danger">{{ $message }}</span>
-            @enderror
-        </td>
-
-        <td>
-            <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price" wire:change="changeSellingPrice({{$index}})" style="width: 100px;" required>
-            @error('rows.'.$index.'.dollar_selling_price')
-            <span class="error text-danger">{{ $message }}</span>
-            @enderror
-        </td>
-        <td>
-            @if(isset($rows[$index]['quantity']) &&  (isset($rows[$index]['dollar_purchase_price']) || isset($rows[$index]['purchase_price'])))
-                <span class="sub_total_span" >
-                    {{$this->dollar_sub_total($index)}}
-                </span>
-            @endif
-        </td>
-    {{-- @endif --}}
+    <td>
+        <input type="text" class="form-control" wire:model="rows.{{ $index }}.dollar_purchase_price" wire:change="changePurchasePrice({{$index}})" style="width: 100px;" required>
+        @error('rows.'.$index.'.dollar_purchase_price')
+        <span class="error text-danger">{{ $message }}</span>
+        @enderror
+    </td>
+    <td>
+        <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price" wire:change="changeSellingPrice({{$index}})" style="width: 100px;" required>
+        @error('rows.'.$index.'.dollar_selling_price')
+        <span class="error text-danger">{{ $message }}</span>
+        @enderror
+    </td>
+    <td>
+        @if(isset($rows[$index]['quantity']) &&  (isset($rows[$index]['dollar_purchase_price']) || isset($rows[$index]['purchase_price'])))
+            <span class="sub_total_span" >
+                {{$this->dollar_sub_total($index)}}
+            </span>
+        @endif
+    </td>
     <td>
         <input type="text" class="form-control" wire:model="rows.{{ $index }}.purchase_price" style="width: 100px;"  required wire:change="changeDollarPurchasePrice({{$index}})">
         @error('rows.'.$index.'.purchase_price')
@@ -106,7 +103,7 @@
         <td></td>
         <td>
             {!! Form::label('price' ,__('lang.quantity')) !!}
-            <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" placeholder = "{{__('lang.quantity')}}" >
+            <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.quantity')}}" >
             @error('rows.'.$index.'.prices.'.$key.'.discount_quantity')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -118,7 +115,7 @@
         </td>
         <td >
             {!! Form::label('b_qty',__('lang.b_qty')) !!}
-            <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" placeholder = "{{__('lang.b_qty')}}" >
+            <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.b_qty')}}" >
             @error('rows.'.$index.'.prices.'.$key.'.bonus_quantity')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -130,7 +127,14 @@
                 'class' => ' form-control price_type',
                 'placeholder' => __('lang.please_select'),
                 'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
+                'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem" w
+                       @if( isset($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
+                wire:change="changePrice({{ $index }}, {{ $key }})">
+                <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+            </div>
             @error('rows.'.$index.'.prices.'.$key.'.price_type')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
@@ -164,7 +168,7 @@
                 {{ __('lang.piece_price')}}:{{$this->rows[$index]['prices'][$key]['dinar_piece_price']??''}}
             </p>
         </td>
-        
+
         <td colspan="2">
             {!! Form::label('customer_type',__('lang.customer_type')) !!}
             <select wire:model="rows.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$index}}" data-key="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
