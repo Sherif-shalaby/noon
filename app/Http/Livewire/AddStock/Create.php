@@ -111,6 +111,9 @@ class Create extends Component
         if($data['var1'] == 'supplier'){
             $this->exchange_rate = $this->changeExchangeRate();
         }
+        if($data['var1'] == ('paying_currency' || 'divide_costs')){
+            $this->changeTotalAmount();
+        }
     }
 
     public function render(): Factory|View|Application
@@ -828,7 +831,11 @@ class Create extends Component
         $this->amount = round_250($this->num_uf($value));
     }
     public function changeTotalAmount(){
-            $this->total_amount = round_250($this->amount +$this->calcPayment());
+        if($this->paying_currency == 2){
+            $this->total_amount =$this->sum_dollar_total_cost() +$this->calcPayment();
+        }else{
+            $this->total_amount =$this->sum_total_cost() +$this->calcPayment();
+        }
     }
     public function sum_sub_total(){
         $totalSubTotal = 0;
@@ -1056,9 +1063,9 @@ class Create extends Component
         return (float)$num;
     }
     public function calcPayment() {
-       $otherExpenses = is_numeric($this->other_expenses) ? (float)$this->other_expenses : 0;
+    //    $otherExpenses = is_numeric($this->other_expenses) ? (float)$this->other_expenses : 0;
        $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
-       $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
-       return ($otherExpenses - $discountAmount + $otherPayments);
+    //    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
+       return ( $discountAmount );
     }
 }
