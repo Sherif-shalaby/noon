@@ -808,7 +808,7 @@ class Create extends Component
             }
         }
         $this->changeAmount(number_format($totalCost,3));
-        return $this->num_uf($totalCost);
+        return round_250($this->num_uf($totalCost));
     }
 
     public function sum_dollar_total_cost(){
@@ -825,10 +825,10 @@ class Create extends Component
     }
 
     public function changeAmount($value){
-        $this->amount = $this->num_uf($value);
+        $this->amount = round_250($this->num_uf($value));
     }
     public function changeTotalAmount(){
-            $this->total_amount = $this->amount +$this->calcPayment();
+            $this->total_amount = round_250($this->amount +$this->calcPayment());
     }
     public function sum_sub_total(){
         $totalSubTotal = 0;
