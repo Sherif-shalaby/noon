@@ -225,14 +225,14 @@
                                     data-toggle="modal" data-target="#add_product_tax_modal"
                                     data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
-                    </div>  
+                    </div>
                     {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('balance_return_request',  null, [
                             'class' => 'form-control',
                         ]) !!}
-                    </div>                 
+                    </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
@@ -304,25 +304,8 @@
                         </div>
                     </div>
                     <div class="col-md-12 product_unit_raws ">
-                        @if(!empty($recent_product->variations))
-                            @foreach($recent_product->variations as $index=>$variation)
-                                @include('products.product_unit_raw', [
-                                'index' => $index ,
-                                'variation'=>$variation,
-                                ])
-                            @endforeach
-                        @else
-                            @include('products.product_unit_raw', ['index' => 0])
-                        @endif
-                        @php
-                        if (!empty($recent_product->variations) && count(($recent_product->variations))>0 ){
-                            $index = count($recent_product->variations) - 1;
-                        }
-                        else{
-                            $index = 0;
-                        }
-                        @endphp
-                        <input type="hidden" id="raw_unit_index" value="{{$index}}" />
+                        @include('products.product_unit_raw')
+                        <input type="hidden" id="raw_unit_index" value="0" />
                     </div>
 
                     {{-- crop image --}}

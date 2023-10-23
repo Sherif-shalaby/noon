@@ -76,7 +76,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                             $(".unit_id"+raw_index).empty().append(data_html);
                             $(".unit_id"+raw_index).val(unit_id).change();
                         }
-                        
+
                     },
                 });
             } else {
@@ -292,6 +292,44 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                         console.log(data_html)
                         $("#product_tax").empty().append(data_html);
                         $("#product_tax").val(product_tax_id).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
+$(document).ready(function () {
+    $("#create-customer-btn").click(function (e) {
+        e.preventDefault();
+        setTimeout(() => {
+            $("#quick_add_customer_form").submit();
+        }, 500);
+    });
+});
+
+$(document).on("submit", "#quick_add_customer_form", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            if (result.success) {
+                Swal.fire("Success", result.msg, "success");
+                $("#add_customer").modal("hide");
+                var customer_id = result.id;
+                $.ajax({
+                    method: "get",
+                    url: "/customer/get-dropdown",
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        $("#client_id").empty().append(data_html[0]);
+                        $("#client_id").val(data_html[1]).trigger();
                     },
                 });
             } else {

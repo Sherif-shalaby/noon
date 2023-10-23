@@ -31,12 +31,30 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
 use function Symfony\Component\String\s;
 
 class Create extends Component
 {
+    protected $rules = [
+        'store_id' => 'required',
+        'supplier' => 'required',
+        'paying_currency' => 'required',
+        'purchase_type' => 'required',
+        'payment_status' => 'required',
+        'method' => 'required',
+        'amount' => 'required',
+        'transaction_currency' => 'required',
+        'items.*.dollar_purchase_price' => 'required_if:items.*.purchase_price,==,null,0,|nullable|numeric',
+        'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
+        'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
+        'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
+        'source_type' => 'required',
+        'source_id' => 'required',
+    ];
+
     use WithPagination;
 
     public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $order_date, $purchase_type,
@@ -46,20 +64,6 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price;
 
-    protected $rules = [
-    'store_id' => 'required',
-    'supplier' => 'required',
-//    'status' => 'required',
-    'paying_currency' => 'required',
-    'purchase_type' => 'required',
-    'payment_status' => 'required',
-    'method' => 'required',
-    'amount' => 'required',
-    'transaction_currency' => 'required',
-    'items.*.variation_id' => 'required',
-    'source_type' => 'required',
-    'source_id' => 'required'
-];
 
     public function mount(){
 
@@ -193,9 +197,18 @@ class Create extends Component
             'users'));
     }
 
-    public function updated($propertyName)
+    public function updated()
     {
-        $this->validateOnly($propertyName);
+
+//        foreach ($this->items as $item) {
+//            if (!empty($item['purchase_price']) && !empty($item['selling_price'])) {
+//                $this->addError('items.*.selling_price', 'Selling price is required if purchase price is set.');
+//            }
+//            if (!empty($item['dollar_purchase_price']) && !empty($item['dollar_selling_price'])) {
+//                $this->addError('items.*.dollar_selling_price', 'Dollar Selling price is required if purchase price is set.');
+//            }
+//        }
+        $this->validate();
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -203,7 +216,6 @@ class Create extends Component
             $this->rules = [
                 'store_id' => 'required',
                 'supplier' => 'required',
-//                'status' => 'required',
                 'transaction_currency' => 'required',
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
@@ -217,7 +229,6 @@ class Create extends Component
                 'store_id' => 'required',
                 'supplier' => 'required',
                 'transaction_currency' => 'required',
-                'purchase_type' => 'required',
                 'payment_status' => 'required',
                 'method' => 'required',
                 'amount' => 'required',
@@ -462,6 +473,10 @@ class Create extends Component
             $this->searchProduct = '';
 
         }
+        if(!empty($this->search_by_product_symbol)){
+            $this->search_by_product_symbol = '';
+
+        }
         $product = Product::find($id);
         $variations = $product->variations;
         if($add_via == 'unit'){
@@ -500,7 +515,10 @@ class Create extends Component
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
+            'variation_id' => $variations->first()->id ?? null,
             'product' => $product,
+            'purchase_price' => null,
+            'dollar_purchase_price' => null,
             'quantity' => 1,
             'unit' => null,
             'base_unit_multiplier' => null,
@@ -573,21 +591,21 @@ class Create extends Component
                     $sell_price = $total_sell_price / $total_quantity ;
                 }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'];
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'],3) ;
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - $percent ),3) ;
                 }
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($total_quantity) ? $total_quantity : 1);
-                $this->items[$index]['prices'][$key]['piece_price'] = $this->items[$index]['prices'][$key]['price_after_desc'];
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($total_quantity) ? $total_quantity : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->items[$index]['prices'][$key]['price_after_desc'],3) ;
             }
             else{
-                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1);
-                $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format((float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
             }
         }
     }
@@ -634,7 +652,7 @@ class Create extends Component
 
             $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
 
-            return number_format($this->items[$index]['sub_total'], 2);
+            return number_format($this->items[$index]['sub_total'], 3);
         }
         else{
             $this->items[$index]['purchase_price'] = null;
@@ -649,7 +667,7 @@ class Create extends Component
 
             $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
 
-            return number_format($this->items[$index]['dollar_sub_total'], 2);
+            return number_format($this->items[$index]['dollar_sub_total'], 3);
         }
         else{
             $this->items[$index]['dollar_purchase_price'] = null;
@@ -725,12 +743,12 @@ class Create extends Component
         else{
             $this->items[$index]['cost'] = (float)$purchase_price;
         }
-        return number_format($this->num_uf($this->items[$index]['cost']),2);
+        return number_format($this->num_uf($this->items[$index]['cost']),3);
     }
 
     public function total_cost($index){
         $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
-        return number_format($this->items[$index]['total_cost'],2) ;
+        return number_format($this->items[$index]['total_cost'],3) ;
 }
 
     public function dollar_cost($index){
@@ -773,7 +791,7 @@ class Create extends Component
         else{
             $this->items[$index]['dollar_cost'] = (float)$purchase_price;
         }
-        return number_format($this->items[$index]['dollar_cost'],2);
+        return number_format($this->items[$index]['dollar_cost'],3);
     }
 
     public function dollar_total_cost($index){
@@ -789,7 +807,7 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalCost,2));
+        $this->changeAmount(number_format($totalCost,3));
         return $this->num_uf($totalCost);
     }
 
@@ -801,7 +819,7 @@ class Create extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalDollarCost,2));
+        $this->changeAmount(number_format($totalDollarCost,3));
 //        dd($totalDollarCost);
         return $this->num_uf($totalDollarCost);
     }
@@ -915,7 +933,7 @@ class Create extends Component
             $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->num_uf($this->exchange_rate);
         }
         else{
-            $purchase_price = $this->items[$index]['purchase_price'];
+            $purchase_price = $this->items[$index]['purchase_price'] ?? '';
         }
         return $purchase_price;
     }
@@ -927,7 +945,7 @@ class Create extends Component
             $purchase_price = $this->items[$index]['purchase_price'] / $this->num_uf($this->exchange_rate);
         }
         else {
-            $purchase_price = $this->items[$index]['dollar_purchase_price'];
+            $purchase_price = $this->items[$index]['dollar_purchase_price'] ?? '';
         }
         return $purchase_price;
 
@@ -941,11 +959,11 @@ class Create extends Component
                         ->orWhereNull('end_date');
                 })->first();
             if (isset($supplier->exchange_rate)) {
-                return $this->exchangeRate = number_format(str_replace(',', '', $supplier->exchange_rate),2);
+                return $this->exchangeRate = number_format(str_replace(',', '', $supplier->exchange_rate),3);
             } else
-                return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),2);
+                return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),3);
         } else {
-            return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),2);
+            return $this->exchangeRate = number_format(System::getProperty('dollar_exchange'),3);
         }
     }
     public function changeExchangeRateBasedPrices(){

@@ -232,6 +232,7 @@ class Create extends Component
                     $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
                     $customer_offer_price['product_id'] = $item['product']['id'];
                     $customer_offer_price['quantity'] = $item['quantity'];
+                    $customer_offer_price['current_stock'] = $item['current_stock'];
                     $customer_offer_price['sell_price'] = $item['selling_price'];
                     $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
                     // created_by
@@ -312,12 +313,17 @@ class Create extends Component
         $dinar_sell = AddStockLine::select('sell_price')->where('product_id', $product['id'])->latest()->first();
         // Task_9_10_2023 : quantity
         $quantity = AddStockLine::where('product_id', $product['id'])->sum('quantity');
-        // dd($quantity);
+        // The "Total quantity" of "each product"
+        $current_stock = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // dd($current_stock);
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
             'product' => $product,
-            'quantity' => 1,
+            // default "quantity" value
+            'quantity' => 1 ,
+            // default "current_stock" value : get sum of all "quantity" of "product" from "add_stock_line" table
+            'current_stock' => isset($current_stock) ? $current_stock : 0 ,
             'unit' => null,
             'base_unit_multiplier' => null,
             'sub_total' => 0,
@@ -331,12 +337,10 @@ class Create extends Component
             'dollar_selling_price' => isset($dollar_sell->dollar_sell_price) ? $dollar_sell->dollar_sell_price : 0 ,
             // get "selling_price" from "add_stock_line" table
             'selling_price' => isset($dinar_sell->sell_price) ? $dinar_sell->sell_price : 0 ,
-            // get sum of all "quantity" of "product" from "add_stock_line" table
-            'quantity' => isset($quantity) ? $quantity : 0 ,
             'cost' => 0,
             'dollar_total_cost' => 0,
             'total_cost' => 0,
-            'current_stock' =>0,
+            // 'current_stock' =>0,
             'total_stock' => 0 + 1,
         ];
         array_push($this->items, $new_item);

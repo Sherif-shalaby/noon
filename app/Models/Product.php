@@ -129,4 +129,9 @@ class Product extends Model
     {
         return $this->hasMany(SellLine::class);
     }
+    // +++++++++++++++++++++ M:M Relationship : product and employee : "products" which "employee" are resposible for +++++++++++++++++
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class);
+    }
 }
