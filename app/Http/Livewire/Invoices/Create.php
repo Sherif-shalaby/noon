@@ -76,7 +76,7 @@ class Create extends Component
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
-    
+
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
     }
@@ -590,7 +590,7 @@ class Create extends Component
     }
 
     public function getProductDiscount($sid){
-        $product  = ProductPrice::where('product_id', $pid);
+        $product  = ProductPrice::where('product_id', $sid);
         if(isset($product)){
             $product->where(function($query){
                 $query->where('price_start_date','<=',date('Y-m-d'));
@@ -802,15 +802,15 @@ class Create extends Component
             //         'cluster' =>  env('PUSHER_APP_CLUSTER'),
             //         'useTLS' => true
             //     );
-        
-        
+
+
             //     $pusher = new Pusher(
             //         env('PUSHER_APP_KEY'),
             //         env('PUSHER_APP_SECRET'),
             //         env('PUSHER_APP_ID'),
             //         $options
             //     );
-        
+
             //     $data=BalanceRequestNotification::create([
             //         'product_id'=>$product_id,
             //         'variation_id'=>$variation_id,
