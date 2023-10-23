@@ -62,19 +62,19 @@
         <td title="{{__('lang.purchase_price')}} $">
             <input type="text" class="form-control" style="width: 61px;" required
                    wire:model="items.{{ $index }}.dollar_purchase_price" wire:change="changeFilling({{$index}})">
-            @error('purchase_price')
+            @error('items.'. $index.'.dollar_purchase_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
         <td title="{{__('lang.selling_price')}} $">
             <input type="text" class="form-control"  style="width: 61px;" required
                    wire:model="items.{{ $index }}.dollar_selling_price">
-            @error('selling_price')
+            @error('items.'.$index.'.dollar_selling_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
         <td title="{{__('lang.sub_total')}} $">
-            @if(isset($product['quantity']) &&  (isset($product['dollar_purchase_price']) || isset($product['purchase_price'])))
+            @if(!empty($product['quantity']) &&  (!empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="sub_total_span" >
                     {{$this->dollar_sub_total($index)}}
                 </span>
@@ -83,18 +83,18 @@
 {{--    @endif--}}
     <td title="{{__('lang.purchase_price')}}">
         <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" wire:change="changeFilling({{$index}})" style="width: 61px;"  required>
-        @error('purchase_price')
+        @error('items.'.$index.'.purchase_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td title="{{__('lang.selling_price')}}">
         <input type="text" class="form-control " wire:model="items.{{ $index }}.selling_price" style="width: 61px;" required>
-        @error('selling_price')
+        @error('items.'.$index.'.selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
     <td title="{{__('lang.sub_total')}}">
-        @if(isset($product['quantity']) && (isset($product['purchase_price']) || isset($product['dollar_purchase_price'])))
+        @if(!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
             <span class="sub_total_span" >
                 {{$this->sub_total($index)}}
             </span>
@@ -106,7 +106,7 @@
         </span>
     </td>
     <td title="{{__('lang.total_size')}}">
-       @if(isset($product['quantity']))
+       @if(!empty($product['quantity']))
             <span class="total_size">
                 {{$this->total_size($index) }}
             </span>
@@ -120,7 +120,7 @@
         </span>
     </td>
     <td title="{{__('lang.total_weight')}}">
-       @if(isset($product['quantity']))
+       @if(!empty($product['quantity']))
             <span class="total_weight">
                 {{$this->total_weight($index) }}
             </span>
@@ -130,7 +130,7 @@
     </td>
 {{--    @if ($showColumn)--}}
         <td title="{{__('lang.cost')}} $">
-            @if(isset($product['quantity']) &&( isset($product['dollar_purchase_price']) || isset($product['purchase_price'])))
+            @if(!empty($product['quantity']) &&( !empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="dollar_cost">
                     {{ $this->dollar_cost($index) }}
                 </span>
@@ -139,7 +139,7 @@
             @endif
         </td>
         <td title="{{__('lang.total_cost')}} $">
-            @if(isset($product['quantity']) &&( isset($product['dollar_purchase_price']) || isset($product['purchase_price'])))
+            @if(!empty($product['quantity']) &&( !empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="dollar_total_cost">
                     {{$this->dollar_total_cost($index) }}
                 </span>
@@ -149,7 +149,7 @@
         </td>
 {{--    @endif--}}
     <td title="{{__('lang.cost')}}">
-        @if(isset($product['quantity']) &&( isset($product['purchase_price']) ||  isset($product['dollar_purchase_price'])))
+        @if(!empty($product['quantity']) &&( !empty($product['purchase_price']) ||  !empty($product['dollar_purchase_price'])))
             <span class="cost">
                 {{$this->cost($index) }}
             </span>
@@ -158,7 +158,7 @@
         @endif
     </td>
     <td title="{{__('lang.total_cost')}}">
-        @if(isset($product['quantity']) &&( isset($product['purchase_price']) ||  isset($product['dollar_purchase_price'])))
+        @if(!empty($product['quantity']) &&( !empty($product['purchase_price']) ||  !empty($product['dollar_purchase_price'])))
             <span class="total_cost">
                 {{$this->total_cost($index) }}
             </span>
@@ -208,7 +208,7 @@
             ]) !!}
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem"
-                @if( isset($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif>
+                @if( !empty($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif>
                 <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
             </div>
             @error('items.'.$index.'.prices.'.$key.'.price_type')
@@ -217,10 +217,10 @@
             @enderror
         </td>
         <td>
-            {!! Form::label('price' ,isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
+            {!! Form::label('price' ,!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
 {{--            <p>--}}
-{{--                {{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->items[$index]['prices'][$key]['dinar_price']??''}}--}}
+{{--                {{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->items[$index]['prices'][$key]['dinar_price']??''}}--}}
 {{--            </p>--}}
         </td>
         <td colspan="2">

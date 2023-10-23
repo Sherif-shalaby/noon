@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    {!! Form::open([ 'id' => 'add_stock_form']) !!}
+                    {!! Form::open([ 'id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
@@ -123,8 +123,14 @@
                                             @foreach($search_result as $product)
                                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                        <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png" width="50px" height="50px">
-                                                        {{$product->sku ?? ''}} - {{$product->name}}
+                                                        @if ($product->image)
+                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                 alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                                        @else
+                                                            <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                                 class="img-thumbnail" width="100px">
+                                                        @endif
+                                                        {{$product->product_symbol ?? ''}} - {{$product->name}}
                                                     </div>
                                                 </li>
                                             @endforeach
@@ -150,7 +156,13 @@
                                             @foreach($search_result as $product)
                                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                        <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png" width="50px" height="50px">
+                                                        @if ($product->image)
+                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                 alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                                        @else
+                                                            <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                                 class="img-thumbnail" width="100px">
+                                                        @endif
                                                         {{$product->sku ?? ''}} - {{$product->name}}
                                                     </div>
                                                 </li>

@@ -177,7 +177,8 @@ class CategoryController extends Controller
 
         return view('categories.index', compact('categories'));
     }
-    public function getSubcategories($id){
+    public function getSubcategories($id)
+    {
         $categories=[];
         $categories = Category::where('parent_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
         $categories_dp = $this->Util->createDropdownHtml($categories, __('lang.please_select'));

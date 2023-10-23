@@ -42,6 +42,7 @@ class SellCarController extends Controller
      */
     public function store(Request $request)
     {
+
         try {
             $data = $request->except('_token');
             $data['created_by']=Auth::user()->id;
@@ -51,13 +52,14 @@ class SellCarController extends Controller
                 'msg' => __('lang.success')
             ];
         } catch (\Exception $e) {
+            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-     
+
         return redirect()->back()->with('status', $output);
     }
 
@@ -110,7 +112,7 @@ class SellCarController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-      
+
         return redirect()->back()->with('status', $output);
     }
 

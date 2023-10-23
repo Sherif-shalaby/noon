@@ -92,7 +92,7 @@ class Create extends Component
     {
         $allproducts = Product::get();
         $departments = Category::get();
-        $this->customers   = Customer::get();
+        $this->customers = Customer::orderBy('created_by', 'asc')->get();
         $languages = System::getLanguageDropdown();
         $currenciesId = [System::getProperty('currency'), 2];
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();

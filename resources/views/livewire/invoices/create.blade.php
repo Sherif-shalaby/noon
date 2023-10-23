@@ -50,10 +50,9 @@
                 @error('client_id')
                 <span class="text-danger">{{ $message }}</span>
                 @enderror
-                @include('customers.quick_add')
             </div>
         </div>
-        <div class="row g-3 cards hide-print ">
+        <div class="row g-3 cards hide-print">
             @include('invoices.partials.products')
             <div class="col-xl-7 special-medal-col">
                 <div class="card-app ">
@@ -191,6 +190,8 @@
         {!! Form::close() !!}
     </div>
 </section>
+@include('customers.quick_add',['quick_add'=>1])
+
 
 
 {{--<!-- This will be printed -->--}}
@@ -224,19 +225,19 @@
                 window.print("#receipt_section");
             });
         });
-        document.addEventListener('livewire:load', function () {
-            Livewire.on('hideModal', function ($customer) {
-                $(".modal-backdrop").removeClass("show");
-                $("#add_customer").removeClass("show");
-
-            });
-        });
-        document.addEventListener('livewire:load', function () {
-            Livewire.on('customerAdded', function ($customer) {
-                // Re-render the Livewire component to refresh the <select>
-                Livewire.emit('refreshSelect');
-            });
-        });
+        // document.addEventListener('livewire:load', function () {
+        //     Livewire.on('hideModal', function ($customer) {
+        //         $(".modal-backdrop").removeClass("show");
+        //         $("#add_customer").removeClass("show");
+        //
+        //     });
+        // });
+        // document.addEventListener('livewire:load', function () {
+        //     Livewire.on('customerAdded', function ($customer) {
+        //         // Re-render the Livewire component to refresh the <select>
+        //         Livewire.emit('refreshSelect');
+        //     });
+        // });
         {{--window.addEventListener('showCreateProductConfirmation', function() {--}}
         {{--    Swal.fire({--}}
         {{--        title: "{{ __('lang.this_product_exists_before') }}" + "<br>" +--}}

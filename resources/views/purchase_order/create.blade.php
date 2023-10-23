@@ -129,13 +129,13 @@
                                                             <td>{{$product->name}}</td>
                                                             <td>{{$product->sku}}</td>
                                                             <td>{{$product->category->name}}</td>
-                                                            {{-- <td>
-                                                                @if( $product->subcategories != null && $product->subcategories != '' )
+                                                            <td>
+                                                                {{-- @if( $product->subcategories != null && $product->subcategories != '' )
                                                                     @foreach($product->subcategories as $subcategory)
                                                                         {{$subcategory->name}}<br>
                                                                     @endforeach
-                                                                @endif
-                                                            </td> --}}
+                                                                @endif --}}
+                                                            </td>
                                                             <td>{{$product->height}}</td>
                                                             <td>{{$product->length}}</td>
                                                             <td>{{$product->width}}</td>
@@ -149,9 +149,9 @@
                                                             </td>
                                                             <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
                                                             <td>
-                                                                @foreach($product->product_prices as $price)
+                                                                {{-- @foreach($product->product_prices as $price)
                                                                     {{$price->price_category." : ".$price->price}} <br>
-                                                                @endforeach
+                                                                @endforeach --}}
                                                             </td>
                                                             <td>
                                                                 @if ($product->created_by  > 0 and $product->created_by != null)
