@@ -22,7 +22,7 @@
                                     <th>@lang('lang.customer_type')</th>
                                     <th>@lang('lang.customer_name')</th>
                                     <th>@lang('lang.phone')</th>
-                                    <th>@lang('lang.payment_type')</th>
+                                    {{-- <th>@lang('lang.payment_type')</th> --}}
                                     <th>@lang('lang.status')</th>
                                     <th>@lang('lang.action')</th>
                                 </tr>
@@ -32,7 +32,7 @@
                                     @foreach($draft_transactions as $key => $transaction)
                                         <tr>
                                             <td>
-                                                {{$transaction->transaction_date}}
+                                                {{\Carbon\Carbon::parse($transaction->transaction_date)->format('Y-m-d')}}
                                             </td>
                                             <td>
                                                 {{$transaction->invoice_no}}
@@ -52,11 +52,11 @@
                                             <td>
                                                 {{$transaction->customer->phone}}
                                             </td>
-                                            <td>
+                                            {{-- <td>
                                                 {{!empty($transaction->transaction_payments[0]) ?$transaction->transaction_payments[0]->method : ''}}
-                                            </td>
+                                            </td> --}}
                                             <td>
-                                                <span class="badge" style="background-color: #6e81dc !important">{{__('lang.'.$transaction->status)}}</span>
+                                                <span class="badge text-white" style="background-color: #6e81dc !important;">{{__('lang.'.$transaction->status)}}</span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">

@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Livewire\Invoices;
-
+use Pusher\Pusher;
 use App\Models\AddStockLine;
+use App\Models\BalanceRequestNotification;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
@@ -71,7 +72,7 @@ class Create extends Component
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
-        $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
+    
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->loadCustomers();
@@ -102,9 +103,9 @@ class Create extends Component
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('showCreateProductConfirmation');
         }
-        // $variations=Variation::orderBy('created_at','desc')->get();
-        // $this->variations=Variation::all();
         $this->client_id=1;
+        $this->payment_status='paid';
+        $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.invoices.create', compact(
             'departments',
@@ -199,7 +200,8 @@ class Create extends Component
                 $this->updateSoldQuantityInAddStockLine($sell_line->product_id, $transaction->store_id, (float)$item['quantity'], $old_quantity, $stock_id);
                 if ($transaction->status == 'final') {
                     $product = Product::find($sell_line->product_id);
-                    $this->decreaseProductQuantity($sell_line->product_id, $transaction->store_id, (float) $sell_line->quantity);
+                    // dd($item['unit_id']);
+                    $this->decreaseProductQuantity($sell_line->product_id, $transaction->store_id, (float) $sell_line->quantity,0,$item['unit_id']);
                 }
 
             }
@@ -228,7 +230,7 @@ class Create extends Component
                             $transaction_payment = PaymentTransactionSellLine::create($payment_data);
                         }
                     }
-//                $this->updateTransactionPaymentStatus($transaction->id);
+//                  $this->updateTransactionPaymentStatus($transaction->id);
 
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
@@ -249,6 +251,7 @@ class Create extends Component
             // dd($this->items);
 
             DB::commit();
+            // $this->items = [];
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             return $this->redirect('/invoices/create');
 
@@ -391,7 +394,11 @@ class Create extends Component
             $this->total += $item['sub_total'];
             // dollar_sub_total
             $this->total_dollar += $item['dollar_sub_total'];
+            $this->discount+= $item['discount_price'];
+            $this->discount_dollar+= $item['discount_price'] * $item['exchange_rate'];
         }
+        $this->dollar_amount = $this->total_dollar;
+        $this->amount = $this->total;
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
@@ -476,7 +483,7 @@ class Create extends Component
             $this->items[$key]['discount_category'] = $discount->price_category;
             $amount=max(1, round($this->items[$key]['quantity']/$discount->quantity));
             $this->items[$key]['extra_quantity'] =($this->items[$key]['quantity']>=$discount->quantity)?(($discount->bonus_quantity??0)*$amount):0;
-            $price = $discount->price;
+            $price = ($this->items[$key]['quantity']>=$discount->quantity)?$discount->price:0;
         }
         else
             $price = 0;
@@ -751,7 +758,7 @@ class Create extends Component
 
         return $register;
     }
-    public function decreaseProductQuantity($product_id, $store_id, $new_quantity, $old_quantity = 0)
+    public function decreaseProductQuantity($product_id, $store_id, $new_quantity, $old_quantity = 0,$variation_id=null)
     {
         $qty_difference = $new_quantity - $old_quantity;
         $product = Product::find($product_id);
@@ -770,7 +777,31 @@ class Create extends Component
                 ]);
             }
             $details->decrement('quantity_available', $qty_difference);
-
+            //send notification if balance_return_request is reached
+            if($details->quantity_available <= $product->balance_return_request){
+                $options = array(
+                    'cluster' =>  env('PUSHER_APP_CLUSTER'),
+                    'useTLS' => true
+                );
+        
+        
+                $pusher = new Pusher(
+                    env('PUSHER_APP_KEY'),
+                    env('PUSHER_APP_SECRET'),
+                    env('PUSHER_APP_ID'),
+                    $options
+                );
+        
+                $data=BalanceRequestNotification::create([
+                    'product_id'=>$product_id,
+                    'variation_id'=>$variation_id,
+                    'isread'=>0,
+                    'type'=>'purchase_order',
+                    'alert_quantity'=>$product->balance_return_request,
+                    'qty_available'=>$details->quantity_available
+                ]);
+                $pusher->trigger('order-channel', 'new-order', $data);
+            }
         return true;
     }
     public function getInvoicePrint($transaction, $payment_types, $transaction_invoice_lang = null)
