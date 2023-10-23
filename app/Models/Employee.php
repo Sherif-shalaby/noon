@@ -88,4 +88,9 @@ class Employee extends Model
         }
         return $employees->toArray();
     }
+    // +++++++++++++++++++++ M:M Relationship : employee and product : "products" which "employee" are resposible for +++++++++++++++++
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'employee_products', 'employee_id', 'product_id');
+    }
 }

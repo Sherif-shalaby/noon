@@ -3,6 +3,7 @@
 
         <div
             class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide">
+
             {!! Form::label('amount', __('lang.amount'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
             ]) !!}
@@ -11,7 +12,7 @@
                     class="form-control initial-balance-input m-0" wire:model="total_amount">
             </div>
             @error('amount')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -33,7 +34,7 @@
                 ]) !!}
             </div>
             @error('method')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
 
         </div>
@@ -55,7 +56,7 @@
                 ]) !!}
             </div>
             @error('paying_currency')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -99,7 +100,6 @@
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                 ]) !!}
                 <div class="input-wrapper">
-
                     {!! Form::text(
                         'ref_number',
                         !empty($transaction_payment) && !empty($transaction_payment->ref_number)
@@ -114,10 +114,10 @@
                         ],
                     ) !!}
                 </div>
+                @error('ref_number')
+                    <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
+                @enderror
             </div>
-            @error('ref_number')
-                <span class="error text-danger">{{ $message }}</span>
-            @enderror
 
             <div
                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif not_cash_fields ">
@@ -133,7 +133,7 @@
                     ]) !!}
                 </div>
                 @error('bank_deposit_date')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
@@ -159,7 +159,7 @@
                     ) !!}
                 </div>
                 @error('bank_name')
-                    <span class="error text-danger">{{ $message }}</span>
+                    <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
                 @enderror
             </div>
         @endif

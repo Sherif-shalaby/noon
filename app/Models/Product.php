@@ -16,13 +16,12 @@ class Product extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = array('name', 'translations', 'sku', 'store_id', 'balance_return_request', 'brand_id', 'category_id', 'subcategory_id1', 'subcategory_id2', 'subcategory_id3', 'unit_id', 'details', 'details_translations', 'image', 'height', 'weight', 'length', 'width', 'size', 'active', 'created_by', 'edited_by', 'deleted_by', 'method', 'product_symbol');
+    protected $fillable = array('name','translations', 'sku','store_id','balance_return_request','brand_id','category_id','subcategory_id1','subcategory_id2','subcategory_id3','unit_id', 'details','details_translations','image','height', 'weight', 'length', 'width','size', 'active','created_by','edited_by','deleted_by','method','product_symbol');
 
-    protected $casts = [
-        'translations' => 'array',
-        'details_translations' => 'array',
+    protected $casts = ['translations' => 'array',
+                        'details_translations'=>'array',
 
-        // 'store_id'=>'array',
+                        // 'store_id'=>'array',
     ];
     public function getNameAttribute($value)
     {
@@ -118,7 +117,7 @@ class Product extends Model
 
     public function product_taxes()
     {
-        return $this->belongsToMany('App\Models\ProductTax', 'products_taxes');
+        return $this->belongsToMany('App\Models\ProductTax','products_taxes');
     }
     // 1:M relationship Between "products" , "Add_Stock_Line" table
     public function stock_lines()
@@ -129,5 +128,10 @@ class Product extends Model
     public function sell_lines()
     {
         return $this->hasMany(SellLine::class);
+    }
+    // +++++++++++++++++++++ M:M Relationship : product and employee : "products" which "employee" are resposible for +++++++++++++++++
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class);
     }
 }

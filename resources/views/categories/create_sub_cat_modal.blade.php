@@ -36,10 +36,10 @@
                             style="width: 100%; margin-right: 0" placeholder="@lang('categories.categorie_name')" name="name"
                             value="{{ old('name') }}">
 
-                        <button class="add-button" type="button" data-toggle="collapse"
-                            data-target="#translation_table_category" aria-expanded="false"
+                        <button class="add-button d-flex justify-content-center align-items-center" type="button"
+                            data-toggle="collapse" data-target="#translation_table_category" aria-expanded="false"
                             aria-controls="collapseExample">
-                            {{ __('categories.addtranslations') }}
+                            <i class="fas fa-globe"></i>
                         </button>
                         @include('layouts.translation_inputs', [
                             'attribute' => 'name',

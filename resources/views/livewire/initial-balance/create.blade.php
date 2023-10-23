@@ -36,7 +36,6 @@
                     <div class="card-body py-0">
                         {{-- <div class="col-md-12"> --}}
                         <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
                             <div
                                 class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('store_id', __('lang.store') . '*', [
@@ -58,13 +57,18 @@
                                         'placeholder' => __('lang.please_select'),
                                         'wire:model' => 'item.0.store_id',
                                     ]) !!}
-                                    <button type="button" class="add-button" data-toggle="modal"
-                                        data-target=".add-store" href="{{ route('store.create') }}"><i
-                                            class="fas fa-plus"></i></button>
+
+                                    <button type="button"
+                                        class="add-button d-flex justify-content-center align-items-center"
+                                        data-toggle="modal" data-target=".add-store"
+                                        href="{{ route('store.create') }}"><i class="fas fa-plus"></i>
+                                    </button>
                                     @include('store.create', ['quick_add' => 1])
+
                                 </div>
                                 @error('item.0.store_id')
-                                    <span class="error text-danger">{{ $message }}</span>
+                                    <span style="font-size: 10px;font-weight: 700;"
+                                        class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -111,7 +115,8 @@
                                     'wire:change' => 'confirmCreateProduct()',
                                 ]) !!}
                                 @error('item.0.name')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label style="font-size: 10px;font-weight: 700;"
+                                        class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                             {{-- <div class="col-md-3">
@@ -132,7 +137,8 @@
                                         'wire:model' => 'item.0.product_symbol',
                                     ]) !!}
                                     @error('item.0.product_symbol')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                        <label style="font-size: 10px;font-weight: 700;"
+                                            class="text-danger error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
                                 <div
@@ -180,7 +186,8 @@
                                     {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
                                 </div>
                                 @error('item.0.category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label style="font-size: 10px;font-weight: 700;"
+                                        class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
 

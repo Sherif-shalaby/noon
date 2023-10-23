@@ -558,7 +558,9 @@
                 </div>
 
                 <div class="col-md-12 product_unit_raws mx-auto" style="width: 95%">
-                    @if (!empty($recent_product->variations))
+                    @include('products.product_unit_raw')
+                    <input type="hidden" id="raw_unit_index" value="0" />
+                    {{-- @if (!empty($recent_product->variations))
                         @foreach ($recent_product->variations as $index => $variation)
                             @include('products.product_unit_raw', [
                                 'index' => $index,
@@ -575,7 +577,7 @@
                             $index = 0;
                         }
                     @endphp
-                    <input type="hidden" id="raw_unit_index" value="{{ $index }}" />
+                    <input type="hidden" id="raw_unit_index" value="{{ $index }}" /> --}}
                 </div>
                 {{-- sizes --}}
                 {{-- add prices --}}

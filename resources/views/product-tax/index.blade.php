@@ -24,11 +24,16 @@
             <div class="col-md-4">
                 <div
                     class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <a data-toggle="modal" data-target="#add_product_tax" class="btn btn-primary text-white"
+                    {{-- <a data-toggle="modal" data-target="#add_product_tax" class="btn btn-primary text-white"
                         data-toggle="modal">
                         @lang('lang.add_product_tax')
                     </a>
-                    @include('product-tax.create')
+                    @include('product-tax.create') --}}
+
+                    <a data-href="{{ route('general-tax.create') }}" data-container=".view_modal"
+                        class="btn btn-modal btn-primary text-white" data-toggle="modal">
+                        @lang('lang.add_general_tax')
+                    </a>
                 </div>
             </div>
         </div>

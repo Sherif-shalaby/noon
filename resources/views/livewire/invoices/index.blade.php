@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     @if (@isset($invoices) && !@empty($invoices) && count($invoices) > 0)
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                        <div class="table-responsive">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -187,3 +187,4 @@
         </div>
     </div>
 </div>
+

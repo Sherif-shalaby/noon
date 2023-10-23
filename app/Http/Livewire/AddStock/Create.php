@@ -31,12 +31,30 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
 use function Symfony\Component\String\s;
 
 class Create extends Component
 {
+    protected $rules = [
+        'store_id' => 'required',
+        'supplier' => 'required',
+        'paying_currency' => 'required',
+        'purchase_type' => 'required',
+        'payment_status' => 'required',
+        'method' => 'required',
+        'amount' => 'required',
+        'transaction_currency' => 'required',
+        'items.*.dollar_purchase_price' => 'required_if:items.*.purchase_price,==,null,0,|nullable|numeric',
+        'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
+        'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
+        'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
+        'source_type' => 'required',
+        'source_id' => 'required',
+    ];
+
     use WithPagination;
 
     public $divide_costs, $other_expenses = 0, $other_payments = 0, $store_id, $order_date, $purchase_type,
@@ -46,20 +64,6 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name, $total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price;
 
-    protected $rules = [
-        'store_id' => 'required',
-        'supplier' => 'required',
-        //    'status' => 'required',
-        'paying_currency' => 'required',
-        'purchase_type' => 'required',
-        'payment_status' => 'required',
-        'method' => 'required',
-        'amount' => 'required',
-        'transaction_currency' => 'required',
-        'items.*.variation_id' => 'required',
-        'source_type' => 'required',
-        'source_id' => 'required'
-    ];
 
     public function mount()
     {
@@ -195,9 +199,18 @@ class Create extends Component
         );
     }
 
-    public function updated($propertyName)
+    public function updated()
     {
-        $this->validateOnly($propertyName);
+
+        //        foreach ($this->items as $item) {
+        //            if (!empty($item['purchase_price']) && !empty($item['selling_price'])) {
+        //                $this->addError('items.*.selling_price', 'Selling price is required if purchase price is set.');
+        //            }
+        //            if (!empty($item['dollar_purchase_price']) && !empty($item['dollar_selling_price'])) {
+        //                $this->addError('items.*.dollar_selling_price', 'Dollar Selling price is required if purchase price is set.');
+        //            }
+        //        }
+        $this->validate();
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -205,7 +218,6 @@ class Create extends Component
             $this->rules = [
                 'store_id' => 'required',
                 'supplier' => 'required',
-                //                'status' => 'required',
                 'transaction_currency' => 'required',
                 'purchase_type' => 'required',
                 'divide_costs' => 'required',
@@ -219,7 +231,6 @@ class Create extends Component
                 'store_id' => 'required',
                 'supplier' => 'required',
                 'transaction_currency' => 'required',
-                'purchase_type' => 'required',
                 'payment_status' => 'required',
                 'method' => 'required',
                 'amount' => 'required',
@@ -455,6 +466,9 @@ class Create extends Component
         if (!empty($this->searchProduct)) {
             $this->searchProduct = '';
         }
+        if (!empty($this->search_by_product_symbol)) {
+            $this->search_by_product_symbol = '';
+        }
         $product = Product::find($id);
         $variations = $product->variations;
         if ($add_via == 'unit') {
@@ -490,7 +504,10 @@ class Create extends Component
         $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
+            'variation_id' => $variations->first()->id ?? null,
             'product' => $product,
+            'purchase_price' => null,
+            'dollar_purchase_price' => null,
             'quantity' => 1,
             'unit' => null,
             'base_unit_multiplier' => null,
@@ -905,7 +922,7 @@ class Create extends Component
         if (empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])) {
             $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->num_uf($this->exchange_rate);
         } else {
-            $purchase_price = $this->items[$index]['purchase_price'];
+            $purchase_price = $this->items[$index]['purchase_price'] ?? '';
         }
         return $purchase_price;
     }
@@ -916,7 +933,7 @@ class Create extends Component
         if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
             $purchase_price = $this->items[$index]['purchase_price'] / $this->num_uf($this->exchange_rate);
         } else {
-            $purchase_price = $this->items[$index]['dollar_purchase_price'];
+            $purchase_price = $this->items[$index]['dollar_purchase_price'] ?? '';
         }
         return $purchase_price;
     }

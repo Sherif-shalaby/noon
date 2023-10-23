@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    {!! Form::open(['id' => 'add_stock_form']) !!}
+                    {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -53,10 +53,11 @@
                                             'placeholder' => __('lang.please_select'),
                                             'wire:model' => 'store_id',
                                         ]) !!}
-                                        @error('store_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('store_id')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div
@@ -78,7 +79,8 @@
                                             data-target=".add-supplier"><i class="fas fa-plus"></i></button>
                                     </div>
                                     @error('supplier')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
@@ -96,10 +98,11 @@
                                             'data-name' => 'transaction_currency',
                                             'wire:model' => 'transaction_currency',
                                         ]) !!}
-                                        @error('transaction_currency')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('transaction_currency')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div
@@ -117,10 +120,11 @@
                                             'data-name' => 'purchase_type',
                                             'wire:model' => 'purchase_type',
                                         ]) !!}
-                                        @error('purchase_type')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('purchase_type')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                             </div>
@@ -147,10 +151,11 @@
                                                 'wire:model' => 'divide_costs',
                                             ],
                                         ) !!}
-                                        @error('divide_costs')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('divide_costs')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div
@@ -200,9 +205,16 @@
                                             @foreach ($search_result as $product)
                                                 <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                        <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png"
-                                                            width="50px" height="50px">
-                                                        {{ $product->sku ?? '' }} - {{ $product->name }}
+                                                        @if ($product->image)
+                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                alt="{{ $product->name }}" class="img-thumbnail"
+                                                                width="100px">
+                                                        @else
+                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                alt="{{ $product->name }}" class="img-thumbnail"
+                                                                width="100px">
+                                                        @endif
+                                                        {{ $product->product_symbol ?? '' }} - {{ $product->name }}
                                                     </div>
                                                 </li>
                                             @endforeach
@@ -264,13 +276,13 @@
                                     @foreach ($products as $product)
                                         <div class="order-btn py-2 border-bottom"
                                             wire:click='add_product({{ $product->id }})' style="cursor: pointer">
-                                            {{--                                            @if ($product->image) --}}
-                                            {{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}" --}}
-                                            {{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" > --}}
-                                            {{--                                            @else --}}
-                                            {{--                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}" --}}
-                                            {{--                                                     class="img-thumbnail" width="100px"> --}}
-                                            {{--                                            @endif --}}
+                                            @if ($product->image)
+                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                    alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                            @else
+                                                <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                    alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                            @endif
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
@@ -447,10 +459,11 @@
                                         'wire:model' => 'source_type',
                                     ]) !!}
                                 </div>
-                                @error('source_type')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
+                            @error('source_type')
+                                <span style="font-size: 10px;font-weight: 700;"
+                                    class="error text-danger">{{ $message }}</span>
+                            @enderror
                             <div
                                 class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
@@ -469,7 +482,8 @@
                                     ]) !!}
                                 </div>
                                 @error('source_id')
-                                    <span class="error text-danger">{{ $message }}</span>
+                                    <span style="font-size: 10px;font-weight: 700;"
+                                        class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -488,10 +502,11 @@
                                         'data-name' => 'payment_status',
                                         'wire:model' => 'payment_status',
                                     ]) !!}
-                                    @error('payment_status')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
+                                @error('payment_status')
+                                    <span style="font-size: 10px;font-weight: 700;"
+                                        class="error text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             @include('add-stock.partials.payment_form')
@@ -516,9 +531,10 @@
                                 @endif
                                 <div
                                     class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
+                                    dssdcsdcsd
                                     <label
                                         class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                        for="due_date">@lang('lang.due'): </label>
+                                        for="due_date">@lang('lang.due')</label>
                                     <input class="form-control m-0 initial-balance-input"
                                         placeholder="@lang('lang.due')" name="due_date" type="date"
                                         id="due_date" autocomplete="off" fdprocessedid="pipnea"
@@ -550,7 +566,6 @@
                                     {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
-
                                     {!! Form::text(
                                         'notify_before_days',
                                         !empty($transaction_payment) && !empty($transaction_payment->notify_before_days)

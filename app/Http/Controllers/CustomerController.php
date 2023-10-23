@@ -102,6 +102,9 @@ class CustomerController extends Controller
             'success' => true,
             'msg' => __('lang.success')
         ];
+        if($request->quick_add){
+            return $output;
+        }
 
 
     } catch (\Exception $e) {
@@ -226,6 +229,13 @@ class CustomerController extends Controller
         return view('customers.important_date_row')->with(compact(
             'index'
         ));
+    }
+    public function getDropdown()
+    {
+        $customers = Customer::orderBy('created_by', 'asc')->pluck('name', 'id')->toArray();
+        $customers_dp = $this->Util->createDropdownHtml($customers, __('lang.please_select'));
+        $output = [$customers_dp , array_key_last($customers)];
+        return $output;
     }
 }
 

@@ -19,7 +19,7 @@
             <input type="text" style="width: 85%" class="mx-auto form-control sku"
                 wire:model="rows.{{ $index }}.sku" required>
             @error('rows.' . $index . '.sku')
-                <label class="text-danger error-msg">{{ $message }}</label>
+                <label style="font-size: 10px;font-weight: 700;" class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
 
@@ -120,7 +120,7 @@
             <input type="text" class="form-control" wire:model="rows.{{ $index }}.dollar_purchase_price"
                 wire:change="changePurchasePrice({{ $index }})" style="width: 70px;" required>
             @error('rows.' . $index . '.dollar_purchase_price')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -130,7 +130,7 @@
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price"
                 wire:change="changeSellingPrice({{ $index }})" style="width: 70px;" required>
             @error('rows.' . $index . '.dollar_selling_price')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -153,7 +153,7 @@
             <input type="text" class="form-control" wire:model="rows.{{ $index }}.purchase_price"
                 style="width: 70px;" wire:change="changeDollarPurchasePrice({{ $index }})" required>
             @error('rows.' . $index . '.purchase_price')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -165,7 +165,7 @@
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price"
                 style="width: 70px;" required>
             @error('rows.' . $index . '.selling_price')
-                <span class="error text-danger">{{ $message }}</span>
+                <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
             @enderror
         </div>
 
@@ -290,7 +290,7 @@
                                 <input type="checkbox" class="custom-control-input"
                                     name="discount_from_original_price" id="discount_from_original_price"
                                     style="font-size: 0.75rem;border-radius: 12px;height: 30px;"
-                                    @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif>
+                                    @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif>
                                 <label class="custom-control-label" id="custom-control-label" style="font-size: 8px"
                                     for="discount_from_original_price">
                                     @lang('lang.discount_from_original_price_with_free_quantity')

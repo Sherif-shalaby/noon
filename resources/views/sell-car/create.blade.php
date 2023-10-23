@@ -158,6 +158,20 @@
                             </div>
                         </div>
                     </div>
+                    {{-- ++++++ days_number_notify ++++++ --}}
+
+                    <div class="form-group hidden col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        id="days_number_notify">
+                        <div class="input-wrapper">
+                            {!! Form::number('days_number_notify', null, [
+                                'class' => 'form-control initial-balance-input m-auto',
+                                'style' => 'width:100%;',
+                                'placeholder' => __('lang.days_number_notify'),
+                                'min' => '0',
+                            ]) !!}
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -170,3 +184,16 @@
         </div>
     </div>
 </div>
+<script>
+    // jQuery code to toggle the input field based on checkbox state
+    $(document).ready(function() {
+        // when check "التنبيه قبل موعد انتهاء ترخيص العربة" checkbox Then appear "days_number_notify" inputField
+        $('#customSwitch1').change(function() {
+            if ($(this).is(':checked')) {
+                $('#days_number_notify').show(); // Show the input field
+            } else {
+                $('#days_number_notify').hide(); // Hide the input field
+            }
+        });
+    });
+</script>
