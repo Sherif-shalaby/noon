@@ -29,7 +29,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],null, ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
+                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
                     @error('payment_status')
                     <span class="error text-danger">{{ $message }}</span>
                     @enderror
@@ -40,9 +40,9 @@
                 <label for="" class="text-primary">العملاء</label>
                 <div class="d-flex justify-content-center">
                     <select class="form-control client select2" wire:model="client_id" id="Client_Select">
-                        <option  value="0 " readonly selected >اختر </option>
+                        <option  value="0 " readonly >اختر </option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                            <option value="{{ $customer->id }}" {{ $client_id==$customer->id?'selected':'' }}>{{ $customer->name }}</option>
                         @endforeach
                     </select>
                     <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
@@ -64,28 +64,24 @@
                                         <tr>
                                             <th >@lang('lang.product')</th>
                                             <th >@lang('lang.quantity')</th>
+                                            <th >@lang('lang.extra')</th>
                                             <th >@lang('lang.unit')</th>
-                                            {{-- <th >@lang('lang.fill')</th> --}}
-                                            {{-- <th >@lang('lang.total_quantity')</th> --}}
                                             <th >@lang('lang.price')</th>
-{{--                                            @if(!empty($showColumn))--}}
-                                                <th >@lang('lang.price') $ </th>
-                                                <th> @lang('lang.exchange_rate')</th>
-{{--                                            @endif--}}
+{{--                                        @if(!empty($showColumn))--}}
+                                            <th >@lang('lang.price') $ </th>
+                                            <th> @lang('lang.exchange_rate')</th>
+{{--                                        @endif--}}
                                             <th >@lang('lang.discount')</th>
                                             <th >@lang('lang.discount_category')</th>
                                             <th >@lang('lang.sub_total')</th>
                                             <th >@lang('lang.sub_total') $</th>
-{{--                                            <th> @lang('lang.stores')</th>--}}
                                             <th >@lang('lang.current_stock')</th>
-{{--                                            <th style="width: 12%">@lang('lang.exchange_rate')</th>--}}
                                             <th >@lang('lang.action')</th>
                                         </tr>
                                         @php
                                           $total = 0;
                                         @endphp
                                         @foreach ($items as $key => $item)
-                                        {{ $item['price'] }}
                                             <tr>
                                                 <td >
                                                     {{$item['product']['name']}}
@@ -107,21 +103,19 @@
                                                         </div>
                                                     </div>
                                                 </td>
-
+                                                <td>{{$item['extra_quantity']}}</td>
                                                 <td>
-                                                    <select class="select" style="height:30% !important" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
-                                                        <option selected value="0.00">select</option>
-                                                        @if(!empty($item['variation']))
-                                                            @foreach($item['variation'] as $item)
-                                                                <option value="{{$item['id']}}" >
-                                                                    {{$item['unit']['name']??''}}
+                                                    <select class="form-control" style="height:30% !important;width:100px;" wire:model="items.{{ $key }}.unit_id"  wire:change="changeUnit({{$key}})">
+                                                        <option value="0.00">select</option>
+                                                         @if(!empty($item['variation']))
+                                                           @foreach($item['variation'] as $i=>$var)
+                                                                <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
+                                                                    {{$var['unit']['name']??''}}
                                                                 </option>
-                                                            @endforeach
+                                                            @endforeach 
                                                         @endif
                                                     </select>
                                                 </td>
-                                                {{-- <td>{{$item['base_unit_multiplier'] ?? 1}}</td> --}}
-                                                {{-- <td>{{$item['total_quantity'] ?? 1}}</td> --}}
                                                 <td >
                                                     {{$item['price']??''}}
                                                 </td>
@@ -140,18 +134,22 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="select discount_category " style="height:30% !important" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}})">
-                                                        <option selected value="0.00">select</option>
+                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}})">
+                                                        <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
+                                                                    @if($discount['price_category']!==null)
                                                                     @if(in_array($client_id, $discount['price_customer_types']))
                                                                     <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
+                                                                    @endif
                                                                     @endif
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
+                                                                    @if($discount['price_category']!==null)
                                                                         <option value="{{$discount['id']}}">{{$discount['price_category']}}</option>
+                                                                    @endif
                                                                 @endforeach
                                                             @endif
                                                         @endif
@@ -163,15 +161,7 @@
                                                 <td>
                                                     {{$item['dollar_sub_total']??0}}
                                                 </td>
-{{--                                                <td>--}}
-{{--                                                    <select class="select" style="height:30% !important" wire:model="items.{{ $key }}.store" >--}}
-{{--                                                        <option selected value="0.00">select</option>--}}
-{{--                                                        @foreach($item['stores'] as $store)--}}
-{{--                                                            <option value="{{$store->store->id}}">{{$store->store->name}}</option>--}}
-{{--                                                        @endforeach--}}
-{{--                                                    </select>--}}
-{{--                                                </td>--}}
-                                                <td >
+                                                <td>
                                                     <span class="current_stock"> {{$item['quantity_available']??0}} </span>
                                                 </td>
                                                 <td  class="text-center">

@@ -537,6 +537,9 @@ return [
     'add_plan'=>'Add Plan',
     'edit_plan'=>'Edit Plan',
     'enter_product_symbol' => 'Enter Product Symbol',
-    'price_after_discounting_quantity' => 'Price after discounting quantity',];
+    'price_after_discounting_quantity' => 'Price after discounting quantity',
+    'extra'=>'Extra',
+    'price_after_discounting_quantity' => 'Price after discounting quantity',
+];
 
 
