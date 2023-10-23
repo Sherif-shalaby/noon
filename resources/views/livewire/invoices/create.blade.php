@@ -39,11 +39,11 @@
             <div class="col-md-2">
                 <label for="" class="text-primary">العملاء</label>
                 <div class="d-flex justify-content-center">
-                    {{$client_id}}
+                    
                     <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
                         <option  value="0 " readonly >اختر </option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                            <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}>{{ $customer->name }}</option>
                         @endforeach
                     </select>
                     <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
