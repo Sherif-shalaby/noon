@@ -144,7 +144,7 @@ class Create extends Component
                 }
                 if ($data['var1'] == "basic_unit_id") {
                 // dd($data['var1']);
-                  
+
                     $this->changeBaseUnit($data['var3']);
                 }
             } else if ($data['var1'] == "price_customer_types" && $data['var3'] !== '') {
@@ -644,7 +644,7 @@ class Create extends Component
             }
             $this->sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * (float)$this->rows[$index]['equal'];
 
-            return number_format($this->sub_total[$index], 2);
+            return number_format($this->sub_total[$index], 3);
         }
     }
 
@@ -661,7 +661,7 @@ class Create extends Component
             // }
             $this->dollar_sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * (float)$this->rows[$index]['equal'];
 
-            return number_format($this->dollar_sub_total[$index], 2);
+            return number_format($this->dollar_sub_total[$index], 3);
         } else {
             $this->quantity[$index] = 0;
             $this->dollar_purchase_price[$index] = 0;
@@ -732,12 +732,12 @@ class Create extends Component
     }
     public function changePurchasePrice($index)
     {
-        $this->rows[$index]['purchase_price'] = (float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate;
+        $this->rows[$index]['purchase_price'] = number_format((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate,3) ;
         $this->changeFilling($index);
     }
     public function changeDollarPurchasePrice($index)
     {
-        $this->rows[$index]['dollar_purchase_price'] = (float)$this->rows[$index]['purchase_price'] / (float)$this->exchange_rate;
+        $this->rows[$index]['dollar_purchase_price'] = number_format((float)$this->rows[$index]['purchase_price'] / (float)$this->exchange_rate,3) ;
         $this->changeDollarFilling($index);
     }
     public function changeExchangeRateBasedPrices()
@@ -756,12 +756,12 @@ class Create extends Component
         if (!empty($this->rows[$index]['fill_quantity'])) {
             if ($this->rows[$index]['purchase_price'] != "") {
                 if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    $this->rows[$index]['dollar_selling_price'] = ($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']);
-                    $this->rows[$index]['selling_price'] = ($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate;
+                    $this->rows[$index]['dollar_selling_price'] =number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
+                    $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate,3) ;
                 } else {
                     $percent = ((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
-                    $this->rows[$index]['dollar_selling_price'] = ((float)$this->rows[$index]['dollar_purchase_price'] + $percent);
-                    $this->rows[$index]['selling_price'] = ((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate;
+                    $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent),3) ;
+                    $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate,3);
                 }
             }
         }
@@ -771,19 +771,20 @@ class Create extends Component
         if (!empty($this->rows[$index]['fill_quantity'])) {
             if ($this->rows[$index]['dollar_purchase_price'] != "") {
                 if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    $this->rows[$index]['dollar_selling_price'] = ($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']);
-                    $this->rows[$index]['selling_price'] = ($this->rows[$index]['purchase_price'] + (float)$this->rows[$index]['fill_quantity']) ;
+                    $this->rows[$index]['dollar_selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3);
+                    $this->rows[$index]['selling_price'] =  number_format(($this->rows[$index]['purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
                 } else {
-                    $percent = ((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
-                    $this->rows[$index]['dollar_selling_price'] = ((float)$this->rows[$index]['dollar_purchase_price'] + $percent);
-                    $this->rows[$index]['selling_price'] = ((float)$this->rows[$index]['purchase_price'] + $percent);
+                    $percent = ((float)$this->rows[$index]['purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
+                    $this->rows[$index]['dollar_selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) ,3) ;
+                    $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['purchase_price'] + $percent),3) ;
                 }
+
             }
         }
     }
     public function changeSellingPrice($index)
     {
-        $this->rows[$index]['selling_price'] = (float)$this->rows[$index]['dollar_selling_price'] * (float)$this->exchange_rate;
+        $this->rows[$index]['selling_price'] = number_format((float)$this->rows[$index]['dollar_selling_price'] * (float)$this->exchange_rate,3) ;
     }
     public function updateProductQuantityStore($product_id,$variation_id, $store_id, $new_quantity)
     {
@@ -865,6 +866,7 @@ class Create extends Component
     }
     public function changePrice($index, $key)
     {
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
             $sell_price = !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] :0;
             $dollar_sell_price = !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] :0;
@@ -876,34 +878,30 @@ class Create extends Component
                 $dollar_sell_price = $total_dollar_sell_price / $total_quantity ;
             }
             if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed') {
-                $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = $sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
-                $this->rows[$index]['prices'][$key]['price_after_desc'] = $dollar_sell_price - (float)$this->rows[$index]['prices'][$key]['price'];
+                $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = number_format($sell_price - (float)$this->rows[$index]['prices'][$key]['price'],3) ;
+                $this->rows[$index]['prices'][$key]['price_after_desc'] = number_format($dollar_sell_price - (float)$this->rows[$index]['prices'][$key]['price'],3) ;
             } elseif ($this->rows[$index]['prices'][$key]['price_type'] === 'percentage') {
                 $percent = $this->rows[$index]['prices'][$key]['price'] / 100;
-                $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
-                $this->rows[$index]['prices'][$key]['price_after_desc'] = (float)($dollar_sell_price - ($percent * $dollar_sell_price));
+                $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = number_format((float)($sell_price - ($percent * $sell_price)),3) ;
+                $this->rows[$index]['prices'][$key]['price_after_desc'] = number_format( (float)($dollar_sell_price - ($percent * $dollar_sell_price)),3);
             }
             $price = !empty($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) ? (float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] : $sell_price;
             $dollar_price = !empty($this->rows[$index]['prices'][$key]['price_after_desc']) ? (float)$this->rows[$index]['prices'][$key]['price_after_desc'] : $dollar_sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->rows[$index]['prices'][$key]['total_price']=(float)$dollar_price * (!empty($total_quantity) ? $total_quantity : 1);
-                $this->rows[$index]['prices'][$key]['dinar_total_price']=(float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
-                $this->rows[$index]['prices'][$key]['piece_price'] = $this->rows[$index]['prices'][$key]['price_after_desc'];
-                $this->rows[$index]['prices'][$key]['dinar_piece_price']=(float)$this->rows[$index]['prices'][$key]['dinar_total_price'] ;
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty($total_quantity) ? $total_quantity : 1),3);
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] ),3) ;
+                $this->rows[$index]['prices'][$key]['piece_price'] = number_format($this->rows[$index]['prices'][$key]['price_after_desc'],3) ;
+                $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_total_price'] ,3) ;
 
             }
             else{
-                $this->rows[$index]['prices'][$key]['total_price']=(float)$dollar_price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1);
-                $this->rows[$index]['prices'][$key]['dinar_total_price']=(float)$price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1);
-                $this->rows[$index]['prices'][$key]['piece_price']=(float)$this->rows[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
-                $this->rows[$index]['prices'][$key]['dinar_piece_price']=(float)$this->rows[$index]['prices'][$key]['dinar_total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->rows[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3);
+                $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
 
             }
-//            $this->rows[$index]['prices'][$key]['total_price']=(float)$this->rows[$index]['prices'][$key]['price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
-//            $this->rows[$index]['prices'][$key]['dinar_total_price']=(float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
-//            $this->rows[$index]['prices'][$key]['piece_price']=(float)$this->rows[$index]['prices'][$key]['total_price'] / ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
-//            $this->rows[$index]['prices'][$key]['dinar_piece_price']=(float)$this->rows[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] );
-            $this->rows[$index]['prices'][$key]['dinar_price']=$this->rows[$index]['prices'][$key]['price']* $this->exchange_rate;
+            $this->rows[$index]['prices'][$key]['dinar_price'] = number_format($this->rows[$index]['prices'][$key]['price']* $this->exchange_rate,3) ;
         }
     }
 }

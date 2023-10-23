@@ -36,13 +36,14 @@
                 </div>
             </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-            <div class="col-md-2" wire:ignore>
+            <div class="col-md-2">
                 <label for="" class="text-primary">العملاء</label>
                 <div class="d-flex justify-content-center">
-                    <select class="form-control client select2" wire:model="client_id" id="Client_Select">
+                    {{$client_id}}
+                    <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
                         <option  value="0 " readonly >اختر </option>
                         @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}" {{ $client_id==$customer->id?'selected':'' }}>{{ $customer->name }}</option>
+                            <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                         @endforeach
                     </select>
                     <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
@@ -113,14 +114,13 @@
                                                                 <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
                                                                     {{$var['unit']['name']??''}}
                                                                 </option>
-                                                            @endforeach 
+                                                            @endforeach
                                                         @endif
                                                     </select>
                                                 </td>
                                                 <td >
                                                     {{$item['price']??''}}
                                                 </td>
-                                                    {{-- @if(!empty($showColumn))--}}
                                                     <td >
                                                         {{ number_format($item['dollar_price']??0 , 2)}}
                                                     </td>
@@ -128,7 +128,6 @@
                                                         <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
                                                                wire:model="items.{{ $key }}.exchange_rate">
                                                     </td>
-                                                    {{--  @endif--}}
 
                                                 <td >
                                                     <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1" readonly
@@ -141,22 +140,21 @@
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
                                                                     @if($discount['price_category']!==null)
-                                                                    @if(in_array($client_id, $discount['price_customer_types']))
-                                                                    <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
-                                                                    @endif
+{{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
+                                                                            <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
                                                                     @endif
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
                                                                     @if($discount['price_category']!==null)
-                                                                        <option value="{{$discount['id']}}">{{$discount['price_category']}}</option>
+                                                                        <option value="{{$discount['id']}}">{{ $discount['price_category'] ?? ''}} </option>
                                                                     @endif
                                                                 @endforeach
                                                             @endif
                                                         @endif
                                                     </select>
                                                 </td>
-                                                <td >
+                                                <td>
                                                     {{ $item['sub_total']??0 }}
                                                 </td>
                                                 <td>
@@ -204,13 +202,13 @@
                 @this.set('department_id', $(this).val());
             });
         });
-        document.addEventListener('livewire:load', function () {
-            $('.client').select();
-            // Trigger Livewire updates when the select2 value changes
-            $('.client').on('change', function (e) {
-            @this.set('client_id', $(this).val());
-            });
-        });
+        // document.addEventListener('livewire:load', function () {
+        //     $('.client').select();
+        //     // Trigger Livewire updates when the select2 value changes
+        //     $('.client').on('change', function (e) {
+        //     @this.set('client_id', $(this).val());
+        //     });
+        // });
         document.addEventListener('livewire:load', function () {
             $('#store_id').select();
             // Trigger Livewire updates when the select2 value changes

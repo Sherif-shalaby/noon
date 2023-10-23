@@ -328,8 +328,8 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $("#Client_Select").empty().append(data_html[0]);
-                        $("#Client_Select").val(data_html[1]).trigger();
+                        $("#client_id").empty().append(data_html[0]);
+                        $("#client_id").val(data_html[1]).trigger();
                     },
                 });
             } else {
