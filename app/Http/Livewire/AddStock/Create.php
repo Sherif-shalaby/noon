@@ -595,7 +595,7 @@ class Create extends Component
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - ($percent * $sell_price)),3) ;
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - $percent ),3) ;
                 }
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
