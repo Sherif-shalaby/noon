@@ -76,9 +76,10 @@ class Create extends Component
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
-
+    
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
+        $this->client_id=1;
     }
 
     public function updated($propertyName)
@@ -124,7 +125,6 @@ class Create extends Component
         }
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
-        $this->client_id=1;
         $this->payment_status='paid';
         $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
         $this->dispatchBrowserEvent('initialize-select2');
@@ -590,7 +590,7 @@ class Create extends Component
     }
 
     public function getProductDiscount($sid){
-        $product  = ProductPrice::where('product_id', $sid);
+        $product  = ProductPrice::where('product_id', $pid);
         if(isset($product)){
             $product->where(function($query){
                 $query->where('price_start_date','<=',date('Y-m-d'));
@@ -802,15 +802,15 @@ class Create extends Component
             //         'cluster' =>  env('PUSHER_APP_CLUSTER'),
             //         'useTLS' => true
             //     );
-
-
+        
+        
             //     $pusher = new Pusher(
             //         env('PUSHER_APP_KEY'),
             //         env('PUSHER_APP_SECRET'),
             //         env('PUSHER_APP_ID'),
             //         $options
             //     );
-
+        
             //     $data=BalanceRequestNotification::create([
             //         'product_id'=>$product_id,
             //         'variation_id'=>$variation_id,

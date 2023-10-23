@@ -822,9 +822,9 @@ class Create extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalDollarCost,3));
+        $this->changeAmount(number_format($totalDollarCost,2));
 //        dd($totalDollarCost);
-        return $this->num_uf($totalDollarCost);
+        return number_format($this->num_uf($totalDollarCost),2);
     }
 
     public function changeAmount($value){
@@ -832,9 +832,9 @@ class Create extends Component
     }
     public function changeTotalAmount(){
         if($this->paying_currency == 2){
-            $this->total_amount =$this->sum_dollar_total_cost() +$this->calcPayment();
+            $this->total_amount =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
         }else{
-            $this->total_amount =$this->sum_total_cost() +$this->calcPayment();
+            $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
         }
     }
     public function sum_sub_total(){

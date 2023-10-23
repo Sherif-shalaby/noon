@@ -329,7 +329,8 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#client_id").empty().append(data_html[0]);
-                        $("#client_id").val(data_html[1]).trigger();
+                        
+                        $("#client_id").val(data_html[1]).change();
                     },
                 });
             } else {
