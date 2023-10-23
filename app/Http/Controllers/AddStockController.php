@@ -253,7 +253,7 @@ class AddStockController extends Controller
                 }
 
                 else{
-                    $amount = $pending_amount * $exchange_rate;
+                    $amount = round_250($pending_amount * $exchange_rate);
                 }
             }
             else{
@@ -261,12 +261,12 @@ class AddStockController extends Controller
                     $amount = $pending_amount / $exchange_rate;
                 }
                 else{
-                    $amount = $pending_amount;
+                    $amount = round($pending_amount);
                 }
             }
         }
         else{
-            $amount = $pending_amount;
+            $amount = round($pending_amount);
         }
 
         return $amount;
