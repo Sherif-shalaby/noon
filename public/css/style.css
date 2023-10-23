@@ -34922,3 +34922,20 @@ table {
     width:50px !important;
     text-align:left;
 }
+ul
+{
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+/* Notification System */
+.notification-list
+{
+    position: relative;
+}
+.notification-number
+{
+    position: absolute;
+    top: -4px;
+    right: 0px;
+}

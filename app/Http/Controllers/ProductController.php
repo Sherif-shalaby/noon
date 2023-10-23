@@ -2,33 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use App\Models\AddStockLine;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Customer;
-use App\Models\CustomerType;
-use App\Models\Product;
-use App\Models\ProductExpiryDamage;
-use App\Models\ProductPrice;
-use App\Models\ProductStore;use App\Models\ProductTax;
-use App\Models\Store;
-use App\Models\System;
+use Carbon\Carbon;
 use App\Models\Tax;
+use App\Utils\Util;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Brand;
+use App\Models\Store;
+use App\Models\System;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Variation;
-use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use App\Models\AddStockLine;
+use App\Models\CustomerType;
+use App\Models\ProductPrice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
-use App\Utils\Util;
+use App\Models\ProductExpiryDamage;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AddProductNotification;
+use Illuminate\Contracts\Foundation\Application;
+use App\Models\ProductStore;use App\Models\ProductTax;
+use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -215,24 +217,35 @@ class ProductController extends Controller
         ProductPrice::create($data_des);
     }
 
-
-
     $output = [
         'success' => true,
         'msg' => __('lang.success')
     ];
      } catch (\Exception $e) {
+            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
     }
+    // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+    // Fetch the user
+    $users = User::where('id','!=',auth()->user()->id)->get();
+    $product_name = $product->name;
+    // Get the name of the user creating the employee
+    $userCreateEmp = auth()->user()->name;
+    $type = "create_product";
+    // Send notification to All users Except "auth()->user()"
+    foreach ($users as $user)
+    {
+        Notification::send($user, new AddProductNotification($product->id ,$userCreateEmp,$product_name,$type));
+    }
+    // +++++++++++++++ End : Notification ++++++++++++++++++++++
     return redirect()->back()->with('status', $output);
   }
-  public function getPriceCustomerFromType($customer_types)
+    public function getPriceCustomerFromType($customer_types)
     {
-
         $discount_customers = [];
         if (!empty($customer_types)) {
             $customers = Customer::whereIn('customer_type_id', $customer_types)->get();
@@ -240,7 +253,6 @@ class ProductController extends Controller
                 $discount_customers[] = $customer->id;
             }
         }
-
         return $discount_customers;
     }
   public function generateSku($name, $number = 1)

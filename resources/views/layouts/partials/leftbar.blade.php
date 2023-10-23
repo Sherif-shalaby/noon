@@ -34,12 +34,14 @@
                 <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
             </a>
         </div>
-        {{--                    <div class="notifybar">--}}
-        {{--                        <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">--}}
-        {{--                            <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">--}}
-        {{--                            <span class="live-icon"></span>--}}
-        {{--                        </a>--}}
-        {{--                    </div>--}}
+        {{-- <div class="notifybar">
+            <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">
+                <i class="dripicons-bell" style="color:rgb(101,110,249)"></i>
+                <span class="live-icon"></span>
+            </a>
+        </div> --}}
+        {{-- +++++++++++++++++ Notification +++++++++++++++++ --}}
+        @include('layouts.partials.notification_list') 
         @php
             $flags=(object)[
                 'en'=>'us',

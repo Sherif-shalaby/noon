@@ -15,10 +15,11 @@ use App\Models\Employee;
 use App\Models\LeaveType;
 use App\Models\Attendance;
 use App\Models\CustomerType;
-use App\Models\EmployeeProducts;
 use App\Utils\MoneySafeUtil;
+// use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
+use App\Models\EmployeeProducts;
 use Illuminate\Support\Facades\DB;
 use App\Utils\StockTransactionUtil;
 use Illuminate\Contracts\View\View;
@@ -26,8 +27,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AddEmployeeNotification;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class EmployeeController extends Controller
 {
@@ -209,6 +214,20 @@ class EmployeeController extends Controller
             $employee->photo = store_file($request->file('photo'), 'employees');
         }
         $employee->save();
+        // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+        // Fetch the user
+        $users = User::where('id','!=',auth()->user()->id)->get();
+        $employee_name = $employee->employee_name;
+        // Get the name of the user creating the employee
+        $userCreateEmp = auth()->user()->name;
+        $type = "create_employee";
+        // Send notification to users
+        foreach ($users as $user)
+        {
+            Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
+        }
+        // +++++++++++++++ End : Notification ++++++++++++++++++++++
+
         // insert "employee_id" and "product_id" of employee's product into "employee_product" table
         for($i = 0; $i < count($data['ids']); $i++) {
             $product = Product::find($data['ids'][$i]);
@@ -485,7 +504,6 @@ class EmployeeController extends Controller
           }
       }
   }
-
 
 }
 

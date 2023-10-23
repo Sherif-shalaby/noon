@@ -58,7 +58,7 @@ class Create extends Component
     'transaction_currency' => 'required',
     'items.*.variation_id' => 'required',
     'source_type' => 'required',
-    'source_id' => 'required'
+    // 'source_id' => 'required'
 ];
 
     public function mount(){
@@ -565,13 +565,13 @@ class Create extends Component
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
                     $this->items[$index]['prices'][$key]['dinar_price_after_desc'] = (float)($sell_price - $percent);
                     $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($dollar_selling_price - ($percent * $dollar_selling_price));
-                
+
                 }
                 if(!empty($this->items[$index]['prices'][$key]['price_after_desc'])){
                     $this->items[$index]['prices'][$key]['total_price']=(float)$this->items[$index]['prices'][$key]['price_after_desc'] * ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
                     $this->items[$index]['prices'][$key]['dinar_total_price']=(float)$this->items[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
                     $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
-                    $this->items[$index]['prices'][$key]['dinar_piece_price']=(float)$this->items[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );                
+                    $this->items[$index]['prices'][$key]['dinar_piece_price']=(float)$this->items[$index]['prices'][$key]['dinar_total_price'] / ((float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'] );
                 }
             }
         }
