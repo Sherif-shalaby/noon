@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Livewire\Invoices;
-use Pusher\Pusher;
+// use Pusher\Pusher;
 use App\Models\AddStockLine;
 use App\Models\BalanceRequestNotification;
 use App\Models\CashRegister;
@@ -797,30 +797,30 @@ class Create extends Component
             }
             $details->decrement('quantity_available', $qty_difference);
             //send notification if balance_return_request is reached
-            if($details->quantity_available <= $product->balance_return_request){
-                $options = array(
-                    'cluster' =>  env('PUSHER_APP_CLUSTER'),
-                    'useTLS' => true
-                );
+            // if($details->quantity_available <= $product->balance_return_request){
+            //     $options = array(
+            //         'cluster' =>  env('PUSHER_APP_CLUSTER'),
+            //         'useTLS' => true
+            //     );
         
         
-                $pusher = new Pusher(
-                    env('PUSHER_APP_KEY'),
-                    env('PUSHER_APP_SECRET'),
-                    env('PUSHER_APP_ID'),
-                    $options
-                );
+            //     $pusher = new Pusher(
+            //         env('PUSHER_APP_KEY'),
+            //         env('PUSHER_APP_SECRET'),
+            //         env('PUSHER_APP_ID'),
+            //         $options
+            //     );
         
-                $data=BalanceRequestNotification::create([
-                    'product_id'=>$product_id,
-                    'variation_id'=>$variation_id,
-                    'isread'=>0,
-                    'type'=>'purchase_order',
-                    'alert_quantity'=>$product->balance_return_request,
-                    'qty_available'=>$details->quantity_available
-                ]);
-                $pusher->trigger('order-channel', 'new-order', $data);
-            }
+            //     $data=BalanceRequestNotification::create([
+            //         'product_id'=>$product_id,
+            //         'variation_id'=>$variation_id,
+            //         'isread'=>0,
+            //         'type'=>'purchase_order',
+            //         'alert_quantity'=>$product->balance_return_request,
+            //         'qty_available'=>$details->quantity_available
+            //     ]);
+            //     $pusher->trigger('order-channel', 'new-order', $data);
+            // }
         return true;
     }
     public function getInvoicePrint($transaction, $payment_types, $transaction_invoice_lang = null)
