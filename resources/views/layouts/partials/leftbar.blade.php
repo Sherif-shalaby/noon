@@ -22,7 +22,13 @@
             {{--                        <p>Social Media Strategist</p>--}}
         </div>
         <div class="userbox">
-            <a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/logout.svg')}}" class="img-fluid" alt="logout"></a>
+            <a href="{{ route('logout') }}" class="profile-icon" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <img src="{{ asset('images/svg-icon/logout.svg') }}" class="img-fluid" alt="logout">
+            </a>
+            
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
         <div class="profilename" style="padding-top: 20px">
             <a href="https://api.whatsapp.com/send?phone={{$settings['watsapp_numbers']}}">

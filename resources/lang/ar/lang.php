@@ -561,8 +561,16 @@ return array(
     'extra'=>'اضافى',
     'draft_transactions'=>'العمليات محفوظة فى المسودة',
     'quick_pay' =>'دفع سريع',
-    
-    
+    'highest_price'=>'الاعلى سعرا',
+    'lowest_price'=>'الاقل سعرا',
+    'from_a_to_z'=>'من الاف للياء',
+    'from_z_to_a'=>'من الياء للالف',
+    'nearest_expiry_filter'=>'اقرب انتهائا للصلاحية',
+    'longest_expiry_filter'=>'أطول انتهائا للصلاحية',
+    'dollar_highest_price'=>'$ الاعلى سعرا',
+    'dollar_lowest_price'=>'$ الاقل سعرا',
+    'out_of_stock' => 'لا يوجد مخزون',
+    'po' => 'أمر شراء',
 
 );
 

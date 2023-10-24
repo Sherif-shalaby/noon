@@ -56,7 +56,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
                                     {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
                                         ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
@@ -65,12 +65,21 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')],$purchase_type ,
                                     ['class' => 'form-control select2', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),
                                      'data-name' => 'purchase_type', 'wire:model' => 'purchase_type']) !!}
                                     @error('purchase_type')
+                                    <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2">
+                                    {!! Form::label('purchase_type', __('lang.po') , []) !!}
+                                    {!! Form::select('purchase_type', $po_nos,null,
+                                    ['class' => 'form-control select2', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'),
+                                     'data-name' => 'po_id', 'wire:model' => 'po_id']) !!}
+                                    @error('po_id')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>

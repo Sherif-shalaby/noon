@@ -542,7 +542,16 @@ return [
     'price_after_discounting_quantity' => 'Price after discounting quantity',
     'draft_transactions'=>'Draft Transactions',
     'quick_pay' =>'دفع سري',
-    
+    'highest_price'=>'Highest Price',
+    'lowest_price'=>'Lowest Price',
+    'from_a_to_z'=>'A to Z',
+    'from_z_to_a'=>'Z to A',
+    'nearest_expiry_filter'=>'Nearest Expiry',
+    'longest_expiry_filter'=>'Longest Expiry',
+    'dollar_highest_price'=>'Highest Price $',
+    'dollar_lowest_price'=>'Lowest Price $',
+    'out_of_stock' => 'Out Of Stock',
+    'po' => 'PO',
 ];
 
 
