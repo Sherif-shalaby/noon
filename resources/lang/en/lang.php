@@ -549,6 +549,8 @@ return [
     'longest_expiry_filter'=>'Longest Expiry',
     'dollar_highest_price'=>'Highest Price $',
     'dollar_lowest_price'=>'Lowest Price $',
+    'out_of_stock' => 'Out Of Stock',
+    'po' => 'PO',
 ];
 
 

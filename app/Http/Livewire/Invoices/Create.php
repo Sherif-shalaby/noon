@@ -18,12 +18,15 @@ use App\Models\PaymentTransactionSellLine;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
+use App\Models\PurchaseOrderLine;
+use App\Models\PurchaseOrderTransaction;
 use App\Models\RedemptionOfPoint;
 use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\System;
+use App\Models\Transaction;
 use App\Models\TransactionPayment;
 use App\Models\TransactionSellLine;
 use App\Models\Variation;
@@ -33,6 +36,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Create extends Component
@@ -58,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere'];
+    protected $listeners = ['listenerReferenceHere','create_purchase_order'];
     public function listenerReferenceHere($data)
     {
         if(isset($data['var1'])) {
@@ -90,6 +94,8 @@ class Create extends Component
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->client_id=1;
+        $this->payment_status='paid';
+
     }
 
     public function updated($propertyName)
@@ -123,9 +129,9 @@ class Create extends Component
         $customer_types=CustomerType::latest()->pluck('name','id');
         $stores = Store::getDropdown();
         $search_result = '';
-        if (empty($store_pos)) {
-            $this->dispatchBrowserEvent('showCreateProductConfirmation');
-        }
+//        if (empty($store_pos)) {
+//            $this->dispatchBrowserEvent('showCreateProductConfirmation');
+//        }
         if (!empty($this->search_by_product_symbol)){
             $search_result = Product::when($this->search_by_product_symbol,function ($query){
                 return $query->where('product_symbol','like','%'.$this->search_by_product_symbol.'%');
@@ -160,7 +166,6 @@ class Create extends Component
         }
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
-        $this->payment_status='paid';
         $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.invoices.create', compact(
@@ -435,14 +440,14 @@ class Create extends Component
         $product = Product::where('id',$id)->first();
         $quantity_available = $this->quantityAvailable($product);
         if ( $quantity_available < 1) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
+            $this->dispatchBrowserEvent('quantity_not_enough', ['id' => $id]);
         }
-
         else {
             $current_stock = $this->getCurrentStock($product);
 //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
+            $stock = $this->getUnits($product,$this->store_id);
 //            $discount = $this->getProductDiscount($current_stock);
             if(isset($discount)){
                 $discounts = $discount;
@@ -501,6 +506,23 @@ class Create extends Component
         }
         $this->computeForAll();
 //        $this->sumSubTotal();
+    }
+
+    public function getUnits($product, $store){
+        $product_store = ProductStore::where('product_id',$product->id)
+            ->where('store_id',$store)->first();
+        $product_variations = $product->variations;
+        $variation = $product_store->variations;
+        $quantity_available = $product_store->quantity_available;
+        if(!empty($product_variations) && !empty($variation)){
+            foreach ($product_variations as $product_variation){
+                if($product_variation->unit_id == $variation->unit_id){
+                    dd(floor($quantity_available));
+                }
+            }
+        }
+
+        dd($product_variations, $variation);
     }
 
     public function computeForAll()
@@ -973,15 +995,15 @@ class Create extends Component
             //         'cluster' =>  env('PUSHER_APP_CLUSTER'),
             //         'useTLS' => true
             //     );
-        
-        
+
+
             //     $pusher = new Pusher(
             //         env('PUSHER_APP_KEY'),
             //         env('PUSHER_APP_SECRET'),
             //         env('PUSHER_APP_ID'),
             //         $options
             //     );
-        
+
             //     $data=BalanceRequestNotification::create([
             //         'product_id'=>$product_id,
             //         'variation_id'=>$variation_id,
@@ -1081,4 +1103,56 @@ class Create extends Component
 
     }
 
+    public function create_purchase_order($id)
+    {
+        $stock = AddStockLine::where('product_id',$id)->latest()->first();
+        $po_count = PurchaseOrderTransaction::count() + 1;
+        $number = 'PO' . $po_count;
+
+        try {
+            $transaction_data = [
+                'store_id' => $this->store_id,
+                'supplier_id' => null,
+                'type' => 'purchase_order',
+                'status' => 'draft',
+                'order_date' => Carbon::now(),
+                'transaction_date' => Carbon::now(),
+                'payment_status' => 'pending',
+                'po_no' => $number,
+                'final_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
+                'grand_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
+                'details' => 'Created from POS page',
+                'created_by' => Auth::user()->id
+            ];
+
+            DB::beginTransaction();
+            $transaction = PurchaseOrderTransaction::create($transaction_data);
+
+            $purchase_order_line_data = [
+                'purchase_order_transaction_id' => $transaction->id,
+                'product_id' => $id,
+                'quantity' => 1,
+                'purchase_price' => !empty($stock) ? $stock->purchase_price ?? null : null,
+                'purchase_price_dollar' => !empty($stock) ? $stock->dollar_purchase_price ?? null : null,
+                'sub_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
+            ];
+
+            PurchaseOrderLine::create($purchase_order_line_data);
+            DB::commit();
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        }
+        catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+        }
+        return $output;
+    }
 }

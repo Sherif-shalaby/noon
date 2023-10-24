@@ -568,6 +568,8 @@ return array(
     'longest_expiry_filter'=>'أطول انتهائا للصلاحية',
     'dollar_highest_price'=>'$ الاعلى سعرا',
     'dollar_lowest_price'=>'$ الاقل سعرا',
+    'out_of_stock' => 'لا يوجد مخزون',
+    'po' => 'أمر شراء',
 
 );
 

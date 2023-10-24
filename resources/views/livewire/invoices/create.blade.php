@@ -118,6 +118,19 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+            {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+            <div class="col-md-2">
+                <label for="" class="text-primary">العملاء</label>
+                <div class="d-flex justify-content-center">
+
+                    <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
+                        <option  value="0 " readonly >اختر </option>
+                        @foreach ($customers as $customer)
+                            <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}>{{ $customer->name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+
                 </div>
                 @include('invoices.partials.search')
             </div>
@@ -270,13 +283,6 @@
                 @this.set('department_id', $(this).val());
             });
         });
-        // document.addEventListener('livewire:load', function () {
-        //     $('.client').select();
-        //     // Trigger Livewire updates when the select2 value changes
-        //     $('.client').on('change', function (e) {
-        //     @this.set('client_id', $(this).val());
-        //     });
-        // });
         document.addEventListener('livewire:load', function () {
             $('#store_id').select();
             // Trigger Livewire updates when the select2 value changes
@@ -292,35 +298,21 @@
                 window.print("#receipt_section");
             });
         });
-        // document.addEventListener('livewire:load', function () {
-        //     Livewire.on('hideModal', function ($customer) {
-        //         $(".modal-backdrop").removeClass("show");
-        //         $("#add_customer").removeClass("show");
-        //
-        //     });
-        // });
-        // document.addEventListener('livewire:load', function () {
-        //     Livewire.on('customerAdded', function ($customer) {
-        //         // Re-render the Livewire component to refresh the <select>
-        //         Livewire.emit('refreshSelect');
-        //     });
-        // });
-        {{--window.addEventListener('showCreateProductConfirmation', function() {--}}
-        {{--    Swal.fire({--}}
-        {{--        title: "{{ __('lang.this_product_exists_before') }}" + "<br>" +--}}
-        {{--            "{{ __('lang.continue_to_add_stock') }}",--}}
-        {{--        icon: 'warning',--}}
-        {{--        showCancelButton: true,--}}
-        {{--        confirmButtonText: 'Yes',--}}
-        {{--        cancelButtonText: 'No',--}}
-        {{--    }).then((result) => {--}}
-        {{--        if (result.isConfirmed) {--}}
-        {{--            Livewire.emit('create');--}}
-        {{--        } else {--}}
-        {{--            Livewire.emit('cancelCreateProduct');--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--});--}}
+        window.addEventListener('quantity_not_enough', function(event) {
+            var id = event.detail.id;
+            Swal.fire({
+                title: "{{ __('lang.out_of_stock') }}" + "<br>" ,
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: LANG.cancel,
+                cancelButtonText: LANG.po,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                } else {
+                    Livewire.emit('create_purchase_order',id);
+                }
+            });
+        });
         $(document).ready(function() {
             $('select').on('change', function(e) {
 
