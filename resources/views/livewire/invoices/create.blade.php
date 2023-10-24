@@ -118,20 +118,9 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-            {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-            <div class="col-md-2">
-                <label for="" class="text-primary">العملاء</label>
-                <div class="d-flex justify-content-center">
-
-                    <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
-                        <option  value="0 " readonly >اختر </option>
-                        @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}>{{ $customer->name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
-
                 </div>
+                {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+          
                 @include('invoices.partials.search')
             </div>
         </div>
@@ -150,10 +139,8 @@
                                             <th >@lang('lang.extra')</th>
                                             <th >@lang('lang.unit')</th>
                                             <th >@lang('lang.price')</th>
-{{--                                        @if(!empty($showColumn))--}}
                                             <th >@lang('lang.price') $ </th>
                                             <th> @lang('lang.exchange_rate')</th>
-{{--                                        @endif--}}
                                             <th >@lang('lang.discount')</th>
                                             <th >@lang('lang.discount_category')</th>
                                             <th >@lang('lang.sub_total')</th>
@@ -221,7 +208,7 @@
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
                                                                     @if($discount['price_category']!==null)
-{{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
+                                                        {{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
                                                                             <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
                                                                     @endif
                                                                 @endforeach
