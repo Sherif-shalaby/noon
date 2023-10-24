@@ -560,6 +560,8 @@ return array(
     'price_after_discounting_quantity' => 'السعر بعد خصم الكميه',
     'extra'=>'اضافى',
     'draft_transactions'=>'العمليات محفوظة فى المسودة',
+    'out_of_stock' => 'لا يوجد مخزون',
+    'po' => 'أمر شراء',
 
 );
 
