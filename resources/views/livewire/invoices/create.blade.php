@@ -233,10 +233,12 @@
 {{--                                                        {{$item['quantity_available']}}--}}
                                                         @if(!empty($item['stock_units']))
 {{--                                                            {{dd($item['stock_units'])}}--}}
-                                                            @foreach($item['stock_units'] as $key => $value)
-                                                                @foreach($value as $key=> $v)
-                                                                    {{$v}} {{$key}}
+                                                            @foreach($item['stock_units'] as $i => $value)
+                                                            @if(!empty($value))
+                                                                @foreach($value as $x=> $v)
+                                                                    {{$v}} {{$x}}
                                                                 @endforeach
+                                                                @endif
                                                             @endforeach
                                                         @endif
                                                     </span>

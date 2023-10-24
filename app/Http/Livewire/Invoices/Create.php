@@ -604,8 +604,6 @@ class Create extends Component
 
     public function delete_item($key)
     {
-//        dd($this->items[$key]);
-        $this->items[$key]['stock_unit'] = '';
         unset($this->items[$key]);
         $this->computeForAll();
     }
