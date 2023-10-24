@@ -517,12 +517,13 @@ class Create extends Component
         if(!empty($product_variations) && !empty($variation)){
             foreach ($product_variations as $product_variation){
                 if($product_variation->unit_id == $variation->unit_id){
-                    dd(floor($quantity_available));
+                    
+                    // dd(floor($quantity_available));
                 }
             }
         }
 
-        dd($product_variations, $variation);
+        // dd($product_variations, $variation);
     }
 
     public function computeForAll()
