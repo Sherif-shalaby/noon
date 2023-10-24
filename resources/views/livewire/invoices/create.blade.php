@@ -25,16 +25,6 @@
                     @enderror
                 </div>
             </div>
-            {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
-            <div class="col-md-2">
-                <div class="form-group">
-                    {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                    {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
-                    @error('payment_status')
-                    <span class="error text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
             <div class="col-md-2">
                 <label for="" class="text-primary">العملاء</label>
