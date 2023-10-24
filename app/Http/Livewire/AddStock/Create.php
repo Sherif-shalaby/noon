@@ -15,12 +15,14 @@ use App\Models\MoneySafeTransaction;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
+use App\Models\PurchaseOrderTransaction;
 use App\Models\StockTransaction;
 use App\Models\StockTransactionPayment;
 use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Variation;
 use Carbon\Carbon;
@@ -62,7 +64,7 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price;
+        $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id;
 
 
     public function mount(){
@@ -105,8 +107,13 @@ class Create extends Component
 
     public function listenerReferenceHere($data)
     {
+
         if(isset($data['var1'])) {
             $this->{$data['var1']} = $data['var2'];
+        }
+        if($data['var1'] == 'po_id'){
+            $this->{$data['var1']} = (int)$data['var2'];
+            $this->add_by_po();
         }
         if($data['var1'] == 'supplier'){
             $this->exchange_rate = $this->changeExchangeRate();
@@ -114,6 +121,7 @@ class Create extends Component
         if($data['var1'] == ('paying_currency' || 'divide_costs')){
             $this->changeTotalAmount();
         }
+
     }
 
     public function render(): Factory|View|Application
@@ -131,6 +139,7 @@ class Create extends Component
         $stores = Store::getDropdown();
         $departments = Category::get();
         $customer_types = CustomerType::latest()->get();
+        $po_nos = PurchaseOrderTransaction::where('status', '!=', 'received')->pluck('po_no', 'id');
         $search_result = '';
         if (!empty($this->search_by_product_symbol)){
             $search_result = Product::when($this->search_by_product_symbol,function ($query){
@@ -196,6 +205,7 @@ class Create extends Component
             'products',
             'customer_types',
             'departments',
+            'po_nos',
             'search_result',
             'users'));
     }
@@ -557,6 +567,13 @@ class Create extends Component
             ],
         ];
         array_unshift($this->items, $new_item);
+    }
+
+    public function add_by_po(){
+        $transaction_purchase_order = PurchaseOrderTransaction::find($this->po_id);
+        $this->store_id = $transaction_purchase_order->store_id;
+        $this->supplier = $transaction_purchase_order->supplier_id;
+        dd($transaction_purchase_order);
     }
     public function addPriceRow($index){
           $new_price = [

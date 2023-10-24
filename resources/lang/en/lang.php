@@ -541,22 +541,8 @@ return [
     'extra'=>'Extra',
     'price_after_discounting_quantity' => 'Price after discounting quantity',
     'draft_transactions'=>'Draft Transactions',
-    'no_new_notification' => 'No New Notification',
-    'delete_notification' => 'Notification Deleted Successfully',
-    'create_new_employee' => 'create new employee',
-    'create_new_product' => 'create new product',
-    'expiry_alert' => 'Expiry Alert',
-    'expired' => 'Expired',
-    'days_ago' => 'days ago',
-    'days' => 'days',
-    'expired_quantity' => 'Expired Quantity',
-    'will_be_exired_in' => 'will be expired in ',
-    'in_stock' => 'In Stock',
-    'alert_quantity' => 'Alert Quantity',
-    'expired' => 'Expired',
-    'expired_quantity' => 'Expired Quantity',
-
-
+    'out_of_stock' => 'Out Of Stock',
+    'po' => 'PO',
 ];
 
 

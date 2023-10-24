@@ -11,4 +11,6 @@ LANG = {
     sorry_you_should_select_products_to_continue_delete:'يجب اختيار منتجات لحذفها',
     all_transactions_related_to_this_products_will_be_deleted:'سيتم حذف جميع المعاملات المتعلقة بهذا المنتج ؛ الأسهم والمبيعات والمشتريات وما إلى ذلك.',
     it_will_delete_the_product_and_all_its_operations:'هل انت متاكد من حذف المنتج وكل العمليات الخاصة به',
+    cancel:'الغاء',
+    po:'+ امر شراء',
 };
