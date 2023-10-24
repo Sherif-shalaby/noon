@@ -560,6 +560,7 @@ return array(
     'price_after_discounting_quantity' => 'السعر بعد خصم الكميه',
     'extra'=>'اضافى',
     'draft_transactions'=>'العمليات محفوظة فى المسودة',
+    'quick_pay' =>'دفع سريع',
     'highest_price'=>'الاعلى سعرا',
     'lowest_price'=>'الاقل سعرا',
     'from_a_to_z'=>'من الاف للياء',

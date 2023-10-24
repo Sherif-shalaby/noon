@@ -541,6 +541,7 @@ return [
     'extra'=>'Extra',
     'price_after_discounting_quantity' => 'Price after discounting quantity',
     'draft_transactions'=>'Draft Transactions',
+    'quick_pay' =>'دفع سري',
     'highest_price'=>'Highest Price',
     'lowest_price'=>'Lowest Price',
     'from_a_to_z'=>'A to Z',

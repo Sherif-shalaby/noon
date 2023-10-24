@@ -143,6 +143,24 @@
 {{--                    </div>--}}
 {{--                </div>--}}
             </div>
+            <div class="row hide-print mt-3">
+   
+                        {{-- ++++++++++++++++++++++ زرار الدفع السريع++++++++++++++++++++ --}}
+                        {{-- <div class="col-md-5 mr-2">
+                            <button data-method="cash" style="width: 100% ,background: #478299" type="button"
+                                    class="btn btn-success payment-btn" wire:click="changeStatus"
+                                    id="quick-pay-btn" ><i class="fa-solid fa-money-bill"></i>
+                                    @lang('lang.quick_pay')</button>
+                        </div> --}}
+                        <div class="col-md-5">
+                            <button  style="width: 100%; background: #5b808f" type="button"
+                                    class="btn btn-primary payment-btn"
+                                         wire:click="pendingStatus"
+                                        id="pay-later-btn" ><i class="fa fa-hourglass-start"></i>
+                                        @lang('lang.pay_later')</button>
+
+                        </div>
+            </div>
         </div>
     </div>
 </div>
