@@ -304,7 +304,7 @@ class Create extends Component
                         $dollar_total_paid = 0;
 
                         $transaction = TransactionSellLine::find($transaction->id);
-             
+
                         //  final_amount : 'النهائي بالدينار'
                         $final_amount = $transaction->final_total ;
                         //  dollar_final_amount : 'النهائي بالدولار'
@@ -318,7 +318,7 @@ class Create extends Component
                         $transaction_payment->save();
                         $transaction->save();
                     }
-                    
+
 
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
@@ -733,7 +733,7 @@ class Create extends Component
 
     public function quantityAvailable($product){
         $quantity_available = ProductStore::where('product_id',$product->id)->where('store_id',$this->store_id)
-            ->first()->quantity_available;
+            ->first()->quantity_available ?? 0;
         return $quantity_available;
     }
 
