@@ -1,4 +1,4 @@
-<div class="col-xl-2">
+<div class="col-xl-3">
     <div class="card-app">
         <div class="d-flex  align-items-center   mt-1 body-card-app pt-2">
             <input type="text" wire:model.defer="client_phone" id=""
