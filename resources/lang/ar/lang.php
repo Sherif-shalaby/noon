@@ -549,5 +549,19 @@ return array(
     'piece_price'=>'سعر القطعة',    'evening_shift' => 'شيفت مسائي' ,
     'employee_products' => 'المنتجات المسئول عنها الموظف',
     'days_number_notify' => 'عدد الايام قبل التنبيه' ,
+    'no_new_notification' => 'لا يوجد إشعار جديد',
+    'delete_notification' => 'تم حذف الاشعار بنجاح',
+    'create_new_employee' => 'إنشاء موظف جديد' ,
+    'create_new_product' => 'إنشاء منتج جديد',
+    'expiry_alert' => 'تنبيه انتهاء الصلاحية',
+    'will_be_exired_in' => 'ستنتهي في ',
+    'expired' => 'منتهي الصلاحية',
+    'days_ago' => 'أيام مضت',
+    'days' => 'أيام',
+    'in_stock' => 'في المخزن',
+    'alert_quantity' => 'كمية التنبيه',
+    'expired' => 'منتهي الصلاحية',
+    'expired_quantity' => 'الكمية منتهية الصلاحية',
+
 );
 

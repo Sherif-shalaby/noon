@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SellCarController;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +12,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\SellPosController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AddStockController;
@@ -20,28 +20,29 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\EmployeeController;
 // use App\Http\Controllers\GetDueReport;
-use App\Http\Controllers\GetDueReportController;
-use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
-// use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
+// use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\GetDueReportController;
 // use App\Http\Controllers\GetDueReportController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PayableReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
@@ -60,6 +61,12 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+    // ++++++++++++++++++++++++++++++++++++ Notifications +++++++++++++++++++++++++++++++++
+    // --------------- Mark All Posts As Read ---------------
+    Route::get('notifications/markAllAsRead', [NotificationController::class,"markAsRead"])->name('Notification.Read');
+    // --------------- delete notification  ---------------
+    Route::get('notifications/delete/{id}', [NotificationController::class,"destroy_notification"])->name('Notification.delete');
+
     // Home cards route
     Route::get('returns', function () {
         return view('returns.index');
