@@ -366,7 +366,7 @@ class Create extends Component
 //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
-//            $stock = $this->getUnits($product,$this->store_id);
+            $stock = $this->getUnits($product,$this->store_id);
 //            $discount = $this->getProductDiscount($current_stock);
             if(isset($discount)){
                 $discounts = $discount;
@@ -1048,11 +1048,11 @@ class Create extends Component
             $transaction = PurchaseOrderTransaction::create($transaction_data);
 
             $purchase_order_line_data = [
-                'transaction_id' => $transaction->id,
+                'purchase_order_transaction_id' => $transaction->id,
                 'product_id' => $id,
                 'quantity' => 1,
-                'purchase_price' => !empty($stock) ? $stock->purchase_price ?? 0 : 0,
-                'purchase_price_dollar' => !empty($stock) ? $stock->dollar_purchase_price ?? 0 : 0,
+                'purchase_price' => !empty($stock) ? $stock->purchase_price ?? null : null,
+                'purchase_price_dollar' => !empty($stock) ? $stock->dollar_purchase_price ?? null : null,
                 'sub_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
             ];
 
