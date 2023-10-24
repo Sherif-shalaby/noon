@@ -113,6 +113,11 @@ class Create extends Component
             $this->updatedDepartmentId($this->nearest_expiry_filter,'nearest_expiry_filter');
         }else if($propertyName === 'longest_expiry_filter') {
             $this->updatedDepartmentId($this->longest_expiry_filter,'longest_expiry_filter');
+        }else if($propertyName === 'dollar_highest_price') {
+            $this->updatedDepartmentId($this->dollar_highest_price,'dollar_highest_price');
+        }
+        else if($propertyName === 'dollar_lowest_price') {
+            $this->updatedDepartmentId($this->dollar_lowest_price,'dollar_lowest_price');
         }
 
     }
@@ -604,8 +609,6 @@ class Create extends Component
 
     public function delete_item($key)
     {
-//        dd($this->items[$key]);
-        $this->items[$key]['stock_unit'] = '';
         unset($this->items[$key]);
         $this->computeForAll();
     }
