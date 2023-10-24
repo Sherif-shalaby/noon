@@ -1,13 +1,18 @@
-<div class="col-xl-2 special-col">
+<div class="col-xl-3 special-col">
     <div class="card-app" >
         <div class="title-card-app">
-            الأصناف الرئيسية
+            الاقسام
             <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
                 {{-- الاقسام --}}
-                <select class="form-control depart" wire:model="department_id">
+                <select class="form-control depart select2" wire:model="department_id" data-name="department_id">
                     <option  value="0 " readonly selected >اختر </option>
                     @foreach ($departments as $depart)
-                        <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                        @if ($depart->parent_id === null)
+                            <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                            @if ($depart->subCategories->count() > 0)
+                                @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-'])
+                            @endif
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -18,7 +23,7 @@
                  <div class="row">
                     @if($allproducts and $allproducts != null)
                         @forelse ($allproducts as $product)
-                            <div class="col-md-6 order-btn" wire:click='add_product({{ $product->id }})' >
+                            <div class="col-md-3 order-btn" wire:click='add_product({{ $product->id }})' >
                                 @if ($product->image)
                                     <img src="{{ asset('uploads/products/' . $product->image) }}"
                                         alt="{{ $product->name }}" class="img-thumbnail" width="100px">
