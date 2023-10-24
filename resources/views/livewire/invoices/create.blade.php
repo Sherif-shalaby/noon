@@ -52,7 +52,7 @@
                             <label for="dollar_lowest_price">@lang('lang.dollar_lowest_price')</label>
                         </div>
                     </div>
-                 
+
                     <div class="col-md-4">
                         <div class="form-check-inline checkbox-dark">
                             <input type="checkbox" id="nearest_expiry_filter" wire:model="nearest_expiry_filter" name="customCheckboxInline2">
@@ -105,7 +105,7 @@
                     <div class="col-md-2">
                         <label for="" class="text-primary">العملاء</label>
                         <div class="d-flex justify-content-center">
-                            
+
                             <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
                                 <option  value="0 " readonly >اختر </option>
                                 @foreach ($customers as $customer)
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-          
+
                 @include('invoices.partials.search')
             </div>
         </div>
@@ -229,7 +229,17 @@
                                                     {{$item['dollar_sub_total']??0}}
                                                 </td>
                                                 <td>
-                                                    <span class="current_stock"> {{$item['quantity_available']??0}} </span>
+                                                    <span class="current_stock">
+{{--                                                        {{$item['quantity_available']}}--}}
+                                                        @if(!empty($item['stock_units']))
+{{--                                                            {{dd($item['stock_units'])}}--}}
+                                                            @foreach($item['stock_units'] as $key => $value)
+                                                                @foreach($value as $key=> $v)
+                                                                    {{$v}} {{$key}}
+                                                                @endforeach
+                                                            @endforeach
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td  class="text-center">
                                                     <div class="btn btn-sm btn-success py-0 px-1 my-1"

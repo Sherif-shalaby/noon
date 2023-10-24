@@ -355,7 +355,7 @@ class Create extends Component
                 });
         })->when($name=='brand_id', function ($query)use ($value)  {
             $query->where('brand_id', $this->brand_id);
-        
+
         })->when($name=='highest_price'&& $this->highest_price=="1", function ($query) {
             $query->withCount(['stock_lines as max_sell_price' => function ($subquery) {
                 $subquery->select(DB::raw('max(sell_price)'));
@@ -379,10 +379,10 @@ class Create extends Component
         })
         ->when($name=='from_a_to_z', function ($query){
             $query->orderBy('products.name', 'desc');
-        
+
         })->when($name=='from_z_to_a', function ($query){
             $query->orderBy('products.name', 'desc');
-        
+
         })->when($name=='nearest_expiry_filter' && $this->nearest_expiry_filter=="1", function ($query){
             $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
                 $subquery->where(function ($q) {
@@ -404,7 +404,7 @@ class Create extends Component
                 });
             }])->orderBy('expiry_date', 'desc');
         })
-        ->get();   
+        ->get();
         // dd($this->allproducts);
     }
 
@@ -447,7 +447,7 @@ class Create extends Component
 //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
-            $stock = $this->getUnits($product,$this->store_id);
+            $stock_units = $this->getUnits($product,$this->store_id);
 //            $discount = $this->getProductDiscount($current_stock);
             if(isset($discount)){
                 $discounts = $discount;
@@ -483,6 +483,7 @@ class Create extends Component
                     'client_id' => $product->customer?->id,
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
+                    'stock_units' => $stock_units,
                     'sub_total' =>  (float) 1 * $this->num_uf($price),
                     'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
@@ -509,6 +510,8 @@ class Create extends Component
     }
 
     public function getUnits($product, $store){
+        $total = [];
+        $remaning_quantity = 0;
         $product_store = ProductStore::where('product_id',$product->id)
             ->where('store_id',$store)->first();
         $product_variations = $product->variations;
@@ -517,13 +520,29 @@ class Create extends Component
         if(!empty($product_variations) && !empty($variation)){
             foreach ($product_variations as $product_variation){
                 if($product_variation->unit_id == $variation->unit_id){
-                    
-                    // dd(floor($quantity_available));
+                    $name1 =
+                    $total[] =[
+                        floor($quantity_available)=> $product_variation->unit->name
+                    ];
+//                    $total[$product_variation->unit->name] = floor($quantity_available);
+                    if($quantity_available - floor($quantity_available) > 0){
+                        $remaning_quantity = (float)explode('.', $quantity_available)[1] ;
+                    }
+                    if(!empty($remaning_quantity) && $product_variation->basic_unit_id == $variation->basic_unit_id){
+                       $basic_unit_name=$product_variation->basic_unit->name ;
+                       array_push($total,[ $remaning_quantity=>$basic_unit_name]);
+
+//                        $total[$product_variation->basic_unit->name] = $remaning_quantity;
+                        break;
+                    }
                 }
             }
         }
-
-        // dd($product_variations, $variation);
+//        foreach ($total as $t){
+//            dd($t);
+//        }
+//        dd($total);
+        return $total;
     }
 
     public function computeForAll()
@@ -585,6 +604,8 @@ class Create extends Component
 
     public function delete_item($key)
     {
+//        dd($this->items[$key]);
+        $this->items[$key]['stock_unit'] = '';
         unset($this->items[$key]);
         $this->computeForAll();
     }
@@ -682,7 +703,8 @@ class Create extends Component
     }
 
     public function quantityAvailable($product){
-        $quantity_available = $product->stock_lines->sum('quantity') - $product->stock_lines->sum('quantity_sold');
+        $quantity_available = ProductStore::where('product_id',$product->id)->where('store_id',$this->store_id)
+            ->first()->quantity_available;
         return $quantity_available;
     }
 
