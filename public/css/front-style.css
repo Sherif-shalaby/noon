@@ -409,11 +409,52 @@ select.form-control {
     }
 }
 
+@keyframes fadeOutLeft {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+@keyframes fadeOutLeftBig {
+    0% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-2000px);
+    }
+}
+
 /* Apply the animation to the element you want to animate */
 .animated-element {
-    animation: bounceOut 0.5s ease;
+    animation: fadeOutLeftBig 1s ease;
     height: 100vh;
     background-color: white;
-
     /* 0.5s is the duration of the animation */
+}
+
+@keyframes fadeInLeftBig {
+    0% {
+        opacity: 0;
+        transform: translateX(2000px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+body {
+    animation: fadeInLeftBig 1s ease;
+    height: 100vh;
+    background-color: white;
 }
