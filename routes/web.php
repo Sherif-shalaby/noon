@@ -20,12 +20,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\EmployeeController;
 // use App\Http\Controllers\GetDueReport;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
-use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 // use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ReceivableController;
@@ -43,6 +41,8 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\GeneralTaxController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
@@ -138,6 +138,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
+    Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+
 
     // stocks
 

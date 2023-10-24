@@ -179,6 +179,10 @@
 
         @include('layouts.partials.header')
 
+        {{-- @php
+        $notifications=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->get();
+        $notification_count=\App\Models\BalanceRequestNotification::orderby('created_at','desc')->where('isread',0)->count();
+        @endphp --}}
         @include('layouts.partials.leftbar')
 
         <!-- Start Rightbar -->
@@ -262,8 +266,30 @@
                     }
                 });
         });
+        
     </script>
+{{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script>
+    Pusher.logToConsole = true;
+    var obj = new Object();
+    var notificationContents = [];
+    var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+        cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+    });
+    var channel = pusher.subscribe('order-channel');
+    channel.bind('new-order', function(data) {
+        // if(data.product_id){
+        // }
+        if (data) {
+           
+            let badge_count = parseInt($('.online-balance-badge').text()) + 1;
+            alert(badge_count)
+            $('.online-balance-badge').text(badge_count);
+            $('.online-balance-badge').show();
 
+        }
+    });
+</script> --}}
 
 </body>
 
