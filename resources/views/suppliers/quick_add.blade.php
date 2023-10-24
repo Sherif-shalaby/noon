@@ -1,4 +1,5 @@
-<div class="modal fade add-supplier" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-supplier animate__animated add-supplier"data-animate-in="animate__rollIn"
+    data-animate-out="animate__rollOut" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             {!! Form::open([
@@ -373,3 +374,27 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        var modelEl = $('.modal-supplier');
+
+        modelEl.addClass(modelEl.attr('data-animate-in'));
+
+        modelEl.on('hide.bs.modal', function(event) {
+                if (!$(this).attr('is-from-animation-end')) {
+                    event.preventDefault();
+                    $(this).addClass($(this).attr('data-animate-out'))
+                    $(this).removeClass($(this).attr('data-animate-in'))
+                }
+                $(this).removeAttr('is-from-animation-end')
+            })
+            .on('animationend', function() {
+                if ($(this).hasClass($(this).attr('data-animate-out'))) {
+                    $(this).attr('is-from-animation-end', true);
+                    $(this).modal('hide')
+                    $(this).removeClass($(this).attr('data-animate-out'))
+                    $(this).addClass($(this).attr('data-animate-in'))
+                }
+            })
+    })
+</script>

@@ -11,8 +11,8 @@
          align-items-center p-2 rounded-3 text-center mb-3 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
 
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.1s; font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
 
             <span style="font-size: 11px" class="mb-2">@lang('lang.sku')</span>
 
@@ -23,8 +23,8 @@
             @enderror
         </div>
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px 2px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.2s; font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px 2px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.quantity')</span>
             <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"
                 wire:model="rows.{{ $index }}.quantity" style="width: 70px;" required>
@@ -36,8 +36,8 @@
 
 
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.3s; font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft  table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.unit')</span>
             <div class="d-flex justify-content-center" style="width: 65%;">
                 <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id'
@@ -56,8 +56,8 @@
             </div>
         </div>
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.4s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.fill_from_basic_unit')</span>
             <input type="text" class="form-control unit_equal" wire:model="rows.{{ $index }}.equal"
                 style="width: 70px;" required>
@@ -66,8 +66,8 @@
 
 
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.5s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.basic_unit')</span>
             <div class="d-flex justify-content-center align-items-center" style="width: 65%;">
 
@@ -87,8 +87,8 @@
             </div>
         </div>
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.6s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.to_get_sell_price')</span>
             <div class="d-flex justify-content-between align-items-center" style="width: 95%;">
                 <div class="input-group-prepend" style="height: 100%;">
@@ -106,16 +106,16 @@
             </div>
         </div>
 
-        <div style="font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.7s;font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <div class="btn btn-sm btn-danger py-2 px-1 " style="width: 50%;"
                 wire:click="delete_product({{ $index }})">
                 <i class="fa fa-trash"></i>
             </div>
         </div>
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.8s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.purchase_price')$</span>
             <input type="text" class="form-control" wire:model="rows.{{ $index }}.dollar_purchase_price"
                 wire:change="changePurchasePrice({{ $index }})" style="width: 70px;" required>
@@ -124,8 +124,8 @@
             @enderror
         </div>
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 2.9s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.selling_price')$</span>
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price"
                 wire:change="changeSellingPrice({{ $index }})" style="width: 70px;" required>
@@ -134,8 +134,8 @@
             @enderror
         </div>
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 3s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.sub_total') $</span>
             @if (isset($rows[$index]['quantity']) &&
                     (isset($rows[$index]['dollar_purchase_price']) || isset($rows[$index]['purchase_price'])))
@@ -147,8 +147,8 @@
 
         {{-- @endif --}}
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 3.1s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.purchase_price')</span>
             <input type="text" class="form-control" wire:model="rows.{{ $index }}.purchase_price"
                 style="width: 70px;" wire:change="changeDollarPurchasePrice({{ $index }})" required>
@@ -159,8 +159,8 @@
 
 
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 3.2s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.selling_price')</span>
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price"
                 style="width: 70px;" required>
@@ -170,8 +170,8 @@
         </div>
 
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 3.3s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.sub_total')</span>
             @if (isset($rows[$index]['quantity']) && (isset($rows[$index]['purchase_price']) || isset($dollar_purchase_price)))
                 <span class="sub_total_span">
@@ -182,8 +182,8 @@
 
 
 
-        <div style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="table-width px-0 d-flex justify-content-center align-items-center flex-column">
+        <div style="animation-delay: 3.4s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-size: 11px" class="mb-2">@lang('lang.new_stock')</span>
             <span class="current_stock_text">
                 {{ $this->total_quantity($index) ?? 0 }}
@@ -196,13 +196,15 @@
 
 </div>
 
-<div style="width: 100%" class="accordion mt-1 p-3" id="accordionPanelsStayOpenExample">
+<div style="width: 100%;animation-delay: 3.6s" class="accordion mt-1 p-3 animate__animated animate__lightSpeedInLeft"
+    id="accordionPanelsStayOpenExample">
     <div class="accordion-item">
         <h2 class="accordion-header">
             @if ($rows[$index])
-                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
+                <button class="accordion-button dis-button collapsed" style="padding: 5px 15px" type="button"
                     data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
-                    aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
+                    data-index="{{ $index }}" aria-expanded="true"
+                    aria-controls="panelsStayOpen-collapse{{ $index }}"
                     wire:click="stayShow({{ $index }})">
                     <h6>
                         @lang('lang.discount')
@@ -414,3 +416,14 @@
         }
     });
 </script>
+{{-- <script>
+    $(document).ready(function() {
+        $('.dis-button').each(function() {
+            $(this).on('click', function() {
+                let index = $(this).attr('data-index');
+
+                $(`#panelsStayOpen-collapse${index}`).toggleClass('show')
+            });
+        })
+    })
+</script> --}}

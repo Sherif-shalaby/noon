@@ -267,6 +267,10 @@
                     }
                 });
         });
+
+        window.addEventListener("beforeunload", (event) => {
+            document.body.classList.add('animated-element');
+        });
     </script>
 
 

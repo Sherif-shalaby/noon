@@ -1,10 +1,11 @@
+{{-- <link rel="stylesheet" href="{{ asset('css/modal.css') }}"> --}}
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
                     {{--  --}}
-                    <div class="card-header">
+                    <div class="card-header animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
                         @if (!empty($is_raw_material))
                             <h4 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.add_stock_for_raw_material')</h4>
@@ -16,12 +17,15 @@
                     @php
                         $index = 0;
                     @endphp
-                    <div class="row mt-2">
-                        <div class="col-md-9">
-                            <p class="italic mb-0 pl-3"><small>@lang('lang.required_fields_info')</small></p>
+                    <div class="row mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 0.3s">
+                            <p
+                                class="italic mb-0 pl-3 @if (app()->isLocale('ar')) text-end mr-2 @else text-start @endif">
+                                <small>@lang('lang.required_fields_info')</small>
+                            </p>
                         </div>
-                        <div class="col-md-3">
-                            <div class="i-checks">
+                        <div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 0.3s">
+                            <div class="i-checks @if (app()->isLocale('ar')) ml-2 @endif">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
                                     @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif class="">
                                 <label for="clear_all_input_form" style="font-size: 0.75rem">
@@ -35,13 +39,13 @@
                     {{-- {!! Form::open(['id' => 'add_stock_form']) !!} --}}
                     <div class="card-body py-0">
                         {{-- <div class="col-md-12"> --}}
-                        <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                style="animation-delay: 0.5s">
                                 {!! Form::label('store_id', __('lang.store') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
                                 ]) !!}
-                                <div class="d-flex justify-content-center align-items-center"
+                                <div class="d-flex justify-content-center align-items-center "
                                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
@@ -63,17 +67,16 @@
                                         data-toggle="modal" data-target=".add-store"
                                         href="{{ route('store.create') }}"><i class="fas fa-plus"></i>
                                     </button>
-                                    @include('store.create', ['quick_add' => 1])
-
                                 </div>
                                 @error('item.0.store_id')
                                     <span style="font-size: 10px;font-weight: 700;"
                                         class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            @include('store.create', ['quick_add' => 1])
 
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 0.6s">
                                 {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -94,18 +97,19 @@
                                         'placeholder' => __('lang.please_select'),
                                         'wire:model' => 'item.0.supplier_id',
                                     ]) !!}
-                                    <button type="button"class="add-button" data-toggle="modal"
-                                        data-target=".add-supplier" href="{{ route('suppliers.create') }}"><i
-                                            class="fas fa-plus"></i></button>
-                                    @include('suppliers.quick_add', ['quick_add' => 1])
+                                    <button
+                                        type="button"class="add-button d-flex justify-content-center align-items-center"
+                                        data-toggle="modal" data-target=".add-supplier"
+                                        href="{{ route('suppliers.create') }}"><i class="fas fa-plus"></i></button>
                                 </div>
                                 @error('item.0.supplier_id ')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            @include('suppliers.quick_add', ['quick_add' => 1])
 
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 0.7s">
                                 {!! Form::label('name', __('lang.product_name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -127,8 +131,8 @@
                                 ]) !!}
                             </div> --}}
                             <div class="col-md-3 d-flex p-0">
-                                <div
-                                    class="col-md-6 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <div class="col-md-6 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                    style="animation-delay: 0.8s">
                                     {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                     ]) !!}
@@ -141,10 +145,10 @@
                                             class="text-danger error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
-                                <div
-                                    class="col-md-6
-                                d-flex mb-2 align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-6 animate__animated animate__flipInX
+                                d-flex mb-2 align-items-center p-0
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    style="animation-delay: 0.9s">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . '', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                     ]) !!}
@@ -156,8 +160,8 @@
                             </div>
 
 
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1s">
                                 {!! Form::label('category', __('lang.category'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -179,8 +183,9 @@
                                     ]) !!}
 
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal" style="cursor: pointer"
-                                        class="add-button btn-modal openCategoryModal text-white d-flex justify-content-center align-items-center"
+                                        data-container=".view_modal" style="cursor: pointer;color: white"
+                                        onMouseOver="this.style.color='#F9C751'" onMouseOut="this.style.color='white'"
+                                        class="add-button btn-modal openCategoryModal d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="0">
                                         <i class="fas fa-plus"></i></a>
                                     {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
@@ -191,8 +196,8 @@
                                 @enderror
                             </div>
 
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1.1s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -213,16 +218,17 @@
                                         'wire:model' => 'item.0.subcategory_id1',
                                     ]) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal" style="cursor: pointer;"
-                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-container=".view_modal" style="cursor: pointer;color: white"
+                                        onMouseOver="this.style.color='#F9C751'" onMouseOut="this.style.color='white'"
+                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1.2s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -243,8 +249,9 @@
                                         'wire:model' => 'item.0.subcategory_id2',
                                     ]) !!}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal" style="cursor: pointer;"
-                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-container=".view_modal" style="cursor: pointer;color: white;"
+                                        class="add-button btn-modal openCategoryModal d-flex justify-content-center align-items-center"
+                                        onMouseOver="this.style.color='#F9C751'" onMouseOut="this.style.color='white'"
                                         data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
                                     {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
@@ -254,8 +261,8 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1.3s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -279,8 +286,9 @@
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="3"><i class="fas fa-plus"></i></button> --}}
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal" style="cursor: pointer;"
-                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center text-white"
+                                        data-container=".view_modal" style="cursor: pointer;color: white"
+                                        class="add-button btn-modal  openCategoryModal d-flex justify-content-center align-items-center"
+                                        onMouseOver="this.style.color='#F9C751'" onMouseOut="this.style.color='white'"
                                         data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
@@ -288,8 +296,8 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ "balance return request +++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1.4s;">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                 ]) !!}
@@ -302,14 +310,15 @@
 
 
                             {{-- tax accordion  --}}
-                            <div class="col-md-12 my-3 p-0">
+                            <div class="col-md-12 my-3 p-0 animate__animated animate__lightSpeedInLeft"
+                                style="animation-delay: 1.6s">
                                 <div class="accordion" id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" style="padding: 5px 15px"
-                                                type="button" wire:click="showHideTax()" data-bs-toggle="collapse"
-                                                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
-                                                aria-controls="panelsStayOpen-collapseOne">
+                                            <button class="accordion-button tax-button collapsed"
+                                                style="padding: 5px 15px" type="button" wire:click="showHideTax()"
+                                                data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne"
+                                                aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
                                                 <h6>
                                                     {{ __('lang.product_tax') }}
                                                 </h6>
@@ -408,12 +417,14 @@
                             </div>
 
                             {{-- size accordion --}}
-                            <div class="col-md-12 my-3 p-0">
+                            <div class="col-md-12 my-3 p-0 animate__animated animate__lightSpeedInLeft"
+                                style="animation-delay: 1.8s">
                                 <div class="accordion " id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button collapsed" style="padding: 5px 15px"
-                                                type="button" data-bs-toggle="collapse" wire:click="showHideSize()"
+                                            <button class="accordion-button size-button collapsed"
+                                                style="padding: 5px 15px" type="button" data-bs-toggle="collapse"
+                                                wire:click="showHideSize()"
                                                 data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
                                                 aria-controls="panelsStayOpen-collapseTwo">
                                                 <h6>{{ __('lang.product_dimensions') }}</h6>
@@ -432,7 +443,7 @@
                                             <div class="accordion-body d-flex">
 
                                                 <div
-                                                    class="col-md-3 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-3 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('weight', __('lang.weight'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
                                                     ]) !!}
@@ -448,7 +459,7 @@
                                                 <div class="col-md-1"></div>
 
                                                 <div
-                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('height', __('lang.height'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
                                                     ]) !!}
@@ -462,7 +473,7 @@
                                                 </div>
 
                                                 <div
-                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('length', __('lang.length'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
                                                     ]) !!}
@@ -476,7 +487,7 @@
                                                 </div>
 
                                                 <div
-                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('width', __('lang.width'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
                                                     ]) !!}
@@ -490,7 +501,7 @@
                                                 </div>
 
                                                 <div
-                                                    class="col-md-2 d-flex align-items-center justify-content-between mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                    class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('size', __('lang.size'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
                                                     ]) !!}
@@ -557,7 +568,8 @@
                         </div>
                         <br>
                         {{-- add prices --}}
-                            <div class="row text-right my-1">
+                            <div class="row text-right my-1 animate__bounceInRight animate__animated"
+                                style="animation-delay: 2s">
                                 <div class="col">
                                     <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
                                         <i class="fa fa-plus"></i> @lang('lang.add')
@@ -573,7 +585,8 @@
                                     ])
                                 @endforeach
 
-                                <div class="fw-bold text-center">
+                                <div class="fw-bold text-center animate__flipInY animate__animated"
+                                    style="animation-delay: 3.7s">
                                     <div class=" mx-3">
 
                                         <span>
@@ -594,10 +607,12 @@
 
                             </div>
                             <div class="col-md-12 text-center mt-1 d-flex justify-content-evenly align-items-center">
-                                <h5 class=" fw-bold">@lang('lang.items_count'):
+                                <h5 class=" fw-bold animate__animated animate__lightSpeedInLeft"
+                                    style="animation-delay: 3.9s">@lang('lang.items_count'):
                                     <span class="items_count_span">{{ count($rows) }}</span>
                                 </h5>
-                                <h5 class=" fw-bold"> @lang('lang.items_quantity'): <span
+                                <h5 class=" fw-bold animate__animated animate__lightSpeedInRight"
+                                    style="animation-delay: 3.9s"> @lang('lang.items_quantity'): <span
                                         class="items_quantity_span">{{ $totalQuantity }}</span>
                                 </h5>
                             </div>
@@ -704,5 +719,27 @@
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
         });
+    </script>
+    <script>
+        $('.tax-button').on("click", function() {
+            $('#panelsStayOpen-collapseOne').toggleClass('show')
+            $('.tax-accordion-arrow i').remove();
+            if ($('#panelsStayOpen-collapseOne').hasClass('show')) {
+                $('.tax-accordion-arrow').append(`<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
+            } else {
+                // $('.tax-accordion-arrow').children('1').remove();
+                $('.tax-accordion-arrow').append(`<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
+            }
+        })
+        $('.size-button').on("click", function() {
+            $('#panelsStayOpen-collapseTwo').toggleClass('show')
+            $('.size-accordion-arrow i').remove();
+
+            if ($('#panelsStayOpen-collapseTwo').hasClass('show')) {
+                $('.size-accordion-arrow').append(`<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
+            } else {
+                $('.size-accordion-arrow').append(`<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
+            }
+        })
     </script>
 @endpush
