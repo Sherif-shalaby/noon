@@ -423,8 +423,8 @@ class Create extends Component
                     {
                         foreach ($product['stock_lines'] as $line)
                         {
-                            $line->sell_price = !empty($item['selling_price']) ? $item['selling_price'] : null;
-                            $line->dollar_sell_price = !empty($item['dollar_selling_price']) ? $item['dollar_selling_price'] : null;
+                            $line->sell_price = !empty($item['selling_price']) ? $this->num_uf($item['selling_price'])  : null;
+                            $line->dollar_sell_price = !empty($item['dollar_selling_price']) ? $this->num_uf( $item['dollar_selling_price'] ) : null;
                             $line->save();
                         }
                     }
@@ -435,7 +435,7 @@ class Create extends Component
                     'product_id' => $item['product']['id'],
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $item['quantity'],
-                    'purchase_price' => !empty($item['purchase_price']) ? $item['purchase_price'] : null ,
+                    'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
                     'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
                     'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
                     'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
@@ -443,7 +443,7 @@ class Create extends Component
                     'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $this->num_uf($item['dollar_total_cost']) : 0,
                     'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total']) : null,
                     'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $this->num_uf($item['dollar_selling_price']) : null,
-                    'cost' => !empty($item['cost']) ?  $item['cost'] : null,
+                    'cost' => !empty($item['cost']) ? $this->num_uf(  $item['cost'] ): null,
                     'dollar_cost' => !empty($item['dollar_cost']) ? $this->num_uf($item['dollar_cost']) : null,
                     'expiry_date' => !empty($item['expiry_date']) ? $this->num_uf($item['expiry_date']) : null,
                     'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
@@ -462,19 +462,19 @@ class Create extends Component
                             'product_id' => $item['product']['id'],
                             'price_type' => $price['price_type'],
                             'price_category' => $price['price_category'],
-                            'price' => $price['price'],
-                            'dinar_price' => $price['dinar_price'],
-                            'quantity' => $price['discount_quantity'],
-                            'bonus_quantity' => $price['bonus_quantity'],
-                            'price_customers'=>!empty($price['price_after_desc']) ? $price['price_after_desc'] : null,
-                            'dinar_price_customers'=>!empty($price['dinar_price_after_desc']) ? $price['dinar_price_after_desc'] : null,
+                            'price' => $this->num_uf($price['price']),
+                            'dinar_price' => $this->num_uf($price['dinar_price']),
+                            'quantity' => $this->num_uf($price['discount_quantity']),
+                            'bonus_quantity' => $this->num_uf($price['bonus_quantity']),
+                            'price_customers'=>!empty($price['price_after_desc']) ? $this->num_uf( $price['price_after_desc'] ) : null,
+                            'dinar_price_customers'=>!empty($price['dinar_price_after_desc']) ? $this->num_uf( $price['dinar_price_after_desc']) : null,
                             'price_customer_types' => $price['price_customer_types'],
                             'created_by' => Auth::user()->id,
                             'stock_line_id ' => $stock_line->id,
-                            'dinar_total_price' => !empty($item['selling_price']) ? $price['total_price'] : null,
-                            'total_price' => !empty($item['dollar_selling_price']) ? $price['total_price'] : null,
-                            'dinar_piece_price' => !empty($item['selling_price']) ? $price['piece_price'] : null,
-                            'piece_price' => !empty($item['dollar_selling_price']) ? $price['piece_price'] : null,
+                            'dinar_total_price' => !empty($item['selling_price']) ? $this->num_uf( $price['total_price'] ) : null,
+                            'total_price' => !empty($item['dollar_selling_price']) ? $this->num_uf( $price['total_price'] ) : null,
+                            'dinar_piece_price' => !empty($item['selling_price']) ? $this->num_uf( $price['piece_price'] ) : null,
+                            'piece_price' => !empty($item['dollar_selling_price']) ? $this->num_uf( $price['piece_price'] ) : null,
                             'stock_line_id' => $stock_line->id,
                         ];
                         ProductPrice::create($price_data);
