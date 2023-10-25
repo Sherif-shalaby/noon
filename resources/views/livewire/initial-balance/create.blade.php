@@ -62,12 +62,18 @@
                                         'wire:model' => 'item.0.store_id',
                                     ]) !!}
 
-                                    <button class="add-button d-flex justify-content-center align-items-center"
+                                    <button
+                                        class="add-button store-button d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-target=".add-store"
                                         href="{{ route('store.create') }}"><i class="fas fa-plus"></i>
                                     </button>
 
-
+                                    {{-- <a data-href="{{ route('store.create') }}" data-container=".view_modal"
+                                        style="cursor: pointer;color: white" onMouseOver="this.style.color='#F9C751'"
+                                        onMouseOut="this.style.color='white'"
+                                        class="add-button store-button btn-modal d-flex justify-content-center align-items-center"
+                                        data-toggle="modal" data-target=".add-store">
+                                        <i class="fas fa-plus"></i></a> --}}
 
 
 
@@ -103,7 +109,7 @@
                                         'wire:model' => 'item.0.supplier_id',
                                     ]) !!}
                                     <button
-                                        type="button"class="add-button d-flex justify-content-center align-items-center"
+                                        type="button"class="add-button supplier-button d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-target=".add-supplier"
                                         href="{{ route('suppliers.create') }}"><i class="fas fa-plus"></i></button>
                                 </div>
@@ -190,7 +196,7 @@
                                     <a data-href="{{ route('categories.sub_category_modal') }}"
                                         data-container=".view_modal" style="cursor: pointer;color: white"
                                         onMouseOver="this.style.color='#F9C751'" onMouseOut="this.style.color='white'"
-                                        class="add-button btn-modal openCategoryModal d-flex justify-content-center align-items-center"
+                                        class="add-button cat-button btn-modal openCategoryModal d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="0">
                                         <i class="fas fa-plus"></i></a>
                                     {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
@@ -728,25 +734,46 @@
         });
     </script>
     <script>
-        $('.tax-button').on("click", function() {
-            $('#panelsStayOpen-collapseOne').toggleClass('show')
-            $('.tax-accordion-arrow i').remove();
-            if ($('#panelsStayOpen-collapseOne').hasClass('show')) {
-                $('.tax-accordion-arrow').append(`<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
-            } else {
-                // $('.tax-accordion-arrow').children('1').remove();
-                $('.tax-accordion-arrow').append(`<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
-            }
-        })
-        $('.size-button').on("click", function() {
-            $('#panelsStayOpen-collapseTwo').toggleClass('show')
-            $('.size-accordion-arrow i').remove();
+        $(document).ready(function() {
+            $('.tax-button').on("click", function() {
+                $('#panelsStayOpen-collapseOne').toggleClass('show')
+                $('.tax-accordion-arrow i').remove();
+                if ($('#panelsStayOpen-collapseOne').hasClass('show')) {
+                    $('.tax-accordion-arrow').append(
+                        `<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
+                } else {
+                    // $('.tax-accordion-arrow').children('1').remove();
+                    $('.tax-accordion-arrow').append(
+                        `<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
+                }
+            })
+            $('.size-button').on("click", function() {
+                $('#panelsStayOpen-collapseTwo').toggleClass('show')
+                $('.size-accordion-arrow i').remove();
 
-            if ($('#panelsStayOpen-collapseTwo').hasClass('show')) {
-                $('.size-accordion-arrow').append(`<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
-            } else {
-                $('.size-accordion-arrow').append(`<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
-            }
-        })
+                if ($('#panelsStayOpen-collapseTwo').hasClass('show')) {
+                    $('.size-accordion-arrow').append(
+                        `<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
+                } else {
+                    $('.size-accordion-arrow').append(
+                        `<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
+                }
+            })
+            $('.cat-button').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 50);
+            });
+            $('.store-button').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 50);
+            });
+            $('.supplier-button').click(function() {
+                $('html, body').animate({
+                    scrollTop: 0
+                }, 50);
+            });
+        });
     </script>
 @endpush

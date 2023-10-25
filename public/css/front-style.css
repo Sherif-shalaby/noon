@@ -105,7 +105,11 @@
 
 select.form-control {
     border: 2px solid #cececf !important;
-    border-radius: 6px !important;
+    border-radius: 12px !important;
+    background-color: transparent;
+    padding: 0;
+    text-align: end;
+    font-weight: 400;
 }
 
 .accordion-button:not(.collapsed) {
@@ -380,7 +384,7 @@ select.form-control {
 
 /* animation */
 
-/* @keyframes fadeOutLeftBig {
+@keyframes fadeOutLeftBig {
     0% {
         opacity: 1;
         transform: translateX(0);
@@ -390,10 +394,10 @@ select.form-control {
         opacity: 0;
         transform: translateX(-2000px);
     }
-} */
+}
 
 /* Apply the animation to the element you want to animate */
-/* .animated-element {
+.animated-element {
     animation: fadeOutLeftBig 1s ease;
     height: 100vh;
     background-color: white;
@@ -414,9 +418,9 @@ select.form-control {
 
 body {
     animation: fadeInLeftBig 1s ease;
-} */
+}
 
-.transition-fade {
+/* .transition-fade {
     opacity: 1;
     transition: 500ms;
     transform: translateX(0);
@@ -431,4 +435,4 @@ html.is-animating .transition-fade {
 html.is-leaving .transition-fade {
     opacity: 0;
     transform: translateX(0);
-}
+} */

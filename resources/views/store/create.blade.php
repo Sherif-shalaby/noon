@@ -1,6 +1,7 @@
 <div class="modal modal-store animate__animated  add-store" data-animate-in="animate__rollIn"
-    data-animate-out="animate__rollOut" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    data-animate-out="animate__rollOut" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel"
+    style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content  @if (app()->isLocale('ar')) text-end @else text-start @endif">
             {!! Form::open([
                 'url' => route('store.store'),

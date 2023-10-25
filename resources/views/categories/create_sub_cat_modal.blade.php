@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal modal-cat animate__animated createSubCategoryModal" data-animate-in="animate__rollIn"
     data-animate-out="animate__rollOut" id="editModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+    aria-labelledby="exampleStandardModalLabel" style="display: none;opacity: 0;" aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
             <div
