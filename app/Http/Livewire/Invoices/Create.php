@@ -478,7 +478,7 @@ class Create extends Component
 //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
-            $stock_units = $this->getUnits($product,$this->store_id);
+            // $stock_units = $this->getUnits($product,$this->store_id);
 //            $discount = $this->getProductDiscount($current_stock);
             if(isset($discount)){
                 $discounts = $discount;
@@ -514,7 +514,7 @@ class Create extends Component
                     'client_id' => $product->customer?->id,
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
-                    'stock_units' => $stock_units,
+                    // 'stock_units' => $stock_units,
                     'sub_total' =>  (float) 1 * $this->num_uf($price),
                     'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
@@ -529,8 +529,7 @@ class Create extends Component
                     'base_unit_multiplier' =>!empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
-                    'unit_id'=>$product->variations()->first()->id
-//                    'store' => $product_stores->first()->store->name,
+                    'unit_id'=>ProductStore::where('product_id',$product->id)->where('store_id',$this->store_id)->first()->variation_id??'',
                 ];
                 array_unshift($this->items,$new_item);
 
@@ -734,6 +733,7 @@ class Create extends Component
     public function quantityAvailable($product){
         $quantity_available = ProductStore::where('product_id',$product->id)->where('store_id',$this->store_id)
             ->first()->quantity_available;
+
         return $quantity_available;
     }
 
@@ -1152,6 +1152,32 @@ class Create extends Component
         $this->items[$key]['discount_categories'] =$stock_line->prices()->get();
         $this->items[$key]['discount'] =0;
         $this->items[$key]['extra_quantity'] =0;
+        $qty=$this->items[$key]['quantity_available'];
+        $variations=Variation::where('product_id',$this->items[$key]['product']['id'])->get();
+        $product_store=ProductStore::where('product_id',$this->items[$key]['product']['id'])->where('store_id',$this->store_id)->first();
+        $amount=1;
+        // dd(Variation::find($variation_id)->unit_id , $product_store->variations->unit_id);
+        $var_id=Variation::find($variation_id)->unit_id;
+        if($var_id == $product_store->variations->unit_id){
+            $this->items[$key]['quantity_available']= $product_store->quantity_available;
+        }else if($var_id == $product_store->variations->basic_unit_id){
+        // dd($product_store->variations->base_unit_id);
+
+            $this->items[$key]['quantity_available']=$product_store->quantity_available * $product_store->variations->equal;
+        }else{
+            // foreach($variations as $variation){
+            //     if($variation->basic_unit_id == $variation_id){
+            //         // $amount *=$variation->equal;
+            //         foreach($variations as $var){
+            //             if($variation->base_unit_id ==$var->unit_id){
+            //                 $amount *=$var->equal;
+            //             }
+            //         }
+                    $this->items[$key]['quantity_available']= 8888;
+            //     }
+            // }
+        }
+        // $this->items[$key]['quantity_available'] =44;
 
     }
 

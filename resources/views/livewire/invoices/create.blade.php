@@ -230,9 +230,8 @@
                                                 </td>
                                                 <td>
                                                     <span class="current_stock">
-{{--                                                        {{$item['quantity_available']}}--}}
-                                                        @if(!empty($item['stock_units']))
-{{--                                                            {{dd($item['stock_units'])}}--}}
+                                                       {{$item['quantity_available']}}
+                                                        {{-- @if(!empty($item['stock_units']))
                                                             @foreach($item['stock_units'] as $i => $value)
                                                             @if(!empty($value))
                                                                 @foreach($value as $x=> $v)
@@ -240,7 +239,7 @@
                                                                 @endforeach
                                                                 @endif
                                                             @endforeach
-                                                        @endif
+                                                        @endif --}}
                                                     </span>
                                                 </td>
                                                 <td  class="text-center">
