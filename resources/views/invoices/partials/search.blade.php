@@ -9,7 +9,7 @@
                            placeholder="@lang('lang.enter_product_symbol')"
                            class="form-control" autocomplete="off">
 
-                    @if(!empty($search_result) && !empty($search_by_product_symbol))
+                    @if(!empty($search_by_product_symbol))
                         <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                             @foreach($search_result as $product)
                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
