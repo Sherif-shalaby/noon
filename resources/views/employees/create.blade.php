@@ -113,12 +113,12 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-sm-6">
-                                            <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                            <label for="branch_id">@lang('lang.branch')</label>
+                                            {!! Form::select('branch_id', $branches, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select') , 'data-live-search' => 'true', 'id' => 'branch_id']) !!}
                                         </div>
                                         <div class="col-sm-6">
                                             <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                            {!! Form::select('store_id[]', $stores, null, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
                                         </div>
                                     </div>
                                     <div class="row mt-4">
@@ -286,9 +286,19 @@
 
 @endsection
 
-@section('javascript')
-
+@push('javascripts')
     <script>
+        $(document).on("change","#branch_id",function () {
+            $.ajax({
+                type: "get",
+                url: "/get_branch_stores/"+$(this).val(),
+                dataType: "html",
+                success: function (response) {
+                    console.log(response)
+                    $("#store_id").empty().append(response).change();
+                }
+            });
+        });
         $(document ).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
@@ -499,4 +509,4 @@
 
         });
     </script>
-@endsection
+@endpush

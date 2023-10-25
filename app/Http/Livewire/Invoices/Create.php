@@ -48,7 +48,7 @@ class Create extends Component
         $discount = 0.00, $total_dollar, $add_customer=[], $customers = [],$discount_dollar, $store_pos,$allproducts=[],$brand_id=0,$brands=[],
         // "الباقي دولار" , "الباقي دينار"
         $dollar_remaining=0 , $dinar_remaining=0 ,
-        $searchProduct,
+        $searchProduct, $stores,
         $final_total, $dollar_final_total, $dollar_amount = 0 , $amount = 0 ,$redirectToHome = false, $status = 'final',
         $draft_transactions, $show_modal = false,  $search_by_product_symbol,$highest_price,$lowest_price,$from_a_to_z,$from_z_to_a,$nearest_expiry_filter,$longest_expiry_filter,$dollar_highest_price,$dollar_lowest_price;
 
@@ -74,7 +74,8 @@ class Create extends Component
                 $this->{$data['var1']} = $data['var2'];
         }
         if(isset($data['var1'])&& $data['var1']=="store_id"){
-        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+            $this->changeAllProducts();
+//        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         }
         if(isset($data['var1'])&& $data['var1']=="department_id"){
             $this->updatedDepartmentId($data['var2'],'department_id');
@@ -90,7 +91,13 @@ class Create extends Component
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $stores = Store::getDropdown();
         $this->store_id = array_key_first($stores);
-        $this->allproducts = Product::get();
+        if(!empty($this->store_id)){
+            $products_store = ProductStore::where('store_id',$this->store_id)->pluck('product_id');
+            $this->allproducts = Product::whereIn('id',$products_store)->get();
+        }
+        else{
+            $this->allproducts = Product::get();
+        }
         $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->client_id=1;
@@ -124,6 +131,8 @@ class Create extends Component
 
     public function render()
     {
+        $store_pos = StorePos::find($this->store_pos_id);
+        $this->stores = $store_pos->user->employee->stores()->pluck('name','id');
         $departments = Category::get();
         $this->brands=Brand::orderby('created_at','desc')->pluck('name','id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
@@ -132,7 +141,7 @@ class Create extends Component
         // $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types=CustomerType::latest()->pluck('name','id');
-        $stores = Store::getDropdown();
+
         $search_result = '';
 //        if (empty($store_pos)) {
 //            $this->dispatchBrowserEvent('showCreateProductConfirmation');
@@ -177,14 +186,16 @@ class Create extends Component
             'departments',
             'languages',
             'selected_currencies',
-            'stores',
+//            'stores',
             'customer_types',
             'search_result',
             ));
     }
 
-    public function changeStorePos(){
-        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
+    public function changeAllProducts (){
+        $products_store = ProductStore::where('store_id',$this->store_id)->pluck('product_id');
+        $this->allproducts = Product::whereIn('id',$products_store)->get();
+//        dd($this->allproducts);
     }
 
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++

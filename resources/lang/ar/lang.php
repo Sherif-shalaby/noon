@@ -573,7 +573,8 @@ return array(
     'po' => 'أمر شراء',
     'branches' => 'الفروع',
     'add_branch' => 'اضافه فرع',
-    'branch_name' => 'اسم الفرع'
+    'branch_name' => 'اسم الفرع',
+    'branch' => 'الفرع',
 
 );
 

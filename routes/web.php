@@ -245,6 +245,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // branch
     Route::resource('branches',BranchController::class);
+    Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
+
 
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
