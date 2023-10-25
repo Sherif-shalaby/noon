@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+            <div class="table-responsive">
                 <table class="table main-table text-center rounded-3 w-100">
                     <thead class="border-0">
                         <tr>
@@ -82,7 +82,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif second-table mt-2">
+            <div class="table-responsive second-table mt-2">
                 <table class="table main-table" id="data-table">
                     <tbody>
                         <tr>

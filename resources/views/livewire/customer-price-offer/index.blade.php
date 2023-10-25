@@ -67,7 +67,7 @@
                 {{-- ++++++++++++++++++++++++++++++ Table +++++++++++++++++++++++ --}}
                 <div class="card-body">
                     @if (@isset($customer_offer_prices) && !@empty($customer_offer_prices) && count($customer_offer_prices) > 0)
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                        <div class="table-responsive">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>

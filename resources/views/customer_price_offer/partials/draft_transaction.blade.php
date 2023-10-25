@@ -10,7 +10,7 @@
              </div>
              <div class="modal-body">
                  <div class="col-md-12">
-                     <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                     <div class="table-responsive">
                          <table id="draft_table" class="table">
                              <thead>
                                  <tr>

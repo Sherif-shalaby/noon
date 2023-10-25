@@ -30,7 +30,7 @@ class WageController extends Controller
      * @param Utils $product
      * @return void
      */
-    public function __construct(Util $Util,Util $commonUtil)
+    public function __construct(Util $Util, Util $commonUtil)
     {
         $this->Util = $Util;
         $this->commonUtil = $commonUtil;
@@ -42,9 +42,9 @@ class WageController extends Controller
      */
     public function index()
     {
-        $wages=Wage::latest()->get();
+        $wages = Wage::latest()->get();
         $payment_types = Wage::getPaymentTypes();
-        return view('employees.wages.index',compact('wages','payment_types'));
+        return view('employees.wages.index', compact('wages', 'payment_types'));
     }
 
     /**
@@ -57,32 +57,16 @@ class WageController extends Controller
         $employees = Employee::with('user')->get()->pluck('user.name', 'id');
         $payment_types = Wage::getPaymentTypes();
         $users = User::Notview()->pluck('name', 'id');
-        return view('employees.wages.create',compact('employees','payment_types','users'));
+        return view('employees.wages.create', compact('employees', 'payment_types', 'users'));
     }
-    // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
-    public function getSourceByTypeDropdown($type = null)
+    // +++++++++++++++++ ajax request : get_other_payment() +++++++++++++++++
+    public function get_other_payment(Request $request)
     {
-        if ($type == 'user') {
-            $array = User::Notview()->pluck('name', 'id');
-        }
-        if ($type == 'pos') {
-            $array = StorePos::pluck('name', 'id');
-        }
-        // if ($type == 'store') {
-        //     $array = Store::pluck('name', 'id');
-        // }
-        if ($type == 'safe') {
-            $array = MoneySafe::pluck('name', 'id');
-        }
-
-        return $this->commonUtil->createDropdownHtml($array, __('lang.please_select'));
     }
     /* +++++++++++++++++++++ store() +++++++++++++++++++++ */
     public function store(Request $request)
     {
-        // dd($request);
-        try
-        {
+        try {
             $data = $request->except('_token', 'submit');
             $data['net_amount'] = (float)($data['net_amount']);
             $data['date_of_creation'] = Carbon::now();
@@ -93,18 +77,16 @@ class WageController extends Controller
             $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
             $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
             $data['amount'] = !empty($data['amount']) ? (float)($data['amount']) : 0;
-            $wage=Wage::create($data);
+            $wage = Wage::create($data);
             // +++++++++++++ upload_files validation +++++++++++++++++++++
             $validatedData = $request->validate([
                 'upload_files.*' => 'file|mimes:pdf,jpg,png|max:2048', // Example validation rules for JPG and PNG files with a maximum size of 2MB
             ]);
             // ========== upload "attachments" in "uploads folder" And Store Them in "wage_attachments" table ==========
-            if ($request->hasFile('upload_files'))
-            {
+            if ($request->hasFile('upload_files')) {
                 $files = $request->file('upload_files');
                 // Loop through each file and create a new WageAttachments instance for each
-                foreach ($files as $file)
-                {
+                foreach ($files as $file) {
                     // Create a new instance of WageAttachments
                     $attachments = new WageAttachments();
                     // Upload file and get the file path
@@ -189,11 +171,11 @@ class WageController extends Controller
      */
     public function edit($id)
     {
-        $employees = User::has('employees')->latest()->pluck('name','id');
+        $employees = User::has('employees')->latest()->pluck('name', 'id');
         $payment_types = Wage::getPaymentTypes();
         $users = User::Notview()->pluck('name', 'id');
-        $wage=Wage::find($id);
-        return view('employees.wages.edit',compact('employees','payment_types','users','wage'));
+        $wage = Wage::find($id);
+        return view('employees.wages.edit', compact('employees', 'payment_types', 'users', 'wage'));
     }
 
     /**
@@ -263,11 +245,11 @@ class WageController extends Controller
      */
     public function destroy($id)
     {
-        try{
-            $wage=Wage::find($id);
-            $wage->deleted_by=Auth::user()->id;
-            $wage_transaction=WageTransaction::where('wage_id',$wage->id)->first();
-            $wage_transaction->deleted_by=Auth::user()->id;
+        try {
+            $wage = Wage::find($id);
+            $wage->deleted_by = Auth::user()->id;
+            $wage_transaction = WageTransaction::where('wage_id', $wage->id)->first();
+            $wage_transaction->deleted_by = Auth::user()->id;
             $wage->save();
             $wage_transaction->save();
             $wage->delete();
@@ -292,12 +274,10 @@ class WageController extends Controller
         $paymentType = $request->input('payment_type');
         $employee = Employee::find($employeeId);
         // For example, let's assume $otherPaymentValue holds the calculated other_payment value
-        if ($paymentType === "salary")
-        {
+        if ($paymentType === "salary") {
             $otherPaymentValue = $employee->fixed_wage_value; // Replace this with your actual logic
         }
-        if ($paymentType == 'commission')
-        {
+        if ($paymentType == 'commission') {
             $otherPaymentValue = $employee->commission_value; // Replace this with your actual logic
         }
         // Return the other_payment value as JSON response
@@ -309,14 +289,12 @@ class WageController extends Controller
         $employee = Employee::find($employee_id);
         $user_id = $employee->user_id;
         $amount = 0;
-//        dd($employee->fixed_wage);
+        //        dd($employee->fixed_wage);
 
 
-        if ($payment_type === "salary")
-        {
-//            dd('salary');
-            if ($employee->fixed_wage == 1)
-            {
+        if ($payment_type === "salary") {
+            //            dd('salary');
+            if ($employee->fixed_wage == 1) {
                 $fixed_wage_value = $employee->fixed_wage_value;
                 $payment_cycle = $employee->payment_cycle;
 
@@ -330,11 +308,11 @@ class WageController extends Controller
                     $amount = $fixed_wage_value * 2;
                 }
                 if ($employee->payment_cycle === "monthly") {
-                    $amount = $fixed_wage_value * 1;}
+                    $amount = $fixed_wage_value * 1;
+                }
             }
         }
-        if ($payment_type == 'commission')
-        {
+        if ($payment_type == 'commission') {
             $start_date = request()->acount_period_start_date;
             $end_date = request()->acount_period_end_date;
 

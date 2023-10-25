@@ -37,7 +37,6 @@ use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
@@ -129,12 +128,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customertypes', CustomerTypeController::class);
 
     // stocks
-    // stocks
 
     //    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
     //    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
     //    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
-
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
@@ -155,6 +152,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('plans', [DeliveryController::class, 'plansList'])->name('delivery_plan.plansList');
     Route::post('delivery_plan/sign-in', [DeliveryController::class, 'signIn']);
     Route::post('delivery_plan/sign-out', [DeliveryController::class, 'signOut']);
+
+    // Route::get('delivery/maps', [DeliveryController::class,'index'])->name('delivery.maps');
+
 
     //    Route::get('add-stock/add-payment/{id}', function ($id) {
     //        return view('add-stock.add-payment', compact('id'));
@@ -237,6 +237,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // ########### General Tax ###########
     Route::resource('sell-car', SellCarController::class);
+
 
     Route::post('api/fetch-customers-by-city', [DeliveryController::class, 'fetchCustomerByCity']);
 });

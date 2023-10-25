@@ -36591,3 +36591,16 @@ table {
     font-size: 0.9em;
     color: #666 !important;
 }
+
+.btn-light {
+    border: 1px solid #aaa !important;
+    border-radius: 3px !important;
+    background-color: #fff !important;
+    color: #444 !important;
+    line-height: 28px;
+    !important
+}
+
+.btn-light::after {
+    color: #8A98AC !important;
+}

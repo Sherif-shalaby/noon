@@ -3,9 +3,7 @@
 {{-- <link rel="shortcut icon" href="{{asset('/uploads/'.$settings['logo'])}}">  --}}
 <!-- Start css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-<!-- Switchery css -->
-{{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
-<link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
+<link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css">
 <!-- Select2 css -->
 <link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
 <!-- Tagsinput css -->
@@ -15,6 +13,8 @@
 <link href="{{ asset('plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <!---->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
 <!-- Pnotify css -->
@@ -40,6 +40,8 @@
 <script type="text/javascript" src="{{ asset('js/toastr/toastr.min.js') }}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <link rel="stylesheet" href="{{ asset('js/jquery-ui.css') }}">
+<!-- Switchery css -->
+<link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
 <style>
     .error-help-block {
         color: red;

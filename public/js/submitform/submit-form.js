@@ -345,43 +345,5 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
         },
     });
 });
-$(document).ready(function () {
-    $("#create-customer-btn").click(function (e) {
-        e.preventDefault();
-        setTimeout(() => {
-            $("#quick_add_customer_form").submit();
-        }, 500);
-    });
-});
-
-$(document).on("submit", "#quick_add_customer_form", function (e) {
-    e.preventDefault();
-    var data = $(this).serialize();
-    $.ajax({
-        method: "post",
-        url: $(this).attr("action"),
-        dataType: "json",
-        data: data,
-        success: function (result) {
-            if (result.success) {
-                Swal.fire("Success", result.msg, "success");
-                $("#add_customer").modal("hide");
-                var customer_id = result.id;
-                $.ajax({
-                    method: "get",
-                    url: "/customer/get-dropdown",
-                    data: {},
-                    contactType: "html",
-                    success: function (data_html) {
-                        $("#Client_Select").empty().append(data_html[0]);
-                        $("#Client_Select").val(data_html[1]).trigger();
-                    },
-                });
-            } else {
-                Swal.fire("Error", result.msg, "error");
-            }
-        },
-    });
-});
 
 //category form

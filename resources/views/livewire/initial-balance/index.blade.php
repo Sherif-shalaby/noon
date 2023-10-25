@@ -73,13 +73,21 @@
                                             @if (!empty($stock->payment_status) && $stock->payment_status != 'paid')
                                                 <li class="divider"></li>
                                                 <li>
-                                                    <a data-href="{{ route('stocks.addPayment', $stock->id) }}"
-                                                        data-container=".view_modal" class="btn btn-modal">
-                                                        <i class="fa fa-money"></i>
-                                                        @lang('lang.pay')
-                                                    </a>
+                                                    <a data-href="{{ route('initial-balance.destroy', $stock->id) }}"
+                                                        {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}} class="btn text-red delete_item"
+                                                        data-deletetype="1"><i class="fa fa-trash"></i>
+                                                        @lang('lang.delete')</a>
                                                 </li>
-                                            @endif
+                                                @if (!empty($stock->payment_status) && $stock->payment_status != 'paid')
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a data-href="{{ route('stocks.addPayment', $stock->id) }}"
+                                                            data-container=".view_modal" class="btn btn-modal">
+                                                            <i class="fa fa-money"></i>
+                                                            @lang('lang.pay')
+                                                        </a>
+                                                    </li>
+                                                @endif
                                         </ul>
                                     </td>
 

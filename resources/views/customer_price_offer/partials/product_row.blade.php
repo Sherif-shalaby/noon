@@ -114,11 +114,7 @@
             {{0.00}}
         @endif
     </td> --}}
-    {{-- +++++++++++++++++++++ column 4 : current_stock +++++++++++++++++++++ --}}
-    <td>
-        <input type="text" class="form-control current_stock" style="width: 65px;" required disabled
-            wire:model="items.{{ $index }}.current_stock">
-    </td>
+
     {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}
     <td class="text-center">
         <div class="btn btn-sm btn-danger py-0 px-1" wire:click="delete_product({{ $index }})">

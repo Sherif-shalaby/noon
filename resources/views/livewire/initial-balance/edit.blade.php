@@ -31,7 +31,6 @@
                                         'placeholder' => __('lang.please_select'),
                                         'wire:model' => 'item.0.store_id',
                                     ]) !!}
-                                    {{--  --}}
                                     <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
                                         data-target=".add-store" href="{{ route('store.create') }}"><i
                                             class="fas fa-plus"></i></button>
