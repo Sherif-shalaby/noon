@@ -315,6 +315,8 @@ class Create extends Component
                         $transaction->dollar_remaining =  $dollar_final_amount ;
                         $transaction_payment->amount = $total_paid;
                         $transaction_payment->dollar_amount = $dollar_total_paid;
+                        $this->amount = $total_paid;
+                        $this->dollar_amount = $dollar_total_paid;
                         $transaction_payment->save();
                         $transaction->save();
                     }
