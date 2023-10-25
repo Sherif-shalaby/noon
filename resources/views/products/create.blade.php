@@ -116,7 +116,7 @@
                     <div class="col-md-1">
                         {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('product_symbol',  null, [
-                            'class' => 'form-control','required'
+                            'class' => 'form-control',
                         ]) !!}
                         <br>
                         @error('product_symbol')
