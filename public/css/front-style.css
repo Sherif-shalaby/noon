@@ -383,7 +383,7 @@ select.form-control {
 }
 
 /* animation */
-
+/* OUT */
 @keyframes fadeOutLeftBig {
     0% {
         opacity: 1;
@@ -404,22 +404,26 @@ select.form-control {
     position: relative;
 }
 
+/* OUT */
+
+/* IN */
 @keyframes fadeInLeftBig {
     0% {
         opacity: 0;
-        transform: translateX(2000px);
+        /* transform: translateX(2000px); */
     }
 
     100% {
         opacity: 1;
-        transform: translateX(0);
+        /* transform: translateX(0); */
     }
 }
 
-body {
-    animation: fadeInLeftBig 1s ease;
+.initial-balance-page {
+    animation: fadeInLeftBig 2s ease;
 }
 
+/* IN */
 /* .transition-fade {
     opacity: 1;
     transition: 500ms;

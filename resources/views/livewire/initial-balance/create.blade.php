@@ -1,5 +1,5 @@
 {{-- <link rel="stylesheet" href="{{ asset('css/modal.css') }}"> --}}
-<section class="forms">
+<section class="forms ">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">

@@ -270,9 +270,9 @@
                 });
         });
 
-        window.addEventListener("beforeunload", (event) => {
-            document.body.classList.add('animated-element');
-        });
+        // window.addEventListener("beforeunload", (event) => {
+        //     document.body.classList.add('animated-element');
+        // });
     </script>
     {{-- <script src="https://unpkg.com/swup@4"></script>
     <script>

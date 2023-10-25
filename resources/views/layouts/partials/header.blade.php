@@ -134,8 +134,8 @@
             {{-- @can('dashboard')  --}}
             @if (!empty($module_settings['dashboard']))
                 <li class="scroll mx-2 mb-3 p-0">
-                    <a href="{{ url('/') }}"
-                        class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                    <a class="home-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
+                        style="cursor: pointer">
                         <div style="width: 25px">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64">
                                 <defs>
@@ -204,8 +204,8 @@
             {{-- @can('product_module')  --}}
             @if (!empty($module_settings['product_module']))
                 <li class="scroll mx-2 mb-3 p-0">
-                    <a href="{{ route('products.create') }}"
-                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                    <a class="products-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
+                        style="cursor: pointer">
                         <div style="width: 25px">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                 <g data-name="product analytic">
@@ -249,8 +249,8 @@
             {{-- @can('cashier_module') --}}
             @if (!empty($module_settings['cashier_module']))
                 <li class="scroll mx-2 mb-3 p-0">
-                    <a href="{{ route('pos.index') }}"
-                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <a class="cashier-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        style="cursor: pointer">
                         {{-- <img
                             src="{{ asset('images/topbar/cashier-machine.png') }}" class="img-fluid pl-1"
                             alt="apps"> --}}
@@ -309,8 +309,8 @@
             {{-- @can('stock_module') --}}
             @if (!empty($module_settings['stock_module']))
                 <li class="scroll mx-2 mb-3 p-0">
-                    <a href="{{ route('stocks.create') }}"
-                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <a class="purchases-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        style="cursor: pointer">
                         <div style="width: 25px">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
                                 style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -355,8 +355,8 @@
             @endif
             @if (!empty($module_settings['stock_module']))
                 <li class="scroll mx-2 mb-3 p-0">
-                    <a href="{{ route('initial-balance.create') }}"
-                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <a class="initial-balance-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        style="cursor: pointer">
                         <span style="width: 25px;">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 60 60">
                                 <g data-name="19-Warehouse">
@@ -420,8 +420,8 @@
             {{-- @endcan --}}
             {{-- ###################### Purchase_Order : امر شراء ###################### --}}
             <li class="scroll mx-2 mb-3 p-0">
-                <a href="{{ route('purchase_order.create') }}"
-                    class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <a class="purchases-order-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="cursor: pointer">
                     <div style="width: 25px">
                         <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                             <g data-name="box exchange money">
@@ -507,7 +507,7 @@
                         <span class="mx-2">{{ __('lang.returns') }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('sell_return.index') }}"><i
+                        <li><a class="return-button" style="cursor: pointer"><i
                                     class="mdi mdi-circle"></i>@lang('lang.sells_return')</a></li>
                     </ul>
                 </li>
@@ -584,11 +584,13 @@
                         <span class="mx-2">{{ __('lang.employees') }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('jobs.index') }}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a>
+                        <li><a style="cursor: pointer" class="jobs-button"><i
+                                    class="mdi mdi-circle"></i>@lang('lang.jobs')</a>
                         </li>
-                        <li><a href="{{ route('employees.create') }}"><i
+                        <li><a style="cursor: pointer" class="employees-button"><i
                                     class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
-                        <li><a href="{{ route('wages.create') }}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a>
+                        <li><a style="cursor: pointer" class="wages-button"><i
+                                    class="mdi mdi-circle"></i>@lang('lang.wages')</a>
                         </li>
                     </ul>
                 </li>
@@ -638,9 +640,9 @@
                     </a>
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li><a href="{{ route('customers.create') }}"><i
+                        <li><a style="cursor: pointer" class="customers-button"><i
                                     class="mdi mdi-circle"></i>{{ __('lang.customers') }}</a></li>
-                        <li><a href="{{ route('customertypes.index') }}"><i
+                        <li><a style="cursor: pointer" class="customer-types-button"><i
                                     class="mdi mdi-circle"></i>{{ __('lang.customer_types') }}</a></li>
                     </ul>
                 </li>
@@ -650,8 +652,8 @@
             {{-- @can('customer_module')  --}}
             @if (!empty($module_settings['customer_module']))
                 <li class="scroll mx-2 mb-3 p-0 ">
-                    <a href="{{ route('customer_price_offer.create') }}"
-                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <a class="customer-price-offer-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        style="cursor: pointer">
                         {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}" class="img-fluid pl-1"
                             alt="layouts"> --}}
                         <div style="width: 25px">
@@ -749,8 +751,8 @@
             {{-- @can('supplier_module')  --}}
             @if (!empty($module_settings['supplier_module']))
                 <li class="scroll mx-2 mb-3 p-0 ">
-                    <a href="{{ route('suppliers.create') }}"
-                        class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                    <a class="suppliers-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                        style="cursor: pointer">
                         {{-- <img
                             src="{{ asset('images/topbar/inventory.png') }}" class="img-fluid pl-1"
                             alt="widgets"> --}}
@@ -917,8 +919,8 @@
             {{-- ###################### sell car : عربة بيع ###################### --}}
             {{-- @can('sell_car_module')  --}}
             <li class="scroll mx-2 mb-3 p-0 ">
-                <a href="{{ route('sell-car.index') }}"
-                    class="d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <a style="cursor: pointer"
+                    class="sell-car-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1" alt="components"> --}}
                     <div style="width: 25px">
                         <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
@@ -1040,19 +1042,19 @@
                                 <ul class="sub-menu">
                                     {{-- ////// اخفاء واظهار اقسام البرنامج ////// --}}
                                     <li>
-                                        <a href="{{ route('getModules') }}">
+                                        <a class="modules-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.modules')
                                         </a>
                                     </li>
                                     {{-- ////// الاعدادات العامة ////// --}}
                                     <li>
-                                        <a href="{{ route('settings.index') }}">
+                                        <a class="general_settings-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.general_settings')
                                         </a>
                                     </li>
                                     {{-- ////// الخزائن ////// --}}
                                     <li>
-                                        <a href="{{ route('moneysafe.index') }}">
+                                        <a class="moneysafes-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.moneysafes')
                                         </a>
                                     </li>
@@ -1063,19 +1065,19 @@
                                 <ul class="sub-menu">
                                     {{-- ////// المخازن ////// --}}
                                     <li>
-                                        <a href="{{ route('store.index') }}">
+                                        <a class="stores-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.stores')
                                         </a>
                                     </li>
                                     {{-- ////// العلامة التجاية ////// --}}
                                     <li>
-                                        <a href="{{ route('brands.index') }}">
+                                        <a class="brands-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.brands')
                                         </a>
                                     </li>
                                     {{-- ////// الاقسام ////// --}}
                                     <li>
-                                        <a href="{{ route('sub-categories', 'category') }}">
+                                        <a class="categories-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('categories.categories')
                                         </a>
                                     </li>
@@ -1086,19 +1088,19 @@
                                 <ul class="sub-menu">
                                     {{-- ////// الالوان ////// --}}
                                     <li>
-                                        <a href="{{ route('colors.index') }}">
+                                        <a class="colors-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('colors.colors')
                                         </a>
                                     </li>
                                     {{-- ////// المقاسات ////// --}}
                                     <li>
-                                        <a href="{{ route('sizes.index') }}">
+                                        <a class="sizes-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('sizes.sizes')
                                         </a>
                                     </li>
                                     {{-- ////// الوحدات ////// --}}
                                     <li>
-                                        <a href="{{ route('units.index') }}">
+                                        <a class="units-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('units.units')
                                         </a>
                                     </li>
@@ -1108,19 +1110,19 @@
                                 <ul class="sub-menu">
                                     {{-- ////////// نقاط البيع للصرافين ////////// --}}
                                     <li>
-                                        <a href="{{ route('store-pos.index') }}">
+                                        <a class="stores_pos-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.store_pos')
                                         </a>
                                     </li>
                                     {{-- ////////// الضرائب العامة ////////// --}}
                                     <li>
-                                        <a href="{{ route('general-tax.index') }}">
+                                        <a class="general-tax-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.general_tax')
                                         </a>
                                     </li>
                                     {{-- ////////// ضرائب المنتجات ////////// --}}
                                     <li>
-                                        <a href="{{ route('product-tax.index') }}">
+                                        <a class="product_tax-button" style="cursor: pointer">
                                             <i class="mdi mdi-circle"></i>@lang('lang.product_tax')
                                         </a>
                                     </li>
@@ -1187,55 +1189,55 @@
                     <ul class="dropdown-menu">
                         {{-- +++++++++++ purchases report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('purchases-report.index') }}">
+                            <a class="purchases_report-button" style="cursor: pointer;">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.purchases_report') }}
                             </a>
                         </li>
                         {{-- +++++++++++ sales report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('sales-report.index') }}">
+                            <a class="sales-report-button" style="cursor: pointer">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.sales_report') }}
                             </a>
                         </li>
                         {{-- +++++++++++ receivable report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('receivable-report.index') }}">
+                            <a class="receivable-report-button" style="cursor: pointer">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.receivable_report') }}
                             </a>
                         </li>
-                        {{-- +++++++++++ receivable report +++++++++++ --}}
+                        {{-- +++++++++++ payable report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('payable-report.index') }}">
+                            <a class="payable-report-button" style="cursor: pointer;">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.payable_report') }}
                             </a>
                         </li>
                         {{-- +++++++++++ customers report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('customers-report.index') }}">
+                            <a style="cursor: pointer" class="customers-report-button">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.customers_report') }}
                             </a>
                         </li>
                         {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
                         <li>
-                            <a href="{{ route('daily-report-summary.index') }}">
+                            <a style="cursor: pointer" class="daily-report-summary-button">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.daily_report_summary') }}
                             </a>
                         </li>
                         {{-- +++++++++++ Get Due Report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('get-due-report.index') }}">
+                            <a style="cursor: pointer" class="get-due-report-button">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.get_due_report') }}
                             </a>
                         </li>
                         {{-- +++++++++++ Supplier Report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('get-supplier-report.index') }}">
+                            <a style="cursor: pointer" class="get-supplier-report-button">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
                             </a>
                         </li>
                         {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
                         <li>
-                            <a href="{{ route('representative_salary_report.index') }}">
+                            <a class="representative_salary_report-button" style="cursor: pointer">
                                 <i class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
                             </a>
                         </li>
@@ -1254,3 +1256,222 @@
     <!-- End container-fluid -->
 </div> --}}
 <!-- End Navigationbar -->
+{{-- href="{{ route('initial-balance.create') }}" --}}
+<script>
+    $('.initial-balance-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('initial-balance.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.home-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ url('/') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.products-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('products.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.cashier-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('pos.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.purchases-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('stocks.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.purchases-order-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('purchase_order.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.return-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('sell_return.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.jobs-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('jobs.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.employees-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('employees.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.wages-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('wages.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.customers-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('customers.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.customer-types-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('customertypes.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.customer-price-offer-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('customer_price_offer.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.suppliers-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('suppliers.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.sell-car-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('sell-car.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.modules-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('getModules') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.general_settings-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('settings.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.moneysafes-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('moneysafe.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.stores-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('store.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.brands-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('brands.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.categories-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('sub-categories', 'category') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.colors-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('colors.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.sizes-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('sizes.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.units-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('units.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.stores_pos-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('store-pos.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.general-tax-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('general-tax.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.product_tax-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('product-tax.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.purchases_report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('purchases-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.sales-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('sales-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.receivable-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('receivable-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.payable-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('payable-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.customers-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('customers-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.daily-report-summary-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('daily-report-summary.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.get-due-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('get-due-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.get-supplier-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('get-supplier-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.representative_salary_report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('representative_salary_report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+</script>
