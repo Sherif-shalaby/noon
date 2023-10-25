@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
@@ -93,6 +94,7 @@ class EmployeeController extends Controller
     public function create(Request $request)
     {
         $stores = Store::pluck('name', 'id')->toArray();
+        $branches = Branch::pluck('name', 'id')->toArray();
         $jobs = JobType::pluck('title', 'id')->toArray();
         $leave_types = LeaveType::all();
         $week_days =  Employee::getWeekDays();
@@ -138,7 +140,7 @@ class EmployeeController extends Controller
                 compact('stores','jobs','leave_types' ,'employee_products',
                     'week_days','modulePermissionArray','subModulePermissionArray',
                     'payment_cycle','commission_type','commission_calculation_period',
-                    'products','customer_types','cashiers' ,'categories','subcategories','brands'
+                    'products','customer_types','cashiers' ,'categories','subcategories','brands','branches'
                 )
             );
 
@@ -201,6 +203,7 @@ class EmployeeController extends Controller
         $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
         $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
         $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
+        $employee->branch_id  = $request->branch_id ?? null;
         if ($request->hasFile('photo')) {
             $employee->photo = store_file($request->file('photo'), 'employees');
         }
@@ -305,6 +308,7 @@ class EmployeeController extends Controller
       $employee = Employee::find($id);
       $user = User::find($employee->user_id);
       $stores = Store::pluck('name', 'id')->toArray();
+      $branches = Branch::pluck('name', 'id')->toArray();
       $selected_stores = $employee->stores->pluck('id');
       $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
 
@@ -323,7 +327,8 @@ class EmployeeController extends Controller
           'modulePermissionArray',
           'subModulePermissionArray',
           'user',
-          'selected_stores'
+          'selected_stores',
+          'branches'
       ));
 
   }
@@ -332,7 +337,7 @@ class EmployeeController extends Controller
    * Update the specified resource in storage.
    *
    * @param  int  $id
-   * @return Response
+   * @return RedirectResponse
    */
   public function update($id ,Request $request)
   {
@@ -382,6 +387,7 @@ class EmployeeController extends Controller
           $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
           $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
           $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
+          $employee->branch_id = $request->branch_id ?? null;
 
           if ($request->hasFile('photo')) {
               $employee->photo = store_file($request->file('photo'), 'employees');

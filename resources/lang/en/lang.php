@@ -541,10 +541,26 @@ return [
     'extra'=>'Extra',
     'price_after_discounting_quantity' => 'Price after discounting quantity',
     'draft_transactions'=>'Draft Transactions',
+    'quick_pay' =>'دفع سري',
+    'highest_price'=>'Highest Price',
+    'lowest_price'=>'Lowest Price',
+    'from_a_to_z'=>'A to Z',
+    'from_z_to_a'=>'Z to A',
+    'nearest_expiry_filter'=>'Nearest Expiry',
+    'longest_expiry_filter'=>'Longest Expiry',
+    'dollar_highest_price'=>'Highest Price $',
+    'dollar_lowest_price'=>'Lowest Price $',
     'out_of_stock' => 'Out Of Stock',
     'po' => 'PO',
+<<<<<<< HEAD
     'new_purchase_order_created_by' => 'New purchase order created by',
 
+=======
+    'branches' => 'Branches',
+    'add_branch' => 'Add Branch',
+    'branch_name' => 'Branch Name',
+    'branch' => 'Branch',
+>>>>>>> 65e915b8cc46c5bb91ce417446b208a4e35d6a52
 ];
 
 

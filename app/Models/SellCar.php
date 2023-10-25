@@ -23,4 +23,8 @@ class SellCar extends Model
     {
         return $this->belongsTo(User::class, 'edited_by');
     }
+    public function branch()
+    {
+        return $this->hasOne(Branch::class);
+    }
 }

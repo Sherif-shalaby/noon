@@ -105,7 +105,7 @@
                                     <button type="button" class="btn btn-secondary" id="search_button"><i
                                             class="fa fa-search"></i>
                                     </button>
-                                    <input type="search" name="search_product" id="search_product" wire:model.debounce.500ms="searchProduct"
+                                    <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
                                            placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                            class="form-control" autocomplete="off">
                                     {{--                                    <button type="button" class="btn btn-success  btn-modal"--}}

@@ -98,19 +98,13 @@
                                                    placeholder="Name">
                                         </div>
                                         <div class="col-sm-6">
-                                            <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
-                                        </div>
-                                        <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
                                                 <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
                                             <input type="email" class="form-control" name="email" id="email" required
                                                    placeholder="Email">
                                         </div>
                                     </div>
-                                    {{-- +++++++++++++++++ password +++++++++++++++++ --}}
                                     <div class="row mt-4">
-
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
@@ -125,6 +119,7 @@
                                     </div>
                                     {{-- +++++++++++++++++ date_of_start_working , date_of_birth +++++++++++++++++ --}}
                                     <div class="row mt-4">
+
                                         <div class="col-sm-6">
                                             <label for="date_of_start_working">@lang('lang.date_of_start_working')</label>
                                             <input type="date" class="form-control"
@@ -290,9 +285,19 @@
 
 @endsection
 
-@section('javascript')
-
+@push('javascripts')
     <script>
+        $(document).on("change","#branch_id",function () {
+            $.ajax({
+                type: "get",
+                url: "/get_branch_stores/"+$(this).val(),
+                dataType: "html",
+                success: function (response) {
+                    console.log(response)
+                    $("#store_id").empty().append(response).change();
+                }
+            });
+        });
         $(document ).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
@@ -462,4 +467,4 @@
 
         });
     </script>
-@endsection
+@endpush
