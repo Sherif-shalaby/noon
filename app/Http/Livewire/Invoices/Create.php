@@ -1167,17 +1167,23 @@ class Create extends Component
 
             $this->items[$key]['quantity_available']=$product_store->quantity_available * $product_store->variations->equal;
         }else{
-            // foreach($variations as $variation){
-            //     if($variation->basic_unit_id == $variation_id){
-            //         // $amount *=$variation->equal;
-            //         foreach($variations as $var){
-            //             if($variation->base_unit_id ==$var->unit_id){
-            //                 $amount *=$var->equal;
-            //             }
-            //         }
-                    $this->items[$key]['quantity_available']= 8888;
-            //     }
-            // }
+            foreach($variations as $variation){
+                if($variation->unit_id == $var_id){
+                    $amount *=$variation->equal;
+                    $basic_unit=$variation->basic_unit_id;
+                    foreach($variations as $var){
+                        if($basic_unit ==$var->unit_id){
+                            $amount *=$var->equal;
+                            $basic_unit=$var->basic_unit_id;
+                            if($product_store->variations->unit_id != $var->basic_unit_id){
+                                break;
+                            }
+                        }
+                    }
+                    $this->items[$key]['quantity_available']= $product_store->quantity_available * $amount;
+                    break;
+                }
+            }
         }
         // $this->items[$key]['quantity_available'] =44;
 
