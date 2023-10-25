@@ -342,20 +342,20 @@
                                             </div>
                                             <div class="col-4 offset-1">
                                                 <div class="preview-image-container">
-                                                    @if (!empty($recent_product->image))
-                                                        <div class="preview">
-                                                            <img src="{{ asset('uploads/products/' . $recent_product->image) }}"
-                                                                 id="image_footer" alt="">
-                                                            <button type="button"
-                                                                    class="btn btn-xs btn-danger delete-btn remove_image "
-                                                                    data-type="image"><i style="font-size: 25px;"
-                                                                                         class="fa fa-trash"></i></button>
-                                                            <span class="btn btn-xs btn-primary  crop-btn"
-                                                                  id="crop-image-btn" data-toggle="modal"
-                                                                  data-target="#imageModal"><i style="font-size: 25px;"
-                                                                                               class="fas fa-crop"></i></span>
-                                                        </div>
-                                                    @endif
+{{--                                                    @if (!empty($recent_product->image))--}}
+{{--                                                        <div class="preview">--}}
+{{--                                                            <img src="{{ asset('uploads/products/' . $recent_product->image) }}"--}}
+{{--                                                                 id="image_footer" alt="">--}}
+{{--                                                            <button type="button"--}}
+{{--                                                                    class="btn btn-xs btn-danger delete-btn remove_image "--}}
+{{--                                                                    data-type="image"><i style="font-size: 25px;"--}}
+{{--                                                                                         class="fa fa-trash"></i></button>--}}
+{{--                                                            <span class="btn btn-xs btn-primary  crop-btn"--}}
+{{--                                                                  id="crop-image-btn" data-toggle="modal"--}}
+{{--                                                                  data-target="#imageModal"><i style="font-size: 25px;"--}}
+{{--                                                                                               class="fas fa-crop"></i></span>--}}
+{{--                                                        </div>--}}
+{{--                                                    @endif--}}
                                                 </div>
                                             </div>
                                         </div>
