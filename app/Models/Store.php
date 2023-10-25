@@ -35,6 +35,10 @@ class Store extends Model
         return $this->belongsToMany(Employee::class, 'employee_stores');
     }
 
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
     public static function getDropdown()
     {
