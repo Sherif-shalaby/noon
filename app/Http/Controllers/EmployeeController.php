@@ -14,8 +14,11 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\LeaveType;
 use App\Models\CustomerType;
+use App\Utils\MoneySafeUtil;
+// use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
+use App\Models\EmployeeProducts;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
@@ -208,6 +211,20 @@ class EmployeeController extends Controller
             $employee->photo = store_file($request->file('photo'), 'employees');
         }
         $employee->save();
+        // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+        // Fetch the user
+        $users = User::where('id','!=',auth()->user()->id)->get();
+        $employee_name = $employee->employee_name;
+        // Get the name of the user creating the employee
+        $userCreateEmp = auth()->user()->name;
+        $type = "create_employee";
+        // Send notification to users
+        foreach ($users as $user)
+        {
+            Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
+        }
+        // +++++++++++++++ End : Notification ++++++++++++++++++++++
+
         // +++++++++++++++ Start : Notification ++++++++++++++++++++++
         // Fetch the user
         $users = User::where('id','!=',auth()->user()->id)->get();

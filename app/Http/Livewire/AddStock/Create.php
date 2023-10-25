@@ -66,6 +66,19 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id;
 
+    'store_id' => 'required',
+    'supplier' => 'required',
+//    'status' => 'required',
+    'paying_currency' => 'required',
+    'purchase_type' => 'required',
+    'payment_status' => 'required',
+    'method' => 'required',
+    'amount' => 'required',
+    'transaction_currency' => 'required',
+    'items.*.variation_id' => 'required',
+    'source_type' => 'required',
+    // 'source_id' => 'required'
+];
 
     public function mount(){
 
