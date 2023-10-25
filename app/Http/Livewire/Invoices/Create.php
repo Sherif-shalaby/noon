@@ -569,9 +569,9 @@ class Create extends Component
                 }
             }
         }
-//        foreach ($total as $t){
-//            dd($t);
-//        }
+        else{
+            $total[] = [$quantity_available => ''];
+        }
 //        dd($total);
         return $total;
     }
