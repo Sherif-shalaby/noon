@@ -23,6 +23,7 @@ $(document).on('change','.width,.height,.length',function(){
     let size=width*height*length;
     $('.size').val(size);
 });
+
 $(document).on("click", ".add_price_row", function () {
     let row_id = parseInt($("#raw_price_index").val());
     $("#raw_price_index").val(row_id + 1);
@@ -45,6 +46,7 @@ $(document).on("change",".is_price_permenant",function () {
     $(this).closest("tr").find(".price_end_date").prop('disabled', (i, v) => !v);
     $(this).closest("tr").find(".price_end_date").val(null);
 });
+// +++++++++++++++++++++++++++++++ filter 1 : subcategory1 +++++++++++++++++++++++++++++++
 $(document).on("change",".category",function () {
     $.ajax({
         type: "get",
@@ -56,6 +58,7 @@ $(document).on("change",".category",function () {
         }
     });
 });
+// +++++++++++++++++++++++++++++++ filter 2 : subcategory2 +++++++++++++++++++++++++++++++
 $(document).on("change",".subcategory",function () {
     $.ajax({
         type: "get",
@@ -67,6 +70,7 @@ $(document).on("change",".subcategory",function () {
         }
     });
 });
+// +++++++++++++++++++++++++++++++ filter 3 : subcategory2 +++++++++++++++++++++++++++++++
 $(document).on("change",".subcategory2",function () {
     $.ajax({
         type: "get",

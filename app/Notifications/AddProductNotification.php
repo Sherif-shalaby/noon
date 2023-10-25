@@ -14,6 +14,7 @@ class AddProductNotification extends Notification
     private $user_create_emp;
     private $product_name;
     private $type;
+    // ++++++++++++++++++++++++++++ __construct() ++++++++++++++++++++++++++++
     public function __construct($product_id,$user_create_emp,$product_name,$type)
     {
         $this->product_id = $product_id;

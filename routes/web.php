@@ -45,6 +45,7 @@ use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
+use App\Models\Employee;
 
 /*
 |--------------------------------------------------------------------------
@@ -240,7 +241,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('api/fetch-state',[SuppliersController::class,'fetchState']);
     // general_setting : fetch "city" of selected "state" selectbox
     Route::post('api/fetch-cities',[SuppliersController::class,'fetchCity']);
-
+    // ++++++++++++++++++++ Employee Filters +++++++++++++++++++
+    // fetch "sub_categories1" of selected "main_category" selectbox
+    Route::post('api/fetch-sub_categories1',[EmployeeController::class,'fetch_sub_categories1']);
+    // fetch "sub_categories2" of selected "sub_categories1" selectbox
+    Route::post('api/fetch-sub_categories2',[EmployeeController::class,'fetch_sub_categories2']);
+    // fetch "sub_categories3" of selected "sub_categories2" selectbox
+    Route::post('api/fetch-sub_categories3',[EmployeeController::class,'fetch_sub_categories3']);
+    // ++++++++++++ get-checked-products ++++++++++++++++++
+    Route::get('get-checked-products/{id}',[EmployeeController::class,'get_checked_products']);
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');

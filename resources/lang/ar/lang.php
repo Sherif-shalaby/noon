@@ -579,6 +579,8 @@ return array(
     'draft_transactions'=>'العمليات محفوظة فى المسودة',
     'out_of_stock' => 'لا يوجد مخزون',
     'po' => 'أمر شراء',
+    'new_purchase_order_created_by' => 'أمر شراء جديد تم إنشاؤه بواسطة',
+
 
 );
 

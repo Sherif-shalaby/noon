@@ -163,12 +163,31 @@
                     </li>
                 @endif --}}
                 {{-- <hr /> --}}
+                {{-- ++++++++++++++++++++ purchase_order Notification ++++++++++++++++++++ --}}
+                @if($notificationVar->data['type'] == 'create_purchase_order')
+                    <li class="notification-box">
+                        <div class="row">
+                            <div class="col-lg-8 col-sm-8 col-8">
+                                {{-- <p style="font-weight: bold">{{ __('lang.create_purchase_order') }}</p> --}}
+                                <p style="margin:0px;margin-bottom:5px;font-weight:bold;">
+                                    <i class="dripicons-card"></i>
+                                    @lang('lang.purchase_order') #{{$notificationVar->data['purchase_order_num']}}
+                                </p>
+                                <span class="text-muted">@lang('lang.new_purchase_order_created_by')
+                                    @if( !empty($notificationVar->data['user_create_po']) )
+                                        {{$notificationVar->data['user_create_po']}}
+                                    @endif
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                @endif
 
-            @empty
-                <div class="text-center no_new_notification_div">
-                    <span class="text-muted" style="font-size: 12px;margin:50px !important;">@lang('lang.no_new_notification')</span>
-                </div>
-            @endforelse
+                @empty
+                    <div class="text-center no_new_notification_div">
+                        <span class="text-muted" style="font-size: 12px;margin:50px !important;">@lang('lang.no_new_notification')</span>
+                    </div>
+                @endforelse
         </ul>
     </li>
 </ul>

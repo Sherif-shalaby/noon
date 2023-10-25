@@ -543,6 +543,8 @@ return [
     'draft_transactions'=>'Draft Transactions',
     'out_of_stock' => 'Out Of Stock',
     'po' => 'PO',
+    'new_purchase_order_created_by' => 'New purchase order created by',
+
 ];
 
 

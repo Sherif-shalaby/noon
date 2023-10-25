@@ -6,28 +6,20 @@ use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
 use App\Models\Brand;
-use App\Models\Leave;
 use App\Models\Store;
 use App\Models\JobType;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\LeaveType;
-use App\Models\Attendance;
 use App\Models\CustomerType;
-use App\Utils\MoneySafeUtil;
-// use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
-use App\Models\EmployeeProducts;
 use Illuminate\Support\Facades\DB;
-use App\Utils\StockTransactionUtil;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\AddEmployeeNotification;
 use Illuminate\Contracts\Foundation\Application;
@@ -84,7 +76,6 @@ class EmployeeController extends Controller
             if ($brand) {
                 $filtered_Products->where('brand_id', $brand);
             }
-
             // Execute the query and get the filtered products
             $filteredProducts = $filtered_Products->get();
 
@@ -163,8 +154,8 @@ class EmployeeController extends Controller
           'password' => 'required|confirmed|max:255',
       ]);
 
-      try {
-
+      try
+      {
           DB::beginTransaction();
 
           $data = $request->except('_token');
@@ -229,7 +220,8 @@ class EmployeeController extends Controller
         // +++++++++++++++ End : Notification ++++++++++++++++++++++
 
         // insert "employee_id" and "product_id" of employee's product into "employee_product" table
-        for($i = 0; $i < count($data['ids']); $i++) {
+        for($i = 0; $i < count($data['ids']); $i++)
+        {
             $product = Product::find($data['ids'][$i]);
             if($product) {
                 // Assuming $employee is already defined or fetched from somewhere
@@ -237,20 +229,9 @@ class EmployeeController extends Controller
             }
         }
         $employee->stores()->sync($data['store_id']);
-
-
-
-        //   if ($request->hasFile('upload_files')) {
-        //       foreach ($request->file('upload_files') as $file) {
-        //           $employee->addMedia($file)->toMediaCollection('employee_files');
-        //       }
-        //   }
-
           //add of update number of leaves
           $this->createOrUpdateNumberofLeaves($request, $employee->id);
-
           //assign permissions to employee
-//          dd($data['permissions']);
           if (!empty($data['permissions'])) {
               foreach ($data['permissions'] as $key => $value) {
                   $permissions[] = $key;
@@ -458,53 +439,91 @@ class EmployeeController extends Controller
           return redirect()->back()->with('status', $output);
       }
   }
+    // +++++++++++++++++++++ destroy() +++++++++++++++++++++
+    public function destroy($id)
+    {
+        try {
+            $employee = Employee::find($id);
+            $employee->delete();
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
-  public function destroy($id)
-  {
-      try {
-          $employee = Employee::find($id);
-          $employee->delete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.job_deleted')
+            ];
+        }
 
-          $output = [
-              'success' => true,
-              'msg' => __('lang.job_deleted')
-          ];
-      }
+        catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('messages.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
 
-      catch (\Exception $e) {
-          Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-          $output = [
-              'success' => false,
-              'msg' => __('messages.something_went_wrong')
-          ];
-      }
-      return redirect()->back()->with('status', $output);
+    }
 
-  }
+    public function  addPoints(){
+    //      dd('test');
+        return view('employees.add_point');
+    }
 
-  public function  addPoints(){
-//      dd('test');
-      return view('employees.add_point');
-  }
+    public function createOrUpdateNumberofLeaves($request, $employee_id)
+    {
+        if (!empty($request->number_of_leaves)) {
+            foreach ($request->number_of_leaves as $key => $value) {
+                NumberOfLeave::updateOrCreate(
+                    ['employee_id' => $employee_id, 'leave_type_id' => $key],
+                    ['number_of_days' => $value['number_of_days'], 'created_by' => Auth::user()->id, 'enabled' => !empty($value['enabled']) ? 1 : 0]
+                );
+            }
+        }
+    }
+    // ============================= Employee's Products : Real-Time Filters =============================
+    // ++++++ fetch_sub_categories1() : Get Sub_Categories1 According to "selected main_categories" selectbox ++++++
+    public function fetch_sub_categories1(Request $request)
+    {
+        $data['subcategory_id1'] = Category::where('parent_id', $request->subcategories1_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++ fetch_sub_categories2() : Get Sub_Categories2 According to "selected sub_category1" selectbox ++++++
+    public function fetch_sub_categories2(Request $request)
+    {
+        $data['subcategory_id2'] = Category::where('parent_id', $request->subcategories2_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++ fetch_sub_categories3() : Get Sub_Categories3 According to "selected sub_category2" selectbox ++++++
+    public function fetch_sub_categories3(Request $request)
+    {
+        $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // +++++++++++++++++++++++++ get_checked_products() +++++++++++++++++++++++++
+    // Get "selected products" from "employee's products" and Add them in "products selectbox" in "تفصيل الراتب"
+    public function get_checked_products($ids)
+    {
+        // Convert the comma-separated string to an array
+        $idsArray = explode(',', $ids);
 
-  public function createOrUpdateNumberofLeaves($request, $employee_id)
-  {
-      if (!empty($request->number_of_leaves)) {
-          foreach ($request->number_of_leaves as $key => $value) {
-              NumberOfLeave::updateOrCreate(
-                  ['employee_id' => $employee_id, 'leave_type_id' => $key],
-                  ['number_of_days' => $value['number_of_days'], 'created_by' => Auth::user()->id, 'enabled' => !empty($value['enabled']) ? 1 : 0]
-              );
-          }
-      }
-  }
+        // $idsArray now contains an array of product IDs
+        // Loop through the IDs and fetch products
+        foreach ($idsArray as $id)
+        {
+            $product = Product::find($id);
+            // Check if the product exists
+            if ($product) {
+                // If found, add the product to the $products array
+                $products[] = $product;
+            } else {
+                // If not found, you might want to handle this differently
+                // For example, you can add a null value to the $products array
+                // $products[] = null;
+            }
+        }
+
+        // Return the $products array as JSON
+        return response()->json(['status' => 'success', 'products' => $products]);
+    }
 
 }
-
 ?>

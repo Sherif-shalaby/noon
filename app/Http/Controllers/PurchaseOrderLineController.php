@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Util;
+use App\Models\User;
+use App\Models\Store;
+use App\Models\Product;
+use App\Models\Supplier;
 use App\Utils\ProductUtil;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrderLine;
-use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\PurchaseOrderTransaction;
-use App\Models\Store;
-use App\Models\Supplier;
-use App\Utils\StockTransactionUtil;
-use App\Utils\Util;
 use Illuminate\Support\Facades\DB;
+use App\Utils\StockTransactionUtil;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\PurchaseOrderTransaction;
+use App\Notifications\AddPurchaseOrderNotification;
+use Illuminate\Support\Facades\Notification;
 
 class PurchaseOrderLineController extends Controller
 {
@@ -144,6 +147,27 @@ class PurchaseOrderLineController extends Controller
             $purchaseOrderTransaction->details = $request['details'];
             // Save the updated PurchaseOrderTransaction
             $purchaseOrderTransaction->save();
+            // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+            // Fetch the user
+            $users = User::where('id','!=',auth()->user()->id)->get();
+            $purchase_order_id = $purchaseOrderLine->id;
+            $purchase_order_transaction_id = $purchaseOrderTransaction->id;
+            $purchase_order_num = $purchaseOrderTransaction->po_no;
+            // Get the name of the user creating the employee
+            $userCreateEmp = auth()->user()->name;
+            $type = "create_purchase_order";
+            // Send notification to users
+            foreach ($users as $user)
+            {
+                Notification::send($user,
+                                    new AddPurchaseOrderNotification( $purchase_order_id ,
+                                                                        $purchase_order_transaction_id,
+                                                                               $purchase_order_num ,
+                                                                                 $userCreateEmp,
+                                                                                        $type));
+            }
+            // +++++++++++++++ End : Notification ++++++++++++++++++++++
+
             DB::commit();
             // You can return a success response or redirect to a success page here
             $output = [
