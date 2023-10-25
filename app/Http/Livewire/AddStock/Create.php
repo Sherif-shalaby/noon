@@ -434,7 +434,7 @@ class Create extends Component
                     'variation_id' => $item['variation_id'] ?? null,
                     'product_id' => $item['product']['id'],
                     'stock_transaction_id' =>$transaction->id ,
-                    'quantity' => $item['quantity'],
+                    'quantity' => $this->num_uf($item['quantity']),
                     'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
                     'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
                     'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
@@ -450,7 +450,7 @@ class Create extends Component
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
                     'fill_type' => $item['fill_type'] ?? null,
-                    'fill_quantity' => $item['fill_quantity'] ?? null,
+                    'fill_quantity' => $this->num_uf($item['fill_quantity'])  ?? null,
                 ];
                 $stock_line = AddStockLine::create($add_stock_data);
 
