@@ -314,7 +314,7 @@
                                     </ul>
                                 </li>
                                 {{-- ================= Column 3 ============== --}}
-                                <li class="mega-menu-col col-md-3">
+                                <li class="mega-menu-col col-md-2">
                                     <ul class="sub-menu">
                                         {{-- ////// الالوان ////// --}}
                                         <li>
@@ -336,7 +336,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                                    <li class="mega-menu-col col-md-3">
+                                <li class="mega-menu-col col-md-2">
                                     <ul class="sub-menu">
                                         {{-- ////////// نقاط البيع للصرافين ////////// --}}
                                         <li>
@@ -354,6 +354,15 @@
                                         <li>
                                             <a href="{{route('product-tax.index')}}">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.product_tax')
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-2">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{route('branches.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.branches')
                                             </a>
                                         </li>
                                     </ul>
