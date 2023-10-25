@@ -70,7 +70,7 @@
             <div class="col-sm-9">
                 <div class="row">
                     {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                             {!! Form::select('store_id', $stores, $store_id,
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('store_pos_id', __('lang.pos') . ':*', []) !!}
                             {!! Form::select('store_pos_id', $store_pos, $store_pos_id, ['class' => 'select2 form-control','data-name'=>'store_pos_id', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_pos_id']) !!}
@@ -92,17 +92,17 @@
                         </div>
                     </div>
                     {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}
-                            {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}
-                            @error('payment_status')
-                            <span class="error text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
+{{--                    <div class="col-md-2">--}}
+{{--                        <div class="form-group">--}}
+{{--                            {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}--}}
+{{--                            {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}--}}
+{{--                            @error('payment_status')--}}
+{{--                            <span class="error text-danger">{{ $message }}</span>--}}
+{{--                            @enderror--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
                     {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <label for="" class="text-primary">العملاء</label>
                         <div class="d-flex justify-content-center">
 
