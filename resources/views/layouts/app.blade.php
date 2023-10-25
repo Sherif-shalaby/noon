@@ -25,7 +25,7 @@
 </head>
 {{-- {{app()->getLocale() === 'ar'?'text-right':''}} --}}
 
-<body class="horizontal-layout">
+<body class="horizontal-layout transition-fade" id="swup">
     <!-- Start Infobar Notifications Sidebar -->
     <div id="infobar-notifications-sidebar" class="infobar-notifications-sidebar">
         <div class="infobar-notifications-sidebar-head d-flex w-100 justify-content-between">
@@ -268,11 +268,14 @@
                 });
         });
 
-        window.addEventListener("beforeunload", (event) => {
-            document.body.classList.add('animated-element');
-        });
+        // window.addEventListener("beforeunload", (event) => {
+        //     document.body.classList.add('animated-element');
+        // });
     </script>
-
+    <script src="https://unpkg.com/swup@4"></script>
+    <script>
+        const swup = new Swup();
+    </script>
 
 </body>
 

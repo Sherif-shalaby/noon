@@ -378,50 +378,9 @@ select.form-control {
     width: 140px !important;
 }
 
-/* CSS */
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
+/* animation */
 
-    to {
-        opacity: 0;
-    }
-}
-
-@keyframes bounceOut {
-    0% {
-        transform: scale(1);
-    }
-
-    25% {
-        transform: scale(.95);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(.3);
-    }
-}
-
-@keyframes fadeOutLeft {
-    0% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    100% {
-        opacity: 0;
-        transform: translateX(-20px);
-    }
-}
-
-@keyframes fadeOutLeftBig {
+/* @keyframes fadeOutLeftBig {
     0% {
         opacity: 1;
         transform: translateX(0);
@@ -431,14 +390,14 @@ select.form-control {
         opacity: 0;
         transform: translateX(-2000px);
     }
-}
+} */
 
 /* Apply the animation to the element you want to animate */
-.animated-element {
+/* .animated-element {
     animation: fadeOutLeftBig 1s ease;
     height: 100vh;
     background-color: white;
-    /* 0.5s is the duration of the animation */
+    position: relative;
 }
 
 @keyframes fadeInLeftBig {
@@ -455,6 +414,21 @@ select.form-control {
 
 body {
     animation: fadeInLeftBig 1s ease;
-    height: 100vh;
-    background-color: white;
+} */
+
+.transition-fade {
+    opacity: 1;
+    transition: 500ms;
+    transform: translateX(0);
+    transform-origin: left;
+}
+
+html.is-animating .transition-fade {
+    opacity: 1;
+    transform: translateX(100%);
+}
+
+html.is-leaving .transition-fade {
+    opacity: 0;
+    transform: translateX(0);
 }

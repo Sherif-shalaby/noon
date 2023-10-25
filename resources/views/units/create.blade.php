@@ -1,5 +1,6 @@
 <!-- Modal -->
-<div class="modal fade add-unit" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal add-unit modal-supplier animate__animated add-supplier" data-animate-in="animate__rollIn"
+    data-animate-out="animate__rollOut" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content @if (app()->isLocale('ar')) text-end @else text-start @endif">
             <div class="modal-header mb-4 d-flex justify-content-between py-0 ">
@@ -58,4 +59,28 @@
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
     {!! JsValidator::formRequest('App\Http\Requests\UnitRequest', '#unit-form') !!}
     {!! JsValidator::formRequest('App\Http\Requests\UnitRequest', '#quick_add_unit_form') !!}
+    <script>
+        $(document).ready(function() {
+            var modelEl = $('.modal-unit');
+
+            modelEl.addClass(modelEl.attr('data-animate-in'));
+
+            modelEl.on('hide.bs.modal', function(event) {
+                    if (!$(this).attr('is-from-animation-end')) {
+                        event.preventDefault();
+                        $(this).addClass($(this).attr('data-animate-out'))
+                        $(this).removeClass($(this).attr('data-animate-in'))
+                    }
+                    $(this).removeAttr('is-from-animation-end')
+                })
+                .on('animationend', function() {
+                    if ($(this).hasClass($(this).attr('data-animate-out'))) {
+                        $(this).attr('is-from-animation-end', true);
+                        $(this).modal('hide')
+                        $(this).removeClass($(this).attr('data-animate-out'))
+                        $(this).addClass($(this).attr('data-animate-in'))
+                    }
+                })
+        })
+    </script>
 @endpush

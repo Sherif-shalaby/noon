@@ -62,11 +62,16 @@
                                         'wire:model' => 'item.0.store_id',
                                     ]) !!}
 
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center"
+                                    <button class="add-button d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-target=".add-store"
                                         href="{{ route('store.create') }}"><i class="fas fa-plus"></i>
                                     </button>
+
+
+
+
+
+
                                 </div>
                                 @error('item.0.store_id')
                                     <span style="font-size: 10px;font-weight: 700;"
@@ -388,13 +393,11 @@
                                                                 @endif
                                                             @endforeach
                                                         </select>
-                                                        <button type="button" class="add-button" data-toggle="modal"
-                                                            data-target="#add_product_tax_modal"
+                                                        <button type="button"
+                                                            class="add-button d-flex justify-content-center align-items-center"
+                                                            data-toggle="modal" data-target="#add_product_tax_modal"
                                                             data-select_category="2"><i class="fas fa-plus"></i>
                                                         </button>
-                                                        @include('product-tax.create', [
-                                                            'quick_add' => 1,
-                                                        ])
 
                                                     </div>
                                                 </div>
@@ -402,19 +405,23 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-                                {{--                            <div class="col-md-3"> --}}
-                                {{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!} --}}
-                                {{--                                {!! Form::select('status', --}}
-                                {{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')] --}}
-                                {{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required', --}}
-                                {{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!} --}}
-                                {{--                                @error('item.0.status') --}}
-                                {{--                                <span class="error text-danger">{{ $message }}</span> --}}
-                                {{--                                @enderror --}}
-                                {{--                            </div> --}}
                             </div>
+                            @include('product-tax.create', [
+                                'quick_add' => 1,
+                            ])
+
+
+                            {{--                            <div class="col-md-3"> --}}
+                            {{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!} --}}
+                            {{--                                {!! Form::select('status', --}}
+                            {{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')] --}}
+                            {{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required', --}}
+                            {{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!} --}}
+                            {{--                                @error('item.0.status') --}}
+                            {{--                                <span class="error text-danger">{{ $message }}</span> --}}
+                            {{--                                @enderror --}}
+                            {{--                            </div> --}}
+
 
                             {{-- size accordion --}}
                             <div class="col-md-12 my-3 p-0 animate__animated animate__lightSpeedInLeft"

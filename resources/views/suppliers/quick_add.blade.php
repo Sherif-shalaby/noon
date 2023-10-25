@@ -1,4 +1,4 @@
-<div class="modal modal-supplier animate__animated add-supplier"data-animate-in="animate__rollIn"
+<div class="modal modal-supplier animate__animated add-supplier" data-animate-in="animate__rollIn"
     data-animate-out="animate__rollOut" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
