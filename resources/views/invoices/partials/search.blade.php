@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-3 m-t-15">
                 <div class="search-box input-group">
-                    <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.500ms="search_by_product_symbol"
+                    <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.200ms="search_by_product_symbol"
                            placeholder="@lang('lang.enter_product_symbol')"
                            class="form-control" autocomplete="off">
 
@@ -35,7 +35,7 @@
                     <button type="button" class="btn btn-secondary" id="search_button"><i
                             class="fa fa-search"></i>
                     </button>
-                    <input type="search" name="search_product" id="search_product" wire:model.debounce.500ms="searchProduct"
+                    <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
                         placeholder="@lang('lang.enter_product_name_to_print_labels')"
                         class="form-control" autocomplete="off">
 
