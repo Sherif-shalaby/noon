@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Models\Store;
+use App\Utils\Util;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,6 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class BranchController extends Controller
 {
+    protected $Util;
+    public function __construct(Util $Util)
+    {
+        $this->Util = $Util;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -158,5 +164,10 @@ class BranchController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function getBranchStores($id){
+        $stores = Store::where('branch_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
+        $stores_dp = $this->Util->createDropdownHtml($stores, __('lang.please_select'));
+        return $stores_dp;
     }
 }

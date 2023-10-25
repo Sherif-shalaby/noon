@@ -75,7 +75,7 @@
                             {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                             {!! Form::select('store_id', $stores, $store_id,
                             ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'store_id', 'required', 'placeholder' => __('lang.please_select'),
-                             'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeStorePos']) !!}
+                             'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeAllProducts']) !!}
                             @error('store_id')
                             <span class="error text-danger">{{ $message }}</span>
                             @enderror

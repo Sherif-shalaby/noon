@@ -554,7 +554,8 @@ return [
     'po' => 'PO',
     'branches' => 'Branches',
     'add_branch' => 'Add Branch',
-    'branch_name' => 'Branch Name'
+    'branch_name' => 'Branch Name',
+    'branch' => 'Branch',
 ];
 
 
