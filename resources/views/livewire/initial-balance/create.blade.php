@@ -134,11 +134,11 @@
                                         class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-1">
-                                {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5']) !!}
-                                {!! Form::text('product_symbol', null, [
+                            {{-- <div class="col-md-3">
+                                {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5']) !!}
+                                {!! Form::text('sku', null, [
                                     'class' => 'form-control',
-                                    'wire:model' => 'item.0.product_symbol',
+                                    'wire:model' => 'item.0.sku',
                                 ]) !!}
                             </div> --}}
                             <div class="col-md-3 d-flex p-0">

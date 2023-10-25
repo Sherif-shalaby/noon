@@ -1,6 +1,6 @@
 <section class="forms">
     <div class="container-fluid">
-        <div class="row">
+        <div class="row ">
             <div class="col-md-12">
                 <div class="card mt-3">
                     <div class="card-header d-flex align-items-center">
@@ -26,15 +26,20 @@
                     <form action="{{ route('pos.store') }}">
                         <div class="card-body">
                             <div class="col-md-12">
-                                <div class="row">
+                                <div
+                                    class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- ++++++++++++++++++++++ stores filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-4">
-                                        <label for="store_id" class="text-primary">
-                                            @lang('lang.store'):<span style="color:#dc3545;">*</span>
+                                    <div
+                                        class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label
+                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                            for="store_id">
+                                            @lang('lang.store')<span style="color:#dc3545;">*</span>
                                         </label>
-                                        <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="store_id" id="Client_Select"
-                                                required>
+                                        <div class=" input-wrapper d-flex justify-content-between align-items-center">
+                                            <select class=" initial-balance-input m-auto client"
+                                                style="width: 100%; border:2px solid #ccc" wire:model="store_id"
+                                                id="Client_Select" required>
                                                 <option value="" readonly selected> {{ __('lang.please_select') }}
                                                 </option>
                                                 @foreach ($stores as $store)
@@ -47,12 +52,15 @@
                                         @enderror
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-4">
-                                        <label for="customer_id" class="text-primary">
-                                            @lang('lang.customers'):<span style="color:#dc3545;">*</span>
+                                    <div
+                                        class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label for="customer_id"
+                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">
+                                            @lang('lang.customers')<span style="color:#dc3545;">*</span>
                                         </label>
-                                        <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="customer_id"
+                                        <div class=" input-wrapper d-flex justify-content-between align-items-center">
+                                            <select class=" initial-balance-input m-auto client"
+                                                style="width: 100%; border:2px solid #ccc" wire:model="customer_id"
                                                 id="Client_Select" required>
                                                 <option value="" readonly selected> {{ __('lang.please_select') }}
                                                 </option>
@@ -70,7 +78,7 @@
                             <br><br>
                             {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
                             <div class="row">
-                                <div class="col-md-8 m-t-15 offset-md-2">
+                                <div class="col-md-8 mx-auto">
                                     <div class="search-box input-group">
                                         {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
                                         <button type="button" class="btn btn-secondary" id="search_button"><i
@@ -102,8 +110,8 @@
                             </div>
                             <br>
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
-                            <div class="row">
-                                <div class="col-md-2 border border-1 mr-3 p-0">
+                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-2 border border-1 mr-3 p-0" style="height: 60vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ الأقسام الرئيسيه ++++++++++++++++++++++ --}}
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                         الأقسام الرئيسيه
@@ -130,7 +138,8 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="table-responsive col-md-9 border border-1">
+                                <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-9 border border-1"
+                                    style="height: 60vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
                                     <table class="table" style="width: auto">
                                         <thead>
@@ -139,15 +148,16 @@
                                                 <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
                                                 <th style="width: 10%">@lang('lang.quantity')</th>
                                                 {{-- <th style="width: 10%">@lang('lang.purchase_price')$</th>  --}}
-                                                <th style="width: 25%">@lang('lang.selling_price')$</th>
+                                                <th style="width: 20%">@lang('lang.selling_price')$</th>
                                                 {{-- <th style="width: 10%">@lang('lang.sub_total')$</th>  --}}
                                                 {{-- <th style="width: 10%">@lang('lang.purchase_price')  </th> --}}
-                                                <th style="width: 25%">@lang('lang.selling_price') </th>
+                                                <th style="width: 20%">@lang('lang.selling_price') </th>
                                                 {{-- <th style="width: 10%">@lang('lang.sub_total')</th> --}}
                                                 {{-- <th style="width: 10%">@lang('lang.cost')$</th>  --}}
                                                 <th style="width: 10%">@lang('lang.total_cost')$</th>
                                                 {{-- <th style="width: 10%">@lang('lang.cost') </th>  --}}
                                                 <th style="width: 10%">@lang('lang.total_cost')</th>
+                                                <th style="width: 10%">@lang('lang.current_stock')</th>
                                                 <th style="width: 10%">@lang('lang.delete')</th>
                                             </tr>
                                         </thead>
@@ -188,7 +198,7 @@
                                         style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
                                 </h4>
                             </div>
-                            <br>
+
                             {{-- ++++++++ total ++++++++++  --}}
                             <div class="col-md-12">
                                 <div class="col-md-3 offset-md-8 text-right">
@@ -204,9 +214,11 @@
                             </div>
                             <br>
 
-                            <div class="row">
+                            <div
+                                class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {{-- ========= block_qty ========= --}}
-                                <div class="col-md-3">
+                                <div
+                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     <div class="form-group">
                                         <div class="i-checks">
                                             <input type="checkbox" id="block_qty" name="block_qty"
@@ -217,47 +229,64 @@
                                     </div>
                                 </div>
                                 {{-- ========= block_for_days ========= --}}
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label(
-                                            'block_for_days',
-                                            __('lang.block_for_days') . ':<span style="color:#dc3545;">*</span>',
-                                            [],
-                                            false,
-                                        ) !!}
+                                <div
+                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label(
+                                        'block_for_days',
+                                        __('lang.block_for_days') . ':<span style="color:#dc3545;">*</span>',
+                                        [
+                                            'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
+                                        ],
+                                        false,
+                                    ) !!}
+                                    <div class="input-wrapper">
+
                                         {!! Form::text('block_for_days', 1, [
-                                            'class' => 'form-control',
+                                            'class' => 'form-control initial-balance-input m-auto app()->isLocale("ar")?  text-end  : text-start',
+                                            'style' => 'width: 100%',
                                             'placeholder' => __('lang.block_for_days'),
                                             'wire:model' => 'block_for_days',
                                             'required',
                                         ]) !!}
-                                        @error('block_for_days')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('block_for_days')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 {{-- ========= validity_days ========= --}}
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('validity_days', __('lang.validity_days') . ':<span style="color:#dc3545;">*</span>', [], false) !!}
-                                        {{-- {!! Form::label('validity_days', __('lang.validity_days') . ':') !!} --}}
+                                <div
+                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label(
+                                        'validity_days',
+                                        __('lang.validity_days') . ':<span style="color:#dc3545;">*</span>',
+                                        ['class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter'],
+                                        false,
+                                    ) !!}
+                                    {{-- {!! Form::label('validity_days', __('lang.validity_days') . ':') !!} --}}
+                                    <div class="input-wrapper">
+
                                         {!! Form::text('validity_days', null, [
-                                            'class' => 'form-control',
+                                            'class' => 'form-control initial-balance-input m-auto app()->isLocale("ar")?  text-end  : text-start',
+                                            'style' => 'width: 100%',
                                             'placeholder' => __('lang.validity_days'),
                                             'wire:model' => 'validity_days',
                                             'required',
                                         ]) !!}
-                                        @error('validity_days')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    @error('validity_days')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 {{-- ========= tax ========= --}}
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label for="tax_method">@lang('lang.tax')</label>
-                                        <select class="form-control" name="tax_method" id="tax_method"
-                                            wire:model='tax_method'>
+                                <div
+                                    class="col-md-3  mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <label
+                                        class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                        for="tax_method">@lang('lang.tax')</label>
+                                    <div class="input-wrapper">
+                                        <select class=" initial-balance-input m-auto p-0"
+                                            style="width: 100%;border:2px solid #ccc;border-radius:12px"
+                                            name="tax_method" id="tax_method" wire:model='tax_method'>
                                             <option value="" selected>{{ __('lang.please_select') }}</option>
                                             @foreach ($taxes as $tax)
                                                 <option data-rate="{{ $tax->rate }}" value="{{ $tax->id }}">
@@ -267,11 +296,16 @@
                                     </div>
                                 </div>
                                 {{-- ========= discount_type ========= --}}
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('discount_type', __('lang.discount_type') . ':') !!}
+                                <div
+                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('discount_type', __('lang.discount_type'), [
+                                        'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
+                                    ]) !!}
+                                    <div class="input-wrapper">
+
                                         {!! Form::select('discount_type', ['fixed' => 'Fixed', 'percentage' => 'Percentage'], 'fixed', [
-                                            'class' => 'form-control',
+                                            'class' => ' initial-balance-input m-auto p-0',
+                                            'style' => 'width:100%;border:2px solid #ccc;border-radius:12px',
                                             'placeholder' => __('lang.please_select'),
                                             'data-live-search' => 'true',
                                             'wire:model' => 'discount_type',
@@ -279,11 +313,16 @@
                                     </div>
                                 </div>
                                 {{-- ========= discount_value ========= --}}
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('discount_value', __('lang.discount_value') . ':') !!}
+                                <div
+                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('discount_value', __('lang.discount_value'), [
+                                        'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
+                                    ]) !!}
+                                    <div class="input-wrapper">
+
                                         {!! Form::text('discount_value', null, [
-                                            'class' => 'form-control',
+                                            'class' => ' initial-balance-input m-auto app()->isLocale("ar")? text-end : text-start',
+                                            'style' => 'width:100%;',
                                             'placeholder' => __('lang.discount_value'),
                                             'wire:model' => 'discount_value',
                                         ]) !!}

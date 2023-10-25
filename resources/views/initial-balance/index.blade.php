@@ -14,7 +14,7 @@
                                 href="{{ url('/') }}" style="text-decoration: none;color: #596fd7">
                                 @lang('lang.dashboard')</a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{ route('initial-balance.create') }}">@lang('lang.add_initial_balance')</a></li>
+                        {{--                        <li class="breadcrumb-item"><a href="#">@lang('lang.employees')</a></li> --}}
                         <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
                             aria-current="page" style="text-decoration: none;color: #596fd7">/ @lang('lang.initial_balance')</li>
                     </ul>

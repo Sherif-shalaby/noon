@@ -196,11 +196,11 @@
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
-                                        <hr />
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="table-responsive col-md-9 border border-1">
+                            <div
+                                class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-9 border border-1">
                                 <table class="table" style="width: auto">
                                     <thead>
                                         <tr>

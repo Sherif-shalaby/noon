@@ -40,6 +40,4 @@ return [
     'plan' => 'Plan',
     'add_plan' => 'Add Plan',
     'edit_plan' => 'Edit Plan',
-
-
 ];

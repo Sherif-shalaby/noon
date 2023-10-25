@@ -18,10 +18,10 @@ class SellCarController extends Controller
      */
     public function index()
     {
-        $sell_cars = SellCar::latest()->get();
-        $job_types = JobType::where('title', 'Representative')->pluck('id')->toArray();
-        $representatives = Employee::whereIn('job_type_id', $job_types)->pluck('employee_name', 'id')->toArray();
-        return view('sell-car.index', compact('sell_cars', 'representatives'));
+        $sell_cars=SellCar::latest()->get();
+        $job_types=JobType::where('title','Representative')->pluck('id')->toArray();
+        $representatives=Employee::whereIn('job_type_id',$job_types)->pluck('employee_name','id')->toArray();
+        return view('sell-car.index',compact('sell_cars','representatives'));
     }
 
     /**
@@ -42,15 +42,17 @@ class SellCarController extends Controller
      */
     public function store(Request $request)
     {
+
         try {
             $data = $request->except('_token');
-            $data['created_by'] = Auth::user()->id;
+            $data['created_by']=Auth::user()->id;
             $sell_car = SellCar::create($data);
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
             ];
         } catch (\Exception $e) {
+            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
@@ -80,10 +82,10 @@ class SellCarController extends Controller
      */
     public function edit($id)
     {
-        $sell_car = SellCar::find($id);
-        $job_types = JobType::where('title', 'Representative')->pluck('id')->toArray();
-        $representatives = Employee::whereIn('job_type_id', $job_types)->pluck('employee_name', 'id')->toArray();
-        return view('sell-car.edit', compact('sell_car', 'representatives'));
+        $sell_car=SellCar::find($id);
+        $job_types=JobType::where('title','Representative')->pluck('id')->toArray();
+        $representatives=Employee::whereIn('job_type_id',$job_types)->pluck('employee_name','id')->toArray();
+        return view('sell-car.edit',compact('sell_car','representatives'));
     }
 
     /**
@@ -123,21 +125,21 @@ class SellCarController extends Controller
     public function destroy($id)
     {
         try {
-            $sell_car = SellCar::find($id);
-            $sell_car->deleted_by = Auth::user()->id;
+            $sell_car=SellCar::find($id);
+            $sell_car->deleted_by=Auth::user()->id;
             $sell_car->save();
             $sell_car->delete();
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
             ];
-        } catch (\Exception $e) {
-            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            $output = [
-                'success' => false,
-                'msg' => __('lang.something_went_wrong')
-            ];
-        }
-        return $output;
+          } catch (\Exception $e) {
+              Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+              $output = [
+                  'success' => false,
+                  'msg' => __('lang.something_went_wrong')
+              ];
+          }
+          return $output;
     }
 }

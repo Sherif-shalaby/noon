@@ -24,7 +24,8 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->string('car_type')->nullable();
-            $table->decimal('car_size', 15, 2)->nullable();
+            // $table->decimal('car_size',15,2)->nullable();
+            $table->string('car_size')->nullable();
             $table->string('car_license')->nullable();
             $table->string('car_model')->nullable();
             $table->date('car_license_end_date')->nullable();

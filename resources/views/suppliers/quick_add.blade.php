@@ -70,57 +70,63 @@
                         </div>
                     </div> --}}
                     {{-- +++++++++++++++++++++++++++++++ exchange_rate ++++++++++++++++++++++++ --}}
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label for="exchange_rate">@lang('lang.exchange_rate')</label>
-                            <div class="select_body d-flex justify-content-between align-items-center">
-                                <input type="number" class="form-control" placeholder="@lang('lang.exchange_rate')"
-                                    name="exchange_rate" style="border-color:#aaa" value="{{ old('exchange_rate') }}">
-                                @error('exchange_rate')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    {{-- --}}
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label for="start_date">@lang('lang.start_date')</label>
-                            <div class="select_body d-flex justify-content-between align-items-center">
-                                <input type="date" class="form-control" placeholder="@lang('lang.start_date')"
-                                    name="start_date" style="border-color:#aaa" value="{{ date('Y-m-d') }}">
-                                @error('start_date')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    {{-- --}}
-                    <div class="col-md-4">
-                        <div class="form-group ">
-                            <label for="end_date">@lang('lang.end_date')</label>
-                            <div class="select_body d-flex justify-content-between align-items-center">
-                                <input type="date" class="form-control" placeholder="@lang('lang.end_date')"
-                                    name="end_date" style="border-color:#aaa" value="{{ old('end_date') }}">
-                                @error('end_date')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
+                    <div
+                        class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                    {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}
-                    <div class="col-md-4 ">
-                        <div class="form-group ">
-                            <label for="postal_code">@lang('lang.postal_code')</label>
-                            <div class="select_body d-flex justify-content-between align-items-center">
-                                <input type="text" class="form-control" placeholder="@lang('lang.postal_code')"
-                                    name="postal_code" value="{{ old('postal_code') }}">
-                                @error('postal_code')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                                "
+                            for="exchange_rate">@lang('lang.exchange_rate')</label>
+                        {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
+                        <input type="number"
+                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                            placeholder="@lang('lang.exchange_rate')" name="exchange_rate" style="border-color:#aaa"
+                            value="{{ old('exchange_rate') }}">
+                        @error('exchange_rate')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        {{-- </div> --}}
+
+                    </div>
+                    {{-- --}}
+                    <div
+                        class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                                "
+                            for="start_date">@lang('lang.start_date')</label>
+                        {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
+                        <input type="date"
+                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                            placeholder="@lang('lang.start_date')" name="start_date" style="border-color:#aaa"
+                            value="{{ date('Y-m-d') }}">
+                        @error('start_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        {{-- </div> --}}
+
+                    </div>
+                    {{-- --}}
+                    <div
+                        class="col-md-4 d-flex mb-2 align-items-center
+                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                                "
+                            for="end_date">@lang('lang.end_date')</label>
+                        {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
+                        <input type="date"
+                            class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                            placeholder="@lang('lang.end_date')" name="end_date" style="border-color:#aaa"
+                            value="{{ old('end_date') }}">
+                        @error('end_date')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                        {{-- </div> --}}
+
                     </div>
 
                     {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}

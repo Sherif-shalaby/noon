@@ -252,6 +252,7 @@
                                     @endif
                                     {{--                                    {{$search_result->links()}} --}}
                                 </div>
+
                             </div>
                         </div>
 
@@ -458,9 +459,6 @@
                                         'wire:model' => 'source_type',
                                     ]) !!}
                                 </div>
-                                @error('source_type')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
                             </div>
                             @error('source_type')
                                 <span style="font-size: 10px;font-weight: 700;"
