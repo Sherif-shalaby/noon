@@ -93,19 +93,13 @@
                                                    placeholder="Name">
                                         </div>
                                         <div class="col-sm-6">
-                                            <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
-                                        </div>
-                                        <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
                                                 <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
                                             <input type="email" class="form-control" name="email" id="email" required
                                                    placeholder="Email">
                                         </div>
                                     </div>
-
                                     <div class="row mt-4">
-
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
@@ -116,7 +110,16 @@
                                             <input type="password" class="form-control" id="password_confirmation"
                                                    name="password_confirmation" required placeholder="Conform Password">
                                         </div>
-
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-6">
+                                            <label for="store_id">@lang('lang.stores')</label>
+                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="store_id">@lang('lang.stores')</label>
+                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                        </div>
                                     </div>
                                     <div class="row mt-4">
 

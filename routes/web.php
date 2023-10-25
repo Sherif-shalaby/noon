@@ -39,6 +39,7 @@ use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\BranchController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
@@ -243,7 +244,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('sell-car', SellCarController::class);
 
     // branch
-    Route::resource('branches',BrandController::class);
+    Route::resource('branches',BranchController::class);
 
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);

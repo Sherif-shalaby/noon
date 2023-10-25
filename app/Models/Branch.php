@@ -30,5 +30,13 @@ class Branch extends Model
     {
         return $this->hasMany(Store::class);
     }
+    public function created_by_user()
+    {
+        return $this->belongsTo(User::class, 'created_by')->withDefault(['name' => '']);
+    }
+    public function updated_by_user()
+    {
+        return $this->belongsTo(User::class, 'updated_by')->withDefault(['name' => '']);
+    }
 
 }

@@ -572,7 +572,8 @@ return array(
     'out_of_stock' => 'لا يوجد مخزون',
     'po' => 'أمر شراء',
     'branches' => 'الفروع',
-
+    'add_branch' => 'اضافه فرع',
+    'branch_name' => 'اسم الفرع'
 
 );
 

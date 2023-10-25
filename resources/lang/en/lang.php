@@ -553,6 +553,8 @@ return [
     'out_of_stock' => 'Out Of Stock',
     'po' => 'PO',
     'branches' => 'Branches',
+    'add_branch' => 'Add Branch',
+    'branch_name' => 'Branch Name'
 ];
 
 
