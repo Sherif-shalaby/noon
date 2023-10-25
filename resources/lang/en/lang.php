@@ -552,6 +552,7 @@ return [
     'dollar_lowest_price'=>'Lowest Price $',
     'out_of_stock' => 'Out Of Stock',
     'po' => 'PO',
+    'branches' => 'Branches',
 ];
 
 
