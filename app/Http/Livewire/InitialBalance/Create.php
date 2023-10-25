@@ -111,7 +111,7 @@ class Create extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
         'item.*.product_tax_id' => 'nullable',
-        'item.*.product_symbol'=>'required|unique:products,product_symbol,NULL,id,deleted_at,NULL',
+        'item.*.product_symbol'=>'nullable|unique:products,product_symbol,NULL,id,deleted_at,NULL',
         'rows.*.sku' => 'required',
         // 'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
         'rows.*.purchase_price' => 'required',
