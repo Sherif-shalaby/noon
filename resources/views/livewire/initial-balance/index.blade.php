@@ -32,7 +32,7 @@
                                 <td>{{$stock->created_at }}</td>
                                 <td>{{$stock->transaction_date }}</td>
                                 <td>{{$stock->supplier->name ?? ''}}</td>
-                                <td>{{$stock->created_by_relationship->name}}</td>
+                                <td>{{$stock->created_by_relationship->name ?? ''}}</td>
                                 @if($stock->transaction_currency == 2)
                                     <td>{{number_format($stock->dollar_final_total,2)}}</td>
                                 @else
