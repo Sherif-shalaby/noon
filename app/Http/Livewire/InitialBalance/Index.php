@@ -3,15 +3,36 @@
 namespace App\Http\Livewire\InitialBalance;
 
 use App\Models\StockTransaction;
+use App\Models\Supplier;
+use App\Models\User;
 use Livewire\Component;
 
 class Index extends Component
 {
+    public  $stocks, $product_name, $product_sku, $product_symbol, $supplier_id, $created_by ;
+
+//    public function updated($propertyName)
+//    {
+//        dd($propertyName);
+//    }
+
     public function render()
     {
-        $stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])->orderBy('created_at', 'desc')->get();
-//        dd($stocks->last()->created_by_relationship->name);
-        return view('livewire.initial-balance.index',compact('stocks'));
+//        $qyery = StockTransaction::whereIn('type', ['initial_balance_payment', 'initial_balance'])
+//            ->orderBy('created_at', 'desc');
+//        if (!empty($this->created_by)) {
+//            $qyery->where('created_by',$this->created_by);
+//            dd($qyery->get());
+//        }
+
+
+
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $users=User::orderBy('created_at', 'desc')->pluck('name','id');
+        $this->stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])->orderBy('created_at', 'desc')->get();
+//        dd($stocks);
+        return view('livewire.initial-balance.index',
+            compact('suppliers','users'));
     }
     public function calculatePendingAmount($transaction_id): string
     {

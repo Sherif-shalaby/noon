@@ -224,7 +224,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
 
     // user check password
-    Route::post('user/check-password', [HomeController::class, 'checkPassword']);
+    Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');
     //suppliers
     Route::resource('suppliers',SuppliersController::class);
     // general_setting : fetch "state" of selected "country" selectbox
