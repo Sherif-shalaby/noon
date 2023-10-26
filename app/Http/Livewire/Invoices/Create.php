@@ -211,8 +211,8 @@ class Create extends Component
                 'exchange_rate' => System::getProperty('dollar_exchange')??0,
                 'type' => 'sell',
 //                'transaction_currency' => $this->transaction_currency,
-                'final_total' => $this->num_uf($this->final_total),
-                'grand_total' => $this->num_uf($this->total),
+                'final_total' => $this->num_uf(round_250($this->final_total)),
+                'grand_total' => $this->num_uf(round_250($this->total)),
                 // 'dollar_final_total' :  'النهائي بالدولار'
                 'dollar_final_total' => $this->num_uf($this->dollar_final_total),
                 'dollar_grand_total' => $this->num_uf($this->total_dollar),
@@ -602,15 +602,15 @@ class Create extends Component
             $this->discount_dollar+= $item['discount_price'] * $item['exchange_rate'];
         }
         $this->dollar_amount = $this->total_dollar;
-        $this->amount = $this->total;
+        $this->amount = round_250($this->total);
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
-        $this->final_total = $this->total;
+        $this->final_total = round_250($this->total);
         // النهائي دولار
         $this->dollar_final_total = $this->total_dollar;
         // task : الباقي دينار
-        $this->dinar_remaining = ($this->amount - $this->final_total);
+        $this->dinar_remaining = round_250($this->amount - $this->final_total);
         // task : الباقي دولار
         $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
     }
@@ -708,35 +708,101 @@ class Create extends Component
     }
     public function changeReceivedDollar()
     {
-        // Check if 'الواصل دولار' has a value and 'الواصل دينار' is equal to zero or null
-        if ($this->dollar_amount !== null && $this->dollar_amount !== 0 )
+        if ($this->dollar_amount !== null && $this->dollar_amount !== 0)
         {
-            // Calculate the remaining dollar amount
-            $this->dollar_remaining = $this->dollar_final_total - $this->dollar_amount ;
-            // Calculate the remaining dinar amount
-            // $dollar_exchange = System::getProperty('dollar_exchange');
-            // $this->dinar_remaining = $this->final_total - ($this->dollar_remaining * $dollar_exchange ) ;
+            if($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total){
+                $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = 0;
+            }else{
+                // Check if total is in dinar and both dollar and dinar amounts are 0
+                if ($this->final_total != 0 && $this->dollar_final_total == 0 && $this->amount == 0) {
+                    // Round to the nearest 250 value
+                    $rounded_final_total = round_250($this->final_total);
+                    // Convert remaining dollar to dinar
+                    $this->dinar_remaining = round_250($rounded_final_total-($this->dollar_amount * System::getProperty('dollar_exchange')));
+                } 
+                // Handle the case where total is in dollar and both dollar and dinar amounts are 0
+                elseif ( $this->dollar_final_total != 0) {
+                    // Calculate remaining dollar amount directly
+                    $this->dollar_remaining = $this->dollar_final_total - $this->dollar_amount;
+                    if($this->final_total != 0){
+                        $this->dinar_remaining = round_250($this->final_total-$this->amount );
+                        if( $this->dinar_remaining < 0 &&  $this->dollar_remaining > 0){
+                            $diff_dinar = $this->amount -  $this->final_total;
+                            $this->dollar_remaining = $this->dollar_remaining - ( $diff_dinar / System::getProperty('dollar_exchange'));
+                            $this->dinar_remaining = 0;
+                       }
+                    }
+                    // else{
+                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+
+                    // }
+                    
+                    // // If dollar_final_total is 0, set dollar_remaining to 0
+                    // if ($this->dollar_final_total == 0) {
+                    //     $this->dollar_remaining = 0;
+                    // }
+                }
+            }
+            
         }
     }
+    
+    
+    
+    
     public function changeReceivedDinar()
     {
-        // Check if 'الواصل دولار' has a value and 'الواصل دينار' is equal to zero or null
-        if ($this->amount !== null && $this->amount !== 0 )
+        if ($this->amount !== null && $this->amount !== 0)
         {
-            // Calculate the remaining dollar amount
-            $this->dinar_remaining = $this->final_total - $this->amount;
-            // // Calculate the remaining dollar amount using the exchange rate
-            // $dollar_exchange = System::getProperty('dollar_exchange');
-            // $this->dollar_remaining = $this->dollar_final_total - ($this->dinar_remaining / $dollar_exchange);
+            if($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total){
+                $diff_dinar = $this->amount -  $this->final_total;
+                $this->dollar_remaining = $this->dollar_remaining - ( $diff_dinar / System::getProperty('dollar_exchange'));
+                $this->dinar_remaining = 0;
+            }else{
+                // Check if total is in dollars and both dollar and dinar amounts are 0
+                if ($this->dollar_final_total != 0 && $this->final_total == 0 && $this->dollar_amount == 0) {
+                    // Calculate remaining dollar amount directly
+                    $this->dollar_remaining = $this->dollar_final_total - ($this->amount / System::getProperty('dollar_exchange'));
+                } 
+                // Check if total is in dinars and both dollar and dinar amounts are 0
+                elseif ($this->final_total != 0 ) {
+                    // Calculate remaining dinar amount
+                    $this->dinar_remaining = round_250($this->final_total ) - $this->amount;
+                    
+                    if($this->dollar_final_total != 0 ){
+                        $this->dollar_remaining = $this->dollar_final_total-$this->dollar_amount ;
+                       if( $this->dollar_remaining < 0 &&  $this->dinar_remaining > 0){
+                            $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                            $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                            $this->dollar_remaining = 0;
+                       }
+                       
+                    }
+                    // else{
+                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+                    // }
+                    // Convert remaining dinar to dollars using the exchange rate
+                    // $this->dollar_remaining = $this->dinar_remaining * System::getProperty('dollar_exchange');
+                }
+            }
         }
     }
+
+    
+
+    
+    
     // calculate final_total : "النهائي دينار"
     public function changeTotal()
     {
         // "النهائي دينار"
-        $this->final_total = $this->total - $this->discount;
+        $this->final_total = round_250($this->total - $this->discount);
         // Task : dollar_remaining : الباقي دينار
-        $this->dinar_remaining = ($this->amount - $this->final_total);
+        $this->dinar_remaining = round_250($this->amount - $this->final_total);
     }
 
     public function ShowDollarCol(){
