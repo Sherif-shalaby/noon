@@ -694,22 +694,23 @@ class Create extends Component
         if(!empty($this->items[$index]['fill_quantity'])){
             if(!empty($this->items[$index]['purchase_price'])){
                 if($this->items[$index]['fill_type']=='fixed'){
-                    $this->items[$index]['selling_price']= ($this->items[$index]['purchase_price'] + (float)$this->items[$index]['fill_quantity']);
+                    $this->items[$index]['selling_price']= ( $this->num_uf($this->items[$index]['purchase_price']) + (float)$this->num_uf($this->items[$index]['fill_quantity']) );
                 }else{
-                    $percent=((float)$this->items[$index]['purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                    $this->items[$index]['selling_price']= (float)($this->items[$index]['purchase_price'] + $percent);
+                    $percent=((float)$this->num_uf($this->items[$index]['purchase_price']) * (float)$this->num_uf($this->items[$index]['fill_quantity'])) / 100;
+                    $this->items[$index]['selling_price']= (float)($this->num_uf($this->items[$index]['purchase_price']) + $percent);
                 }
             }
             if(!empty($this->items[$index]['dollar_purchase_price'])){
+
                 if($this->items[$index]['fill_type']=='fixed'){
-                    $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+                    $this->items[$index]['dollar_selling_price']=($this->num_uf($this->items[$index]['dollar_purchase_price'])+(float)$this->num_uf($this->items[$index]['fill_quantity']));
                 }
                 else{
-                    $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                    $this->items[$index]['dollar_selling_price'] = ((float)$this->items[$index]['dollar_purchase_price'] + $percent);
+                    $percent = ((float)$this->num_uf($this->items[$index]['dollar_purchase_price']) * (float)$this->num_uf($this->items[$index]['fill_quantity'])) / 100;
+                    $this->items[$index]['dollar_selling_price'] = ((float)$this->num_uf($this->items[$index]['dollar_purchase_price']) + $percent);
                 }
-
             }
+//            dd($this->items[$index]['dollar_selling_price']);
         }
         $this->changeTotalAmount();
 
@@ -720,6 +721,7 @@ class Create extends Component
 
     public function sub_total($index)
     {
+        $this->changeFilling($index);
         if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
             // convert purchase price from Dollar To Dinar
             $purchase_price = $this->convertDollarPrice($index);
@@ -731,10 +733,12 @@ class Create extends Component
         else{
             $this->items[$index]['purchase_price'] = null;
         }
+
     }
 
     public function dollar_sub_total($index)
     {
+        $this->changeFilling($index);
         if(isset($this->items[$index]['quantity']) && isset($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])){
             // convert purchase price from Dinar To Dollar
             $purchase_price = $this->convertDinarPrice($index);
@@ -746,6 +750,7 @@ class Create extends Component
         else{
             $this->items[$index]['dollar_purchase_price'] = null;
         }
+
     }
 
 
