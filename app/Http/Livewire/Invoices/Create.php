@@ -478,7 +478,7 @@ class Create extends Component
 
         }
         if(!empty($this->search_by_product_symbol)){
-            $this->searchProduct = '';
+            $this->search_by_product_symbol = '';
 
         }
         $product = Product::where('id',$id)->first();
