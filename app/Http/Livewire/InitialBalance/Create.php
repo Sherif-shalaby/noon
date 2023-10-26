@@ -897,7 +897,7 @@ class Create extends Component
             else{
                 $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
                 $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
-                $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->rows[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3);
+                $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1),3);
                 $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
 
             }
