@@ -880,7 +880,7 @@ class Create extends Component
         $unit = Variation::where('id',$variation_id)->first();
         $qty_difference = 0;
         $qtyByUnit = 1 ;
-        if(!empty($stock) && !empty($stock->variation_id)){
+        if(!empty($stock) && !empty($stock->variation_id && !empty($unit))){
             $stock_variation = Variation::find($stock->variation_id);
             if($stock_variation->unit_id == $unit->unit_id){
                 $qty_difference = $new_quantity;
