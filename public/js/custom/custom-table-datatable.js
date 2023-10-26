@@ -10,7 +10,7 @@ $(document).ready(function() {
         responsive: true
     });
     $('#default-datatable').DataTable( {
-        "order": [[ 3, "desc" ]],
+        "order": [],
         responsive: true,
     } );
     var table = $('#datatable-buttons').DataTable({
