@@ -1158,10 +1158,23 @@ class Create extends Component
     public function changeUnit($key){
         $variation_id=$this->items[$key]['unit_id'];
         $stock_line=AddStockLine::where('variation_id',$variation_id)->first();
-        $this->items[$key]['price']=number_format($stock_line->sell_price??0,2);
-        $this->items[$key]['dollar_price']=number_format($stock_line->dollar_sell_price??0,2);
-        $this->items[$key]['sub_total']=number_format($stock_line->sell_price*$this->items[$key]['quantity'],2);
-        $this->items[$key]['dollar_sub_total']=number_format($stock_line->dollar_sell_price*$this->items[$key]['quantity'],2);
+        if(empty($stock_line->sell_price) && empty($stock_line->dollar_sell_price)){
+            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
+            $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);
+            $product_variations = Variation::where('product_id',$this->items[$key]['product']['id'])->get();
+            $unit = Variation::where('id',$variation_id)->first();
+            $qtyByUnit = $this->getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id);
+            $this->items[$key]['price']=number_format($this->items[$key]['current_stock']['sell_price'] * $qtyByUnit ??0,2);
+            $this->items[$key]['dollar_price']=number_format($this->items[$key]['current_stock']['dollar_sell_price'] * $qtyByUnit ??0,2);
+        }
+        else{
+            $this->items[$key]['price']=number_format($stock_line->sell_price??0,2);
+            $this->items[$key]['dollar_price']=number_format($stock_line->dollar_sell_price??0,2);
+            $this->items[$key]['current_stock'] = $stock_line;
+
+        }
+        $this->items[$key]['sub_total']=number_format($this->items[$key]['price']*$this->items[$key]['quantity'],2);
+        $this->items[$key]['dollar_sub_total']=number_format($this->items[$key]['dollar_price']*$this->items[$key]['quantity'],2);
         $this->items[$key]['discount_categories'] =$stock_line->prices()->get();
         $this->items[$key]['discount'] =0;
         $this->items[$key]['extra_quantity'] =0;
@@ -1169,7 +1182,6 @@ class Create extends Component
         $variations=Variation::where('product_id',$this->items[$key]['product']['id'])->get();
         $product_store=ProductStore::where('product_id',$this->items[$key]['product']['id'])->where('store_id',$this->store_id)->first();
         $amount=1;
-        // dd(Variation::find($variation_id)->unit_id , $product_store->variations->unit_id);
         $var_id=Variation::find($variation_id)->unit_id;
         if($var_id == $product_store->variations->unit_id){
             $this->items[$key]['quantity_available']= $product_store->quantity_available;
@@ -1183,7 +1195,7 @@ class Create extends Component
                     $amount *=$variation->equal;
                     $basic_unit=$variation->basic_unit_id;
                     foreach($variations as $var){
-                        if($basic_unit ==$var->unit_id){
+                        if($basic_unit == $var->unit_id){
                             $amount *=$var->equal;
                             $basic_unit=$var->basic_unit_id;
                             if($product_store->variations->unit_id != $var->basic_unit_id){
@@ -1196,10 +1208,44 @@ class Create extends Component
                 }
             }
         }
-        // $this->items[$key]['quantity_available'] =44;
-
     }
 
+
+    public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id){
+        $qtyByUnit = 1 ;
+        if($stock_variation->basic_unit_id == $unit->unit_id){
+            $qtyByUnit = 1 / $stock_variation->equal;
+        }
+        elseif ($stock_variation->basic_unit_id == $unit->basic_unit_id){
+            $qtyByUnit = $unit->equal / $stock_variation->equal;
+        }
+        else{
+            foreach ($product_variations as $key => $product_variation){
+                if (!empty($product_variations[$key+1])) {
+                    if ($stock_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                        if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
+                            $qtyByUnit = $stock_variation->equal * $product_variations[$key + 1]->equal;
+                            break;
+                        } else {
+                            $qtyByUnit = $product_variation->equal;
+                        }
+                    }
+                    else{
+                        if ($product_variation->basic_unit_id == $product_variations[$key+1]->unit_id){
+                            $qtyByUnit *= $product_variation->equal;
+                        }
+                    }
+                }
+                else{
+                    if ($product_variation->basic_unit_id == $variation_id){
+                        $qtyByUnit *= $product_variation->equal;
+                        break;
+                    }
+                }
+            }
+        }
+    return $qtyByUnit;
+    }
     public function create_purchase_order($id)
     {
         $stock = AddStockLine::where('product_id',$id)->latest()->first();

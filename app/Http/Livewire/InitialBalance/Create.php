@@ -888,8 +888,8 @@ class Create extends Component
             $price = !empty($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) ? (float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] : $sell_price;
             $dollar_price = !empty($this->rows[$index]['prices'][$key]['price_after_desc']) ? (float)$this->rows[$index]['prices'][$key]['price_after_desc'] : $dollar_sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty($total_quantity) ? $total_quantity : 1),3);
-                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] * ((float)$this->rows[$index]['prices'][$key]['discount_quantity'] +(float)$this->rows[$index]['prices'][$key]['bonus_quantity'] ),3) ;
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty((float)$this->rows[$index]['prices'][$key]['discount_quantity'] ) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity']  : 1),3);
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_price_after_desc'] * ((!empty((float)$this->rows[$index]['prices'][$key]['discount_quantity'] ) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity']  : 1) ),3) ;
                 $this->rows[$index]['prices'][$key]['piece_price'] = number_format($this->rows[$index]['prices'][$key]['price_after_desc'],3) ;
                 $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_total_price'] ,3) ;
 
