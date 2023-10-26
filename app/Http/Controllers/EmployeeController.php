@@ -152,7 +152,7 @@ class EmployeeController extends Controller
   /* =========================== store() =========================== */
   public function store(Request $request)
   {
-    //   return response($request);
+      return response($request);
       $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
@@ -224,21 +224,6 @@ class EmployeeController extends Controller
             Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
         }
         // +++++++++++++++ End : Notification ++++++++++++++++++++++
-
-        // +++++++++++++++ Start : Notification ++++++++++++++++++++++
-        // Fetch the user
-        $users = User::where('id','!=',auth()->user()->id)->get();
-        $employee_name = $employee->employee_name;
-        // Get the name of the user creating the employee
-        $userCreateEmp = auth()->user()->name;
-        $type = "create_employee";
-        // Send notification to users
-        foreach ($users as $user)
-        {
-            Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
-        }
-        // +++++++++++++++ End : Notification ++++++++++++++++++++++
-
         // insert "employee_id" and "product_id" of employee's product into "employee_product" table
         for($i = 0; $i < count($data['ids']); $i++)
         {

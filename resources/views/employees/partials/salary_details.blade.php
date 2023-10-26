@@ -41,13 +41,24 @@
                         <br>
                         {{--  +++++++++++++++++++ commissioned_products ++++++++++++++++ --}}
                         {!! Form::label('commissioned_products', __('lang.products') . ':', ['class' => 'text-muted']) !!}
-                        {!! Form::select(
-                            'selected_products[]', // Name attribute for the select element (use array syntax for multiple selections)
+                        {{-- {!! Form::select(
+                            'commissioned_products[]', // Name attribute for the select element (use array syntax for multiple selections)
                             [], // Initially empty array, options will be populated via AJAX
                             null, // Default selected value (null in this case)
                             ['class' => 'form-control salary_select select2', 'multiple' => 'multiple', 'data-actions-box' => 'true', 'id' => 'selected_products']
+                        ) !!} --}}
+                        {!! Form::select(
+                            'commissioned_products[]',
+                            [],
+                            null,
+                            [
+                                'class' => 'form-control selectpicker',
+                                'multiple' => 'multiple',
+                                'placeholder' => __('lang.please_select'),
+                                'id' => 'selected_products',
+                                // 'data-actions-box' => 'true'
+                            ],
                         ) !!}
-
                         <br>
                         <br>
                         {!! Form::label('commission_customer_types', __('lang.customer_types') . ':', ['class' => 'text-muted']) !!}

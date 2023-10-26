@@ -442,7 +442,7 @@
                     }
                 });
                 // console.log(selectedProducts);
-                var productIdsString = selectedProducts;
+                // var productIdsString = selectedProducts;
                 var apiUrl = `/get-checked-products/`+selectedProducts;
                 $.ajax({
                     url: apiUrl,
@@ -456,8 +456,12 @@
                         $('#selected_products').append('<option value="">{{ __("lang.please_select") }}</option>');
                         $.each(response.products, function(index, product)
                         {
+                            $('#selected_products').selectpicker('refresh');
+                            $('#selected_products').attr('title', product.name);
                             $('#selected_products').append('<option selected value="' + product.id + '">' + product.name + '</option>');
                         });
+                        // Refresh the SelectPicker to apply changes
+                        $('#selected_products').selectpicker('refresh');
                     },
                     error: function(error) {
                         console.error('Error fetching product:', error);
