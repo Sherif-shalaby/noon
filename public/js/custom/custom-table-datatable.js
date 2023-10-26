@@ -14,6 +14,8 @@ $(document).ready(function() {
         responsive: true,
     } );
     var table = $('#datatable-buttons').DataTable({
+
+        "order": [],
         // lengthChange: false,
         // responsive: true,
         dom: "<'row'<'col-md-3 'l><'col-md-5 text-center 'B><'col-md-4'f>>" +
