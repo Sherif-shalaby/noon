@@ -3,45 +3,59 @@
     <div class="col-md-22">
         <div class="card mt-3">
             <div class="card-header d-flex align-items-center">
-                <h3 class="print-title">@lang('lang.stock')</h3>
+                <h3 class="print-title">@lang('lang.initial_balance')</h3>
             </div>
             <div class="card-body">
+{{--                <div class="row">--}}
+{{--                    <div class="col-lg-12">--}}
+{{--                        <div class="container-fluid">--}}
+{{--                            @include('initial-balance.partial.filters')--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
                 <div class="table-responsive">
                     <table id="datatable-buttons" class="table dataTable">
                         <thead>
                         <tr>
-                            <th>@lang('lang.po_ref_no')</th>
-                            <th>@lang('lang.invoice_no')</th>
+{{--                            <th>@lang('lang.po_ref_no')</th>--}}
+{{--                            <th>@lang('lang.invoice_no')</th>--}}
                             <th>@lang('lang.date_and_time')</th>
-                            <th>@lang('lang.invoice_date')</th>
+                            <th>@lang('lang.product')</th>
+{{--                            <th>@lang('lang.invoice_date')</th>--}}
                             <th>@lang('lang.supplier')</th>
                             <th>@lang('lang.created_by')</th>
-                            <th class="sum">@lang('lang.value')</th>
-                            <th class="sum">@lang('lang.paid_amount')</th>
-                            <th class="sum">@lang('lang.pending_amount')</th>
-                            <th>@lang('lang.due_date')</th>
-                            <th>@lang('lang.notes')</th>
+{{--                            <th class="sum">@lang('lang.value')</th>--}}
+{{--                            <th class="sum">@lang('lang.paid_amount')</th>--}}
+{{--                            <th class="sum">@lang('lang.pending_amount')</th>--}}
+{{--                            <th>@lang('lang.due_date')</th>--}}
+{{--                            <th>@lang('lang.notes')</th>--}}
                             <th class="notexport">@lang('lang.action')</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($stocks as $index => $stock)
                             <tr>
-                                <td>{{$stock->po_no ?? ''}}</td>
-                                <td>{{$stock->invoice_no ?? ''}}</td>
+{{--                                <td>{{$stock->po_no ?? ''}}</td>--}}
+{{--                                <td>{{$stock->invoice_no ?? ''}}</td>--}}
                                 <td>{{$stock->created_at }}</td>
-                                <td>{{$stock->transaction_date }}</td>
+                                <td>
+                                    {{$stock->add_stock_lines->first()->product->name }}
+{{--                                    <br>--}}
+{{--                                    {{$stock->add_stock_lines->first()->product->sku ?? '' }}<br>--}}
+{{--                                    {{$stock->add_stock_lines->first()->product->product_symbol ?? '' }}<br>--}}
+                                </td>
+{{--                                <td>{{$stock->transaction_date }}</td>--}}
                                 <td>{{$stock->supplier->name ?? ''}}</td>
                                 <td>{{$stock->created_by_relationship->name}}</td>
-                                @if($stock->transaction_currency == 2)
-                                    <td>{{number_format($stock->dollar_final_total,2)}}</td>
-                                @else
-                                    <td>{{number_format($stock->final_total,2)}}</td>
-                                @endif
-                                <td>{{$this->calculatePaidAmount($stock->id)}}</td>
-                                <td>{{$this->calculatePendingAmount($stock->id)}}</td>
-                                <td>{{$stock->due_date ?? ''}}</td>
-                                <td>{{$stock->notes ?? ''}}</td>
+{{--                                @if($stock->transaction_currency == 2)--}}
+{{--                                    <td>{{number_format($stock->dollar_final_total,2)}}</td>--}}
+{{--                                @else--}}
+{{--                                    <td>{{number_format($stock->final_total,2)}}</td>--}}
+{{--                                @endif--}}
+{{--                                <td>{{$this->calculatePaidAmount($stock->id)}}</td>--}}
+{{--                                <td>{{$this->calculatePendingAmount($stock->id)}}</td>--}}
+{{--                                <td>{{$stock->due_date ?? ''}}</td>--}}
+{{--                                <td>{{$stock->notes ?? ''}}</td>--}}
                                 <td>
                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                             aria-haspopup="true" aria-expanded="false">
@@ -65,7 +79,7 @@
                                         <li class="divider"></li>
                                         <li>
                                             <a data-href="{{route('initial-balance.destroy', $stock->id)}}"
-                                               {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                                data-check_password="{{route('check_password', Auth::user()->id)}}" 
                                                class="btn text-red delete_item" data-deletetype="1"><i class="fa fa-trash"></i>
                                                 @lang('lang.delete')</a>
                                         </li>
