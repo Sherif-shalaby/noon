@@ -129,26 +129,26 @@ class InitialBalanceController extends Controller
 
             $product=Product::find($add_stock_lines->first()->product_id);
             // return $product;
-            if(isset($product->image)){
-                $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
-                if(File::exists($image_path)) {
-                    File::delete($image_path);
-                }
-            }
-            if (!empty($product->variations())) {
-            $product->variations()->update([
-                'deleted_by'=>Auth::user()->id
-            ]);
-            $product->variations()->delete();
-            }
-            ProductTax::where('product_id', $add_stock_lines->first()->product_id)->delete();
-
-            $product->deleted_by = Auth::user()->id;
-            $product->save();
-            $product->delete();
-
             DB::beginTransaction();
+            if(!empty($product)){
+                if(isset($product->image)){
+                    $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
+                    if(File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                }
+                if (!empty($product->variations())) {
+                    $product->variations()->update([
+                        'deleted_by'=>Auth::user()->id
+                    ]);
+                    $product->variations()->delete();
+                }
+                ProductTax::where('product_id', $add_stock_lines->first()->product_id)->delete();
 
+                $product->deleted_by = Auth::user()->id;
+                $product->save();
+                $product->delete();
+            }
             if ($add_stock->status != 'received') {
                 $add_stock_lines->delete();
             } else {
