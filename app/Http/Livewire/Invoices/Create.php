@@ -721,7 +721,7 @@ class Create extends Component
                     $rounded_final_total = round_250($this->final_total);
                     // Convert remaining dollar to dinar
                     $this->dinar_remaining = round_250($rounded_final_total-($this->dollar_amount * System::getProperty('dollar_exchange')));
-                } 
+                }
                 // Handle the case where total is in dollar and both dollar and dinar amounts are 0
                 elseif ( $this->dollar_final_total != 0) {
                     // Calculate remaining dollar amount directly
@@ -739,20 +739,20 @@ class Create extends Component
                     //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
 
                     // }
-                    
+
                     // // If dollar_final_total is 0, set dollar_remaining to 0
                     // if ($this->dollar_final_total == 0) {
                     //     $this->dollar_remaining = 0;
                     // }
                 }
             }
-            
+
         }
     }
-    
-    
-    
-    
+
+
+
+
     public function changeReceivedDinar()
     {
         if ($this->amount !== null && $this->amount !== 0)
@@ -766,12 +766,12 @@ class Create extends Component
                 if ($this->dollar_final_total != 0 && $this->final_total == 0 && $this->dollar_amount == 0) {
                     // Calculate remaining dollar amount directly
                     $this->dollar_remaining = $this->dollar_final_total - ($this->amount / System::getProperty('dollar_exchange'));
-                } 
+                }
                 // Check if total is in dinars and both dollar and dinar amounts are 0
                 elseif ($this->final_total != 0 ) {
                     // Calculate remaining dinar amount
                     $this->dinar_remaining = round_250($this->final_total ) - $this->amount;
-                    
+
                     if($this->dollar_final_total != 0 ){
                         $this->dollar_remaining = $this->dollar_final_total-$this->dollar_amount ;
                        if( $this->dollar_remaining < 0 &&  $this->dinar_remaining > 0){
@@ -779,7 +779,7 @@ class Create extends Component
                             $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                             $this->dollar_remaining = 0;
                        }
-                       
+
                     }
                     // else{
                     //     $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
@@ -792,10 +792,10 @@ class Create extends Component
         }
     }
 
-    
 
-    
-    
+
+
+
     // calculate final_total : "النهائي دينار"
     public function changeTotal()
     {
@@ -1225,7 +1225,7 @@ class Create extends Component
         $variation_id=$this->items[$key]['unit_id'];
         $stock_line=AddStockLine::where('variation_id',$variation_id)->first();
         if(empty($stock_line->sell_price) && empty($stock_line->dollar_sell_price)){
-            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
+//            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
             $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);
             $product_variations = Variation::where('product_id',$this->items[$key]['product']['id'])->get();
             $unit = Variation::where('id',$variation_id)->first();
@@ -1237,11 +1237,10 @@ class Create extends Component
             $this->items[$key]['price']=number_format($stock_line->sell_price??0,2);
             $this->items[$key]['dollar_price']=number_format($stock_line->dollar_sell_price??0,2);
             $this->items[$key]['current_stock'] = $stock_line;
-
+            $this->items[$key]['discount_categories'] = $stock_line->prices()->get();
         }
         $this->items[$key]['sub_total']=number_format($this->items[$key]['price']*$this->items[$key]['quantity'],2);
         $this->items[$key]['dollar_sub_total']=number_format($this->items[$key]['dollar_price']*$this->items[$key]['quantity'],2);
-        $this->items[$key]['discount_categories'] =$stock_line->prices()->get();
         $this->items[$key]['discount'] =0;
         $this->items[$key]['extra_quantity'] =0;
         $qty=$this->items[$key]['quantity_available'];
