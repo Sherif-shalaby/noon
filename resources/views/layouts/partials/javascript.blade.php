@@ -134,7 +134,8 @@
                             url: '/user/check-password/',
                             method: 'POST',
                             data: {
-                                value: result
+                                value: result,
+                                _token: '{{ csrf_token() }}'
                             },
                             dataType: 'json',
                             success: (data) => {
