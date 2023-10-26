@@ -127,10 +127,10 @@ class InitialBalanceController extends Controller
             $add_stock = StockTransaction::find($id);
             $add_stock_lines = $add_stock->add_stock_lines;
 
-            $product=Product::find($add_stock_lines->first()->product_id);
             // return $product;
             DB::beginTransaction();
-            if(!empty($product)){
+            if(!empty($add_stock_lines->first()->product_id)){
+                $product=Product::find($add_stock_lines->first()->product_id);
                 if(isset($product->image)){
                     $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
                     if(File::exists($image_path)) {
@@ -182,7 +182,7 @@ class InitialBalanceController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
-            dd($e);
+//            dd($e);
         }
 
         return $output;
