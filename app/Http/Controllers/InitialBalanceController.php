@@ -16,6 +16,9 @@ use App\Models\Supplier;
 use App\Models\System;
 use App\Models\Unit;
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -45,7 +48,7 @@ class InitialBalanceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -55,11 +58,11 @@ class InitialBalanceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
-       
+
         $exchange_rate=0;
         $exchange_rate =System::getProperty('dollar_exchange');
         return view('initial-balance.create',compact('exchange_rate'));
@@ -124,28 +127,28 @@ class InitialBalanceController extends Controller
             $add_stock = StockTransaction::find($id);
             $add_stock_lines = $add_stock->add_stock_lines;
 
-            $product=Product::find($add_stock_lines->first()->product_id);
             // return $product;
-            if(isset($product->image)){
-                $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
-                if(File::exists($image_path)) {
-                    File::delete($image_path);
-                }
-            }
-            if (!empty($product->variations())) {
-            $product->variations()->update([
-                'deleted_by'=>Auth::user()->id
-            ]);
-            $product->variations()->delete();
-            }
-            ProductTax::where('product_id', $add_stock_lines->first()->product_id)->delete();
-
-            $product->deleted_by = Auth::user()->id;
-            $product->save();
-            $product->delete();
-
             DB::beginTransaction();
+            if(!empty($add_stock_lines->first()->product_id)){
+                $product=Product::find($add_stock_lines->first()->product_id);
+                if(isset($product->image)){
+                    $image_path = public_path() .'/uploads/products/'.$product->image;  // prev image path
+                    if(File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                }
+                if (!empty($product->variations())) {
+                    $product->variations()->update([
+                        'deleted_by'=>Auth::user()->id
+                    ]);
+                    $product->variations()->delete();
+                }
+                ProductTax::where('product_id', $add_stock_lines->first()->product_id)->delete();
 
+                $product->deleted_by = Auth::user()->id;
+                $product->save();
+                $product->delete();
+            }
             if ($add_stock->status != 'received') {
                 $add_stock_lines->delete();
             } else {
@@ -179,7 +182,7 @@ class InitialBalanceController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
-            dd($e);
+//            dd($e);
         }
 
         return $output;
@@ -188,7 +191,7 @@ class InitialBalanceController extends Controller
     {
         $row_id = request()->row_id ?? 0;
         $units = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-  
+
         return view('initial-balance.partial.raw_unit',compact(
             'row_id',
             'units',

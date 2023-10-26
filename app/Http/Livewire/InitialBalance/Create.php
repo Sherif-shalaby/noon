@@ -111,7 +111,7 @@ class Create extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
         'item.*.product_tax_id' => 'nullable',
-        'item.*.product_symbol'=>'required|unique:products,product_symbol,NULL,id,deleted_at,NULL',
+        'item.*.product_symbol'=>'nullable|unique:products,product_symbol,NULL,id,deleted_at,NULL',
         'rows.*.sku' => 'required',
         // 'rows.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
         'rows.*.purchase_price' => 'required',
@@ -438,7 +438,7 @@ class Create extends Component
                 $product->size = !empty($this->item[0]['size'])?$this->item[0]['size']:0;
                 $product->method = !empty($this->item[0]['method'])?$this->item[0]['method']:null;
                 $product->product_symbol = $this->item[0]['product_symbol'];
-                $product->balance_return_request=!empty($this->item[0]['balance_return_request'])?$this->item[0]['balance_return_request']:0;
+                $product->balance_return_request=!empty($this->item[0]['balance_return_request'])? $this->num_uf($this->item[0]['balance_return_request']):0;
                 $product->save();
                 if(!empty($this->item[0]['product_tax_id'])){
                     ProductTax::create([
@@ -470,9 +470,9 @@ class Create extends Component
                     'product_id' => $product->id,
                     'variation_id' => $Variation->id,
                     'stock_transaction_id' => $transaction->id,
-                    'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->rows[$index]['quantity'] : 0,
+                    'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : 0,
                     'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
-                    'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->rows[$index]['fill_quantity'] : 0,
+                    'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
                     'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
                     // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
                     'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
@@ -488,7 +488,7 @@ class Create extends Component
                 $stockLine = AddStockLine::create($add_stock_data);
 
 //                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity']);
-                $this->updateProductQuantityStore($product->id,$Variation->id, $transaction->store_id, $this->rows[$index]['quantity']);
+                $this->updateProductQuantityStore($product->id,$Variation->id, $transaction->store_id, $this->num_uf($this->rows[$index]['quantity']));
 
                 if (!empty($row['prices'])) {
                     foreach ($row['prices'] as $price) {
@@ -897,7 +897,7 @@ class Create extends Component
             else{
                 $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
                 $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$price * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
-                $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->rows[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3);
+                $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1),3);
                 $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
 
             }

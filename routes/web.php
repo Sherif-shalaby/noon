@@ -39,6 +39,7 @@ use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\BranchController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
@@ -223,7 +224,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
 
     // user check password
-    Route::post('user/check-password', [HomeController::class, 'checkPassword']);
+    Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');
     //suppliers
     Route::resource('suppliers',SuppliersController::class);
     // general_setting : fetch "state" of selected "country" selectbox
@@ -239,8 +240,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('moneysafe/watch-money-to-safe-transaction/{id}', [MoneySafeController::class,'getMoneySafeTransactions'])->name('moneysafe.watch-money-to-safe-transaction');
     Route::resource('moneysafe', MoneySafeController::class);
 
-    // ########### General Tax ###########
+    // sell car
     Route::resource('sell-car', SellCarController::class);
+
+    // branch
+    Route::resource('branches',BranchController::class);
+    Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
+
 
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);

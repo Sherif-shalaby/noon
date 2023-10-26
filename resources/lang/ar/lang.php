@@ -571,6 +571,10 @@ return array(
     'dollar_lowest_price'=>'$ الاقل سعرا',
     'out_of_stock' => 'لا يوجد مخزون',
     'po' => 'أمر شراء',
+    'branches' => 'الفروع',
+    'add_branch' => 'اضافه فرع',
+    'branch_name' => 'اسم الفرع',
+    'branch' => 'الفرع',
 
 );
 

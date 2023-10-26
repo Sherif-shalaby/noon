@@ -75,7 +75,7 @@
                             {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                             {!! Form::select('store_id', $stores, $store_id,
                             ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'store_id', 'required', 'placeholder' => __('lang.please_select'),
-                             'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeStorePos']) !!}
+                             'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeAllProducts']) !!}
                             @error('store_id')
                             <span class="error text-danger">{{ $message }}</span>
                             @enderror
@@ -230,9 +230,8 @@
                                                 </td>
                                                 <td>
                                                     <span class="current_stock">
-{{--                                                        {{$item['quantity_available']}}--}}
-                                                        @if(!empty($item['stock_units']))
-{{--                                                            {{dd($item['stock_units'])}}--}}
+                                                       {{$item['quantity_available']}}
+                                                        {{-- @if(!empty($item['stock_units']))
                                                             @foreach($item['stock_units'] as $i => $value)
                                                             @if(!empty($value))
                                                                 @foreach($value as $x=> $v)
@@ -240,7 +239,7 @@
                                                                 @endforeach
                                                                 @endif
                                                             @endforeach
-                                                        @endif
+                                                        @endif --}}
                                                     </span>
                                                 </td>
                                                 <td  class="text-center">
