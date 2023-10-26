@@ -131,11 +131,10 @@
                 }).then((result) => {
                     if (result) {
                         $.ajax({
-                            url: '/user/check-password/',
+                            url: '{{ route('check_password') }}',
                             method: 'POST',
                             data: {
                                 value: result,
-                                _token: '{{ csrf_token() }}'
                             },
                             dataType: 'json',
                             success: (data) => {
