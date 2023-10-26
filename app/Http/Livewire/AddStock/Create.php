@@ -212,18 +212,9 @@ class Create extends Component
             'users'));
     }
 
-    public function updated()
+    public function updated($propertyName)
     {
-
-//        foreach ($this->items as $item) {
-//            if (!empty($item['purchase_price']) && !empty($item['selling_price'])) {
-//                $this->addError('items.*.selling_price', 'Selling price is required if purchase price is set.');
-//            }
-//            if (!empty($item['dollar_purchase_price']) && !empty($item['dollar_selling_price'])) {
-//                $this->addError('items.*.dollar_selling_price', 'Dollar Selling price is required if purchase price is set.');
-//            }
-//        }
-        $this->validate();
+        $this->validateOnly($propertyName);
     }
     public function store(): Redirector|Application|RedirectResponse
     {
@@ -445,10 +436,10 @@ class Create extends Component
                     'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $this->num_uf($item['dollar_selling_price']) : null,
                     'cost' => !empty($item['cost']) ? $this->num_uf(  $item['cost'] ): null,
                     'dollar_cost' => !empty($item['dollar_cost']) ? $this->num_uf($item['dollar_cost']) : null,
-                    'expiry_date' => !empty($item['expiry_date']) ? $this->num_uf($item['expiry_date']) : null,
+                    'expiry_date' => !empty($item['expiry_date']) ? $item['expiry_date'] : null,
                     'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
-                    'exchange_rate' => !empty($supplier->exchange_rate) ? str_replace(',' ,'',$supplier->exchange_rate) : null,
+                    'exchange_rate' => !empty($supplier->exchange_rate) ? $this->num_uf($supplier->exchange_rate) : null,
                     'fill_type' => $item['fill_type'] ?? null,
                     'fill_quantity' => $this->num_uf($item['fill_quantity'])  ?? null,
                 ];
