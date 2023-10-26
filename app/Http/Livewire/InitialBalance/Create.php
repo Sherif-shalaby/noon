@@ -880,8 +880,8 @@ class Create extends Component
                 if(empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
                     $total_sell_price = $this->num_uf($sell_price) * $this->num_uf($this->rows[$index]['prices'][$key]['discount_quantity']);
                     $total_dollar_sell_price = $this->num_uf($dollar_sell_price) * $this->num_uf($this->rows[$index]['prices'][$key]['discount_quantity']);
-                    $sell_price = $this->num_uf($total_sell_price) / $this->num_uf($this->rows[$index]['prices'][$key]['discount_quantity']) ;
-                    $dollar_sell_price = $this->num_uf($total_dollar_sell_price) / $this->num_uf($total_quantity) ;
+                    $sell_price = $this->num_uf($total_sell_price) / $total_quantity ;
+                    $dollar_sell_price = $this->num_uf($total_dollar_sell_price) / $total_quantity;
                 }
                 if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed') {
                     $this->rows[$index]['prices'][$key]['dinar_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['price']) * $this->num_uf($this->exchange_rate),3) ;
@@ -889,8 +889,8 @@ class Create extends Component
                     $this->rows[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) -$this->num_uf( (float)$this->rows[$index]['prices'][$key]['price']), 3);
                 } elseif ($this->rows[$index]['prices'][$key]['price_type'] === 'percentage') {
                     $percent =(float) $this->rows[$index]['prices'][$key]['price'] / 100;
-                    $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = number_format(($sell_price - ($percent * $sell_price)), 3);
-                    $this->rows[$index]['prices'][$key]['price_after_desc'] = number_format((float)($dollar_sell_price - ($percent * $dollar_sell_price)), 3);
+                    $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), 3);
+                    $this->rows[$index]['prices'][$key]['price_after_desc'] = number_format((float)($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), 3);
                     $this->rows[$index]['prices'][$key]['dinar_price'] = (float) $this->rows[$index]['prices'][$key]['price'] ;
                 }
             }
