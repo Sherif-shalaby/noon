@@ -243,16 +243,21 @@ class Create extends Component
             $transaction = TransactionSellLine::create($transaction_data);
 
             // Add Sell line
-            foreach ($this->items as $item) {
+            foreach ($this->items as $key => $item) {
                 if ($item['discount_type'] == 0) {
                     $item['discount_type'] = null;
                 }
-//                dd($item);
+                if(!empty($item['unit_id'])){
+                    $this->rules = [
+                        'items.' . $key . '.unit_id' => 'required',
+                    ];
+                    $this->validate();
+                }
                 $old_quantity = 0;
                 $sell_line = new SellLine();
                 $sell_line->transaction_id = $transaction->id;
                 $sell_line->product_id = $item['product']['id'];
-                $sell_line->variation_id = $item['unit_id'];
+                $sell_line->variation_id = !empty($item['unit_id']) ? $item['unit_id'] :  null;
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
                 $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
                 $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
@@ -351,7 +356,7 @@ class Create extends Component
                 $this->emit('printInvoice', $html_content);
             }
 
-            DB::commit();
+//            DB::commit();
             // $this->items = [];
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             return $this->redirect('/invoices/create');
@@ -1223,6 +1228,7 @@ class Create extends Component
         ];
     }
     public function changeUnit($key){
+//        dd($this->items[$key]['unit_id']);
         if(!empty($this->items[$key]['unit_id'])){
             $variation_id=$this->items[$key]['unit_id'];
             $stock_line=AddStockLine::where('variation_id',$variation_id)->first();
