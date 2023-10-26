@@ -42,6 +42,8 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -64,6 +66,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('supplier_id', __('lang.supplier') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
                                         {!! Form::select('supplier_id', $suppliers, $supplier, [
@@ -75,8 +78,10 @@
                                             'wire:model' => 'supplier',
                                             'wire:change' => 'changeExchangeRate()',
                                         ]) !!}
-                                        <button type="button" class="add-button" data-toggle="modal"
-                                            data-target=".add-supplier"><i class="fas fa-plus"></i></button>
+                                        <button type="button"
+                                            class="add-button d-flex justify-content-center align-items-center"
+                                            data-toggle="modal" data-target=".add-supplier"><i
+                                                class="fas fa-plus"></i></button>
                                     </div>
                                     @error('supplier')
                                         <span style="font-size: 10px;font-weight: 700;"
@@ -88,7 +93,8 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     <label
                                         class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                        for="invoice_currency">@lang('lang.invoice_currency') *</label>
+                                        style="font-size: 12px;font-weight: 500;" for="invoice_currency">*
+                                        @lang('lang.invoice_currency')</label>
                                     <div class="input-wrapper">
                                         {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency, [
                                             'class' => 'form-control select2',
@@ -109,6 +115,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -126,16 +133,31 @@
                                             class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-12 mt-2">
-                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('purchase_type', __('lang.purchase_type'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                    ]) !!}
+                                    <div class="input-wrapper">
+                                        {!! Form::select('purchase_type', $po_nos, null, [
+                                            'class' => 'form-control select2',
+                                            'data-live-search' => 'true',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'po_id',
+                                            'wire:model' => 'po_id',
+                                        ]) !!}
+                                    </div>
+                                    @error('po_id')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    {!! Form::label('divide_costs', __('lang.divide_costs') . ':', [
+                                    {!! Form::label('divide_costs', __('lang.divide_costs'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
                                         {!! Form::select(
@@ -162,6 +184,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('transaction_date', __('lang.date_and_time'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
 
                                     <input type="datetime-local" wire:model="transaction_date"
@@ -170,8 +193,9 @@
 
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', [
+                                    {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <input type="text" class="form-control initial-balance-input m-0"
                                         id="exchange_rate" name="exchange_rate" wire:model="exchange_rate"
@@ -183,6 +207,7 @@
                                         class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         {!! Form::label('exchange_rate', __('lang.end_date'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         <input type="date" class="form-control m-0 initial-balance-input"
                                             id="end_date" name="end_date" wire:model="end_date">
@@ -191,11 +216,15 @@
 
                             </div>
                         </div>
+
+
+
+
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <div class="col-md-4">
                                 <div class="search-box input-group">
                                     <input type="search" name="search_by_product_symbol" id="search_by_product_symbol"
-                                        wire:model.debounce.500ms="search_by_product_symbol"
+                                        wire:model.debounce.200ms="search_by_product_symbol"
                                         placeholder="@lang('lang.enter_product_symbol')" class="form-control" autocomplete="off">
 
                                     @if (!empty($search_result) && !empty($search_by_product_symbol))
@@ -228,7 +257,7 @@
                                             class="fa fa-search"></i>
                                     </button>
                                     <input type="search" name="search_product" id="search_product"
-                                        wire:model.debounce.500ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')"
+                                        wire:model.debounce.200ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                         class="form-control" autocomplete="off">
                                     {{--                                    <button type="button" class="btn btn-success  btn-modal" --}}
                                     {{--                                            data-href="{{ route('products.create') }}?quick_add=1" --}}
@@ -242,8 +271,15 @@
                                                 <li class="ui-menu-item"
                                                     wire:click="add_product({{ $product->id }})">
                                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                        <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png"
-                                                            width="50px" height="50px">
+                                                        @if ($product->image)
+                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                alt="{{ $product->name }}" class="img-thumbnail"
+                                                                width="100px">
+                                                        @else
+                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                alt="{{ $product->name }}" class="img-thumbnail"
+                                                                width="100px">
+                                                        @endif
                                                         {{ $product->sku ?? '' }} - {{ $product->name }}
                                                     </div>
                                                 </li>
@@ -257,7 +293,7 @@
                         </div>
 
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-2 border border-1 mr-3 p-0" style="height: 60vh;overflow: scroll">
+                            <div class="col-md-2 border border-1 p-0" style="height: 100vh;overflow: scroll">
                                 <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                     الأقسام الرئيسيه
                                     <div for="" class="d-flex align-items-center text-nowrap gap-1"
@@ -289,8 +325,8 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div class="table-responsive col-md-9 border border-1 @if (app()->isLocale('ar')) dir-rtl @endif"
-                                style="height: 60vh;overflow: scroll">
+                            <div class="table-responsive col-md-10 border border-1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="height: 100vh;overflow: scroll">
 
                                 @if (!empty($items))
                                     @foreach ($items as $index => $product)
@@ -347,7 +383,7 @@
                             </h4>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12 mb-3">
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3> @lang('lang.total') :
                                     @if ($paying_currency == 2)
@@ -432,7 +468,7 @@
                                 {!! Form::label('other_payments', __('lang.other_payments'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 ]) !!}
-                                <div class="input-wrapper">
+                                <div class="input-wrapper mr-3">
 
                                     {!! Form::text('other_payments', $other_payments, [
                                         'class' => 'form-control m-0 initial-balance-input width-full',
@@ -593,9 +629,9 @@
                                 {!! Form::label('notes', __('lang.notes'), [
                                     'class' => app()->isLocale('ar')
                                         ? 'd-block text-end  mx-2 mb-0 width-quarter width-full'
-                                        : 'mx-2 mb-0 width-quarter width-full',
+                                        : 'mr-3 mb-0 width-quarter width-full',
                                 ]) !!}
-                                <div class="input-wrapper">
+                                <div class="input-wrapper" style="width: 90% !important;">
                                     {!! Form::textarea(
                                         'notes',
                                         !empty($recent_stock) && !empty($recent_stock->notes) ? $recent_stock->notes : null,

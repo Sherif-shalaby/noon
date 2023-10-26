@@ -14,14 +14,16 @@
                 <div class="breadcrumb-list">
                     <ul style=" list-style: none;"
                         class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                @lang('lang.dashboard')</a>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif ">
+                            <a style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">
+                                / @lang('lang.dashboard')
+                            </a>
                         </li>
                         <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
                             aria-current="page">
                             <a style="text-decoration: none;color: #596fd7"
-                                href="{{ route('customer_price_offer.index') }}">/ @lang('lang.customer_price_offer')</a>
+                                href="{{ route('customer_price_offer.index') }}">
+                                / @lang('lang.customer_price_offer')</a>
                         </li>
                         <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
                             aria-current="page">

@@ -71,6 +71,7 @@
                         class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::label('brand', __('lang.brand'), [
                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                         ]) !!}
                         <div class="d-flex justify-content-center align-items-center"
                             style="background-color: #dedede; border: none;
@@ -78,7 +79,7 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-                                        margin: auto;
+
                                         height: 30px;
                                         flex-wrap: nowrap;">
                             {!! Form::select('brand_id', $brands, isset($recent_product->brand) ? $recent_product->brand->id : null, [
@@ -96,6 +97,7 @@
                         class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::label('store', __('lang.store'), [
                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                         ]) !!}
                         <div class="d-flex justify-content-center align-items-center"
                             style="background-color: #dedede; border: none;
@@ -104,7 +106,7 @@
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
                                         height: 30px;
-                                        margin: auto;
+
                                         flex-wrap: nowrap;">
                             {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
                                 'class' => 'form-control selectpicker',
@@ -124,6 +126,7 @@
 
                         {!! Form::label('name', __('lang.product_name'), [
                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                            'style' => 'font-size: 12px;font-weight: 500;',
                         ]) !!}
 
                         <div class="d-flex justify-content-center align-items-center"
@@ -132,7 +135,7 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-                                        margin: auto;
+
                                         height: 30px;
                                         flex-wrap: nowrap;">
 
@@ -162,6 +165,7 @@
                             class="mb-2 p-0 col-md-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px !important;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('product_symbol', null, [
                                 'class' => 'form-control initial-balance-input m-auto',
@@ -178,6 +182,7 @@
                                 'class' => app()->isLocale('ar')
                                     ? 'd-block text-end  mr-2 ml-0 mb-0 width-quarter'
                                     : 'mr-2 ml-0 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('product_sku', null, [
                                 'class' => 'form-control initial-balance-input m-auto',
@@ -199,6 +204,7 @@
                                     'class' => app()->isLocale('ar')
                                         ? 'd-block text-end  mr-2 ml-0 mb-0 width-quarter'
                                         : 'mr-2 ml-0 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -206,7 +212,7 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-                                        margin: auto;
+
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select(
@@ -234,6 +240,7 @@
                                 class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -241,7 +248,7 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-                                        margin: auto;
+
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select(
@@ -268,6 +275,7 @@
                                 class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -275,7 +283,7 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-                                        margin: auto;
+
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select(
@@ -302,6 +310,7 @@
                                 class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -309,7 +318,7 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-                                        margin: auto;
+
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select(
@@ -338,10 +347,15 @@
                                 class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
-                                {!! Form::text('balance_return_request', null, [
-                                    'class' => 'form-control initial-balance-input m-auto',
-                                ]) !!}
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('balance_return_request', null, [
+                                        'class' => 'form-control initial-balance-input m-auto',
+                                        'style' => 'width:100%',
+                                    ]) !!}
+                                </div>
                             </div>
 
                         </div>
@@ -657,7 +671,7 @@
                                             </div>
                                             <div>
                                                 <div class="preview-image-container">
-                                                    @if (!empty($recent_product->image))
+                                                    {{-- @if (!empty($recent_product->image))
                                                         <div class="preview">
                                                             <img src="{{ asset('uploads/products/' . $recent_product->image) }}"
                                                                 id="image_footer" alt="">
@@ -670,7 +684,7 @@
                                                                 data-target="#imageModal"><i style="font-size: 25px;"
                                                                     class="fas fa-crop"></i></span>
                                                         </div>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </div>
                                         </div>

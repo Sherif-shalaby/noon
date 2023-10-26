@@ -286,13 +286,15 @@
                                     'placeholder' => __('lang.please_select'),
                                     'style' => 'border-radius: 12px;height: 30px;',
                                     'wire:model' => 'rows.' . $index . '.prices.' . $key . '.price_type',
+                                    'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
                                 ],
                             ) !!}
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input"
                                     name="discount_from_original_price" id="discount_from_original_price"
                                     style="font-size: 0.75rem;border-radius: 12px;height: 30px;"
-                                    @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif>
+                                    @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                    wire:change="changePrice({{ $index }}, {{ $key }})">
                                 <label class="custom-control-label" id="custom-control-label" style="font-size: 8px"
                                     for="discount_from_original_price">
                                     @lang('lang.discount_from_original_price_with_free_quantity')

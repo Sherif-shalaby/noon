@@ -15,20 +15,20 @@
 <!-- Switchery js -->
 {{-- <script src="{{asset('plugins/switchery/switchery.min.js')}}"></script> --}}
 <!-- Datatable js -->
-<script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.bootstrap4.min.js')}}"></script>
-{{--<script src="{{asset('plugins/datatables/jszip.min.js')}}"></script>--}}
-<script src="{{asset('plugins/datatables/pdfmake.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/vfs_fonts.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.html5.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.print.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/buttons.colVis.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/dataTables.responsive.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/responsive.bootstrap4.min.js')}}"></script>
-<script src="{{asset('plugins/datatables/1.13.6/api/sum().js')}}"></script>
-<script src="{{asset('js/custom/custom-table-datatable.js')}}"></script>
+<script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+{{-- <script src="{{asset('plugins/datatables/jszip.min.js')}}"></script> --}}
+<script src="{{ asset('plugins/datatables/pdfmake.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/vfs_fonts.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.print.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/buttons.colVis.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/1.13.6/api/sum().js') }}"></script>
+<script src="{{ asset('js/custom/custom-table-datatable.js') }}"></script>
 
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script> --}}
 
@@ -51,9 +51,24 @@
 <script src="{{ asset('plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
 <script src="{{ asset('js/custom/custom-pnotify.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script src="{{ asset('plugins/switchery/switchery.min.js') }}"></script>
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
+    $(document).on("click", "#discount_from_original_price", function() {
+        var value = $('#discount_from_original_price').is(':checked') ? 1 : 0;
+        $.ajax({
+            method: "get",
+            url: "/create-or-update-system-property/discount_from_original_price/" + value,
+            contentType: "html",
+            success: function(result) {
+                if (result.success) {
+                    Swal.fire("Success", response.msg, "success");
+                }
+            },
+        });
+    });
     $(document).on("click", "#clear_all_input_form", function() {
         var value = $('#clear_all_input_form').is(':checked') ? 1 : 0;
         $.ajax({
@@ -95,10 +110,10 @@
     });
     $(document).on('click', '.delete_item', function(e) {
         e.preventDefault();
-        var deletetype=$(this).data('deletetype');
-        var title=LANG.are_you_sure;
-        if(deletetype==1){
-            title=LANG.it_will_delete_the_product_and_all_its_operations
+        var deletetype = $(this).data('deletetype');
+        var title = LANG.are_you_sure;
+        if (deletetype == 1) {
+            title = LANG.it_will_delete_the_product_and_all_its_operations
         }
         Swal.fire({
             title: title,
@@ -121,10 +136,10 @@
                 }).then((result) => {
                     if (result) {
                         $.ajax({
-                            url: '/user/check-password/',
+                            url: '{{ route('check_password') }}',
                             method: 'POST',
                             data: {
-                                value: result
+                                value: result,
                             },
                             dataType: 'json',
                             success: (data) => {

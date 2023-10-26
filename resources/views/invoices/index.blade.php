@@ -8,18 +8,18 @@
                 <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('lang.sells')
                 </h4>
                 <div class="breadcrumb-list">
-                    <ul style=" list-style: none;"
+                    <ul
                         class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
                                 style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                 @lang('lang.dashboard')</a>
                         </li>
-                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
                             aria-current="page">@lang('lang.sells')</li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-4 ">
+            <div class="col-md-4 col-lg-4">
                 {{--                <div class="widgetbar"> --}}
                 {{--                    <a href="{{route('customers.create')}}" class="btn btn-primary"> --}}
                 {{--                    </a> --}}
@@ -37,8 +37,7 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5
-                            class="card-title d-flex @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                        <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                             @lang('lang.sells')</h5>
                     </div>
                     <div class="card-body">
@@ -50,7 +49,7 @@
                             </div>
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                        <div class="table-responsive">
                             <table id="datatable-buttons" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>

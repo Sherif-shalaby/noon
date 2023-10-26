@@ -1128,6 +1128,15 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="mega-menu-col col-md-2">
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{route('branches.index')}}">
+                                                <i class="mdi mdi-circle"></i>@lang('lang.branches')
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                         </ul>
                     </div>
                 </li>

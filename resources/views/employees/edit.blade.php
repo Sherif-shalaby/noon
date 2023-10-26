@@ -8,7 +8,7 @@
                 <h4 class="page-title">@lang('lang.employees')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.employees')</li>
                     </ol>
                 </div>
@@ -31,25 +31,58 @@
                         <h4>@lang('lang.edit_employee')</h4>
                     </div>
                     <div class="card-body">
-                        {!! Form::open(['url' => route('employees.update', $employee->id), 'method' => 'put', 'id' => 'edit_employee_form', 'enctype' => 'multipart/form-data']) !!}
+                        {!! Form::open([
+                            'url' => route('employees.update', $employee->id),
+                            'method' => 'put',
+                            'id' => 'edit_employee_form',
+                            'enctype' => 'multipart/form-data',
+                        ]) !!}
 
                         <div class="row">
 
                             <div class="col-sm-6">
                                 <label for="fname">@lang('lang.name'):*</label>
-                                <input type="text" class="form-control" name="name" value="{{ $employee->employee_name }}" @if($employee->name == 'Admin') readonly @endif
-                                id="name" required placeholder="Name">
+                                <input type="text" class="form-control" name="name"
+                                    value="{{ $employee->employee_name }}" @if ($employee->name == 'Admin') readonly @endif
+                                    id="name" required placeholder="Name">
                             </div>
                             <div class="col-sm-6">
                                 <label for="store_id">@lang('lang.store')</label>
-                                {!! Form::select('store_id[]', $stores,$selected_stores, ['class' => 'form-control select2','multiple', 'placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                {!! Form::select('store_id[]', $stores, $selected_stores, [
+                                    'class' => 'form-control select2',
+                                    'multiple',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-live-search' => 'true',
+                                    'id' => 'store_id',
+                                ]) !!}
                             </div>
                             <div class="col-sm-6">
                                 <label for="email">@lang('lang.email'):*<small>(@lang('lang.it_will_be_used_for_login'))</small></label>
-                                <input type="email" class="form-control" name="email" value="{{ $employee->user->email }}"
-                                       id="email" required placeholder="Email">
+                                <input type="email" class="form-control" name="email"
+                                    value="{{ $employee->user->email }}" id="email" required placeholder="Email">
                             </div>
 
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-6">
+                                <label for="branch_id">@lang('lang.branch')</label>
+                                {!! Form::select('branch_id', $branches, $employee->branch_id, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-live-search' => 'true',
+                                    'id' => 'branch_id',
+                                ]) !!}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="store_id">@lang('lang.store')</label>
+                                {!! Form::select('store_id[]', $stores, $selected_stores, [
+                                    'class' => 'form-control select2',
+                                    'multiple',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-live-search' => 'true',
+                                    'id' => 'store_id',
+                                ]) !!}
+                            </div>
                         </div>
 
                         <div class="row mt-4">
@@ -57,12 +90,12 @@
                             <div class="col-sm-6">
                                 <label for="password">@lang('lang.password')</label>
                                 <input type="password" class="form-control" name="password" id="password"
-                                       placeholder="Create New Password">
+                                    placeholder="Create New Password">
                             </div>
                             <div class="col-sm-6">
                                 <label for="pass">@lang('lang.confirm_password')</label>
                                 <input type="password" class="form-control" id="password_confirmation"
-                                       name="password_confirmation" placeholder="Conform Password">
+                                    name="password_confirmation" placeholder="Conform Password">
                             </div>
 
                         </div>
@@ -71,14 +104,14 @@
                             <div class="col-sm-6">
                                 <label for="date_of_start_working">@lang('lang.date_of_start_working')</label>
                                 <input type="date_of_start_working" class="form-control" name="date_of_start_working"
-                                       value="@if (!empty($employee->date_of_start_working)) {{ @format_date($employee->date_of_start_working) }} @endif"
-                                       id="date_of_start_working" placeholder="@lang('lang.date_of_start_working')">
+                                    value="@if (!empty($employee->date_of_start_working)) {{ @format_date($employee->date_of_start_working) }} @endif"
+                                    id="date_of_start_working" placeholder="@lang('lang.date_of_start_working')">
                             </div>
                             <div class="col-sm-6">
                                 <label for="date_of_birth">@lang('lang.date_of_birth')</label>
                                 <input type="date_of_birth" class="form-control" name="date_of_birth" id="date_of_birth"
-                                       value="@if (!empty($employee->date_of_birth)) {{ @format_date($employee->date_of_birth) }} @endif"
-                                       placeholder="@lang('lang.date_of_birth')">
+                                    value="@if (!empty($employee->date_of_birth)) {{ @format_date($employee->date_of_birth) }} @endif"
+                                    placeholder="@lang('lang.date_of_birth')">
                             </div>
 
                         </div>
@@ -86,12 +119,15 @@
 
                             <div class="col-sm-6">
                                 <label for="job_type">@lang('lang.job_type')</label>
-                                {!! Form::select('job_type_id', $jobs, $employee->job_type_id, ['class' => 'form-control', 'placeholder' => __('lang.select_job_type')]) !!}
+                                {!! Form::select('job_type_id', $jobs, $employee->job_type_id, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.select_job_type'),
+                                ]) !!}
                             </div>
                             <div class="col-sm-6">
                                 <label for="mobile">@lang('lang.mobile'):*</label>
                                 <input type="mobile" class="form-control" name="mobile" id="mobile" required
-                                       value="{{ $employee->mobile }}" placeholder="@lang('lang.mobile')">
+                                    value="{{ $employee->mobile }}" placeholder="@lang('lang.mobile')">
                             </div>
 
                         </div>
@@ -107,29 +143,29 @@
                             </div>
                         </div>
 
-{{--                        <div class="row mt-4">--}}
-{{--                            @foreach ($number_of_leaves as $number_of_leave)--}}
-{{--                                <div class="col-sm-6">--}}
-{{--                                    <div class="i-checks">--}}
-{{--                                        <input id="number_of_leaves{{ $number_of_leave->id }}"--}}
-{{--                                               name="number_of_leaves[{{ $number_of_leave->id }}][enabled]"--}}
-{{--                                               @if ($number_of_leave->enabled == 1) checked @endif type="checkbox" value="1"--}}
-{{--                                               class="form-control-custom">--}}
-{{--                                        <label--}}
-{{--                                            for="number_of_leaves{{ $number_of_leave->id }}"><strong>{{ $number_of_leave->name }}</strong></label>--}}
-{{--                                        <input type="number" class="form-control"--}}
-{{--                                               name="number_of_leaves[{{ $number_of_leave->id }}][number_of_days]"--}}
-{{--                                               id="number_of_leaves" readonly placeholder="{{ $number_of_leave->name }}"--}}
-{{--                                               value="{{ $number_of_leave->number_of_days }}">--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            @endforeach--}}
-{{--                        </div>--}}
+                        {{--                        <div class="row mt-4"> --}}
+                        {{--                            @foreach ($number_of_leaves as $number_of_leave) --}}
+                        {{--                                <div class="col-sm-6"> --}}
+                        {{--                                    <div class="i-checks"> --}}
+                        {{--                                        <input id="number_of_leaves{{ $number_of_leave->id }}" --}}
+                        {{--                                               name="number_of_leaves[{{ $number_of_leave->id }}][enabled]" --}}
+                        {{--                                               @if ($number_of_leave->enabled == 1) checked @endif type="checkbox" value="1" --}}
+                        {{--                                               class="form-control-custom"> --}}
+                        {{--                                        <label --}}
+                        {{--                                            for="number_of_leaves{{ $number_of_leave->id }}"><strong>{{ $number_of_leave->name }}</strong></label> --}}
+                        {{--                                        <input type="number" class="form-control" --}}
+                        {{--                                               name="number_of_leaves[{{ $number_of_leave->id }}][number_of_days]" --}}
+                        {{--                                               id="number_of_leaves" readonly placeholder="{{ $number_of_leave->name }}" --}}
+                        {{--                                               value="{{ $number_of_leave->number_of_days }}"> --}}
+                        {{--                                    </div> --}}
+                        {{--                                </div> --}}
+                        {{--                            @endforeach --}}
+                        {{--                        </div> --}}
 
                         <div class="row mt-4">
                             <!-- Button trigger modal -->
                             <button type="button" style="margin-left: 15px;" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#salary_details">
+                                data-target="#salary_details">
                                 @lang('lang.salary_details')
                             </button>
 
@@ -141,38 +177,44 @@
                                 <label for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
                                 <table>
                                     <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>@lang('lang.check_in')</th>
-                                        <th> @lang('lang.check_out')</th>
-                                    </tr>
+                                        <tr>
+                                            <th></th>
+                                            <th>@lang('lang.check_in')</th>
+                                            <th> @lang('lang.check_out')</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($week_days as $key => $week_day)
-                                        <tr>
-                                            <td>
-                                                <div class="form-group">
-                                                    <div class="i-checks">
-                                                        <input id="working_day_per_week{{ $key }}"
-                                                               @if (!empty($employee->working_day_per_week[$key])) checked @endif
-                                                               name="working_day_per_week[{{ $key }}]"
-                                                               type="checkbox" value="1">
-                                                        <label
-                                                            for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                        @foreach ($week_days as $key => $week_day)
+                                            <tr>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="i-checks">
+                                                            <input id="working_day_per_week{{ $key }}"
+                                                                @if (!empty($employee->working_day_per_week[$key])) checked @endif
+                                                                name="working_day_per_week[{{ $key }}]"
+                                                                type="checkbox" value="1">
+                                                            <label
+                                                                for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {!! Form::text('check_in[' . $key . ']', !empty($employee->check_in[$key]) ? $employee->check_in[$key] : null, ['class' => 'form-control input-md check_in time_picker ']) !!}
-                                            </td>
-                                            <td>
-                                                {!! Form::text('check_out[' . $key . ']', !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null, [
-'class' => 'form-control input-md check_out
-                                        time_picker',
-]) !!}
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                </td>
+                                                <td>
+                                                    {!! Form::text('check_in[' . $key . ']', !empty($employee->check_in[$key]) ? $employee->check_in[$key] : null, [
+                                                        'class' => 'form-control input-md check_in time_picker ',
+                                                    ]) !!}
+                                                </td>
+                                                <td>
+                                                    {!! Form::text(
+                                                        'check_out[' . $key . ']',
+                                                        !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null,
+                                                        [
+                                                            'class' => 'form-control input-md check_out
+                                                                                            time_picker',
+                                                        ],
+                                                    ) !!}
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -194,7 +236,8 @@
                         <div class="row mt-4">
 
                             <div class="col-sm-12">
-                                <button type="submit" class="btn btn-primary" id="submit-btn">@lang('lang.update_employee')</button>
+                                <button type="submit" class="btn btn-primary"
+                                    id="submit-btn">@lang('lang.update_employee')</button>
                             </div>
 
                         </div>
@@ -211,12 +254,10 @@
 
 @push('javascript')
     <script>
-        $('.js-example-basic-multiple').select2(
-            {
-                placeholder: "{{__('lang.please_select')}}",
-                tags: true
-            }
-        );
+        $('.js-example-basic-multiple').select2({
+            placeholder: "{{ __('lang.please_select') }}",
+            tags: true
+        });
         $('#date_of_start_working').datepicker({
             language: '{{ session('language') }}',
             todayHighlight: true,

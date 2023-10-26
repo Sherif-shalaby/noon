@@ -2,12 +2,11 @@
     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
         <div
-            class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide">
-
+            class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide">
             {!! Form::label('amount', __('lang.amount'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
             ]) !!}
-            <div class="input-wrapper">
+            <div class="input-wrapper mr-3">
                 <input style="width: 100%" type="number" placeholder="{{ __('lang.amount') }}"
                     class="form-control initial-balance-input m-0" wire:model="total_amount">
             </div>
@@ -17,7 +16,7 @@
         </div>
 
         <div
-            class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide">
+            class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide">
             {!! Form::label('method', __('lang.payment_type'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
             ]) !!}
@@ -40,7 +39,7 @@
         </div>
 
         <div
-            class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif  "
                 for="paying_currency">@lang('lang.paying_currency') </label>
             <div class="input-wrapper">

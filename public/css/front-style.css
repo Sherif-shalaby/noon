@@ -15,7 +15,7 @@
     color: #373737;
     box-shadow: 0 8px 6px -5px #bbb;
     width: 60%;
-    margin: auto;
+    /* margin: auto; */
     height: 30px;
     flex-wrap: nowrap;
 }
@@ -216,7 +216,7 @@ select.form-control {
 }
 
 .width-quarter {
-    width: 30%;
+    width: 25%;
 }
 
 .width-half {
@@ -440,3 +440,13 @@ html.is-leaving .transition-fade {
     opacity: 0;
     transform: translateX(0);
 } */
+
+.bg-light-gray {
+    background-color: rgb(221, 221, 221);
+    ;
+}
+
+.bg-dark-gray {
+    background-color: rgba(214, 214, 214, 0.297);
+    ;
+}

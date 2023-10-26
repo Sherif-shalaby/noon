@@ -33,7 +33,7 @@ class ProductRequest extends FormRequest
             'weight'=>'nullable|numeric|between:0,99999999999.99',
             'category_id'=>'required',
             'sku.*' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-            'product_symbol' => 'required|unique:products,product_symbol',
+            'product_symbol' => 'nullable|unique:products,product_symbol',
 
         ];
     }

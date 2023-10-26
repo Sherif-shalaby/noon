@@ -35,6 +35,10 @@ class Employee extends Model
     {
         return $this->hasMany(WageTransaction::class);
     }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
     public static function getWeekDays(){
         return [
             'sunday' => __('lang.sunday'),

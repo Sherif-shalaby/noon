@@ -185,7 +185,12 @@
 
         @include('layouts.partials.header')
 
-
+        {{-- @php
+            $notifications = \App\Models\BalanceRequestNotification::orderby('created_at', 'desc')->get();
+            $notification_count = \App\Models\BalanceRequestNotification::orderby('created_at', 'desc')
+                ->where('isread', 0)
+                ->count();
+        @endphp --}}
         @include('layouts.partials.leftbar')
 
         <!-- Start Rightbar -->
@@ -278,7 +283,31 @@
     <script>
         const swup = new Swup();
     </script> --}}
+    {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // $('.online-balance-badge').hide();
+        })
+        // Enable pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+        var obj = new Object();
+        var notificationContents = [];
+        var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+        });
+        var channel = pusher.subscribe('order-channel');
+        channel.bind('new-order', function(data) {
+            // if(data.product_id){
+            // }
+            if (data) {
 
+                let badge_count = parseInt($('.online-balance-badge').text()) + 1;
+                alert(badge_count)
+                $('.online-balance-badge').text(badge_count);
+                $('.online-balance-badge').show();
+            }
+        });
+    </script> --}}
 </body>
 
 <!-- Mirrored from themesbox.in/admin-templates/theta/html/light-horizontal/page-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Jul 2023 09:24:31 GMT -->

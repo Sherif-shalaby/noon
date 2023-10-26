@@ -44,6 +44,7 @@
                                 style="animation-delay: 0.5s">
                                 {!! Form::label('store_id', __('lang.store') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center "
                                     style="background-color: #dedede; border: none;
@@ -90,6 +91,7 @@
                                 style="animation-delay: 0.6s">
                                 {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -123,6 +125,7 @@
                                 style="animation-delay: 0.7s">
                                 {!! Form::label('name', __('lang.product_name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 {!! Form::text('name', $item[0]['name'], [
                                     'class' => 'form-control required initial-balance-input my-0',
@@ -146,6 +149,7 @@
                                     style="animation-delay: 0.8s">
                                     {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     {!! Form::text('product_symbol', null, [
                                         'class' => 'initial-balance-input my-0',
@@ -162,6 +166,7 @@
                                     style="animation-delay: 0.9s">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . '', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <input type="text" class="form-control  initial-balance-input my-0"
                                         id="exchange_rate" value="{{ $item[0]['exchange_rate'] }}"
@@ -175,6 +180,7 @@
                                 style="animation-delay: 1s">
                                 {!! Form::label('category', __('lang.category'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -211,6 +217,7 @@
                                 style="animation-delay: 1.1s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -242,6 +249,7 @@
                                 style="animation-delay: 1.2s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -276,6 +284,7 @@
                                 style="animation-delay: 1.3s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede; border: none;
@@ -311,6 +320,7 @@
                                 style="animation-delay: 1.4s;">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
 
                                 {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
