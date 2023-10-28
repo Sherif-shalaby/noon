@@ -81,6 +81,14 @@ class Create extends Component
             $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
             if(!empty($recent_stock)){
                 $transaction_payment = $recent_stock->transaction_payments->first();
+                $this->store_id =$recent_stock->store_id ?? null ;
+                $this->supplier = $recent_stock->supplier_id?? null;
+                $this->transaction_date = $recent_stock->transaction_date ?? null;
+                $this->transaction_currency = $recent_stock->transaction_currency ?? null;
+                $this->purchase_type = $recent_stock->purchase_type ?? null;
+                $this->divide_costs = $recent_stock->divide_costs ?? null;
+                $this->payment_status = $recent_stock->payment_status ?? null;
+                $this->invoice_no = $recent_stock->invoice_no ?? null;
                 $this->store_id =$recent_stock->store_id ?? __('lang.select') ;
                 $this->supplier = $recent_stock->supplier_id?? __('lang.select');
                 $this->transaction_date = $recent_stock->transaction_date ?? __('lang.select');
@@ -92,12 +100,12 @@ class Create extends Component
                 $this->other_expenses = !empty((int)$recent_stock->other_expenses) ? $recent_stock->other_expenses : null;
                 $this->discount_amount = !empty((int)$recent_stock->discount_amount) ? $recent_stock->discount_amount: null;
                 $this->other_payments = !empty((int)$recent_stock->other_payments) ? $recent_stock->other_payments: null;
-                $this->amount = $transaction_payment->amount ?? __('lang.select');
-                $this->method = $transaction_payment->method ?? __('lang.select');
+                $this->amount = $transaction_payment->amount ?? null;
+                $this->method = $transaction_payment->method ?? null;
                 $this->paying_currency = $this->transaction_currency ;
-                $this->source_type =$transaction_payment->source_type ?? __('lang.select') ;
-                $this->source_id = $transaction_payment->source_id ?? __('lang.select');
-                $this->paid_on = $transaction_payment->paid_on ?? __('lang.select');
+                $this->source_type =$transaction_payment->source_type ?? null ;
+                $this->source_id = $transaction_payment->source_id ?? null;
+                $this->paid_on = $transaction_payment->paid_on ?? null;
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
@@ -444,7 +452,7 @@ class Create extends Component
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? $this->num_uf($supplier->exchange_rate) : null,
                     'fill_type' => $item['fill_type'] ?? null,
-                    'fill_quantity' => $this->num_uf($item['fill_quantity'])  ?? null,
+                    'fill_quantity' => !empty($this->num_uf($item['fill_quantity']))  ?? null,
                 ];
                 $stock_line = AddStockLine::create($add_stock_data);
 
@@ -532,7 +540,7 @@ class Create extends Component
 //    public function getCurrentStock($product_id){
     public function addNewProduct($variations,$product,$show_product_data, $index = null){
 //        $current_stock = $this->getCurrentStock($product->id);
-        $new_item = [
+          $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
             'variation_id' => $variations->first()->id ?? null,
@@ -555,6 +563,7 @@ class Create extends Component
             'total_cost' => 0,
             'current_stock' =>0,
             'total_stock' => 0 + 1,
+            'fill_quantity' => null,
             'prices' => [
                 [
                     'price_type' => null,
@@ -677,7 +686,7 @@ class Create extends Component
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($total_quantity) ? $total_quantity : 1),3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
                 $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->items[$index]['prices'][$key]['price_after_desc'],3) ;
             }
             else{

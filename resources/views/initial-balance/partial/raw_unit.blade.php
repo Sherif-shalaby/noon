@@ -75,7 +75,7 @@
         @enderror
     </td>
     <td>
-        <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price" style="width: 100px;" required >
+        <input type="text" class="form-control " wire:model="rows.{{ $index }}.selling_price" wire:change="changeDollarSellingPrice( {{ $index }} )" style="width: 100px;" required >
         @error('rows.'.$index.'.selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
