@@ -96,7 +96,23 @@
         </div>
     </div>
 
+
+    <div id="toggleDollar" style="width: 50px;height: 120px;background-color: red;cursor: pointer;">
+
+    </div>
     <!-- End Profilebar -->
 
 </div>
 <!-- End Leftbar -->
+
+<script>
+    var toggleDollarButton = document.getElementById('toggleDollar');
+
+    toggleDollarButton.addEventListener('click', function() {
+        var dollarCells = document.getElementsByClassName('dollar-cell');
+
+        for (var i = 0; i < dollarCells.length; i++) {
+            dollarCells[i].classList.toggle('showHideDollarCells')
+        }
+    })
+</script>

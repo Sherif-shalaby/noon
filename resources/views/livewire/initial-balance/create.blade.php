@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <div class="card mt-3">
                     {{--  --}}
-                    <div class="card-header animate__animated animate__fadeInUp" style="animation-delay: 0.2s">
+                    <div class="card-header  animate__fadeInUp" style="animation-delay: 0.2s">
                         @if (!empty($is_raw_material))
                             <h4 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.add_stock_for_raw_material')</h4>
@@ -18,13 +18,13 @@
                         $index = 0;
                     @endphp
                     <div class="row mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 0.3s">
+                        <div class="col-md-9  animate__bounceInRight" style="animation-delay: 0.3s">
                             <p
                                 class="italic mb-0 pl-3 @if (app()->isLocale('ar')) text-end mr-2 @else text-start @endif">
                                 <small>@lang('lang.required_fields_info')</small>
                             </p>
                         </div>
-                        <div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 0.3s">
+                        <div class="col-md-3  animate__bounceInLeft" style="animation-delay: 0.3s">
                             <div class="i-checks @if (app()->isLocale('ar')) ml-2 @endif">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
                                     @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif class="">
@@ -40,7 +40,7 @@
                     <div class="card-body py-0">
                         {{-- <div class="col-md-12"> --}}
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                            <div class="col-md-3  animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                 style="animation-delay: 0.5s">
                                 {!! Form::label('store_id', __('lang.store') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
@@ -87,7 +87,7 @@
                             </div>
                             @include('store.create', ['quick_add' => 1])
 
-                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3  animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 0.6s">
                                 {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -121,7 +121,7 @@
                             </div>
                             @include('suppliers.quick_add', ['quick_add' => 1])
 
-                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3  animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 0.7s">
                                 {!! Form::label('name', __('lang.product_name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -145,7 +145,7 @@
                                 ]) !!}
                             </div> --}}
                             <div class="col-md-3 d-flex p-0">
-                                <div class="col-md-6 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                <div class="col-md-6 d-flex mb-2 align-items-center  animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                     style="animation-delay: 0.8s">
                                     {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -160,7 +160,7 @@
                                             class="text-danger error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 animate__animated animate__flipInX
+                                <div class="col-md-6  animate__flipInX
                                 d-flex mb-2 align-items-center p-0
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 0.9s">
@@ -176,7 +176,7 @@
                             </div>
 
 
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center  animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1s">
                                 {!! Form::label('category', __('lang.category'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -213,7 +213,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center  animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.1s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -245,7 +245,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center  animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.2s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -280,7 +280,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center  animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.3s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -316,7 +316,7 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ "balance return request +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center  animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.4s;">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -331,8 +331,7 @@
 
 
                             {{-- tax accordion  --}}
-                            <div class="col-md-12 my-3 p-0 animate__animated animate__lightSpeedInLeft"
-                                style="animation-delay: 1.6s">
+                            <div class="col-md-12 my-3 p-0  animate__lightSpeedInLeft" style="animation-delay: 1.6s">
                                 <div class="accordion" id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -440,8 +439,7 @@
 
 
                             {{-- size accordion --}}
-                            <div class="col-md-12 my-3 p-0 animate__animated animate__lightSpeedInLeft"
-                                style="animation-delay: 1.8s">
+                            <div class="col-md-12 my-3 p-0  animate__lightSpeedInLeft" style="animation-delay: 1.8s">
                                 <div class="accordion " id="accordionPanelsStayOpenExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
@@ -591,8 +589,7 @@
                         </div>
                         <br>
                         {{-- add prices --}}
-                            <div class="row text-right my-1 animate__bounceInRight animate__animated"
-                                style="animation-delay: 2s">
+                            <div class="row text-right my-1 animate__bounceInRight " style="animation-delay: 2s">
                                 <div class="col">
                                     <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
                                         <i class="fa fa-plus"></i> @lang('lang.add')
@@ -608,8 +605,7 @@
                                     ])
                                 @endforeach
 
-                                <div class="fw-bold text-center animate__flipInY animate__animated"
-                                    style="animation-delay: 3.7s">
+                                <div class="fw-bold text-center animate__flipInY " style="animation-delay: 3.7s">
                                     <div class=" mx-3">
 
                                         <span>
@@ -630,13 +626,12 @@
 
                             </div>
                             <div class="col-md-12 text-center mt-1 d-flex justify-content-evenly align-items-center">
-                                <h5 class=" fw-bold animate__animated animate__lightSpeedInLeft"
-                                    style="animation-delay: 3.9s">@lang('lang.items_count'):
+                                <h5 class=" fw-bold  animate__lightSpeedInLeft" style="animation-delay: 3.9s">
+                                    @lang('lang.items_count'):
                                     <span class="items_count_span">{{ count($rows) }}</span>
                                 </h5>
-                                <h5 class=" fw-bold animate__animated animate__lightSpeedInRight"
-                                    style="animation-delay: 3.9s"> @lang('lang.items_quantity'): <span
-                                        class="items_quantity_span">{{ $totalQuantity }}</span>
+                                <h5 class=" fw-bold  animate__lightSpeedInRight" style="animation-delay: 3.9s">
+                                    @lang('lang.items_quantity'): <span class="items_quantity_span">{{ $totalQuantity }}</span>
                                 </h5>
                             </div>
                         </div>

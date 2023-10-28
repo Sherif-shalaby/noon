@@ -23,9 +23,8 @@
     <!-- End css -->
     @livewireStyles
 </head>
-{{-- {{app()->getLocale() === 'ar'?'text-right':''}} --}}
 
-<body class="horizontal-layout transition-fade" id="swup">
+<body class="horizontal-layout">
 
     {{-- <body class="horizontal-layout"> --}}
     <!-- Start Infobar Notifications Sidebar -->
@@ -273,6 +272,11 @@
                         window.livewire.emit('remove');
                     }
                 });
+        });
+
+        window.addEventListener('load', function() {
+            var loaderWrapper = document.querySelector('.loading');
+            loaderWrapper.style.display = 'none'; // Hide the loader once the page is fully loaded
         });
 
         // window.addEventListener("beforeunload", (event) => {
