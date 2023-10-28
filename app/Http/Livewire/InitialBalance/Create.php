@@ -737,12 +737,12 @@ class Create extends Component
     }
     public function changePurchasePrice($index)
     {
-        $this->rows[$index]['purchase_price'] = number_format((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate,3) ;
+        $this->rows[$index]['purchase_price'] = number_format((float)$this->num_uf($this->rows[$index]['dollar_purchase_price']) * (float)$this->exchange_rate,3) ;
         $this->changeFilling($index);
     }
     public function changeDollarPurchasePrice($index)
     {
-        $this->rows[$index]['dollar_purchase_price'] = number_format((float)$this->rows[$index]['purchase_price'] / (float)$this->exchange_rate,3) ;
+        $this->rows[$index]['dollar_purchase_price'] = number_format((float)$this->num_uf($this->rows[$index]['purchase_price']) / (float)$this->exchange_rate,3) ;
         $this->changeDollarFilling($index);
     }
     public function changeExchangeRateBasedPrices()
