@@ -901,6 +901,7 @@ class Create extends Component
         if($this->rows[$index]['prices'][$key]['price_currency']=='dinar'){
             if(!empty($this->rows[$index]['prices'][$key]['price'])) {
                 if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
+                    $actual_price=(float)$this->rows[$index]['prices'][$key]['price']/(float)$this->exchange_rate;
                     $this->rows[$index]['prices'][$key]['price']=number_format((float)$this->rows[$index]['prices'][$key]['price']/(float)$this->exchange_rate,3);
                 }
             }
@@ -920,7 +921,7 @@ class Create extends Component
                 }
                 if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed'){
                     if($this->rows[$index]['prices'][$key]['price_currency']=='dinar'){
-                        $dinar_price=ceil(number_format($this->num_uf($this->rows[$index]['prices'][$key]['price']) * $this->num_uf($this->exchange_rate),3)) ;
+                        $dinar_price=ceil(number_format($this->num_uf($actual_price) * $this->num_uf($this->exchange_rate),3)) ;
                     }else{
                         $dinar_price=number_format($this->num_uf($this->rows[$index]['prices'][$key]['price']) * $this->num_uf($this->exchange_rate),3);
                     }
