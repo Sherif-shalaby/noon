@@ -920,7 +920,7 @@ class Create extends Component
                     $dollar_sell_price = $this->num_uf($total_dollar_sell_price) / $total_quantity;
                 }
                 if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed'){
-                    if($this->rows[$index]['prices'][$key]['price_currency']=='dollar'){
+                    if($this->rows[$index]['prices'][$key]['price_currency']=='dollar' && !empty($this->discount_from_original_price)){
                         $dollar_price=ceil(number_format($this->num_uf($actual_price),3)) ;
                     }else{
                         $dollar_price=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_price']) * $this->num_uf($this->exchange_rate),3);
