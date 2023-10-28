@@ -922,7 +922,7 @@ class Create extends Component
                     if($this->rows[$index]['prices'][$key]['price_currency']=='dollar' && !empty($this->discount_from_original_price)){
                         $dollar_price=ceil(number_format($this->num_uf($actual_price),3)) ;
                     }else{
-                        $dollar_price=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_price']) * $this->num_uf($this->exchange_rate),3);
+                        $dollar_price=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_price']) / $this->num_uf($this->exchange_rate),3);
                     }
                     // dd($this->rows[$index]['prices'][$key]);
                     $this->rows[$index]['prices'][$key]['price'] = $dollar_price;
