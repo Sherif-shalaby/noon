@@ -107,7 +107,6 @@ class Create extends Component
 
     public function listenerReferenceHere($data)
     {
-
         if(isset($data['var1'])) {
             $this->{$data['var1']} = $data['var2'];
         }
@@ -488,7 +487,7 @@ class Create extends Component
         return redirect('/add-stock/create');
     }
 
-    public function add_product($id, $add_via = null, $index = null){
+    public function add_product($id, $add_via = null, $index = null,$new_unit_raw=0){
         if(!empty($this->searchProduct)){
             $this->searchProduct = '';
 
@@ -504,11 +503,12 @@ class Create extends Component
             $this->addNewProduct($variations,$product,$show_product_data, $index);
         }
         else{
-            if(!empty($this->items)){
+            if(!empty($this->items) && $new_unit_raw==0){
                 $newArr = array_filter($this->items, function ($item) use ($product) {
                     return $item['product']['id'] == $product->id;
                 });
                 if (count($newArr) > 0) {
+                    // dd($newArr);
                     $key = array_keys($newArr)[0];
                     ++$this->items[$key]['quantity'];
                     // push index to top
@@ -517,13 +517,14 @@ class Create extends Component
                     array_unshift($this->items, $item);
                 }
                 else{
+                    // dd(7);
                     $show_product_data = true;
                     $this->addNewProduct($variations,$product,$show_product_data);
                 }
             }
             else{
                 $show_product_data = true;
-                $this->addNewProduct($variations,$product,$show_product_data);
+                $this->addNewProduct($variations,$product,$show_product_data,$index);
             }
         }
 
@@ -574,7 +575,11 @@ class Create extends Component
                 ],
             ],
         ];
-        array_unshift($this->items, $new_item);
+        if(!empty($index)){
+            array_splice($this->items, $index + 1, 0, [$new_item]);
+        }else{
+            array_unshift($this->items, $new_item);
+        }
     }
 
     public function add_by_po(){
@@ -832,7 +837,7 @@ class Create extends Component
     public function total_cost($index){
         $this->items[$index]['total_cost'] = (float)$this->items[$index]['cost'] * $this->items[$index]['quantity'];
         return number_format($this->items[$index]['total_cost'],3) ;
-}
+    }
 
     public function dollar_cost($index){
 
@@ -1147,5 +1152,8 @@ class Create extends Component
        $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
     //    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
        return ( $discountAmount );
+    }
+    public function addRaw($index){
+
     }
 }

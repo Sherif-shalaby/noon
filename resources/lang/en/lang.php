@@ -556,6 +556,7 @@ return [
     'add_branch' => 'Add Branch',
     'branch_name' => 'Branch Name',
     'branch' => 'Branch',
+    'add_new_unit'=>'Add New Unit',
 ];
 
 

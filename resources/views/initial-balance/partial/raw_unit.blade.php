@@ -135,7 +135,7 @@
                     'wire:change' => 'changePrice(' .$index.','.$key.')',
                     'style'=>'width:120px;font-size:15px;height:38px;'
                 ]) !!}
-                <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['prices'][$key]['price_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.prices.{{$key}}.price_currency" wire:change="changeFilling({{$index}})">
+                <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['prices'][$key]['price_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.prices.{{$key}}.price_currency">
                     <option selected value="dollar">Dollar</option>
                     <option  value="dinar">Dinar</option>
                 </select>
@@ -152,31 +152,31 @@
             @enderror
         </td>
         <td>
-            {!! Form::label('price' ,isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount').' $' : __('lang.percent').' $') !!}
-            <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
+            {!! Form::label('price' ,isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
+            <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
             <p>
-                {{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount'): __('lang.percent')}}:{{$this->rows[$index]['prices'][$key]['dinar_price']??''}}
+                {{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount').' $': __('lang.percent').' $'}}:{{$this->rows[$index]['prices'][$key]['price']??''}}
             </p>
         </td>
         <td>
-            {!! Form::label('' ,__('lang.price').' $') !!}
-            <input type="text" name="" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.price_after_desc" placeholder = "{{__('lang.price')}}" >
+            {!! Form::label('' ,__('lang.price')) !!}
+            <input type="text" name="" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_price_after_desc" placeholder = "{{__('lang.price')}}" >
             <p>
-                {{__('lang.price')}}:{{$this->rows[$index]['prices'][$key]['dinar_price_after_desc']??''}}
+                {{__('lang.price').' $'}}:{{$this->rows[$index]['prices'][$key]['price_after_desc']??''}}
             </p>
         </td>
         <td>
-            {!! Form::label('total_price' , __('lang.total_price').' $') !!}
-            <input type="text" name="total_price" class="form-control total_price" wire:model="rows.{{$index}}.prices.{{$key}}.total_price" placeholder = "{{__('lang.total_price')}}" >
+            {!! Form::label('total_price' , __('lang.total_price')) !!}
+            <input type="text" name="total_price" class="form-control total_price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_total_price" placeholder = "{{__('lang.total_price')}}" >
             <p>
-                {{__('lang.total_price')}}:{{$this->rows[$index]['prices'][$key]['dinar_total_price']??''}}
+                {{__('lang.total_price').' $'}}:{{$this->rows[$index]['prices'][$key]['total_price']??''}}
             </p>
         </td>
         <td>
-            {!! Form::label('piece_price' , __('lang.piece_price').' $') !!}
-            <input type="text" name="piece_price" class="form-control piece_price" wire:model="rows.{{$index}}.prices.{{$key}}.piece_price" placeholder = "{{__('lang.total_price')}}" >
+            {!! Form::label('piece_price' , __('lang.piece_price')) !!}
+            <input type="text" name="piece_price" class="form-control piece_price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_piece_price" placeholder = "{{__('lang.total_price')}}" >
             <p>
-                {{ __('lang.piece_price')}}:{{$this->rows[$index]['prices'][$key]['dinar_piece_price']??''}}
+                {{ __('lang.piece_price').' $'}}:{{$this->rows[$index]['prices'][$key]['piece_price']??''}}
             </p>
         </td>
 
