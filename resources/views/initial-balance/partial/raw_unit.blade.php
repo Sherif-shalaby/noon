@@ -44,6 +44,10 @@
                 <option selected value="fixed">@lang('lang.fixed')</option>
                 <option  value="percent">%</option>
             </select>
+            <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['fill_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.fill_currency" wire:change="changeFilling({{$index}})">
+                <option selected value="dollar">Dollar</option>
+                <option  value="dinar">Dinar</option>
+            </select>
             <div class="input-group-prepend">
                 <input type="text" class="form-control" wire:model="rows.{{ $index }}.fill_quantity" wire:change="changeFilling({{$index}})" style="width: 100px;" required>
             </div>
@@ -123,14 +127,21 @@
         </td>
         <td>
             {!! Form::label('price_type' ,__('lang.type')) !!}
-            {!! Form::select('rows.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
-                'class' => ' form-control price_type',
-                'placeholder' => __('lang.please_select'),
-                'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
-                'wire:change' => 'changePrice(' .$index.','.$key.')',
-            ]) !!}
+            <div class="d-flex justify-content-between">
+                {!! Form::select('rows.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
+                    'class' => ' form-control price_type',
+                    'placeholder' => __('lang.please_select'),
+                    'wire:model' => 'rows.'.$index.'.prices.'.$key.'.price_type',
+                    'wire:change' => 'changePrice(' .$index.','.$key.')',
+                    'style'=>'width:120px;font-size:15px;height:38px;'
+                ]) !!}
+                <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['prices'][$key]['price_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.prices.{{$key}}.price_currency" wire:change="changeFilling({{$index}})">
+                    <option selected value="dollar">Dollar</option>
+                    <option  value="dinar">Dinar</option>
+                </select>
+            </div>
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem" w
+                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem" 
                        @if( isset($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
                 wire:change="changePrice({{ $index }}, {{ $key }})">
                 <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
