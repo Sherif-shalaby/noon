@@ -211,8 +211,8 @@ class Create extends Component
                 'exchange_rate' => System::getProperty('dollar_exchange')??0,
                 'type' => 'sell',
 //                'transaction_currency' => $this->transaction_currency,
-                'final_total' => $this->num_uf($this->final_total),
-                'grand_total' => $this->num_uf($this->total),
+                'final_total' => $this->num_uf(round_250($this->final_total)),
+                'grand_total' => $this->num_uf(round_250($this->total)),
                 // 'dollar_final_total' :  'النهائي بالدولار'
                 'dollar_final_total' => $this->num_uf($this->dollar_final_total),
                 'dollar_grand_total' => $this->num_uf($this->total_dollar),
@@ -243,15 +243,21 @@ class Create extends Component
             $transaction = TransactionSellLine::create($transaction_data);
 
             // Add Sell line
-            foreach ($this->items as $item) {
+            foreach ($this->items as $key => $item) {
                 if ($item['discount_type'] == 0) {
                     $item['discount_type'] = null;
+                }
+                if(!empty($item['unit_id'])){
+                    $this->rules = [
+                        'items.' . $key . '.unit_id' => 'required',
+                    ];
+                    $this->validate();
                 }
                 $old_quantity = 0;
                 $sell_line = new SellLine();
                 $sell_line->transaction_id = $transaction->id;
                 $sell_line->product_id = $item['product']['id'];
-                $sell_line->variation_id = $item['unit_id'];
+                $sell_line->variation_id = !empty($item['unit_id']) ? $item['unit_id'] :  null;
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
                 $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
                 $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
@@ -350,7 +356,7 @@ class Create extends Component
                 $this->emit('printInvoice', $html_content);
             }
 
-            DB::commit();
+//            DB::commit();
             // $this->items = [];
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             return $this->redirect('/invoices/create');
@@ -478,7 +484,7 @@ class Create extends Component
 
         }
         if(!empty($this->search_by_product_symbol)){
-            $this->searchProduct = '';
+            $this->search_by_product_symbol = '';
 
         }
         $product = Product::where('id',$id)->first();
@@ -602,15 +608,15 @@ class Create extends Component
             $this->discount_dollar+= $item['discount_price'] * $item['exchange_rate'];
         }
         $this->dollar_amount = $this->total_dollar;
-        $this->amount = $this->total;
+        $this->amount = round_250($this->total);
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
-        $this->final_total = $this->total;
+        $this->final_total = round_250($this->total);
         // النهائي دولار
         $this->dollar_final_total = $this->total_dollar;
         // task : الباقي دينار
-        $this->dinar_remaining = ($this->amount - $this->final_total);
+        $this->dinar_remaining = round_250($this->amount - $this->final_total);
         // task : الباقي دولار
         $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
     }
@@ -708,35 +714,101 @@ class Create extends Component
     }
     public function changeReceivedDollar()
     {
-        // Check if 'الواصل دولار' has a value and 'الواصل دينار' is equal to zero or null
-        if ($this->dollar_amount !== null && $this->dollar_amount !== 0 )
+        if ($this->dollar_amount !== null && $this->dollar_amount !== 0)
         {
-            // Calculate the remaining dollar amount
-            $this->dollar_remaining = $this->dollar_final_total - $this->dollar_amount ;
-            // Calculate the remaining dinar amount
-            // $dollar_exchange = System::getProperty('dollar_exchange');
-            // $this->dinar_remaining = $this->final_total - ($this->dollar_remaining * $dollar_exchange ) ;
+            if($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total){
+                $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = 0;
+            }else{
+                // Check if total is in dinar and both dollar and dinar amounts are 0
+                if ($this->final_total != 0 && $this->dollar_final_total == 0 && $this->amount == 0) {
+                    // Round to the nearest 250 value
+                    $rounded_final_total = round_250($this->final_total);
+                    // Convert remaining dollar to dinar
+                    $this->dinar_remaining = round_250($rounded_final_total-($this->dollar_amount * System::getProperty('dollar_exchange')));
+                }
+                // Handle the case where total is in dollar and both dollar and dinar amounts are 0
+                elseif ( $this->dollar_final_total != 0) {
+                    // Calculate remaining dollar amount directly
+                    $this->dollar_remaining = $this->dollar_final_total - $this->dollar_amount;
+                    if($this->final_total != 0){
+                        $this->dinar_remaining = round_250($this->final_total-$this->amount );
+                        if( $this->dinar_remaining < 0 &&  $this->dollar_remaining > 0){
+                            $diff_dinar = $this->amount -  $this->final_total;
+                            $this->dollar_remaining = $this->dollar_remaining - ( $diff_dinar / System::getProperty('dollar_exchange'));
+                            $this->dinar_remaining = 0;
+                       }
+                    }
+                    // else{
+                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+
+                    // }
+
+                    // // If dollar_final_total is 0, set dollar_remaining to 0
+                    // if ($this->dollar_final_total == 0) {
+                    //     $this->dollar_remaining = 0;
+                    // }
+                }
+            }
+
         }
     }
+
+
+
+
     public function changeReceivedDinar()
     {
-        // Check if 'الواصل دولار' has a value and 'الواصل دينار' is equal to zero or null
-        if ($this->amount !== null && $this->amount !== 0 )
+        if ($this->amount !== null && $this->amount !== 0)
         {
-            // Calculate the remaining dollar amount
-            $this->dinar_remaining = $this->final_total - $this->amount;
-            // // Calculate the remaining dollar amount using the exchange rate
-            // $dollar_exchange = System::getProperty('dollar_exchange');
-            // $this->dollar_remaining = $this->dollar_final_total - ($this->dinar_remaining / $dollar_exchange);
+            if($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total){
+                $diff_dinar = $this->amount -  $this->final_total;
+                $this->dollar_remaining = $this->dollar_remaining - ( $diff_dinar / System::getProperty('dollar_exchange'));
+                $this->dinar_remaining = 0;
+            }else{
+                // Check if total is in dollars and both dollar and dinar amounts are 0
+                if ($this->dollar_final_total != 0 && $this->final_total == 0 && $this->dollar_amount == 0) {
+                    // Calculate remaining dollar amount directly
+                    $this->dollar_remaining = $this->dollar_final_total - ($this->amount / System::getProperty('dollar_exchange'));
+                }
+                // Check if total is in dinars and both dollar and dinar amounts are 0
+                elseif ($this->final_total != 0 ) {
+                    // Calculate remaining dinar amount
+                    $this->dinar_remaining = round_250($this->final_total ) - $this->amount;
+
+                    if($this->dollar_final_total != 0 ){
+                        $this->dollar_remaining = $this->dollar_final_total-$this->dollar_amount ;
+                       if( $this->dollar_remaining < 0 &&  $this->dinar_remaining > 0){
+                            $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                            $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                            $this->dollar_remaining = 0;
+                       }
+
+                    }
+                    // else{
+                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+                    // }
+                    // Convert remaining dinar to dollars using the exchange rate
+                    // $this->dollar_remaining = $this->dinar_remaining * System::getProperty('dollar_exchange');
+                }
+            }
         }
     }
+
+
+
+
+
     // calculate final_total : "النهائي دينار"
     public function changeTotal()
     {
         // "النهائي دينار"
-        $this->final_total = $this->total - $this->discount;
+        $this->final_total = round_250($this->total - $this->discount);
         // Task : dollar_remaining : الباقي دينار
-        $this->dinar_remaining = ($this->amount - $this->final_total);
+        $this->dinar_remaining = round_250($this->amount - $this->final_total);
     }
 
     public function ShowDollarCol(){
@@ -808,7 +880,7 @@ class Create extends Component
         $unit = Variation::where('id',$variation_id)->first();
         $qty_difference = 0;
         $qtyByUnit = 1 ;
-        if(!empty($stock) && !empty($stock->variation_id)){
+        if(!empty($stock) && !empty($stock->variation_id && !empty($unit))){
             $stock_variation = Variation::find($stock->variation_id);
             if($stock_variation->unit_id == $unit->unit_id){
                 $qty_difference = $new_quantity;
@@ -1156,50 +1228,104 @@ class Create extends Component
         ];
     }
     public function changeUnit($key){
-        $variation_id=$this->items[$key]['unit_id'];
-        $stock_line=AddStockLine::where('variation_id',$variation_id)->first();
-        $this->items[$key]['price']=number_format($stock_line->sell_price??0,2);
-        $this->items[$key]['dollar_price']=number_format($stock_line->dollar_sell_price??0,2);
-        $this->items[$key]['sub_total']=number_format($stock_line->sell_price*$this->items[$key]['quantity'],2);
-        $this->items[$key]['dollar_sub_total']=number_format($stock_line->dollar_sell_price*$this->items[$key]['quantity'],2);
-        $this->items[$key]['discount_categories'] =$stock_line->prices()->get();
-        $this->items[$key]['discount'] =0;
-        $this->items[$key]['extra_quantity'] =0;
-        $qty=$this->items[$key]['quantity_available'];
-        $variations=Variation::where('product_id',$this->items[$key]['product']['id'])->get();
-        $product_store=ProductStore::where('product_id',$this->items[$key]['product']['id'])->where('store_id',$this->store_id)->first();
-        $amount=1;
-        // dd(Variation::find($variation_id)->unit_id , $product_store->variations->unit_id);
-        $var_id=Variation::find($variation_id)->unit_id;
-        if($var_id == $product_store->variations->unit_id){
-            $this->items[$key]['quantity_available']= $product_store->quantity_available;
-        }else if($var_id == $product_store->variations->basic_unit_id){
-        // dd($product_store->variations->base_unit_id);
-
-            $this->items[$key]['quantity_available']=$product_store->quantity_available * $product_store->variations->equal;
-        }else{
-            foreach($variations as $variation){
-                if($variation->unit_id == $var_id){
-                    $amount *=$variation->equal;
-                    $basic_unit=$variation->basic_unit_id;
-                    foreach($variations as $var){
-                        if($basic_unit ==$var->unit_id){
-                            $amount *=$var->equal;
-                            $basic_unit=$var->basic_unit_id;
-                            if($product_store->variations->unit_id != $var->basic_unit_id){
-                                break;
+//        dd($this->items[$key]['unit_id']);
+        if(!empty($this->items[$key]['unit_id'])){
+            $variation_id=$this->items[$key]['unit_id'];
+            $stock_line=AddStockLine::where('variation_id',$variation_id)->first();
+            if(empty($stock_line->sell_price) && empty($stock_line->dollar_sell_price)){
+//            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
+                $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);
+                $product_variations = Variation::where('product_id',$this->items[$key]['product']['id'])->get();
+                $unit = Variation::where('id',$variation_id)->first();
+                $qtyByUnit = $this->getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id);
+                $this->items[$key]['price']=number_format($this->items[$key]['current_stock']['sell_price'] * $qtyByUnit ??0,2);
+                $this->items[$key]['dollar_price']=number_format($this->items[$key]['current_stock']['dollar_sell_price'] * $qtyByUnit ??0,2);
+            }
+            else{
+                $this->items[$key]['price']=number_format($stock_line->sell_price??0,2);
+                $this->items[$key]['dollar_price']=number_format($stock_line->dollar_sell_price??0,2);
+                $this->items[$key]['current_stock'] = $stock_line;
+                $this->items[$key]['discount_categories'] = $stock_line->prices()->get();
+            }
+            $this->items[$key]['sub_total']=number_format( $this->num_uf($this->items[$key]['price']) *$this->items[$key]['quantity'],2);
+            $this->items[$key]['dollar_sub_total']=number_format($this->items[$key]['dollar_price']*$this->items[$key]['quantity'],2);
+            $this->items[$key]['discount'] =0;
+            $this->items[$key]['extra_quantity'] =0;
+            $qty=$this->items[$key]['quantity_available'];
+            $variations=Variation::where('product_id',$this->items[$key]['product']['id'])->get();
+            $product_store=ProductStore::where('product_id',$this->items[$key]['product']['id'])->where('store_id',$this->store_id)->first();
+            $amount=1;
+            $var_id=Variation::find($variation_id)->unit_id;
+            if(!empty($product_store->variations)){
+                if($var_id == $product_store->variations->unit_id){
+                    $this->items[$key]['quantity_available']= $product_store->quantity_available;
+                }
+                else if($var_id == $product_store->variations->basic_unit_id){
+                    // dd($product_store->variations->base_unit_id);
+                    $this->items[$key]['quantity_available']=$product_store->quantity_available * $product_store->variations->equal;
+                }
+                else{
+                    foreach($variations as $variation){
+                        if($variation->unit_id == $var_id){
+                            $amount *=$variation->equal;
+                            $basic_unit=$variation->basic_unit_id;
+                            foreach($variations as $var){
+                                if($basic_unit == $var->unit_id){
+                                    $amount *=$var->equal;
+                                    $basic_unit=$var->basic_unit_id;
+                                    if($product_store->variations->unit_id != $var->basic_unit_id){
+                                        break;
+                                    }
+                                }
                             }
+                            $this->items[$key]['quantity_available']= $product_store->quantity_available * $amount;
+                            break;
                         }
                     }
-                    $this->items[$key]['quantity_available']= $product_store->quantity_available * $amount;
-                    break;
+                }
+            }
+            else{
+                $this->items[$key]['quantity_available'] = $qty ;
+            }
+        }
+    }
+
+
+    public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id){
+        $qtyByUnit = 1 ;
+        if($stock_variation->basic_unit_id == $unit->unit_id){
+            $qtyByUnit = 1 / $stock_variation->equal;
+        }
+        elseif ($stock_variation->basic_unit_id == $unit->basic_unit_id){
+            $qtyByUnit = $unit->equal / $stock_variation->equal;
+        }
+        else{
+            foreach ($product_variations as $key => $product_variation){
+                if (!empty($product_variations[$key+1])) {
+                    if ($stock_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                        if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
+                            $qtyByUnit = $stock_variation->equal * $product_variations[$key + 1]->equal;
+                            break;
+                        } else {
+                            $qtyByUnit = $product_variation->equal;
+                        }
+                    }
+                    else{
+                        if ($product_variation->basic_unit_id == $product_variations[$key+1]->unit_id){
+                            $qtyByUnit *= $product_variation->equal;
+                        }
+                    }
+                }
+                else{
+                    if ($product_variation->basic_unit_id == $variation_id){
+                        $qtyByUnit *= $product_variation->equal;
+                        break;
+                    }
                 }
             }
         }
-        // $this->items[$key]['quantity_available'] =44;
-
+    return $qtyByUnit;
     }
-
     public function create_purchase_order($id)
     {
         $stock = AddStockLine::where('product_id',$id)->latest()->first();
