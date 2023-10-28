@@ -381,7 +381,6 @@ class Create extends Component
     }
     public function store()
     {
-        dd($this->rows);
         //for variation valid sku
         if ($this->item[0]['isExist'] == 1) {
             $product = Product::find($this->item[0]['id']);
