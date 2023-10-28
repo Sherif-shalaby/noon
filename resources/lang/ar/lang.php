@@ -575,6 +575,7 @@ return array(
     'add_branch' => 'اضافه فرع',
     'branch_name' => 'اسم الفرع',
     'branch' => 'الفرع',
+    'add_new_unit'=>'اضافة وحدة جديدة',
 
 );
 

@@ -68,8 +68,9 @@
                                 <div class="col-md-2">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')],$purchase_type ,
-                                    ['class' => 'form-control select2', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),
+                                    ['class' => 'form-control', 'required', 'placeholder' => __('lang.please_select'),
                                      'data-name' => 'purchase_type', 'wire:model' => 'purchase_type']) !!}
+
                                     @error('purchase_type')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -499,7 +500,7 @@
     });
 
     $(document).ready(function() {
-        $('select').on('change', function(e) {
+        $('.select2').on('change', function(e) {
 
             var name = $(this).data('name');
             var index = $(this).data('index');
