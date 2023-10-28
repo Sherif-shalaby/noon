@@ -86,7 +86,42 @@
                                     <td>
                                         <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
                                     </td>
-                                    <td>{{$product->product_stores->sum('quantity_available')}}</td>
+                                    <td>@foreach($product->product_stores as $store)
+                                            @php 
+                                            $unit=!empty($store->variations)?$store->variations:[];
+                                            $amount=0;
+                                            @endphp
+                                        @endforeach
+                                
+                                    @foreach($product->variations as $variation)
+                                        @if($unit->unit_id == $variation->unit_id)
+                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available')}}<br>
+                                        @elseif($unit->basic_unit_id == $variation->unit_id)
+                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available') * $variation->equal}}<br>
+                                        @else
+                                            {{-- @foreach($product->variations as $v_unit)
+                                                @if($v_unit->unit_id == $var_id)
+                                                    @php
+                                                    $amount *=$v_unit->equal;
+                                                    $basic_unit=$v_unit->basic_unit_id;
+                                                    foreach($variations as $var){
+                                                        if($basic_unit ==$var->unit_id){
+                                                            $amount *=$var->equal;
+                                                            $basic_unit=$var->basic_unit_id;
+                                                            if($product_store->variations->unit_id != $var->basic_unit_id){
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    echo $quantity_available= $product_store->quantity_available * $amount;
+                                                    break;
+                                                    @endphp
+                                                @endif --}}
+                                            @endforeach
+                                        @endif
+                                         
+                                    @endforeach
+                                    </td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
                                         {{$product->subCategory1->name??''}} <br>

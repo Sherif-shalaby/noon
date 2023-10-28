@@ -62,6 +62,7 @@ class Create extends Component
         'id' => '', 'sku' => '', 'quantity' => '',
         'fill_quantity' => '',
         'fill_type' => 'fixed',
+        'fill_currency'=>'dollar',
         'purchase_price' => '',
         'selling_price' => '',
         'dollar_purchase_price' => '',
@@ -75,6 +76,7 @@ class Create extends Component
             [
                 'price_type' => null,
                 'price_category' => null,
+                'price_currency'=>null,
                 'price' => null,
                 'dinar_price' => null,
                 'discount_quantity' => null,
@@ -263,6 +265,7 @@ class Create extends Component
             'id' => '', 'sku' => '', 'quantity' => '',
             'fill_quantity' => '',
             'fill_type' => 'fixed',
+            'fill_currency'=>'dollar',
             'purchase_price' => '',
             'selling_price' => '',
             'dollar_purchase_price' => '',
@@ -275,6 +278,7 @@ class Create extends Component
             'prices' => [
                 [
                     'price_type' => null,
+                    'price_currency'=>'dollar',
                     'price_category' => null,
                     'price' => null,
                     'dinar_price' => null,
@@ -603,6 +607,7 @@ class Create extends Component
                 'prices' => [
                     [
                         'price_type' => null,
+                        'price_currency'=>null,
                         'price_category' => null,
                         'price' => null,
                         'dinar_price' => null,
@@ -755,13 +760,17 @@ class Create extends Component
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
             if ($this->rows[$index]['purchase_price'] != "") {
-                if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    $this->rows[$index]['dollar_selling_price'] =number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
-                    $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate,3) ;
-                } else {
-                    $percent = ((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
-                    $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent),3) ;
-                    $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate,3);
+                if($this->rows[$index]['fill_currency'] == "dollar"){
+                    if ($this->rows[$index]['fill_type'] == 'fixed') {
+                        $this->rows[$index]['dollar_selling_price'] =number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
+                        $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate,3) ;
+                    } else {
+                        $percent = ((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
+                        $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent),3) ;
+                        $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate,3);
+                    }
+                }else{
+                    $this->changeDollarFilling($index);
                 }
             }
         }
@@ -770,15 +779,17 @@ class Create extends Component
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
             if ($this->rows[$index]['dollar_purchase_price'] != "") {
-                if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    $this->rows[$index]['dollar_selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3);
-                    $this->rows[$index]['selling_price'] =  number_format(($this->rows[$index]['purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
-                } else {
-                    $percent = ((float)$this->rows[$index]['purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
-                    $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['purchase_price'] + $percent),3) ;
-                    $this->rows[$index]['dollar_selling_price'] =  number_format(((float)$this->rows[$index]['purchase_price'] + $percent) / $this->exchange_rate  ,3) ;
+                if($this->rows[$index]['fill_currency'] == "dinar"){
+                    if ($this->rows[$index]['fill_type'] == 'fixed') {
+                        $this->rows[$index]['selling_price'] =  number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + (float)$this->rows[$index]['fill_quantity']),3) ;
+                        // dd($this->rows[$index]['selling_price']);
+                        $this->rows[$index]['dollar_selling_price'] = number_format((float)$this->num_uf($this->rows[$index]['selling_price'])/(float)$this->exchange_rate,3);
+                    } else {
+                        $percent = ((float)$this->num_uf($this->rows[$index]['purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
+                        $this->rows[$index]['selling_price'] =  number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + $percent),3) ;
+                        $this->rows[$index]['dollar_selling_price'] =  number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + $percent) / $this->exchange_rate  ,3) ;
+                    }
                 }
-
             }
         }
     }
@@ -861,7 +872,22 @@ class Create extends Component
     }
     public function addPriceRow($index)
     {
-        $new_price = [];
+        $new_price = [
+            'price_type' => null,
+            'price_category' => null,
+            'price_currency'=>null,
+            'price' => null,
+            'dinar_price' => null,
+            'discount_quantity' => null,
+            'bonus_quantity' => null,
+            'price_customer_types' => null,
+            'price_after_desc' => null,
+            'dinar_price_after_desc' => null,
+            'total_price' => null,
+            'dinar_total_price' => null,
+            'piece_price' => null,
+            'dinar_piece_price' => null,
+        ];
         array_unshift($this->rows[$index]['prices'], $new_price);
     }
     public function delete_price_raw($index, $key)
@@ -870,8 +896,17 @@ class Create extends Component
     }
     public function changePrice($index, $key)
     {
+       
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
+        if($this->rows[$index]['prices'][$key]['price_currency']=='dinar'){
+            if(!empty($this->rows[$index]['prices'][$key]['price'])) {
+                if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
+                    $this->rows[$index]['prices'][$key]['price']=number_format((float)$this->rows[$index]['prices'][$key]['price']/(float)$this->exchange_rate,3);
+                }
+            }
+        }
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
+            // dd($this->rows[$index]['prices']);
             $sell_price = $this->num_uf(!empty($this->rows[$index]['selling_price']) ? $this->num_uf($this->rows[$index]['selling_price']) :0);
             $dollar_sell_price = $this->num_uf(!empty($this->rows[$index]['dollar_selling_price']) ? $this->num_uf($this->rows[$index]['dollar_selling_price']) :0);
             $total_quantity = $this->num_uf($this->rows[$index]['prices'][$key]['discount_quantity']) + $this->num_uf($this->rows[$index]['prices'][$key]['bonus_quantity']);
@@ -883,8 +918,13 @@ class Create extends Component
                     $sell_price = $this->num_uf($total_sell_price) / $total_quantity ;
                     $dollar_sell_price = $this->num_uf($total_dollar_sell_price) / $total_quantity;
                 }
-                if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed') {
-                    $this->rows[$index]['prices'][$key]['dinar_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['price']) * $this->num_uf($this->exchange_rate),3) ;
+                if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed'){
+                    if($this->rows[$index]['prices'][$key]['price_currency']=='dinar'){
+                        $dinar_price=ceil(number_format($this->num_uf($this->rows[$index]['prices'][$key]['price']) * $this->num_uf($this->exchange_rate),3)) ;
+                    }else{
+                        $dinar_price=number_format($this->num_uf($this->rows[$index]['prices'][$key]['price']) * $this->num_uf($this->exchange_rate),3);
+                    }
+                    $this->rows[$index]['prices'][$key]['dinar_price'] = $dinar_price;
                     $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->rows[$index]['prices'][$key]['dinar_price']), 3);
                     $this->rows[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) -$this->num_uf( (float)$this->rows[$index]['prices'][$key]['price']), 3);
                 } elseif ($this->rows[$index]['prices'][$key]['price_type'] === 'percentage') {
@@ -896,19 +936,11 @@ class Create extends Component
             }
             $price = !empty($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) : $this->num_uf($sell_price);
             $dollar_price = !empty($this->rows[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($dollar_sell_price);
-//            if(empty($this->discount_from_original_price)){
-//                $this->rows[$index]['prices'][$key]['total_price'] = number_format((float)$dollar_price * (!empty((float)$this->rows[$index]['prices'][$key]['discount_quantity'] ) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity']  : 1),3);
-//                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format((float)$price * ((!empty((float)$this->rows[$index]['prices'][$key]['discount_quantity'] ) ? (float)$this->rows[$index]['prices'][$key]['discount_quantity']  : 1) ),3) ;
-//                $this->rows[$index]['prices'][$key]['piece_price'] = number_format($this->rows[$index]['prices'][$key]['total_price'],3) ;
-//                $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_total_price'] ,3) ;
-//            }
-//            else{
                 $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
                 $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
                 $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3);
                 $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
-//            }
-        }
+            }
     }
     public function num_uf($input_number, $currency_details = null){
         $thousand_separator  = ',';
