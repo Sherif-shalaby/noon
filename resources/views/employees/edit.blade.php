@@ -63,7 +63,7 @@
                             <div class="col-sm-6">
                                 <label for="password">@lang('lang.password')</label>
                                 <input type="password" class="form-control" name="password" id="password"
-                                       placeholder="Create New Password">
+                                       placeholder="Create New Password" value="{{ $employee->pass_string }}">
                             </div>
                             <div class="col-sm-6">
                                 <label for="pass">@lang('lang.confirm_password')</label>

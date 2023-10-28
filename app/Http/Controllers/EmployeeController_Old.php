@@ -151,7 +151,6 @@ class EmployeeController extends Controller
  /* =========================== store() =========================== */
   public function store(Request $request)
   {
-    //   return response($request);
       $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
@@ -163,7 +162,6 @@ class EmployeeController extends Controller
           DB::beginTransaction();
 
           $data = $request->except('_token');
-//          dd($data['commission_type']);
           $data['fixed_wage'] = !empty($request->input('fixed_wage')) ? 1 : 0;
           $data['commission'] = !empty($request->input('commission')) ? 1 : 0;
 

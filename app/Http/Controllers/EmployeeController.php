@@ -152,7 +152,7 @@ class EmployeeController extends Controller
   /* =========================== store() =========================== */
   public function store(Request $request)
   {
-      return response($request);
+    //   return response($request);
       $request->validate([
           'email' => 'required|email|unique:users|max:255',
           'name' => 'required|max:255',
@@ -164,7 +164,6 @@ class EmployeeController extends Controller
           DB::beginTransaction();
 
           $data = $request->except('_token');
-//          dd($data['commission_type']);
           $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
           $data['commission'] = !empty($data['commission']) ? 1 : 0;
 
@@ -225,35 +224,38 @@ class EmployeeController extends Controller
         }
         // +++++++++++++++ End : Notification ++++++++++++++++++++++
         // insert "employee_id" and "product_id" of employee's product into "employee_product" table
-        for($i = 0; $i < count($data['ids']); $i++)
+        if(isset($data['ids']))
         {
-            $product = Product::find($data['ids'][$i]);
-            if($product) {
-                // Assuming $employee is already defined or fetched from somewhere
-                $employee->products()->attach($product->id);
+            for($i = 0; $i < count($data['ids']); $i++)
+            {
+                $product = Product::find($data['ids'][$i]);
+                if($product) {
+                    // Assuming $employee is already defined or fetched from somewhere
+                    $employee->products()->attach($product->id);
+                }
             }
         }
-        $employee->stores()->sync($data['store_id']);
+        // $employee->stores()->sync($data['store_id']);
           //add of update number of leaves
           $this->createOrUpdateNumberofLeaves($request, $employee->id);
-          //assign permissions to employee
-          if (!empty($data['permissions'])) {
-              foreach ($data['permissions'] as $key => $value) {
-                  $permissions[] = $key;
-              }
+        //assign permissions to employee
+        if (!empty($data['permissions'])) {
+            foreach ($data['permissions'] as $key => $value) {
+                $permissions[] = $key;
+            }
 
-              if (!empty($permissions)) {
-                  $user->syncPermissions($permissions);
-              }
-          }
-          DB::commit();
+            if (!empty($permissions)) {
+                $user->syncPermissions($permissions);
+            }
+        }
+        DB::commit();
 
-          $output = [
-              'success' => true,
-              'msg' => __('lang.employee_added')
-          ];
+        $output = [
+            'success' => true,
+            'msg' => __('lang.employee_added')
+        ];
 
-          return redirect()->route('employees.index')->with('status', $output);
+        return redirect()->route('employees.index')->with('status', $output);
       }
       catch (\Exception $e) {
           dd($e);
@@ -288,51 +290,42 @@ class EmployeeController extends Controller
               compact('employee','week_days','modulePermissionArray','subModulePermissionArray')
           );
   }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return Application|Factory|View
-   */
+  /* ++++++++++++++++++++++++ edit() ++++++++++++++++++++++++ */
   public function edit($id)
   {
-      $jobs = JobType::pluck('title', 'id')->toArray();
-      $customer_types = CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-      $cashiers = Employee::getDropdownByJobType('Cashier');
-      $week_days = Employee::getWeekDays();
-      $payment_cycle = Employee::paymentCycle();
-      $commission_type = Employee::commissionType();
-      $commission_calculation_period = Employee::commissionCalculationPeriod();
-      $modulePermissionArray = User::modulePermissionArray();
-//      dd()
-      $subModulePermissionArray = User::subModulePermissionArray();
-      $employee = Employee::find($id);
-      $user = User::find($employee->user_id);
-      $stores = Store::pluck('name', 'id')->toArray();
-      $branches = Branch::pluck('name', 'id')->toArray();
-      $selected_stores = $employee->stores->pluck('id');
-      $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
-
-      return view('employees.edit')->with(compact(
-          'jobs',
-          'employee',
-          'stores',
-          'stores',
-          'customer_types',
-          'cashiers',
-          'week_days',
-          'payment_cycle',
-          'commission_type',
-          'products',
-          'commission_calculation_period',
-          'modulePermissionArray',
-          'subModulePermissionArray',
-          'user',
-          'selected_stores',
-          'branches'
-      ));
-
+    $jobs = JobType::pluck('title', 'id')->toArray();
+    $customer_types = CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+    $cashiers = Employee::getDropdownByJobType('Cashier');
+    $week_days = Employee::getWeekDays();
+    $payment_cycle = Employee::paymentCycle();
+    $commission_type = Employee::commissionType();
+    $commission_calculation_period = Employee::commissionCalculationPeriod();
+    $modulePermissionArray = User::modulePermissionArray();
+    $subModulePermissionArray = User::subModulePermissionArray();
+    $employee = Employee::find($id);
+    $user = User::find($employee->user_id);
+    $stores = Store::pluck('name', 'id')->toArray();
+    $branches = Branch::pluck('name', 'id')->toArray();
+    $selected_stores = $employee->stores->pluck('id');
+    $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
+    return view('employees.edit')->with(compact(
+        'jobs',
+        'employee',
+        'stores',
+        'stores',
+        'customer_types',
+        'cashiers',
+        'week_days',
+        'payment_cycle',
+        'commission_type',
+        'products',
+        'commission_calculation_period',
+        'modulePermissionArray',
+        'subModulePermissionArray',
+        'user',
+        'selected_stores',
+        'branches'
+    ));
   }
 
   /**
