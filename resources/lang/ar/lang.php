@@ -576,6 +576,6 @@ return array(
     'branch_name' => 'اسم الفرع',
     'branch' => 'الفرع',
     'add_new_unit'=>'اضافة وحدة جديدة',
-
+    'basic_unit_for_import_product'=>'الوحدة الاساسية لاستيراد المنتج',
 );
 

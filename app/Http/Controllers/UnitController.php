@@ -113,4 +113,11 @@ class UnitController extends Controller
     public function getUnitData($id){
         return Unit::Find($id);
     }
+    public function getUnitsDropdown(Request $request){
+        // return $request->all();
+        $dataArray = json_decode($request->selectBoxValues, true);
+        $units = Unit::whereIn('id',$dataArray)->orderBy('name', 'asc')->pluck('name', 'id');
+        $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
+        return $units_dp;
+    }
 }
