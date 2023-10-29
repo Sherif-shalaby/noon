@@ -8,8 +8,11 @@
                 {{ $index + 1 }}
             </div>
         </div>
-        <div class="col-md-6">
-
+        <div class="col-md-6 d-flex justify-content-end ">
+            <button class="btn btn btn-primary"
+                wire:click="add_product({{ $product['product']['id'] }},null,{{ $index }},1)" type="button">
+                <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
+            </button>
         </div>
     </div>
 
@@ -382,7 +385,6 @@
     font-size: 10px;">@lang('lang.action')</span> --}}
             <div class="btn btn-sm btn-danger py-0 px-1" wire:click="delete_product({{ $index }})">
                 <i class="fa fa-trash"></i>
-
             </div>
         </div>
     </div>

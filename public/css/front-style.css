@@ -251,9 +251,17 @@ select.form-control {
     width: 110px;
 }
 
+.double-table-width {
+    width: 220px;
+}
+
 @media (min-width:992px) {
     .table-width {
         width: 140px;
+    }
+
+    .double-table-width {
+        width: 290px;
     }
 }
 

@@ -1,9 +1,17 @@
-<div class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+<div class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif position-relative"
     style="background-color: rgba(214, 214, 214, 0.439);">
+
+
+    <div class="btn btn-sm btn-danger py-2 px-1 position-absolute" style="width: fit-content;bottom:40%;left: 2%;"
+        wire:click="delete_product({{ $index }})">
+        <i class="fa fa-trash"></i>
+    </div>
+
 
     <div class="col-md-1 d-inline-flex justify-content-center align-items-center text-white"
         style="width: 30px;height: 30px; border-radius: 50%;background-color: #596fd7">
         {{ $index + 1 }}
+
     </div>
     {{--  --}}
     <div
@@ -94,7 +102,7 @@
         </div>
 
         <div style="animation-delay: 2.6s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
+            class="animate__animated animate__fadeInLeft double-table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-weight: 700;
                 font-size: 11px;" class="mb-2">@lang('lang.to_get_sell_price')</span>
             <div class="d-flex justify-content-between align-items-center" style="width: 95%;">
@@ -108,18 +116,19 @@
                     <option selected value="fixed">@lang('lang.fixed')</option>
                     <option value="percent">%</option>
                 </select>
+                <select class="custom-select "
+                    style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['fill_type'] !== 'fixed' ? 'display:none;' : '' }}"
+                    wire:model="rows.{{ $index }}.fill_currency"
+                    wire:change="changeFilling({{ $index }})">
+                    <option selected value="dollar">Dollar</option>
+                    <option value="dinar">Dinar</option>
+                </select>
 
 
             </div>
         </div>
 
-        <div style="animation-delay: 2.7s;font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
-            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
-            <div class="btn btn-sm btn-danger py-2 px-1 " style="width: 50%;"
-                wire:click="delete_product({{ $index }})">
-                <i class="fa fa-trash"></i>
-            </div>
-        </div>
+
 
         <div style="animation-delay: 2.8s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
             class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
@@ -318,15 +327,21 @@
                                     'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
                                 ],
                             ) !!}
+                            <select class="custom-select "
+                                style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['prices'][$key]['price_type'] !== 'fixed' ? 'display:none;' : '' }}"
+                                wire:model="rows.{{ $index }}.prices.{{ $key }}.price_currency">
+                                <option selected value="dollar">Dollar</option>
+                                <option value="dinar">Dinar</option>
+                            </select>
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input"
-                                    name="discount_from_original_price" id="discount_from_original_price"
-                                    style="font-size: 0.75rem;border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;"
-                                    @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                    name="discount_from_original_price"
+                                    id="discount_from_original_price{{ $key }}" style="font-size: 0.75rem"
+                                    @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
                                     wire:change="changePrice({{ $index }}, {{ $key }})">
                                 <label class="custom-control-label" id="custom-control-label" style="font-size: 8px"
-                                    for="discount_from_original_price">
-                                    @lang('lang.discount_from_original_price_with_free_quantity')
+                                    for="discount_from_original_price{{ $key }}">
+                                    {{-- @lang('lang.discount_from_original_price') --}}
                                 </label>
                             </div>
                             @error('rows.' . $index . '.prices.' . $key . '.price_type')
@@ -338,13 +353,11 @@
                             style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label(
                                 'price',
-                                isset($price['price_type']) && $price['price_type'] == 'fixed'
-                                    ? __('lang.amount') . ' $'
-                                    : __('lang.percent') . ' $',
+                                isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
                                 ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2'],
                             ) !!}
                             <input type="text" name="price" class="form-control price"
-                                wire:model="rows.{{ $index }}.prices.{{ $key }}.price"
+                                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price"
                                 wire:change="changePrice({{ $index }}, {{ $key }})"
                                 placeholder="{{ __('lang.percent') }}"
                                 style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
@@ -362,7 +375,7 @@
                             style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                             {!! Form::label('', __('lang.price'), ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2']) !!}
                             <input type="text" name="" class="form-control price"
-                                wire:model="rows.{{ $index }}.prices.{{ $key }}.price_after_desc"
+                                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price_after_desc"
                                 placeholder="{{ __('lang.price') }}"
                                 style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
                             <p class="mb-0 d-flex flex-column">
@@ -370,7 +383,7 @@
                                     {{ __('lang.price') }}
                                 </span>
                                 <span>
-                                    {{ $this->rows[$index]['prices'][$key]['dinar_price_after_desc'] ?? '' }}
+                                    {{ $this->rows[$index]['prices'][$key]['price_after_desc'] ?? '' }}
                                 </span>
                             </p>
                         </div>
@@ -382,15 +395,15 @@
                                 'class' => 'pt-2',
                             ]) !!}
                             <input type="text" name="total_price" class="form-control total_price"
-                                wire:model="rows.{{ $index }}.prices.{{ $key }}.total_price"
+                                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_total_price"
                                 placeholder = "{{ __('lang.total_price') }}"
                                 style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
                             <p class="mb-0 d-flex flex-column">
                                 <span>
-                                    {{ __('lang.total_price') }}
+                                    {{ __('lang.total_price') . ' $' }}
                                 </span>
                                 <span>
-                                    {{ $this->rows[$index]['prices'][$key]['dinar_total_price'] ?? '' }}
+                                    {{ $this->rows[$index]['prices'][$key]['total_price'] ?? '' }}
                                 </span>
                             </p>
                         </div>
@@ -402,15 +415,15 @@
                                 'class' => 'pt-2',
                             ]) !!}
                             <input type="text" name="piece_price" class="form-control piece_price"
-                                wire:model="rows.{{ $index }}.prices.{{ $key }}.piece_price"
+                                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_piece_price"
                                 placeholder = "{{ __('lang.total_price') }}"
                                 style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
                             <p class="mb-0 d-flex flex-column">
                                 <span>
-                                    {{ __('lang.piece_price') }}
+                                    {{ __('lang.piece_price') . ' $' }}
                                 </span>
                                 <span>
-                                    {{ $this->rows[$index]['prices'][$key]['dinar_piece_price'] ?? '' }}
+                                    {{ $this->rows[$index]['prices'][$key]['piece_price'] ?? '' }}
                                 </span>
                             </p>
                         </div>
@@ -462,14 +475,16 @@
 </div>
 
 <script>
-    const checkbox = document.getElementById('discount_from_original_price');
+    const checkbox = document.getElementsByClassName('custom-control-input')[0];
     const label = document.getElementById('custom-control-label');
 
     checkbox.addEventListener('change', function() {
-        if (checkbox.checked) {
-            label.textContent = "@lang('lang.discount_from_original_price')";
+        if (!checkbox.checked) {
+            label.innerHTML = "";
+            label.innerHTML = "@lang('lang.discount_from_original_price_with_free_quantity')";
         } else {
-            label.textContent = "@lang('lang.discount_from_original_price_with_free_quantity')";
+            label.innerHTML = "";
+            label.innerHTML = "@lang('lang.discount_from_original_price')";
         }
     });
 </script>

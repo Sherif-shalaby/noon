@@ -43,7 +43,7 @@
                                     {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    font-weight: 500;',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -120,8 +120,7 @@
                                     <div class="input-wrapper">
 
                                         {!! Form::select('purchase_type', ['import' => __('lang.import'), 'local' => __('lang.local')], $purchase_type, [
-                                            'class' => 'form-control select2',
-                                            'data-live-search' => 'true',
+                                            'class' => 'form-control ',
                                             'required',
                                             'placeholder' => __('lang.please_select'),
                                             'data-name' => 'purchase_type',
@@ -707,8 +706,7 @@
         });
 
         $(document).ready(function() {
-            $('select').on('change', function(e) {
-
+            $('.select2').on('change', function(e) {
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)

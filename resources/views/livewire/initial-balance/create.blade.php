@@ -359,7 +359,7 @@
                                                     class="col-md-6  mb-2 mb-lg-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <label for="method"
                                                         class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
-                                                        style="width: 25%">{{ __('lang.tax_method') . '*' }}</label>
+                                                        style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.tax_method') . '*' }}</label>
                                                     <div
                                                         style="background-color: #dedede; border: none;
                                                                 border-radius: 16px;
@@ -386,7 +386,7 @@
                                                     class="col-md-6 d-flex mb-2 mb-lg-1 justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <label for="product"
                                                         class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
-                                                        style="width: 25%">{{ __('lang.product_tax') . '*' }}</label>
+                                                        style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.product_tax') . '*' }}</label>
                                                     <div class="d-flex justify-content-center align-items-center"
                                                         style="background-color: #dedede; border: none;
                                                                 border-radius: 16px;
@@ -467,6 +467,7 @@
                                                     class="col-md-3 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('weight', __('lang.weight'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
                                                     ]) !!}
                                                     <input type="text" wire:model='item.0.weight'
                                                         wire:change='changeSize()'
@@ -483,6 +484,7 @@
                                                     class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('height', __('lang.height'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
                                                     ]) !!}
                                                     <input type="text" wire:model='item.0.height'
                                                         wire:change='changeSize()'
@@ -497,6 +499,7 @@
                                                     class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('length', __('lang.length'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
                                                     ]) !!}
                                                     <input type="text" wire:model='item.0.length'
                                                         wire:change='changeSize()'
@@ -511,6 +514,7 @@
                                                     class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('width', __('lang.width'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
                                                     ]) !!}
                                                     <input type="text" wire:model='item.0.width'
                                                         wire:change='changeSize()'
@@ -525,6 +529,7 @@
                                                     class="col-md-2 d-flex align-items-center justify-content-start mb-2 mb-lg-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     {!! Form::label('size', __('lang.size'), [
                                                         'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 h5' : 'mx-2 mb-0 h5',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
                                                     ]) !!}
                                                     <input type="text" wire:model='item.0.size'
                                                         wire:change='changeSize()'
