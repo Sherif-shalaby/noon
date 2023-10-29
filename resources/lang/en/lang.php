@@ -557,6 +557,7 @@ return [
     'branch_name' => 'Branch Name',
     'branch' => 'Branch',
     'add_new_unit'=>'Add New Unit',
+    'basic_unit_for_import_product'=>'Basic Unit For Import Product',
 ];
 
 

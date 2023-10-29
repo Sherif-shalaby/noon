@@ -68,6 +68,7 @@
                                     <th>@lang('lang.size')</th>
                                     {{-- <th>@lang('lang.unit')</th> --}}
                                     <th>@lang('lang.weight')</th>
+                                    <th>{{__('lang.basic_unit_for_import_product')}}</th>
                                     <th>@lang('lang.stores')</th>
                                     <th>@lang('lang.brand')</th>
 {{--                                    <th>@lang('lang.discount')</th>--}}
@@ -94,7 +95,7 @@
                                         @endforeach
                                 
                                     @foreach($product->variations as $variation)
-                                        @if($unit->unit_id == $variation->unit_id)
+                                        @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
                                             {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available')}}<br>
                                         {{-- @elseif($unit->basic_unit_id == $variation->unit_id)
                                             {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available') * $variation->equal}}<br> --}}
@@ -129,12 +130,17 @@
                                         {{$product->subCategory2->name??''}} <br>
                                         {{$product->subCategory3->name??''}}
                                     </td>
-                                    <td>{{$product->height}}</td>
-                                    <td>{{$product->length}}</td>
-                                    <td>{{$product->width}}</td>
-                                    <td><span class="text-primary">{{$product->size}}</span></td>
+                                    <td>{{$product->product_dimensions->height??0}}</td>
+                                    <td>{{$product->product_dimensions->length??0}}</td>
+                                    <td>{{$product->product_dimensions->width??0}}</td>
+                                    <td><span class="text-primary">{{$product->product_dimensions->size??0}}</span></td>
                                     {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
-                                    <td>{{$product->weight}}</td>
+                                    <td>{{$product->product_dimensions->weight??0}}</td>
+                                    <td>
+                                        {{!empty($product->product_dimensions->variations)?
+                                        (!empty($product->product_dimensions->variations->unit)?$product->product_dimensions->variations->unit->name:
+                                        ''):''}}
+                                    </td>
                                     <td>
                                         @foreach($product->stores as $store)
                                         {{$store->name}}<br>

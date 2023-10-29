@@ -9,7 +9,8 @@ class ProductDimension extends Model
 {
     use HasFactory;
     protected $table = 'product_dimensions';
-
+    protected $guarded = ['id'];
+ 
     public function product()
     {
         return $this->belongsTo('Product\Product', 'product_id');

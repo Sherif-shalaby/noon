@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductDimension;
 use App\Models\ProductExpiryDamage;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;use App\Models\ProductTax;
@@ -128,11 +129,6 @@ class ProductController extends Controller
         'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-        'height' => $request->height,
-        'length' => $request->length,
-        'width' => $request->width,
-        'size' => $request->size,
-        'weight' => $request->weight,
         'details' => $request->details,
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
@@ -190,6 +186,25 @@ class ProductController extends Controller
             Variation::create($var_data);
         }
     }
+
+   
+    if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
+    || $request->size ==(''||0) && $request->weight ==(''||0)) {
+    }else{
+        $product_dimensions=[
+            'product_id'=>$product->id??null,
+            'variation_id'=>Variation::where('product_id',$product->id)->where('unit_id',$request->variation_id)->first()->id??null,
+            'height' => $request->height,
+            'length' => $request->length,
+            'width' => $request->width,
+            'size' => $request->size,
+            'weight' => $request->weight
+        ];
+        ProductDimension::create($product_dimensions);
+
+    }
+
+
 
     $index_prices=[];
     if($request->has('price_category')){
@@ -300,7 +315,10 @@ class ProductController extends Controller
       $customer_types = CustomerType::pluck('name', 'id');
       $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax','product_tax_id'));
+      $variation_units=Variation::where('product_id',$id)->pluck('unit_id');
+      $basic_units=Unit::whereIn('id',$variation_units)->pluck('name','id');
+      return view('products.edit',compact('unitArray','categories','brands'
+      ,'units','stores','quick_add','product','customer_types','product_tax','product_tax_id','basic_units'));
   }
 
   /**
@@ -312,9 +330,9 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     // return $request->all();
-       $request->validate([
-        'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
-       ]);
+    //    $request->validate([
+    //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
+    //    ]);
     try{
       $product_data = [
         'name' => $request->name,
@@ -325,11 +343,11 @@ class ProductController extends Controller
         'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-        'height' => $request->height,
-        'length' => $request->length,
-        'width' => $request->width,
-        'size' => $request->size,
-        'weight' => $request->weight,
+        // 'height' => $request->height,
+        // 'length' => $request->length,
+        // 'width' => $request->width,
+        // 'size' => $request->size,
+        // 'weight' => $request->weight,
         'details' => $request->details,
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
@@ -390,6 +408,23 @@ class ProductController extends Controller
         else{
         Variation::create($var_data);
         }
+    }
+
+
+    if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
+    || $request->size ==(''||0) && $request->weight ==(''||0)) {
+        ProductDimension::where('product_id',$product->id)->delete();
+    }else{
+        $product_dimensions=[
+            'product_id'=>$product->id??null,
+            'variation_id'=>Variation::where('product_id',$product->id)->where('unit_id',$request->variation_id)->first()->id??null,
+            'height' => $request->height,
+            'length' => $request->length,
+            'width' => $request->width,
+            'size' => $request->size,
+            'weight' => $request->weight
+        ];
+        ProductDimension::where('product_id',$product->id)->update($product_dimensions);
     }
 
     $output = [

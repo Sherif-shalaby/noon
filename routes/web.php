@@ -118,6 +118,8 @@ Route::group(['middleware' => ['auth']], function () {
     // units
     Route::get('units/get-unit-data/{id}', [UnitController::class,'getUnitData']);
     Route::get('units/get-dropdown', [UnitController::class,'getDropdown']);
+    Route::get('variations/units/get-dropdown', [UnitController::class,'getUnitsDropdown']);
+
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);

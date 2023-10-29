@@ -254,7 +254,7 @@
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
+                                {!! Form::text('height', isset($recent_product->product_dimensions->height) ? $recent_product->product_dimensions->height : 0, [
                                     'class' => 'form-control height',
                                 ]) !!}
                                 <br>
@@ -267,7 +267,7 @@
 
                             <div class="col-md-2">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
+                                {!! Form::text('length', isset($recent_product->product_dimensions->length) ? $recent_product->product_dimensions->length : 0, [
                                     'class' => 'form-control length',
                                 ]) !!}
                                 <br>
@@ -278,7 +278,7 @@
 
                             <div class="col-md-2">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
+                                {!! Form::text('width', isset($recent_product->product_dimensions->width) ? $recent_product->product_dimensions->width : 0, [
                                     'class' => 'form-control width',
                                 ]) !!}
                                 <br>
@@ -288,7 +288,7 @@
                             </div>
                             <div class="col-md-2">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
+                                {!! Form::text('size', isset($recent_product->product_dimensions->size) ? $recent_product->product_dimensions->size : 0, [
                                     'class' => 'form-control size',
                                 ]) !!}
                                 <br>
@@ -296,16 +296,23 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            
                             <div class="col-md-2">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
+                                {!! Form::text('weight', isset($recent_product->product_dimensions->weight) ? $recent_product->product_dimensions->weight : 0, [
                                     'class' => 'form-control',
                                 ]) !!}
                                 <br>
                                 @error('weight')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('variation', __('lang.basic_unit_for_import_product'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::select('variation_id', [], null, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.please_select'),
+                                    'id' => 'variation_id',
+                                ]) !!}
                             </div>
                         </div>
 

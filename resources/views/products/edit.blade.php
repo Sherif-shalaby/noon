@@ -86,7 +86,7 @@
                     <div class="col-md-1">
                         {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('product_symbol',  isset($product->product_symbol)?$product->product_symbol:null, [
-                            'class' => 'form-control','required'
+                            'class' => 'form-control'
                         ]) !!}
                         <br>
                         @error('product_symbol')
@@ -209,72 +209,7 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div> 
-                    {{-- sizes --}}
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12 pt-5 ">
-                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
-                            </div>
-                            <div class="col-md-3">
-                                {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('height', $product->height, [
-                                    'class' => 'form-control height',
-                                ]) !!}
-                                <br>
-                                @error('height')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-3">
-                                {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('length', $product->length, [
-                                    'class' => 'form-control length',
-                                ]) !!}
-                                <br>
-                                @error('length')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3">
-                                {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('width', $product->width, [
-                                    'class' => 'form-control width',
-                                ]) !!}
-                                <br>
-                                @error('width')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('size', $product->size, [
-                                    'class' => 'form-control size',
-                                ]) !!}
-                                <br>
-                                @error('size')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('weight', $product->weight, [
-                                    'class' => 'form-control',
-                                ]) !!}
-                                <br>
-                                @error('weight')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
+                  
                     <div class="col-md-12 pt-5">
                         <div class="col-md-3">
                             <button class="btn btn btn-primary add_unit_row" type="button">
@@ -306,7 +241,76 @@
                         <input type="hidden" id="raw_unit_index" value="{{ $index }}" />
                     </div>
                     {{-- sizes --}}
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12 pt-5 ">
+                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('height', isset($product->product_dimensions->height) ? $product->product_dimensions->height : 0, [
+                                    'class' => 'form-control height',
+                                ]) !!}
+                                <br>
+                                @error('height')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
+
+
+                            <div class="col-md-2">
+                                {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('length', isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0, [
+                                    'class' => 'form-control length',
+                                ]) !!}
+                                <br>
+                                @error('length')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('width', isset($product->product_dimensions->width) ? $product->product_dimensions->width : 0, [
+                                    'class' => 'form-control width',
+                                ]) !!}
+                                <br>
+                                @error('width')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('size', isset($product->product_dimensions->size) ? $product->product_dimensions->size : 0, [
+                                    'class' => 'form-control size',
+                                ]) !!}
+                                <br>
+                                @error('size')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::text('weight', isset($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0, [
+                                    'class' => 'form-control',
+                                ]) !!}
+                                <br>
+                                @error('weight')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('variation', __('lang.basic_unit_for_import_product'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::select('variation_id',$basic_units, isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.please_select'),
+                                    'id' => 'variation_id',
+                                ]) !!}
+                            </div>
+                        </div>
+
+                    </div>
                     {{-- crop image --}}
                     <div class="col-md-12 pt-5">
                         <div class="row">
