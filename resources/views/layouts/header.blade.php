@@ -126,7 +126,7 @@
     <div class="container-fluid"> --}}
 <!-- Start Horizontal Nav -->
 
-<nav class="horizontal-nav mobile-navbar fixed-navbar px-2 py-4 navbar-responsive">
+<nav class="horizontal-nav mobile-navbar fixed-navbar px-2 py-4 ">
     <div class="collapse navbar-collapse d-flex  justify-content-between" id="navbar-menu">
         <ul style="width: 100%"
             class="horizontal-menu d-flex justify-content-evenly @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

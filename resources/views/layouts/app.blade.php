@@ -199,8 +199,9 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="mobile-logobar">
-                            <a href="index.html" class="mobile-logo"><img src="{{ asset('images/logo.svg') }}"
-                                    class="img-fluid" alt="logo"></a>
+                            <a href="index.html" class="mobile-logo">
+                                <img src="{{ asset('images/logo.svg') }}" class="img-fluid" alt="logo">
+                            </a>
                         </div>
                         <div class="mobile-togglebar">
                             <ul class="list-inline mb-0">
@@ -214,11 +215,12 @@
                                         </a>
                                     </div>
                                 </li>
-                                <li class="list-inline-item">
+                                <li class="list-inline-item" id="toggle-responsive-nav">
                                     <div class="menubar">
                                         <a class="menu-hamburger navbar-toggle bg-transparent"
                                             href="javascript:void();" data-toggle="collapse"
                                             data-target="#navbar-menu" aria-expanded="true">
+
                                             <img src="{{ asset('images/svg-icon/collapse.svg') }}"
                                                 class="img-fluid menu-hamburger-collapse" alt="collapse">
                                             <img src="{{ asset('images/svg-icon/close.svg') }}"
@@ -282,6 +284,8 @@
         // window.addEventListener("beforeunload", (event) => {
         //     document.body.classList.add('animated-element');
         // });
+        let toggleButton = document.getElementById('toggle-responsive-nav')
+        let navbarMenu = document.getElementById('navbar-menu')
     </script>
     {{-- <script src="https://unpkg.com/swup@4"></script>
     <script>

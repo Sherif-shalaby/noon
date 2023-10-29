@@ -126,10 +126,10 @@
     <!-- Start container-fluid -->
     <div class="container-fluid"> --}}
 <!-- Start Horizontal Nav -->
-<nav class="horizontal-nav mobile-navbar fixed-navbar px-2 py-4 navbar-responsive ">
+<nav class="horizontal-nav mobile-navbar fixed-navbar px-2 py-4 ">
     <div class="collapse navbar-collapse d-flex  justify-content-between" id="navbar-menu">
         <ul style="width: 100%"
-            class="horizontal-menu d-flex flex-wrap justify-content-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            class="horizontal-menu d-flex flex-wrap justify-content-start mt-5 mt-md-0 @if (app()->isLocale('ar')) flex-column flex-md-row-reverse @else flex-row @endif">
             {{-- ###################### Dashboard : نظرة عامة ###################### --}}
             {{-- @can('dashboard')  --}}
             @if (!empty($module_settings['dashboard']))
@@ -1129,14 +1129,14 @@
                                 </ul>
                             </li>
                             <li class="mega-menu-col col-md-2">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{route('branches.index')}}">
-                                                <i class="mdi mdi-circle"></i>@lang('lang.branches')
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ route('branches.index') }}">
+                                            <i class="mdi mdi-circle"></i>@lang('lang.branches')
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
                 </li>

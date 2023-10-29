@@ -94,7 +94,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.fill')</span>
+            font-size: 10px;">@lang('lang.fill')</span>
 
 
         </div>
@@ -106,7 +106,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.basic_unit')</span>
+            font-size: 10px;">@lang('lang.basic_unit')</span>
             <span>{{ $product['unit'] }}</span>
 
 
@@ -119,7 +119,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-1" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.to_get_sell_price')</span>
+            font-size: 10px;">@lang('lang.to_get_sell_price')</span>
             <div class="d-flex justify-content-between align-items-center">
                 <select class="custom-select " style="width:35px;font-size:10px;height:30px;padding: 0"
                     wire:model="items.{{ $index }}.fill_type" wire:change="changeFilling({{ $index }})">
@@ -136,8 +136,8 @@
         </div>
     </div>
 
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
+        <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
@@ -152,8 +152,8 @@
         </div>
     </div>
 
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
+        <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                  align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
@@ -167,8 +167,8 @@
         </div>
     </div>
 
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
+        <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                  align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
@@ -289,7 +289,7 @@
     </div>
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
+        <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                   align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
@@ -305,7 +305,7 @@
     </div>
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
+        <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                  align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
@@ -393,9 +393,10 @@
     <div style="width: 100%" class="accordion mt-1 p-3" id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
-                    aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ $index }}">
+                <button class="accordion-stock-button collapsed" style="padding: 5px 15px" type="button"
+                    data-bs-toggle="collapse" data-index="{{ $index }}"
+                    data-bs-target="#panelsStayOpen-collapse{{ $index }}" aria-expanded="false"
+                    aria-controls="panelsStayOpen-collapse{{ $index }}">
                     <h6>
                         @lang('lang.discount')
                     </h6>
@@ -605,6 +606,9 @@
             label.textContent = "@lang('lang.discount_from_original_price_with_free_quantity')";
         }
     });
+
+
+    var accButtons = document.getElementsByClassName('accordion-stock-button');
 </script>
 {{--
 <script>

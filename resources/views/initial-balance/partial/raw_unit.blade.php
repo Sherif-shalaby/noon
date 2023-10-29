@@ -131,7 +131,7 @@
 
 
         <div style="animation-delay: 2.8s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
+            class="dollar-cell animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-weight: 700;
                 font-size: 11px;" class="mb-2">@lang('lang.purchase_price')$</span>
             <input type="text" class="form-control" wire:model="rows.{{ $index }}.dollar_purchase_price"
@@ -143,7 +143,7 @@
         </div>
 
         <div style="animation-delay: 2.9s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
+            class="dollar-cell animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-weight: 700;
             font-size: 11px;" class="mb-2">@lang('lang.selling_price')$</span>
             <input type="text" class="form-control " wire:model="rows.{{ $index }}.dollar_selling_price"
@@ -155,7 +155,7 @@
         </div>
 
         <div style="animation-delay: 3s;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
-            class="animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
+            class="dollar-cell animate__animated animate__fadeInLeft table-width px-0 d-flex justify-content-center align-items-center flex-column">
             <span style="font-weight: 700;
              font-size: 11px;" class="mb-2">@lang('lang.sub_total') $</span>
             @if (isset($rows[$index]['quantity']) &&
@@ -388,8 +388,8 @@
                             </p>
                         </div>
 
-                        <div
-                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                        <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
+                            class="dollar-cell">
                             {!! Form::label('total_price', __('lang.total_price') . ' $', [
                                 'style' => 'font-weight: 700;font-size: 11px',
                                 'class' => 'pt-2',
@@ -408,8 +408,8 @@
                             </p>
                         </div>
 
-                        <div
-                            style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                        <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
+                            class="dollar-cell">
                             {!! Form::label('piece_price', __('lang.piece_price') . ' $', [
                                 'style' => 'font-weight: 700;font-size: 11px',
                                 'class' => 'pt-2',

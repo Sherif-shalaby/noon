@@ -42,8 +42,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                        'style' => 'font-size: 12px;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        font-weight: 500;',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -122,6 +121,7 @@
                                         {!! Form::select('purchase_type', ['import' => __('lang.import'), 'local' => __('lang.local')], $purchase_type, [
                                             'class' => 'form-control ',
                                             'required',
+                                            'style' => 'width:100%;height:100%',
                                             'placeholder' => __('lang.please_select'),
                                             'data-name' => 'purchase_type',
                                             'wire:model' => 'purchase_type',

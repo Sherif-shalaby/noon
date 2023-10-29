@@ -611,7 +611,7 @@
                                 @endforeach
 
                                 <div class="fw-bold text-center animate__flipInY " style="animation-delay: 3.7s">
-                                    <div class=" mx-3">
+                                    <div class=" mx-3 dollar-cell">
 
                                         <span>
                                             $@lang('lang.total')</span>
