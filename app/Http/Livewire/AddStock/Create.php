@@ -424,7 +424,7 @@ class Create extends Component
                 }
                 $supplier = Supplier::find($this->supplier);
                 $add_stock_data = [
-                    'variation_id' => $item['variation_id'] ?? null,
+                    'variation_id' => !empty($item['variation_id'])?$item['variation_id'] : null,
                     'product_id' => $item['product']['id'],
                     'stock_transaction_id' =>$transaction->id ,
                     'quantity' => $this->num_uf($item['quantity']),
@@ -695,8 +695,8 @@ class Create extends Component
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
-       $this->items[$index]['unit'] = $variant->unit->name;
-       $this->items[$index]['base_unit_multiplier'] = $variant->equal;
+       $this->items[$index]['unit'] = $variant->unit->name??'';
+       $this->items[$index]['base_unit_multiplier'] = $variant->equal??0;
     }
 
     public function changeFilling($index){
@@ -1082,10 +1082,10 @@ class Create extends Component
         $qtyByUnit = 1 ;
         if(!empty($product_store) && !empty($product_store->variation_id)){
             $store_variation = Variation::find($product_store->variation_id);
-            if($store_variation->unit_id == $unit->unit_id){
+            if(isset($unit->unit_id) && $store_variation->unit_id == $unit->unit_id){
                 $qty_difference = $new_quantity;
             }
-            elseif($store_variation->basic_unit_id == $unit->unit_id){
+            elseif(isset($unit->unit_id) && $store_variation->basic_unit_id == $unit->unit_id){
                 $qtyByUnit = 1 / $store_variation->equal;
                 $qty_difference = $qtyByUnit * $new_quantity;
             }
