@@ -233,13 +233,26 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div>
+                    
+                    <div class="col-md-12 pt-5">
+                        <div class="col-md-3">
+                            <button class="btn btn btn-primary add_unit_row" type="button">
+                                <i class="fa fa-plus"></i> @lang('lang.add')
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12 product_unit_raws ">
+                        @include('products.product_unit_raw')
+                        <input type="hidden" id="raw_unit_index" value="0" />
+                    </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
                                     'class' => 'form-control height',
@@ -252,7 +265,7 @@
 
 
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
                                     'class' => 'form-control length',
@@ -263,7 +276,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
                                     'class' => 'form-control width',
@@ -273,7 +286,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
                                     'class' => 'form-control size',
@@ -283,7 +296,8 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            
+                            <div class="col-md-2">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
                                     'class' => 'form-control',
@@ -296,18 +310,6 @@
                         </div>
 
                     </div>
-                    <div class="col-md-12">
-                        <div class="col-md-3">
-                            <button class="btn btn btn-primary add_unit_row" type="button">
-                                <i class="fa fa-plus"></i> @lang('lang.add')
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-12 product_unit_raws ">
-                        @include('products.product_unit_raw')
-                        <input type="hidden" id="raw_unit_index" value="0" />
-                    </div>
-
                     {{-- crop image --}}
                     <div class="col-md-12 pt-5">
                         <div class="row">

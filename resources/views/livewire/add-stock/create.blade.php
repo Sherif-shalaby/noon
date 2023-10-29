@@ -116,7 +116,25 @@
                                                wire:model="end_date">
                                     </div>
                                 @endif
-
+                           
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
+                                        {!! Form::text('other_expenses', $other_expenses,
+                                        ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
+                                         'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
+                                        {!! Form::text('other_payments', $other_payments,
+                                        ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
+                                         'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <br>
@@ -325,14 +343,7 @@
                                     'wire:model' => 'invoice_no']) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
-                                    {!! Form::text('other_expenses', $other_expenses,
-                                    ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
-                                     'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
-                                </div>
-                            </div>
+                           
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
@@ -341,14 +352,7 @@
                                     'wire:model' => 'discount_amount','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
-                                    {!! Form::text('other_payments', $other_payments,
-                                    ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
-                                     'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
-                                </div>
-                            </div>
+                            
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_type', __('lang.source_type'). ':*', []) !!} <br>
