@@ -154,139 +154,141 @@ class EmployeeController extends Controller
   public function store(Request $request)
   {
     //   return response($request);
-      $request->validate([
-          'email' => 'required|email|unique:users|max:255',
-          'name' => 'required|max:255',
-          'password' => 'required|confirmed|max:255',
-      ]);
+        $request->validate([
+            'email' => 'required|email|unique:users|max:255',
+            'name' => 'required|max:255',
+            'password' => 'required|confirmed|max:255',
+        ]);
+        try
+        {
+            DB::beginTransaction();
+            $data = $request->except('_token');
+            $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
+            $data['commission'] = !empty($data['commission']) ? 1 : 0;
 
-      try {
+            $user_data = [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+            ];
+            $user = User::create($user_data);
+            $employee = new Employee();
+            $employee->employee_name = $data['name'];
+            $employee->user_id = $user->id;
+            // $employee->pass_string = Crypt::encrypt($data['password']);
+            $employee->pass_string = !empty($data['password']) ? Crypt::encrypt($data['password']) : null;
+            $employee->date_of_start_working = $data['date_of_start_working'];
+            $employee->date_of_birth = $data['date_of_birth'];
+            $employee->job_type_id = $data['job_type_id'];
+            // $employee->mobile = $data['mobile'];
+            // Set the mobile attribute based on user input (if provided)
+            $employee->mobile = !empty($data['mobile']) ? $data['mobile'] : null;
+            $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
+            $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
+            // Working per week
+            $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
+            $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
+            $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
+            // Evening shift
+            $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox'])  ?  $data['evening_shift_checkbox'] : []) ;
+            $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in'])  ?  $data['evening_shift_check_in'] : []) ;
+            $employee->evening_shift_check_out = json_encode(!empty($data['evening_shift_check_out']) ?  $data['evening_shift_check_out'] : []);
 
-          DB::beginTransaction();
-
-          $data = $request->except('_token');
-//          dd($data['commission_type']);
-          $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
-          $data['commission'] = !empty($data['commission']) ? 1 : 0;
-
-          $user_data = [
-              'name' => $data['name'],
-              'email' => $data['email'],
-              'password' => Hash::make($data['password']),
-
-          ];
-        $user = User::create($user_data);
-
-        $employee = new Employee();
-        $employee->employee_name = $data['name'];
-        $employee->user_id = $user->id;
-        $employee->pass_string = Crypt::encrypt($data['password']);
-        $employee->date_of_start_working = $data['date_of_start_working'];
-        $employee->date_of_birth = $data['date_of_birth'];
-        $employee->job_type_id = $data['job_type_id'];
-        $employee->mobile = $data['mobile'];
-        $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
-        $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
-        // Working per week
-        $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
-        $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
-        $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
-        // Evening shift
-        $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox'])  ?  $data['evening_shift_checkbox'] : []) ;
-        $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in'])  ?  $data['evening_shift_check_in'] : []) ;
-        $employee->evening_shift_check_out = json_encode(!empty($data['evening_shift_check_out']) ?  $data['evening_shift_check_out'] : []);
-
-        $employee->fixed_wage = $data['fixed_wage'];
-        $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
-        $employee->payment_cycle = $data['payment_cycle'];
-        $employee->commission = $data['commission'];
-        $employee->commission_value = $this->commonUtil->num_uf($data['commission_value']) ?? 0;
-        $employee->commission_type = $data['commission_type'];
-        $employee->commision_calculation_period = $data['commission_calculation_period'];
-        $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
-        $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
-        $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
-        $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
-        $employee->branch_id  = $request->branch_id ?? null;
-        if ($request->hasFile('photo')) {
-            $employee->photo = store_file($request->file('photo'), 'employees');
-        }
-        $employee->save();
-        // insert "employee_id" and "product_id" of employee's product into "employee_product" table
-        for($i = 0; $i < count($data['ids']); $i++) {
-            $product = Product::find($data['ids'][$i]);
-            if($product) {
-                // Assuming $employee is already defined or fetched from somewhere
-                $employee->products()->attach($product->id);
+            $employee->fixed_wage = $data['fixed_wage'];
+            $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
+            $employee->payment_cycle = $data['payment_cycle'];
+            $employee->commission = $data['commission'];
+            $employee->commission_value = $this->commonUtil->num_uf($data['commission_value']) ?? 0;
+            $employee->commission_type = $data['commission_type'];
+            $employee->commision_calculation_period = $data['commission_calculation_period'];
+            $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
+            $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
+            $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
+            $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
+            $employee->branch_id  = $request->branch_id ?? null;
+            if ($request->hasFile('photo')) {
+                $employee->photo = store_file($request->file('photo'), 'employees');
             }
+            $employee->save();
+            // insert "employee_id" and "product_id" of employee's product into "employee_product" table
+            if(isset($data['ids']))
+            {
+                for($i = 0; $i < count($data['ids']); $i++)
+                {
+                    $product = Product::find($data['ids'][$i]);
+                    if($product)
+                    {
+                        // Assuming $employee is already defined or fetched from somewhere
+                        $employee->products()->attach($product->id);
+                    }
+                }
+            }
+            $employee->stores()->sync($data['store_id']);
+            //add of update number of leaves
+            $this->createOrUpdateNumberofLeaves($request, $employee->id);
+            //assign permissions to employee
+            if (!empty($data['permissions'])) {
+                foreach ($data['permissions'] as $key => $value) {
+                    $permissions[] = $key;
+                }
+
+                if (!empty($permissions)) {
+                    $user->syncPermissions($permissions);
+                }
+            }
+            DB::commit();
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.employee_added')
+            ];
+
+            return redirect()->route('employees.index')->with('status', $output);
         }
-        $employee->stores()->sync($data['store_id']);
+        catch (\Exception $e) {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
 
+            return redirect()->back()->with('status', $output);
 
+        }
+    }
+    /* ============================= show() ============================= */
+    public function show($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $week_days = Employee::getWeekDays();
+        $modulePermissionArray = User::modulePermissionArray();
+        $subModulePermissionArray = User::subModulePermissionArray();
 
-        //   if ($request->hasFile('upload_files')) {
-        //       foreach ($request->file('upload_files') as $file) {
-        //           $employee->addMedia($file)->toMediaCollection('employee_files');
-        //       }
-        //   }
-
-          //add of update number of leaves
-          $this->createOrUpdateNumberofLeaves($request, $employee->id);
-
-          //assign permissions to employee
-//          dd($data['permissions']);
-          if (!empty($data['permissions'])) {
-              foreach ($data['permissions'] as $key => $value) {
-                  $permissions[] = $key;
-              }
-
-              if (!empty($permissions)) {
-                  $user->syncPermissions($permissions);
-              }
-          }
-          DB::commit();
-
-          $output = [
-              'success' => true,
-              'msg' => __('lang.employee_added')
-          ];
-
-          return redirect()->route('employees.index')->with('status', $output);
-      }
-      catch (\Exception $e) {
-          dd($e);
-          Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-          $output = [
-              'success' => false,
-              'msg' => __('lang.something_went_wrong')
-          ];
-
-          return redirect()->back()->with('status', $output);
-
-      }
-
-
-  }
-
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return Application|Factory|View
-   */
-  public function show($id)
-  {
-      $employee = Employee::findOrFail($id);
-      $week_days = Employee::getWeekDays();
-      $modulePermissionArray = User::modulePermissionArray();
-      $subModulePermissionArray = User::subModulePermissionArray();
-
-      return view('employees.show')
-          ->with(
-              compact('employee','week_days','modulePermissionArray','subModulePermissionArray')
-          );
-  }
-
+        return view('employees.show')
+            ->with(
+                compact('employee','week_days','modulePermissionArray','subModulePermissionArray')
+            );
+    }
+    // ============================= Employee's Products : Real-Time Filters =============================
+    // ++++++ fetch_sub_categories1() : Get Sub_Categories1 According to "selected main_categories" selectbox ++++++
+    public function fetch_sub_categories1(Request $request)
+    {
+        $data['subcategory_id1'] = Category::where('parent_id', $request->subcategories1_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++ fetch_sub_categories2() : Get Sub_Categories2 According to "selected sub_category1" selectbox ++++++
+    public function fetch_sub_categories2(Request $request)
+    {
+        $data['subcategory_id2'] = Category::where('parent_id', $request->subcategories2_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++ fetch_sub_categories3() : Get Sub_Categories3 According to "selected sub_category2" selectbox ++++++
+    public function fetch_sub_categories3(Request $request)
+    {
+        $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
+        return response()->json($data);
+    }
   /**
    * Show the form for editing the specified resource.
    *
@@ -341,156 +343,153 @@ class EmployeeController extends Controller
    */
   public function update($id ,Request $request)
   {
-//      dd($request);
-//      dd($request);
-      $validated = $request->validate([
-          'email' => 'required|email|max:255',
-          'name' => 'required|max:255'
-      ]);
+        $validated = $request->validate([
+            'email' => 'required|email|max:255',
+            'name' => 'required|max:255'
+        ]);
 
-      try {
+        try
+        {
 
-          DB::beginTransaction();
+            DB::beginTransaction();
+            $data = $request->except('_token');
+            $data['date_of_start_working'] = !empty($data['date_of_start_working']) ? Carbon::createFromFormat('m/d/Y', $data['date_of_start_working'])->format('Y-m-d') : null;
+            $data['date_of_birth'] = !empty($data['date_of_birth']) ? Carbon::createFromFormat('m/d/Y', $data['date_of_birth'])->format('Y-m-d') : null;
+            $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
+            $data['commission'] = !empty($data['commission']) ? 1 : 0;
+            $user_data = [
+                'name' => $data['name'],
+                'email' => $data['email']
+            ];
+            $employee =  Employee::find($id);
+            $employee->employee_name = $data['name'];
+            // Check if a new password is provided in the request
+            if (!empty($data['password']))
+            {
+                // Encrypt and update the new password if provided
+                $employee->pass_string = Crypt::encrypt($data['password']);
+            }
+            $employee->date_of_start_working = $data['date_of_start_working'];
+            $employee->date_of_birth = $data['date_of_birth'];
+            $employee->job_type_id = $data['job_type_id'];
+            $employee->mobile = $data['mobile'];
+            $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
+            $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
+            $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
+            $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
+            $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
+            $employee->fixed_wage = $data['fixed_wage'];
+            $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
+            $employee->payment_cycle = $data['payment_cycle'];
+            $employee->commission = $data['commission'];
+            $employee->commission_value = $data['commission_value']?? 0;
+            $employee->commission_type = $data['commission_type'];
+            $employee->commision_calculation_period = $data['commission_calculation_period'];
+            $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
+            $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
+            $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
+            $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
+            $employee->branch_id = $request->branch_id ?? null;
 
-          $data = $request->except('_token');
-          $data['date_of_start_working'] = !empty($data['date_of_start_working']) ? Carbon::createFromFormat('m/d/Y', $data['date_of_start_working'])->format('Y-m-d') : null;
-          $data['date_of_birth'] = !empty($data['date_of_birth']) ? Carbon::createFromFormat('m/d/Y', $data['date_of_birth'])->format('Y-m-d') : null;
-          $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
-//          dd($data['fixed_wage_value']);
-          $data['commission'] = !empty($data['commission']) ? 1 : 0;
+            if ($request->hasFile('photo')) {
+                $employee->photo = store_file($request->file('photo'), 'employees');
+            }
+            $employee->save();
 
-          $user_data = [
-              'name' => $data['name'],
-              'email' => $data['email']
-          ];
+            if (!empty($request->input('password'))) {
+                $validated = $request->validate([
+                    'password' => 'required|confirmed|max:255',
+                ]);
+                $user_data['password'] = Hash::make($request->input('password'));
+                $employee_data['pass_string'] = Crypt::encrypt($data['password']);;
+            }
 
-          $employee =  Employee::find($id);
-          $employee->employee_name = $data['name'];
-          $employee->pass_string = Crypt::encrypt($data['password']);
-          $employee->date_of_start_working = $data['date_of_start_working'];
-          $employee->date_of_birth = $data['date_of_birth'];
-          $employee->job_type_id = $data['job_type_id'];
-          $employee->mobile = $data['mobile'];
-          $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
-          $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
-          $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
-          $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
-          $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
-          $employee->fixed_wage = $data['fixed_wage'];
-          $employee->fixed_wage_value = $data['fixed_wage_value'] ?? 0;
-          $employee->payment_cycle = $data['payment_cycle'];
-          $employee->commission = $data['commission'];
-          $employee->commission_value = $data['commission_value']?? 0;
-          $employee->commission_type = $data['commission_type'];
-          $employee->commision_calculation_period = $data['commission_calculation_period'];
-          $employee->comissioned_products = json_encode(!empty($data['commissioned_products']) ? $data['commissioned_products'] : []);
-          $employee->comission_customer_types = json_encode(!empty($data['commission_customer_types']) ? $data['commission_customer_types'] : []);
-          $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
-          $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
-          $employee->branch_id = $request->branch_id ?? null;
-
-          if ($request->hasFile('photo')) {
-              $employee->photo = store_file($request->file('photo'), 'employees');
-          }
-          $employee->save();
-
-          if (!empty($request->input('password'))) {
-              $validated = $request->validate([
-                  'password' => 'required|confirmed|max:255',
-              ]);
-              $user_data['password'] = Hash::make($request->input('password'));
-              $employee_data['pass_string'] = Crypt::encrypt($data['password']);;
-          }
-
-          $user = User::find($employee->user_id);
-          User::where('id', $employee->user_id)->update($user_data);
+            $user = User::find($employee->user_id);
+            User::where('id', $employee->user_id)->update($user_data);
 
 
-          if ($request->hasFile('upload_files')) {
-              foreach ($request->file('upload_files') as $file) {
-                  $employee->addMedia($file)->toMediaCollection('employee_files');
-              }
-          }
+            if ($request->hasFile('upload_files')) {
+                foreach ($request->file('upload_files') as $file) {
+                    $employee->addMedia($file)->toMediaCollection('employee_files');
+                }
+            }
 
-         $employee->stores()->sync($data['store_id']);
+            $employee->stores()->sync($data['store_id']);
 
-          //add of update number of leaves
-          $this->createOrUpdateNumberofLeaves($request, $id);
+            //add of update number of leaves
+            $this->createOrUpdateNumberofLeaves($request, $id);
 
-          if (!empty($data['permissions'])) {
-              foreach ($data['permissions'] as $key => $value) {
-                  $permissions[] = $key;
-              }
+            if (!empty($data['permissions'])) {
+                foreach ($data['permissions'] as $key => $value) {
+                    $permissions[] = $key;
+                }
 
-              if (!empty($permissions)) {
-                  $user->syncPermissions($permissions);
-              }
-          }
+                if (!empty($permissions)) {
+                    $user->syncPermissions($permissions);
+                }
+            }
 
-          DB::commit();
+            DB::commit();
 
-          $output = [
-              'success' => true,
-              'msg' => __('lang.employee_updated')
-          ];
+            $output = [
+                'success' => true,
+                'msg' => __('lang.employee_updated')
+            ];
 
-          return redirect()->route('employees.index')->with('status', $output);
-      } catch (\Exception $e) {
-          Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-          $output = [
-              'success' => false,
-              'msg' => __('lang.something_went_wrong')
-          ];
-          dd($e);
-          return redirect()->back()->with('status', $output);
-      }
-  }
+            return redirect()->route('employees.index')->with('status', $output);
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+            dd($e);
+            return redirect()->back()->with('status', $output);
+        }
+    }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
-  public function destroy($id)
-  {
-      try {
-          $employee = Employee::find($id);
-          $employee->delete();
+    /* ============================= destroy() ============================= */
+    public function destroy($id)
+    {
+        try {
+            $employee = Employee::find($id);
+            $employee->delete();
 
-          $output = [
-              'success' => true,
-              'msg' => __('lang.job_deleted')
-          ];
-      }
+            $output = [
+                'success' => true,
+                'msg' => __('lang.job_deleted')
+            ];
+        }
 
-      catch (\Exception $e) {
-          Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-          $output = [
-              'success' => false,
-              'msg' => __('messages.something_went_wrong')
-          ];
-      }
-      return redirect()->back()->with('status', $output);
+        catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('messages.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
 
-  }
-
-  public function  addPoints(){
-//      dd('test');
-      return view('employees.add_point');
-  }
-
-  public function createOrUpdateNumberofLeaves($request, $employee_id)
-  {
-      if (!empty($request->number_of_leaves)) {
-          foreach ($request->number_of_leaves as $key => $value) {
-              NumberOfLeave::updateOrCreate(
-                  ['employee_id' => $employee_id, 'leave_type_id' => $key],
-                  ['number_of_days' => $value['number_of_days'], 'created_by' => Auth::user()->id, 'enabled' => !empty($value['enabled']) ? 1 : 0]
-              );
-          }
-      }
-  }
+    }
+    /* ============================= addPoints() ============================= */
+    public function  addPoints()
+    {
+        return view('employees.add_point');
+    }
+    /* ============================= createOrUpdateNumberofLeaves() ============================= */
+    public function createOrUpdateNumberofLeaves($request, $employee_id)
+    {
+        if (!empty($request->number_of_leaves)) {
+            foreach ($request->number_of_leaves as $key => $value) {
+                NumberOfLeave::updateOrCreate(
+                    ['employee_id' => $employee_id, 'leave_type_id' => $key],
+                    ['number_of_days' => $value['number_of_days'], 'created_by' => Auth::user()->id, 'enabled' => !empty($value['enabled']) ? 1 : 0]
+                );
+            }
+        }
+    }
 
 
 }

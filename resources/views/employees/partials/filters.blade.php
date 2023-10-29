@@ -11,7 +11,7 @@
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id1', $subcategories,null,
+                    {!! Form::select( 'subcategory_id1', [],null,
                         ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
                     ) !!}
                 </div>
@@ -19,7 +19,7 @@
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id2', $subcategories,null,
+                    {!! Form::select( 'subcategory_id2', [] ,null,
                             ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
                     ) !!}
                 </div>
@@ -27,7 +27,7 @@
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('subcategory_id3', $subcategories,null,
+                    {!! Form::select('subcategory_id3', [] ,null,
                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
                     ) !!}
                 </div>
@@ -117,6 +117,70 @@
         // when clicking on "filter button" , call "updateSubcategories()" method
         $('#filter_btn').click(function(){
             updateSubcategories();
+        });
+        // +++++++++++++++++++++++++++++++++ subcategory1 filter +++++++++++++++++++++++++++++++++
+        $('#categoryId').change(function(event) {
+            var idSubcategory1 = this.value;
+            // alert(idSubcategory1);
+            $('#subcategory_id1').html('');
+                $.ajax({
+                    url: "/api/fetch-sub_categories1",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {subcategories1_id: idSubcategory1,_token:"{{ csrf_token() }}"},
+                    success:function(response)
+                    {
+                        $('#subcategory_id1').html('<option value="10">{{ __("lang.subcategory") }}</option>');
+
+                        $.each(response.subcategory_id1,function(index, val)
+                        {
+                            // console.log(val);
+                            $('#subcategory_id1').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        });
+                    }
+                })
+            });
+        // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
+        $('#subcategory_id1').change(function(event) {
+                var idSubcategory2 = this.value;
+                // alert(idSubcategory2);
+                $('#subcategory_id2').html('');
+                $.ajax({
+                url: "/api/fetch-sub_categories2",
+                type: 'POST',
+                dataType: 'json',
+                data: {subcategories2_id: idSubcategory2,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    $('#subcategory_id2').html('<option value="10">{{ __("lang.subcategory").'2' }}</option>');
+                    $.each(response.subcategory_id2,function(index, val)
+                    {
+                        console.log(val);
+                        $('#subcategory_id2').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+        // +++++++++++++++++++++++++++++++++ subcategory3 filter +++++++++++++++++++++++++++++++++
+        $('#subcategory_id2').change(function(event) {
+                var idSubcategory3 = this.value;
+                // alert(idSubcategory3);
+                $('#subcategory_id3').html('');
+                $.ajax({
+                url: "/api/fetch-sub_categories3",
+                type: 'POST',
+                dataType: 'json',
+                data: {subcategories3_id: idSubcategory3,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    $('#subcategory_id3').html('<option value="10">{{ __("lang.subcategory").'3' }}</option>');
+                    $.each(response.subcategory_id3,function(index, val)
+                    {
+                        // console.log(val);
+                        $('#subcategory_id3').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
         });
 
     });
