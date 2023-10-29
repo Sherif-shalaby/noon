@@ -11,7 +11,6 @@ use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\CustomerType;
-use App\Models\EarningOfPoint;
 use App\Models\Invoice;
 use App\Models\MoneySafeTransaction;
 use App\Models\PaymentTransactionSellLine;
@@ -20,7 +19,6 @@ use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\PurchaseOrderLine;
 use App\Models\PurchaseOrderTransaction;
-use App\Models\RedemptionOfPoint;
 use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
@@ -823,7 +821,7 @@ class Create extends Component
     }
 
     public function getProductDiscount($sid){
-        $product  = ProductPrice::where('product_id', $pid);
+        $product  = ProductPrice::where('product_id', $sid);
         if(isset($product)){
             $product->where(function($query){
                 $query->where('price_start_date','<=',date('Y-m-d'));
