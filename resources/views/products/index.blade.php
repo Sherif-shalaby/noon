@@ -96,9 +96,10 @@
                                     @foreach($product->variations as $variation)
                                         @if($unit->unit_id == $variation->unit_id)
                                             {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available')}}<br>
-                                        @elseif($unit->basic_unit_id == $variation->unit_id)
-                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available') * $variation->equal}}<br>
+                                        {{-- @elseif($unit->basic_unit_id == $variation->unit_id)
+                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available') * $variation->equal}}<br> --}}
                                         @else
+                                        <span class="product_unit" data-unit_id="{{$variation->id}}">{{$variation->unit->name}} <span class="unit_value">0</span></span> <br>
                                             {{-- @foreach($product->variations as $v_unit)
                                                 @if($v_unit->unit_id == $var_id)
                                                     @php
@@ -117,7 +118,7 @@
                                                     break;
                                                     @endphp
                                                 @endif --}}
-                                            @endforeach
+                                            {{-- @endforeach --}}
                                         @endif
                                          
                                     @endforeach
@@ -269,6 +270,9 @@
     });
 </script>
     <script>
+        $(document).on('click', '.product_unit', function() {
+
+        });
         $(document).on('click', '#delete_all', function() {
             var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
             var selected_delete_ids = [];
