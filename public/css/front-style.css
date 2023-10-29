@@ -427,32 +427,82 @@ select.form-control {
     }
 }
 
-.initial-balance-page {
-    animation: fadeInLeftBig 5s ease
+.animate-in-page {
+    animation: fadeInLeftBig 1s ease;
 }
 
 /* IN */
 
 /* LOADING */
 
+body {
+    overflow-y: hidden;
+    height: 100vh;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 11111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    /* animation: loadingFadeOut 0.5s ease forwards; */
+    animation-delay: 1s;
+}
+
+.overlay .box {
+    position: absolute;
+    width: 290px;
+    height: 300px;
+    z-index: 2;
+    top: 30%;
+    left: 70%;
+    right: 0;
+    background-color: #6aaddf;
+    /* animation: moveLoading 1.5s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite forwards; */
+}
+
+.arrow-down {
+    width: 100%;
+    top: 79px;
+    left: 246px;
+    z-index: 10;
+    position: absolute;
+}
+
+@keyframes moveLoading {
+    0% {
+        left: 70%;
+    }
+
+    100% {
+        left: -25%;
+    }
+}
+
+@keyframes loadingFadeOut {
+    0% {
+        opacity: 1;
+        top: 0;
+    }
+
+    100% {
+        opacity: 0;
+        top: -100%;
+    }
+}
+
+
 /* LOADING */
 
-/* .transition-fade {
-    opacity: 1;
-    transition: 500ms;
-    transform: translateX(0);
-    transform-origin: left;
-}
 
-html.is-animating .transition-fade {
-    opacity: 1;
-    transform: translateX(100%);
-}
-
-html.is-leaving .transition-fade {
-    opacity: 0;
-    transform: translateX(0);
-} */
 
 .bg-light-gray {
     background-color: rgb(221, 221, 221);
@@ -528,4 +578,8 @@ html.is-leaving .transition-fade {
     right: 0;
     left: 0;
     bottom: 0;
+}
+
+.mdi-circle::before {
+    display: none;
 }

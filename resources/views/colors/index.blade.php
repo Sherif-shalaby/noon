@@ -16,7 +16,7 @@
                         </li>
                         <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
                             aria-current="page">@lang('colors.colors')</li>
-                        </ol>
+                    </ul>
                 </div>
             </div>
             <div class="col-md-4 ">

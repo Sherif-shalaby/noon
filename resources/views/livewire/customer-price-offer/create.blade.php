@@ -111,7 +111,7 @@
                             <br>
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div class="col-md-2 border border-1 mr-3 p-0" style="height: 60vh;overflow: scroll">
+                                <div class="col-md-2 border border-1 p-0" style="height: 90vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ الأقسام الرئيسيه ++++++++++++++++++++++ --}}
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                         الأقسام الرئيسيه
@@ -138,8 +138,8 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-9 border border-1"
-                                    style="height: 60vh;overflow: scroll">
+                                <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-10 border border-1"
+                                    style="height: 90vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
                                     <table class="table" style="width: auto">
                                         <thead>

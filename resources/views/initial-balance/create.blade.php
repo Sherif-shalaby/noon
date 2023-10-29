@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.initial_balance'))
 @section('breadcrumbbar')
-    <div class="initial-balance-page">
-
+    <div class="animate-in-page relative">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

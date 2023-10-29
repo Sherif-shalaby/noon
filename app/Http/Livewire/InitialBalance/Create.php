@@ -294,6 +294,8 @@ class Create extends Component
             'change_price_stock' => '',
             'equal' => '',
             'method' => '',
+            'show_prices' => false,
+            'show_price_button' => true,
             'prices' => [
                 [
                     'price_type' => null,

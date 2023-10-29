@@ -24,7 +24,23 @@
     @livewireStyles
 </head>
 
-<body class="horizontal-layout">
+<body class="horizontal-layout relative">
+
+    <div class="overlay">
+        <div style="width: 55%;overflow: hidden;position: relative;">
+            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/logo4.png') }}"
+                alt="logo">
+            <span class="box"></span>
+        </div>
+        <div style="width: 55%;overflow: hidden;position: absolute;top: 0;left: 0;">
+            <img class="arrow-down" src="{{ asset('images/arrow-down-1.png') }}" alt="logo">
+            <img style="width: 100%;z-index: 10;position: absolute;" src="{{ asset('images/arrow-up-1.png') }}"
+                alt="logo">
+            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/word1.png') }}"
+                alt="logo">
+        </div>
+    </div>
+
 
     {{-- <body class="horizontal-layout"> --}}
     <!-- Start Infobar Notifications Sidebar -->
@@ -97,7 +113,8 @@
                             <span class="mr-3 align-self-center img-icon">N</span>
                             <div class="media-body">
                                 <h5>Nelson Smith<span class="timing">Jan 22</span></h5>
-                                <p><span class="badge badge-danger-inverse">WORK</span>Salary has been processed.</p>
+                                <p><span class="badge badge-danger-inverse">WORK</span>Salary has been processed.
+                                </p>
                             </div>
                         </li>
                         <li class="media">
@@ -105,7 +122,8 @@
                             <div class="media-body">
                                 <h5>Courtney Cox<i class="feather icon-star text-warning ml-2"></i><span
                                         class="timing">Feb 15</span></h5>
-                                <p><span class="badge badge-success-inverse">URGENT</span>New product launching...</p>
+                                <p><span class="badge badge-success-inverse">URGENT</span>New product launching...
+                                </p>
                             </div>
                         </li>
                         <li class="media">
@@ -133,7 +151,8 @@
                                     class="feather icon-check"></i></span>
                             <div class="media-body">
                                 <h5 class="action-title">Payment Success !!!</h5>
-                                <p class="my-3">We have received your payment toward ad Account : 9876543210. Your Ad
+                                <p class="my-3">We have received your payment toward ad Account : 9876543210.
+                                    Your Ad
                                     is Running.</p>
                                 <p><span class="badge badge-danger-inverse">INFO</span><span
                                         class="badge badge-info-inverse">STATUS</span><span class="timing">Today,
@@ -147,7 +166,8 @@
                                 <h5 class="action-title">Nobita Applied for Leave.</h5>
                                 <p class="my-3">Nobita applied for leave due to personal reasons on 22nd Feb.</p>
                                 <p><span class="badge badge-success">APPROVE</span><span
-                                        class="badge badge-danger">REJECT</span><span class="timing">Yesterday, 05:25
+                                        class="badge badge-danger">REJECT</span><span class="timing">Yesterday,
+                                        05:25
                                         PM</span></p>
                             </div>
                         </li>
@@ -168,9 +188,11 @@
                                     class="feather icon-award"></i></span>
                             <div class="media-body">
                                 <h5 class="action-title">Congratulations !!!</h5>
-                                <p class="my-3">Your role in the organization has been changed from Editor to Chief
+                                <p class="my-3">Your role in the organization has been changed from Editor to
+                                    Chief
                                     Strategist.</p>
-                                <p><span class="badge badge-danger-inverse">ACTIVITY</span><span class="timing">10 Jan
+                                <p><span class="badge badge-danger-inverse">ACTIVITY</span><span class="timing">10
+                                        Jan
                                         2019, 08:49 PM</span></p>
                             </div>
                         </li>
@@ -287,6 +309,7 @@
         let toggleButton = document.getElementById('toggle-responsive-nav')
         let navbarMenu = document.getElementById('navbar-menu')
     </script>
+
     {{-- <script src="https://unpkg.com/swup@4"></script>
     <script>
         const swup = new Swup();
@@ -316,6 +339,22 @@
             }
         });
     </script> --}}
+    {{-- <script>
+        // Wait for the DOM content to be fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set overflow to hidden initially
+            document.body.style.overflowY = "hidden";
+            document.body.style.height = "100vh";
+
+            // Remove overflow hidden after 1.5 seconds
+            setTimeout(function() {
+                document.body.style.overflowY = "auto"; // Or "visible" depending on your requirements
+                document.body.style.height = "fit-content"; // Or "visible" depending on your requirements
+            }, 500);
+        });
+    </script> --}}
+
+
 </body>
 
 <!-- Mirrored from themesbox.in/admin-templates/theta/html/light-horizontal/page-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Jul 2023 09:24:31 GMT -->

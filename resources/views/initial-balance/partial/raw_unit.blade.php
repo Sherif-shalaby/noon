@@ -334,15 +334,22 @@
                                 <option value="dinar">Dinar</option>
                             </select>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input"
-                                    name="discount_from_original_price"
-                                    id="discount_from_original_price{{ $key }}" style="font-size: 0.75rem"
-                                    @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                    wire:change="changePrice({{ $index }}, {{ $key }})">
-                                <label class="custom-control-label" id="custom-control-label" style="font-size: 8px"
-                                    for="discount_from_original_price{{ $key }}">
-                                    {{-- @lang('lang.discount_from_original_price') --}}
-                                </label>
+                                <form id="myForm">
+                                    <input type="checkbox" class="custom-control-input"
+                                        name="discount_from_original_price"
+                                        id="discount_from_original_price{{ $key }}"
+                                        style="font-size: 0.75rem" @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                        wire:change="changePrice({{ $index }}, {{ $key }})">
+
+                                    <label class="custom-control-label" id="custom-control-label"
+                                        style="font-size: 8px" for="discount_from_original_price{{ $key }}">
+                                        {{-- @if (request()->has('discount_from_original_price'))
+                                            @lang('lang.discount_from_original_price')
+                                        @else --}}
+                                        @lang('lang.discount_from_original_price_with_free_quantity')
+                                        {{-- @endif --}}
+                                    </label>
+                                </form>
                             </div>
                             @error('rows.' . $index . '.prices.' . $key . '.price_type')
                                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -475,18 +482,24 @@
 </div>
 
 <script>
-    const checkbox = document.getElementsByClassName('custom-control-input')[0];
-    const label = document.getElementById('custom-control-label');
+    // // const checkbox = document.getElementsByClassName('custom-control-input')[0];
+    // const label = document.getElementById('custom-control-label');
+    // var checkbox = document.querySelector('.custom-control-input');
 
-    checkbox.addEventListener('change', function() {
-        if (!checkbox.checked) {
-            label.innerHTML = "";
-            label.innerHTML = "@lang('lang.discount_from_original_price_with_free_quantity')";
-        } else {
-            label.innerHTML = "";
-            label.innerHTML = "@lang('lang.discount_from_original_price')";
-        }
-    });
+    // document.getElementById('myForm').addEventListener('submit', function(event) {
+    //     event.preventDefault(); // Prevent the form from submitting and page from refreshing
+    // });
+
+
+    // checkbox.addEventListener('change', function() {
+    //     if (checkbox.checked) {
+    //         label.innerHTML = "";
+    //         label.innerHTML = "@lang('lang.discount_from_original_price')";
+    //     } else {
+    //         label.innerHTML = "";
+    //         label.innerHTML = "@lang('lang.discount_from_original_price_with_free_quantity')";
+    //     }
+    // });
 </script>
 {{-- <script>
     $(document).ready(function() {
