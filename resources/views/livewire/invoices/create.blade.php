@@ -179,9 +179,11 @@
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
                                                            @foreach($item['variation'] as $i=>$var)
-                                                                <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
-                                                                    {{$var['unit']['name']??''}}
-                                                                </option>
+                                                               @if(!empty($var->unit_id))
+                                                                    <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
+                                                                        {{$var['unit']['name']??''}}
+                                                                    </option>
+                                                               @endif
                                                             @endforeach
                                                         @endif
                                                     </select>
@@ -231,15 +233,6 @@
                                                 <td>
                                                     <span class="current_stock">
                                                        {{$item['quantity_available']}}
-                                                        {{-- @if(!empty($item['stock_units']))
-                                                            @foreach($item['stock_units'] as $i => $value)
-                                                            @if(!empty($value))
-                                                                @foreach($value as $x=> $v)
-                                                                    {{$v}} {{$x}}
-                                                                @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                        @endif --}}
                                                     </span>
                                                 </td>
                                                 <td  class="text-center">

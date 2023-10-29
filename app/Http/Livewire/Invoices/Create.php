@@ -279,8 +279,6 @@ class Create extends Component
                 // Update Sold Quantity in stock line
                 $this->updateSoldQuantityInAddStockLine($sell_line->product_id, $transaction->store_id, (float)$item['quantity'], $stock_id,$item['unit_id']);
                 if ($transaction->status == 'final') {
-                    $product = Product::find($sell_line->product_id);
-                    // dd($item['unit_id']);
                     $this->decreaseProductQuantity($sell_line->product_id, $transaction->store_id, (float) $sell_line->quantity,$item['unit_id']);
                 }
 
@@ -354,7 +352,7 @@ class Create extends Component
                 $this->emit('printInvoice', $html_content);
             }
 
-//            DB::commit();
+            DB::commit();
             // $this->items = [];
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             return $this->redirect('/invoices/create');
@@ -947,6 +945,7 @@ class Create extends Component
                 }
             }
         }
+//        dd($add_stock_lines);
 
         return true;
     }
@@ -1110,6 +1109,7 @@ class Create extends Component
         else{
             $qty_difference = $new_quantity;
         }
+//        dd($qty_difference);
         if ($qty_difference != 0) {
             if (empty($product_store)) {
                 $product_store = new ProductStore();
@@ -1120,8 +1120,7 @@ class Create extends Component
             if(empty($product_store->variation_id) && !empty($variation_id)){
                 $product_store->variation_id = $variation_id;
             }
-            $product_store->quantity_available -= $qty_difference;
-            $product_store->save();
+            $product_store->decrement('quantity_available', $qty_difference);
         }
 
             //send notification if balance_return_request is reached
