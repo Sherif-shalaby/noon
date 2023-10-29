@@ -48,10 +48,12 @@
 
                         </div>
                         <div class="row mt-4">
+                            {{-- ============= branch_id ============= --}}
                             <div class="col-sm-6">
                                 <label for="branch_id">@lang('lang.branch')</label>
                                 {!! Form::select('branch_id', $branches, $employee->branch_id, ['class' => 'form-control select2','placeholder' => __('lang.please_select') , 'data-live-search' => 'true', 'id' => 'branch_id']) !!}
                             </div>
+                            {{-- ============= store_id ============= --}}
                             <div class="col-sm-6">
                                 <label for="store_id">@lang('lang.store')</label>
                                 {!! Form::select('store_id[]', $stores,$selected_stores, ['class' => 'form-control select2','multiple', 'placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'id' => 'store_id']) !!}
@@ -59,12 +61,13 @@
                         </div>
 
                         <div class="row mt-4">
-
+                            {{-- ============= password ============= --}}
                             <div class="col-sm-6">
                                 <label for="password">@lang('lang.password')</label>
                                 <input type="password" class="form-control" name="password" id="password"
                                        placeholder="Create New Password">
                             </div>
+                            {{-- ============= confirm_password ============= --}}
                             <div class="col-sm-6">
                                 <label for="pass">@lang('lang.confirm_password')</label>
                                 <input type="password" class="form-control" id="password_confirmation"
@@ -96,7 +99,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label for="mobile">@lang('lang.mobile'):*</label>
-                                <input type="mobile" class="form-control" name="mobile" id="mobile" required
+                                <input type="mobile" class="form-control" name="mobile" id="mobile"
                                        value="{{ $employee->mobile }}" placeholder="@lang('lang.mobile')">
                             </div>
 

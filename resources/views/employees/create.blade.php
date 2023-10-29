@@ -87,11 +87,13 @@
                                     <br/>
                                     {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                     <div class="row">
+                                        {{-- ============= name ============= --}}
                                         <div class="col-sm-6">
                                             <label for="fname">@lang('lang.name'):*</label>
                                             <input type="text" class="form-control" name="name" id="name" required
                                                    placeholder="Name">
                                         </div>
+                                        {{-- ============= email ============= --}}
                                         <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
                                                 <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
@@ -100,15 +102,17 @@
                                         </div>
                                     </div>
                                     <div class="row mt-4">
+                                        {{-- ============= password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
-                                                   required placeholder="Create New Password">
+                                                    placeholder="Create New Password">
                                         </div>
+                                        {{-- ============= confirm_password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
-                                                   name="password_confirmation" required placeholder="Conform Password">
+                                                     name="password_confirmation" placeholder="Conform Password">
                                         </div>
                                     </div>
                                     <div class="row mt-4">
@@ -137,14 +141,15 @@
 
                                     </div>
                                     <div class="row mt-4">
-
+                                        {{-- ============= job_type ============= --}}
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
                                             {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
                                         </div>
+                                        {{-- ============= phone_number ============= --}}
                                         <div class="col-sm-6">
                                             <label for="mobile">@lang('lang.phone_number'):*</label>
-                                            <input type="mobile" class="form-control" name="mobile" id="mobile" required
+                                            <input type="mobile" class="form-control" name="mobile" id="mobile"
                                                    placeholder="@lang('lang.mobile')">
                                         </div>
 
@@ -221,12 +226,14 @@
                                                             {{-- "check_in" inputField --}}
                                                             <td>
                                                                 {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
-                                                                <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}">
+                                                                {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}"> --}}
+                                                                <input type="time" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}">
                                                             </td>
                                                             {{-- "check_out" inputField --}}
                                                             <td>
-                                                                <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}">
+                                                                {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}"> --}}
                                                                 {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
+                                                                <input type="time" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}">
                                                             </td>
                                                             {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
                                                             <td >
@@ -238,11 +245,13 @@
                                                                     <tr>
                                                                         {{-- تسجيل الدخول --}}
                                                                         <td>
-                                                                            <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}">
+                                                                            {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}"> --}}
+                                                                            <input type="time" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}">
                                                                         </td>
                                                                         {{-- تسجيل الخروج --}}
                                                                         <td>
-                                                                            <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}">
+                                                                            {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}"> --}}
+                                                                            <input type="time" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}">
                                                                         </td>
                                                                     </tr>
                                                                 </table>
