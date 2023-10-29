@@ -286,7 +286,25 @@ class EmployeeController extends Controller
               compact('employee','week_days','modulePermissionArray','subModulePermissionArray')
           );
   }
-
+    // ============================= Employee's Products : Real-Time Filters =============================
+    // ++++++ fetch_sub_categories1() : Get Sub_Categories1 According to "selected main_categories" selectbox ++++++
+    public function fetch_sub_categories1(Request $request)
+    {
+        $data['subcategory_id1'] = Category::where('parent_id', $request->subcategories1_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++ fetch_sub_categories2() : Get Sub_Categories2 According to "selected sub_category1" selectbox ++++++
+    public function fetch_sub_categories2(Request $request)
+    {
+        $data['subcategory_id2'] = Category::where('parent_id', $request->subcategories2_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++ fetch_sub_categories3() : Get Sub_Categories3 According to "selected sub_category2" selectbox ++++++
+    public function fetch_sub_categories3(Request $request)
+    {
+        $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
+        return response()->json($data);
+    }
   /**
    * Show the form for editing the specified resource.
    *

@@ -99,6 +99,7 @@ Route::group(['middleware' => ['auth']], function () {
     // // general_setting : fetch "city" of selected "state" selectbox
     // Route::post('api/fetch-cities',[SettingController::class,'fetchCity']);
 
+
     Route::post('settings/remove-image/{type}', [SettingController::class,'removeImage']);
     Route::resource('settings', SettingController::class);
     Route::get('stores/get-dropdown', [StoreController::class,'getDropdown']);
@@ -111,6 +112,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
     Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');
+    // ++++++++++++++++++++ Employee Filters +++++++++++++++++++
+    // fetch "sub_categories1" of selected "main_category" selectbox
+    Route::post('api/fetch-sub_categories1',[EmployeeController::class,'fetch_sub_categories1']);
+    // fetch "sub_categories2" of selected "sub_categories1" selectbox
+    Route::post('api/fetch-sub_categories2',[EmployeeController::class,'fetch_sub_categories2']);
+    // fetch "sub_categories3" of selected "sub_categories2" selectbox
+    Route::post('api/fetch-sub_categories3',[EmployeeController::class,'fetch_sub_categories3']);
+
     // colors
     Route::resource('colors', ColorController::class)->except(['show']);
     // sizes
