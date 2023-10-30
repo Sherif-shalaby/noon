@@ -684,8 +684,10 @@ class Create extends Component
         ];
     }
 
-    public function subtotal($key){
-//        $this->changeDiscount($key);
+    public function subtotal($key, $via = 'quantity'){
+        if($via == 'quantity'){
+            $this->changeDiscount($key);
+        }
         if($this->items[$key]['discount'] != 0){
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
@@ -708,17 +710,14 @@ class Create extends Component
     }
 
     public function changeDiscount($key){
-//        dd($this->items[$key]['quantity']);
         $discounts = collect($this->items[$key]['discount_categories'])->sortBy('quantity')->toArray();
         foreach ($discounts as $discount){
             $currentQuantity = $this->items[$key]['quantity'];
             // Check if the quantity meets the current discount condition
             if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
-                dd($discount);
+                $this->items[$key]['discount'] = $discount['id'];
             }
-//            elseif ($currentQuantity > $discount)
         }
-        dd($discounts);
     }
 
     // calculate dollar_final_total : "النهائي دولار"
