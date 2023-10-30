@@ -714,8 +714,10 @@ class Create extends Component
         foreach ($discounts as $discount){
             $currentQuantity = $this->items[$key]['quantity'];
             // Check if the quantity meets the current discount condition
-            if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
-                $this->items[$key]['discount'] = $discount['id'];
+            if(!empty( $discount['quantity'])){
+                if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
+                    $this->items[$key]['discount'] = $discount['id'];
+                }
             }
         }
     }
