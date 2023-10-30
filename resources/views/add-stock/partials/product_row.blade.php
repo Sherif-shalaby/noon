@@ -9,6 +9,7 @@
     </td>
     <td title="{{__('lang.sku')}}">
 {{--        @if($product['show_product_data'])--}}
+
             {{ $product['product']['sku'] }}
 {{--        @endif--}}
     </td>
@@ -31,9 +32,9 @@
                     @endforeach
                 </select>
                 {{-- {{dd($product['variations'])}} --}}
-                <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
+                {{-- <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
                     <i class="fa fa-plus"></i>
-                </button>
+                </button> --}}
             </div>
         @else
             <span>@lang('lang.no_units')</span>
