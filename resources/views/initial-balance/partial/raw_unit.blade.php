@@ -45,8 +45,8 @@
                 <option  value="percent">%</option>
             </select>
             <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['fill_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.fill_currency" wire:change="changeFilling({{$index}})">
-                <option selected value="dollar">Dollar</option>
-                <option  value="dinar">Dinar</option>
+                <option selected value="dinar">Dinar</option>
+                <option  value="dollar">Dollar</option>
             </select>
             <div class="input-group-prepend">
                 <input type="text" class="form-control" wire:model="rows.{{ $index }}.fill_quantity" wire:change="changeFilling({{$index}})" style="width: 100px;" required>

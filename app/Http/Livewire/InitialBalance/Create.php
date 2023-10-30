@@ -64,7 +64,7 @@ class Create extends Component
         'id' => '', 'sku' => '', 'quantity' => '',
         'fill_quantity' => '',
         'fill_type' => 'fixed',
-        'fill_currency'=>'dollar',
+        'fill_currency'=>'dinar',
         'purchase_price' => '',
         'selling_price' => '',
         'dollar_purchase_price' => '',
@@ -266,7 +266,7 @@ class Create extends Component
             'id' => '', 'sku' => '', 'quantity' => '',
             'fill_quantity' => '',
             'fill_type' => 'fixed',
-            'fill_currency'=>'dollar',
+            'fill_currency'=>'dinar',
             'purchase_price' => '',
             'selling_price' => '',
             'dollar_purchase_price' => '',
@@ -808,18 +808,19 @@ class Create extends Component
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
             if ($this->rows[$index]['purchase_price'] != "") {
-                if($this->rows[$index]['fill_currency'] == "dollar"){
-                    if ($this->rows[$index]['fill_type'] == 'fixed') {
-                        $this->rows[$index]['dollar_selling_price'] =number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']),3) ;
-                        $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate,3) ;
-                    } else {
-                        $percent = ($this->num_uf($this->rows[$index]['dollar_purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
-                        $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent),3) ;
-                        $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate,3);
+                if ($this->rows[$index]['fill_type'] == 'fixed') {
+                    if($this->rows[$index]['fill_currency'] == "dollar") {
+                        $this->rows[$index]['dollar_selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']), 3);
+                        $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate, 3);
                     }
-                }else{
-                    $this->changeDollarFilling($index);
+                } else {
+                $percent = ($this->num_uf($this->rows[$index]['dollar_purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
+                $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent),3) ;
+                $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate,3);
                 }
+            }
+            else{
+                $this->changeDollarFilling($index);
             }
         }
     }
