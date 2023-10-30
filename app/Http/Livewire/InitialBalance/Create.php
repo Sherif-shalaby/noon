@@ -136,7 +136,6 @@ class Create extends Component
 
     public function listenerReferenceHere($data)
     {
-        // dd(44);
         if (isset($data['var1'])) {
             // dd($data['var1']);
             if (($data['var1'] == "unit_id" || $data['var1'] == "basic_unit_id") && $data['var3'] !== '') {
@@ -170,7 +169,7 @@ class Create extends Component
             }
             $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
             $this->exchange_rate = $this->changeExchangeRate();
-            $this->changeExchangeRateBasedPrices();
+            // $this->changeExchangeRateBasedPrices();
         }
     }
     public function render()
@@ -301,16 +300,11 @@ class Create extends Component
     {
         $unit = $this->rows[$index]['unit_id'];
         $unit_index = '';
-        $base_unit_index='';
         foreach ($this->rows as $i => $item) {
             if ($item['basic_unit_id'] === $unit) {
                 $unit_index = $i;
                 break;
             }
-            // if ($item['unit_id'] === $unit) {
-            //     $base_unit_index = $i;
-            //     break;
-            // }
         }
         if ($unit_index !== '') {
             $this->rows[$index]['equal'] = 1;
@@ -332,11 +326,22 @@ class Create extends Component
     {
         $base_unit = $this->rows[$index]['basic_unit_id'];
         $unit_index = '';
+        $basic_unit_index = '';
         foreach ($this->rows as $i => $item) {
             if($i !=$index){
                 if ($item['unit_id'] === $base_unit) {
                     $unit_index = $i;
                     break;
+                }
+            }
+        }
+        if ($unit_index == '') {
+            foreach ($this->rows as $i => $item) {
+                if($i !=$index){
+                    if ($item['basic_unit_id'] === $base_unit) {
+                        $basic_unit_index = $i;
+                        break;
+                    }
                 }
             }
         }
@@ -354,6 +359,22 @@ class Create extends Component
                     $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
                 }
                 $this->changePurchasePrice($index);
+            }
+        }else{
+            if ($basic_unit_index !== '') {
+                $this->rows[$index]['quantity'] = 0;
+                $this->rows[$index]['fill_type'] = $this->rows[$basic_unit_index]['fill_type'];
+                if ((float)$this->rows[$basic_unit_index]['equal'] != 0) {
+                    $this->rows[$index]['dollar_purchase_price'] = number_format(((float)$this->rows[$basic_unit_index]['dollar_purchase_price'] / (float)$this->rows[$basic_unit_index]['equal']) * (float)$this->rows[$index]['equal'],3);
+                    // dd($this->rows[$basic_unit_index]);
+                    if ($this->rows[$index]['fill_type'] == "fixed") {
+                        $this->rows[$index]['fill_quantity'] =  number_format(((float)$this->rows[$basic_unit_index]['fill_quantity'] / (float)$this->rows[$basic_unit_index]['equal'] )*(float)$this->rows[$index]['equal'],3);
+                        $this->rows[$index]['fill_currency'] = $this->rows[$basic_unit_index]['fill_currency'];
+                    } else {
+                        $this->rows[$index]['fill_quantity'] = $this->rows[$basic_unit_index]['fill_quantity'];
+                    }
+                    $this->changePurchasePrice($index);
+                }
             }
         }
     }
@@ -700,6 +721,7 @@ class Create extends Component
     public function delete_product($index)
     {
         unset($this->rows[$index]);
+        $this->rows = array_values($this->rows);
     }
 
     public function convertDollarPrice($index)

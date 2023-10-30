@@ -1,6 +1,6 @@
 <div class="row unit-row">
     <input type="hidden" name="variation_ids[{{$index ?? 0 }}]" value="{{$variation->id ?? null}}">
-    @if(!empty($index))
+    @if(isset($index) && $index!=='')
     <div class="col-md-2 pl-5">
         {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
         {!! Form::text('sku['.$index.']',$variation->sku ?? null, [
@@ -14,7 +14,7 @@
     <div class="col-md-2">
         {!! Form::label('unit', __('lang.new_unit'), ['class'=>'h5 pt-3']) !!}
         <div class="d-flex justify-content-center">
-            <select name="new_unit_id[{{$index}}]"  data-name='unit_id' data-index="{{$index}}" required class="form-control select2 unit_id{{$index}}" style="width: 100px;">
+            <select name="new_unit_id[{{$index}}]"  data-name='unit_id' data-index="{{$index}}" required class="form-control unit_select select2 unit_id{{$index}}" style="width: 100px;">
                 <option value="">{{__('lang.please_select')}}</option>
                 @foreach($units as $unit)
                     <option @if( isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>

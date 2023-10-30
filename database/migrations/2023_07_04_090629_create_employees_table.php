@@ -38,9 +38,9 @@ class CreateEmployeesTable extends Migration {
 			$table->string('check_out')->nullable();
 
             // Evening Shift columns
-            $table->string('evening_shift_checkbox')->nullable();
-			$table->string('evening_shift_check_in')->nullable();
-			$table->string('evening_shift_check_out')->nullable();
+            // $table->string('evening_shift_checkbox')->nullable();
+			// $table->string('evening_shift_check_in')->nullable();
+			// $table->string('evening_shift_check_out')->nullable();
 
 
             $table->integer('number_of_days_any_leave_added')->nullable();

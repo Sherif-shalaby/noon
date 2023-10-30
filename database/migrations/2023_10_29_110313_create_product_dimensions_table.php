@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('product_dimensions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id')->unsigned();
+            $table->unsignedBigInteger('product_id')->unsigned()->nullable();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             
-            $table->unsignedBigInteger('variation_id')->unsigned();
+            $table->unsignedBigInteger('variation_id')->unsigned()->nullable();
             $table->foreign('variation_id')->references('id')->on('variations')->onDelete('cascade');
             
             $table->decimal('height', 10,2)->nullable();

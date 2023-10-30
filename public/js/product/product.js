@@ -102,6 +102,32 @@ $(document).on("click", ".add_unit_row", function () {
 $(document).on("click", ".remove_row", function () {
 $(this).closest(".unit-row").remove();
 });
-// $(document).on("change", ".unit_id", function () {
-//     $('.basic_unit_id').val($(this).val()).trigger('change');
-// });
+$(document).on("change", ".unit_select", function () {
+    var selectBox1 = $('#variation_id');
+    selectBox1.empty();
+    console.log(getSelectBoxValues());
+    var jsonData = JSON.stringify(getSelectBoxValues());
+    $.ajax({
+        method: "get",
+        url: "/variations/units/get-dropdown",
+        data: {selectBoxValues:jsonData},
+        traditional: true,
+        contactType: "html",
+        success: function (data_html) {
+            console.log(data_html)
+            selectBox1.empty().append(data_html);
+            // selectBox1.val(brand_id).trigger();
+        },
+    });
+     
+});
+
+function getSelectBoxValues() {
+    var selectedValues = [];
+    $('.unit_select').each(function () {
+        if($(this).val()!==''){
+            selectedValues.push($(this).val());
+        }
+    });
+    return selectedValues;
+}
