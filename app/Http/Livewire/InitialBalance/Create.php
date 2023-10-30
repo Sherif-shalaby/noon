@@ -301,9 +301,9 @@ class Create extends Component
     public function changeUnit($index)
     {
         ///////////////////////////product dimension variation ///////////////////
-        foreach($this->rows as $index=>$row){
-            if(!empty($this->rows[$index]['unit_id']) && $this->rows[$index]['unit_id']!==''){
-                $this->unit_variations[]=$this->rows[$index]['unit_id'];
+        foreach($this->rows as $i=>$row){
+            if(!empty($this->rows[$i]['unit_id']) && $this->rows[$i]['unit_id']!==''){
+                $this->unit_variations[]=$this->rows[$i]['unit_id'];
             }
         }
         $this->basic_unit_variations = Unit::whereIn('id',$this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
@@ -311,6 +311,7 @@ class Create extends Component
         //////////////////////////////// calculate row based on other rows//////////////
         $unit = $this->rows[$index]['unit_id'];
         $unit_index = '';
+        $same_unit_index = '';
         foreach ($this->rows as $i => $item) {
             if ($item['basic_unit_id'] === $unit) {
                 $unit_index = $i;
@@ -332,6 +333,29 @@ class Create extends Component
                 $this->changePurchasePrice($index);
             }
         }
+        // if ($unit_index == '') {
+        //     foreach ($this->rows as $i => $item) {
+        //         if ($item['unit_id'] === $unit) {
+        //             $same_unit_index = $i;
+        //             break;
+        //         }
+        //     }
+        // }
+        // if ($same_unit_index !== '') {
+        //     $this->rows[$index]['equal'] = 1;
+        //     $this->rows[$index]['quantity'] = 0;
+        //     $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
+        //     if ((float)$this->rows[$unit_index]['equal'] != 0) {
+        //         $this->rows[$index]['dollar_purchase_price'] = ((float)$this->rows[$unit_index]['dollar_purchase_price'] / (float)$this->rows[$unit_index]['equal']);
+        //         if ($this->rows[$index]['fill_type'] == "fixed") {
+        //             $this->rows[$index]['fill_quantity'] = (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+        //             $this->rows[$index]['fill_currency'] = $this->rows[$unit_index]['fill_currency'];
+        //         } else {
+        //             $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
+        //         }
+        //         $this->changePurchasePrice($index);
+        //     }
+        // }
     }
     public function changeBaseUnit($index)
     {
