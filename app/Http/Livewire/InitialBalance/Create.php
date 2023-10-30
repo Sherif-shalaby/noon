@@ -681,16 +681,9 @@ class Create extends Component
 
     public function sub_total($index)
     {
-        if (isset($this->rows[$index]['quantity']) && (isset($this->rows[$index]['purchase_price']) || isset($this->dollar_purchase_price[$index]))) {
-            // convert purchase price from Dollar To Dinar
-            $purchase_price = $this->convertDollarPrice($index);
+        if (!empty($this->rows[$index]['quantity']) && !empty($this->rows[$index]['purchase_price'])) {
 
-            if (isset($this->get_product($index)->base_unit_multiplier)) {
-                $this->base_unit[$index] = $this->get_product($index)->base_unit_multiplier;
-            } else {
-                $this->base_unit[$index] = 1;
-            }
-            $this->sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * (float)$this->rows[$index]['equal'];
+            $this->sub_total[$index] = (int)$this->rows[$index]['quantity'] * $this->num_uf($this->rows[$index]['purchase_price']);
 
             return number_format($this->sub_total[$index], 3);
         }
@@ -698,21 +691,9 @@ class Create extends Component
 
     public function dollar_sub_total($index)
     {
-        if (isset($this->rows[$index]['quantity']) && (isset($this->rows[$index]['dollar_purchase_price']) || isset($this->rows[$index]['purchase_price']))) {
-            // convert purchase price from Dinar To Dollar
-            $purchase_price = $this->convertDinarPrice($index);
-            // if(isset($this->get_product($index)->base_unit_multiplier)){
-            //     $this->base_unit[$index]  = $this->get_product($index)->base_unit_multiplier;
-            // }
-            // else{
-            //     $this->base_unit[$index] = 1;
-            // }
-            $this->dollar_sub_total[$index] = (int)$this->rows[$index]['quantity'] * (float)$purchase_price * (float)$this->rows[$index]['equal'];
-
+        if (!empty($this->rows[$index]['quantity']) && !empty($this->rows[$index]['dollar_purchase_price'])) {
+            $this->dollar_sub_total[$index] = (int)$this->rows[$index]['quantity'] * $this->num_uf($this->rows[$index]['dollar_purchase_price']);
             return number_format($this->dollar_sub_total[$index], 3);
-        } else {
-            $this->quantity[$index] = 0;
-            $this->dollar_purchase_price[$index] = 0;
         }
     }
 
@@ -732,7 +713,7 @@ class Create extends Component
         return number_format(array_sum($this->sub_total), 2);
     }
 
-    public function sum_dollar_tsub_total()
+    public function sum_dollar_sub_total()
     {
         return number_format(array_sum($this->dollar_sub_total), 2);
     }
@@ -754,7 +735,6 @@ class Create extends Component
     }
     public function convertDinarPrice($index)
     {
-        //        dd($this->purchase_price[$index]);
         if (!empty($this->rows[$index]['purchase_price']) && empty($this->rows[$index]['dollar_purchase_price'])) {
             $purchase_price = $this->rows[$index]['purchase_price'] / $this->exchange_rate;
         } else {

@@ -94,7 +94,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-2"> 
+                            <div class="col-md-2">
                                 {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!}
                                 <input type="text" class="form-control" id="exchange_rate"
                                     value="{{ $item[0]['exchange_rate'] }}"
@@ -216,9 +216,9 @@
                                     'wire:model' => 'item.0.balance_return_request',
                                     'class' => 'form-control',
                                 ]) !!}
-                            </div> 
+                            </div>
                         </div>
-                       
+
 
                         <br>
                         {{-- add prices --}}
@@ -311,7 +311,7 @@
                                         <tr>
                                             <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
                                             {{-- @if ($showColumn) --}}
-                                            <td> {{ $this->sum_dollar_tsub_total() }} </td>
+                                            <td> {{ $this->sum_dollar_sub_total() }} </td>
                                             <td></td>
                                             <td></td>
                                             {{-- @endif --}}
