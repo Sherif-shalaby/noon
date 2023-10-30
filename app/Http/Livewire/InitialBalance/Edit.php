@@ -342,9 +342,9 @@ class Edit extends Component
     {
         ///////////////////////////product dimension variation ///////////////////
         $this->unit_variations=[];
-        foreach($this->rows as $index=>$row){
-            if(!empty($this->rows[$index]['unit_id']) && $this->rows[$index]['unit_id']!==''){
-                $this->unit_variations[]=$this->rows[$index]['unit_id'];
+        foreach($this->rows as $i=>$row){
+            if(!empty($this->rows[$i]['unit_id']) && $this->rows[$i]['unit_id']!==''){
+                $this->unit_variations[]=$this->rows[$i]['unit_id'];
             }
         }
         $this->basic_unit_variations = Unit::whereIn('id',$this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
