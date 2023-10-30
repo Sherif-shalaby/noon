@@ -200,12 +200,12 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
-    Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // Route::resource('purchase_order', PurchaseOrderLineController::class);
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
-    Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
+    // Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
@@ -225,6 +225,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('customer_price_offer/edit/{id}', 'customer_price_offer.edit')->name('customer_price_offer.edit');
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
+    // ################################# Task : purchase_order : Livewire #################################
+    Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
 
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
