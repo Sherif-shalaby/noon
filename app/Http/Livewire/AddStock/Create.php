@@ -101,6 +101,7 @@ class Create extends Component
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $this->dispatchBrowserEvent('initialize-select2');
     }
     protected $listeners = ['listenerReferenceHere'];
@@ -130,7 +131,6 @@ class Create extends Component
 
     public function render(): Factory|View|Application
     {
-        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();

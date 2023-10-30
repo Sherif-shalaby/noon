@@ -26,8 +26,8 @@
                 <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
                     <option value="" selected>{{__('lang.please_select')}}</option>
                     @foreach($product['variations'] as $variant)
-                        @if(!empty($variant->unit_id))
-                            <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                        @if(!empty($variant['unit_id']))
+                            <option value="{{$variant['id']}}">{{$variant['unit']['name'] ?? ''}}</option>
                         @endif
                     @endforeach
                 </select>
