@@ -552,10 +552,10 @@ class Create extends Component
             'fill_type' => 'fixed',
             'sub_total' => 0,
             'dollar_sub_total' => 0,
-            'size' => !empty($product->size) ? $product->size : 0,
-            'total_size' => !empty($product->size) ? $product->size * 1 : 0,
-            'weight' => !empty($product->weight) ? $product->weight : 0,
-            'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
+            'size' => !empty($product->product_dimensions->size) ? $product->product_dimensions->size : 0,
+            'total_size' => !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 : 0,
+            'weight' => !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0,
+            'total_weight' =>!empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 : 0,
             'dollar_cost' => 0,
             'cost' => 0,
             'dollar_total_cost' => 0,
@@ -704,6 +704,11 @@ class Create extends Component
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
+    //    $product=$this->items[$index]['product'];
+    //    $this->items[$index]['size'] = !empty($product->product_dimensions->size) ? $product->product_dimensions->size : 0;
+    //    $this->items[$index]['total_size'] = !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 : 0;
+    //    $this->items[$index]['weight'] = !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0;
+    //    $this->items[$index]['total_weight'] =!empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 : 0;
        $this->items[$index]['unit'] = $variant->unit->name??'';
        $this->items[$index]['base_unit_multiplier'] = $variant->equal??0;
     }
@@ -1161,8 +1166,5 @@ class Create extends Component
        $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
     //    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
        return ( $discountAmount );
-    }
-    public function addRaw($index){
-
     }
 }

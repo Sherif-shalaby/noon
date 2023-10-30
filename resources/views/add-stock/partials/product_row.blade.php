@@ -30,6 +30,7 @@
                         @endif
                     @endforeach
                 </select>
+                {{-- {{dd($product['variations'])}} --}}
                 <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
                     <i class="fa fa-plus"></i>
                 </button>
