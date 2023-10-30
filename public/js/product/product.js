@@ -16,11 +16,11 @@ $(() => {
     };
     $("#product_details").summernote(usrCfg);
 });
-$(document).on('change','.width,.height,.length',function(){
-    let width=parseFloat($('.width').val());
-    let height=parseFloat($('.height').val());
-    let length=parseFloat($('.length').val());
-    let size=width*height*length;
+$(document).on('change', '.width,.height,.length', function () {
+    let width = parseFloat($('.width').val());
+    let height = parseFloat($('.height').val());
+    let length = parseFloat($('.length').val());
+    let size = width * height * length;
     $('.size').val(size);
 });
 $(document).on("click", ".add_price_row", function () {
@@ -39,16 +39,16 @@ $(document).on("click", ".remove_row", function () {
     row_id = $(this).closest("tr").data("row_id");
     $(this).closest("tr").remove();
 });
-$(document).on("change",".is_price_permenant",function () {
+$(document).on("change", ".is_price_permenant", function () {
     $(this).closest("tr").find(".price_start_date").prop('disabled', (i, v) => !v);
     $(this).closest("tr").find(".price_start_date").val(null);
     $(this).closest("tr").find(".price_end_date").prop('disabled', (i, v) => !v);
     $(this).closest("tr").find(".price_end_date").val(null);
 });
-$(document).on("change",".category",function () {
+$(document).on("change", ".category", function () {
     $.ajax({
         type: "get",
-        url: "/category/get-subcategories/"+$(this).val(),
+        url: "/category/get-subcategories/" + $(this).val(),
         dataType: "html",
         success: function (response) {
             console.log(response)
@@ -56,10 +56,10 @@ $(document).on("change",".category",function () {
         }
     });
 });
-$(document).on("change",".subcategory",function () {
+$(document).on("change", ".subcategory", function () {
     $.ajax({
         type: "get",
-        url: "/category/get-subcategories/"+$(this).val(),
+        url: "/category/get-subcategories/" + $(this).val(),
         dataType: "html",
         success: function (response) {
             console.log(response)
@@ -67,10 +67,10 @@ $(document).on("change",".subcategory",function () {
         }
     });
 });
-$(document).on("change",".subcategory2",function () {
+$(document).on("change", ".subcategory2", function () {
     $.ajax({
         type: "get",
-        url: "/category/get-subcategories/"+$(this).val(),
+        url: "/category/get-subcategories/" + $(this).val(),
         dataType: "html",
         success: function (response) {
             console.log(response)
@@ -78,7 +78,7 @@ $(document).on("change",".subcategory2",function () {
         }
     });
 });
-$(document).ready(function() {
+$(document).ready(function () {
     $('.js-example-basic-multiple').select2(
         {
             placeholder: LANG.please_select,
@@ -87,8 +87,8 @@ $(document).ready(function() {
     );
 });
 $(document).on("click", ".add_unit_row", function () {
-    let row_id = parseInt($("#raw_unit_index").val())+ 1;
-    $("#raw_unit_index").val(row_id );
+    let row_id = parseInt($("#raw_unit_index").val()) + 1;
+    $("#raw_unit_index").val(row_id);
     $.ajax({
         method: "get",
         url: "/product/get-raw-unit",
@@ -100,8 +100,34 @@ $(document).on("click", ".add_unit_row", function () {
     });
 });
 $(document).on("click", ".remove_row", function () {
-$(this).closest(".unit-row").remove();
+    $(this).closest(".unit-row").remove();
 });
-// $(document).on("change", ".unit_id", function () {
-//     $('.basic_unit_id').val($(this).val()).trigger('change');
-// });
+$(document).on("change", ".unit_select", function () {
+    var selectBox1 = $('#variation_id');
+    selectBox1.empty();
+    console.log(getSelectBoxValues());
+    var jsonData = JSON.stringify(getSelectBoxValues());
+    $.ajax({
+        method: "get",
+        url: "/variations/units/get-dropdown",
+        data: { selectBoxValues: jsonData },
+        traditional: true,
+        contactType: "html",
+        success: function (data_html) {
+            console.log(data_html)
+            selectBox1.empty().append(data_html);
+            // selectBox1.val(brand_id).trigger();
+        },
+    });
+
+});
+
+function getSelectBoxValues() {
+    var selectedValues = [];
+    $('.unit_select').each(function () {
+        if ($(this).val() !== '') {
+            selectedValues.push($(this).val());
+        }
+    });
+    return selectedValues;
+}

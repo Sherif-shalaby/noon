@@ -486,9 +486,13 @@
                                             {!! Form::label('height', __('lang.height'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
-                                                'class' => 'form-control height initial-balance-input m-0',
-                                            ]) !!}
+                                            {!! Form::text(
+                                                'height',
+                                                isset($recent_product->product_dimensions->height) ? $recent_product->product_dimensions->height : 0,
+                                                [
+                                                    'class' => 'form-control height initial-balance-input m-0',
+                                                ],
+                                            ) !!}
 
                                             @error('height')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -500,9 +504,13 @@
                                             {!! Form::label('length', __('lang.length'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
-                                                'class' => 'form-control length initial-balance-input m-0',
-                                            ]) !!}
+                                            {!! Form::text(
+                                                'length',
+                                                isset($recent_product->product_dimensions->length) ? $recent_product->product_dimensions->length : 0,
+                                                [
+                                                    'class' => 'form-control length initial-balance-input m-0',
+                                                ],
+                                            ) !!}
 
                                             @error('length')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -514,9 +522,13 @@
                                             {!! Form::label('width', __('lang.width'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
-                                                'class' => 'form-control width initial-balance-input m-0',
-                                            ]) !!}
+                                            {!! Form::text(
+                                                'width',
+                                                isset($recent_product->product_dimensions->width) ? $recent_product->product_dimensions->width : 0,
+                                                [
+                                                    'class' => 'form-control width initial-balance-input m-0',
+                                                ],
+                                            ) !!}
                                             @error('width')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
@@ -527,28 +539,48 @@
                                             {!! Form::label('size', __('lang.size'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
-                                                'class' => 'form-control size initial-balance-input m-0',
-                                            ]) !!}
+                                            {!! Form::text(
+                                                'size',
+                                                isset($recent_product->product_dimensions->size) ? $recent_product->product_dimensions->size : 0,
+                                                [
+                                                    'class' => 'form-control size initial-balance-input m-0',
+                                                ],
+                                            ) !!}
                                             @error('size')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-1"></div>
-
                                         <div
-                                            class="col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('weight', __('lang.weight'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
                                             ]) !!}
-                                            {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
-                                                'class' => 'form-control initial-balance-input m-0',
-                                            ]) !!}
+                                            {!! Form::text(
+                                                'weight',
+                                                isset($recent_product->product_dimensions->weight) ? $recent_product->product_dimensions->weight : 0,
+                                                [
+                                                    'class' => 'form-control initial-balance-input m-0',
+                                                ],
+                                            ) !!}
 
                                             @error('weight')
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
+                                        </div>
+                                        <div
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('variation', __('lang.basic_unit_for_import_product'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                            ]) !!}
+                                            <div class="input-wrapper">
+
+                                                {!! Form::select('variation_id', [], null, [
+                                                    'class' => 'form-control select2',
+                                                    'placeholder' => __('lang.please_select'),
+                                                    'id' => 'variation_id',
+                                                ]) !!}
+                                            </div>
                                         </div>
 
                                         {{-- <div class="col-md-3">

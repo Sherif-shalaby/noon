@@ -1,4 +1,4 @@
- @if (!empty($index))
+ @if (isset($index) && $index !== '')
      <div class="d-flex align-items-center unit-row justify-content-between py-2 mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
          style="background-color: #ededed; border-radius: 7px">
 
@@ -35,7 +35,7 @@
                                         flex-wrap: nowrap;">
                      <select name="new_unit_id[{{ $index }}]" data-name='unit_id'
                          data-index="{{ $index }}" required
-                         class="form-control select2 unit_id{{ $index }}" style="width: 100px;">
+                         class="form-control unit_select select2 unit_id{{ $index }}" style="width: 100px;">
                          <option value="">{{ __('lang.please_select') }}</option>
                          @foreach ($units as $unit)
                              <option @if (isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif value="{{ $unit->id }}">

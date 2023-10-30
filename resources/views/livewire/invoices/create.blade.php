@@ -309,10 +309,12 @@
                                                         <option value="0.00">select</option>
                                                         @if (!empty($item['variation']))
                                                             @foreach ($item['variation'] as $i => $var)
-                                                                <option value="{{ $var['id'] }}"
-                                                                    {{ $i == 0 ? 'selected' : '' }}>
-                                                                    {{ $var['unit']['name'] ?? '' }}
-                                                                </option>
+                                                                @if (!empty($var->unit_id))
+                                                                    <option value="{{ $var['id'] }}"
+                                                                        {{ $i == 0 ? 'selected' : '' }}>
+                                                                        {{ $var['unit']['name'] ?? '' }}
+                                                                    </option>
+                                                                @endif
                                                             @endforeach
                                                         @endif
                                                     </select>
@@ -344,7 +346,7 @@
                                                     <select class="form-control discount_category "
                                                         style="height:30% !important;width:50px;font-size:14px;"
                                                         wire:model="items.{{ $key }}.discount"
-                                                        wire:change="subtotal({{ $key }})">
+                                                        wire:change="subtotal({{ $key }},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if (!empty($item['discount_categories']))
                                                             @if (!empty($client_id))
@@ -358,11 +360,11 @@
                                                                 @endforeach
                                                             @else
                                                                 @foreach ($item['discount_categories'] as $discount)
-                                                                    @if ($discount['price_category'] !== null)
-                                                                        <option value="{{ $discount['id'] }}">
-                                                                            {{ $discount['price_category'] ?? '' }}
-                                                                        </option>
-                                                                    @endif
+                                                                    {{-- @if ($discount['price_category'] !== null) --}}
+                                                                    <option value="{{ $discount['id'] }}">
+                                                                        {{ $discount['price_category'] ?? '' }}
+                                                                    </option>
+                                                                    {{-- @endif --}}
                                                                 @endforeach
                                                             @endif
                                                         @endif
@@ -380,15 +382,6 @@
                                                     <span class="current_stock"
                                                         style="font-weight: 700;font-size: 10px;">
                                                         {{ $item['quantity_available'] }}
-                                                        {{-- @if (!empty($item['stock_units']))
-                                                            @foreach ($item['stock_units'] as $i => $value)
-                                                            @if (!empty($value))
-                                                                @foreach ($value as $x => $v)
-                                                                    {{$v}} {{$x}}
-                                                                @endforeach
-                                                                @endif
-                                                            @endforeach
-                                                        @endif --}}
                                                     </span>
                                                 </td>
                                                 <td class="text-center px-1 border-right">

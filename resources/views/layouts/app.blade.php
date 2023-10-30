@@ -28,17 +28,17 @@
 
     <div class="overlay">
         <div style="width: 55%;overflow: hidden;position: relative;">
-            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/logo4.png') }}"
+            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/logo2.png') }}"
                 alt="logo">
             <span class="box"></span>
         </div>
-        <div style="width: 55%;overflow: hidden;position: absolute;top: 0;left: 0;">
+        {{-- <div style="width: 55%;overflow: hidden;position: absolute;top: 0;left: 0;">
             <img class="arrow-down" src="{{ asset('images/arrow-down-1.png') }}" alt="logo">
             <img style="width: 100%;z-index: 10;position: absolute;" src="{{ asset('images/arrow-up-1.png') }}"
                 alt="logo">
             <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/word1.png') }}"
                 alt="logo">
-        </div>
+        </div> --}}
     </div>
 
 
@@ -339,7 +339,7 @@
             }
         });
     </script> --}}
-    {{-- <script>
+    <script>
         // Wait for the DOM content to be fully loaded
         document.addEventListener("DOMContentLoaded", function() {
             // Set overflow to hidden initially
@@ -352,7 +352,7 @@
                 document.body.style.height = "fit-content"; // Or "visible" depending on your requirements
             }, 500);
         });
-    </script> --}}
+    </script>
 
 
 </body>

@@ -559,4 +559,5 @@ return [
     'discount_from_original_price' => 'خصم من السعر الأصلي',
     'discount_from_original_price_with_free_quantity' => 'Discount from original price with free quantity',
     'add_new_unit' => 'Add New Unit',
+    'basic_unit_for_import_product' => 'Basic Unit For Import Product',
 ];

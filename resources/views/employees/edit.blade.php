@@ -125,8 +125,8 @@
                                 ]) !!}
                             </div>
                             <div class="col-sm-6">
-                                <label for="mobile">@lang('lang.mobile'):*</label>
-                                <input type="mobile" class="form-control" name="mobile" id="mobile" required
+                                <label for="mobile">@lang('lang.mobile')*</label>
+                                <input type="mobile" class="form-control" name="mobile" id="mobile"
                                     value="{{ $employee->mobile }}" placeholder="@lang('lang.mobile')">
                             </div>
 
@@ -209,7 +209,7 @@
                                                         !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null,
                                                         [
                                                             'class' => 'form-control input-md check_out
-                                                                                            time_picker',
+                                                                                                                                                                                                    time_picker',
                                                         ],
                                                     ) !!}
                                                 </td>

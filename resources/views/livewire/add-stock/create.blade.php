@@ -213,445 +213,496 @@
                                     </div>
                                 @endif
 
-                            </div>
-                        </div>
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('other_expenses', __('lang.other_expenses'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    ]) !!}
+                                    <div class="input-wrapper">
 
-
-
-
-                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-4">
-                                <div class="search-box input-group">
-                                    <input type="search" name="search_by_product_symbol" id="search_by_product_symbol"
-                                        wire:model.debounce.200ms="search_by_product_symbol"
-                                        placeholder="@lang('lang.enter_product_symbol')" class="form-control" autocomplete="off">
-
-                                    @if (!empty($search_result) && !empty($search_by_product_symbol))
-                                        <ul id="ui-id-1" tabindex="0"
-                                            class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                                            style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                            @foreach ($search_result as $product)
-                                                <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
-                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                        @if ($product->image)
-                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                alt="{{ $product->name }}" class="img-thumbnail"
-                                                                width="100px">
-                                                        @else
-                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                                alt="{{ $product->name }}" class="img-thumbnail"
-                                                                width="100px">
-                                                        @endif
-                                                        {{ $product->product_symbol ?? '' }} - {{ $product->name }}
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-8 mb-3">
-                                <div class="search-box input-group">
-                                    <button type="button" class="btn btn-secondary" id="search_button"><i
-                                            class="fa fa-search"></i>
-                                    </button>
-                                    <input type="search" name="search_product" id="search_product"
-                                        wire:model.debounce.200ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')"
-                                        class="form-control" autocomplete="off">
-                                    {{--                                    <button type="button" class="btn btn-success  btn-modal" --}}
-                                    {{--                                            data-href="{{ route('products.create') }}?quick_add=1" --}}
-                                    {{--                                            data-container=".view_modal"><i class="fa fa-plus"></i> --}}
-                                    {{--                                    </button> --}}
-                                    @if (!empty($search_result) && !empty($searchProduct))
-                                        <ul id="ui-id-1" tabindex="0"
-                                            class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                                            style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                            @foreach ($search_result as $product)
-                                                <li class="ui-menu-item"
-                                                    wire:click="add_product({{ $product->id }})">
-                                                    <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                        @if ($product->image)
-                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                alt="{{ $product->name }}" class="img-thumbnail"
-                                                                width="100px">
-                                                        @else
-                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                                alt="{{ $product->name }}" class="img-thumbnail"
-                                                                width="100px">
-                                                        @endif
-                                                        {{ $product->sku ?? '' }} - {{ $product->name }}
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    @endif
-                                    {{--                                    {{$search_result->links()}} --}}
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-2 border border-1 p-0" style="height: 100vh;overflow: scroll">
-                                <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
-                                    الأقسام الرئيسيه
-                                    <div for="" class="d-flex align-items-center text-nowrap gap-1"
-                                        wire:ignore>
-                                        {{-- الاقسام --}}
-                                        <select class="form-control select2" data-name="department_id"
-                                            wire:model="department_id">
-                                            <option value="" readonly selected>اختر </option>
-                                            @foreach ($departments as $depart)
-                                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        {!! Form::text('other_expenses', $other_expenses, [
+                                            'class' => 'form-control m-0 initial-balance-input width-full',
+                                            'placeholder' => __('lang.other_expenses'),
+                                            'id' => 'other_expenses',
+                                            'wire:model' => 'other_expenses',
+                                            'wire:change' => 'changeTotalAmount()',
+                                        ]) !!}
                                     </div>
                                 </div>
-                                <div class="p-2">
-                                    @foreach ($products as $product)
-                                        <div class="order-btn py-2 border-bottom"
-                                            wire:click='add_product({{ $product->id }})' style="cursor: pointer">
-                                            @if ($product->image)
-                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                    alt="{{ $product->name }}" class="img-thumbnail" width="100px">
-                                            @else
-                                                <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                    alt="{{ $product->name }}" class="img-thumbnail" width="100px">
-                                            @endif
-                                            <span>{{ $product->name }}</span>
-                                            <span>{{ $product->sku }} </span>
-                                        </div>
-                                    @endforeach
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('other_payments', __('lang.other_payments'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    ]) !!}
+                                    <div class="input-wrapper mr-3">
+
+                                        {!! Form::text('other_payments', $other_payments, [
+                                            'class' => 'form-control m-0 initial-balance-input width-full',
+                                            'placeholder' => __('lang.other_payments'),
+                                            'id' => 'other_payments',
+                                            'wire:model' => 'other_payments',
+                                            'wire:change' => 'changeTotalAmount()',
+                                        ]) !!}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="table-responsive col-md-10 border border-1 @if (app()->isLocale('ar')) dir-rtl @endif"
-                                style="height: 100vh;overflow: scroll">
 
-                                @if (!empty($items))
-                                    @foreach ($items as $index => $product)
-                                        @include('add-stock.partials.product_row')
-                                    @endforeach
 
-                                    <div class="d-flex justify-content-between align-items-center">
 
-                                        <div>
-                                            <span>$@lang('lang.total')</span>
-                                            <span> {{ $this->sum_dollar_sub_total() }} </span>
-                                        </div>
 
-                                        <div>
 
-                                            <span>@lang('lang.total')</span>
-                                            <td> {{ $this->sum_sub_total() }} </td>
-                                        </div>
 
-                                        <div>
-                                            <span>$@lang('lang.total_size')</span>
-                                            <span>{{ $this->sum_size() ?? 0 }}</span>
-                                        </div>
+                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-4">
+                                    <div class="search-box input-group">
+                                        <input type="search" name="search_by_product_symbol"
+                                            id="search_by_product_symbol"
+                                            wire:model.debounce.200ms="search_by_product_symbol"
+                                            placeholder="@lang('lang.enter_product_symbol')" class="form-control" autocomplete="off">
 
-                                        <div>
-                                            <span>$@lang('lang.total_weight')</span>
-                                            <span>{{ $this->sum_weight() ?? 0 }}</span>
-                                        </div>
-
-                                        <div>
-                                            <span>$@lang('lang.total_cost')</span>
-                                            <span>{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
-                                        </div>
-
-                                        <div>
-                                            <span>@lang('lang.total_cost')</span>
-                                            <span>{{ $this->sum_total_cost() ?? 0 }}</span>
-                                        </div>
+                                        @if (!empty($search_result) && !empty($search_by_product_symbol))
+                                            <ul id="ui-id-1" tabindex="0"
+                                                class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                @foreach ($search_result as $product)
+                                                    <li class="ui-menu-item"
+                                                        wire:click="add_product({{ $product->id }})">
+                                                        <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                            @if ($product->image)
+                                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                    alt="{{ $product->name }}" class="img-thumbnail"
+                                                                    width="100px">
+                                                            @else
+                                                                <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                    alt="{{ $product->name }}" class="img-thumbnail"
+                                                                    width="100px">
+                                                            @endif
+                                                            {{ $product->product_symbol ?? '' }} -
+                                                            {{ $product->name }}
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <div class="search-box input-group">
+                                        <button type="button" class="btn btn-secondary" id="search_button"><i
+                                                class="fa fa-search"></i>
+                                        </button>
+                                        <input type="search" name="search_product" id="search_product"
+                                            wire:model.debounce.200ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')"
+                                            class="form-control" autocomplete="off">
+                                        {{--                                    <button type="button" class="btn btn-success  btn-modal" --}}
+                                        {{--                                            data-href="{{ route('products.create') }}?quick_add=1" --}}
+                                        {{--                                            data-container=".view_modal"><i class="fa fa-plus"></i> --}}
+                                        {{--                                    </button> --}}
+                                        @if (!empty($search_result) && !empty($searchProduct))
+                                            <ul id="ui-id-1" tabindex="0"
+                                                class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                @foreach ($search_result as $product)
+                                                    <li class="ui-menu-item"
+                                                        wire:click="add_product({{ $product->id }})">
+                                                        <div id="ui-id-73" tabindex="-1"
+                                                            class="ui-menu-item-wrapper">
+                                                            @if ($product->image)
+                                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                    alt="{{ $product->name }}" class="img-thumbnail"
+                                                                    width="100px">
+                                                            @else
+                                                                <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                    alt="{{ $product->name }}" class="img-thumbnail"
+                                                                    width="100px">
+                                                            @endif
+                                                            {{ $product->sku ?? '' }} - {{ $product->name }}
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        {{--                                    {{$search_result->links()}} --}}
                                     </div>
 
-
-                                @endif
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-12 text-center mt-1 ">
-                            <h4>@lang('lang.items_count'):
-                                <span class="items_count_span"
-                                    style="margin-right: 15px;">{{ !empty($items) ? count($items) : 0 }}</span>
-                            </h4>
-                            <h4>
-                                @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                    style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
-                            </h4>
-                        </div>
+                            <div
+                                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-2 border border-1 p-0" style="height: 100vh;overflow: scroll">
+                                    <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
+                                        الأقسام الرئيسيه
+                                        <div for="" class="d-flex align-items-center text-nowrap gap-1"
+                                            wire:ignore>
+                                            {{-- الاقسام --}}
+                                            <select class="form-control select2" data-name="department_id"
+                                                wire:model="department_id">
+                                                <option value="" readonly selected>اختر </option>
+                                                @foreach ($departments as $depart)
+                                                    @if ($depart->parent_id === null)
+                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                        </option>
+                                                        @if ($depart->subCategories->count() > 0)
+                                                            @include('categories.category-select', [
+                                                                'categories' => $depart->subCategories,
+                                                                'prefix' => '-',
+                                                            ])
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="p-2">
+                                        @foreach ($products as $product)
+                                            <div class="order-btn py-2 border-bottom"
+                                                wire:click='add_product({{ $product->id }})'
+                                                style="cursor: pointer">
+                                                @if ($product->image)
+                                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                        alt="{{ $product->name }}" class="img-thumbnail"
+                                                        width="100px">
+                                                @else
+                                                    <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                        alt="{{ $product->name }}" class="img-thumbnail"
+                                                        width="100px">
+                                                @endif
+                                                <span>{{ $product->name }}</span>
+                                                <span>{{ $product->sku }} </span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="table-responsive col-md-10 border border-1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                    style="height: 100vh;overflow: scroll">
 
-                        <div class="col-md-12 mb-3">
-                            <div class="col-md-3 offset-md-8 text-right">
-                                <h3> @lang('lang.total') :
-                                    @if ($paying_currency == 2)
-                                        {{ $this->sum_dollar_total_cost() ?? 0.0 }}
-                                    @else
-                                        {{ $this->sum_total_cost() ?? 0.0 }}
+                                    @if (!empty($items))
+                                        @foreach ($items as $index => $product)
+                                            @include('add-stock.partials.product_row')
+                                        @endforeach
+
+                                        <div class="d-flex justify-content-between align-items-center">
+
+                                            <div>
+                                                <span>$@lang('lang.total')</span>
+                                                <span> {{ $this->sum_dollar_sub_total() }} </span>
+                                            </div>
+
+                                            <div>
+
+                                                <span>@lang('lang.total')</span>
+                                                <td> {{ $this->sum_sub_total() }} </td>
+                                            </div>
+
+                                            <div>
+                                                <span>$@lang('lang.total_size')</span>
+                                                <span>{{ $this->sum_size() ?? 0 }}</span>
+                                            </div>
+
+                                            <div>
+                                                <span>$@lang('lang.total_weight')</span>
+                                                <span>{{ $this->sum_weight() ?? 0 }}</span>
+                                            </div>
+
+                                            <div>
+                                                <span>$@lang('lang.total_cost')</span>
+                                                <span>{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
+                                            </div>
+
+                                            <div>
+                                                <span>@lang('lang.total_cost')</span>
+                                                <span>{{ $this->sum_total_cost() ?? 0 }}</span>
+                                            </div>
+                                        </div>
+
+
                                     @endif
-                                    <span class="final_total_span"></span>
-                                </h3>
-                            </div>
-                        </div>
-
-                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('files', __('lang.files'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="initial-balance-input my-0">
-                                    <label for="files" style="width: 100%;height: 100%;"
-                                        class="d-flex justify-content-evenly align-items-center">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                        {{ __('lang.upload_image') }}
-                                    </label>
-                                    <input style="opacity: 0;" type="file" name="files[]" id="files"
-                                        wire:model="files">
                                 </div>
+                            </div>
 
+                            <div class="col-md-12 text-center mt-1 ">
+                                <h4>@lang('lang.items_count'):
+                                    <span class="items_count_span"
+                                        style="margin-right: 15px;">{{ !empty($items) ? count($items) : 0 }}</span>
+                                </h4>
+                                <h4>
+                                    @lang('lang.items_quantity'): <span class="items_quantity_span"
+                                        style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
+                                </h4>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <div class="col-md-3 offset-md-8 text-right">
+                                    <h3> @lang('lang.total') :
+                                        @if ($paying_currency == 2)
+                                            {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                        @else
+                                            {{ $this->sum_total_cost() ?? 0.0 }}
+                                        @endif
+                                        <span class="final_total_span"></span>
+                                    </h3>
+                                </div>
                             </div>
 
                             <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('invoice_no', __('lang.invoice_no'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper">
-
-                                    {!! Form::text('invoice_no', $invoice_no, [
-                                        'class' => 'form-control initial-balance-input m-0 width-full',
-                                        'placeholder' => __('lang.invoice_no'),
-                                        'wire:model' => 'invoice_no',
+                                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div
+                                    class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('files', __('lang.files'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
+                                    <div class="initial-balance-input my-0">
+                                        <label for="files" style="width: 100%;height: 100%;"
+                                            class="d-flex justify-content-evenly align-items-center">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            {{ __('lang.upload_image') }}
+                                        </label>
+                                        <input style="opacity: 0;" type="file" name="files[]" id="files"
+                                            wire:model="files">
+                                    </div>
+
                                 </div>
-                            </div>
 
-                            <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('other_expenses', __('lang.other_expenses'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper">
-
-                                    {!! Form::text('other_expenses', $other_expenses, [
-                                        'class' => 'form-control m-0 initial-balance-input width-full',
-                                        'placeholder' => __('lang.other_expenses'),
-                                        'id' => 'other_expenses',
-                                        'wire:model' => 'other_expenses',
-                                        'wire:change' => 'changeTotalAmount()',
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('invoice_no', __('lang.invoice_no'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
+                                    <div class="input-wrapper">
+
+                                        {!! Form::text('invoice_no', $invoice_no, [
+                                            'class' => 'form-control initial-balance-input m-0 width-full',
+                                            'placeholder' => __('lang.invoice_no'),
+                                            'wire:model' => 'invoice_no',
+                                        ]) !!}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('discount_amount', __('lang.discount'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper">
-
-                                    {!! Form::text('discount_amount', $discount_amount, [
-                                        'class' => 'form-control m-0 initial-balance-input width-full',
-                                        'placeholder' => __('lang.discount'),
-                                        'id' => 'discount_amount',
-                                        'wire:model' => 'discount_amount',
-                                        'wire:change' => 'changeTotalAmount()',
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('other_expenses', __('lang.other_expenses'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
+                                    <div class="input-wrapper">
+
+                                        {!! Form::text('other_expenses', $other_expenses, [
+                                            'class' => 'form-control m-0 initial-balance-input width-full',
+                                            'placeholder' => __('lang.other_expenses'),
+                                            'id' => 'other_expenses',
+                                            'wire:model' => 'other_expenses',
+                                            'wire:change' => 'changeTotalAmount()',
+                                        ]) !!}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('other_payments', __('lang.other_payments'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper mr-3">
-
-                                    {!! Form::text('other_payments', $other_payments, [
-                                        'class' => 'form-control m-0 initial-balance-input width-full',
-                                        'placeholder' => __('lang.other_payments'),
-                                        'id' => 'other_payments',
-                                        'wire:model' => 'other_payments',
-                                        'wire:change' => 'changeTotalAmount()',
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('discount_amount', __('lang.discount'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
+                                    <div class="input-wrapper">
+
+                                        {!! Form::text('discount_amount', $discount_amount, [
+                                            'class' => 'form-control m-0 initial-balance-input width-full',
+                                            'placeholder' => __('lang.discount'),
+                                            'id' => 'discount_amount',
+                                            'wire:model' => 'discount_amount',
+                                            'wire:change' => 'changeTotalAmount()',
+                                        ]) !!}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('source_type', __('lang.source_type') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper">
-
-                                    {!! Form::select('source_type', ['pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type, [
-                                        'class' => 'form-control select2',
-                                        'data-live-search' => 'true',
-                                        'placeholder' => __('lang.please_select'),
-                                        'data-name' => 'source_type',
-                                        'wire:model' => 'source_type',
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('other_payments', __('lang.other_payments'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
-                                </div>
-                            </div>
-                            @error('source_type')
-                                <span style="font-size: 10px;font-weight: 700;"
-                                    class="error text-danger">{{ $message }}</span>
-                            @enderror
-                            <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper">
+                                    <div class="input-wrapper mr-3">
 
-                                    {!! Form::select('source_id', $users, $source_id, [
-                                        'class' => 'form-control select2',
-                                        'data-live-search' => 'true',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'source_id',
-                                        'required',
-                                        'data-name' => 'source_id',
-                                        'wire:model' => 'source_id',
-                                    ]) !!}
+                                        {!! Form::text('other_payments', $other_payments, [
+                                            'class' => 'form-control m-0 initial-balance-input width-full',
+                                            'placeholder' => __('lang.other_payments'),
+                                            'id' => 'other_payments',
+                                            'wire:model' => 'other_payments',
+                                            'wire:change' => 'changeTotalAmount()',
+                                        ]) !!}
+                                    </div>
                                 </div>
-                                @error('source_id')
+
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('source_type', __('lang.source_type') . '*', [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    ]) !!}
+                                    <div class="input-wrapper">
+
+                                        {!! Form::select('source_type', ['pos' => __('lang.pos'), 'safe' => __('lang.safe')], $source_type, [
+                                            'class' => 'form-control select2',
+                                            'data-live-search' => 'true',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'source_type',
+                                            'wire:model' => 'source_type',
+                                        ]) !!}
+                                    </div>
+                                </div>
+                                @error('source_type')
                                     <span style="font-size: 10px;font-weight: 700;"
                                         class="error text-danger">{{ $message }}</span>
                                 @enderror
-                            </div>
-
-                            <div
-                                class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {!! Form::label('payment_status', __('lang.payment_status') . '*', [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                ]) !!}
-                                <div class="input-wrapper">
-
-                                    {!! Form::select('payment_status', $payment_status_array, $payment_status, [
-                                        'class' => 'form-control select2',
-                                        'data-live-search' => 'true',
-                                        'required',
-                                        'placeholder' => __('lang.please_select'),
-                                        'data-name' => 'payment_status',
-                                        'wire:model' => 'payment_status',
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     ]) !!}
+                                    <div class="input-wrapper">
+
+                                        {!! Form::select('source_id', $users, $source_id, [
+                                            'class' => 'form-control select2',
+                                            'data-live-search' => 'true',
+                                            'placeholder' => __('lang.please_select'),
+                                            'id' => 'source_id',
+                                            'required',
+                                            'data-name' => 'source_id',
+                                            'wire:model' => 'source_id',
+                                        ]) !!}
+                                    </div>
+                                    @error('source_id')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @error('payment_status')
-                                    <span style="font-size: 10px;font-weight: 700;"
-                                        class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
 
-                            @include('add-stock.partials.payment_form')
-                            @if ($payment_status != 'paid' && isset($payment_status))
-                                @if (!empty($amount))
+                                <div
+                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    {!! Form::label('payment_status', __('lang.payment_status') . '*', [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    ]) !!}
+                                    <div class="input-wrapper">
 
+                                        {!! Form::select('payment_status', $payment_status_array, $payment_status, [
+                                            'class' => 'form-control select2',
+                                            'data-live-search' => 'true',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'payment_status',
+                                            'wire:model' => 'payment_status',
+                                        ]) !!}
+                                    </div>
+                                    @error('payment_status')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                @include('add-stock.partials.payment_form')
+                                @if ($payment_status != 'paid' && isset($payment_status))
+                                    @if (!empty($amount))
+
+                                        <div
+                                            class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
+                                            <label
+                                                class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
+                                                for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
+                                                <span class="due_amount_span">
+                                                    @if ($paying_currency == 2)
+                                                        {{ $this->sum_dollar_total_cost() - $amount ?? '' }}
+                                                    @else
+                                                        {{ @num_uf($this->sum_total_cost()) - $amount ?? '' }}
+                                                    @endif
+                                                </span>
+                                            </label>
+                                        </div>
+
+                                    @endif
                                     <div
                                         class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
+                                        dssdcsdcsd
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                            for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
-                                            <span class="due_amount_span">
-                                                @if ($paying_currency == 2)
-                                                    {{ $this->sum_dollar_total_cost() - $amount ?? '' }}
-                                                @else
-                                                    {{ @num_uf($this->sum_total_cost()) - $amount ?? '' }}
-                                                @endif
-                                            </span>
-                                        </label>
+                                            for="due_date">@lang('lang.due')</label>
+                                        <input class="form-control m-0 initial-balance-input"
+                                            placeholder="@lang('lang.due')" name="due_date" type="date"
+                                            id="due_date" autocomplete="off" fdprocessedid="pipnea"
+                                            wire:model="due_date">
                                     </div>
 
+                                    <div
+                                        class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
+                                        {!! Form::label('due_date', __('lang.due_date'), [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        ]) !!}
+                                        {!! Form::text(
+                                            'due_date',
+                                            !empty($transaction_payment) && !empty($transaction_payment->due_date)
+                                                ? @format_date($transaction_payment->due_date)
+                                                : (!empty($payment)
+                                                    ? @format_date($payment->due_date)
+                                                    : null),
+                                            [
+                                                'class' => 'form-control m-0 initial-balance-input',
+                                                'placeholder' => __('lang.due_date'),
+                                                'wire:model' => 'due_date',
+                                            ],
+                                        ) !!}
+                                    </div>
+
+                                    <div
+                                        class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
+                                        {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        ]) !!}
+                                        {!! Form::text(
+                                            'notify_before_days',
+                                            !empty($transaction_payment) && !empty($transaction_payment->notify_before_days)
+                                                ? $transaction_payment->notify_before_days
+                                                : (!empty($payment)
+                                                    ? $payment->notify_before_days
+                                                    : null),
+                                            [
+                                                'class' => 'form-control m-0 initial-balance-input',
+                                                'placeholder' => __('lang.notify_before_days'),
+                                                'wire:model' => 'notify_before_days',
+                                            ],
+                                        ) !!}
+                                    </div>
+
+                                    {{--                                <div class="col-md-3 due_fields "> --}}
+                                    {{--                                    <div class="form-group"> --}}
+                                    {{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!} --}}
+                                    {{--                                         --}}
+                                    {{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!} --}}
+                                    {{--                                    </div> --}}
+                                    {{--                                </div> --}}
                                 @endif
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
-                                    dssdcsdcsd
-                                    <label
-                                        class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                        for="due_date">@lang('lang.due')</label>
-                                    <input class="form-control m-0 initial-balance-input"
-                                        placeholder="@lang('lang.due')" name="due_date" type="date"
-                                        id="due_date" autocomplete="off" fdprocessedid="pipnea"
-                                        wire:model="due_date">
-                                </div>
-
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
-                                    {!! Form::label('due_date', __('lang.due_date'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                <div class="col-md-12 d-flex flex-column justify-content-start mt-2">
+                                    {!! Form::label('notes', __('lang.notes'), [
+                                        'class' => app()->isLocale('ar')
+                                            ? 'd-block text-end  mx-2 mb-0 width-quarter width-full'
+                                            : 'mr-3 mb-0 width-quarter width-full',
                                     ]) !!}
-                                    {!! Form::text(
-                                        'due_date',
-                                        !empty($transaction_payment) && !empty($transaction_payment->due_date)
-                                            ? @format_date($transaction_payment->due_date)
-                                            : (!empty($payment)
-                                                ? @format_date($payment->due_date)
-                                                : null),
-                                        [
-                                            'class' => 'form-control m-0 initial-balance-input',
-                                            'placeholder' => __('lang.due_date'),
-                                            'wire:model' => 'due_date',
-                                        ],
-                                    ) !!}
+                                    <div class="input-wrapper" style="width: 90% !important;">
+                                        {!! Form::textarea(
+                                            'notes',
+                                            !empty($recent_stock) && !empty($recent_stock->notes) ? $recent_stock->notes : null,
+                                            ['class' => 'form-control width-full initial-balance-input m-0', 'rows' => 3, 'wire:model' => 'notes'],
+                                        ) !!}
+                                    </div>
                                 </div>
 
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
-                                    {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    ]) !!}
-                                    {!! Form::text(
-                                        'notify_before_days',
-                                        !empty($transaction_payment) && !empty($transaction_payment->notify_before_days)
-                                            ? $transaction_payment->notify_before_days
-                                            : (!empty($payment)
-                                                ? $payment->notify_before_days
-                                                : null),
-                                        [
-                                            'class' => 'form-control m-0 initial-balance-input',
-                                            'placeholder' => __('lang.notify_before_days'),
-                                            'wire:model' => 'notify_before_days',
-                                        ],
-                                    ) !!}
-                                </div>
-
-                                {{--                                <div class="col-md-3 due_fields "> --}}
-                                {{--                                    <div class="form-group"> --}}
-                                {{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!} --}}
-                                {{--                                         --}}
-                                {{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!} --}}
-                                {{--                                    </div> --}}
-                                {{--                                </div> --}}
-                            @endif
-                            <div class="col-md-12 d-flex flex-column justify-content-start mt-2">
-                                {!! Form::label('notes', __('lang.notes'), [
-                                    'class' => app()->isLocale('ar')
-                                        ? 'd-block text-end  mx-2 mb-0 width-quarter width-full'
-                                        : 'mr-3 mb-0 width-quarter width-full',
-                                ]) !!}
-                                <div class="input-wrapper" style="width: 90% !important;">
-                                    {!! Form::textarea(
-                                        'notes',
-                                        !empty($recent_stock) && !empty($recent_stock->notes) ? $recent_stock->notes : null,
-                                        ['class' => 'form-control width-full initial-balance-input m-0', 'rows' => 3, 'wire:model' => 'notes'],
-                                    ) !!}
-                                </div>
                             </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="submit" name="submit" id="submit-save" style="margin: 10px"
+                                value="save" class="btn btn-primary pull-right btn-flat submit"
+                                wire:click.prevent = "store()">@lang('lang.save')</button>
 
                         </div>
+                        {!! Form::close() !!}
                     </div>
-                    <div class="col-sm-12">
-                        <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
-                            class="btn btn-primary pull-right btn-flat submit"
-                            wire:click.prevent = "store()">@lang('lang.save')</button>
-
-                    </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
-    </div>
 </section>
 <div class="view_modal no-print"></div>
 {{-- <!-- This will be printed --> --}}

@@ -91,6 +91,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductStore::class);
     }
+    public function product_dimensions()
+    {
+        return $this->hasOne(ProductDimension::class);
+    }
     public function variations()
     {
         return $this->hasMany('App\Models\Variation');

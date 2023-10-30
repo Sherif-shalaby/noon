@@ -11,7 +11,6 @@ use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\CustomerType;
-use App\Models\EarningOfPoint;
 use App\Models\Invoice;
 use App\Models\MoneySafeTransaction;
 use App\Models\PaymentTransactionSellLine;
@@ -20,7 +19,6 @@ use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\PurchaseOrderLine;
 use App\Models\PurchaseOrderTransaction;
-use App\Models\RedemptionOfPoint;
 use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
@@ -260,7 +258,7 @@ class Create extends Component
                 $sell_line->variation_id = !empty($item['unit_id']) ? $item['unit_id'] :  null;
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
                 $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
-                $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
+                $sell_line->product_discount_category = !empty($item['discount']) ? $item['discount'] : 0;
                 $sell_line->quantity = (float)$item['quantity'] + $item['extra_quantity'];
                 $sell_line->sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
                 $sell_line->dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
@@ -281,8 +279,6 @@ class Create extends Component
                 // Update Sold Quantity in stock line
                 $this->updateSoldQuantityInAddStockLine($sell_line->product_id, $transaction->store_id, (float)$item['quantity'], $stock_id,$item['unit_id']);
                 if ($transaction->status == 'final') {
-                    $product = Product::find($sell_line->product_id);
-                    // dd($item['unit_id']);
                     $this->decreaseProductQuantity($sell_line->product_id, $transaction->store_id, (float) $sell_line->quantity,$item['unit_id']);
                 }
 
@@ -356,7 +352,7 @@ class Create extends Component
                 $this->emit('printInvoice', $html_content);
             }
 
-//            DB::commit();
+            DB::commit();
             // $this->items = [];
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             return $this->redirect('/invoices/create');
@@ -627,10 +623,11 @@ class Create extends Component
             $this->items[$key]['quantity']++;
 
             $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
-                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['total_quantity'] ) -
-                ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
+            $this->subtotal($key);
+//            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
+//                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+//            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['total_quantity'] ) -
+//                ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
         }
         else{
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
@@ -642,10 +639,11 @@ class Create extends Component
         if($this->items[$key]['quantity'] > 1 ){
             $this->items[$key]['quantity']--;
 //            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
-                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['quantity'] ) -
-                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+//            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
+//                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+//            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['quantity'] ) -
+//                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+            $this->subtotal($key);
         }
 
         $this->computeForAll();
@@ -686,7 +684,10 @@ class Create extends Component
         ];
     }
 
-    public function subtotal($key){
+    public function subtotal($key, $via = 'quantity'){
+        if($via == 'quantity'){
+            $this->changeDiscount($key);
+        }
         if($this->items[$key]['discount'] != 0){
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
@@ -697,13 +698,30 @@ class Create extends Component
         }
         else
             $price = 0;
-            $this->items[$key]['discount_price'] = $price;
-            $this->items[$key]['sub_total'] = ($this->items[$key]['price'] * $this->items[$key]['quantity']) -
-                ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ($this->items[$key]['dollar_price'] * $this->items[$key]['quantity']) -
-                ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->computeForAll();
+
+        $this->items[$key]['discount_price'] = $price;
+        $this->items[$key]['sub_total'] = ($this->items[$key]['price'] * $this->items[$key]['quantity']) -
+            ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+        $this->items[$key]['dollar_sub_total']  =  ($this->items[$key]['dollar_price'] * $this->items[$key]['quantity']) -
+            ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+        $this->computeForAll();
+
+
     }
+
+    public function changeDiscount($key){
+        $discounts = collect($this->items[$key]['discount_categories'])->sortBy('quantity')->toArray();
+        foreach ($discounts as $discount){
+            $currentQuantity = $this->items[$key]['quantity'];
+            // Check if the quantity meets the current discount condition
+            if(!empty( $discount['quantity'])){
+                if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
+                    $this->items[$key]['discount'] = $discount['id'];
+                }
+            }
+        }
+    }
+
     // calculate dollar_final_total : "النهائي دولار"
     public function changeDollarTotal()
     {
@@ -823,7 +841,7 @@ class Create extends Component
     }
 
     public function getProductDiscount($sid){
-        $product  = ProductPrice::where('product_id', $pid);
+        $product  = ProductPrice::where('product_id', $sid);
         if(isset($product)){
             $product->where(function($query){
                 $query->where('price_start_date','<=',date('Y-m-d'));
@@ -949,6 +967,7 @@ class Create extends Component
                 }
             }
         }
+//        dd($add_stock_lines);
 
         return true;
     }
@@ -1112,6 +1131,7 @@ class Create extends Component
         else{
             $qty_difference = $new_quantity;
         }
+//        dd($qty_difference);
         if ($qty_difference != 0) {
             if (empty($product_store)) {
                 $product_store = new ProductStore();
@@ -1122,8 +1142,7 @@ class Create extends Component
             if(empty($product_store->variation_id) && !empty($variation_id)){
                 $product_store->variation_id = $variation_id;
             }
-            $product_store->quantity_available -= $qty_difference;
-            $product_store->save();
+            $product_store->decrement('quantity_available', $qty_difference);
         }
 
             //send notification if balance_return_request is reached

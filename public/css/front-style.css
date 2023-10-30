@@ -453,7 +453,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: white;
-    /* animation: loadingFadeOut 0.5s ease forwards; */
+    animation: loadingFadeOut 0.5s ease forwards;
     animation-delay: 1s;
 }
 
@@ -466,16 +466,16 @@ body {
     left: 70%;
     right: 0;
     background-color: #6aaddf;
-    /* animation: moveLoading 1.5s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite forwards; */
+    animation: moveLoading 1.5s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite forwards;
 }
 
-.arrow-down {
+/* .arrow-down {
     width: 100%;
     top: 79px;
     left: 246px;
     z-index: 10;
     position: absolute;
-}
+} */
 
 @keyframes moveLoading {
     0% {

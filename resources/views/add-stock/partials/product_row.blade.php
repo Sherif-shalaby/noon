@@ -69,7 +69,9 @@
                         wire:change="getVariationData({{ $index }})">
                         <option value="" selected>{{ __('lang.please_select') }}</option>
                         @foreach ($product['variations'] as $variant)
-                            <option value="{{ $variant['id'] }}">{{ $variant['unit']['name'] }}</option>
+                            @if (!empty($variant->unit_id))
+                                <option value="{{ $variant['id'] }}">{{ $variant['unit']['name'] }}</option>
+                            @endif
                         @endforeach
                     </select>
                     <button type="button" class="btn btn-primary btn-sm "

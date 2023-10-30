@@ -11,7 +11,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('store_id', $stores, null, [
+                    {!! Form::select('store_id', $stores, request()->store_id, [
                         'class' => 'form-control select2',
                         'placeholder' => __('lang.store'),
                     ]) !!}
@@ -27,7 +27,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('category_id', $categories, null, [
+                    {!! Form::select('category_id', $categories, request()->category_id, [
                         'class' => 'form-control select2 category',
                         'placeholder' => __('lang.category'),
                         'id' => 'categoryId',
@@ -44,7 +44,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('subcategory_id1', $subcategories, null, [
+                    {!! Form::select('subcategory_id1', $subcategories, request()->subcategory_id1, [
                         'class' => 'form-control select2 subcategory',
                         'placeholder' => __('lang.subcategory') . ' 1',
                         'id' => 'subcategory_id1',
@@ -61,7 +61,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('subcategory_id2', $subcategories, null, [
+                    {!! Form::select('subcategory_id2', $subcategories, request()->subcategory_id2, [
                         'class' => 'form-control select2 subcategory2',
                         'placeholder' => __('lang.subcategory') . ' 2',
                         'id' => 'subCategoryId2',
@@ -78,7 +78,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('subcategory_id3', $subcategories, null, [
+                    {!! Form::select('subcategory_id3', $subcategories, request()->subcategory_id3, [
                         'class' => 'form-control select2 subcategory3',
                         'placeholder' => __('lang.subcategory') . ' 3',
                         'id' => 'subCategoryId3',
@@ -96,7 +96,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('brand_id', $brands, null, [
+                    {!! Form::select('brand_id', $brands, request()->brand_id, [
                         'class' => 'form-control select2',
                         'placeholder' => __('lang.brand'),
                     ]) !!}
@@ -112,7 +112,7 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                    {!! Form::select('created_by', $users, null, [
+                    {!! Form::select('created_by', $users, request()->created_by, [
                         'class' => 'form-control select2',
                         'placeholder' => __('lang.created_by'),
                     ]) !!}
@@ -120,7 +120,8 @@
             </div>
             <div class="col-3">
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1" name="dont_show_zero_stocks">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                        {{ !empty(request()->dont_show_zero_stocks) ? 'checked' : '' }} name="dont_show_zero_stocks">
                     <label class="custom-control-label" for="customSwitch1">@lang('lang.dont_show_zero_stocks')</label>
                 </div>
             </div>
