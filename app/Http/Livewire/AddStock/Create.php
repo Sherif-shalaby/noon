@@ -187,7 +187,13 @@ class Create extends Component
             $users = User::Notview()->pluck('name', 'id');
         }
         if(!empty($this->department_id)){
-            $products = Product::where('category_id' , $this->department_id)->get();
+//            dd($this->department_id);
+            $products = Product::where('category_id' , $this->department_id)
+                ->orWhere('subcategory_id1',$this->department_id)
+                ->orWhere('subcategory_id2',$this->department_id)
+                ->orWhere('subcategory_id3',$this->department_id)
+                ->orderBy('created_at','desc')
+                ->get();
         }
         else{
             $products = Product::paginate();

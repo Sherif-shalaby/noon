@@ -209,10 +209,10 @@
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
-                                                                    @if($discount['price_category']!==null)
+{{--                                                                    @if($discount['price_category']!==null)--}}
                                                         {{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
                                                                             <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
-                                                                    @endif
+{{--                                                                    @endif--}}
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)

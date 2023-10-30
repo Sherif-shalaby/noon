@@ -48,7 +48,7 @@ class ProductController extends Controller
   /**
    * Display a listing of the resource.
    *
-   * @return Response
+   * @return Application|Factory|View
    */
   public function index(Request $request)
   {
@@ -187,7 +187,7 @@ class ProductController extends Controller
         }
     }
 
-   
+
     if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
     || $request->size ==(''||0) && $request->weight ==(''||0)) {
     }else{
