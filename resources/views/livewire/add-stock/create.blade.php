@@ -229,7 +229,7 @@
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
-{{--                                        <hr/>--}}
+                                        <hr/>
                                     @endforeach
                                 </div>
                             </div>

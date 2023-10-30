@@ -623,10 +623,11 @@ class Create extends Component
             $this->items[$key]['quantity']++;
 
             $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
-                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['total_quantity'] ) -
-                ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
+            $this->subtotal($key);
+//            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
+//                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+//            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['total_quantity'] ) -
+//                ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
         }
         else{
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'الكمية غير كافية',]);
@@ -638,10 +639,11 @@ class Create extends Component
         if($this->items[$key]['quantity'] > 1 ){
             $this->items[$key]['quantity']--;
 //            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
-            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
-                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['quantity'] ) -
-                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+//            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
+//                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+//            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['quantity'] ) -
+//                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+            $this->subtotal($key);
         }
 
         $this->computeForAll();
@@ -683,6 +685,7 @@ class Create extends Component
     }
 
     public function subtotal($key){
+//        $this->changeDiscount($key);
         if($this->items[$key]['discount'] != 0){
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
@@ -693,13 +696,31 @@ class Create extends Component
         }
         else
             $price = 0;
-            $this->items[$key]['discount_price'] = $price;
-            $this->items[$key]['sub_total'] = ($this->items[$key]['price'] * $this->items[$key]['quantity']) -
-                ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->items[$key]['dollar_sub_total']  =  ($this->items[$key]['dollar_price'] * $this->items[$key]['quantity']) -
-                ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            $this->computeForAll();
+
+        $this->items[$key]['discount_price'] = $price;
+        $this->items[$key]['sub_total'] = ($this->items[$key]['price'] * $this->items[$key]['quantity']) -
+            ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+        $this->items[$key]['dollar_sub_total']  =  ($this->items[$key]['dollar_price'] * $this->items[$key]['quantity']) -
+            ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+        $this->computeForAll();
+
+
     }
+
+    public function changeDiscount($key){
+//        dd($this->items[$key]['quantity']);
+        $discounts = collect($this->items[$key]['discount_categories'])->sortBy('quantity')->toArray();
+        foreach ($discounts as $discount){
+            $currentQuantity = $this->items[$key]['quantity'];
+            // Check if the quantity meets the current discount condition
+            if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
+                dd($discount);
+            }
+//            elseif ($currentQuantity > $discount)
+        }
+        dd($discounts);
+    }
+
     // calculate dollar_final_total : "النهائي دولار"
     public function changeDollarTotal()
     {
