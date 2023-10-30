@@ -204,15 +204,15 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}})">
+                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
-                                                                    @if($discount['price_category']!==null)
+{{--                                                                    @if($discount['price_category']!==null)--}}
                                                         {{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
                                                                             <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
-                                                                    @endif
+{{--                                                                    @endif--}}
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
@@ -258,6 +258,7 @@
             @include('invoices.partials.rightSidebar')
         </div>
         {!! Form::close() !!}
+        <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>
 </section>
 @include('customers.quick_add',['quick_add'=>1])

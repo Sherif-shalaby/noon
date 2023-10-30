@@ -258,7 +258,7 @@ class Create extends Component
                 $sell_line->variation_id = !empty($item['unit_id']) ? $item['unit_id'] :  null;
                 $sell_line->product_discount_type = !empty($item['discount_type']) ? $item['discount_type'] : null;
                 $sell_line->product_discount_amount = !empty($item['discount_price']) ? $this->num_uf($item['discount_price'], 2) : 0;
-                $sell_line->product_discount_category = !empty($item['discount_category']) ? $item['discount_category'] : 0;
+                $sell_line->product_discount_category = !empty($item['discount']) ? $item['discount'] : 0;
                 $sell_line->quantity = (float)$item['quantity'] + $item['extra_quantity'];
                 $sell_line->sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
                 $sell_line->dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
@@ -554,6 +554,12 @@ class Create extends Component
 //        $this->sumSubTotal();
     }
 
+    public function cancel(){
+        foreach ($this->items as $index => $item){
+            $this->delete_item($index);
+        }
+    }
+
     public function getUnits($product, $store){
         $total = [];
         $remaning_quantity = 0;
@@ -684,8 +690,10 @@ class Create extends Component
         ];
     }
 
-    public function subtotal($key){
-//        $this->changeDiscount($key);
+    public function subtotal($key, $via = 'quantity'){
+        if($via == 'quantity'){
+            $this->changeDiscount($key);
+        }
         if($this->items[$key]['discount'] != 0){
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
@@ -708,17 +716,16 @@ class Create extends Component
     }
 
     public function changeDiscount($key){
-//        dd($this->items[$key]['quantity']);
         $discounts = collect($this->items[$key]['discount_categories'])->sortBy('quantity')->toArray();
         foreach ($discounts as $discount){
             $currentQuantity = $this->items[$key]['quantity'];
             // Check if the quantity meets the current discount condition
-            if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
-                dd($discount);
+            if(!empty( $discount['quantity'])){
+                if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
+                    $this->items[$key]['discount'] = $discount['id'];
+                }
             }
-//            elseif ($currentQuantity > $discount)
         }
-        dd($discounts);
     }
 
     // calculate dollar_final_total : "النهائي دولار"
@@ -733,7 +740,16 @@ class Create extends Component
     {
         if ($this->dollar_amount !== null && $this->dollar_amount !== 0)
         {
-            if($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total){
+            if($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+            }elseif($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+            }
+            elseif($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total){
                 $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dollar_remaining = 0;
@@ -780,7 +796,13 @@ class Create extends Component
     {
         if ($this->amount !== null && $this->amount !== 0)
         {
-            if($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total){
+            if($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+            }elseif($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+
+                $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+            }
+            elseif($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total){
                 $diff_dinar = $this->amount -  $this->final_total;
                 $this->dollar_remaining = $this->dollar_remaining - ( $diff_dinar / System::getProperty('dollar_exchange'));
                 $this->dinar_remaining = 0;
@@ -814,6 +836,7 @@ class Create extends Component
             }
         }
     }
+
 
 
 

@@ -219,66 +219,6 @@
                                 ]) !!}
                             </div>
                         </div>
-
-                        {{-- sizes --}}
-                        <div class="row">
-                            <div class="col-md-12 pt-5 ">
-                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
-                            </div>
-
-                            <div class="col-md-3">
-                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
-                                    class='form-control weight' />
-                                <br>
-                                @error('item.0.weight')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-1"></div>
-                            <div class="col-md-2">
-                                {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.height' wire:change='changeSize()'
-                                    class='form-control height' />
-                                <br>
-                                @error('item.0.height')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2">
-                                {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.length' wire:change='changeSize()'
-                                    class='form-control length' />
-                                <br>
-                                @error('item.0.length')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-2">
-                                {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.width' wire:change='changeSize()'
-                                    class='form-control width' />
-                                <br>
-                                @error('item.0.width')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-2">
-                                {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                <input type="text" wire:model='item.0.size' wire:change='changeSize()'
-                                    class='form-control size' />
-                                <br>
-                                @error('item.0.size')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                        </div>
-
                         <br>
                         {{-- add prices --}}
                         {{-- <div class="row">
@@ -388,7 +328,72 @@
                                     style="margin-right: 15px;">{{ $totalQuantity }}</span>
                             </h4>
                         </div>
-                        <br>
+                        {{-- sizes --}}
+                        <div class="row">
+                            <div class="col-md-12 pt-5 ">
+                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
+                            </div>
+
+                            <div class="col-md-2">
+                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
+                                <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
+                                    class='form-control weight' />
+                                <br>
+                                @error('item.0.weight')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
+                                <input type="text" wire:model='item.0.height' wire:change='changeSize()'
+                                    class='form-control height' />
+                                <br>
+                                @error('item.0.height')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+
+
+
+                            <div class="col-md-2">
+                                {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
+                                <input type="text" wire:model='item.0.length' wire:change='changeSize()'
+                                    class='form-control length' />
+                                <br>
+                                @error('item.0.length')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2">
+                                {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
+                                <input type="text" wire:model='item.0.width' wire:change='changeSize()'
+                                    class='form-control width' />
+                                <br>
+                                @error('item.0.width')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
+                                <input type="text" wire:model='item.0.size' wire:change='changeSize()'
+                                    class='form-control size' />
+                                <br>
+                                @error('item.0.size')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                            <div class="col-md-2">
+                                <label for="basic_unit_variation_id" class="h5 pt-3">{{ __('lang.basic_unit_for_import_product') . ':*' }}</label>
+                                {!! Form::select('basic_unit_variation_id', $basic_unit_variations, $item[0]['basic_unit_variation_id'], [
+                                    'id' => 'basic_unit_variation_id',
+                                    'class' => ' form-control select2 basic_unit_variation_id',
+                                    'data-name' => 'basic_unit_variation_id',
+                                    'placeholder' => __('lang.please_select'),
+                                    'wire:model' => 'item.0.basic_unit_variation_id',
+                                ]) !!}
+                            </div>
+                        </div>
                     </div>
                     {{-- {!! Form::close() !!} --}}
                     <div class="col-sm-12">
