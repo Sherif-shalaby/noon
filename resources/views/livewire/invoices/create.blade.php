@@ -247,7 +247,6 @@
 
                                                 </td>
                                             </tr>
-                                            <hr />
                                         @endforeach
                                     </table>
                                 </div>

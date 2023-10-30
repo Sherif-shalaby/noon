@@ -664,30 +664,33 @@ class Create extends Component
     {
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price'])){
-            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] : $this->items[$index]['dollar_selling_price'];
-            $total_quantity = (float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'];
+            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->num_uf($this->items[$index]['selling_price']) : $this->num_uf($this->items[$index]['dollar_selling_price']);
+            $total_quantity = $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) + $this->num_uf($this->items[$index]['prices'][$key]['bonus_quantity']);
             if(!empty($this->items[$index]['prices'][$key]['price'])){
                 if (empty($this->discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
-                    $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
-                    $sell_price = $total_sell_price / $total_quantity ;
+                    $total_sell_price = $this->num_uf($sell_price) * $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']);
+                    $sell_price = $this->num_uf($total_sell_price) / $this->num_uf($total_quantity) ;
                 }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'],3) ;
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($sell_price)-  $this->num_uf($this->items[$index]['prices'][$key]['price']),3) ;
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - $percent ),3) ;
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($this->num_uf($sell_price) - $this->num_uf($percent) ),3) ;
                 }
             }
-            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
+            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($sell_price);
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->items[$index]['prices'][$key]['price_after_desc'],3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']),3) ;
             }
             else{
-                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format((float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1),3) ;
+//                dd($total_quantity,$this->items[$index]['prices'][$key]['total_price']);
+
             }
+
         }
     }
 

@@ -116,7 +116,7 @@
                                                wire:model="end_date">
                                     </div>
                                 @endif
-                           
+
                             </div>
                             <div class="row">
                                 <div class="col-md-3">
@@ -229,7 +229,7 @@
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
-                                        <hr/>
+{{--                                        <hr/>--}}
                                     @endforeach
                                 </div>
                             </div>
@@ -343,7 +343,7 @@
                                     'wire:model' => 'invoice_no']) !!}
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
@@ -352,7 +352,7 @@
                                     'wire:model' => 'discount_amount','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_type', __('lang.source_type'). ':*', []) !!} <br>
