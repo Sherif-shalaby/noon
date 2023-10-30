@@ -429,6 +429,7 @@ select.form-control {
 
 .animate-in-page {
     animation: fadeInLeftBig 1s ease;
+    animation-delay: 1s;
 }
 
 /* IN */
@@ -581,5 +582,38 @@ body {
 }
 
 .mdi-circle::before {
-    display: none;
+    font-size: 8px;
+    margin: 2px;
+    margin-left: 5px;
+}
+
+.menu-hamburger img {
+    filter: invert(0.62) sepia(1) saturate(4.5) hue-rotate(199deg);
+    width: 24px;
+}
+
+@media (min-width:992px) {
+    .settings-menu {
+        width: 1000px !important;
+        right: -6px !important;
+    }
+}
+
+.card-deck .card {
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card-deck .card:hover {
+    transform: scale(1.05);
+    background-color: #596fd7;
+    color: white;
+}
+
+.card-title {
+    color: dimgray;
+}
+
+.card-deck .card:hover .card-title {
+    color: white;
 }

@@ -202,7 +202,7 @@
         </div>
     </div>
     <!-- Start Containerbar -->
-    <div id="containerbar" class="pl-3 pr-3 bg-white">
+    <div id="containerbar" class=" bg-white">
 
         @include('layouts.partials.header')
 
@@ -217,7 +217,7 @@
         <!-- Start Rightbar -->
         <div class="rightbar">
             <!-- Start Topbar Mobile -->
-            <div class="topbar-mobile">
+            {{-- <div class="topbar-mobile">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="mobile-logobar">
@@ -254,7 +254,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- End Topbar Mobile -->
             @yield('breadcrumbbar')
             @yield('content')
