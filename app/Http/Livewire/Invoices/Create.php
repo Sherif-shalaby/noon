@@ -733,8 +733,17 @@ class Create extends Component
     public function changeReceivedDollar()
     {
         if ($this->dollar_amount !== null && $this->dollar_amount !== 0)
-        {
-            if($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total){
+        {   
+            if($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+            }elseif($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
+                // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+            }
+            elseif($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total){
                 $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dollar_remaining = 0;
@@ -781,7 +790,13 @@ class Create extends Component
     {
         if ($this->amount !== null && $this->amount !== 0)
         {
-            if($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total){
+            if($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+            }elseif($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0){
+                
+                $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+            }
+            elseif($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total){
                 $diff_dinar = $this->amount -  $this->final_total;
                 $this->dollar_remaining = $this->dollar_remaining - ( $diff_dinar / System::getProperty('dollar_exchange'));
                 $this->dinar_remaining = 0;
@@ -815,7 +830,8 @@ class Create extends Component
             }
         }
     }
-
+        
+    
 
 
 

@@ -6,6 +6,7 @@ use App\Models\AddStockLine;
 use App\Models\Category;
 use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductDimension;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\ProductTax;
@@ -43,6 +44,7 @@ class Create extends Component
             'isExist' => 0, 'status' => '',
             'product_tax_id' => '',
             'change_current_stock' => 0,
+            'basic_unit_variation_id'=>'',
             'method' => '',
             'exchange_rate' => 0,
             'product_symbol'=>'',
@@ -56,7 +58,7 @@ class Create extends Component
         $supplier, $exchange_rate, $exchangeRate, $transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category,
-        $clear_all_input_stock_form, $product_tax, $subcategories = [] , $discount_from_original_price;
+        $clear_all_input_stock_form, $product_tax, $subcategories = [] , $discount_from_original_price,$basic_unit_variations=[],$unit_variations=[];
 
     public $rows = [[
         'id' => '', 'sku' => '', 'quantity' => '',
@@ -225,11 +227,11 @@ class Create extends Component
                     $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
-                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height ?? null;
-                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length ?? null;
-                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width ?? null;
-                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
-                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
+                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
+                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
+                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
+                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->weight ?? null;
+                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
                 $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request ?? null;
 
 
@@ -298,6 +300,15 @@ class Create extends Component
     }
     public function changeUnit($index)
     {
+        ///////////////////////////product dimension variation ///////////////////
+        foreach($this->rows as $index=>$row){
+            if(!empty($this->rows[$index]['unit_id']) && $this->rows[$index]['unit_id']!==''){
+                $this->unit_variations[]=$this->rows[$index]['unit_id'];
+            }
+        }
+        $this->basic_unit_variations = Unit::whereIn('id',$this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
+        ////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////// calculate row based on other rows//////////////
         $unit = $this->rows[$index]['unit_id'];
         $unit_index = '';
         foreach ($this->rows as $i => $item) {
@@ -324,6 +335,7 @@ class Create extends Component
     }
     public function changeBaseUnit($index)
     {
+         //////////////////////////////// calculate row based on other rows//////////////
         $base_unit = $this->rows[$index]['basic_unit_id'];
         $unit_index = '';
         $basic_unit_index = '';
@@ -441,11 +453,6 @@ class Create extends Component
                 $product->subcategory_id1 = $this->item[0]['subcategory_id1'];
                 $product->subcategory_id2 = $this->item[0]['subcategory_id2'];
                 $product->subcategory_id3 = $this->item[0]['subcategory_id3'];
-                $product->height = isset($this->item[0]['height'])?$this->item[0]['height']:0;
-                $product->length = isset($this->item[0]['length'])?$this->item[0]['length']:0;
-                $product->width = isset($this->item[0]['width'])?$this->item[0]['width']:0;
-                $product->weight = isset($this->item[0]['weight'])?$this->item[0]['weight']:0;
-                $product->size = isset($this->item[0]['size'])?$this->item[0]['size']:0;
                 $product->method = $this->item[0]['method'];
                 $product->product_symbol = !empty($this->item[0]['product_symbol'])?$this->item[0]['product_symbol']:$this->generateSymbol();
                 $product->balance_return_request=$this->item[0]['balance_return_request']??0;
@@ -459,11 +466,6 @@ class Create extends Component
                 $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ? $this->item[0]['subcategory_id1'] : null;
                 $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
                 $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
-                $product->height = !empty($this->item[0]['height'])?$this->item[0]['height']:0;
-                $product->length = !empty($this->item[0]['length'])?$this->item[0]['length']:0;
-                $product->width = !empty($this->item[0]['width'])?$this->item[0]['width']:0;
-                $product->weight = !empty($this->item[0]['weight'])?$this->item[0]['weight']:0;
-                $product->size = !empty($this->item[0]['size'])?$this->item[0]['size']:0;
                 $product->method = !empty($this->item[0]['method'])?$this->item[0]['method']:null;
                 $product->product_symbol = $this->item[0]['product_symbol'];
                 $product->balance_return_request=!empty($this->item[0]['balance_return_request'])? $this->num_uf($this->item[0]['balance_return_request']):0;
@@ -515,7 +517,7 @@ class Create extends Component
                 ];
                 $stockLine = AddStockLine::create($add_stock_data);
 
-//                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity']);
+                //                $this->updateProductQuantityStore($product->id, $transaction->store_id,  $this->rows[$index]['quantity']);
                 $this->updateProductQuantityStore($product->id,$Variation->id, $transaction->store_id, $this->num_uf($this->rows[$index]['quantity']));
 
                 if (!empty($row['prices'])) {
@@ -541,6 +543,19 @@ class Create extends Component
                         ProductPrice::create($price_data);
                     }
                 }
+            }
+            if ($this->item[0]['height'] ==(''||0) && $this->item[0]['length'] ==(''||0) && $this->item[0]['width'] ==(''||0)
+            || $this->item[0]['size'] ==(''||0) && $this->item[0]['weight'] ==(''||0)) {
+            }else{
+                ProductDimension::create([
+                    'product_id'=>$product->id,
+                    'variation_id'=>!empty($this->item[0]['basic_unit_variation_id'])?(Variation::where('product_id',$product->id)->where('unit_id',$this->item[0]['basic_unit_variation_id'])->first()->id??''):null,
+                    'height' => !empty($this->item[0]['height'])?$this->item[0]['height']:0,
+                    'length' => !empty($this->item[0]['length'])?$this->item[0]['length']:0,
+                    'width '=> !empty($this->item[0]['width'])?$this->item[0]['width']:0,
+                    'weight' => !empty($this->item[0]['weight'])?$this->item[0]['weight']:0,
+                    'size'=> !empty($this->item[0]['size'])?$this->item[0]['size']:0,
+                ]);
             }
             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
@@ -594,11 +609,12 @@ class Create extends Component
                 'subcategory_id1' => $this->edit_product['subcategory_id1'],
                 'subcategory_id2' => $this->edit_product['subcategory_id2'],
                 'subcategory_id3' => $this->edit_product['subcategory_id3'],
-                'weight' => $this->edit_product['weight'],
-                'width' => $this->edit_product['width'],
-                'height' => $this->edit_product['height'],
-                'length' => $this->edit_product['length'],
-                'size' => $this->edit_product['size'],
+                'weight' => $this->edit_product['product_dimensions']['weight'],
+                'width' => $this->edit_product['product_dimensions']['width'],
+                'height' => $this->edit_product['product_dimensions']['height'],
+                'length' => $this->edit_product['product_dimensions']['length'],
+                'size' => $this->edit_product['product_dimensions']['size'],
+                'basic_unit_variation_id' => $this->edit_product['product_dimensions']['variation_id'],
                 'method' => '',
                 'status' => '',
                 'change_current_stock' => 0,
@@ -613,41 +629,44 @@ class Create extends Component
 
 
         $variations = Variation::where('product_id', $this->edit_product['id'])->get();
-        foreach ($variations as $variation) {
-            $newRow = [
-                'id' => $variation->id,
-                'sku' => $variation->sku,
-                'quantity' => '',
-                'fill_quantity' => '',
-                'fill_type' => 'fixed',
-                'purchase_price' => '',
-                'selling_price' => '',
-                'dollar_purchase_price' => '',
-                'dollar_selling_price' => '',
-                'unit_id' => $variation->unit_id,
-                'basic_unit_id' => $variation->basic_unit_id,
-                'change_price_stock' => '',
-                'equal' => $variation->equal,
-                'prices' => [
-                    [
-                        'price_type' => null,
-                        'price_currency'=>null,
-                        'price_category' => null,
-                        'price' => null,
-                        'dinar_price' => null,
-                        'discount_quantity' => null,
-                        'bonus_quantity' => null,
-                        'price_customer_types' => null,
-                        'price_after_desc' => null,
-                        'dinar_price_after_desc' => null,
-                        'dinar_total_price' => null,
-                        'total_price' => null,
-                        'dinar_piece_price' => null,
-                        'piece_price' => null,
+        if(!empty($variations)){
+            $this->rows=[];
+            foreach ($variations as $variation) {
+                $newRow = [
+                    'id' => $variation->id,
+                    'sku' => $variation->sku,
+                    'quantity' => '',
+                    'fill_quantity' => '',
+                    'fill_type' => 'fixed',
+                    'purchase_price' => '',
+                    'selling_price' => '',
+                    'dollar_purchase_price' => '',
+                    'dollar_selling_price' => '',
+                    'unit_id' => $variation->unit_id,
+                    'basic_unit_id' => $variation->basic_unit_id,
+                    'change_price_stock' => '',
+                    'equal' => $variation->equal,
+                    'prices' => [
+                        [
+                            'price_type' => null,
+                            'price_currency'=>null,
+                            'price_category' => null,
+                            'price' => null,
+                            'dinar_price' => null,
+                            'discount_quantity' => null,
+                            'bonus_quantity' => null,
+                            'price_customer_types' => null,
+                            'price_after_desc' => null,
+                            'dinar_price_after_desc' => null,
+                            'dinar_total_price' => null,
+                            'total_price' => null,
+                            'dinar_piece_price' => null,
+                            'piece_price' => null,
+                        ],
                     ],
-                ],
-            ];
-            $this->rows[] = $newRow;
+                ];
+                $this->rows[] = $newRow;
+            }
         }
     }
     public function cancelCreateProduct()
