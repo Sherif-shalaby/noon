@@ -28,7 +28,7 @@
 
     <div class="overlay">
         <div style="width: 55%;overflow: hidden;position: relative;">
-            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/logo2.png') }}"
+            <img style="width: 100%;z-index: 10;position: relative;" src="{{ asset('images/logo3.png') }}"
                 alt="logo">
             <span class="box"></span>
         </div>
