@@ -407,6 +407,7 @@
             @include('invoices.partials.rightSidebar')
         </div>
         {!! Form::close() !!}
+        <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>
 </section>
 @include('customers.quick_add', ['quick_add' => 1])
