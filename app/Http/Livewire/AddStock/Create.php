@@ -158,6 +158,7 @@ class Create extends Component
 
         }
         if(!empty($this->searchProduct)){
+//            $variations_id = [];
             $search_result = Product::when($this->searchProduct,function ($query){
                 return $query->where('name','like','%'.$this->searchProduct.'%')
                              ->orWhere('sku','like','%'.$this->searchProduct.'%');
@@ -166,13 +167,15 @@ class Create extends Component
             if(count($search_result) == 0){
                 $variation = Variation::when($this->searchProduct,function ($query){
                     return $query->where('sku','like','%'.$this->searchProduct.'%');
-                })->pluck('product_id');
+                })->pluck('product_id','id');
                 $search_result = Product::whereIn('id',$variation);
+                $variations_id = collect($variation)->keys();
                 $search_result = $search_result->paginate();
             }
 
             if(count($search_result) === 1){
-                $this->add_product($search_result->first()->id);
+                $variation_id = !empty($variations_id) ? $variations_id->first() : null;
+                $this->add_product($search_result->first()->id,null,null,0,$variation_id);
                 $search_result = '';
                 $this->searchProduct = '';
             }
@@ -187,7 +190,6 @@ class Create extends Component
             $users = User::Notview()->pluck('name', 'id');
         }
         if(!empty($this->department_id)){
-//            dd($this->department_id);
             $products = Product::where('category_id' , $this->department_id)
                 ->orWhere('subcategory_id1',$this->department_id)
                 ->orWhere('subcategory_id2',$this->department_id)
@@ -491,7 +493,7 @@ class Create extends Component
         return redirect('/add-stock/create');
     }
 
-    public function add_product($id, $add_via = null, $index = null,$new_unit_raw=0){
+    public function add_product($id, $add_via = null, $index = null,$new_unit_raw=0,$variation_id = null){
         if(!empty($this->searchProduct)){
             $this->searchProduct = '';
 
@@ -523,24 +525,24 @@ class Create extends Component
                 else{
                     // dd(7);
                     $show_product_data = true;
-                    $this->addNewProduct($variations,$product,$show_product_data);
+                    $this->addNewProduct($variations,$product,$show_product_data,$index,$variation_id);
                 }
             }
             else{
                 $show_product_data = true;
-                $this->addNewProduct($variations,$product,$show_product_data,$index);
+                $this->addNewProduct($variations,$product,$show_product_data,$index,$variation_id);
             }
         }
 
     }
 
 //    public function getCurrentStock($product_id){
-    public function addNewProduct($variations,$product,$show_product_data, $index = null){
+    public function addNewProduct($variations,$product,$show_product_data, $index = null,$variation_id ){
 //        $current_stock = $this->getCurrentStock($product->id);
           $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
-            'variation_id' => $variations->first()->id ?? null,
+            'variation_id' => !empty($variation_id) ? $variation_id : ($variations->first()->id ?? null),
             'product' => $product,
             'purchase_price' => null,
             'dollar_purchase_price' => null,
