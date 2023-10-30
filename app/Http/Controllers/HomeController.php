@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BalanceRequestNotification;
 use App\Models\System;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;

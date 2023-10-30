@@ -74,7 +74,7 @@
                                         <button type="button" class="btn btn-secondary" id="search_button"><i
                                                 class="fa fa-search"></i>
                                         </button>
-                                        <input type="search" name="search_product" id="search_product" wire:model.debounce.500ms="searchProduct"
+                                        <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
                                             placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                             class="form-control" autocomplete="off">
                                         {{-- ++++++++++ search_result  ++++++++++ --}}
@@ -131,15 +131,16 @@
                                                 <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
                                                 <th style="width: 10%">@lang('lang.quantity')</th>
                                                 {{-- <th style="width: 10%">@lang('lang.purchase_price')$</th>  --}}
-                                                <th style="width: 25%">@lang('lang.selling_price')$</th>
+                                                <th style="width: 20%">@lang('lang.selling_price')$</th>
                                                 {{-- <th style="width: 10%">@lang('lang.sub_total')$</th>  --}}
                                                 {{-- <th style="width: 10%">@lang('lang.purchase_price')  </th> --}}
-                                                <th style="width: 25%">@lang('lang.selling_price') </th>
+                                                <th style="width: 20%">@lang('lang.selling_price') </th>
                                                 {{-- <th style="width: 10%">@lang('lang.sub_total')</th> --}}
                                                 {{-- <th style="width: 10%">@lang('lang.cost')$</th>  --}}
                                                 <th style="width: 10%">@lang('lang.total_cost')$</th>
                                                 {{-- <th style="width: 10%">@lang('lang.cost') </th>  --}}
                                                 <th style="width: 10%">@lang('lang.total_cost')</th>
+                                                <th style="width: 10%">@lang('lang.current_stock')</th>
                                                 <th style="width: 10%">@lang('lang.delete')</th>
                                             </tr>
                                         </thead>

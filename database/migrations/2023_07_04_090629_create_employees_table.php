@@ -36,6 +36,13 @@ class CreateEmployeesTable extends Migration {
 			$table->string('working_day_per_weak')->nullable();
 			$table->string('check_in')->nullable();
 			$table->string('check_out')->nullable();
+
+            // Evening Shift columns
+            // $table->string('evening_shift_checkbox')->nullable();
+			// $table->string('evening_shift_check_in')->nullable();
+			// $table->string('evening_shift_check_out')->nullable();
+
+
             $table->integer('number_of_days_any_leave_added')->nullable();
             $table->string('working_day_per_week')->nullable();
 			$table->boolean('fixed_wage')->default('0');

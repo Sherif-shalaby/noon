@@ -91,6 +91,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductStore::class);
     }
+    public function product_dimensions()
+    {
+        return $this->hasOne(ProductDimension::class);
+    }
     public function variations()
     {
         return $this->hasMany('App\Models\Variation');
@@ -128,5 +132,10 @@ class Product extends Model
     public function sell_lines()
     {
         return $this->hasMany(SellLine::class);
+    }
+    // +++++++++++++++++++++ M:M Relationship : product and employee : "products" which "employee" are resposible for +++++++++++++++++
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class);
     }
 }

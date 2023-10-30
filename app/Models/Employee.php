@@ -35,6 +35,10 @@ class Employee extends Model
     {
         return $this->hasMany(WageTransaction::class);
     }
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
     public static function getWeekDays(){
         return [
             'sunday' => __('lang.sunday'),
@@ -87,5 +91,10 @@ class Employee extends Model
             $employees = $query->pluck('user.name', 'id');
         }
         return $employees->toArray();
+    }
+    // +++++++++++++++++++++ M:M Relationship : employee and product : "products" which "employee" are resposible for +++++++++++++++++
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'employee_products', 'employee_id', 'product_id');
     }
 }

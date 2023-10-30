@@ -116,7 +116,7 @@
                     <div class="col-md-1">
                         {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('product_symbol',  null, [
-                            'class' => 'form-control','required'
+                            'class' => 'form-control',
                         ]) !!}
                         <br>
                         @error('product_symbol')
@@ -225,23 +225,36 @@
                                     data-toggle="modal" data-target="#add_product_tax_modal"
                                     data-select_category="2"><i class="fas fa-plus"></i></button>
                         </div>
-                    </div>  
+                    </div>
                     {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
                         {!! Form::text('balance_return_request',  null, [
                             'class' => 'form-control',
                         ]) !!}
-                    </div>                 
+                    </div>
+                    
+                    <div class="col-md-12 pt-5">
+                        <div class="col-md-3">
+                            <button class="btn btn btn-primary add_unit_row" type="button">
+                                <i class="fa fa-plus"></i> @lang('lang.add')
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12 product_unit_raws ">
+                        @include('products.product_unit_raw')
+                        <input type="hidden" id="raw_unit_index" value="0" />
+                    </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('height', isset($recent_product->height) ? $recent_product->height : 0, [
+                                {!! Form::text('height', isset($recent_product->product_dimensions->height) ? $recent_product->product_dimensions->height : 0, [
                                     'class' => 'form-control height',
                                 ]) !!}
                                 <br>
@@ -252,9 +265,9 @@
 
 
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('length', isset($recent_product->height) ? $recent_product->length : 0, [
+                                {!! Form::text('length', isset($recent_product->product_dimensions->length) ? $recent_product->product_dimensions->length : 0, [
                                     'class' => 'form-control length',
                                 ]) !!}
                                 <br>
@@ -263,9 +276,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('width', isset($recent_product->width) ? $recent_product->width : 0, [
+                                {!! Form::text('width', isset($recent_product->product_dimensions->width) ? $recent_product->product_dimensions->width : 0, [
                                     'class' => 'form-control width',
                                 ]) !!}
                                 <br>
@@ -273,9 +286,9 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('size', isset($recent_product->size) ? $recent_product->size : 0, [
+                                {!! Form::text('size', isset($recent_product->product_dimensions->size) ? $recent_product->product_dimensions->size : 0, [
                                     'class' => 'form-control size',
                                 ]) !!}
                                 <br>
@@ -283,9 +296,9 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-2">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('weight', isset($recent_product->weight) ? $recent_product->weight : 0, [
+                                {!! Form::text('weight', isset($recent_product->product_dimensions->weight) ? $recent_product->product_dimensions->weight : 0, [
                                     'class' => 'form-control',
                                 ]) !!}
                                 <br>
@@ -293,38 +306,17 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+                            <div class="col-md-2">
+                                {!! Form::label('variation', __('lang.basic_unit_for_import_product'), ['class' => 'h5 pt-3']) !!}
+                                {!! Form::select('variation_id', [], null, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.please_select'),
+                                    'id' => 'variation_id',
+                                ]) !!}
+                            </div>
                         </div>
 
                     </div>
-                    <div class="col-md-12">
-                        <div class="col-md-3">
-                            <button class="btn btn btn-primary add_unit_row" type="button">
-                                <i class="fa fa-plus"></i> @lang('lang.add')
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-md-12 product_unit_raws ">
-                        @if(!empty($recent_product->variations))
-                            @foreach($recent_product->variations as $index=>$variation)
-                                @include('products.product_unit_raw', [
-                                'index' => $index ,
-                                'variation'=>$variation,
-                                ])
-                            @endforeach
-                        @else
-                            @include('products.product_unit_raw', ['index' => 0])
-                        @endif
-                        @php
-                        if (!empty($recent_product->variations) && count(($recent_product->variations))>0 ){
-                            $index = count($recent_product->variations) - 1;
-                        }
-                        else{
-                            $index = 0;
-                        }
-                        @endphp
-                        <input type="hidden" id="raw_unit_index" value="{{$index}}" />
-                    </div>
-
                     {{-- crop image --}}
                     <div class="col-md-12 pt-5">
                         <div class="row">
@@ -359,20 +351,20 @@
                                             </div>
                                             <div class="col-4 offset-1">
                                                 <div class="preview-image-container">
-                                                    @if (!empty($recent_product->image))
-                                                        <div class="preview">
-                                                            <img src="{{ asset('uploads/products/' . $recent_product->image) }}"
-                                                                 id="image_footer" alt="">
-                                                            <button type="button"
-                                                                    class="btn btn-xs btn-danger delete-btn remove_image "
-                                                                    data-type="image"><i style="font-size: 25px;"
-                                                                                         class="fa fa-trash"></i></button>
-                                                            <span class="btn btn-xs btn-primary  crop-btn"
-                                                                  id="crop-image-btn" data-toggle="modal"
-                                                                  data-target="#imageModal"><i style="font-size: 25px;"
-                                                                                               class="fas fa-crop"></i></span>
-                                                        </div>
-                                                    @endif
+{{--                                                    @if (!empty($recent_product->image))--}}
+{{--                                                        <div class="preview">--}}
+{{--                                                            <img src="{{ asset('uploads/products/' . $recent_product->image) }}"--}}
+{{--                                                                 id="image_footer" alt="">--}}
+{{--                                                            <button type="button"--}}
+{{--                                                                    class="btn btn-xs btn-danger delete-btn remove_image "--}}
+{{--                                                                    data-type="image"><i style="font-size: 25px;"--}}
+{{--                                                                                         class="fa fa-trash"></i></button>--}}
+{{--                                                            <span class="btn btn-xs btn-primary  crop-btn"--}}
+{{--                                                                  id="crop-image-btn" data-toggle="modal"--}}
+{{--                                                                  data-target="#imageModal"><i style="font-size: 25px;"--}}
+{{--                                                                                               class="fas fa-crop"></i></span>--}}
+{{--                                                        </div>--}}
+{{--                                                    @endif--}}
                                                 </div>
                                             </div>
                                         </div>

@@ -68,6 +68,7 @@
                                     <th>@lang('lang.size')</th>
                                     {{-- <th>@lang('lang.unit')</th> --}}
                                     <th>@lang('lang.weight')</th>
+                                    <th>{{__('lang.basic_unit_for_import_product')}}</th>
                                     <th>@lang('lang.stores')</th>
                                     <th>@lang('lang.brand')</th>
 {{--                                    <th>@lang('lang.discount')</th>--}}
@@ -86,19 +87,60 @@
                                     <td>
                                         <input type="checkbox" name="product_selected_delete" class="product_selected_delete" value=" {{ $product->id }} " data-product_id="{{ $product->id }}" />
                                     </td>
-                                    <td>{{$product->product_stores->sum('quantity_available')}}</td>
+                                    <td>@foreach($product->product_stores as $store)
+                                            @php
+                                            $unit=!empty($store->variations)?$store->variations:[];
+                                            $amount=0;
+                                            @endphp
+                                        @endforeach
+
+                                    @foreach($product->variations as $variation)
+                                        @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
+                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available')}}<br>
+                                        {{-- @elseif($unit->basic_unit_id == $variation->unit_id)
+                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available') * $variation->equal}}<br> --}}
+                                        @else
+                                        <span class="product_unit" data-unit_id="{{$variation->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
+                                            {{-- @foreach($product->variations as $v_unit)
+                                                @if($v_unit->unit_id == $var_id)
+                                                    @php
+                                                    $amount *=$v_unit->equal;
+                                                    $basic_unit=$v_unit->basic_unit_id;
+                                                    foreach($variations as $var){
+                                                        if($basic_unit ==$var->unit_id){
+                                                            $amount *=$var->equal;
+                                                            $basic_unit=$var->basic_unit_id;
+                                                            if($product_store->variations->unit_id != $var->basic_unit_id){
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                    echo $quantity_available= $product_store->quantity_available * $amount;
+                                                    break;
+                                                    @endphp
+                                                @endif --}}
+                                            {{-- @endforeach --}}
+                                        @endif
+
+                                    @endforeach
+                                    </td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
                                         {{$product->subCategory1->name??''}} <br>
                                         {{$product->subCategory2->name??''}} <br>
                                         {{$product->subCategory3->name??''}}
                                     </td>
-                                    <td>{{$product->height}}</td>
-                                    <td>{{$product->length}}</td>
-                                    <td>{{$product->width}}</td>
-                                    <td><span class="text-primary">{{$product->size}}</span></td>
+                                    <td>{{$product->product_dimensions->height??0}}</td>
+                                    <td>{{$product->product_dimensions->length??0}}</td>
+                                    <td>{{$product->product_dimensions->width??0}}</td>
+                                    <td><span class="text-primary">{{$product->product_dimensions->size??0}}</span></td>
                                     {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
-                                    <td>{{$product->weight}}</td>
+                                    <td>{{$product->product_dimensions->weight??0}}</td>
+                                    <td>
+                                        {{!empty($product->product_dimensions->variations)?
+                                        (!empty($product->product_dimensions->variations->unit)?$product->product_dimensions->variations->unit->name:
+                                        ''):''}}
+                                    </td>
                                     <td>
                                         @foreach($product->stores as $store)
                                         {{$store->name}}<br>
@@ -178,7 +220,7 @@
 
                                     <td colspan="5" style="text-align: right">@lang('lang.total')</td>
                                     <td id="sum"></td>
-                                    <td colspan="12"></tdcol>
+                                    <td colspan="12"></td>
                                 </tfoot>
                             </table>
                             </div>
@@ -234,6 +276,9 @@
     });
 </script>
     <script>
+        $(document).on('click', '.product_unit', function() {
+
+        });
         $(document).on('click', '#delete_all', function() {
             var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
             var selected_delete_ids = [];

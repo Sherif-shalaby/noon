@@ -2,11 +2,23 @@
 @section('title', __('lang.jobs'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
+        {{-- ///////// left side //////////// --}}
+        <div class="col-md-8 col-lg-8">
+            <h4 class="page-title">@lang('lang.add_employee')</h4>
+            <div class="breadcrumb-list">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                    <li class="breadcrumb-item active"><a href="{{route('employees.index')}}">@lang('lang.employees')</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@lang('lang.add_employee')</li>
+                </ol>
+            </div>
+        </div>
+        {{-- ///////// right side //////////// --}}
         <div class="widgetbar">
             <a  class="btn btn-primary" href="{{route('employees.index')}}">@lang('lang.employee')</a>
-            {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
-            {{--                            class="dripicons-plus"></i>--}}
-            {{--                        @lang('lang.add_new_employee')</a>--}}
+            {{--  <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
+            {{--             class="dripicons-plus"></i>--}}
+            {{--              @lang('lang.add_new_employee')</a>--}}
         </div>
     </div>
 @endsection
@@ -20,21 +32,68 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            {{-- ////////////////////// employee's products ////////////////////// --}}
+                            <div class="col-md-12 text-center">
+                                <h3>@lang('lang.employee_products')</h3>
+                            </div>
+                            {{-- ======== Filters ======== --}}
+                            <div class="col-lg-12">
+                                <div class="container-fluid">
+                                    @include('employees.partials.filters')
+                                </div>
+                            </div>
                             <div class="col-sm-12">
-                                <form class="form-group" id="new_employee_form"
-                                      action="{{ route('employees.store') }}" method="POST"
-                                      enctype="multipart/form-data">
+                                <form class="form-group" id="productForm" action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
+                                    {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
+                                    <div class="row mt-4 m-auto">
+                                        {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
+                                        <table id="productTable" class="table table-striped table-bordered m-auto">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    {{-- "select_all" checkbox --}}
+                                                    <th> <input type="checkbox" id="select_all_ids"/> </th>
+                                                    <th>@lang('lang.product_name')</th>
+                                                    <th>@lang('lang.sku')</th>
+                                                    <th>@lang('lang.category')</th>
+                                                    <th>@lang('lang.subcategories_name')</th>
+                                                    <th>@lang('lang.brand')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($employee_products as $index=>$product)
+                                                    <tr>
+                                                        <td>{{ $index+1 }}</td>
+                                                        {{-- "select" checkbox --}}
+                                                        <td>
+                                                            {{-- get "all checked products" --}}
+                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
+                                                        </td>
+                                                        <td>{{$product->name}}</td>
+                                                        <td>{{$product->sku}}</td>
+                                                        <td>{{$product->category->name??''}}</td>
+                                                        <td>
+                                                            {{$product->subCategory1->name??''}} <br>
+                                                            {{$product->subCategory2->name??''}} <br>
+                                                            {{$product->subCategory3->name??''}}
+                                                        </td>
+                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <br/>
+                                    {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                     <div class="row">
+                                        {{-- ============= name ============= --}}
                                         <div class="col-sm-6">
                                             <label for="fname">@lang('lang.name'):*</label>
                                             <input type="text" class="form-control" name="name" id="name" required
                                                    placeholder="Name">
                                         </div>
-                                        <div class="col-sm-6">
-                                            <label for="store_id">@lang('lang.stores')</label>
-                                            {!! Form::select('store_id[]', $stores, !empty($stores) && count($stores) > 0 ? array_key_first($stores) : false, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
-                                        </div>
+                                        {{-- ============= email ============= --}}
                                         <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
                                                 <small>(@lang('lang.it_will_be_used_for_login'))</small></label>
@@ -42,20 +101,29 @@
                                                    placeholder="Email">
                                         </div>
                                     </div>
-
                                     <div class="row mt-4">
-
+                                        {{-- ============= password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
-                                                   required placeholder="Create New Password">
+                                                    placeholder="Create New Password">
                                         </div>
+                                        {{-- ============= confirm_password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
-                                                   name="password_confirmation" required placeholder="Conform Password">
+                                                     name="password_confirmation" placeholder="Conform Password">
                                         </div>
-
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-6">
+                                            <label for="branch_id">@lang('lang.branch')</label>
+                                            {!! Form::select('branch_id', $branches, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select') , 'data-live-search' => 'true', 'id' => 'branch_id']) !!}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="store_id">@lang('lang.stores')</label>
+                                            {!! Form::select('store_id[]', $stores, null, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
+                                        </div>
                                     </div>
                                     <div class="row mt-4">
 
@@ -73,14 +141,15 @@
 
                                     </div>
                                     <div class="row mt-4">
-
+                                        {{-- ============= job_type ============= --}}
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
                                             {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
                                         </div>
+                                        {{-- ============= phone_number ============= --}}
                                         <div class="col-sm-6">
                                             <label for="mobile">@lang('lang.phone_number'):*</label>
-                                            <input type="mobile" class="form-control" name="mobile" id="mobile" required
+                                            <input type="mobile" class="form-control" name="mobile" id="mobile"
                                                    placeholder="@lang('lang.mobile')">
                                         </div>
 
@@ -126,46 +195,77 @@
                                     </div>
                                     <br>
                                     <br>
+                                    {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label
                                                 for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
                                             <table>
                                                 <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>@lang('lang.check_in')</th>
-                                                    <th> @lang('lang.check_out')</th>
-                                                </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>@lang('lang.check_in')</th>
+                                                        <th>@lang('lang.check_out')</th>
+                                                        <th>@lang('lang.evening_shift')</th>
+                                                        <th id="label1" class="hidden">@lang('lang.check_in')</th>
+                                                        <th id="label2" class="hidden">@lang('lang.check_out')</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach ($week_days as $key => $week_day)
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-group">
-                                                                <div class="i-checks">
-                                                                    <input id="working_day_per_week{{ $key }}"
-                                                                           name="working_day_per_week[{{ $key }}]"
-                                                                           type="checkbox" value="1">
-                                                                    <label
-                                                                        for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                    @foreach ($week_days as $key => $week_day)
+                                                        <tr>
+                                                            {{-- "working_day_per_week" checkbox --}}
+                                                            <td>
+                                                                <div class="form-group">
+                                                                    <div class="i-checks">
+                                                                        <input id="working_day_per_week{{ $key }}" name="working_day_per_week[{{ $key }}]" type="checkbox" value="1">
+                                                                        <label for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker',]) !!}
-                                                        </td>
-                                                        <td>
-                                                            {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker',]) !!}
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                            </td>
+                                                            {{-- "check_in" inputField --}}
+                                                            <td>
+                                                                {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
+                                                                {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}"> --}}
+                                                                <input type="time" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}">
+                                                            </td>
+                                                            {{-- "check_out" inputField --}}
+                                                            <td>
+                                                                {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}"> --}}
+                                                                {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
+                                                                <input type="time" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}">
+                                                            </td>
+                                                            {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
+                                                            <td >
+                                                                <input type="checkbox" class="checkbox-toggle" id="checkbox2{{ $key }}" name="evening_shift_checkbox[{{ $key }}]">
+                                                            </td>
+                                                            {{--  "تسجيل الدخول" , "تسجيل الخروج" --}}
+                                                            <td>
+                                                                <table class="hidden inputFields_evening_shift" id="inputFields_evening_shift{{ $key }}">
+                                                                    <tr>
+                                                                        {{-- تسجيل الدخول --}}
+                                                                        <td>
+                                                                            {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}"> --}}
+                                                                            <input type="time" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}">
+                                                                        </td>
+                                                                        {{-- تسجيل الخروج --}}
+                                                                        <td>
+                                                                            {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}"> --}}
+                                                                            <input type="time" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}">
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                            {{-- <br/>  --}}
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                     <br>
                                     <br>
+                                    {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
                                     <div class="row">
                                         <div class="col-md-12 text-center">
                                             <h3>@lang('lang.user_rights')</h3>
@@ -175,6 +275,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- +++++++++++++ save Button +++++++++++ --}}
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
                                             <div class="text-right">
@@ -193,10 +294,21 @@
     </div>
 
 @endsection
-@section('javascript')
 
+@push('javascripts')
     <script>
-        $( document ).ready(function() {
+        $(document).on("change","#branch_id",function () {
+            $.ajax({
+                type: "get",
+                url: "/get_branch_stores/"+$(this).val(),
+                dataType: "html",
+                success: function (response) {
+                    console.log(response)
+                    $("#store_id").empty().append(response).change();
+                }
+            });
+        });
+        $(document ).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
                 var checked_all = $(this).prop('checked');
@@ -267,14 +379,143 @@
                     $('.check_box_delete').prop('checked', false);
                 }
             });
-
             $(document).on('focusout', '.check_in', function() {
                 $('.check_in').val($(this).val())
             })
             $(document).on('focusout', '.check_out', function() {
                 $('.check_out').val($(this).val())
             })
+            // +++++++++++++++++ Evening Shift +++++++++++++++++
+            // Get all the checkboxes and input fields
+            const checkboxes = document.querySelectorAll('.checkbox-toggle');
+            const inputFields = document.querySelectorAll('.inputFields_evening_shift');
+            const label1 = document.getElementById('label1');
+            const label2 = document.getElementById('label2');
+            // when checkbox of "evening shift" is "checked" then appear "two input fields"
+            checkboxes.forEach((checkbox, index) =>
+            {
+                checkbox.addEventListener('change', function ()
+                {
+                    if (checkbox.checked){
+                        inputFields[index].classList.remove('hidden');
+                        updateLabelsVisibility();
+                    }else{
+                        inputFields[index].classList.add('hidden');
+                        updateLabelsVisibility();
+                    }
+                });
+                // Check the initial state of checkboxes and show/hide labels accordingly
+                if (checkbox.checked) {
+                    label1.classList.remove('hidden');
+                    label2.classList.remove('hidden');
+                }else{
+                    label1.classList.add('hidden');
+                    label2.classList.add('hidden');
+                }
+                // ++++++++++++++++++++ updateLabelsVisibility() ++++++++++++++++++++
+                function updateLabelsVisibility()
+                {
+                    let anyCheckboxChecked = false;
+                    checkboxes.forEach(function(checkbox)
+                    {
+                        if (checkbox.checked) {
+                            anyCheckboxChecked = true;
+                        }
+                    });
+                    if (anyCheckboxChecked) {
+                        label1.classList.remove('hidden');
+                        label2.classList.remove('hidden');
+                    }else {
+                        label1.classList.add('hidden');
+                        label2.classList.add('hidden');
+                    }
+                }
+                // Initially update labels visibility based on the checked state of checkboxes
+                updateLabelsVisibility();
+            });
+            // // ======================================== Employee Products Table ========================================
+            // // +++++++++++++++ updateSubcategories() +++++++++++++++
+            // // Function to update subcategories based on the selected category ID
+            // function updateSubcategories()
+            // {
+            //     console.log( $('body').find('.category option:selected').val() );
+            //     $.ajax({
+            //         method : "get",
+            //         url: "/employees/create/",
+            //         // get "all inputFields of form that have name and value"
+            //         // data: $('#filter_form').serialize(),
+            //         data : {
+            //             category_id : $('body').find('.category option:selected').val(),
+            //             subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
+            //             subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
+            //             subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
+            //             brand_id : $('body').find('.brand option:selected').val(),
+            //         },
+            //         success: function (response) {
+            //             console.log("The Response Data : ");
+            //             console.log(response)
+            //             // Clear existing table content
+            //             $('#productTable tbody').empty();
+            //             // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
+            //             // Assuming response.products is the array of products received from the server response
+            //             $.each(response, function(index, product) {
+            //                 console.log(product);
+            //                 var row = '<tr>' +
+            //                     '<td>' + (index + 1) + '</td>' +
+            //                     '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
+            //                     '<td>' + product.name + '</td>' +
+            //                     '<td>' + product.sku + '</td>' +
+            //                     '<td>' + (product.category ? product.category.name : '') + '</td>' +
+            //                     '<td>' +
+            //                     (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
+            //                     (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
+            //                     (product.subCategory3 ? product.subCategory3.name : '') +
+            //                     '</td>' +
+            //                     '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
+            //                     '</tr>';
+            //                 $('#productTable tbody').append(row);
+            //             });
+
+            //         },
+            //         error: function (error) {
+            //             console.error("Error fetching filtered products:", error);
+            //         }
+            //     });
+            // }
+            // // when clicking on "filter button" , call "updateSubcategories()" method
+            // $('#filter_btn').click(function(){
+            //     updateSubcategories();
+            // });
+            // ======================================== Checkboxes of "products" table ========================================
+            // when click on "all checkboxs" , it will checked "all checkboxes"
+            $('#select_all_ids').click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'));
+            });
+            // ++++++++++++++++++++++++++++ submit button +++++++++++++++++++++++++
+            // $('#submit-btn').click(function(event) {
+
+            //     // Prevent the default form submission behavior
+            //     event.preventDefault();
+            //     // Serialize the form data from the form with ID 'productForm'
+            //     var formData = $('#productForm').serialize();
+
+            //     // Make the AJAX request
+            //     $.ajax({
+            //         type: 'POST',
+            //         url: '/products',
+            //         data: formData,
+            //         dataType: 'json',
+            //         success: function(response) {
+            //             console.log(response.message); // Output success message
+            //             // Handle success, for example, show a success message to the user
+            //         },
+            //         error: function(error) {
+            //             console.error('Error:', error);
+            //             // Handle errors, for example, show an error message to the user
+            //         }
+            //     });
+            // });
+
         });
     </script>
-
-@endsection
+@endpush

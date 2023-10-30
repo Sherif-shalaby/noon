@@ -12,8 +12,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
-<!-- Switchery js -->
-{{-- <script src="{{asset('plugins/switchery/switchery.min.js')}}"></script> --}}
 <!-- Datatable js -->
 <script src="{{asset('plugins/datatables/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
@@ -44,13 +42,12 @@
 <script type="text/javascript" src="{{ asset('js/submitform/submit-form.js') }}"></script>
 <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('js/lang/' . app()->getLocale() . '.js') }}"></script>
-<script></script>
-
-
 <!-- Pnotify js -->
 <script src="{{ asset('plugins/pnotify/js/pnotify.custom.min.js') }}"></script>
 <script src="{{ asset('js/custom/custom-pnotify.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- Switchery js -->
+<script src="{{asset('plugins/switchery/switchery.min.js')}}"></script>
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
 <script>
@@ -59,6 +56,19 @@
         $.ajax({
             method: "get",
             url: "/create-or-update-system-property/clear_all_input_stock_form/" + value,
+            contentType: "html",
+            success: function(result) {
+                if (result.success) {
+                    Swal.fire("Success", response.msg, "success");
+                }
+            },
+        });
+    });
+    $(document).on("click", "#discount_from_original_price", function() {
+        var value = $('#discount_from_original_price').is(':checked') ? 1 : 0;
+        $.ajax({
+            method: "get",
+            url: "/create-or-update-system-property/discount_from_original_price/" + value,
             contentType: "html",
             success: function(result) {
                 if (result.success) {
@@ -121,10 +131,10 @@
                 }).then((result) => {
                     if (result) {
                         $.ajax({
-                            url: '/user/check-password/',
+                            url: '{{ route('check_password') }}',
                             method: 'POST',
                             data: {
-                                value: result
+                                value: result,
                             },
                             dataType: 'json',
                             success: (data) => {

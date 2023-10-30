@@ -42,11 +42,22 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
-                                {!! Form::select('customer_type_id', $customer_types, null, [
+                                {{-- {!! Form::select('customer_type_id', $customer_types, null, [
                                     'class' => 'form-control select2',
                                     'required',
                                     'placeholder' => __('lang.please_select'),
-                                ]) !!}
+                                ]) !!} --}}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select('customer_type_id', $customer_types, null, [
+                                        'class' => 'form-control select2',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                    {{-- "add new customer_type" button --}}
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal">
+                                       <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
                                 @error('customer_type_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
@@ -263,7 +274,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -281,6 +292,9 @@
             <!-- End col -->
             <!-- ++++++++++++ Crop_Image Modal ++++++++++++ -->
             {{-- @include('categories.modalCrop')  --}}
+            {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
+            @include('customer_types.create')
+
         </div>
     </div>
 @endsection
