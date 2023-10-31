@@ -103,23 +103,6 @@ class Create extends Component
             'rows.0.prices.0.discount_quantity.required_if' => __('lang.required')
         ];
     }
-    public function showHideTax()
-    {
-        $this->item[0]['show_tax'] = !$this->item[0]['show_tax'];
-    }
-    public function showHideSize()
-    {
-        $this->item[0]['show_size'] = !$this->item[0]['show_size'];
-    }
-    public function showPrices($index)
-    {
-        $this->rows[$index]['show_prices'] = true;
-    }
-    public function stayShow($index)
-    {
-        $this->rows[$index]['show_prices'] =
-            !$this->rows[$index]['show_prices'];
-    }
     public function updatedInputs()
     {
         $this->validate([
@@ -147,6 +130,23 @@ class Create extends Component
             // 'rows.*.prices.*.bonus_quantity' => 'required',
         ]);
         $this->messages();
+    }
+    public function showHideTax()
+    {
+        $this->item[0]['show_tax'] = !$this->item[0]['show_tax'];
+    }
+    public function showHideSize()
+    {
+        $this->item[0]['show_size'] = !$this->item[0]['show_size'];
+    }
+    public function showPrices($index)
+    {
+        $this->rows[$index]['show_prices'] = true;
+    }
+    public function stayShow($index)
+    {
+        $this->rows[$index]['show_prices'] =
+            !$this->rows[$index]['show_prices'];
     }
     public function changeSize()
     {
@@ -586,7 +586,7 @@ class Create extends Component
                     'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
                     'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
                     'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
-                    'width ' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
+                    'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
                     'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
                     'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
                 ]);
@@ -817,12 +817,10 @@ class Create extends Component
     public function changeFilling($index)
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
-            if ($this->rows[$index]['purchase_price'] != "") {
+            if ($this->rows[$index]['purchase_price'] != "" && ($this->rows[$index]['fill_currency'] == "dollar")) {
                 if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    if ($this->rows[$index]['fill_currency'] == "dollar") {
-                        $this->rows[$index]['dollar_selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']), 3);
-                        $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate, 3);
-                    }
+                    $this->rows[$index]['dollar_selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']), 3);
+                    $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate, 3);
                 } else {
                     $percent = ($this->num_uf($this->rows[$index]['dollar_purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
                     $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent), 3);
@@ -836,12 +834,10 @@ class Create extends Component
     public function changeDollarFilling($index)
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
-            if ($this->rows[$index]['dollar_purchase_price'] != "") {
+            if ($this->rows[$index]['dollar_purchase_price'] != "" && ($this->rows[$index]['fill_currency'] == "dinar")) {
                 if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    if ($this->rows[$index]['fill_currency'] == "dinar") {
-                        $this->rows[$index]['selling_price'] = number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + (float)$this->rows[$index]['fill_quantity']), 3);
-                        $this->rows[$index]['dollar_selling_price'] = number_format((float)$this->num_uf($this->rows[$index]['selling_price']) / (float)$this->exchange_rate, 3);
-                    }
+                    $this->rows[$index]['selling_price'] = number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + (float)$this->rows[$index]['fill_quantity']), 3);
+                    $this->rows[$index]['dollar_selling_price'] = number_format((float)$this->num_uf($this->rows[$index]['selling_price']) / (float)$this->exchange_rate, 3);
                 } else {
                     $percent = ($this->num_uf($this->rows[$index]['purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
                     $this->rows[$index]['selling_price'] =  number_format(($this->num_uf($this->rows[$index]['purchase_price']) + $percent), 3);

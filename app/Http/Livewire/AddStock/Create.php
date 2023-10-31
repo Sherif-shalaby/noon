@@ -531,6 +531,9 @@ class Create extends Component
 //    public function getCurrentStock($product_id){
     public function addNewProduct($variations,$product,$show_product_data, $index = null){
 //        $current_stock = $this->getCurrentStock($product->id);
+// !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 :
+// !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 :
+// dd($variations->first()->id===$product->product_dimensions->variation_id);
           $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -544,10 +547,10 @@ class Create extends Component
             'fill_type' => 'fixed',
             'sub_total' => 0,
             'dollar_sub_total' => 0,
-            'size' => !empty($product->product_dimensions->size) ? $product->product_dimensions->size : 0,
-            'total_size' => !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 : 0,
-            'weight' => !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0,
-            'total_weight' =>!empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 : 0,
+            'size' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->size) && $variations->first()->id===$product->product_dimensions->variation_id) ? $product->product_dimensions->size :0):0,
+            'total_size' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->size) && $variations->first()->id==$product->product_dimensions->variation_id) ? $product->product_dimensions->size * 1 :0):0,
+            'weight' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->weight) && $variations->first()->id==$product->product_dimensions->variation_id) ? $product->product_dimensions->weight :0):0,
+            'total_weight' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->weight) && $variations->first()->id==$product->product_dimensions->variation_id) ? $product->product_dimensions->weight * 1 :0):0,
             'dollar_cost' => 0,
             'cost' => 0,
             'dollar_total_cost' => 0,
@@ -693,13 +696,22 @@ class Create extends Component
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
+       $product_data = Product::find($variant->product_id);
        $product=$this->items[$index]['product'];
-       $this->items[$index]['size'] = !empty($product->product_dimensions->size) ? $product->product_dimensions->size : 0;
-       $this->items[$index]['total_size'] = !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 : 0;
-       $this->items[$index]['weight'] = !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0;
-       $this->items[$index]['total_weight'] =!empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 : 0;
+       if(!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id==$variant->id){
+            $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
+            $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
+            $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
+            $this->items[$index]['total_weight'] =!empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
+       }else{
+        $this->items[$index]['size'] = 0;
+        $this->items[$index]['total_size'] = 0;
+        $this->items[$index]['weight'] =0;
+        $this->items[$index]['total_weight'] =0;
+       }
        $this->items[$index]['unit'] = $variant->unit->name??'';
        $this->items[$index]['base_unit_multiplier'] = $variant->equal??0;
+    //    dd($product_data->product_dimensions);
     }
 
     public function changeFilling($index){
