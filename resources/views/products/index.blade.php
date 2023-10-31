@@ -96,30 +96,9 @@
 
                                     @foreach($product->variations as $variation)
                                         @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
-                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available')}}<br>
-                                        {{-- @elseif($unit->basic_unit_id == $variation->unit_id)
-                                            {{$variation->unit->name}}  {{$product->product_stores->sum('quantity_available') * $variation->equal}}<br> --}}
+                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
                                         @else
-                                        <span class="product_unit" data-unit_id="{{$variation->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
-                                            {{-- @foreach($product->variations as $v_unit)
-                                                @if($v_unit->unit_id == $var_id)
-                                                    @php
-                                                    $amount *=$v_unit->equal;
-                                                    $basic_unit=$v_unit->basic_unit_id;
-                                                    foreach($variations as $var){
-                                                        if($basic_unit ==$var->unit_id){
-                                                            $amount *=$var->equal;
-                                                            $basic_unit=$var->basic_unit_id;
-                                                            if($product_store->variations->unit_id != $var->basic_unit_id){
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    echo $quantity_available= $product_store->quantity_available * $amount;
-                                                    break;
-                                                    @endphp
-                                                @endif --}}
-                                            {{-- @endforeach --}}
+                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
                                         @endif
 
                                     @endforeach
@@ -277,7 +256,20 @@
 </script>
     <script>
         $(document).on('click', '.product_unit', function() {
-
+            var $this=$(this);
+            var variation_id=$(this).data('variation_id');
+            var product_id=$(this).data('product_id');
+            $.ajax({
+                type: "get",
+                url: "/product/get-unit-store",
+                data: {variation_id:variation_id,product_id:product_id},
+                success: function (response) {
+                    $this.closest('td').find('.product_unit').each(function() {
+                        $(this).find('.unit_value').text(0); // Change "New Value" to the desired value
+                    });
+                    $this.children('.unit_value').text(response.store);
+                }
+            });
         });
         $(document).on('click', '#delete_all', function() {
             var checkboxes = document.querySelectorAll('input[name="product_selected_delete"]');
