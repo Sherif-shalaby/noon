@@ -71,6 +71,18 @@
                         ]) !!}
                     </div>
                     <div class="col-md-3">
+                        {!! Form::label('start_date', __('lang.start_date'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::date('start_date', !empty($settings['start_date']) ? $settings['start_date'] : date('Y-m-d'), [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
+                        {!! Form::label('end_date', __('lang.end_date'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::date('end_date', !empty($settings['end_date']) ? $settings['end_date'] : null, [
+                            'class' => 'form-control',
+                        ]) !!}
+                    </div>
+                    <div class="col-md-3">
                         {!! Form::label('default_payment_type', __('lang.default_payment_type'), ['class'=>'h5 pt-3']) !!}
                         {!! Form::select('default_payment_type',['cash'=>__('lang.cash'),'later'=>__('lang.later')], !empty($settings['default_payment_type']) ? $settings['default_payment_type'] : null, [
                             'class' => 'form-control select2',

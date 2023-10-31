@@ -8,7 +8,7 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        {{-- <li class="breadcrumb-item"><a href="#">Brands</a></li> --}}
+                         <li class="breadcrumb-item"><a href="{{ route('suppliers.create') }}">@lang('lang.add_supplier')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.suppliers')</li>
                     </ol>
                 </div>
