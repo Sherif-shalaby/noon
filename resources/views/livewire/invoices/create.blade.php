@@ -179,7 +179,7 @@
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
                                                            @foreach($item['variation'] as $i=>$var)
-                                                               @if(!empty($var->unit_id))
+                                                               @if(!empty($var['unit_id']))
                                                                     <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
                                                                         {{$var['unit']['name']??''}}
                                                                     </option>

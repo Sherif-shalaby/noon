@@ -1302,28 +1302,43 @@ class Create extends Component
                     $this->items[$key]['quantity_available']= $product_store->quantity_available;
                 }
                 else if($var_id == $product_store->variations->basic_unit_id){
-                    // dd($product_store->variations->base_unit_id);
                     $this->items[$key]['quantity_available']=$product_store->quantity_available * $product_store->variations->equal;
-                }
-                else{
-                    foreach($variations as $variation){
-                        if($variation->unit_id == $var_id){
-                            $amount *=$variation->equal;
-                            $basic_unit=$variation->basic_unit_id;
-                            foreach($variations as $var){
-                                if($basic_unit == $var->unit_id){
-                                    $amount *=$var->equal;
-                                    $basic_unit=$var->basic_unit_id;
-                                    if($product_store->variations->unit_id != $var->basic_unit_id){
-                                        break;
-                                    }
+                }else{
+                    $amount=1;
+                    foreach($variations as $var){
+                            if($var->id !==$product_store->variation_id){
+                                if(isset($var->equal)){
+                                    $amount *= $var->equal;
+                                }
+                                if($var->unit_id == $var_id){
+                                    break;
                                 }
                             }
-                            $this->items[$key]['quantity_available']= $product_store->quantity_available * $amount;
-                            break;
-                        }
                     }
+                $this->items[$key]['quantity_available']=number_format($product_store->quantity_available / $amount ,3);
+
+                    // return ['name'=>$variation->unit->name,'store'=>number_format( $product->product_stores->sum('quantity_available') / $amount,3)];
+        
                 }
+                // else{
+                //     foreach($variations as $variation){
+                //         if($variation->unit_id == $var_id){
+                //             $amount *=$variation->equal;
+                //             $basic_unit=$variation->basic_unit_id;
+                //             foreach($variations as $var){
+                //                 if($basic_unit == $var->unit_id){
+                //                     $amount *=$var->equal;
+                //                     $basic_unit=$var->basic_unit_id;
+                //                     if($product_store->variations->unit_id != $var->basic_unit_id){
+                //                         break;
+                //                     }
+                //                 }
+                //             }
+                //             $this->items[$key]['quantity_available']= $product_store->quantity_available / $amount;
+                //             break;
+                //         }
+                //     }
+                // }
             }
             else{
                 $this->items[$key]['quantity_available'] = $qty ;
