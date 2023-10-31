@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SellCarController;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +11,9 @@ use App\Http\Controllers\WageController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\SellPosController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AddStockController;
@@ -20,26 +21,26 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\GetDueReportController;
-use App\Http\Controllers\InitialBalanceController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\PayableReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\GeneralTaxController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\BranchController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 
@@ -75,8 +76,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', BrandController::class);
     Route::resource('store', App\Http\Controllers\StoreController::class);
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
-    //employees
+    // ======================== employees
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
+    // ---------- attendance ------------
+    Route::resource('attendance', AttendanceController::class);
+
     Route::get('add_point', [App\Http\Controllers\EmployeeController::class,'addPoints'])->name('employees.add_points');
     // +++++++++++++++++++++++ filters of "employees products" +++++++++++++++++++++
     Route::get('/employees/filter/{id}', [App\Http\Controllers\EmployeeController::class,'filterProducts']);

@@ -187,6 +187,7 @@
                         </li> --}}
                     {{-- </ul> --}}
                 </li>
+
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
                     @if(!empty($module_settings['return_module']))
@@ -207,6 +208,8 @@
                                     <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
                                     <li><a href="{{route('employees.create')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
                                     <li><a href="{{route('wages.create')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
+                                    {{-- ########### Attendance : الحضور و الانصراف ########### --}}
+                                    <li><a href="{{route('attendance.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>
                                 </ul>
                             </li>
                     @endif
