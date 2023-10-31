@@ -10,7 +10,7 @@
                            class="form-control" autocomplete="off">
 
                     @if(!empty($search_by_product_symbol))
-                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important;height: 600px !important; border: 1px solid #ccc !important;">
+                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important; border: 1px solid #ccc !important;">
                             @foreach($search_result as $product)
                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
@@ -40,7 +40,7 @@
                         class="form-control" autocomplete="off">
 
                     @if(!empty($search_result) && !empty($searchProduct))
-                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important;height: 600px !important; border: 1px solid #ccc !important;">
+                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important; border: 1px solid #ccc !important;">
                             @foreach($search_result as $product)
                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
