@@ -150,16 +150,18 @@ class CustomerController extends Controller
    * Show the form for editing the specified resource.
    *
    * @param  int  $id
-   * @return Response
+   * @return Application|Factory|View
    */
   public function edit($id)
   {
     $customer = Customer::find($id);
     $customer_types = CustomerType::pluck('name', 'id');
+    $countryId = System::getProperty('country_id');
+    $countryName = Country::where('id', $countryId)->pluck('name')->first();
 
     return view('customers.edit')->with(compact(
         'customer',
-        'customer_types',
+        'customer_types','countryId','countryName'
     ));
   }
 
