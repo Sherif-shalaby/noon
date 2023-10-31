@@ -161,13 +161,13 @@ class Create extends Component
                 return $query->where('name','like','%'.$this->searchProduct.'%')
                              ->orWhere('sku','like','%'.$this->searchProduct.'%');
             });
-            $search_result = $search_result->paginate();
+            $search_result = $search_result->get();
             if(count($search_result) == 0){
                 $variation = Variation::when($this->searchProduct,function ($query){
                     return $query->where('sku','like','%'.$this->searchProduct.'%');
                 })->pluck('product_id');
                 $search_result = Product::whereIn('id',$variation);
-                $search_result = $search_result->paginate();
+                $search_result = $search_result->get();
             }
 
             if(count($search_result) === 1){
@@ -176,6 +176,7 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
+        // dd($search_result);
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
         $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
@@ -1302,28 +1303,40 @@ class Create extends Component
                     $this->items[$key]['quantity_available']= $product_store->quantity_available;
                 }
                 else if($var_id == $product_store->variations->basic_unit_id){
-                    // dd($product_store->variations->base_unit_id);
                     $this->items[$key]['quantity_available']=$product_store->quantity_available * $product_store->variations->equal;
-                }
-                else{
-                    foreach($variations as $variation){
-                        if($variation->unit_id == $var_id){
-                            $amount *=$variation->equal;
-                            $basic_unit=$variation->basic_unit_id;
-                            foreach($variations as $var){
-                                if($basic_unit == $var->unit_id){
-                                    $amount *=$var->equal;
-                                    $basic_unit=$var->basic_unit_id;
-                                    if($product_store->variations->unit_id != $var->basic_unit_id){
-                                        break;
-                                    }
+                }else{
+                    $amount=1;
+                    foreach($variations as $var){
+                            if($var->id !==$product_store->variation_id){
+                                if(isset($var->equal)){
+                                    $amount *= $var->equal;
+                                }
+                                if($var->unit_id == $var_id){
+                                    break;
                                 }
                             }
-                            $this->items[$key]['quantity_available']= $product_store->quantity_available * $amount;
-                            break;
-                        }
                     }
+                $this->items[$key]['quantity_available']=number_format($product_store->quantity_available / $amount ,3);
                 }
+                // else{
+                //     foreach($variations as $variation){
+                //         if($variation->unit_id == $var_id){
+                //             $amount *=$variation->equal;
+                //             $basic_unit=$variation->basic_unit_id;
+                //             foreach($variations as $var){
+                //                 if($basic_unit == $var->unit_id){
+                //                     $amount *=$var->equal;
+                //                     $basic_unit=$var->basic_unit_id;
+                //                     if($product_store->variations->unit_id != $var->basic_unit_id){
+                //                         break;
+                //                     }
+                //                 }
+                //             }
+                //             $this->items[$key]['quantity_available']= $product_store->quantity_available / $amount;
+                //             break;
+                //         }
+                //     }
+                // }
             }
             else{
                 $this->items[$key]['quantity_available'] = $qty ;

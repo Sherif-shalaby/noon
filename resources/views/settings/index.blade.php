@@ -1,4 +1,4 @@
-@extends('layouts.app')
+    @extends('layouts.app')
 @section('title', __('lang.settings'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">

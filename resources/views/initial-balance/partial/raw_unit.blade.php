@@ -45,8 +45,8 @@
                 <option  value="percent">%</option>
             </select>
             <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['fill_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.fill_currency" wire:change="changeFilling({{$index}})">
-                <option selected value="dollar">Dollar</option>
-                <option  value="dinar">Dinar</option>
+                <option selected value="dinar">Dinar</option>
+                <option  value="dollar">Dollar</option>
             </select>
             <div class="input-group-prepend">
                 <input type="text" class="form-control" wire:model="rows.{{ $index }}.fill_quantity" wire:change="changeFilling({{$index}})" style="width: 100px;" required>
@@ -66,7 +66,7 @@
         @enderror
     </td>
     <td>
-        @if(isset($rows[$index]['quantity']) &&  (isset($rows[$index]['dollar_purchase_price']) || isset($rows[$index]['purchase_price'])))
+        @if(isset($row['quantity']) &&  (!empty($row['dollar_purchase_price']) || isset($row['purchase_price'])))
             <span class="sub_total_span" >
                 {{$this->dollar_sub_total($index)}}
             </span>
@@ -142,7 +142,7 @@
                     </select>
                 </div>
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem" 
+                    <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem"
                         @if( isset($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
                     wire:change="changePrice({{ $index }}, {{ $key }})">
                     <label class="custom-control-label" for="discount_from_original_price{{$key}}">@lang('lang.discount_from_original_price')</label>

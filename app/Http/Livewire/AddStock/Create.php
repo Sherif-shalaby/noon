@@ -101,6 +101,7 @@ class Create extends Component
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $this->dispatchBrowserEvent('initialize-select2');
     }
     protected $listeners = ['listenerReferenceHere'];
@@ -130,7 +131,6 @@ class Create extends Component
 
     public function render(): Factory|View|Application
     {
-        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
@@ -158,7 +158,6 @@ class Create extends Component
 
         }
         if(!empty($this->searchProduct)){
-//            $variations_id = [];
             $search_result = Product::when($this->searchProduct,function ($query){
                 return $query->where('name','like','%'.$this->searchProduct.'%')
                              ->orWhere('sku','like','%'.$this->searchProduct.'%');
@@ -167,15 +166,13 @@ class Create extends Component
             if(count($search_result) == 0){
                 $variation = Variation::when($this->searchProduct,function ($query){
                     return $query->where('sku','like','%'.$this->searchProduct.'%');
-                })->pluck('product_id','id');
+                })->pluck('product_id');
                 $search_result = Product::whereIn('id',$variation);
-                $variations_id = collect($variation)->keys();
                 $search_result = $search_result->paginate();
             }
 
             if(count($search_result) === 1){
-                $variation_id = !empty($variations_id) ? $variations_id->first() : null;
-                $this->add_product($search_result->first()->id,null,null,0,$variation_id);
+                $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->searchProduct = '';
             }
@@ -190,12 +187,7 @@ class Create extends Component
             $users = User::Notview()->pluck('name', 'id');
         }
         if(!empty($this->department_id)){
-            $products = Product::where('category_id' , $this->department_id)
-                ->orWhere('subcategory_id1',$this->department_id)
-                ->orWhere('subcategory_id2',$this->department_id)
-                ->orWhere('subcategory_id3',$this->department_id)
-                ->orderBy('created_at','desc')
-                ->get();
+            $products = Product::where('category_id' , $this->department_id)->get();
         }
         else{
             $products = Product::paginate();
@@ -493,7 +485,7 @@ class Create extends Component
         return redirect('/add-stock/create');
     }
 
-    public function add_product($id, $add_via = null, $index = null,$new_unit_raw=0,$variation_id = null){
+    public function add_product($id, $add_via = null, $index = null,$new_unit_raw=0){
         if(!empty($this->searchProduct)){
             $this->searchProduct = '';
 
@@ -525,24 +517,27 @@ class Create extends Component
                 else{
                     // dd(7);
                     $show_product_data = true;
-                    $this->addNewProduct($variations,$product,$show_product_data,$index,$variation_id);
+                    $this->addNewProduct($variations,$product,$show_product_data);
                 }
             }
             else{
                 $show_product_data = true;
-                $this->addNewProduct($variations,$product,$show_product_data,$index,$variation_id);
+                $this->addNewProduct($variations,$product,$show_product_data,$index);
             }
         }
 
     }
 
 //    public function getCurrentStock($product_id){
-    public function addNewProduct($variations,$product,$show_product_data, $index = null,$variation_id ){
+    public function addNewProduct($variations,$product,$show_product_data, $index = null){
 //        $current_stock = $this->getCurrentStock($product->id);
+// !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 :
+// !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 :
+// dd($variations->first()->id===$product->product_dimensions->variation_id);
           $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
-            'variation_id' => !empty($variation_id) ? $variation_id : ($variations->first()->id ?? null),
+            'variation_id' => $variations->first()->id ?? null,
             'product' => $product,
             'purchase_price' => null,
             'dollar_purchase_price' => null,
@@ -552,10 +547,10 @@ class Create extends Component
             'fill_type' => 'fixed',
             'sub_total' => 0,
             'dollar_sub_total' => 0,
-            'size' => !empty($product->product_dimensions->size) ? $product->product_dimensions->size : 0,
-            'total_size' => !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 : 0,
-            'weight' => !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0,
-            'total_weight' =>!empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 : 0,
+            'size' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->size) && $variations->first()->id===$product->product_dimensions->variation_id) ? $product->product_dimensions->size :0):0,
+            'total_size' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->size) && $variations->first()->id==$product->product_dimensions->variation_id) ? $product->product_dimensions->size * 1 :0):0,
+            'weight' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->weight) && $variations->first()->id==$product->product_dimensions->variation_id) ? $product->product_dimensions->weight :0):0,
+            'total_weight' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->weight) && $variations->first()->id==$product->product_dimensions->variation_id) ? $product->product_dimensions->weight * 1 :0):0,
             'dollar_cost' => 0,
             'cost' => 0,
             'dollar_total_cost' => 0,
@@ -672,45 +667,51 @@ class Create extends Component
     {
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price'])){
-            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->num_uf($this->items[$index]['selling_price']) : $this->num_uf($this->items[$index]['dollar_selling_price']);
-            $total_quantity = $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) + $this->num_uf($this->items[$index]['prices'][$key]['bonus_quantity']);
+            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] : $this->items[$index]['dollar_selling_price'];
+            $total_quantity = (float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'];
             if(!empty($this->items[$index]['prices'][$key]['price'])){
                 if (empty($this->discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
-                    $total_sell_price = $this->num_uf($sell_price) * $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']);
-                    $sell_price = $this->num_uf($total_sell_price) / $this->num_uf($total_quantity) ;
+                    $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
+                    $sell_price = $total_sell_price / $total_quantity ;
                 }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($sell_price)-  $this->num_uf($this->items[$index]['prices'][$key]['price']),3) ;
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'],3) ;
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
                     $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($this->num_uf($sell_price) - $this->num_uf($percent) ),3) ;
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($sell_price - $percent ),3) ;
                 }
             }
-            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($sell_price);
+            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']),3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->items[$index]['prices'][$key]['price_after_desc'],3) ;
             }
             else{
-                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $total_quantity : 1),3) ;
-//                dd($total_quantity,$this->items[$index]['prices'][$key]['total_price']);
-
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format((float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1),3) ;
             }
-
         }
     }
 
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
-    //    $product=$this->items[$index]['product'];
-    //    $this->items[$index]['size'] = !empty($product->product_dimensions->size) ? $product->product_dimensions->size : 0;
-    //    $this->items[$index]['total_size'] = !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 : 0;
-    //    $this->items[$index]['weight'] = !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0;
-    //    $this->items[$index]['total_weight'] =!empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 : 0;
+       $product_data = Product::find($variant->product_id);
+       $product=$this->items[$index]['product'];
+       if(!empty($product_data->product_dimensions->variation_id) && $product_data->product_dimensions->variation_id==$variant->id){
+            $this->items[$index]['size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size : 0;
+            $this->items[$index]['total_size'] = !empty($product_data->product_dimensions->size) ? $product_data->product_dimensions->size * 1 : 0;
+            $this->items[$index]['weight'] = !empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight : 0;
+            $this->items[$index]['total_weight'] =!empty($product_data->product_dimensions->weight) ? $product_data->product_dimensions->weight * 1 : 0;
+       }else{
+        $this->items[$index]['size'] = 0;
+        $this->items[$index]['total_size'] = 0;
+        $this->items[$index]['weight'] =0;
+        $this->items[$index]['total_weight'] =0;
+       }
        $this->items[$index]['unit'] = $variant->unit->name??'';
        $this->items[$index]['base_unit_multiplier'] = $variant->equal??0;
+    //    dd($product_data->product_dimensions);
     }
 
     public function changeFilling($index){
