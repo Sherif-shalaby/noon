@@ -309,6 +309,7 @@ class Create extends Component
                     }
                 }
                 $supplier = Supplier::find($this->supplier);
+//                dd($item['fill_quantity']);
                 $add_stock_data = [
                     'variation_id' => $item['variation_id'] ?? null,
                     'product_id' => $item['product']['id'],
@@ -329,8 +330,9 @@ class Create extends Component
                     'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
                     'exchange_rate' => !empty($supplier->exchange_rate) ? $this->num_uf($supplier->exchange_rate) : null,
                     'fill_type' => $item['fill_type'] ?? null,
-                    'fill_quantity' => !empty($this->num_uf($item['fill_quantity']))  ?? null,
+                    'fill_quantity' => !empty($item['fill_quantity']) ? $this->num_uf($item['fill_quantity']): null,
                 ];
+//                dd($add_stock_data);
                 $stock_line = AddStockLine::create($add_stock_data);
 
                 $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
@@ -530,10 +532,6 @@ class Create extends Component
 
 //    public function getCurrentStock($product_id){
     public function addNewProduct($variations,$product,$show_product_data, $index = null){
-//        $current_stock = $this->getCurrentStock($product->id);
-// !empty($product->product_dimensions->size) ? $product->product_dimensions->size * 1 :
-// !empty($product->product_dimensions->weight) ? $product->product_dimensions->weight * 1 :
-// dd($variations->first()->id===$product->product_dimensions->variation_id);
           $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
