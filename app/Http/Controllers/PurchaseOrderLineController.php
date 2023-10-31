@@ -61,49 +61,14 @@ class PurchaseOrderLineController extends Controller
             'products'
         ));
     }
+    /* +++++++++++++++ deleteAll() +++++++++++++++ */
     public function deleteAll(Request $request)
     {
         $ids = $request->ids;
         $products = Product::with('stock_lines')->whereIn('id', $ids)->get();
         return $products;
     }
-    // ++++++++++++++++++++++++++++++ Ajax Search : get_products() ++++++++++++++++++++++++++++++++
-    // public function search(Request $request)
-    // {
-    //     // return $request;
 
-    //     // if($request->ajax())
-    //     // {
-    //     //     $data = Product::all();
-    //     //     $output='';
-    //     //     if( count($data) > 0 )
-    //     //     {
-    //     //         $output ='
-    //     //                 <thead>
-    //     //                     <tr>
-    //     //                         <th scope="col">#</th>
-    //     //                         <th scope="col">name</th>
-    //     //                     </tr>
-    //     //                 </thead>
-    //     //                 <tbody>';
-    //     //                 foreach($data as $row){
-    //     //                     $output .='
-    //     //                     <tr>
-    //     //                     <th scope="row">'.$row->id.'</th>
-    //     //                     <td>'.$row->name.'</td>
-    //     //                     </tr>
-    //     //                     ';
-    //     //                 }
-    //     //         $output .= '
-    //     //             </tbody>';
-    //     //     }
-    //     //     else
-    //     //     {
-    //     //         $output .='No results';
-    //     //     }
-    //     //     return $output;
-    //     // }
-    // }
     /* ++++++++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
     public function store(Request $request)
     {
@@ -118,7 +83,7 @@ class PurchaseOrderLineController extends Controller
             $purchaseOrderTransaction->grand_total = 0; // You'll update this after saving the transaction
             $purchaseOrderTransaction->final_total = $request['total_subtotal'];
             $purchaseOrderTransaction->po_no = $request['po_no'];
-            $purchaseOrderTransaction->created_by = auth()->user()->id;
+            // $purchaseOrderTransaction->created_by = auth()->user()->id;
             $purchaseOrderTransaction->order_date = now();
             $purchaseOrderTransaction->transaction_date = now();
             // Save the purchase order transaction to the database
