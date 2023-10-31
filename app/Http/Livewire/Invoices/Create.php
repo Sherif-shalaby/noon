@@ -161,13 +161,13 @@ class Create extends Component
                 return $query->where('name','like','%'.$this->searchProduct.'%')
                              ->orWhere('sku','like','%'.$this->searchProduct.'%');
             });
-            $search_result = $search_result->paginate();
+            $search_result = $search_result->get();
             if(count($search_result) == 0){
                 $variation = Variation::when($this->searchProduct,function ($query){
                     return $query->where('sku','like','%'.$this->searchProduct.'%');
                 })->pluck('product_id');
                 $search_result = Product::whereIn('id',$variation);
-                $search_result = $search_result->paginate();
+                $search_result = $search_result->get();
             }
 
             if(count($search_result) === 1){
@@ -1316,9 +1316,6 @@ class Create extends Component
                             }
                     }
                 $this->items[$key]['quantity_available']=number_format($product_store->quantity_available / $amount ,3);
-
-                    // return ['name'=>$variation->unit->name,'store'=>number_format( $product->product_stores->sum('quantity_available') / $amount,3)];
-        
                 }
                 // else{
                 //     foreach($variations as $variation){
