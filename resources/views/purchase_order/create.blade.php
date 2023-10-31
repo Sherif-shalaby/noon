@@ -11,7 +11,7 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('purchase_order.index')}}">@lang('lang.purchase_order')</a></li>
+                        {{-- <li class="breadcrumb-item"><a href="{{route('purchase_order.index')}}">@lang('lang.purchase_order')</a></li> --}}
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.create_purchase_order')</li>
                     </ol>
                 </div>

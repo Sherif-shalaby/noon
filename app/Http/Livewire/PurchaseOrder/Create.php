@@ -50,7 +50,7 @@ class Create extends Component
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $po_no ,$exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
-        $files, $upload_documents , $total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ;
+        $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ;
 
     protected $rules =
     [
@@ -203,12 +203,14 @@ class Create extends Component
             $purchaseOrderTransaction = new PurchaseOrderTransaction();
             $purchaseOrderTransaction->store_id = $this->store_id;
             $purchaseOrderTransaction->supplier_id = $this->supplier_id;
-            $purchaseOrderTransaction->grand_total = 0; // You'll update this after saving the transaction
-            // $purchaseOrderTransaction->final_total = $this->total_subtotal;
-            $purchaseOrderTransaction->final_total = 0;
             $purchaseOrderTransaction->po_no = $this->po_no;
+            $purchaseOrderTransaction->details = $this->details;
             $purchaseOrderTransaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
             $purchaseOrderTransaction->created_by = auth()->user()->id;
+            // grand_total
+            $purchaseOrderTransaction->grand_total = $this->num_uf($this->sum_total_cost());
+            // final_total
+            $purchaseOrderTransaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             // deleted_by
             // $purchaseOrderTransaction->deleted_by = null;
             // created_at
@@ -231,12 +233,14 @@ class Create extends Component
                     $purchase_order = [];
 
                     // Set values for the new array
-                    $purchase_order['transaction_customer_offer_id'] = $purchaseOrderTransaction->id;
+                    $purchase_order['purchase_order_transaction_id'] = $purchaseOrderTransaction->id;
                     $purchase_order['product_id'] = $item['product']['id'];
                     $purchase_order['quantity'] = $item['quantity'];
                     // $purchase_order['current_stock'] = $item['current_stock'];
                     $purchase_order['purchase_price'] = $item['purchasing_price'];
-                    $purchase_order['dollar_purchase_price'] = $item['dollar_purchasing_price'];
+                    $purchase_order['purchase_price_dollar'] = $item['dollar_purchasing_price'];
+                    // sub_total
+                    $purchase_order['sub_total'] = !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : 0 ;
                     // created_by
                     $purchase_order['created_by'] = Auth::user()->id;
                     // updated_by
@@ -292,7 +296,7 @@ class Create extends Component
                 if (count($newArr) > 0) {
                     $key = array_keys($newArr)[0];
                     ++$this->items[$key]['quantity'];
-        //                $this->items[$key]['sub_total'] = ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -( $this->items[$key]['quantity'] * $this->items[$key]['discount']);
+                       $this->items[$key]['sub_total'] = ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -( $this->items[$key]['quantity'] * $this->items[$key]['discount']);
                 }
                 else{
                     $show_product_data = true;
@@ -474,12 +478,29 @@ class Create extends Component
         if(!empty($this->items)){
             foreach ($this->items as $item)
             {
-//                dd($item['dollar_total_cost']);
+            //    dd($item['dollar_total_cost']);
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
 //        dd($totalDollarCost);
         return number_format($totalDollarCost,2);
+    }
+    // +++++++++++++++++++++++ sub_total() +++++++++++++++++++++++
+    public function sub_total($index)
+    {
+        $this->changeFilling($index);
+        if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
+            // convert purchase price from Dollar To Dinar
+            $purchase_price = $this->convertDollarPrice($index);
+
+            $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
+
+            return number_format($this->items[$index]['sub_total'], 3);
+        }
+        else{
+            $this->items[$index]['purchase_price'] = null;
+        }
+
     }
 
     public function sum_sub_total(){

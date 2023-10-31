@@ -198,19 +198,8 @@
                                             {{$this->sum_total_cost() ?? 0.00}}
                                         @endif
                                         <span class="final_total_span"></span> </h3>
-                                        {{-- <input type="hidden" name="total_subtotal" id="total_subtotal_input" value="{{$this->sum_total_cost() ?? 0.00}}"> --}}
-
-                                </div>
-                            </div>
-                            <br>
-                            {{-- ++++++++++++++++++++++++ final_total inputField ++++++++++++++++++++++++ --}}
-                            <div class="col-md-12">
-                                <div class="col-md-3 offset-md-8 text-right">
-                                    <h3> @lang('lang.total'):
-                                        <span class="final_total_span" id="total_subtotal"></span>
                                         <input type="hidden" name="total_subtotal" id="total_subtotal_input" value="{{$this->sum_total_cost() ?? 0.00}}">
 
-                                    </h3>
                                 </div>
                             </div>
                             <br>
@@ -219,7 +208,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         {!! Form::label('details', __('lang.details'), []) !!}
-                                        {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                                        {{-- {!! Form::textarea('details', null, ['class' => 'form-control', 'rows' => 3]) !!} --}}
+                                        <textarea name="details" class="form-control" rows="3" wire:model="details"></textarea>
                                     </div>
                                 </div>
                             </div>

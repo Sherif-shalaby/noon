@@ -96,6 +96,9 @@
             <span class="dollar_total_cost">
                 {{$this->dollar_total_cost($index) }}
             </span>
+
+            <input type="hidden" class="form-control" style="width: 61px;"
+                    value="{{ $this->dollar_total_cost($index) }}" >
         @else
             {{0.00}}
         @endif
@@ -106,6 +109,8 @@
             <span class="cost">
                 {{$this->total_cost($index) }}
             </span>
+            <input type="hidden" class="form-control" style="width: 61px;"
+                    value="{{ $this->total_cost($index) }}" >
         @else
             {{0.00}}
         @endif
