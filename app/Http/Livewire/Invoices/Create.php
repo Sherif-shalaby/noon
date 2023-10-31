@@ -176,6 +176,7 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
+        // dd($search_result);
         // $variations=Variation::orderBy('created_at','desc')->get();
         // $this->variations=Variation::all();
         $this->draft_transactions = TransactionSellLine::where('status','draft')->get();
