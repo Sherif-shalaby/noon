@@ -122,7 +122,7 @@
 {{--</div>--}}
 <!-- End Topbar -->
 <!-- Start Navigationbar -->
-<div class="navigationbar">
+<div class="navigationbar no-print">
     <!-- Start container-fluid -->
     <div class="container-fluid">
         <!-- Start Horizontal Nav -->

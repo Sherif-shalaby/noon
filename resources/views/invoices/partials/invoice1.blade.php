@@ -25,19 +25,7 @@
         .hidden-print {
             display: none !important;
         }
-        #watermark {
-                position: fixed;
-                width: 100%;
-                height: auto;
-                top: 10%;
-                left: 0%;
-                opacity: 0.2;
-            }
 
-            #watermark img {
-                width: 100%;
-                height: 100%;
-            }
         @page {
             margin: 0;
         }
@@ -110,21 +98,8 @@
 
 <section>
     @include('layouts.partials.print_header')
-    @php
-        $logo = App\Models\System::getProperty('logo');
-    @endphp
-    @if (empty($create_pdf))
-        <div id="watermark"><img src="{{ asset('/uploads/' . $logo) }}" alt=""></div>
-    @endif
-    <div class="row">
-        <div class="col-md-6" style="width: 50%;@if (!empty($create_pdf)) float:left; @endif">
-            <div class="col-md-12">
-                <h5>@lang('lang.date'): {{ now()->format('Y-m-d') }}</h5>
-                {{-- <h5>@lang('lang.store'): {{ $sale->store->name ?? '' }}</h5> --}}
-            </div>
-        </div>
-    </div>
-    <div class="description pt-3">
+
+    <div class="description">
         <!-- ++++++++++++++++++ system info +++++++++++++ -->
         <div style="border: 2px dashed #000; justify-content: center;">
 
@@ -134,25 +109,18 @@
                         @lang('lang.invoice_title1') <br/>
                         @lang('lang.invoice_title2')
                     </h1>
-                   
                 </div>
             </div>
 
-            <div class="row pl-2 pr-2">
+            <div class="row">
                 <div class="col-sm-6 pl-3">
-                    @php
-                        $watsapp_numbers = App\Models\System::getProperty('watsapp_numbers');
-                    @endphp
                     <p class="text-left">
                         <b>@lang('lang.invoice_address_en') </b>
-                        
-                        
                     </p>
                 </div>
                 <div class="col-sm-6 pr-3">
                     <p class="text-right">
-                        <b>@lang('lang.invoice_address_ar') </b><br>
-                        <b>@lang('lang.contact_number') : {{$watsapp_numbers }}</b>
+                        <b>@lang('lang.invoice_address_ar') </b>
                     </p>
                 </div>
             </div>
@@ -215,7 +183,7 @@
                 <th style="width:10%;text-align: center">@lang('lang.total')</th>
                 <th style="width:10%;text-align: center">@lang('lang.price_of_piece')</th>
                 <th style="width:10%;text-align: center">@lang('lang.quantity')</th>
-                <th style="width:10%;text-align: center">@lang('lang.extra_quantity')</th>
+                <th style="width:10%;text-align: center">@lang('lang.fill')</th>
                 <th style="width:10%;text-align: center">@lang('lang.carton')</th>
                 <th style="width:40%;text-align: center">@lang('lang.description')</th>
                 <th style="width:10%;text-align: center">@lang('lang.notes')</th>
@@ -231,9 +199,14 @@
                                 {{$line->sell_price}}
                             @endif
                         </td>
-                        <td style="text-align: center;">{{$line->quantity??0}}</td>
-                        <td style="text-align: center;">{{$line->extra_quantity??0}}</td>
-                        <td style="text-align: center">{{number_format($line->quantity??0 + $line->extra_quantity??0,2)}}</td>
+                        @if(isset($line->product->unit->base_unit_multiplier))
+                            <td style="text-align: center;">{{number_format($line->quantity * $line->product->unit->base_unit_multiplier,2)}}</td>
+                            <td style="background-color: #CACACA;text-align: center;">{{$line->product->unit->base_unit_multiplier}}</td>
+                        @else
+                            <td style="text-align: center;">{{$line->quantity}}</td>
+                            <td style="text-align: center;">1</td>
+                        @endif
+                        <td style="text-align: center">{{number_format($line->quantity,2)}}</td>
                         <td style="text-align: center"> {{$line->product->name}}</td>
                         <td></td>
                     </tr>

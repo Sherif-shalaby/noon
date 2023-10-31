@@ -558,6 +558,8 @@ return [
     'branch' => 'Branch',
     'add_new_unit'=>'Add New Unit',
     'basic_unit_for_import_product'=>'Basic Unit For Import Product',
+    'extra_quantity'=>'Extra Quantity',
+    'contact_number'=>'Contact Number',
 ];
 
 
