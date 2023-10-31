@@ -554,16 +554,19 @@ class Create extends Component
             }
             if ($this->item[0]['height'] ==(''||0) && $this->item[0]['length'] ==(''||0) && $this->item[0]['width'] ==(''||0)
             || $this->item[0]['size'] ==(''||0) && $this->item[0]['weight'] ==(''||0)) {
-            }else{
-                ProductDimension::create([
+
+            }
+            else{
+               $product_dimension =  ProductDimension::create([
                     'product_id'=>$product->id,
                     'variation_id'=>!empty($this->item[0]['basic_unit_variation_id'])?(Variation::where('product_id',$product->id)->where('unit_id',$this->item[0]['basic_unit_variation_id'])->first()->id??''):null,
                     'height' => !empty($this->item[0]['height'])?$this->item[0]['height']:0,
                     'length' => !empty($this->item[0]['length'])?$this->item[0]['length']:0,
-                    'width '=> !empty($this->item[0]['width'])?$this->item[0]['width']:0,
+                    'width' => !empty($this->item[0]['width'])?$this->item[0]['width']:0,
                     'weight' => !empty($this->item[0]['weight'])?$this->item[0]['weight']:0,
-                    'size'=> !empty($this->item[0]['size'])?$this->item[0]['size']:0,
+                    'size' => !empty($this->item[0]['size'])?$this->item[0]['size']:0,
                 ]);
+//               dd($product_dimension);
             }
             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
