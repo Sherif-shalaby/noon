@@ -577,5 +577,7 @@ return array(
     'branch' => 'الفرع',
     'add_new_unit'=>'اضافة وحدة جديدة',
     'basic_unit_for_import_product'=>'الوحدة الاساسية لاستيراد المنتج',
+    'extra_quantity'=>'كمية اضافية',
+    'contact_number'=>'رقم التواصل',
 );
 
