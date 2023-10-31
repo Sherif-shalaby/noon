@@ -114,7 +114,7 @@
             <div>
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2">
@@ -140,7 +140,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded  p-2">
                             <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-4">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2  dollar-cell">
@@ -188,8 +188,8 @@
 
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
+                    </div> --}}
+                    <div class="col-md-4">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2">
@@ -220,35 +220,36 @@
 
         </div>
 
-        <div class="row g-3 cards hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        <div class="row cards hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             @include('invoices.partials.products')
-            <div class="col-xl-10 special-medal-col">
+            <div class="col-xl-9 p-0 special-medal-col" style="max-height: 90vh;">
                 <div class="card-app ">
-                    <div class="body-card-app content py-2 ">
+                    <div class="body-card-app content p-0">
                         <div class="tab-content" id="v-pills-tabContent">
-                            <div class="body-card-app">
+                            <div class="body-card-app p-0">
                                 <div
                                     class="table-responsive box-table @if (app()->isLocale('ar')) dir-rtl @endif">
                                     <table class="table">
                                         <tr>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
                                                 @lang('lang.product')</th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th
+                                                style="font-weight: 700;font-size: 10px;text-align: center;width: 10%;">
                                                 @lang('lang.quantity')</th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 4%">
                                                 @lang('lang.extra')</th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
                                                 @lang('lang.unit')</th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                                 @lang('lang.price')</th>
                                             <th class="dollar-cell"
-                                                style="font-weight: 700;font-size: 10px;text-align: center">
+                                                style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                                 @lang('lang.price') $ </th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                                 @lang('lang.exchange_rate')</th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 9%">
                                                 @lang('lang.discount')</th>
-                                            <th style="font-weight: 700;font-size: 10px;text-align: center">
+                                            <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
                                                 @lang('lang.discount_category')</th>
                                             <th style="font-weight: 700;font-size: 10px;text-align: center">
                                                 @lang('lang.sub_total')</th>
@@ -264,18 +265,21 @@
                                             $total = 0;
                                         @endphp
                                         @foreach ($items as $key => $item)
-                                            <tr>
-                                                <td style="font-weight: 700;font-size: 10px;"
+                                            <tr style="height: 50px">
+
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                     class="px-1 border-right ">
-
-                                                    {{ $item['product']['name'] }}
-
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        {{ $item['product']['name'] }}
+                                                    </div>
                                                 </td>
 
-                                                <td class="px-1 border-right ">
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
                                                     <div class="d-flex align-items-center gap-1 " style="width: 80px">
-                                                        <div class=" add-num control-num d-flex justify-content-center align-items-center"
-                                                            style="width: 15px;height: 15px;border-right adius: 50%;color: white;background-color: #596fd7"
+                                                        <div class="btn-success add-num control-num d-flex justify-content-center align-items-center"
+                                                            style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
                                                             wire:click="increment({{ $key }})">
                                                             <i style="font-size: 10px;width: 50px;font-weight: 600"
                                                                 class="fa-solid fa-plus"></i>
@@ -287,8 +291,8 @@
                                                         @error("items.$key.quantity")
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
-                                                        <div class="decrease-num control-num d-flex justify-content-center align-items-center"
-                                                            style="width: 15px;height: 15px;border-right adius: 50%;color: white;background-color: #596fd7"
+                                                        <div class="btn-danger decrease-num control-num d-flex justify-content-center align-items-center"
+                                                            style="width: 15px;height: 15px;border-radius: 50%;color: white;cursor:pointer;"
                                                             wire:click="decrement({{ $key }})">
                                                             <i style="font-size: 10px;width: 50px;font-weight: 600"
                                                                 class="fa-solid fa-minus"></i>
@@ -296,14 +300,17 @@
                                                     </div>
                                                 </td>
 
-                                                <td class="px-1 border-right "
-                                                    style="font-weight: 700;font-size: 10px;">
-                                                    {{ $item['extra_quantity'] }}
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        {{ $item['extra_quantity'] }}
+                                                    </div>
                                                 </td>
 
-                                                <td class="px-1 border-right ">
-                                                    <select class="form-control"
-                                                        style="height:30% !important;width:50px;"
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <select class="form-control" style="width:50px;"
                                                         wire:model="items.{{ $key }}.unit_id"
                                                         wire:change="changeUnit({{ $key }})">
                                                         <option value="0.00">select</option>
@@ -320,31 +327,43 @@
                                                     </select>
                                                 </td>
 
-                                                <td class="px-1 border-right "
-                                                    style="font-weight: 700;font-size: 10px;">
-                                                    {{ $item['price'] ?? '' }}
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        {{ $item['price'] ?? '' }}
+                                                    </div>
                                                 </td>
 
-                                                <td class="px-1 border-right dollar-cell"
-                                                    style="font-weight: 700;font-size: 10px;">
-                                                    {{ number_format($item['dollar_price'] ?? 0, 2) }}
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        {{ number_format($item['dollar_price'] ?? 0, 2) }}
+                                                    </div>
                                                 </td>
 
-                                                <td class="px-1 border-right ">
-                                                    <input style="font-weight: 700;font-size: 10px;width: 75px"
-                                                        class="form-control p-1 text-center" type="text"
-                                                        min="1"
-                                                        wire:model="items.{{ $key }}.exchange_rate">
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        <input style="font-weight: 700;font-size: 10px;width: 65px"
+                                                            class="form-control p-1 text-center" type="text"
+                                                            min="1"
+                                                            wire:model="items.{{ $key }}.exchange_rate">
+                                                    </div>
                                                 </td>
 
-                                                <td class="px-1 border-right ">
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
                                                     <input class="form-control p-1 text-center" style="width:35px"
                                                         type="text" min="1" readonly
                                                         wire:model="items.{{ $key }}.discount_price">
                                                 </td>
-                                                <td class="px-1 border-right ">
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
                                                     <select class="form-control discount_category "
-                                                        style="height:30% !important;width:50px;font-size:14px;"
+                                                        style="width:50px;font-size:14px;"
                                                         wire:model="items.{{ $key }}.discount"
                                                         wire:change="subtotal({{ $key }},'discount')">
                                                         <option selected value="0">select</option>
@@ -370,17 +389,25 @@
                                                         @endif
                                                     </select>
                                                 </td>
-                                                <td class="px-1 border-right "
-                                                    style="font-weight: 700;font-size: 10px;">
-                                                    {{ $item['sub_total'] ?? 0 }}
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        {{ $item['sub_total'] ?? 0 }}
+                                                    </div>
                                                 </td>
-                                                <td class="px-1 border-right dollar-cell"
-                                                    style="font-weight: 700;font-size: 10px;">
-                                                    {{ $item['dollar_sub_total'] ?? 0 }}
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <div style="height: 100%;max-width: 100%;"
+                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center">
+                                                        {{ $item['dollar_sub_total'] ?? 0 }}
+                                                    </div>
                                                 </td>
-                                                <td class="px-1 border-right ">
-                                                    <span class="current_stock"
-                                                        style="font-weight: 700;font-size: 10px;">
+                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                    class="px-1 border-right ">
+                                                    <span
+                                                        class="current_stock d-flex flex-wrap justify-content-center align-items-center text-center"
+                                                        style="font-weight: 700;font-size: 10px;height: 100%;max-width: 100%;">
                                                         {{ $item['quantity_available'] }}
                                                     </span>
                                                 </td>

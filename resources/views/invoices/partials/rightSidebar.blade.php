@@ -1,11 +1,13 @@
-<div>
+<div class="col-md-2 p-0">
     <div class="card-app">
-        <div class="d-flex  align-items-center   mt-1 body-card-app pt-2">
-            <input type="text" wire:model.defer="client_phone" id="" class="form-control w-60"
+        <div class="  mt-1 body-card-app pt-2">
+            <input type="text" wire:model.defer="client_phone" id="" class="form-control w-60 mb-1"
                 placeholder="{{ __('بحث برقم العميل') }}">
             {{--            <input readonly type="text" class="{{ $client ? '' : 'd-none' }} form-control w-25" --}}
             {{--                   value="{{ $client?->name }}"> --}}
-            <button wire:click='getClient' class="btn btn-sm btn-primary">{{ __('Search') }}</button>
+            <div class="d-flex justify-content-center align-items-center">
+                <button wire:click='getClient' class="w-100 btn btn-sm btn-primary">{{ __('Search') }}</button>
+            </div>
         </div>
         {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
         {{-- <div class="mb-1 body-card-app pt-2" wire:ignore>
@@ -25,13 +27,32 @@
             @include('customers.quick_add')
         </div> --}}
         {{-- +++++++++++++++++ الاجماليات +++++++++++++++++ --}}
-        <div class="title-card-app text-start mt-3 @if (app()->isLocale('ar')) text-end @else text-start @endif">
+        <div class="title-card-app text-start text-center">
             الاجماليات
         </div>
-        <div class="body-card-app pt-2">
-            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        <div class="body-card-app pt-2 d-flex flex-column justify-content-center align-items-center">
+            <div style="width: 100%"
+                class="row  hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="mb-2 col-md-6 p-1">
+                    <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
+                        class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
+                            class="fa-solid fa-money-bill"></i>
+                        @lang('lang.pay')</button>
+                    {{--                            @include('invoices.partials.payment') --}}
+                </div>
+                <div class="mb-2 col-md-6 p-1">
+                    <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
+                        class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
+                        {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
+                        @lang('lang.view_draft')</button>
+                    @include('invoices.partials.draft_transaction')
+
+                </div>
+            </div>
+            <div style="width: 100%"
+                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3 dollar-cell">
+                <div class="col-sm-6 p-1 dollar-cell">
                     <div class="form-group">
                         {!! Form::label('dollar_grand_total', 'الاجمالي بالدولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -47,7 +68,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-6 p-1">
                     <div class="form-group">
                         {!! Form::label('grand_total', 'الاجمالي بالدينار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -62,8 +83,11 @@
                         ]) !!}
                     </div>
                 </div>
+            </div>
+            <div style="width: 100%"
+                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- +++++++++++ الخصم دولار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3 dollar-cell">
+                <div class="col-sm-6 p-1 dollar-cell">
                     <div class="form-group">
                         {!! Form::label('dollar_discount', 'الخصم دولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -78,7 +102,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++ الخصم دينار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-6 p-1">
                     <div class="form-group">
                         {!! Form::label('discount', 'الخصم دينار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -91,8 +115,11 @@
                         ]) !!}
                     </div>
                 </div>
+            </div>
+            <div style="width: 100%"
+                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- +++++++++++ النهائي دولار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3 dollar-cell">
+                <div class="col-sm-6 p-1 dollar-cell">
                     <div class="form-group">
                         {!! Form::label('dollar_final_total', 'النهائي دولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -102,7 +129,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++ النهائي دينار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-6 p-1">
                     <div class="form-group">
                         {!! Form::label('final_total', 'النهائي دينار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -111,8 +138,11 @@
                         {!! Form::number('final_total', $final_total, ['class' => 'form-control', 'readonly']) !!}
                     </div>
                 </div>
+            </div>
+            <div style="width: 100%"
+                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- +++++++++++ الواصل دولار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3 dollar-cell">
+                <div class="col-sm-6 p-1 dollar-cell">
                     <div class="form-group">
                         {!! Form::label('dollar_amount', 'الواصل دولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -126,7 +156,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++ الواصل دينار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-6 p-1">
                     <div class="form-group">
                         {!! Form::label('amount', 'الواصل دينار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -139,8 +169,11 @@
                         ]) !!}
                     </div>
                 </div>
+            </div>
+            <div style="width: 100%"
+                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- +++++++++++ الباقي دولار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3 dollar-cell">
+                <div class="col-sm-6 p-1 dollar-cell">
                     <div class="form-group">
                         {!! Form::label('dollar_remaining', 'الباقي دولار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -154,7 +187,7 @@
                     </div>
                 </div>
                 {{-- +++++++++++ الباقي دينار +++++++++++ --}}
-                <div class="col-sm-4 col-md-3">
+                <div class="col-sm-6 p-1">
                     <div class="form-group">
                         {!! Form::label('dinar_remaining', 'الباقي دينار', [
                             'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
@@ -167,8 +200,9 @@
                         ]) !!}
                     </div>
                 </div>
-
             </div>
+
+
             {{--            <div class="d-flex align-items-center gap-2 mb-2 justify-content-end"> --}}
             {{--                <label for="" class="text-primary">{{ __('كاش') }}:</label> --}}
             {{--                <input type="number" class="form-control w-50" wire:model="cash" max="{{ $total }}"> --}}
@@ -179,51 +213,41 @@
             {{--                </label> --}}
             {{--                <input type="number" readonly class="form-control w-50" wire:model="rest"> --}}
             {{--            </div> --}}
-            <div class="row hide-print">
-                {{--                <div class="me-auto"> --}}
-                {{--                    <div class="btns-control row"> --}}
-                {{-- ++++++++++++++++++++++ زرار الدفع ++++++++++++++++++++ --}}
-                <div class="col-sm-4 col-md-3 mb-2">
-                    <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                        class="btn btn-success payment-btn " wire:click="submit" id="cash-btn"><i
-                            class="fa-solid fa-money-bill"></i>
-                        @lang('lang.pay')</button>
-                    {{--                            @include('invoices.partials.payment') --}}
-                </div>
-                <div class="col-sm-4 col-md-3 mb-2">
+            {{-- <div class="row hide-print"> --}}
+            {{--                <div class="me-auto"> --}}
+            {{--                    <div class="btns-control row"> --}}
+            {{-- ++++++++++++++++++++++ زرار الدفع ++++++++++++++++++++ --}}
+            <div style="width: 100%"
+                class="row  hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="mb-2 col-md-6 p-1">
                     <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
                             class="fa-solid fa-flag"></i>
                         @lang('lang.draft')</button>
+                    {{--                            @include('invoices.partials.payment') --}}
                 </div>
-                <div class="col-sm-4 col-md-3">
-                    <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                        class="btn btn-primary payment-btn " data-toggle="modal" data-target="#draftTransaction"
-                        {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
-                        @lang('lang.view_draft')</button>
-                    @include('invoices.partials.draft_transaction')
-
-                </div>
-                <div class="col-sm-4 col-md-3">
+                <div class="mb-2 col-md-6 p-1">
                     <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
                         class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
                             class="fa fa-hourglass-start"></i>
                         @lang('lang.pay_later')</button>
+                    @include('invoices.partials.draft_transaction')
 
                 </div>
-                {{--                    </div> --}}
-                {{--                </div> --}}
             </div>
-            <div class="row hide-print mt-3">
+            {{--                    </div> --}}
+            {{--                </div> --}}
+            {{-- </div>
+            <div class="row hide-print mt-3"> --}}
 
-                {{-- ++++++++++++++++++++++ زرار الدفع السريع++++++++++++++++++++ --}}
-                {{-- <div class="col-md-5 mr-2">
+            {{-- ++++++++++++++++++++++ زرار الدفع السريع++++++++++++++++++++ --}}
+            {{-- <div class="col-md-5 mr-2">
                             <button data-method="cash" style="width: 100% ,background: #478299" type="button"
                                     class="btn btn-success payment-btn" wire:click="changeStatus"
                                     id="quick-pay-btn" ><i class="fa-solid fa-money-bill"></i>
                                     @lang('lang.quick_pay')</button>
                         </div> --}}
-                {{-- <div class="col-md-5">
+            {{-- <div class="col-md-5">
                             <button  style="width: 100%; background: #5b808f" type="button"
                                     class="btn btn-primary payment-btn"
                                          wire:click="pendingStatus"
@@ -231,7 +255,7 @@
                                         @lang('lang.pay_later')</button>
 
                         </div> --}}
-            </div>
+            {{-- </div> --}}
         </div>
     </div>
 </div>

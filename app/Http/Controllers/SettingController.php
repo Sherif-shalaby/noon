@@ -24,7 +24,7 @@ class SettingController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -188,6 +188,14 @@ class SettingController extends Controller
             System::updateOrCreate(
                 ['key' => 'dollar_exchange'],
                 ['value' => $request->dollar_exchange, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+            System::updateOrCreate(
+                ['key' => 'start_date'],
+                ['value' => $request->start_date, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
+            System::updateOrCreate(
+                ['key' => 'end_date'],
+                ['value' => $request->end_date, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
             System::updateOrCreate(
                 ['key' => 'tax'],

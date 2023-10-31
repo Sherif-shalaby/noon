@@ -43,7 +43,7 @@ class Edit extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date, $deleted_items = [] , $deleted_prices = [], $transaction_id;
+        $end_date, $deleted_items = [] , $deleted_prices = [], $transaction_id, $discount_from_original_price;
 
     protected $rules = [
         'store_id' => 'required',
@@ -89,6 +89,7 @@ class Edit extends Component
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $this->dispatchBrowserEvent('initialize-select2');
     }
     protected $listeners = ['listenerReferenceHere'];
@@ -445,8 +446,9 @@ class Edit extends Component
     }
     public function addStockProduct($line)
     {
+//        dd($line);
         $new_item = [
-            'variations' => $line->product->variations,
+            'variations' => $line->product->variations??'',
             'variation_id' => $line->variation_id,
             'product' => $line->product,
             'quantity' => $line->quantity,
@@ -626,60 +628,64 @@ class Edit extends Component
 
     public function changePrice($index,$key)
     {
+        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if(!empty($this->items[$index]['selling_price']) || !empty($this->items[$index]['dollar_selling_price'])){
-            $sell_price = !empty($this->items[$index]['selling_price']) ? $this->items[$index]['selling_price'] : $this->items[$index]['dollar_selling_price'];
+            $sell_price = !empty($this->items[$index]['selling_price']) ?$this->num_uf( $this->items[$index]['selling_price']) : $this->num_uf($this->items[$index]['dollar_selling_price']);
             $total_quantity = (float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'];
             if(!empty($this->items[$index]['prices'][$key]['price'])){
                 if (empty($this->discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
-                    $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
-                    $sell_price = $total_sell_price / $total_quantity ;
+                    $total_sell_price = $this->num_uf($sell_price) * $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']);
+                    $sell_price = $this->num_uf($total_sell_price) / $this->num_uf($total_quantity) ;
                 }
                 if($this->items[$index]['prices'][$key]['price_type'] == 'fixed'){
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)$sell_price-  (float)$this->items[$index]['prices'][$key]['price'];
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format($this->num_uf($sell_price) -  $this->num_uf($this->items[$index]['prices'][$key]['price']),3) ;
                 }
                 elseif($this->items[$index]['prices'][$key]['price_type'] == 'percentage'){
-                    $percent = $sell_price * $this->items[$index]['prices'][$key]['price'] / 100;
-                    $this->items[$index]['prices'][$key]['price_after_desc'] = (float)($sell_price - ($percent * $sell_price));
+                    $percent = $this->num_uf($sell_price) * $this->num_uf($this->items[$index]['prices'][$key]['price']) / 100;
+                    $this->items[$index]['prices'][$key]['price_after_desc'] = number_format((float)($this->num_uf($sell_price) - $percent ),3) ;
                 }
             }
-            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
+            $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($sell_price);
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($total_quantity) ? $total_quantity : 1);
-                $this->items[$index]['prices'][$key]['piece_price'] = $this->items[$index]['prices'][$key]['price_after_desc'];
-            }
+                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']),3) ;
+            })
             else{
-                $this->items[$index]['prices'][$key]['total_price']=(float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1);
-                $this->items[$index]['prices'][$key]['piece_price']=(float)$this->items[$index]['prices'][$key]['total_price'] / (!empty($total_quantity) ? $total_quantity : 1);
+                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price'] )/ (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
             }
         }
     }
 
     public function getVariationData($index){
-        $variant = Variation::find($this->items[$index]['variation_id']);
-        $this->items[$index]['unit'] = $variant->unit->name;
-        $this->items[$index]['base_unit_multiplier'] = $variant->equal;
+        if(!empty($this->items[$index]['variation_id'])){
+            $variant = Variation::find($this->items[$index]['variation_id']);
+            $this->items[$index]['unit'] = $variant->unit->name;
+            $this->items[$index]['base_unit_multiplier'] = $variant->equal;
+        }
     }
 
     public function changeFilling($index){
         if(!empty($this->items[$index]['fill_quantity'])){
             if(!empty($this->items[$index]['purchase_price'])){
                 if($this->items[$index]['fill_type']=='fixed'){
-                    $this->items[$index]['selling_price']= ($this->items[$index]['purchase_price'] + (float)$this->items[$index]['fill_quantity']);
+                    $this->items[$index]['selling_price']= ( $this->num_uf($this->items[$index]['purchase_price']) + (float)$this->num_uf($this->items[$index]['fill_quantity']) );
                 }else{
-                    $percent=((float)$this->items[$index]['purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                    $this->items[$index]['selling_price']= (float)($this->items[$index]['purchase_price'] + $percent);
+                    $percent=((float)$this->num_uf($this->items[$index]['purchase_price']) * (float)$this->num_uf($this->items[$index]['fill_quantity'])) / 100;
+                    $this->items[$index]['selling_price']= (float)($this->num_uf($this->items[$index]['purchase_price']) + $percent);
                 }
             }
             if(!empty($this->items[$index]['dollar_purchase_price'])){
+
                 if($this->items[$index]['fill_type']=='fixed'){
-                    $this->items[$index]['dollar_selling_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
+                    $this->items[$index]['dollar_selling_price']=($this->num_uf($this->items[$index]['dollar_purchase_price'])+(float)$this->num_uf($this->items[$index]['fill_quantity']));
                 }
                 else{
-                    $percent = ((float)$this->items[$index]['dollar_purchase_price'] * (float)$this->items[$index]['fill_quantity']) / 100;
-                    $this->items[$index]['dollar_selling_price'] = ((float)$this->items[$index]['dollar_purchase_price'] + $percent);
+                    $percent = ((float)$this->num_uf($this->items[$index]['dollar_purchase_price']) * (float)$this->num_uf($this->items[$index]['fill_quantity'])) / 100;
+                    $this->items[$index]['dollar_selling_price'] = ((float)$this->num_uf($this->items[$index]['dollar_purchase_price']) + $percent);
                 }
-
             }
+//            dd($this->items[$index]['dollar_selling_price']);
         }
         $this->changeTotalAmount();
 
@@ -872,7 +878,11 @@ class Edit extends Component
         $this->amount = $this->num_uf($value);
     }
     public function changeTotalAmount(){
-        $this->total_amount = $this->amount +$this->calcPayment();
+        if($this->paying_currency == 2){
+            $this->total_amount =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
+        }else{
+            $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
+        }
     }
     public function sum_sub_total(){
         $totalSubTotal = 0;
