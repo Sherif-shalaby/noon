@@ -446,7 +446,7 @@ class Edit extends Component
     public function addStockProduct($line)
     {
         $new_item = [
-            'variations' => $line->product->variations,
+            'variations' => $line->product->variations??'',
             'variation_id' => $line->variation_id,
             'product' => $line->product,
             'quantity' => $line->quantity,
