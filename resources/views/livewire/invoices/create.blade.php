@@ -336,7 +336,7 @@
                                                 </td>
 
                                                 <td style="font-weight: 700;font-size: 10px;height: 50px;"
-                                                    class="px-1 border-right ">
+                                                    class="px-1 border-right dollar-cell">
                                                     <div style="height: 100%;max-width: 100%;"
                                                         class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                         {{ number_format($item['dollar_price'] ?? 0, 2) }}
@@ -397,7 +397,7 @@
                                                     </div>
                                                 </td>
                                                 <td style="font-weight: 700;font-size: 10px;height: 50px;"
-                                                    class="px-1 border-right ">
+                                                    class="px-1 border-right dollar-cell">
                                                     <div style="height: 100%;max-width: 100%;"
                                                         class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                         {{ $item['dollar_sub_total'] ?? 0 }}

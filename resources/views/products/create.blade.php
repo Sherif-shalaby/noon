@@ -29,21 +29,22 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4 ">
-                    <div
-                        class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                        <a href="{{ route('products.index') }}" class="btn btn-primary">
-                            @lang('lang.products')
-                        </a>
-                    </div>
+            </div>
+            <div class="col-md-4 ">
+                <div
+                    class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                    <a href="{{ route('products.index') }}" class="btn btn-primary">
+                        @lang('lang.products')
+                    </a>
                 </div>
             </div>
         </div>
-    @endsection
-    @section('content')
+    </div>
+@endsection
+@section('content')
+    <div class="animate-in-page">
         <!-- Start row -->
         <div class="d-flex justify-content-center">
-
             <!-- Start col -->
             <div class="col-lg-12">
                 <div class="card m-b-30 p-2">
