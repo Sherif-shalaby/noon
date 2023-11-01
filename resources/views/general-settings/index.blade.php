@@ -110,6 +110,25 @@
 
                     <div
                         class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        {!! Form::label('start_date', __('lang.start_date'), [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                        ]) !!}
+                        {!! Form::date('start_date', !empty($settings['start_date']) ? $settings['start_date'] : date('Y-m-d'), [
+                            'class' => 'form-control required initial-balance-input my-0',
+                        ]) !!}
+                    </div>
+                    <div
+                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        {!! Form::label('end_date', __('lang.end_date'), [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                        ]) !!}
+                        {!! Form::date('end_date', !empty($settings['end_date']) ? $settings['end_date'] : null, [
+                            'class' => 'form-control required initial-balance-input my-0',
+                        ]) !!}
+                    </div>
+
+                    <div
+                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::label('default_payment_type', __('lang.default_payment_type'), [
                             'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
                         ]) !!}

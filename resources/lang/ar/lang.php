@@ -578,4 +578,6 @@ return array(
     'discount_from_original_price_with_free_quantity' => 'الخصم من السعر مع احتساب الكمية المجانية',
     'add_new_unit' => 'اضافة وحدة جديدة',
     'basic_unit_for_import_product' => 'الوحدة الاساسية لاستيراد المنتج',
+    'extra_quantity' => 'كمية اضافية',
+    'contact_number' => 'رقم التواصل',
 );

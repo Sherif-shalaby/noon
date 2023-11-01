@@ -1,6 +1,7 @@
-<div class="row" style="text-align: center;" id="invoice_heaer_div" >
+<div class="row" style="text-align: center;" id="invoice_heaer_div">
     @php
-        $letter_header = App\Models\System::getProperty('letter_header');
+        $logo = App\Models\System::getProperty('logo');
     @endphp
-    <img src="@if(!empty($letter_header)){{asset('uploads/'.$letter_header)}}@else{{asset('/uploads/'.session('logo'))}}@endif" alt="header" id="header_invoice_img" style="width: auto; margin: auto;  max-height: 150px;">
+    <img src="@if (!empty($letter_header)) {{ asset('/uploads/' . $logo) }}@else{{ asset('/uploads/' . session('logo')) }} @endif"
+        alt="header" id="header_invoice_img" style="width: auto; margin: auto;  max-height: 150px;">
 </div>

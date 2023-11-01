@@ -14,6 +14,9 @@
                                 style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                 @lang('lang.dashboard')</a>
                         </li>
+                        <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                style="text-decoration: none;color: #596fd7" href="{{ route('suppliers.create') }}">/
+                                @lang('lang.add_supplier')</a></li>
                         {{-- <li class="breadcrumb-item"><a href="#">Brands</a></li> --}}
                         <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
                             aria-current="page">@lang('lang.suppliers')</li>
