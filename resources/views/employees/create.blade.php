@@ -219,7 +219,7 @@
                                                     for="job_type">@lang('lang.jobs')</label>
                                                 <div class="input-wrapper">
                                                     {!! Form::select('job_type_id', $jobs, null, [
-                                                        'class' => 'form-control selectpicker',
+                                                        'class' => 'form-control selectpicker initial-balance-input width-full',
                                                         'placeholder' => __('lang.select_job_type'),
                                                         'data-live-search' => 'true',
                                                     ]) !!}
@@ -287,7 +287,8 @@
                                                 </div>
                                             @endforeach
                                         </div>
-                                        <div class="row mt-4">
+                                        <div
+                                            class="row my-2 mr-3  @if (app()->isLocale('ar')) justify-content-end @endif">
                                             <!-- Button salary modal -->
                                             <button type="button" class="btn btn-primary width-fit" data-toggle="modal"
                                                 data-target="#salary_details">
@@ -295,28 +296,30 @@
                                             </button>
                                             @include('employees.partials.salary_details')
                                         </div>
-                                        <br>
-                                        <br>
+
+
                                         {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
-                                                <table>
+                                                <table style="width: 100%">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
-                                                            <th>@lang('lang.check_in')</th>
-                                                            <th>@lang('lang.check_out')</th>
-                                                            <th>@lang('lang.evening_shift')</th>
-                                                            <th id="label1" class="hidden">@lang('lang.check_in')</th>
-                                                            <th id="label2" class="hidden">@lang('lang.check_out')</th>
+                                                            <th class="text-center">@lang('lang.check_in')</th>
+                                                            <th class="text-center">@lang('lang.check_out')</th>
+                                                            <th class="text-center">@lang('lang.evening_shift')</th>
+                                                            <th class="text-center" id="label1" class="hidden">
+                                                                @lang('lang.check_in')</th>
+                                                            <th id="label2" class="hidden text-center">
+                                                                @lang('lang.check_out')</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($week_days as $key => $week_day)
                                                             <tr>
                                                                 {{-- "working_day_per_week" checkbox --}}
-                                                                <td>
+                                                                <td class="text-center">
                                                                     <div class="form-group">
                                                                         <div class="i-checks">
                                                                             <input
@@ -329,7 +332,7 @@
                                                                     </div>
                                                                 </td>
                                                                 {{-- "check_in" inputField --}}
-                                                                <td>
+                                                                <td class="text-center">
                                                                     {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
                                                                     {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}"> --}}
                                                                     <input type="time" class="form-control"
@@ -337,7 +340,7 @@
                                                                         id="input10{{ $key }}">
                                                                 </td>
                                                                 {{-- "check_out" inputField --}}
-                                                                <td>
+                                                                <td class="text-center">
                                                                     {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}"> --}}
                                                                     {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
                                                                     <input type="time" class="form-control"
@@ -346,13 +349,14 @@
                                                                     {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
                                                                 </td>
                                                                 {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
-                                                                <td>
+                                                                <td class="text-center">
                                                                     <input type="checkbox" class="checkbox-toggle"
                                                                         id="checkbox2{{ $key }}"
                                                                         name="evening_shift_checkbox[{{ $key }}]">
                                                                 </td>
                                                                 {{--  "تسجيل الدخول" , "تسجيل الخروج" --}}
-                                                                <td>
+                                                                <td
+                                                                    class="text-center d-flex justify-content-center align-items-center">
                                                                     <table class="hidden inputFields_evening_shift"
                                                                         id="inputFields_evening_shift{{ $key }}">
                                                                         <tr>
