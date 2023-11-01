@@ -109,10 +109,20 @@
     var toggleDollarButton = document.getElementById('toggleDollar');
 
     toggleDollarButton.addEventListener('click', function() {
-        localStorage.getItem("showHideDollar");
-        if (!localStorage.getItem("showHideDollar")) {
-            localStorage.setItem("showHideDollar", "show");
+
+        const value = localStorage.getItem("showHideDollar");
+        if (value === null) {
+            localStorage.setItem("showHideDollar", "hide");
+        } else {
+            if (localStorage.getItem("showHideDollar") == "show") {
+                localStorage.setItem("showHideDollar", "hide");
+            } else {
+                localStorage.setItem("showHideDollar", "show");
+            }
         }
+
+
+
         var dollarCells = document.getElementsByClassName('dollar-cell');
 
         for (var i = 0; i < dollarCells.length; i++) {
