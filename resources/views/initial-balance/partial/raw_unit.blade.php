@@ -34,7 +34,6 @@
                         class="text-danger error-msg">{{ $message }}</label>
                 @enderror
             </div>
-
             <div style="
      font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px 2px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
@@ -125,13 +124,16 @@
                         <option selected value="fixed">@lang('lang.fixed')</option>
                         <option value="percent">%</option>
                     </select>
-                    <select class="custom-select "
-                        style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['fill_type'] !== 'fixed' ? 'display:none;' : '' }}"
-                        wire:model="rows.{{ $index }}.fill_currency"
-                        wire:change="changeFilling({{ $index }})">
-                        <option selected value="dinar">Dinar</option>
-                        <option value="dollar">Dollar</option>
-                    </select>
+                    <span class=" dollar-cell">
+
+                        <select class="custom-select"
+                            style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['fill_type'] !== 'fixed' ? 'display:none;' : '' }}"
+                            wire:model="rows.{{ $index }}.fill_currency"
+                            wire:change="changeFilling({{ $index }})">
+                            <option selected value="dinar">Dinar</option>
+                            <option value="dollar">Dollar</option>
+                        </select>
+                    </span>
 
 
                 </div>

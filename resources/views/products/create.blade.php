@@ -403,7 +403,7 @@
                                             class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label for="method"
                                                 class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                style="width: 25%">{{ __('lang.tax_method') . '*' }}</label>
+                                                style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.tax_method') . '*' }}</label>
                                             <div
                                                 style="background-color: #dedede; border: none;
                                                     border-radius: 16px;
@@ -429,7 +429,7 @@
                                             class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                             <label for="product"
                                                 class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                style="width: 25%">{{ __('lang.product_tax') . '*' }}</label>
+                                                style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.product_tax') . '*' }}</label>
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="background-color: #dedede; border: none;
                                                         border-radius: 16px;
@@ -485,6 +485,7 @@
                                             class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('height', __('lang.height'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
                                             {!! Form::text(
                                                 'height',
@@ -503,6 +504,7 @@
                                             class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('length', __('lang.length'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
                                             {!! Form::text(
                                                 'length',
@@ -521,6 +523,7 @@
                                             class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('width', __('lang.width'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
                                             {!! Form::text(
                                                 'width',
@@ -538,6 +541,7 @@
                                             class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('size', __('lang.size'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
                                             {!! Form::text(
                                                 'size',
@@ -555,6 +559,7 @@
                                             class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('weight', __('lang.weight'), [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
                                             {!! Form::text(
                                                 'weight',
@@ -569,9 +574,10 @@
                                             @enderror
                                         </div>
                                         <div
-                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            class="col-md-2 d-flex align-items-center pr-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             {!! Form::label('variation', __('lang.basic_unit_for_import_product'), [
-                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
                                             ]) !!}
                                             <div class="input-wrapper">
 
@@ -682,7 +688,8 @@
                                     <div class="container-fluid mt-3">
                                         <div class="row mx-0" style="border: 1px dashed #ddd;">
                                             <div class="pt-2 text-center">
-                                                <label for="projectinput2" class='h5'>
+                                                <label style="font-size: 12px;font-weight: 500;" for="projectinput2"
+                                                    class='h5'>
                                                     {{ __('lang.product_image') }}</label>
                                             </div>
                                             <div class=" d-flex justify-content-center align-items-center flex-column">
@@ -744,7 +751,8 @@
                                 <div class="container-fluid">
                                     <div class="form-group">
                                         <label for="details"
-                                            class="h5  @if (app()->isLocale('ar')) text-end @else text-start @endif d-block">{{ __('lang.product_details') }}&nbsp;
+                                            class="h5  @if (app()->isLocale('ar')) text-end @else text-start @endif d-block"
+                                            style="font-size: 12px;font-weight: 500;">{{ __('lang.product_details') }}&nbsp;
                                             <button class="btn btn-primary btn-sm ml-2" type="button"
                                                 data-toggle="collapse" data-target="#translation_details_product"
                                                 aria-expanded="false" aria-controls="collapseExample">

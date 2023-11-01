@@ -26,7 +26,7 @@
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <input type="text" name="name"
-                            class="select form-control datepicker category p-0 initial-balance-input my-0 @if (app()->isLocale('ar')) text-end  @else  text-start @endif"
+                            class="select form-control category p-0 initial-balance-input my-0 @if (app()->isLocale('ar')) text-end  @else  text-start @endif"
                             style="width:100%;border-radius:16px;border:2px solid #cececf"
                             placeholder="{{ __('lang.tax_name') }}" required>
                         {{-- Error Message --}}

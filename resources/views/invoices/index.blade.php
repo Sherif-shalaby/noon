@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                            <div class="table-responsive">
+                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <table id="datatable-buttons" class="table table-striped table-bordered">
                                     <thead>
                                         <tr>
