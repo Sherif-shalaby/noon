@@ -379,6 +379,7 @@ return array(
     'check_in_time' => 'وقت الدخول',
     'check_out_time' => 'وقت الخروج',
     'attendance_list' => 'قائمة الحضور',
+    'add_row' => 'اضافة سطر' ,
     'customer' => 'عميل',
     'add_payment' => 'إضافة دفع',
     'color'=>'لون',

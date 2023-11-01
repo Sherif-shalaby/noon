@@ -36,30 +36,36 @@
                         <div class="col-sm-12">
                             <br>
                             {!! Form::open(['url' => route('attendance.store'), 'method' => 'post']) !!}
+                            {{-- "index" of "each row" --}}
                             <input type="hidden" name="index" id="index" value="0">
                             <div class="row">
+                                {{-- add "new_row" to table --}}
                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-primary add_row" id="add_row">+
-                                        @lang('lang.add_row')</button>
+                                    <button type="button" class="btn btn-primary add_row" id="add_row">
+                                        +@lang('lang.add_row')
+                                    </button>
                                 </div>
                             </div>
                             <br>
+                            {{-- ++++++++++++++++++++ Table ++++++++++++++++++++ --}}
                             <table class="table" id="attendance_table">
+                                {{-- /////////// table_thead /////////// --}}
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.date')</th>
                                         <th>@lang('lang.employee')</th>
-                                        <th>@lang('lang.checkin')</th>
-                                        <th>@lang('lang.checkout')</th>
+                                        <th>@lang('lang.check_in')</th>
+                                        <th>@lang('lang.check_out')</th>
                                         <th>@lang('lang.status')</th>
                                         <th>@lang('lang.created_by')</th>
+                                        <th>@lang('lang.action')</th>
                                     </tr>
                                 </thead>
-
-                                <tbody>
-
+                                {{-- /////////// table_tbody /////////// --}}
+                                <tbody class="table_tbody">
                                     <tr>
-                                        <td><input type="date" class="form-control date" name="attendances[0][date]"
+                                        <td>
+                                            <input type="date" class="form-control date" name="attendances[0][date]"
                                                 required></td>
                                         <td>
                                             {!! Form::select('attendances[0][employee_id]', $employees, null , ['class'
@@ -83,6 +89,12 @@
                                         <td>
                                             {{ucfirst(Auth::user()->name)}}
                                         </td>
+                                        {{-- ++++++++ delete row ++++++++ --}}
+                                        <td>
+                                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">
+                                                <i class="fa fa-close"></i>
+                                            </a>
+                                        </td>
                                     </tr>
 
                                 </tbody>
@@ -105,19 +117,24 @@
 
 @section('javascript')
 <script>
+    // +++++++++++++ add "new_row" to table +++++++++++++
     $('#add_row').click(function(){
         row_index = parseInt($('#index').val());
         row_index = row_index + 1;
         $('#index').val(row_index);
         $.ajax({
             method: 'get',
-            url: '/hrm/attendance/get-attendance-row/'+row_index,
+            url: '/attendance/get-attendance-row/'+row_index,
             data: {  },
             contentType: 'html',
             success: function(result) {
                 $('#attendance_table tbody').append(result);
             },
         });
-    })
+    });
+    // +++++++++++++ remove "row" to table +++++++++++++
+    $('.table_tbody').on('click','.deleteRow',function(){
+        $(this).parent().parent().remove();
+    });
 </script>
 @endsection

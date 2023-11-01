@@ -88,4 +88,14 @@ class AttendanceController extends Controller
     {
         //
     }
+    // +++++++++++++++++++ "add_new_row" for "create attendance" +++++++++++++++++++
+    public function getAttendanceRow($row_index)
+    {
+        $employees = Employee::leftjoin('users', 'employees.user_id', 'users.id')->select('users.name', 'employees.id')->pluck('name', 'id');
+
+        return view('employees.attendance.partials.attendance_row')->with(compact(
+            'employees',
+            'row_index'
+        ));
+    }
 }

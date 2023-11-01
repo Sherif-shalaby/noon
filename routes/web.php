@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
     // ---------- attendance ------------
     Route::resource('attendance', AttendanceController::class);
+    // add "new_row"
+    Route::get('attendance/get-attendance-row/{row_index}', [AttendanceController::class , 'getAttendanceRow']);
 
     Route::get('add_point', [App\Http\Controllers\EmployeeController::class,'addPoints'])->name('employees.add_points');
     // +++++++++++++++++++++++ filters of "employees products" +++++++++++++++++++++
