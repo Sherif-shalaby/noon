@@ -43,6 +43,7 @@ use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
+use App\Http\Controllers\RequiredProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -208,6 +209,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ---- required_products ----
+    Route::resource('required-products', RequiredProductController::class);
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);

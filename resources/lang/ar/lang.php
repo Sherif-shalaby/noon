@@ -348,6 +348,10 @@ return array(
     'show_purchase_order' => 'عرض اوامر الشراء' ,
     'create_purchase_order' => 'انشاء أمر شراء' ,
     'po_no' => 'رقم طلب الشراء' ,
+    'required_products' => 'المواد المطلوبة',
+    'last_purchase_date' =>'تاريخ اخر عملية شراء' ,
+    'product_price' =>'سعر المادة',
+    'required_quantity' =>'الكمية المطلوبة',
     // +++++++++++++ invoice_title +++++++++++++
     'invoice_title1' => 'عامر' ,
     'invoice_title2' => 'للتجارة العامة',

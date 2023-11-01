@@ -1393,12 +1393,13 @@ class Create extends Component
         }
     return $qtyByUnit;
     }
+    // +++++++++++++++ create_purchase_order() method : When click on "امر شراء" button +++++++++++++++
     public function create_purchase_order($id)
     {
         $stock = AddStockLine::where('product_id',$id)->latest()->first();
         $po_count = PurchaseOrderTransaction::count() + 1;
         $number = 'PO' . $po_count;
-
+        // dd($po_count);
         try {
             $transaction_data = [
                 'store_id' => $this->store_id,
