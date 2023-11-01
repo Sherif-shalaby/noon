@@ -4,7 +4,7 @@
 
 
         <div class="btn btn-sm btn-danger py-2 px-1 position-absolute"
-            style="width: fit-content;bottom:40%;left: 2%;z-index: 99;" wire:click="delete_product({{ $index }})">
+            style="width: fit-content;bottom:40%;left: 8%;z-index: 99;" wire:click="delete_product({{ $index }})">
             <i class="fa fa-trash"></i>
         </div>
 
@@ -360,15 +360,13 @@
                                     <div class="custom-control custom-switch">
                                         <form id="myForm">
                                             <input type="checkbox" class="custom-control-input"
-                                                name="discount_from_original_price"
-                                                id="discount_from_original_price{{ $key }}"
+                                                name="discount_from_original_price" id="discount_from_original_price"
                                                 style="font-size: 0.75rem"
                                                 @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
                                                 wire:change="changePrice({{ $index }}, {{ $key }})">
 
                                             <label class="custom-control-label" id="custom-control-label"
-                                                style="font-size: 8px"
-                                                for="discount_from_original_price{{ $key }}">
+                                                style="font-size: 8px" for="discount_from_original_price">
                                                 {{-- @if (request()->has('discount_from_original_price'))
                                             @lang('lang.discount_from_original_price')
                                         @else --}}
