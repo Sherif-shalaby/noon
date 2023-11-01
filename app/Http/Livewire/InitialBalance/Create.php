@@ -78,7 +78,7 @@ class Create extends Component
             [
                 'price_type' => null,
                 'price_category' => null,
-                'price_currency'=>'dollar',
+                'price_currency'=>'dinar',
                 'price' => null,
                 'dinar_price' => null,
                 'discount_quantity' => null,
@@ -278,7 +278,7 @@ class Create extends Component
             'prices' => [
                 [
                     'price_type' => null,
-                    'price_currency'=>'dollar',
+                    'price_currency'=>'dinar',
                     'price_category' => null,
                     'price' => null,
                     'dinar_price' => null,
@@ -929,11 +929,11 @@ class Create extends Component
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if($this->rows[$index]['prices'][$key]['price_currency']=='dollar'){
             if(!empty($this->rows[$index]['prices'][$key]['dinar_price'])) {
-                if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
+//                if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
                     $actual_price=(float)$this->rows[$index]['prices'][$key]['dinar_price'];
                     $this->rows[$index]['prices'][$key]['dinar_price']=number_format((float)$this->rows[$index]['prices'][$key]['dinar_price']/(float)$this->exchange_rate,3);
                     // dd($this->rows[$index]['prices'][$key]['dinar_price']);
-                }
+//                }
             }
         }
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
@@ -950,7 +950,7 @@ class Create extends Component
                     $dollar_sell_price = $this->num_uf($total_dollar_sell_price) / $total_quantity;
                 }
                 if ($this->rows[$index]['prices'][$key]['price_type'] === 'fixed'){
-                    if($this->rows[$index]['prices'][$key]['price_currency']=='dollar' && !empty($this->discount_from_original_price)){
+                    if($this->rows[$index]['prices'][$key]['price_currency']=='dollar' ){
                         $dollar_price=ceil(number_format($this->num_uf($actual_price),3)) ;
                     }else{
                         $dollar_price=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_price']) / $this->num_uf($this->exchange_rate),3);
