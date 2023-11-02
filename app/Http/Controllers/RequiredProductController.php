@@ -11,7 +11,8 @@ class RequiredProductController extends Controller
     /* ++++++++++++++++++++ index() +++++++++++++++++++++  */
     public function index()
     {
-        return view('purchase_order.required_products.index');
+        $requiredProducts = RequiredProduct::all();
+        return view('purchase_order.required_products.index',compact('requiredProducts'));
     }
 
     /**

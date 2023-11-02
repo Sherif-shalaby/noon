@@ -42,33 +42,44 @@
                                                     <th>@lang('lang.employee_name')</th>
                                                     <th>@lang('lang.date')</th>
                                                     <th>@lang('lang.product_name')</th>
+                                                    <th>@lang('lang.store')</th>
                                                     <th>@lang('lang.supplier_name')</th>
                                                     <th>@lang('lang.branch_name')</th>
-                                                    <th>@lang('lang.last_purchase_date')</th>
-                                                    <th>@lang('lang.product_price')</th>
+                                                    <th>@lang('lang.purchase_price')</th>
+                                                    <th>@lang('lang.purchase_price_dollar')</th>
                                                     <th>@lang('lang.required_quantity')</th>
                                                     <th>@lang('lang.action')</th>
                                                 </tr>
                                             </thead>
-                                            {{-- <tbody>
-                                                @foreach($employee_products as $index=>$product)
+                                            <tbody class="tbody">
+                                                @foreach($requiredProducts as $index=>$requiredProduct)
                                                     <tr>
                                                         <td>{{ $index+1 }}</td>
                                                         <td>
-                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
+                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$requiredProduct->id}}" />
                                                         </td>
-                                                        <td>{{$product->name}}</td>
-                                                        <td>{{$product->sku}}</td>
-                                                        <td>{{$product->category->name??''}}</td>
+                                                        <td>{{!empty($requiredProduct->employee_id)?$requiredProduct->employee_id:''}}</td>
+                                                        <td>{{!empty($requiredProduct->order_date)?$requiredProduct->order_date:''}}</td>
+                                                        <td>{{!empty($requiredProduct->product_id)?$requiredProduct->product->name:''}}</td>
+                                                        <td>{{!empty($requiredProduct->store_id)?$requiredProduct->stores->name:''}}</td>
+                                                        <td>{{!empty($requiredProduct->supplier_id)?$requiredProduct->supplier->name:''}}</td>
+                                                        {{-- <td>{{$requiredProduct->branch_id ?? ''}}</td> --}}
+                                                        <td>{{!empty($requiredProduct->branch_id)?$requiredProduct->branch->name:''}}</td>
+                                                        <td>{{!empty($requiredProduct->purchase_price)?$requiredProduct->purchase_price:''}}</td>
+                                                        <td>{{!empty($requiredProduct->dollar_purchase_price)?$requiredProduct->dollar_purchase_price:''}}</td>
                                                         <td>
-                                                            {{$product->subCategory1->name??''}} <br>
-                                                            {{$product->subCategory2->name??''}} <br>
-                                                            {{$product->subCategory3->name??''}}
+                                                            <input type="text" class="form-control" name="required_quantity{{$index}}" id="required_quantity"
+                                                                    placeholder="@lang('lang.required_quantity')">
                                                         </td>
-                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                        {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}
+                                                        <td  class="text-center">
+                                                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">
+                                                                <i class="fa fa-trash"></i>
+                                                            </a>
+                                                        </td>
                                                     </tr>
                                                 @endforeach
-                                            </tbody> --}}
+                                            </tbody>
                                         </table>
                                     </div>
                                     <br/>
@@ -112,6 +123,10 @@
             // when click on "all checkboxs" , it will checked "all checkboxes"
             $('#select_all_ids').click(function() {
                 $('.checkbox_ids').prop('checked', $(this).prop('checked'));
+            });
+            // +++++++++++++ Delete Row in required_product +++++++++++++
+            $('.tbody').on('click','.deleteRow',function(){
+                $(this).parent().parent().remove();
             });
         });
     </script>
