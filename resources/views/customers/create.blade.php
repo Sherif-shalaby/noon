@@ -13,7 +13,7 @@
                         <ul style=" list-style: none;"
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
-                                    style="text-decoration: none;color: #596fd" href="{{ url('/') }}">/
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                     @lang('lang.dashboard')</a>
                             </li>
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
@@ -24,7 +24,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class=" col-md-4 ">
                     <div
                         class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                         <a href="{{ route('customers.index') }}" class="btn btn-primary">
@@ -52,140 +52,149 @@
                         'id' => 'customer-form',
                     ]) !!}
                     <div class="container-fluid">
-                        <div class="row pt-5">
+                        <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
-                                    <div class="d-flex justify-content-center">
-                                        {!! Form::select('customer_type_id', $customer_types, null, [
-                                            'class' => 'form-control select2',
-                                            'required',
-                                            'placeholder' => __('lang.please_select'),
-                                        ]) !!}
-                                        {{-- "add new customer_type" button --}}
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#createCustomerTypesModal">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    @error('customer_type_id')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                ]) !!}
+                                <div class="input-wrapper">
+                                    {!! Form::select('customer_type_id', $customer_types, null, [
+                                        'class' => 'form-control selectpicker',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                    {{-- "add new customer_type" button --}}
+                                    <button type="button" class="add-button" data-toggle="modal"
+                                        data-target="#createCustomerTypesModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
+                                @error('customer_type_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
                             </div>
                             {{-- +++++++++++++++++++++++++++++++ name  ++++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    {!! Form::label('name', __('lang.name')) !!}
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('name', __('lang.name'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                ]) !!}
+                                <div class="input-wrapper">
                                     {!! Form::text('name', null, [
-                                        'class' => 'form-control required',
+                                        'class' => 'form-control initial-balance-input m-auto width-full required',
                                     ]) !!}
-                                    @error('name')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
+                                @error('name')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
                             </div>
-                            {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group ">
-                                    <table class="bordered">
-                                        <thead class="email_thead">
-                                            <tr>
-                                                <th class="text-left" style="font-weight: normal;">
-                                                    <label class="mb-2">
-                                                        <span class="text-danger">*</span>@lang('lang.email')
-                                                    </label>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="email_tbody">
-                                            <tr>
-                                                <td class="col-md-12 p-0">
-                                                    <div
-                                                        class="select_body d-flex justify-content-between align-items-center">
-                                                        <input type="text" class="form-control"
-                                                            placeholder="@lang('lang.email')" name="email[]"
-                                                            value="{{ old('email') }}" required>
-                                                        @error('email')
-                                                            <div class="alert alert-danger">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                </td>
-                                                <td class="col-md-6">
-                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                    <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_email"
-                                                        type="button">
-                                                        <i class="fa fa-plus"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+
                             {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-md-4 mb-3 ">
-                                <div class="form-group">
-                                    <label for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
-                                    <input type="number" class="form-control" name="min_amount_in_dollar"
-                                        id="min_amount_in_dollar" />
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
+                                <div class="input-wrapper">
+
+                                    <input type="number" class="form-control initial-balance-input m-auto width-full "
+                                        name="min_amount_in_dollar" id="min_amount_in_dollar" />
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-md-4 mb-3 ">
-                                <div class="form-group">
-                                    <label for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
-                                    <input type="number" class="form-control" name="max_amount_in_dollar"
-                                        id="max_amount_in_dollar" />
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
+                                <div class="input-wrapper">
+                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                        name="max_amount_in_dollar" id="max_amount_in_dollar" />
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-md-4 mb-3 ">
-                                <div class="form-group">
-                                    <label for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
-                                    <input type="number" class="form-control" name="min_amount_in_dinar"
-                                        id="min_amount_in_dinar" />
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
+                                <div class="input-wrapper">
+
+                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                        name="min_amount_in_dinar" id="min_amount_in_dinar" />
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-md-4 mb-3 ">
-                                <div class="form-group">
-                                    <label for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
-                                    <input type="number" class="form-control" name="max_amount_in_dinar"
-                                        id="max_amount_in_dinar" />
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
+                                <div class="input-wrapper">
+
+                                    <input type="number" class="form-control initial-balance-input m-auto width-full "
+                                        name="max_amount_in_dinar" id="max_amount_in_dinar" />
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
-                                    <input type="text" class="form-control" name="balance_in_dollar"
-                                        id="balance_in_dollar" />
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
+                                <div class="input-wrapper">
+
+                                    <input type="text" class="form-control initial-balance-input m-auto width-full "
+                                        name="balance_in_dollar" id="balance_in_dollar" />
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
-                                    <input type="text" class="form-control" name="balance_in_dinar"
-                                        id="balance_in_dinar" />
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
+                                <div class="input-wrapper">
+                                    <input type="text" class="form-control initial-balance-input m-auto width-full"
+                                        name="balance_in_dinar" id="balance_in_dinar" />
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <label for="country-dd">@lang('lang.country')</label>
-                                <select id="country-dd" name="country" class="form-control" disabled>
-                                    <option value="{{ $countryId }}">
-                                        {{ $countryName }}
-                                    </option>
-                                </select>
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
+                                <div class="input-wrapper">
+                                    <select id="country-dd" name="country" class="form-control selectpicker" disabled>
+                                        <option value="{{ $countryId }}">
+                                            {{ $countryName }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                             {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="state-dd">@lang('lang.state')</label>
-                                    <select id="state-dd" name="state_id" class="form-control">
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
+                                <div class="input-wrapper">
+                                    <select id="state-dd" name="state_id" class="form-control selectpicker">
                                         @php
                                             $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
                                         @endphp
@@ -198,98 +207,168 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="city-dd">@lang('lang.city')</label>
-                                    <select id="city-dd" name="city_id" class="form-control"></select>
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.city')</label>
+                                <div class="input-wrapper">
+                                    <select id="city-dd" name="city_id" class="form-control selectpicker"></select>
                                 </div>
                             </div>
-                            {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
-                            <div class="col-md-4 mt-1">
-                                <table class="bordered">
-                                    <thead class="phone_thead">
+
+                            {{-- ++++++++++++ images ++++++++++++ --}}
+                            <div
+                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                    style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
+                                <div class="input-wrapper">
+                                    <input class="form-control img  initial-balance-input m-auto width-full"
+                                        name="image" type="file" accept="image/*" id="image">
+                                </div>
+                                {{-- Crop Image : cropper.js --}}
+                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                @error('cover')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
+                            <div
+                                class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <table class="bordered m-0" style="width: 100%">
+                                    <thead class="email_thead">
                                         <tr>
-                                            <th class="text-left" style="font-weight: normal;">@lang('lang.phone')</th>
+                                            <th
+                                                class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                                <label class="mb-0">
+                                                    <span class="text-danger">*</span>@lang('lang.email')
+                                                </label>
+                                            </th>
                                         </tr>
                                     </thead>
-                                    <tbody class="phone_tbody">
+                                    <tbody class="email_tbody">
                                         <tr>
-                                            <td class="col-md-12 p-0">
-                                                <div class="form-group">
-                                                    {!! Form::text('phone[]', null, [
-                                                        'class' => 'form-control required',
-                                                    ]) !!}
-                                                    @error('phone')
-                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                            <td class="col-md-12 p-0 mb-2">
+                                                <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                                                    style="width: 100%">
+                                                    <input type="text" class=" initial-balance-input m-0"
+                                                        width="100%;" style="flex-grow: 1"
+                                                        placeholder="@lang('lang.email')" name="email[]"
+                                                        value="{{ old('email') }}" required>
+                                                    @error('email')
+                                                        <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
+
+                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                    <a href="javascript:void(0)"
+                                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
+                                                        type="button">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow"
-                                                    style="margin-bottom: 10px;" type="button" id="submit-btn">
-                                                    <i class="fa fa-plus"></i>
-                                                </a>
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
+
+                            {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
+                            <div
+                                class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="m-0 " style="width: 100%">
+                                    <table class="bordered m-0" style="width: 100%">
+                                        <thead class="phone_thead">
+                                            <tr>
+                                                <th
+                                                    class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                                    <label class="mb-0">
+                                                        <span class="text-danger">*</span> @lang('lang.phone')
+                                                    </label>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="phone_tbody">
+                                            <tr>
+                                                <td class="col-md-12 p-0 mb-2">
+                                                    <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                                                        style="width: 100%">
+
+                                                        {!! Form::text('phone[]', null, [
+                                                            'class' => 'form-control required  initial-balance-input m-0 width-full',
+                                                            'style' => 'flex-grow: 1',
+                                                        ]) !!}
+                                                        @error('phone')
+                                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                                        @enderror
+
+                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                        <a href="javascript:void(0)"
+                                                            class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
+                                                            style="margin-bottom: 10px;" type="button" id="submit-btn">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    {!! Form::label('address', __('lang.address')) !!}
+                            <div
+                                class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('address', __('lang.address'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                ]) !!}
+                                <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
                                     {!! Form::textarea('address', null, [
                                         'class' => 'form-control',
+                                        'style' => ' width: 100%;height:100%;background-color:transparent',
                                     ]) !!}
-                                    @error('address')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
+                                @error('address')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    {!! Form::label('notes', __('lang.notes')) !!}
+                            <div
+                                class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('notes', __('lang.notes'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                ]) !!}
+                                <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
                                     {!! Form::textarea('notes', null, [
                                         'class' => 'form-control',
+                                        'style' => ' width: 100%;height:100%;background-color:transparent',
                                     ]) !!}
-                                    @error('address')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
+                                @error('address')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
                             </div>
-                            {{-- ++++++++++++ images ++++++++++++ --}}
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>@lang('lang.upload_image')</label>
-                                    <input class="form-control img" name="image" type="file" accept="image/*"
-                                        id="image">
-                                    {{-- Crop Image : cropper.js --}}
-                                    {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                    @error('cover')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
+
 
 
                         </div>
                         <div class="row pt-4 pb-5">
                             <div class="col-md-12">
-                                <h3>@lang('lang.important_dates')</h3>
+                                <h3 class=" @if (app()->isLocale('ar')) text-end @endif">@lang('lang.important_dates')</h3>
                             </div>
                             <div class="col-md-12">
                                 <div class="row">
-                                    <table class="table table-bordered" id="important_date_table" style="width: 100%;">
+                                    <table class="table table-bordered  @if (app()->isLocale('ar')) dir-rtl @endif"
+                                        id="important_date_table" style="width: 100%;">
                                         <thead>
                                             <tr>
-                                                <th style="width: 20%;">@lang('lang.important_date')</th>
-                                                <th style="width: 20%;">@lang('lang.date')</th>
-                                                <th style="width: 20%;">@lang('lang.notify_before_days')</th>
-                                                <th style="width: 10%;"><button type="button"
+                                                <th class="text-center" style="width: 20%;">@lang('lang.important_date')</th>
+                                                <th class="text-center" style="width: 20%;">@lang('lang.date')</th>
+                                                <th class="text-center" style="width: 20%;">@lang('lang.notify_before_days')</th>
+                                                <th class="text-center" style="width: 10%;"><button type="button"
                                                         class="add_date btn btn-success btn-xs"><i
                                                             class="fa fa-plus"></i></button>
                                                 </th>
@@ -327,12 +406,15 @@
         $('.phone_tbody').on('click', '.addRow', function() {
             console.log('new phone inputField was added');
             var tr = `<tr>
-                    <td>
-                        <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
-                    </td>
+                    <td class="col-md-12 p-0 mb-2">
+                           <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                            style="width: 100%">
+                        <input type="text" name="phone[]" class=" initial-balance-input m-0"
+                                width="100%;" style="flex-grow: 1" placeholder="Enter phone number" />
+
+                        <a href="javascript:void(0)" class="add-button d-flex justify-content-center align-items-center text-decoration-none deleteRow">-</a>
+                  </div>
+
 
                 </td>
             </tr>`;
@@ -345,16 +427,18 @@
         $('.email_tbody').on('click', '.addRow_email', function() {
             console.log('new Email inputField was added');
             var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                    <td  class="col-md-12 p-0">
+                        <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                            style="width: 100%">
+                        <input  type="text" class=" initial-balance-input m-0"
+                            width="100%"  style="flex-grow: 1" placeholder="@lang('lang.email')" name="email[]"
                                 value="{{ old('email') }}" required >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
-                    </td>
+
+                        <a href="javascript:void(0)" class="add-button d-flex justify-content-center align-items-center text-decoration-none deleteRow_email">-</a>
+                    </div>
 
                 </td>
             </tr>`;

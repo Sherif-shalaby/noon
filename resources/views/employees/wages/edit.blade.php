@@ -1,161 +1,277 @@
 @extends('layouts.app')
 @section('title', __('lang.edit_wages'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.edit_wages')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('wages.index') }}">@lang('lang.wages')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.edit_wages')</li>
-                    </ol>
+    <div class="animate-in-page">
+
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.edit_wages')</h4>
+                    <div class="breadcrumb-list">
+                        <ul
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a></li>
+                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ route('wages.index') }}">/
+                                    @lang('lang.wages')</a></li>
+                            <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                                aria-current="page">@lang('lang.edit_wages')</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('content')
-    <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
-            <div class="card m-b-30 p-2">
-                {!! Form::open(['route' => ['wages.update',$wage->id],'method'=>'put','id'=>'brand-update-form' ]) !!}
-                @csrf
-                @method('PUT')
-                <div class="container-fluid">
-                    <div class="row pt-5">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {!! Form::label('employee_id', __('lang.employee') . ':*') !!}
-                                {!! Form::select('employee_id', $employees, $wage->employee_id, [
-                                    'class' => 'form-control select2',
-                                    'required',
-                                    'placeholder' => __('lang.please_select'),
+    <div class="animate-in-page">
+
+        <!-- Start row -->
+        <div class="row d-flex justify-content-center">
+            <!-- Start col -->
+            <div class="col-lg-12">
+                <div class="card m-b-30 p-2">
+                    {!! Form::open(['route' => ['wages.update', $wage->id], 'method' => 'put', 'id' => 'brand-update-form']) !!}
+                    @csrf
+                    @method('PUT')
+                    <div class="container-fluid">
+                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('employee_id', __('lang.employee') . '*', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
+                                <div class="input-wrapper">
+
+                                    {!! Form::select('employee_id', $employees, $wage->employee_id, [
+                                        'class' => 'form-control selectpicker',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                </div>
                                 @error('employee_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {!! Form::label('payment_type', __('lang.payment_type') . ':*') !!}
-                                {!! Form::select('payment_type', $payment_types,  $wage->payment_type, [
-                                    'class' => 'form-control select2',
-                                    'required',
-                                    'placeholder' => __('lang.please_select'),
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('payment_type', __('lang.payment_type') . '*', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
+                                <div class="input-wrapper">
+
+                                    {!! Form::select('payment_type', $payment_types, $wage->payment_type, [
+                                        'class' => 'form-control selectpicker',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                    ]) !!}
+                                </div>
                                 @error('payment_type')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                        </div>
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {!! Form::label('other_payment', __('lang.other_payment')) !!}
-                                {!! Form::text('other_payment', $wage->other_payment, [
-                                    'class' => 'form-control',
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('other_payment', __('lang.other_payment'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('other_payment', $wage->other_payment, [
+                                        'class' => 'form-control initial-balance-input m-auto width-full',
+                                    ]) !!}
+                                </div>
                                 @error('other_payment')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                        </div>
 
-                        <div class="col-md-4 account_period">
-                            <div class="form-group">
-                                <label for="account_period">@lang('lang.account_period')</label>
-                                {!! Form::month('account_period', $wage->account_period, [
-                                    'class' => 'form-control',
-                                    'placeholder' => __('lang.account_period'),
-                                    'id' => 'account_period',
-                                ]) !!}
-                            </div>
-                        </div>
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center account_period
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;' for="account_period">@lang('lang.account_period')</label>
+                                <div class="input-wrapper">
 
-                        <div class="col-md-4 account_period">
-                            <div class="form-group">
-                                <label for="acount_period_start_date">@lang('lang.acount_period_start_date')</label>
-                                {!! Form::text('acount_period_start_date', @format_date($wage->acount_period_start_date), [
-                                    'class' => 'form-control  datepicker calculate_salary',
-                                    'placeholder' => __('lang.acount_period_start_date'),
-                                    'id' => 'acount_period_start_date',
-                                ]) !!}
+                                    {!! Form::month('account_period', $wage->account_period, [
+                                        'class' => 'form-control initial-balance-input m-auto width-full',
+                                        'placeholder' => __('lang.account_period'),
+                                        'id' => 'account_period',
+                                    ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 account_period">
-                            <div class="form-group">
-                                <label for="acount_period_end_date">@lang('lang.acount_period_end_date')</label>
-                                {!! Form::text('acount_period_end_date', @format_date($wage->acount_period_end_date) , [
-                                    'class' => 'form-control datepicker calculate_salary',
-                                    'placeholder' => __('lang.acount_period_end_date'),
-                                    'id' => 'acount_period_end_date',
-                                ]) !!}
+
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center account_period
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="acount_period_start_date">@lang('lang.acount_period_start_date')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('acount_period_start_date', @format_date($wage->acount_period_start_date), [
+                                        'class' => 'form-control initial-balance-input m-auto width-full datepicker calculate_salary',
+                                        'placeholder' => __('lang.acount_period_start_date'),
+                                        'id' => 'acount_period_start_date',
+                                    ]) !!}
+                                </div>
                             </div>
-                        </div>
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center account_period
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="acount_period_end_date">@lang('lang.acount_period_end_date')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('acount_period_end_date', @format_date($wage->acount_period_end_date), [
+                                        'class' => 'form-control  initial-balance-input m-auto width-full  datepicker calculate_salary',
+                                        'placeholder' => __('lang.acount_period_end_date'),
+                                        'id' => 'acount_period_end_date',
+                                    ]) !!}
+                                </div>
+                            </div>
 
 
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="deductibles">@lang('lang.deductibles')</label>
-                                {!! Form::text('deductibles', $wage->deductibles, ['class' => 'form-control', 'placeholder' => __('lang.deductibles'), 'id' => 'deductibles']) !!}
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;' for="deductibles">@lang('lang.deductibles')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('deductibles', $wage->deductibles, [
+                                        'class' => 'form-control  initial-balance-input m-auto width-full ',
+                                        'placeholder' => __('lang.deductibles'),
+                                        'id' => 'deductibles',
+                                    ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="reasons_of_deductibles">@lang('lang.reasons_of_deductibles')</label>
-                                {!! Form::text('reasons_of_deductibles', $wage->reasons_of_deductibles, ['class' => 'form-control', 'rows' => 3, 'placeholder' => __('lang.reasons_of_deductibles')]) !!}
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="reasons_of_deductibles">@lang('lang.reasons_of_deductibles')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('reasons_of_deductibles', $wage->reasons_of_deductibles, [
+                                        'class' => 'form-control  initial-balance-input m-auto width-full',
+                                        'rows' => 3,
+                                        'placeholder' => __('lang.reasons_of_deductibles'),
+                                    ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="net_amount">@lang('lang.net_amount')</label>
-                                {!! Form::text('net_amount', $wage->net_amount, ['class' => 'form-control', 'placeholder' => __('lang.net_amount'), 'id' => 'net_amount']) !!}
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;' for="net_amount">@lang('lang.net_amount')</label>
+                                <div class="input-wrapper">
+                                    {!! Form::text('net_amount', $wage->net_amount, [
+                                        'class' => 'form-control initial-balance-input m-auto width-full',
+                                        'placeholder' => __('lang.net_amount'),
+                                        'id' => 'net_amount',
+                                    ]) !!}
+                                </div>
                             </div>
-                        </div>
-                        <input type="hidden" name="amount" id="amount" value="{{ $wage->amount }}">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="payment_date">@lang('lang.payment_date')</label>
-                                {!! Form::text('payment_date', !empty($wage->payment_date) ? @format_date($wage->payment_date) : @format_date(date('Y-m-d')), ['class' => 'form-control datepicker', 'placeholder' => __('lang.payment_date')]) !!}
+                            <input type="hidden" name="amount" id="amount" value="{{ $wage->amount }}">
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                    style='font-size: 12px;font-weight: 500;' for="payment_date">@lang('lang.payment_date')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text(
+                                        'payment_date',
+                                        !empty($wage->payment_date) ? @format_date($wage->payment_date) : @format_date(date('Y-m-d')),
+                                        [
+                                            'class' => 'form-control datepicker  initial-balance-input m-auto width-full',
+                                            'placeholder' => __('lang.payment_date'),
+                                        ],
+                                    ) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {!! Form::label('source_type', __('lang.source_type'), []) !!} <br>
-                                {!! Form::select('source_type', ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')], $wage->source_type, ['class' => 'select2 form-control','placeholder' => __('lang.please_select')]) !!}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {!! Form::label('source_of_payment', __('lang.source_of_payment'), []) !!} <br>
-                                {!! Form::select('source_id', $users, $wage->source_id, ['class' => 'select2 form-control', 'placeholder' => __('lang.please_select'), 'id' => 'source_id', 'required']) !!}
-                            </div>
-                        </div>
-                
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {!! Form::label('notes', __('lang.notes')) !!}
-                                {!! Form::textarea('notes', $wage->notes, [
-                                    'class' => 'form-control',
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('source_type', __('lang.source_type'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
+                                <div class="input-wrapper">
+
+                                    {!! Form::select(
+                                        'source_type',
+                                        ['user' => __('lang.user'), 'pos' => __('lang.pos'), 'store' => __('lang.store'), 'safe' => __('lang.safe')],
+                                        $wage->source_type,
+                                        ['class' => 'selectpicker form-control', 'placeholder' => __('lang.please_select')],
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('source_of_payment', __('lang.source_of_payment'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                ]) !!}
+                                <div class="input-wrapper">
+
+                                    {!! Form::select('source_id', $users, $wage->source_id, [
+                                        'class' => 'selectpicker form-control',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'source_id',
+                                        'required',
+                                    ]) !!}
+                                </div>
+                            </div>
+
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                {!! Form::label('notes', __('lang.notes'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                ]) !!}
+                                <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
+                                    {!! Form::textarea('notes', $wage->notes, [
+                                        'class' => 'form-control',
+                                        'style' => ' width: 300px;height:100%;background-color:transparent',
+                                    ]) !!}
+                                </div>
                                 @error('notes')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row pb-5">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                        <div class="row pb-5">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+                            </div>
                         </div>
                     </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
     </div>

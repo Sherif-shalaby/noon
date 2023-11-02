@@ -12,119 +12,194 @@
             </div>
             <div class="modal-body">
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <div class="i-checks" style="margin-top: 40px">
+                    <div
+                        class="col-md-6 d-flex flex-column justify-content-start @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+
+                        <div class="i-checks">
+                            <div
+                                class="d-flex mb-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+
                                 <input id="fixed_wage" name="fixed_wage" type="checkbox" value="1"
                                     @if (!empty($employee->fixed_wage)) checked @endif class=" salary_checkbox">
-                                <label for="fixed_wage"><strong>@lang('lang.enter_the_fixed_wage')</strong></label>
+                                <label style="font-size: 12px;font-weight: 500;"
+                                    class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif"
+                                    for="fixed_wage"><strong>@lang('lang.enter_the_fixed_wage')</strong></label>
+                            </div>
+                            <div class="input-wrapper mb-2 width-full">
                                 {!! Form::text('fixed_wage_value', !empty($employee->fixed_wage_value) ? $employee->fixed_wage_value : null, [
-                                    'class' => 'form-control salary_fields',
+                                    'class' => 'form-control salary_fields initial-balance-input width-full text-end',
                                     'placeholder' => __('lang.enter_the_fixed_wage'),
                                 ]) !!}
                             </div>
+                            {!! Form::label('', __('lang.select_payment_cycle'), [
+                                'class' =>
+                                    'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                'style' => 'font-size: 12px;font-weight: 500',
+                            ]) !!}
+                            <div class="input-wrapper width-full">
+                                {!! Form::select(
+                                    'payment_cycle',
+                                    $payment_cycle,
+                                    !empty($employee->payment_cycle) ? $employee->payment_cycle : null,
+                                    [
+                                        'class' => 'form-control salary_select selectpicker initial-balance-input width-full',
+                                        'placeholder' => __('lang.select_payment_cycle'),
+                                    ],
+                                ) !!}
+                            </div>
                         </div>
-                        {!! Form::select(
-                            'payment_cycle',
-                            $payment_cycle,
-                            !empty($employee->payment_cycle) ? $employee->payment_cycle : null,
-                            ['class' => 'form-control salary_select select2', 'placeholder' => __('lang.select_payment_cycle')],
-                        ) !!}
+
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
+                    <div
+                        class="col-md-6 d-flex flex-column justify-content-start @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                        <div
+                            class="d-flex mb-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                             <div class="i-checks">
-                                <div class="d-flex">
+                                <div
+                                    class="d-flex mb-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                                     <input id="commission" name="commission" type="checkbox" value="1"
                                         @if (!empty($employee->commission)) checked @endif class="salary_checkbox">
                                     <label style="font-size: 12px;font-weight: 500;"
-                                        class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                        class="mx-2 mb-0 @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="commission"><strong>@lang('lang.enter_the_commission_%')</strong></label>
                                 </div>
-                                <div class="input-wrapper">
+                                <div class="input-wrapper mb-2 width-full">
                                     {!! Form::text('commission_value', !empty($employee->commission_value) ? $employee->commission_value : null, [
                                         'class' => 'form-control salary_fields initial-balance-input width-full',
                                         'placeholder' => __('lang.enter_the_commission_%'),
                                     ]) !!}
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        {!! Form::label('', __('lang.select_commission_type'), [
+                                            'class' =>
+                                                'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                            'style' => 'font-size: 12px;font-weight: 500',
+                                        ]) !!}
+                                        <div class="input-wrapper mb-2 width-full">
+
+                                            {!! Form::select(
+                                                'commission_type',
+                                                $commission_type,
+                                                !empty($employee->commission_type) ? $employee->commission_type : null,
+                                                [
+                                                    'class' => 'form-control salary_select selectpicker initial-balance-input width-full',
+                                                    'placeholder' => __('lang.select_commission_type'),
+                                                ],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        {!! Form::label('', __('lang.select_commission_calculation_period'), [
+                                            'class' =>
+                                                'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                            'style' => 'font-size: 12px;font-weight: 500',
+                                        ]) !!}
+                                        <div class="input-wrapper mb-2 width-full">
+                                            {!! Form::select(
+                                                'commission_calculation_period',
+                                                $commission_calculation_period,
+                                                !empty($employee->commission_calculation_period) ? $employee->commission_calculation_period : null,
+                                                [
+                                                    'class' => 'form-control salary_select selectpicker',
+                                                    'placeholder' => __('lang.select_commission_calculation_period'),
+                                                ],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        {!! Form::label('commissioned_products', __('lang.products'), [
+                                            'class' =>
+                                                'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                            'style' => 'font-size: 12px;font-weight: 500',
+                                        ]) !!}
+                                        <div class="input-wrapper mb-2 width-full">
+
+                                            {!! Form::select(
+                                                'commissioned_products[]',
+                                                $products,
+                                                !empty($employee->commissioned_products) ? $employee->commissioned_products : null,
+                                                [
+                                                    'class' => 'form-control salary_select selectpicker',
+                                                    'multiple',
+                                                    'placehoder' => __('lang.please_select'),
+                                                    'data-actions-box' => 'true',
+                                                ],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        {!! Form::label('commission_customer_types', __('lang.customer_types'), [
+                                            'class' =>
+                                                'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                            'style' => 'font-size: 12px;font-weight: 500',
+                                        ]) !!}
+                                        <div class="input-wrapper mb-2 width-full">
+
+                                            {!! Form::select(
+                                                'commission_customer_types[]',
+                                                $customer_types,
+                                                !empty($employee->commission_customer_types) ? $employee->commission_customer_types : null,
+                                                [
+                                                    'class' => 'form-control salary_select selectpicker',
+                                                    'multiple',
+                                                    'placehoder' => __('lang.please_select'),
+                                                    'data-actions-box' => 'true',
+                                                ],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        {!! Form::label('commission_stores', __('lang.stores'), [
+                                            'class' =>
+                                                'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                            'style' => 'font-size: 12px;font-weight: 500',
+                                        ]) !!}
+                                        <div class="input-wrapper  mb-2 width-full">
+
+                                            {!! Form::select(
+                                                'commission_stores[]',
+                                                $stores,
+                                                !empty($employee->commission_stores) ? $employee->commission_stores : null,
+                                                [
+                                                    'class' => 'form-control salary_select selectpicker',
+                                                    'multiple',
+                                                    'placehoder' => __('lang.please_select'),
+                                                    'data-actions-box' => 'true',
+                                                ],
+                                            ) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        {!! Form::label('commission_cashiers', __('lang.cashiers'), [
+                                            'class' =>
+                                                'app()->isLocale("ar") ? d-block text-end text-muted mx-2 mb-0 width-full pr-3  : text-muted mx-2 mb-0 width-full pr-3 ',
+                                            'style' => 'font-size: 12px;font-weight: 500',
+                                        ]) !!}
+                                        <div class="input-wrapper mb-2 width-full">
+                                            {!! Form::select(
+                                                'commission_cashiers[]',
+                                                $cashiers,
+                                                !empty($employee->commission_cashiers) ? $employee->commission_cashiers : null,
+                                                [
+                                                    'class' => 'form-control salary_select selectpicker',
+                                                    'multiple',
+                                                    'placehoder' => __('lang.please_select'),
+                                                    'data-actions-box' => 'true',
+                                                ],
+                                            ) !!}
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                        <div class="input-wrapper">
-
-                            {!! Form::select(
-                                'commission_type',
-                                $commission_type,
-                                !empty($employee->commission_type) ? $employee->commission_type : null,
-                                [
-                                    'class' => 'form-control salary_select select initial-balance-input width-full',
-                                    'placeholder' => __('lang.select_commission_type'),
-                                ],
-                            ) !!}
-                        </div>
-
-                        <div class="input-wrapper">
-
-                            {!! Form::select(
-                                'commission_calculation_period',
-                                $commission_calculation_period,
-                                !empty($employee->commission_calculation_period) ? $employee->commission_calculation_period : null,
-                                ['class' => 'form-control salary_select select2', 'placeholder' => __('lang.select_commission_calculation_period')],
-                            ) !!}
-                        </div>
-                        {!! Form::label('commissioned_products', __('lang.products') . ':', ['class' => 'text-muted']) !!}
-                        {!! Form::select(
-                            'commissioned_products[]',
-                            $products,
-                            !empty($employee->commissioned_products) ? $employee->commissioned_products : null,
-                            [
-                                'class' => 'form-control salary_select select2',
-                                'multiple',
-                                'placehoder' => __('lang.please_select'),
-                                'data-actions-box' => 'true',
-                            ],
-                        ) !!}
-                        <br>
-                        <br>
-                        {!! Form::label('commission_customer_types', __('lang.customer_types') . ':', ['class' => 'text-muted']) !!}
-                        {!! Form::select(
-                            'commission_customer_types[]',
-                            $customer_types,
-                            !empty($employee->commission_customer_types) ? $employee->commission_customer_types : null,
-                            [
-                                'class' => 'form-control salary_select select2',
-                                'multiple',
-                                'placehoder' => __('lang.please_select'),
-                                'data-actions-box' => 'true',
-                            ],
-                        ) !!}
-                        <br>
-                        <br>
-                        {!! Form::label('commission_stores', __('lang.stores') . ':', ['class' => 'text-muted']) !!}
-                        {!! Form::select(
-                            'commission_stores[]',
-                            $stores,
-                            !empty($employee->commission_stores) ? $employee->commission_stores : null,
-                            [
-                                'class' => 'form-control salary_select select2',
-                                'multiple',
-                                'placehoder' => __('lang.please_select'),
-                                'data-actions-box' => 'true',
-                            ],
-                        ) !!}
-                        <br>
-                        <br>
-                        {!! Form::label('commission_cashiers', __('lang.cashiers') . ':', ['class' => 'text-muted']) !!}
-                        {!! Form::select(
-                            'commission_cashiers[]',
-                            $cashiers,
-                            !empty($employee->commission_cashiers) ? $employee->commission_cashiers : null,
-                            [
-                                'class' => 'form-control salary_select select2',
-                                'multiple',
-                                'placehoder' => __('lang.please_select'),
-                                'data-actions-box' => 'true',
-                            ],
-                        ) !!}
 
                     </div>
                 </div>

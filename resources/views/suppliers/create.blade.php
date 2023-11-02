@@ -335,8 +335,6 @@
                                                                         type="button">
                                                                         <i class="fa fa-plus"></i>
                                                                     </a>
-                                                                </div>
-                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

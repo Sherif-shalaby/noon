@@ -6,7 +6,7 @@
             <div
                 class="d-flex align-items-center justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                    <h4 class="page-title c">
                         @lang('lang.add_employee')</h4>
                     <div class="breadcrumb-list">
                         <ul
@@ -164,7 +164,7 @@
                                                     for="branch_id">@lang('lang.branch')</label>
                                                 <div class="input-wrapper">
                                                     {!! Form::select('branch_id', $branches, null, [
-                                                        'class' => 'form-control select2',
+                                                        'class' => 'form-control selectpicker',
                                                         'placeholder' => __('lang.please_select'),
                                                         'data-live-search' => 'true',
                                                         'id' => 'branch_id',
@@ -179,7 +179,7 @@
                                                 <div class="input-wrapper">
 
                                                     {!! Form::select('store_id[]', $stores, null, [
-                                                        'class' => 'form-control select2',
+                                                        'class' => 'form-control selectpicker',
                                                         'multiple',
                                                         'data-live-search' => 'true',
                                                         'id' => 'store_id',
@@ -301,8 +301,10 @@
                                         {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
-                                                <table style="width: 100%">
+                                                <label class=" d-block text-center "
+                                                    for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
+                                                <table style="width: 100%"
+                                                    class="@if (app()->isLocale('ar')) dir-rtl @endif">
                                                     <thead>
                                                         <tr>
                                                             <th></th>
