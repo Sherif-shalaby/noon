@@ -43,10 +43,10 @@
                                                     <th>@lang('lang.date')</th>
                                                     <th>@lang('lang.product_name')</th>
                                                     <th>@lang('lang.store')</th>
+                                                    <th>@lang('lang.status')</th>
                                                     <th>@lang('lang.supplier_name')</th>
                                                     <th>@lang('lang.branch_name')</th>
                                                     <th>@lang('lang.purchase_price')</th>
-                                                    <th>@lang('lang.purchase_price_dollar')</th>
                                                     <th>@lang('lang.required_quantity')</th>
                                                     <th>@lang('lang.action')</th>
                                                 </tr>
@@ -58,17 +58,52 @@
                                                         <td>
                                                             <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$requiredProduct->id}}" />
                                                         </td>
-                                                        <td>{{!empty($requiredProduct->employee_id)?$requiredProduct->employee_id:''}}</td>
-                                                        <td>{{!empty($requiredProduct->order_date)?$requiredProduct->order_date:''}}</td>
-                                                        <td>{{!empty($requiredProduct->product_id)?$requiredProduct->product->name:''}}</td>
-                                                        <td>{{!empty($requiredProduct->store_id)?$requiredProduct->stores->name:''}}</td>
-                                                        <td>{{!empty($requiredProduct->supplier_id)?$requiredProduct->supplier->name:''}}</td>
-                                                        {{-- <td>{{$requiredProduct->branch_id ?? ''}}</td> --}}
-                                                        <td>{{!empty($requiredProduct->branch_id)?$requiredProduct->branch->name:''}}</td>
-                                                        <td>{{!empty($requiredProduct->purchase_price)?$requiredProduct->purchase_price:''}}</td>
-                                                        <td>{{!empty($requiredProduct->dollar_purchase_price)?$requiredProduct->dollar_purchase_price:''}}</td>
+                                                        {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
                                                         <td>
-                                                            <input type="text" class="form-control" name="required_quantity{{$index}}" id="required_quantity"
+                                                            <input type="hidden" class="form-control" name="employee_ids[]" value="{{ $requiredProduct->employee_id }}">
+                                                            {{ !empty($requiredProduct->employee_id) ? $requiredProduct->employee->employee_name : '' }}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ order_date +++++++++++++++++ --}}
+                                                        <td>
+                                                            <input type="hidden" class="form-control" name="order_dates[]" value="{{ $requiredProduct->order_date }}">
+                                                            {{ !empty($requiredProduct->order_date) ? $requiredProduct->order_date : '' }}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
+                                                        <td>
+                                                            <input type="hidden" class="form-control" name="product_ids[]" value="{{ $requiredProduct->product_id }}">
+                                                            {{ !empty($requiredProduct->product_id) ? $requiredProduct->product->name : '' }}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
+                                                        <td>
+                                                            <input type="hidden" class="form-control" name="store_id[]" id="store_id" value="{{ $requiredProduct->store_id }}">
+                                                            {{!empty($requiredProduct->store_id)?$requiredProduct->stores->name:''}}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ status +++++++++++++++++ --}}
+                                                        <td>
+                                                            <input type="hidden" class="form-control" name="status[]" id="status" value="final">
+                                                            {{!empty($requiredProduct->status)?$requiredProduct->status:''}}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
+                                                        <td>
+                                                            <input type="hidden" class="form-control" name="supplier_id[]" id="supplier_id" value="{{ $requiredProduct->supplier_id }}">
+                                                            {{!empty($requiredProduct->supplier_id)?$requiredProduct->supplier->name:''}}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
+                                                        <td>
+                                                            <input type="hidden" class="form-control" name="branch_id[]" id="branch_id" value="{{ $requiredProduct->branch_id }}">
+                                                            {{!empty($requiredProduct->branch_id)?$requiredProduct->branch->name:''}}
+                                                        </td>
+                                                        {{-- +++++++++++++++++ purchase_price , dollar_purchase_price +++++++++++++++++ --}}
+                                                        <td>
+                                                            {{-- dinar_purchase_price --}}
+                                                            <input type="hidden" class="form-control" name="purchase_price[]" id="purchase_price" value="{{ $requiredProduct->purchase_price }}">
+                                                            {{!empty($requiredProduct->purchase_price)?$requiredProduct->purchase_price:''}} <br/>
+                                                            {{-- dollar_purchase_price --}}
+                                                            <input type="hidden" class="form-control" name="dollar_purchase_price[]" id="dollar_purchase_price" value="{{ $requiredProduct->dollar_purchase_price }}">
+                                                            {{!empty($requiredProduct->dollar_purchase_price)?$requiredProduct->dollar_purchase_price:''}} $
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="required_quantity[]" id="required_quantity"
                                                                     placeholder="@lang('lang.required_quantity')">
                                                         </td>
                                                         {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}

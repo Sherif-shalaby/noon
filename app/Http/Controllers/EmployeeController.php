@@ -175,12 +175,10 @@ class EmployeeController extends Controller
             $employee = new Employee();
             $employee->employee_name = $data['name'];
             $employee->user_id = $user->id;
-            // $employee->pass_string = Crypt::encrypt($data['password']);
             $employee->pass_string = !empty($data['password']) ? Crypt::encrypt($data['password']) : null;
             $employee->date_of_start_working = $data['date_of_start_working'];
             $employee->date_of_birth = $data['date_of_birth'];
             $employee->job_type_id = $data['job_type_id'];
-            // $employee->mobile = $data['mobile'];
             // Set the mobile attribute based on user input (if provided)
             $employee->mobile = !empty($data['mobile']) ? $data['mobile'] : null;
             $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;

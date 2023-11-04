@@ -72,7 +72,7 @@ class PurchaseOrderLineController extends Controller
     /* ++++++++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
     public function store(Request $request)
     {
-        // return $request;
+        return $request;
         try
         {
             DB::beginTransaction();

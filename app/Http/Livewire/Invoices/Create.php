@@ -168,7 +168,6 @@ class Create extends Component
                 $search_result = '';
                 $this->search_by_product_symbol = '';
             }
-
         }
         if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
