@@ -55,6 +55,7 @@
                                             <td>
                                                 {{!empty($transaction->transaction_payments[0]) ?$transaction->transaction_payments[0]->method : ''}}
                                             </td>
+                                            
                                             <td>
                                                 <span class="badge" style="background-color: #6e81dc !important">{{__('lang.'.$transaction->status)}}</span>
                                             </td>
