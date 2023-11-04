@@ -78,7 +78,7 @@
                                                             title=" {{__('lang.edit') }}" data-toggle="tooltip"
                                                             class="dripicons-document-edit"></i>
                                                     </a>
-                                                    @if(!empty($transaction->deliveryman_id) && $transaction->status=="draft")
+                                                    @if(!empty($transaction->deliveryman_id) && $transaction->status=="draft" && Auth::user()->name=="Admin")
                                                         <button  wire:click="submitPendingOrders({{$transaction->id}})"
                                                             class="btn btn-secondary text-white pay-bill rounded-3">
                                                             <i title=" {{__('lang.pay')}}" data-toggle="tooltip" class="fa-solid fa-money-bill"></i>
