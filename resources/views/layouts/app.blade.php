@@ -264,6 +264,7 @@
         @include('layouts.partials.footer')
     </div>
     <!-- End Containerbar -->
+
     <!-- Start js -->
     @include('layouts.partials.javascript')
 
@@ -353,7 +354,6 @@
             }, 500);
         });
     </script>
-
 
 </body>
 

@@ -134,7 +134,7 @@
                                 </div>
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    {!! Form::label('purchase_type', __('lang.purchase_type'), [
+                                    {!! Form::label('purchase_type', __('lang.po_no'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
@@ -217,7 +217,9 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
+
                                     <div class="input-wrapper">
 
                                         {!! Form::text('other_expenses', $other_expenses, [
@@ -233,8 +235,9 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('other_payments', __('lang.other_payments'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    <div class="input-wrapper mr-3">
+                                    <div class="input-wrapper">
 
                                         {!! Form::text('other_payments', $other_payments, [
                                             'class' => 'form-control m-0 initial-balance-input width-full',
@@ -451,9 +454,11 @@
                                     class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('files', __('lang.files'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    <div class="initial-balance-input my-0">
-                                        <label for="files" style="width: 100%;height: 100%;"
+                                    <div class="initial-balance-input my-0 mr-0">
+                                        <label for="files"
+                                            style="width: 100%;height: 100%;font-size: 12px;font-weight: 500;"
                                             class="d-flex justify-content-evenly align-items-center">
                                             <i class="fas fa-cloud-upload-alt"></i>
                                             {{ __('lang.upload_image') }}
@@ -468,6 +473,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -481,25 +487,9 @@
 
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    {!! Form::label('other_expenses', __('lang.other_expenses'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    ]) !!}
-                                    <div class="input-wrapper">
-
-                                        {!! Form::text('other_expenses', $other_expenses, [
-                                            'class' => 'form-control m-0 initial-balance-input width-full',
-                                            'placeholder' => __('lang.other_expenses'),
-                                            'id' => 'other_expenses',
-                                            'wire:model' => 'other_expenses',
-                                            'wire:change' => 'changeTotalAmount()',
-                                        ]) !!}
-                                    </div>
-                                </div>
-
-                                <div
-                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('discount_amount', __('lang.discount'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -513,27 +503,12 @@
                                     </div>
                                 </div>
 
-                                <div
-                                    class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    {!! Form::label('other_payments', __('lang.other_payments'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                    ]) !!}
-                                    <div class="input-wrapper mr-3">
-
-                                        {!! Form::text('other_payments', $other_payments, [
-                                            'class' => 'form-control m-0 initial-balance-input width-full',
-                                            'placeholder' => __('lang.other_payments'),
-                                            'id' => 'other_payments',
-                                            'wire:model' => 'other_payments',
-                                            'wire:change' => 'changeTotalAmount()',
-                                        ]) !!}
-                                    </div>
-                                </div>
 
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('source_type', __('lang.source_type') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -554,6 +529,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
@@ -577,6 +553,7 @@
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('payment_status', __('lang.payment_status') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">
 
