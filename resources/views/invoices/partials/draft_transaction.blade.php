@@ -23,6 +23,8 @@
                                     <th>@lang('lang.customer_name')</th>
                                     <th>@lang('lang.phone')</th>
                                     {{-- <th>@lang('lang.payment_type')</th> --}}
+                                    <th>@lang('lang.delivery_cost')</th>
+                                    <th>@lang('lang.deliveryman')</th>
                                     <th>@lang('lang.status')</th>
                                     <th>@lang('lang.action')</th>
                                 </tr>
@@ -56,7 +58,15 @@
                                                 {{!empty($transaction->transaction_payments[0]) ?$transaction->transaction_payments[0]->method : ''}}
                                             </td> --}}
                                             <td>
+                                                {{!empty($transaction->delivery_cost) ?$transaction->delivery_cost: ''}}
+                                            </td>
+                                            <td>{{!empty($transaction->delivery) ?$transaction->delivery->employee_name: ''}}</td>
+                                            <td>
                                                 <span class="badge text-white" style="background-color: #6e81dc !important;">{{__('lang.'.$transaction->status)}}</span>
+                                                <br>
+                                                @if(!empty($transaction->deliveryman_id) )
+                                                    <span class="badge text-white" style="background-color: #f11d1d !important;">{{__('lang.pending_orders')}}</span>
+                                                @endif
                                             </td>
                                             <td>
                                                 <div class="btn-group">
@@ -68,6 +78,22 @@
                                                             title=" {{__('lang.edit') }}" data-toggle="tooltip"
                                                             class="dripicons-document-edit"></i>
                                                     </a>
+                                                    @if(!empty($transaction->deliveryman_id) && $transaction->status=="draft")
+                                                        <button  wire:click="submitPendingOrders({{$transaction->id}})"
+                                                            class="btn btn-secondary text-white pay-bill rounded-3">
+                                                            <i title=" {{__('lang.pay')}}" data-toggle="tooltip" class="fa-solid fa-money-bill"></i>
+                                                        </button>
+                                                     @endif
+
+
+
+                                                     <div class="col-md-3">
+                                                        {{-- <button data-method="cash" style="width: 100%" type="button"
+                                                            class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
+                                                                class="fa-solid fa-money-bill"></i>
+                                                            @lang('lang.pay')</button> --}}
+                                                        {{--                            @include('invoices.partials.payment') --}}
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>

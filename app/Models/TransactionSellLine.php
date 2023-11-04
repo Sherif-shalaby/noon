@@ -15,10 +15,9 @@ class TransactionSellLine extends Model
 
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
-
-    public function transaction_sell_line()
+    public function delivery()
     {
-        return $this->hasOne(SellLine::class);
+        return $this->belongsTo(Employee::class,'deliveryman_id');
     }
 
     public function customer()
