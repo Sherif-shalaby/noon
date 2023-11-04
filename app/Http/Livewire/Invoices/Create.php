@@ -126,7 +126,22 @@ class Create extends Component
     public function render()
     {
         $store_pos = StorePos::find($this->store_pos_id);
+
         $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
+
+        // $this->stores = $store_pos->user->employee->stores()->pluck('name','id');
+        // Check if a valid StorePos record is found
+//         if ($store_pos)
+//         {
+//             // Access relationships and update the stores property
+//             $this->stores = $store_pos->user->employee->stores()->pluck('name', 'id');
+//         }
+//         else
+//         {
+//             // Handle the case where no StorePos record is found
+//             // superadmin has no "store" , "branch" , "sale_point"
+//             $this->stores = [];
+//         }
         $departments = Category::get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();

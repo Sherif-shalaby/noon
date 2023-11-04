@@ -129,7 +129,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('units/get-dropdown', [UnitController::class,'getDropdown']);
     Route::get('variations/units/get-dropdown', [UnitController::class,'getUnitsDropdown']);
     Route::get('product/get-unit-store', [UnitController::class,'getUnitStore']);
-    
+
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
@@ -201,7 +201,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
-    // Route::resource('purchase_order', PurchaseOrderLineController::class);
+    Route::resource('purchase_order', PurchaseOrderLineController::class);
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
