@@ -7,12 +7,13 @@
             class="col-md-3 px-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {!! Form::label('sku', __('lang.product_code'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end mb-0 width-half' : ' mb-0 width-half',
+                'style' => 'font-size: 12px;font-weight: 500;',
             ]) !!}
             {!! Form::text('sku[' . $index . ']', isset($variation->sku) ? $variation->sku : null, [
                 'class' => 'form-control mater-name-input m-0',
             ]) !!}
             @error('sku.' . $index)
-                <label style="fontsd" class="text-danger error-msg">{{ $message }}</label>
+                <label style="font-size: 12px;font-weight: 500;" class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
 
@@ -20,6 +21,7 @@
             class="col-md-3 px-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {!! Form::label('unit', __('lang.new_unit'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mb-0 width-half' : 'mb-0 width-half',
+                'style' => 'font-size: 12px;font-weight: 500;',
             ]) !!}
             <div class="d-flex justify-content-center align-items-center"
                 style="background-color: #dedede; border: none;
@@ -47,6 +49,7 @@
             class="col-md-3 px-2 d-flex align-items-center justify-content-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {!! Form::label('equal', __('lang.equal'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end mb-0 width-fit ml-2' : ' mb-0 width-fit mr-2',
+                'style' => 'font-size: 12px;font-weight: 500;',
             ]) !!}
             {!! Form::text('equal[' . $index . ']', isset($variation->equal) ? $variation->equal : null, [
                 'class' => 'form-control mater-name-input m-0 width-30',
@@ -56,6 +59,7 @@
             class="col-md-3 px-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {!! Form::label('basic_unit', __('lang.basic_unit'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end mb-0 width-65' : ' mb-0 width-65',
+                'style' => 'font-size: 12px;font-weight: 500;',
             ]) !!}
             <div class="d-flex justify-content-center align-items-center"
                 style="background-color: #dedede; border: none;

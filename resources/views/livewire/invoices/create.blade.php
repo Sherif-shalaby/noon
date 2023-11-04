@@ -4,37 +4,16 @@
         <div class="">
 
             <div>
-                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
-                        {!! Form::label('brand_id', __('lang.brand') . '*', [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
-                            'style' => 'font-size: 12px;font-weight: 500;',
-                        ]) !!}
-                        <div class="input-wrapper">
-
-                            {!! Form::select('brand_id', $brands, $brand_id, [
-                                'class' => 'select2 form-control',
-                                'data-live-search' => 'true',
-                                'id' => 'brand_id',
-                                'required',
-                                'placeholder' => __('lang.please_select'),
-                                'data-name' => 'brand_id',
-                                'wire:model' => 'brand_id',
-                            ]) !!}
-                        </div>
-                        @error('brand_id')
-                            <span class="error text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                <div
+                    class="row justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                        class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                         {!! Form::label('store_id', __('lang.store') . '*', [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-0 width-fit' : ' mb-0 h5 width-fit',
                             'style' => 'font-size: 12px;font-weight: 500;',
                         ]) !!}
-                        <div class="input-wrapper">
+                        <div class="input-wrapper mx-2">
 
                             {!! Form::select('store_id', $stores, $store_id, [
                                 'class' => 'select2 form-control',
@@ -53,12 +32,12 @@
                     </div>
                     {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
                     <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                        class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                         {!! Form::label('store_pos_id', __('lang.pos') . '*', [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
+                            'class' => app()->isLocale('ar') ? 'd-block text-end h5   mb-0 width-fit' : '  mb-0 h5 width-fit',
                             'style' => 'font-size: 12px;font-weight: 500;',
                         ]) !!}
-                        <div class="input-wrapper">
+                        <div class="input-wrapper mx-2">
                             {!! Form::select('store_pos_id', $store_pos, $store_pos_id, [
                                 'class' => 'select2 form-control',
                                 'data-name' => 'store_pos_id',
@@ -87,7 +66,7 @@
                         class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
                             style="font-size: 12px;font-weight: 500;">العملاء</label>
-                        <div class="input-wrapper">
+                        <div class="input-wrapper mx-2">
                             <select class="form-control client select2" wire:model="client_id" id="client_id"
                                 data-name="client_id">
                                 <option value="0 " readonly>اختر </option>
@@ -104,17 +83,39 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    @include('invoices.partials.search')
                 </div>
                 {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
 
-                @include('invoices.partials.search')
             </div>
 
 
             <div>
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <div
+                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                        {!! Form::label('brand_id', __('lang.brand') . '*', [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-0 width-fit' : '  mb-0 h5 width-fit',
+                            'style' => 'font-size: 12px;font-weight: 500;',
+                        ]) !!}
+                        <div class="input-wrapper mx-2">
 
-                    <div class="col-md-4">
+                            {!! Form::select('brand_id', $brands, $brand_id, [
+                                'class' => 'select2 form-control',
+                                'data-live-search' => 'true',
+                                'id' => 'brand_id',
+                                'required',
+                                'placeholder' => __('lang.please_select'),
+                                'data-name' => 'brand_id',
+                                'wire:model' => 'brand_id',
+                            ]) !!}
+                        </div>
+                        @error('brand_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2">
@@ -140,7 +141,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded  p-2">
                             <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
@@ -164,7 +165,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="col-md-4">
+                    {{-- <div class="col-md-2">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2  dollar-cell">
@@ -189,7 +190,7 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div class="col-md-4">
+                    <div class="col-md-3">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2">

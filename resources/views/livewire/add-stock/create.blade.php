@@ -388,34 +388,45 @@
                                         <div class="d-flex justify-content-between align-items-center">
 
                                             <div>
-                                                <span>$@lang('lang.total')</span>
-                                                <span> {{ $this->sum_dollar_sub_total() }} </span>
+                                                <span
+                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total')</span>
+                                                <span style="font-weight:700;font-size: 16px;">
+                                                    {{ $this->sum_dollar_sub_total() }} </span>
                                             </div>
 
                                             <div>
 
-                                                <span>@lang('lang.total')</span>
-                                                <td> {{ $this->sum_sub_total() }} </td>
+                                                <span style="font-weight:700;font-size: 14px;">@lang('lang.total')</span>
+                                                <span style="font-weight:700;font-size: 16px;">
+                                                    {{ $this->sum_sub_total() }} </span>
                                             </div>
 
                                             <div>
-                                                <span>$@lang('lang.total_size')</span>
-                                                <span>{{ $this->sum_size() ?? 0 }}</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total_size')</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 16px;">{{ $this->sum_size() ?? 0 }}</span>
                                             </div>
 
                                             <div>
-                                                <span>$@lang('lang.total_weight')</span>
-                                                <span>{{ $this->sum_weight() ?? 0 }}</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total_weight')</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 16px;">{{ $this->sum_weight() ?? 0 }}</span>
                                             </div>
 
                                             <div>
-                                                <span>$@lang('lang.total_cost')</span>
-                                                <span>{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total_cost')</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 16px;">{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
                                             </div>
 
                                             <div>
-                                                <span>@lang('lang.total_cost')</span>
-                                                <span>{{ $this->sum_total_cost() ?? 0 }}</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 14px;">@lang('lang.total_cost')</span>
+                                                <span
+                                                    style="font-weight:700;font-size: 16px;">{{ $this->sum_total_cost() ?? 0 }}</span>
                                             </div>
                                         </div>
 

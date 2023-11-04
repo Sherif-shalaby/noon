@@ -33,8 +33,7 @@
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
             align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-
-            <span class="mb-2" style="    font-weight: 700;
+            <span class="mb-2" style="font-weight: 700;
              font-size: 10px;">@lang('lang.products')</span>
             {{ $product['product']['name'] }}
         </div>
@@ -406,7 +405,7 @@
 
     <div class="d-flex flex-column" style="width: 100%">
         <div class="accordion-new">
-            <h2 class="accordion-header-new px-3 py-1 position-relative d-flex"
+            <h2 class="accordion-header-new 879878978 px-3 py-1 position-relative d-flex"
                 style="color: white;background-color: #596fd7;border-radius: 6px;width: fit-content;margin-top: -10px">
                 @lang('lang.discount')
                 <span class="accordion-arrow-new mx-2">
@@ -419,7 +418,7 @@
 
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <input style="width: 61px;height:30px;font-size:12px;" type="text"
                                 class="form-control price_category" name="price_category"
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.price_category"
@@ -428,7 +427,7 @@
 
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('price_type', __('lang.type'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('price_type', __('lang.type'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             {!! Form::select(
                                 'items.' . $index . '.prices.' . $key . '.price_type',
                                 ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
@@ -465,7 +464,7 @@
                             {!! Form::label(
                                 'price',
                                 !empty($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
-                                ['style' => 'font-size:10px'],
+                                ['style' => 'font-weight:700;font-size: 10px;'],
                             ) !!}
                             <input type="text" style="width: 61px;height:30px;font-size:12px;" name="price"
                                 class="form-control price"
@@ -476,7 +475,7 @@
 
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('', __('lang.price'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('', __('lang.price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <input type="text" style="width: 61px;height:30px;font-size:12px;" name=""
                                 class="form-control price"
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.price_after_desc"
@@ -485,7 +484,7 @@
 
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('price', __('lang.quantity'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('price', __('lang.quantity'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <input style="width: 61px;height:30px;font-size:12px;" type="text"
                                 class="form-control discount_quantity"
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.discount_quantity"
@@ -496,7 +495,7 @@
 
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('b_qty', __('lang.b_qty'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('b_qty', __('lang.b_qty'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <input style="width: 61px;height:30px;font-size:12px;" type="text"
                                 class="form-control bonus_quantity"
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.bonus_quantity"
@@ -506,7 +505,7 @@
                         </div>
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('total_price', __('lang.total_price'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('total_price', __('lang.total_price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <input type="text" style="width: 61px;height:30px;font-size:12px;" name="total_price"
                                 class="form-control total_price"
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.total_price"
@@ -515,7 +514,7 @@
                         </div>
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('piece_price', __('lang.piece_price'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('piece_price', __('lang.piece_price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <input type="text" name="piece_price" style="width: 61px;height:30px;font-size:12px;"
                                 class="form-control piece_price"
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.piece_price"
@@ -525,7 +524,7 @@
 
                         <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                             class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('customer_type', __('lang.customer_type'), ['style' => 'font-size:10px']) !!}
+                            {!! Form::label('customer_type', __('lang.customer_type'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                             <select
                                 wire:model="items.{{ $index }}.prices.{{ $key }}.price_customer_types"
                                 data-name='price_customer_types' data-index="{{ $key }}"
@@ -572,7 +571,7 @@
 
                     <div class="col-md-3"
                         style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                        {!! Form::label('', __('lang.expiry_date'), ['style' => 'font-size:10px']) !!}
+                        {!! Form::label('', __('lang.expiry_date'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                         {!! Form::date('add_stock_lines[' . $index . '][expiry_date]', null, [
                             'class' => 'form-control datepicker expiry_date',
                             'wire:model' => 'items.' . $index . '.expiry_date',
@@ -580,7 +579,7 @@
                     </div>
                     <div class="col-md-3"
                         style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                        {!! Form::label('', __('lang.days_before_the_expiry_date'), ['style' => 'font-size:10px']) !!}
+                        {!! Form::label('', __('lang.days_before_the_expiry_date'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                         {!! Form::text('add_stock_lines[' . $index . '][expiry_warning]', null, [
                             'class' => 'form-control days_before_the_expiry_date',
                             'wire:model' => 'items.' . $index . '.expiry_warning',
@@ -588,7 +587,7 @@
                     </div>
                     <div class="col-md-3"
                         style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                        {!! Form::label('', __('lang.convert_status_expire'), ['style' => 'font-size:10px']) !!}
+                        {!! Form::label('', __('lang.convert_status_expire'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
                         {!! Form::text('add_stock_lines[' . $index . '][convert_status_expire]', null, [
                             'class' => 'form-control',
                             'wire:model' => 'items.' . $index . '.convert_status_expire',
@@ -620,45 +619,29 @@
     var accButtons = document.getElementsByClassName('accordion-stock-button');
 </script>
 
-<script>
-    // Add a click event listener to each accordion header
-    let accordions = document.querySelectorAll('.accordion-new');
-
-    accordions.forEach((accordion) => {
-        let header = accordion.querySelector('.accordion-header-new');
-        let arrow = header.querySelector('.accordion-arrow-new');
-        let content = accordion.querySelector('.accordion-content-new');
-
-        header.addEventListener('click', (e) => {
-
-            accordion.classList.toggle('active'); // Toggle active class
-            if (content.style.display === 'block') {
-                arrow.style.transform = 'rotate(0deg)'; // Hide content
-                content.style.display = 'none'; // Hide content
-            } else {
-                content.style.display = 'block'; // Show content
-                arrow.style.transform = 'rotate(180deg)'; // Show content
-            }
-        })
-    });
-</script>
-
-
 {{-- <script>
     // Add a click event listener to each accordion header
-    let header = document.querySelectorAll('.accordion-header-new');
+    $('.accordion-new').each(function(i) {
+        let header = $(this).find('.accordion-header-new');
+        let arrow = header.find('.accordion-arrow-new');
+        let content = $(this).find('.accordion-content-new');
 
-    // const header = accordion.querySelector('.accordion-header-new');
-    // const content = accordion.querySelector('.accordion-content-new');
-
-    header.forEach((head, i) => {
-        head.addEventListener('click', (e) => {
-            head.nextElementSibling.classList.toggle('active'); // Toggle active class
-            if (head.nextElementSibling.style.display === 'block') {
-                head.nextElementSibling.style.display = 'none'; // Hide content
+        header.on('click', function(e) {
+            $(this).parent().toggleClass('active'); // Toggle active class
+            if (content.is(':visible')) {
+                arrow.css('transform', 'rotate(0deg)'); // Hide content
+                content.hide(); // Hide content
             } else {
-                head.nextElementSibling.style.display = 'block'; // Show content
+                content.show(); // Show content
+                arrow.css('transform', 'rotate(180deg)'); // Show content
             }
         });
     });
 </script> --}}
+<script>
+    $('.accordion-new .accordion-header-new').each(function(i) {
+        $(this).on('click', function() {
+            console.log($(this));
+        })
+    })
+</script>

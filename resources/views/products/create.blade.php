@@ -29,13 +29,13 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4 ">
-                <div
-                    class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
-                    <a href="{{ route('products.index') }}" class="btn btn-primary">
-                        @lang('lang.products')
-                    </a>
+                <div class="col-md-4 ">
+                    <div
+                        class="widgetbar  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                        <a href="{{ route('products.index') }}" class="btn btn-primary">
+                            @lang('lang.products')
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,7 +74,7 @@
                         <div
                             class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {!! Form::label('brand', __('lang.brand'), [
-                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0 width-quarter' : ' mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             <div class="d-flex justify-content-center align-items-center"
@@ -171,8 +171,8 @@
                                     'style' => 'font-size: 12px !important;font-weight: 500;',
                                 ]) !!}
                                 {!! Form::text('product_symbol', null, [
-                                    'class' => 'form-control initial-balance-input m-auto',
-                                    'required',
+                                    'class' => 'form-control initial-balance-input m-auto p-1',
+                                    'style' => 'font-size: 12px !important;font-weight: 500;',
                                 ]) !!}
 
                                 @error('product_symbol')
@@ -188,7 +188,8 @@
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 {!! Form::text('product_sku', null, [
-                                    'class' => 'form-control initial-balance-input m-auto',
+                                    'class' => 'form-control initial-balance-input m-auto p-1',
+                                    'style' => 'font-size: 12px !important;font-weight: 500;',
                                 ]) !!}
                                 @error('product_sku')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -204,9 +205,7 @@
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('category', __('lang.category'), [
-                                        'class' => app()->isLocale('ar')
-                                            ? 'd-block text-end  mr-2 ml-0 mb-0 width-quarter'
-                                            : 'mr-2 ml-0 mb-0 width-quarter',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  ml-0 mb-0 width-quarter' : ' ml-0 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="d-flex justify-content-center align-items-center"
@@ -351,7 +350,7 @@
                                 <div
                                     class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0 width-quarter' : ' mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper">

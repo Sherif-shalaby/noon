@@ -40,5 +40,7 @@
         @livewire('add-stock.create')
     </div>
 @endsection
+
+
 @push('javascripts')
 @endpush
