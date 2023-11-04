@@ -579,5 +579,9 @@ return array(
     'basic_unit_for_import_product'=>'الوحدة الاساسية لاستيراد المنتج',
     'extra_quantity'=>'كمية اضافية',
     'contact_number'=>'رقم التواصل',
+    'delivery_cost'=>'تكلفة التوصيل',
+    'deliveryman'=>'رجل التوصيل',
+    'delivery'=>'التوصيل',
+    'pending_orders'=>'طلبات معلقة',
 );
 
