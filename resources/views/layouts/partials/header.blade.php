@@ -145,7 +145,7 @@
                 @if (!empty($module_settings['dashboard']))
                     <li class="scroll mx-2 mb-0 p-0">
                         <a class="home-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
-                            style="cursor: pointer">
+                            href="{{ url('/') }}" style="cursor: pointer;text-decoration: none">
                             <div style="width: 25px">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 64 64">
                                     <defs>
@@ -216,7 +216,7 @@
                 @if (!empty($module_settings['product_module']))
                     <li class="scroll mx-2 mb-0 p-0">
                         <a class="products-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center"
-                            style="cursor: pointer">
+                            href="{{ route('products.create') }}" style="cursor: pointer;text-decoration: none">
                             <div style="width: 25px">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                     <g data-name="product analytic">
@@ -261,7 +261,7 @@
                 @if (!empty($module_settings['cashier_module']))
                     <li class="scroll mx-2 mb-0 p-0">
                         <a class="cashier-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="cursor: pointer">
+                            href="{{ route('pos.index') }}" style="cursor: pointer;text-decoration: none">
                             {{-- <img
                             src="{{ asset('images/topbar/cashier-machine.png') }}" class="img-fluid pl-1"
                             alt="apps"> --}}
@@ -323,7 +323,7 @@
                 @if (!empty($module_settings['stock_module']))
                     <li class="scroll mx-2 mb-0 p-0">
                         <a class="purchases-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="cursor: pointer">
+                            href="{{ route('stocks.create') }}" style="cursor: pointer;text-decoration: none">
                             <div style="width: 25px">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 512 512"
                                     style="enable-background:new 0 0 512 512" xml:space="preserve">
@@ -369,7 +369,8 @@
                 @if (!empty($module_settings['stock_module']))
                     <li class="scroll mx-2 mb-0 p-0">
                         <a class="initial-balance-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="cursor: pointer">
+                            href="{{ route('initial-balance.create') }}"
+                            style="cursor: pointer;text-decoration: none">
                             <span style="width: 25px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 60 60">
                                     <g data-name="19-Warehouse">
@@ -435,7 +436,7 @@
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
                 <li class="scroll mx-2 mb-0 p-0">
                     <a class="purchases-order-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        style="cursor: pointer">
+                        href="{{ route('purchase_order.create') }}" style="cursor: pointer;text-decoration: none">
                         <div style="width: 25px">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                 <g data-name="box exchange money">
@@ -523,7 +524,8 @@
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
                             <li><a class="return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    style="cursor: pointer;font-weight: 600"><i
+                                    href="{{ route('sell_return.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
                                         class="mdi mdi-circle"></i>@lang('lang.sells_return')</a></li>
                         </ul>
                     </li>
@@ -602,14 +604,17 @@
                         </a>
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            <li><a style="cursor: pointer;font-weight: 600"
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('jobs.index') }}"
                                     class="jobs-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.jobs')</a>
                             </li>
-                            <li><a style="cursor: pointer;font-weight: 600"
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('employees.create') }}"
                                     class="employees-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
-                            <li><a style="cursor: pointer;font-weight: 600"
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('wages.create') }}"
                                     class="wages-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.wages')</a>
                             </li>
@@ -661,10 +666,12 @@
                         </a>
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            <li><a style="cursor: pointer;font-weight: 600"
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('customers.create') }}"
                                     class="customers-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>{{ __('lang.customers') }}</a></li>
-                            <li><a style="cursor: pointer;font-weight: 600"
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('customertypes.index') }}"
                                     class="customer-types-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>{{ __('lang.customer_types') }}</a></li>
                         </ul>
@@ -676,7 +683,8 @@
                 @if (!empty($module_settings['customer_module']))
                     <li class="scroll mx-2 mb-0 p-0 ">
                         <a class="customer-price-offer-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="cursor: pointer;font-weight: 600">
+                            href="{{ route('customer_price_offer.create') }}"
+                            style="cursor: pointer;font-weight: 600;text-decoration: none">
                             {{-- <img src="{{ asset('images/topbar/customer-feedback.png') }}" class="img-fluid pl-1"
                             alt="layouts"> --}}
                             <div style="width: 25px">
@@ -775,7 +783,8 @@
                 @if (!empty($module_settings['supplier_module']))
                     <li class="scroll mx-2 mb-0 p-0 ">
                         <a class="suppliers-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
-                            style="cursor: pointer;font-weight: 600">
+                            href="{{ route('suppliers.create') }}"
+                            style="cursor: pointer;font-weight: 600;text-decoration: none">
                             {{-- <img
                             src="{{ asset('images/topbar/inventory.png') }}" class="img-fluid pl-1"
                             alt="widgets"> --}}
@@ -942,7 +951,8 @@
                 {{-- ###################### sell car : عربة بيع ###################### --}}
                 {{-- @can('sell_car_module')  --}}
                 <li class="scroll mx-2 mb-0 p-0 ">
-                    <a style="cursor: pointer;font-weight: 600"
+                    <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                        href="{{ route('sell-car.index') }}"
                         class="sell-car-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1" alt="components"> --}}
                         <div style="width: 25px">
@@ -1070,21 +1080,24 @@
                                         {{-- ////// اخفاء واظهار اقسام البرنامج ////// --}}
                                         <li>
                                             <a class="modules-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('getModules') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.modules')
                                             </a>
                                         </li>
                                         {{-- ////// الاعدادات العامة ////// --}}
                                         <li>
                                             <a class="general_settings-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('settings.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.general_settings')
                                             </a>
                                         </li>
                                         {{-- ////// الخزائن ////// --}}
                                         <li>
                                             <a class="moneysafes-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('moneysafe.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.moneysafes')
                                             </a>
                                         </li>
@@ -1096,21 +1109,24 @@
                                         {{-- ////// المخازن ////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif stores-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('store.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.stores')
                                             </a>
                                         </li>
                                         {{-- ////// العلامة التجاية ////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif brands-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('brands.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.brands')
                                             </a>
                                         </li>
                                         {{-- ////// الاقسام ////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif categories-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('sub-categories', 'category') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('categories.categories')
                                             </a>
                                         </li>
@@ -1122,21 +1138,24 @@
                                         {{-- ////// الالوان ////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif colors-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('colors.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('colors.colors')
                                             </a>
                                         </li>
                                         {{-- ////// المقاسات ////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif sizes-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('sizes.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('sizes.sizes')
                                             </a>
                                         </li>
                                         {{-- ////// الوحدات ////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif units-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('units.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('units.units')
                                             </a>
                                         </li>
@@ -1147,21 +1166,24 @@
                                         {{-- ////////// نقاط البيع للصرافين ////////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif stores_pos-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('store-pos.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.store_pos')
                                             </a>
                                         </li>
                                         {{-- ////////// الضرائب العامة ////////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif general-tax-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('general-tax.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.general_tax')
                                             </a>
                                         </li>
                                         {{-- ////////// ضرائب المنتجات ////////// --}}
                                         <li>
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif product_tax-button"
-                                                style="cursor: pointer;font-weight: 600">
+                                                href="{{ route('product-tax.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.product_tax')
                                             </a>
                                         </li>
@@ -1170,7 +1192,8 @@
                                 <li class="mega-menu-col col-md-3 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         <li>
-                                            <a style="cursor: pointer;font-weight: 600;"
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none;"
+                                                href="{{ route('branches.index') }}"
                                                 class="branch-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif text-decoration-none">
                                                 <i class="mdi mdi-circle"></i>@lang('lang.branches')
                                             </a>
@@ -1240,55 +1263,63 @@
                             {{-- +++++++++++ purchases report +++++++++++ --}}
                             <li>
                                 <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    style="cursor: pointer;font-weight: 600;">
+                                    href="{{ route('purchases-report.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.purchases_report') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ sales report +++++++++++ --}}
                             <li>
                                 <a class="sales-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    style="cursor: pointer;font-weight: 600">
+                                    href="{{ route('sales-report.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.sales_report') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ receivable report +++++++++++ --}}
                             <li>
                                 <a class="receivable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    style="cursor: pointer;font-weight: 600">
+                                    href="{{ route('receivable-report.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.receivable_report') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ payable report +++++++++++ --}}
                             <li>
                                 <a class="payable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    style="cursor: pointer;font-weight: 600;">
+                                    href="{{ route('payable-report.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.payable_report') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ customers report +++++++++++ --}}
                             <li>
-                                <a style="cursor: pointer;font-weight: 600"
+                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('customers-report.index') }}"
                                     class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif customers-report-button">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.customers_report') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
                             <li>
-                                <a style="cursor: pointer;font-weight: 600"
+                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('daily-report-summary.index') }}"
                                     class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily-report-summary-button">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.daily_report_summary') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ Get Due Report +++++++++++ --}}
                             <li>
-                                <a style="cursor: pointer;font-weight: 600"
+                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('get-due-report.index') }}"
                                     class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-due-report-button">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.get_due_report') }}
                                 </a>
                             </li>
                             {{-- +++++++++++ Supplier Report +++++++++++ --}}
                             <li>
-                                <a style="cursor: pointer;font-weight: 600"
+                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('get-supplier-report.index') }}"
                                     class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-supplier-report-button">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
                                 </a>
@@ -1296,7 +1327,8 @@
                             {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
                             <li>
                                 <a class="representative_salary_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    style="cursor: pointer;font-weight: 600">
+                                    href="{{ route('representative_salary_report.index') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none">
                                     <i class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
                                 </a>
                             </li>
@@ -1304,9 +1336,6 @@
                     </li>
                 @endif
                 {{-- @endcan --}}
-
-
-
             </ul>
         </div>
     </div>
