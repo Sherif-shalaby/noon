@@ -10,6 +10,11 @@
         background-color: #596fd7 !important;
         color: white !important;
         border-radius: 6px !important;
+        cursor: pointer;
+    }
+
+    .accordion-content {
+        display: none;
     }
 </style>
 <div
@@ -405,17 +410,15 @@
     </div>
 
     <div class="d-flex flex-column" style="width: 100%">
-        <div class="accordion mb-1" id="accordionExample{{ $index }}discount">
+        <div class="accordion mb-1">
             <div class="accordion-item" style="border: none">
                 <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne{{ $index }}discount" aria-expanded="true"
-                        aria-controls="collapseOne">
+                    <div class="accordion-button"
+                        onclick="toggleAccordion(`collapseOne{{ $index }}discount`)">
                         @lang('lang.discount')
-                    </button>
+                    </div>
                 </h2>
-                <div id="collapseOne{{ $index }}discount" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionExample{{ $index }}discount">
+                <div id="collapseOne{{ $index }}discount" class="accordion-content">
                     <div class="accordion-body p-0">
                         @foreach ($product['prices'] as $key => $price)
                             <div class="d-flex flex-wrap justify-content-between width-full mb-2"
@@ -567,17 +570,15 @@
             </div>
         </div>
 
-        <div class="accordion" id="accordionExample{{ $index }}validity">
+        <div class="accordion">
             <div class="accordion-item" style="border: none">
                 <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne{{ $index }}validity" aria-expanded="true"
-                        aria-controls="collapseOne">
+                    <div class="accordion-button"
+                        onclick="toggleAccordion(`collapseOne{{ $index }}validity`)">
                         @lang('lang.validity')
-                    </button>
+                    </div>
                 </h2>
-                <div id="collapseOne{{ $index }}validity" class="accordion-collapse collapse"
-                    data-bs-parent="#accordionExample{{ $index }}validity">
+                <div id="collapseOne{{ $index }}validity" class="accordion-content">
                     <div class="accordion-body p-0" style="">
 
                         <div class="p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center"

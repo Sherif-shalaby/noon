@@ -390,7 +390,7 @@
                                     <input type="text" name="price" class="form-control price"
                                         wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price"
                                         wire:change="changePrice({{ $index }}, {{ $key }})"
-                                        placeholder="{{ __('lang.percent') }}"
+                                        placeholder="{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                         style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
                                     <p class="mb-0 d-flex flex-column">
                                         <span>
