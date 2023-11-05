@@ -580,5 +580,9 @@ return array(
     'extra_quantity'=>'كمية اضافية',
     'contact_number'=>'رقم التواصل',
     'units_count' => 'عدد الوحدات',
+    'delivery_cost'=>'تكلفة التوصيل',
+    'deliveryman'=>'رجل التوصيل',
+    'delivery'=>'التوصيل',
+    'pending_orders'=>'طلبات معلقة',
 );
 

@@ -561,6 +561,10 @@ return [
     'extra_quantity'=>'Extra Quantity',
     'contact_number'=>'Contact Number',
     'units_count' => 'Units Count',
+    'delivery_cost'=>'Delivery Cost',
+    'deliveryman'=>'Delivery Man',
+    'delivery'=>'Delivery',
+    'pending_orders'=>'Pending Orders',
 ];
 
 
