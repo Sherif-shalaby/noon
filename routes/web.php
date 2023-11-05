@@ -145,10 +145,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
-
-    //    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
-    //    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
-    //    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
@@ -206,7 +202,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
-    // Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
+
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
@@ -254,21 +250,21 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('moneysafe/watch-money-to-safe-transaction/{id}', [MoneySafeController::class,'getMoneySafeTransactions'])->name('moneysafe.watch-money-to-safe-transaction');
     Route::resource('moneysafe', MoneySafeController::class);
 
-    // sell car
+    // Sell car
     Route::resource('sell-car', SellCarController::class);
 
-    // branch
+    // Branch
     Route::resource('branches',BranchController::class);
     Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
 
-
-
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
+
+    // Transfer
+    Route::view('transfer/create/{id}','transfer.create')->name('transfer.create');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 

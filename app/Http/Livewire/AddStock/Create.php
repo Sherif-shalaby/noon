@@ -982,6 +982,32 @@ class Create extends Component
         unset($this->items[$index]);
     }
 
+    public function countItems(){
+        $count = 0;
+        if (!empty($this->items)){
+            $collection = collect($this->items);
+            // Filter out elements where show_product_data is false
+            $filteredCollection = $collection->filter(function ($item) {
+                return $item['show_product_data'] !== false;
+            });
+            $count = $filteredCollection->count();
+        }
+        return $count;
+    }
+
+    public function countUnitsItems(){
+        $count = 0;
+        if (!empty($this->items)){
+            $collection = collect($this->items);
+            // Filter out elements where show_product_data is false
+            $filteredCollection = $collection->filter(function ($item) {
+                return $item['show_product_data'] == false;
+            });
+            $count = $filteredCollection->count();
+        }
+        return $count;
+    }
+
     public function getPurchaseOrderStatusArray()
     {
         return [
