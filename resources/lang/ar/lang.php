@@ -582,4 +582,8 @@ return array(
     'contact_number' => 'رقم التواصل',
     'discount' => 'الخصم',
     'validity' => 'الصلاحية',
+    'delivery_cost' => 'تكلفة التوصيل',
+    'deliveryman' => 'رجل التوصيل',
+    'delivery' => 'التوصيل',
+    'pending_orders' => 'طلبات معلقة',
 );

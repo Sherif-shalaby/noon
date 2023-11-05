@@ -33,13 +33,15 @@
         <div class="body-card-app pt-2 d-flex flex-column justify-content-center align-items-center">
             <div style="width: 100%"
                 class="row  hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div class="mb-2 col-md-6 p-1">
-                    <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                        class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
-                            class="fa-solid fa-money-bill"></i>
-                        @lang('lang.pay')</button>
-                    {{--                            @include('invoices.partials.payment') --}}
-                </div>
+                @if (!$this->checkRepresentativeUser())
+                    <div class="mb-2 col-md-6 p-1">
+                        <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
+                            class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
+                                class="fa-solid fa-money-bill"></i>
+                            @lang('lang.pay')</button>
+                        {{--                            @include('invoices.partials.payment') --}}
+                    </div>
+                @endif
                 <div class="mb-2 col-md-6 p-1">
                     <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
@@ -200,6 +202,37 @@
                         ]) !!}
                     </div>
                 </div>
+                @if ($this->checkRepresentativeUser())
+                    <div class="col-sm-6 p-1">
+                        <div class="form-group">
+                            {!! Form::label('deliveryman_id', __('lang.deliveryman') . '*', [
+                                'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                            ]) !!}
+                            {!! Form::select('deliveryman_id', $deliverymen, null, [
+                                'class' => 'select2 form-control',
+                                'data-live-search' => 'true',
+                                'id' => 'deliveryman_id',
+                                'placeholder' => __('lang.please_select'),
+                                'data-name' => 'deliveryman_id',
+                                'wire:model' => 'deliveryman_id',
+                            ]) !!}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-1">
+                        <div class="form-group">
+                            {!! Form::label('delivery_cost', __('lang.delivery_cost'), [
+                                'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                            ]) !!}
+                            {!! Form::number('delivery_cost', null, [
+                                'class' => 'form-control',
+                                'wire:model' => 'delivery_cost',
+                                'placeholder' => __('lang.delivery_cost'),
+                            ]) !!}
+                        </div>
+                    </div>
+                @endif
             </div>
 
 
@@ -226,14 +259,15 @@
                         @lang('lang.draft')</button>
                     {{--                            @include('invoices.partials.payment') --}}
                 </div>
-                <div class="mb-2 col-md-6 p-1">
-                    <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
-                        class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
-                            class="fa fa-hourglass-start"></i>
-                        @lang('lang.pay_later')</button>
-                    @include('invoices.partials.draft_transaction')
-
-                </div>
+                @if (!$this->checkRepresentativeUser())
+                    <div class="mb-2 col-md-6 p-1">
+                        <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
+                            class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
+                                class="fa fa-hourglass-start"></i>
+                            @lang('lang.pay_later')</button>
+                        @include('invoices.partials.draft_transaction')
+                    </div>
+                @endif
             </div>
             {{--                    </div> --}}
             {{--                </div> --}}

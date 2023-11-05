@@ -11,7 +11,9 @@ use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\CustomerType;
+use App\Models\Employee;
 use App\Models\Invoice;
+use App\Models\JobType;
 use App\Models\MoneySafeTransaction;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\Product;
@@ -43,7 +45,7 @@ class Create extends Component
         $client_id, $client, $cash = 0, $rest, $invoice, $invoice_id, $date, $payment_status,
         $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id,
         $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note, $payment_types,
-        $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar, $store_pos, $allproducts = [], $brand_id = 0, $brands = [],
+        $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar, $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost,
         // "الباقي دولار" , "الباقي دينار"
         $dollar_remaining = 0, $dinar_remaining = 0,
         $searchProduct, $stores,
@@ -124,16 +126,22 @@ class Create extends Component
     public function render()
     {
         $store_pos = StorePos::find($this->store_pos_id);
+
+        $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
+
         // $this->stores = $store_pos->user->employee->stores()->pluck('name','id');
         // Check if a valid StorePos record is found
-        if ($store_pos) {
-            // Access relationships and update the stores property
-            $this->stores = $store_pos->user->employee->stores()->pluck('name', 'id');
-        } else {
-            // Handle the case where no StorePos record is found
-            // superadmin has no "store" , "branch" , "sale_point"
-            $this->stores = [];
-        }
+//         if ($store_pos)
+//         {
+//             // Access relationships and update the stores property
+//             $this->stores = $store_pos->user->employee->stores()->pluck('name', 'id');
+//         }
+//         else
+//         {
+//             // Handle the case where no StorePos record is found
+//             // superadmin has no "store" , "branch" , "sale_point"
+//             $this->stores = [];
+//         }
         $departments = Category::get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
@@ -142,7 +150,8 @@ class Create extends Component
         // $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types = CustomerType::latest()->pluck('name', 'id');
-
+        $delivery_job_type = JobType::where('title', 'Deliveryman')->first();
+        $deliverymen = Employee::where('job_type_id', $delivery_job_type->id)->pluck('employee_name', 'id');
         $search_result = '';
         //        if (empty($store_pos)) {
         //            $this->dispatchBrowserEvent('showCreateProductConfirmation');
@@ -190,6 +199,7 @@ class Create extends Component
             //            'stores',
             'customer_types',
             'search_result',
+            'deliverymen'
         ));
     }
 
@@ -244,7 +254,11 @@ class Create extends Component
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
-
+            if ($this->checkRepresentativeUser()) {
+                $transaction->deliveryman_id = isset($this->deliveryman_id) ? $this->deliveryman_id : null;
+                $transaction->delivery_cost = isset($this->delivery_cost) ? $this->num_uf($this->delivery_cost) : 0;
+                $transaction->save();
+            }
             // Add Sell line
             foreach ($this->items as $key => $item) {
                 if ($item['discount_type'] == 0) {
@@ -398,35 +412,35 @@ class Create extends Component
     public function updatedDepartmentId($value, $name)
     {
         $this->allproducts = Product::when($name == 'department_id', function ($query) {
-            $query->where(function ($query) {
-                $query->where('category_id', $this->department_id)
-                    ->orWhere('subcategory_id1', $this->department_id)
-                    ->orWhere('subcategory_id2', $this->department_id)
-                    ->orWhere('subcategory_id3', $this->department_id);
-            });
-        })->when($name == 'brand_id', function ($query) use ($value) {
-            $query->where('brand_id', $this->brand_id);
-        })->when($name == 'highest_price' && $this->highest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as max_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('max(sell_price)'));
-            }])
-                ->orderBy('max_sell_price', 'desc');
-        })->when($name == 'lowest_price' && $this->lowest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as min_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('min(sell_price)'));
-            }])
-                ->orderBy('min_sell_price', 'asc');
-        })->when($name == 'dollar_highest_price' && $this->dollar_highest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as max_dollar_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('max(dollar_sell_price)'));
-            }])
-                ->orderBy('max_dollar_sell_price', 'desc');
-        })->when($name == 'dollar_lowest_price' && $this->lowest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as min_dollar_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('min(dollar_sell_price)'));
-            }])
-                ->orderBy('min_dollar_sell_price', 'asc');
-        })
+                $query->where(function ($query) {
+                    $query->where('category_id', $this->department_id)
+                        ->orWhere('subcategory_id1', $this->department_id)
+                        ->orWhere('subcategory_id2', $this->department_id)
+                        ->orWhere('subcategory_id3', $this->department_id);
+                });
+            })->when($name == 'brand_id', function ($query) use ($value) {
+                $query->where('brand_id', $this->brand_id);
+            })->when($name == 'highest_price' && $this->highest_price == "1", function ($query) {
+                $query->withCount(['stock_lines as max_sell_price' => function ($subquery) {
+                    $subquery->select(DB::raw('max(sell_price)'));
+                }])
+                    ->orderBy('max_sell_price', 'desc');
+            })->when($name == 'lowest_price' && $this->lowest_price == "1", function ($query) {
+                $query->withCount(['stock_lines as min_sell_price' => function ($subquery) {
+                    $subquery->select(DB::raw('min(sell_price)'));
+                }])
+                    ->orderBy('min_sell_price', 'asc');
+            })->when($name == 'dollar_highest_price' && $this->dollar_highest_price == "1", function ($query) {
+                $query->withCount(['stock_lines as max_dollar_sell_price' => function ($subquery) {
+                    $subquery->select(DB::raw('max(dollar_sell_price)'));
+                }])
+                    ->orderBy('max_dollar_sell_price', 'desc');
+            })->when($name == 'dollar_lowest_price' && $this->lowest_price == "1", function ($query) {
+                $query->withCount(['stock_lines as min_dollar_sell_price' => function ($subquery) {
+                    $subquery->select(DB::raw('min(dollar_sell_price)'));
+                }])
+                    ->orderBy('min_dollar_sell_price', 'asc');
+            })
             ->when($name == 'from_a_to_z', function ($query) {
                 $query->orderBy('products.name', 'desc');
             })->when($name == 'from_z_to_a', function ($query) {
@@ -1405,5 +1419,53 @@ class Create extends Component
             dd($e);
         }
         return $output;
+    }
+    public function checkRepresentativeUser()
+    {
+        $user_id = Auth::user()->id;
+        $job_type = JobType::where('title', 'Representative')->first();
+        $employee = Employee::where('user_id', $user_id)->where('job_type_id', $job_type->id)->first();
+        if (!empty($employee)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function submitPendingOrders($transaction_id)
+    {
+        try {
+            $transaction = TransactionSellLine::find($transaction_id);
+            $transaction->status = "final";
+            $transaction->save();
+
+            if (!empty($transaction->dollar_amount) || !empty($transaction->amount)) {
+                $payment_data = [
+                    'transaction_id' => $transaction_id,
+                    'amount' => $transaction->amount,
+                    'dollar_amount' => $transaction->dollar_amount,
+                    // "dollar_remaining" inputField
+                    'dollar_remaining' => $transaction->dollar_remaining,
+                    // "dinar_remaining" inputField
+                    'dinar_remaining' => $transaction->dinar_remaining,
+                    'method' => 'cash',
+                    'paid_on' => Carbon::now(),
+                    'payment_note' => $transaction->payment_note,
+                    'exchange_rate' => System::getProperty('dollar_exchange'),
+                ];
+                if ($transaction->dollar_amount > 0 || $transaction->amount > 0) {
+                    $transaction_payment = null;
+                    if (!empty($transaction->dollar_amount) || !empty($transaction->amount)) {
+                        $payment_data['created_by'] = Auth::user()->id;
+                        $payment_data['payment_for'] =  $transaction->customer_id;
+                        $transaction_payment = PaymentTransactionSellLine::create($payment_data);
+                    }
+                }
+            }
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
+            return $this->redirect('/invoices/create');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            dd($e);
+        }
     }
 }

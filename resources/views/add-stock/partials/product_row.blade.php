@@ -1,15 +1,16 @@
+{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> --}}
 <style>
-    /* Hide the content of all accordions by default */
-    .accordion-content-new {
-        display: none;
+    .accordion-item {
+        background-color: transparent
     }
 
-    /* Style the accordion headers */
-    .accordion-header-new {
-        cursor: pointer;
+    .accordion-button {
+        padding: 8px !important;
+        width: fit-content !important;
+        background-color: #596fd7 !important;
+        color: white !important;
+        border-radius: 6px !important;
     }
-
-    /* Style for active (open) accordion headers */
 </style>
 <div
     class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if ($index % 2 == 0) bg-light-gray @else bg-dark-gray @endif">
@@ -31,7 +32,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-            align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+            align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="font-weight: 700;
              font-size: 10px;">@lang('lang.products')</span>
@@ -41,7 +42,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-          align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+          align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
          font-size: 10px;">@lang('lang.sku')</span>
@@ -51,7 +52,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-            align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+            align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -68,7 +69,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-              align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+              align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -104,7 +105,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-             align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+             align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -116,7 +117,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -129,7 +130,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex
-                align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-1" style="    font-weight: 700;
@@ -152,7 +153,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
-                align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -168,7 +169,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -183,7 +184,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -198,7 +199,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -214,7 +215,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-               align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+               align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -229,7 +230,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-              align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+              align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -244,7 +245,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -257,7 +258,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -274,7 +275,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -287,7 +288,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-              align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+              align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
@@ -304,7 +305,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
-                  align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
     font-size: 10px;">@lang('lang.cost')$</span>
@@ -320,7 +321,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
     font-size: 10px;">@lang('lang.total_cost')$</span>
@@ -336,7 +337,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                  align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
     font-size: 10px;">@lang('lang.cost')</span>
@@ -352,7 +353,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
     font-size: 10px;">@lang('lang.total_cost')</span>
@@ -368,7 +369,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-              align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+              align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
     font-size: 10px;">@lang('lang.new_stock')</span>
@@ -382,7 +383,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
     font-size: 10px;">@lang('lang.change_current_stock')</span>
@@ -392,7 +393,7 @@
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-               align-items-center rounded-3 text-center mb-3 flex-column align-items-center "
+               align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="font-size: 11px;height: 70px;">
 
             {{-- <span class="mb-2" style="    font-weight: 700;
@@ -404,196 +405,213 @@
     </div>
 
     <div class="d-flex flex-column" style="width: 100%">
-        <div class="accordion-new">
-            <h2 class="accordion-header-new 879878978 px-3 py-1 position-relative d-flex"
-                style="color: white;background-color: #596fd7;border-radius: 6px;width: fit-content;margin-top: -10px">
-                @lang('lang.discount')
-                <span class="accordion-arrow-new mx-2">
-                    <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                </span>
-            </h2>
-            <div class="accordion-content-new">
-                @foreach ($product['prices'] as $key => $price)
-                    <div class="d-flex flex-wrap justify-content-between width-full mb-2">
+        <div class="accordion mb-1" id="accordionExample{{ $index }}discount">
+            <div class="accordion-item" style="border: none">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne{{ $index }}discount" aria-expanded="true"
+                        aria-controls="collapseOne">
+                        @lang('lang.discount')
+                    </button>
+                </h2>
+                <div id="collapseOne{{ $index }}discount" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample{{ $index }}discount">
+                    <div class="accordion-body p-0">
+                        @foreach ($product['prices'] as $key => $price)
+                            <div class="d-flex flex-wrap justify-content-between width-full mb-2"
+                                style="background-color: whitesmoke;
+                                                                padding: 5px;
+                                                                border-radius: 6px;">
 
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <input style="width: 61px;height:30px;font-size:12px;" type="text"
-                                class="form-control price_category" name="price_category"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.price_category"
-                                maxlength="6">
-                        </div>
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <input style="width: 61px;height:30px;font-size:12px;" type="text"
+                                        class="form-control price_category" name="price_category"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.price_category"
+                                        maxlength="6">
+                                </div>
 
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('price_type', __('lang.type'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            {!! Form::select(
-                                'items.' . $index . '.prices.' . $key . '.price_type',
-                                ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
-                                null,
-                                [
-                                    'class' => ' form-control price_type',
-                                    'style' => 'width: 61px;height:30px;font-size:12px;',
-                                    //                'data-index' =>$index,
-                                    'placeholder' => __('lang.please_select'),
-                                    'wire:model' => 'items.' . $index . '.prices.' . $key . '.price_type',
-                                    'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
-                                ],
-                            ) !!}
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox"
-                                    class="custom-control-input product-discount_from_original_price"
-                                    name="discount_from_original_price" id="discount_from_original_price"
-                                    style="font-size: 0.75rem;border-radius: 12px;height: 30px;"
-                                    @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                    wire:change="changePrice({{ $index }}, {{ $key }})">
-                                <label class="custom-control-label product-custom-label" id="custom-control-label"
-                                    style="font-size: 8px" for="discount_from_original_price">
-                                    @lang('lang.discount_from_original_price')
-                                </label>
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('price_type', __('lang.type'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    {!! Form::select(
+                                        'items.' . $index . '.prices.' . $key . '.price_type',
+                                        ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
+                                        null,
+                                        [
+                                            'class' => ' form-control price_type',
+                                            'style' => 'width: 61px;height:30px;font-size:12px;',
+                                            //                'data-index' =>$index,
+                                            'placeholder' => __('lang.please_select'),
+                                            'wire:model' => 'items.' . $index . '.prices.' . $key . '.price_type',
+                                            'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
+                                        ],
+                                    ) !!}
+                                    <div class="custom-control custom-switch">
+                                        <input type="checkbox"
+                                            class="custom-control-input product-discount_from_original_price"
+                                            name="discount_from_original_price" id="discount_from_original_price"
+                                            style="font-size: 0.75rem;border-radius: 12px;height: 30px;"
+                                            @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                            wire:change="changePrice({{ $index }}, {{ $key }})">
+                                        <label class="custom-control-label product-custom-label"
+                                            id="custom-control-label" style="font-size: 8px"
+                                            for="discount_from_original_price">
+                                            @lang('lang.discount_from_original_price')
+                                        </label>
+                                    </div>
+                                    @error('items.' . $index . '.prices.' . $key . '.price_type')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+
+                                    {!! Form::label(
+                                        'price',
+                                        !empty($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
+                                        ['style' => 'font-weight:700;font-size: 10px;'],
+                                    ) !!}
+                                    <input type="text" style="width: 61px;height:30px;font-size:12px;"
+                                        name="price" class="form-control price"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.price"
+                                        wire:change="changePrice({{ $index }}, {{ $key }})"
+                                        placeholder = "{{ __('lang.percent') }}">
+                                </div>
+
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('', __('lang.price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <input type="text" style="width: 61px;height:30px;font-size:12px;"
+                                        name="" class="form-control price"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.price_after_desc"
+                                        placeholder = "{{ __('lang.price') }}" readonly>
+                                </div>
+
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('price', __('lang.quantity'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <input style="width: 61px;height:30px;font-size:12px;" type="text"
+                                        class="form-control discount_quantity"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.discount_quantity"
+                                        wire:change="changePrice({{ $index }}, {{ $key }})"
+                                        placeholder = "{{ __('lang.quantity') }}">
+
+                                </div>
+
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('b_qty', __('lang.b_qty'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <input style="width: 61px;height:30px;font-size:12px;" type="text"
+                                        class="form-control bonus_quantity"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.bonus_quantity"
+                                        wire:change="changePrice({{ $index }}, {{ $key }})"
+                                        placeholder = "{{ __('lang.b_qty') }}">
+
+                                </div>
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('total_price', __('lang.total_price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <input type="text" style="width: 61px;height:30px;font-size:12px;"
+                                        name="total_price" class="form-control total_price"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.total_price"
+                                        placeholder = "{{ __('lang.total_price') }}">
+
+                                </div>
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('piece_price', __('lang.piece_price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <input type="text" name="piece_price"
+                                        style="width: 61px;height:30px;font-size:12px;"
+                                        class="form-control piece_price"
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.piece_price"
+                                        placeholder = "{{ __('lang.total_price') }}">
+
+                                </div>
+
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center flex-column">
+                                    {!! Form::label('customer_type', __('lang.customer_type'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                    <select
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.price_customer_types"
+                                        data-name='price_customer_types' data-index="{{ $key }}"
+                                        class="form-control js-example-basic-multiple" multiple='multiple'
+                                        style="border-radius:6px !important; border: 2px solid gray"
+                                        placeholder="{{ __('lang.please_select') }}">
+                                        @foreach ($customer_types as $type)
+                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+
+                                <div style="width: 80px;padding:0;margin:0;font-size: 12px;border-radius: 6px;"
+                                    class="d-flex justify-content-center align-items-center col-md-1">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                        wire:click="addPriceRow({{ $index }})">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    @if ($key > 0)
+                                        <button class="btn btn-sm btn-danger"
+                                            wire:click="delete_price_raw({{ $index }},{{ $key }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
-                            @error('items.' . $index . '.prices.' . $key . '.price_type')
-                                <label class="text-danger error-msg">{{ $message }}</label>
-                            @enderror
-                        </div>
-
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-
-                            {!! Form::label(
-                                'price',
-                                !empty($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
-                                ['style' => 'font-weight:700;font-size: 10px;'],
-                            ) !!}
-                            <input type="text" style="width: 61px;height:30px;font-size:12px;" name="price"
-                                class="form-control price"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.price"
-                                wire:change="changePrice({{ $index }}, {{ $key }})"
-                                placeholder = "{{ __('lang.percent') }}">
-                        </div>
-
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('', __('lang.price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <input type="text" style="width: 61px;height:30px;font-size:12px;" name=""
-                                class="form-control price"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.price_after_desc"
-                                placeholder = "{{ __('lang.price') }}" readonly>
-                        </div>
-
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('price', __('lang.quantity'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <input style="width: 61px;height:30px;font-size:12px;" type="text"
-                                class="form-control discount_quantity"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.discount_quantity"
-                                wire:change="changePrice({{ $index }}, {{ $key }})"
-                                placeholder = "{{ __('lang.quantity') }}">
-
-                        </div>
-
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('b_qty', __('lang.b_qty'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <input style="width: 61px;height:30px;font-size:12px;" type="text"
-                                class="form-control bonus_quantity"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.bonus_quantity"
-                                wire:change="changePrice({{ $index }}, {{ $key }})"
-                                placeholder = "{{ __('lang.b_qty') }}">
-
-                        </div>
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('total_price', __('lang.total_price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <input type="text" style="width: 61px;height:30px;font-size:12px;" name="total_price"
-                                class="form-control total_price"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.total_price"
-                                placeholder = "{{ __('lang.total_price') }}">
-
-                        </div>
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('piece_price', __('lang.piece_price'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <input type="text" name="piece_price" style="width: 61px;height:30px;font-size:12px;"
-                                class="form-control piece_price"
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.piece_price"
-                                placeholder = "{{ __('lang.total_price') }}">
-
-                        </div>
-
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center flex-column">
-                            {!! Form::label('customer_type', __('lang.customer_type'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                            <select
-                                wire:model="items.{{ $index }}.prices.{{ $key }}.price_customer_types"
-                                data-name='price_customer_types' data-index="{{ $key }}"
-                                class="form-control js-example-basic-multiple" multiple='multiple'
-                                style="border-radius:6px !important; border: 2px solid gray"
-                                placeholder="{{ __('lang.please_select') }}">
-                                @foreach ($customer_types as $type)
-                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-
-                        <div style="width: 80px;padding:0;margin:0;font-size: 12px;border-radius: 6px;"
-                            class="d-flex justify-content-center align-items-center col-md-1">
-                            <button type="button" class="btn btn-sm btn-primary"
-                                wire:click="addPriceRow({{ $index }})">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            @if ($key > 0)
-                                <button class="btn btn-sm btn-danger"
-                                    wire:click="delete_price_raw({{ $index }},{{ $key }})">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            @endif
-                        </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
             </div>
         </div>
 
-        <div class="accordion-new">
-            <h2 class="accordion-header-new px-3 py-1 d-flex"
-                style="color: white;background-color: #596fd7;border-radius: 6px;width: fit-content;">
-                @lang('lang.validity')
-                <span class="accordion-arrow-new mx-2">
-                    <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                </span>
-            </h2>
-            <div class="accordion-content-new">
+        <div class="accordion" id="accordionExample{{ $index }}validity">
+            <div class="accordion-item" style="border: none">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne{{ $index }}validity" aria-expanded="true"
+                        aria-controls="collapseOne">
+                        @lang('lang.validity')
+                    </button>
+                </h2>
+                <div id="collapseOne{{ $index }}validity" class="accordion-collapse collapse"
+                    data-bs-parent="#accordionExample{{ $index }}validity">
+                    <div class="accordion-body p-0" style="">
 
-                <div class="p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center"
-                    style="width: 100%">
+                        <div class="p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center"
+                            style="width: 100%;background-color: whitesmoke;
+                                                                padding: 5px;
+                                                                border-radius: 6px;">
 
-                    <div class="col-md-3"
-                        style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                        {!! Form::label('', __('lang.expiry_date'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                        {!! Form::date('add_stock_lines[' . $index . '][expiry_date]', null, [
-                            'class' => 'form-control datepicker expiry_date',
-                            'wire:model' => 'items.' . $index . '.expiry_date',
-                        ]) !!}
-                    </div>
-                    <div class="col-md-3"
-                        style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                        {!! Form::label('', __('lang.days_before_the_expiry_date'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                        {!! Form::text('add_stock_lines[' . $index . '][expiry_warning]', null, [
-                            'class' => 'form-control days_before_the_expiry_date',
-                            'wire:model' => 'items.' . $index . '.expiry_warning',
-                        ]) !!}
-                    </div>
-                    <div class="col-md-3"
-                        style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                        {!! Form::label('', __('lang.convert_status_expire'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
-                        {!! Form::text('add_stock_lines[' . $index . '][convert_status_expire]', null, [
-                            'class' => 'form-control',
-                            'wire:model' => 'items.' . $index . '.convert_status_expire',
-                        ]) !!}
-                    </div>
+                            <div class="col-md-3"
+                                style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
+                                {!! Form::label('', __('lang.expiry_date'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                {!! Form::date('add_stock_lines[' . $index . '][expiry_date]', null, [
+                                    'class' => 'form-control datepicker expiry_date',
+                                    'wire:model' => 'items.' . $index . '.expiry_date',
+                                ]) !!}
+                            </div>
+                            <div class="col-md-3"
+                                style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
+                                {!! Form::label('', __('lang.days_before_the_expiry_date'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                {!! Form::text('add_stock_lines[' . $index . '][expiry_warning]', null, [
+                                    'class' => 'form-control days_before_the_expiry_date',
+                                    'wire:model' => 'items.' . $index . '.expiry_warning',
+                                ]) !!}
+                            </div>
+                            <div class="col-md-3"
+                                style="font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
+                                {!! Form::label('', __('lang.convert_status_expire'), ['style' => 'font-weight:700;font-size: 10px;']) !!}
+                                {!! Form::text('add_stock_lines[' . $index . '][convert_status_expire]', null, [
+                                    'class' => 'form-control',
+                                    'wire:model' => 'items.' . $index . '.convert_status_expire',
+                                ]) !!}
+                            </div>
 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -614,34 +632,4 @@
             label.textContent = "@lang('lang.discount_from_original_price_with_free_quantity')";
         }
     });
-
-
-    var accButtons = document.getElementsByClassName('accordion-stock-button');
-</script>
-
-{{-- <script>
-    // Add a click event listener to each accordion header
-    $('.accordion-new').each(function(i) {
-        let header = $(this).find('.accordion-header-new');
-        let arrow = header.find('.accordion-arrow-new');
-        let content = $(this).find('.accordion-content-new');
-
-        header.on('click', function(e) {
-            $(this).parent().toggleClass('active'); // Toggle active class
-            if (content.is(':visible')) {
-                arrow.css('transform', 'rotate(0deg)'); // Hide content
-                content.hide(); // Hide content
-            } else {
-                content.show(); // Show content
-                arrow.css('transform', 'rotate(180deg)'); // Show content
-            }
-        });
-    });
-</script> --}}
-<script>
-    $('.accordion-new .accordion-header-new').each(function(i) {
-        $(this).on('click', function() {
-            console.log($(this));
-        })
-    })
 </script>
