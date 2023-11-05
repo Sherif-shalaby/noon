@@ -56,11 +56,11 @@
                                                     <tr>
                                                         <td>{{ $index+1 }}</td>
                                                         <td>
-                                                            <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$requiredProduct->id}}" />
+                                                            <input type="checkbox" name="products[{{$index}}][checkbox]" class="checkbox_ids" value="1" />
                                                         </td>
                                                         {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
                                                         <td>
-                                                            <input  type="hidden" class="form-control" name="products[{{$index}}][employee_id] "
+                                                            <input  type="hidden" class="form-control" name="products[{{$index}}][employee_id]"
                                                                     value="{{ $requiredProduct->employee_id }}">
                                                             {{ !empty($requiredProduct->employee_id) ? $requiredProduct->employee->employee_name : '' }}
                                                         </td>

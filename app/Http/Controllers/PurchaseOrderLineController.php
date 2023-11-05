@@ -44,7 +44,6 @@ class PurchaseOrderLineController extends Controller
     public function index()
     {
         $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->orderBy('created_at','desc')->get();
-        // return $purchase_orders;
         return view('purchase_order.index',compact('purchase_orders'));
     }
     /* +++++++++++++++ create() +++++++++++++++ */
@@ -72,7 +71,7 @@ class PurchaseOrderLineController extends Controller
     /* ++++++++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
     public function store(Request $request)
     {
-        return $request;
+        // return $request;
         try
         {
             DB::beginTransaction();

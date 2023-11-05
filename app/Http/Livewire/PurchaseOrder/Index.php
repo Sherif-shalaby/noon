@@ -55,7 +55,7 @@ class Index extends Component
         $stores = Store::getDropdown();
         $customers = Customer::get();
 
-        return view('livewire.customer-price-offer.index',
+        return view('purchase_order.index',
                 compact('customer_offer_prices','stores','customers'));
     }
 }
