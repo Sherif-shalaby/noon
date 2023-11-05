@@ -298,7 +298,7 @@
                                                 class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                                 <label for="product_tax_id"
                                                     class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                    style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.product_tax') . ':*' }}</label>
+                                                    style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.product_tax') . '*' }}</label>
                                                 <div class="input-wrapper">
                                                     <select name="product_tax_id" id="product_tax"
                                                         class="form-control select2"

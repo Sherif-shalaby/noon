@@ -70,7 +70,7 @@
                                         for="store_id">@lang('lang.store')</label>
                                     <div class="input-wrapper">
                                         {!! Form::select('store_id[]', $stores, $selected_stores, [
-                                            'class' => 'form-control select2 form-control initial-balance-input',
+                                            'class' => 'form-control selectpicker form-control initial-balance-input',
                                             'style' => 'width: 100%;height:100%',
                                             'multiple',
                                             'placeholder' => __('lang.please_select'),

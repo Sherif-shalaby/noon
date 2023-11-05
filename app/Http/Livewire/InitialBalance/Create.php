@@ -48,7 +48,8 @@ class Create extends Component
             'method' => '',
             'exchange_rate' => 0,
             'product_symbol' => '',
-            'balance_return_request' => '',          'show_tax' => false,
+            'balance_return_request' => '',
+            'show_tax' => false,
             'show_size' => false
         ]
     ];

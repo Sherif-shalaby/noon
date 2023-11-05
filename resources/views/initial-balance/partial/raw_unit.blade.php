@@ -1,6 +1,24 @@
-<div>
-    <div class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif position-relative"
-        style="background-color: rgba(214, 214, 214, 0.439);">
+<style>
+    .accordion-item {
+        background-color: transparent
+    }
+
+    .accordion-button {
+        padding: 8px !important;
+        width: fit-content !important;
+        background-color: #596fd7 !important;
+        color: white !important;
+        border-radius: 6px !important;
+        cursor: pointer;
+    }
+
+    .accordion-content {
+        display: none;
+    }
+</style>
+<div style="background-color: rgba(214, 214, 214, 0.439);" class="mb-2 p-1">
+    <div
+        class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif position-relative">
 
 
         <div class="btn btn-sm btn-danger py-2 px-1 position-absolute"
@@ -246,244 +264,238 @@
 
     </div>
 
-    <div style="width: 100%;" class="accordion mt-1 p-3 animate__animated animate__lightSpeedInLeft"
-        id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header">
+    <div style="width: 100%;" class="accordion animate__animated animate__lightSpeedInLeft m-1">
+        <div class="accordion-item" style="border: none">
+            <h2 class="accordion-header d-flex justify-content-end m-1">
                 @if ($rows[$index])
-                    <button class="accordion-button dis-button collapsed" style="padding: 5px 15px" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}"
-                        data-index="{{ $index }}" aria-expanded="true"
-                        aria-controls="panelsStayOpen-collapse{{ $index }}"
-                        wire:click="stayShow({{ $index }})">
-                        <h6>
-                            @lang('lang.discount')
-                        </h6>
-                        <span class="accordion-arrow">
-                            @if ($rows[$index]['show_prices'])
+                    <div class="accordion-button" onclick="toggleAccordion(`collapseOne{{ $index }}`)">
+                        @lang('lang.discount')
+                        {{-- <span class="accordion-arrow"> --}}
+                        {{-- @if ($rows[$index]['show_prices'])
                                 <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
                             @else
                                 <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                            @endif
-                        </span>
-                    </button>
+                            @endif --}}
+                        {{-- </span> --}}
+                    </div>
                 @endif
             </h2>
-            <div id="panelsStayOpen-collapse{{ $index }}"
-                class="accordion-collapse collapse @if ($rows[$index]['show_prices']) show @endif">
-                @if (!empty($rows[$index]['prices']))
-                    @foreach ($rows[$index]['prices'] as $key => $price)
-                        <div class="accordion-body mb-3 p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="background-color: #eee">
-                            <div style="width: 100px;font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
-                                class="d-flex justify-content-around align-items-center">
-                                <button type="button" class="btn btn-sm btn-primary"
-                                    wire:click="addPriceRow({{ $index }})">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                @if ($key > 0)
-                                    <button class="btn btn-sm btn-danger"
-                                        wire:click="delete_price_raw({{ $index }},{{ $key }})">
-                                        <i class="fa fa-trash"></i>
+            <div id="collapseOne{{ $index }}" class="accordion-content">
+                <div class="accordion-body p-0">
+                    @if (!empty($rows[$index]['prices']))
+                        @foreach ($rows[$index]['prices'] as $key => $price)
+                            <div class="accordion-body mb-3 p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="background-color: #eee">
+                                <div style="width: 100px;font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
+                                    class="d-flex justify-content-around align-items-center">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                        wire:click="addPriceRow({{ $index }})">
+                                        <i class="fa fa-plus"></i>
                                     </button>
-                                @endif
-                            </div>
-
-                            <div
-                                class="d-flex flex-wrap  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-                                <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
-                                    {!! Form::label('price_category', __('lang.price_category'), [
-                                        'style' => 'font-weight: 700;font-size: 10px',
-                                        'class' => 'pt-2',
-                                    ]) !!}
-                                    <input type="text" class="form-control price_category" name="price_category"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.price_category"
-                                        maxlength="6"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
-                                </div>
-                                <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
-                                    {!! Form::label('price', __('lang.quantity'), [
-                                        'style' => 'font-weight: 700;font-size: 11px',
-                                        'class' => 'pt-2',
-                                    ]) !!}
-                                    <input type="text" class="form-control discount_quantity"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.discount_quantity"
-                                        wire:change="changePrice({{ $index }}, {{ $key }})"
-                                        placeholder = "{{ __('lang.quantity') }}"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
-                                    @error('rows.' . $index . '.prices.' . $key . '.discount_quantity')
-                                        <br>
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
+                                    @if ($key > 0)
+                                        <button class="btn btn-sm btn-danger"
+                                            wire:click="delete_price_raw({{ $index }},{{ $key }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    @endif
                                 </div>
 
                                 <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
-                                    {!! Form::label('b_qty', __('lang.b_qty'), ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2']) !!}
-                                    <input type="text" class="form-control bonus_quantity"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.bonus_quantity"
-                                        wire:change="changePrice({{ $index }}, {{ $key }})"
-                                        placeholder="{{ __('lang.b_qty') }}">
-                                    @error('rows.' . $index . '.prices.' . $key . '.bonus_quantity')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
+                                    class="d-flex flex-wrap  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                                <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
-                                    {!! Form::label('price_type', __('lang.type'), [
-                                        'style' => 'font-weight: 700;font-size: 11px',
-                                        'class' => 'pt-2',
-                                    ]) !!}
-                                    {!! Form::select(
-                                        'rows.' . $index . '.prices.' . $key . '.price_type',
-                                        ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
-                                        null,
-                                        [
-                                            'class' => ' p-0 price_type',
-                                            'placeholder' => __('lang.please_select'),
-                                            'style' => 'border-radius: 12px;height: 30px;',
-                                            'wire:model' => 'rows.' . $index . '.prices.' . $key . '.price_type',
-                                            'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
-                                        ],
-                                    ) !!}
-                                    <select class="custom-select "
-                                        style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['prices'][$key]['price_type'] !== 'fixed' ? 'display:none;' : '' }}"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.price_currency">
-                                        <option selected value="dollar">Dollar</option>
-                                        <option value="dinar">Dinar</option>
-                                    </select>
-                                    <div class="custom-control custom-switch">
-                                        <form id="myForm">
-                                            <input type="checkbox" class="custom-control-input"
-                                                name="discount_from_original_price" id="discount_from_original_price"
-                                                style="font-size: 0.75rem"
-                                                @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                                wire:change="changePrice({{ $index }}, {{ $key }})">
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                                        {!! Form::label('price_category', __('lang.price_category'), [
+                                            'style' => 'font-weight: 700;font-size: 10px',
+                                            'class' => 'pt-2',
+                                        ]) !!}
+                                        <input type="text" class="form-control price_category"
+                                            name="price_category"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.price_category"
+                                            maxlength="6"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
+                                    </div>
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                                        {!! Form::label('price', __('lang.quantity'), [
+                                            'style' => 'font-weight: 700;font-size: 11px',
+                                            'class' => 'pt-2',
+                                        ]) !!}
+                                        <input type="text" class="form-control discount_quantity"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.discount_quantity"
+                                            wire:change="changePrice({{ $index }}, {{ $key }})"
+                                            placeholder = "{{ __('lang.quantity') }}"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
+                                        @error('rows.' . $index . '.prices.' . $key . '.discount_quantity')
+                                            <br>
+                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                        @enderror
+                                    </div>
 
-                                            <label class="custom-control-label" id="custom-control-label"
-                                                style="font-size: 8px" for="discount_from_original_price">
-                                                {{-- @if (request()->has('discount_from_original_price'))
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                                        {!! Form::label('b_qty', __('lang.b_qty'), ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2']) !!}
+                                        <input type="text" class="form-control bonus_quantity"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.bonus_quantity"
+                                            wire:change="changePrice({{ $index }}, {{ $key }})"
+                                            placeholder="{{ __('lang.b_qty') }}">
+                                        @error('rows.' . $index . '.prices.' . $key . '.bonus_quantity')
+                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                        @enderror
+                                    </div>
+
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px">
+                                        {!! Form::label('price_type', __('lang.type'), [
+                                            'style' => 'font-weight: 700;font-size: 11px',
+                                            'class' => 'pt-2',
+                                        ]) !!}
+                                        {!! Form::select(
+                                            'rows.' . $index . '.prices.' . $key . '.price_type',
+                                            ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
+                                            null,
+                                            [
+                                                'class' => ' p-0 price_type',
+                                                'placeholder' => __('lang.please_select'),
+                                                'style' => 'border-radius: 12px;height: 30px;',
+                                                'wire:model' => 'rows.' . $index . '.prices.' . $key . '.price_type',
+                                                'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
+                                            ],
+                                        ) !!}
+                                        <select class="custom-select "
+                                            style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['prices'][$key]['price_type'] !== 'fixed' ? 'display:none;' : '' }}"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.price_currency">
+                                            <option selected value="dollar">Dollar</option>
+                                            <option value="dinar">Dinar</option>
+                                        </select>
+                                        <div class="custom-control custom-switch">
+                                            <form id="myForm">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    name="discount_from_original_price"
+                                                    id="discount_from_original_price" style="font-size: 0.75rem"
+                                                    @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
+                                                    wire:change="changePrice({{ $index }}, {{ $key }})">
+
+                                                <label class="custom-control-label" id="custom-control-label"
+                                                    style="font-size: 8px" for="discount_from_original_price">
+                                                    {{-- @if (request()->has('discount_from_original_price'))
                                             @lang('lang.discount_from_original_price')
                                         @else --}}
-                                                @lang('lang.discount_from_original_price_with_free_quantity')
-                                                {{-- @endif --}}
-                                            </label>
-                                        </form>
+                                                    @lang('lang.discount_from_original_price_with_free_quantity')
+                                                    {{-- @endif --}}
+                                                </label>
+                                            </form>
+                                        </div>
+                                        @error('rows.' . $index . '.prices.' . $key . '.price_type')
+                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                        @enderror
                                     </div>
-                                    @error('rows.' . $index . '.prices.' . $key . '.price_type')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
 
-                                <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
-                                    {!! Form::label(
-                                        'price',
-                                        isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
-                                        ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2'],
-                                    ) !!}
-                                    <input type="text" name="price" class="form-control price"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price"
-                                        wire:change="changePrice({{ $index }}, {{ $key }})"
-                                        placeholder="{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
-                                    <p class="mb-0 d-flex flex-column">
-                                        <span>
-                                            {{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}
-                                        </span>
-                                        <span>
-                                            {{ $this->rows[$index]['prices'][$key]['dinar_price'] ?? '' }}
-                                        </span>
-                                    </p>
-                                </div>
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                                        {!! Form::label(
+                                            'price',
+                                            isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
+                                            ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2'],
+                                        ) !!}
+                                        <input type="text" name="price" class="form-control price"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price"
+                                            wire:change="changePrice({{ $index }}, {{ $key }})"
+                                            placeholder="{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
+                                        <p class="mb-0 d-flex flex-column">
+                                            <span>
+                                                {{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}
+                                            </span>
+                                            <span>
+                                                {{ $this->rows[$index]['prices'][$key]['dinar_price'] ?? '' }}
+                                            </span>
+                                        </p>
+                                    </div>
 
-                                <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
-                                    {!! Form::label('', __('lang.price'), ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2']) !!}
-                                    <input type="text" name="" class="form-control price"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price_after_desc"
-                                        placeholder="{{ __('lang.price') }}"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
-                                    <p class="mb-0 d-flex flex-column">
-                                        <span>
-                                            {{ __('lang.price') }}
-                                        </span>
-                                        <span>
-                                            {{ $this->rows[$index]['prices'][$key]['price_after_desc'] ?? '' }}
-                                        </span>
-                                    </p>
-                                </div>
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                                        {!! Form::label('', __('lang.price'), ['style' => 'font-weight: 700;font-size: 11px', 'class' => 'pt-2']) !!}
+                                        <input type="text" name="" class="form-control price"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_price_after_desc"
+                                            placeholder="{{ __('lang.price') }}"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
+                                        <p class="mb-0 d-flex flex-column">
+                                            <span>
+                                                {{ __('lang.price') }}
+                                            </span>
+                                            <span>
+                                                {{ $this->rows[$index]['prices'][$key]['price_after_desc'] ?? '' }}
+                                            </span>
+                                        </p>
+                                    </div>
 
-                                <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
-                                    class="dollar-cell">
-                                    {!! Form::label('total_price', __('lang.total_price') . ' $', [
-                                        'style' => 'font-weight: 700;font-size: 11px',
-                                        'class' => 'pt-2',
-                                    ]) !!}
-                                    <input type="text" name="total_price" class="form-control total_price"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_total_price"
-                                        placeholder = "{{ __('lang.total_price') }}"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
-                                    <p class="mb-0 d-flex flex-column">
-                                        <span>
-                                            {{ __('lang.total_price') . ' $' }}
-                                        </span>
-                                        <span>
-                                            {{ $this->rows[$index]['prices'][$key]['total_price'] ?? '' }}
-                                        </span>
-                                    </p>
-                                </div>
+                                    <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
+                                        class="dollar-cell">
+                                        {!! Form::label('total_price', __('lang.total_price') . ' $', [
+                                            'style' => 'font-weight: 700;font-size: 11px',
+                                            'class' => 'pt-2',
+                                        ]) !!}
+                                        <input type="text" name="total_price" class="form-control total_price"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_total_price"
+                                            placeholder = "{{ __('lang.total_price') }}"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
+                                        <p class="mb-0 d-flex flex-column">
+                                            <span>
+                                                {{ __('lang.total_price') . ' $' }}
+                                            </span>
+                                            <span>
+                                                {{ $this->rows[$index]['prices'][$key]['total_price'] ?? '' }}
+                                            </span>
+                                        </p>
+                                    </div>
 
-                                <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
-                                    class="dollar-cell">
-                                    {!! Form::label('piece_price', __('lang.piece_price') . ' $', [
-                                        'style' => 'font-weight: 700;font-size: 11px',
-                                        'class' => 'pt-2',
-                                    ]) !!}
-                                    <input type="text" name="piece_price" class="form-control piece_price"
-                                        wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_piece_price"
-                                        placeholder = "{{ __('lang.total_price') }}"
-                                        style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
-                                    <p class="mb-0 d-flex flex-column">
-                                        <span>
-                                            {{ __('lang.piece_price') . ' $' }}
-                                        </span>
-                                        <span>
-                                            {{ $this->rows[$index]['prices'][$key]['piece_price'] ?? '' }}
-                                        </span>
-                                    </p>
-                                </div>
+                                    <div style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;"
+                                        class="dollar-cell">
+                                        {!! Form::label('piece_price', __('lang.piece_price') . ' $', [
+                                            'style' => 'font-weight: 700;font-size: 11px',
+                                            'class' => 'pt-2',
+                                        ]) !!}
+                                        <input type="text" name="piece_price" class="form-control piece_price"
+                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_piece_price"
+                                            placeholder = "{{ __('lang.total_price') }}"
+                                            style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
+                                        <p class="mb-0 d-flex flex-column">
+                                            <span>
+                                                {{ __('lang.piece_price') . ' $' }}
+                                            </span>
+                                            <span>
+                                                {{ $this->rows[$index]['prices'][$key]['piece_price'] ?? '' }}
+                                            </span>
+                                        </p>
+                                    </div>
 
-                                <div
-                                    style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
-                                    {!! Form::label('customer_type', __('lang.customer_type'), [
-                                        'style' => 'font-weight: 700;font-size: 11px',
-                                        'class' => 'pt-2',
-                                    ]) !!}
-                                    <div class="d-flex justify-content-center align-items-center"
-                                        style=" border: none;
+                                    <div
+                                        style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
+                                        {!! Form::label('customer_type', __('lang.customer_type'), [
+                                            'style' => 'font-weight: 700;font-size: 11px',
+                                            'class' => 'pt-2',
+                                        ]) !!}
+                                        <div class="d-flex justify-content-center align-items-center"
+                                            style=" border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         width: 100%;
                                         margin: auto;
                                         flex-wrap: nowrap;">
-                                        <select
-                                            wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
-                                            data-name='price_customer_types' data-index="{{ $index }}"
-                                            data-key="{{ $key }}"
-                                            class="form-control js-example-basic-multiple" multiple='multiple'
-                                            placeholder="{{ __('lang.please_select') }}">
-                                            @foreach ($customer_types as $type)
-                                                <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                            @endforeach
-                                        </select>
+                                            <select
+                                                wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
+                                                data-name='price_customer_types' data-index="{{ $index }}"
+                                                data-key="{{ $key }}"
+                                                class="form-control js-example-basic-multiple" multiple='multiple'
+                                                placeholder="{{ __('lang.please_select') }}">
+                                                @foreach ($customer_types as $type)
+                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                @endforeach
+                                            </select>
 
-                                        {{-- <select class="selectpicker" data-live-search="true"
+                                            {{-- <select class="selectpicker" data-live-search="true"
                                     wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
                                     data-name='price_customer_types' data-index="{{ $index }}"
                                     data-key="{{ $key }}" multiple='multiple'
@@ -495,16 +507,18 @@
                                 </select> --}}
 
 
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
-                @endif
+                        @endforeach
+                    @endif
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <script>

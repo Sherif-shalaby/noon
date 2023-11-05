@@ -111,8 +111,9 @@
                                             for="start_date">@lang('lang.start_date')</label>
                                         <div
                                             class="select_body input-wrapper d-flex justify-content-between align-items-center">
-                                            <input type="date" class="form-control" placeholder="@lang('lang.start_date')"
-                                                name="start_date" style="border-color:#aaa"
+                                            <input type="date"
+                                                style="background: transparent;outline: none !important;border: none;width: 100%;padding: 15px;"
+                                                placeholder="@lang('lang.start_date')" name="start_date" style="border-color:#aaa"
                                                 value="{{ $supplier->start_date }}">
                                             @error('start_date')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -129,8 +130,9 @@
                                             for="end_date">@lang('lang.end_date')</label>
                                         <div
                                             class="select_body input-wrapper d-flex justify-content-between align-items-center">
-                                            <input type="date" class="form-control" placeholder="@lang('lang.end_date')"
-                                                name="end_date" style="border-color:#aaa"
+                                            <input type="date"
+                                                style="background: transparent;outline: none !important;border: none;width: 100%;padding: 15px;"
+                                                placeholder="@lang('lang.end_date')" name="end_date" style="border-color:#aaa"
                                                 value="{{ $supplier->end_date }}">
                                             @error('end_date')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -285,14 +287,14 @@
                                                 <tbody class="email_tbody">
                                                     <tr>
                                                         <td class="col-md-12 p-0  mb-2">
-                                                            <div class="select_body input-wrapper  d-flex justify-content-between align-items-center"
+                                                            <div class="select_body input-wrapper m-2 d-flex justify-content-between align-items-center"
                                                                 style="width: 100%">
                                                                 <input type="text" class=" initial-balance-input m-0"
                                                                     width="100%;" style="flex-grow: 1"
                                                                     placeholder="@lang('lang.email')" name="email[]"
                                                                     value="{{ old('email') }}" required>
 
-                                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                                {{-- +++++++++++++ Add New Email +++++++++ --}}
                                                                 <a href="javascript:void(0)"
                                                                     class="add-button d-flex justify-content-center align-items-center text-decoration-none addRow_email"
                                                                     type="button">
@@ -418,14 +420,14 @@
                     <div
                         class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <label
-                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('image')</label>
-                        <div class="input-wrapper">
+                            class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">@lang('image')</label>
+                        <div class="input-wrapper width-fit">
 
                             <input class="initial-balance-input m-auto form-control img"
                                 style="width: 100%; border:2px solid #ccc;padding: 0" name="image" type="file"
                                 accept="image/*">
                         </div>
-                        <div class="dropzone" id="my-dropzone">
+                        <div class="dropzone" style="opacity: 0;width: 20px;height: 20px;" id="my-dropzone">
                             <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
                         </div>
                         @error('cover')
@@ -457,15 +459,18 @@
         $('.email_tbody').on('click', '.addRow_email', function() {
             console.log('new Email inputField was added');
             var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                    <td class="col-md-12 p-0">
+                        <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                            style="width: 100%">
+                        <input  type="text" class=" initial-balance-input m-0"
+                            width="100%"  style="flex-grow: 1" placeholder="@lang('lang.email')" name="email[]"
                                 value="{{ old('email') }}" required >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
+
+                        <a href="javascript:void(0)" class="add-button d-flex justify-content-center align-items-center text-decoration-none deleteRow_email"> <i class="fa fa-minus"></i></a>
+                        </div>
                     </td>
                 </tr>`;
             $('.email_tbody').append(tr);
@@ -478,16 +483,17 @@
         $('.phone_tbody').on('click', '.addRow_phone', function() {
             console.log('new mobile_number inputField was added');
             var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.phone_number')" name="mobile_number[]"
+                    <td class="col-md-12 p-0 mb-2">
+                          <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                            style="width: 100%">
+                        <input  type="text" class=" initial-balance-input m-0"  width="100%;" style="flex-grow: 1" placeholder="@lang('lang.phone_number')" name="mobile_number[]"
                                 value="{{ old('mobile_number') }}" required >
                                 @error('mobile_number')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_phone">-</a>
-                    </td>
+                        <a href="javascript:void(0)" class="add-button d-flex justify-content-center align-items-center  text-decoration-none deleteRow_phone"> <i class="fa fa-minus"></i></a>
+                   </div>
+                        </td>
 
                 </td>
             </tr>`;

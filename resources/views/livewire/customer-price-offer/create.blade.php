@@ -6,9 +6,9 @@
                     <div class="card-header d-flex align-items-center">
                         <h4>@lang('lang.customer_price_offer')</h4>
                     </div>
-                    <div class="row ">
+                    <div class="row align-items-center mb-2">
                         <div class="col-md-9">
-                            <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>
+                            <p class="italic pl-3 mb-0"><small>@lang('lang.required_fields_info') </small></p>
                         </div>
                         <div class="col-md-3">
                             <div class="i-checks">
@@ -24,19 +24,20 @@
                     </div>
                     {{-- {!! Form::open([ 'id' => 'add_st ock_form']) !!} --}}
                     <form action="{{ route('pos.store') }}">
-                        <div class="card-body">
+                        <div class="card-body py-0">
                             <div class="col-md-12">
                                 <div
                                     class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- ++++++++++++++++++++++ stores filter ++++++++++++++++++++++ --}}
                                     <div
-                                        class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         <label
-                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                            class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif"
                                             for="store_id">
                                             @lang('lang.store')<span style="color:#dc3545;">*</span>
                                         </label>
-                                        <div class=" input-wrapper d-flex justify-content-between align-items-center">
+                                        <div
+                                            class=" input-wrapper d-flex justify-content-between align-items-center width-fit">
                                             <select class=" initial-balance-input m-auto client"
                                                 style="width: 100%; border:2px solid #ccc" wire:model="store_id"
                                                 id="Client_Select" required>
@@ -53,12 +54,13 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
                                     <div
-                                        class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         <label for="customer_id"
-                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">
+                                            class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">
                                             @lang('lang.customers')<span style="color:#dc3545;">*</span>
                                         </label>
-                                        <div class=" input-wrapper d-flex justify-content-between align-items-center">
+                                        <div
+                                            class=" input-wrapper width-fit d-flex justify-content-between align-items-center">
                                             <select class=" initial-balance-input m-auto client"
                                                 style="width: 100%; border:2px solid #ccc" wire:model="customer_id"
                                                 id="Client_Select" required>
@@ -73,42 +75,40 @@
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                </div>
-                            </div>
-                            <br><br>
-                            {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
-                            <div class="row">
-                                <div class="col-md-8 mx-auto">
-                                    <div class="search-box input-group">
-                                        {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
-                                        <button type="button" class="btn btn-secondary" id="search_button"><i
-                                                class="fa fa-search"></i>
-                                        </button>
-                                        <input type="search" name="search_product" id="search_product"
-                                            wire:model.debounce.200ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')"
-                                            class="form-control" autocomplete="off">
-                                        {{-- ++++++++++ search_result  ++++++++++ --}}
-                                        @if (!empty($search_result))
-                                            <ul id="ui-id-1" tabindex="0"
-                                                class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                                                style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                                @foreach ($search_result as $product)
-                                                    <li class="ui-menu-item"
-                                                        wire:click="add_product({{ $product->id }})">
-                                                        <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                            <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png"
-                                                                width="50px" height="50px">
-                                                            {{ $product->sku ?? '' }} - {{ $product->name }}
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </div>
+                                    {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
 
+                                    <div class="col-md-6 mb-2">
+                                        <div class="search-box input-group">
+                                            {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
+                                            <button type="button" class="btn btn-secondary" id="search_button"><i
+                                                    class="fa fa-search"></i>
+                                            </button>
+                                            <input type="search" name="search_product" id="search_product"
+                                                wire:model.debounce.200ms="searchProduct"
+                                                placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control" autocomplete="off">
+                                            {{-- ++++++++++ search_result  ++++++++++ --}}
+                                            @if (!empty($search_result))
+                                                <ul id="ui-id-1" tabindex="0"
+                                                    class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                                                    style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                    @foreach ($search_result as $product)
+                                                        <li class="ui-menu-item"
+                                                            wire:click="add_product({{ $product->id }})">
+                                                            <div id="ui-id-73" tabindex="-1"
+                                                                class="ui-menu-item-wrapper">
+                                                                <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png"
+                                                                    width="50px" height="50px">
+                                                                {{ $product->sku ?? '' }} - {{ $product->name }}
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <br>
+
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div class="col-md-2 border border-1 p-0" style="height: 90vh;overflow: scroll">
@@ -130,7 +130,8 @@
                                     {{-- +++++++++++++++++++++ المنتجات +++++++++++++++++++++ --}}
                                     <div class="p-2">
                                         @foreach ($products as $product)
-                                            <div class="order-btn" wire:click='add_product({{ $product->id }})'>
+                                            <div class="order-btn" style="cursor: pointer"
+                                                wire:click='add_product({{ $product->id }})'>
                                                 <span>{{ $product->name }}</span>
                                                 <span>{{ $product->sku }} </span>
                                             </div>
@@ -145,20 +146,21 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
-                                                <th style="width: 10%">@lang('lang.quantity')</th>
-                                                {{-- <th style="width: 10%">@lang('lang.purchase_price')$</th>  --}}
+                                                <th style="width: 10%;text-align: center" class="col-sm-8">
+                                                    @lang('lang.products')</th>
+                                                <th style="width: 10%;text-align: center">@lang('lang.quantity')</th>
+                                                {{-- <th style="width: 10%;text-align: center">@lang('lang.purchase_price')$</th>  --}}
                                                 <th style="width: 20%">@lang('lang.selling_price')$</th>
-                                                {{-- <th style="width: 10%">@lang('lang.sub_total')$</th>  --}}
-                                                {{-- <th style="width: 10%">@lang('lang.purchase_price')  </th> --}}
+                                                {{-- <th style="width: 10%;text-align: center">@lang('lang.sub_total')$</th>  --}}
+                                                {{-- <th style="width: 10%;text-align: center">@lang('lang.purchase_price')  </th> --}}
                                                 <th style="width: 20%">@lang('lang.selling_price') </th>
-                                                {{-- <th style="width: 10%">@lang('lang.sub_total')</th> --}}
-                                                {{-- <th style="width: 10%">@lang('lang.cost')$</th>  --}}
-                                                <th style="width: 10%">@lang('lang.total_cost')$</th>
-                                                {{-- <th style="width: 10%">@lang('lang.cost') </th>  --}}
-                                                <th style="width: 10%">@lang('lang.total_cost')</th>
-                                                <th style="width: 10%">@lang('lang.current_stock')</th>
-                                                <th style="width: 10%">@lang('lang.delete')</th>
+                                                {{-- <th style="width: 10%;text-align: center">@lang('lang.sub_total')</th> --}}
+                                                {{-- <th style="width: 10%;text-align: center">@lang('lang.cost')$</th>  --}}
+                                                <th style="width: 15%;text-align: center">@lang('lang.total_cost')$</th>
+                                                {{-- <th style="width: 10%;text-align: center">@lang('lang.cost') </th>  --}}
+                                                <th style="width: 10%;text-align: center">@lang('lang.total_cost')</th>
+                                                <th style="width: 10%;text-align: center">@lang('lang.current_stock')</th>
+                                                <th style="width: 5%;text-align: center">@lang('lang.delete')</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -168,21 +170,25 @@
                                                 @endforeach
                                                 <tr>
                                                     {{-- +++++++++ Task : "مجموع اجمالي التكاليف" +++++++++ --}}
-                                                    <td colspan="5" style="text-align: right"> @lang('lang.total')
+                                                    <td class="text-center" colspan="5"
+                                                        style="text-align: right;font-size: 14px;font-weight: 500;">
+                                                        @lang('lang.total')
                                                     </td>
-                                                    <td> {{ $this->sum_dollar_sub_total() }} </td>
+                                                    <td class="text-center" style="font-size: 14px;font-weight: 500;">
+                                                        {{ $this->sum_dollar_sub_total() }} </td>
                                                     {{-- <td></td>  --}}
                                                     {{-- <td></td>
                                                 <td> {{$this->sum_sub_total()}} </td>
                                                 <td></td> --}}
-                                                    <td>
+                                                    <td class="text-center" style="font-size: 14px;font-weight: 500;">
                                                         {{ $this->sum_dinar_sub_total() ?? 0 }}
                                                     </td>
                                                     {{-- <td></td>
                                                 <td  style=";">
                                                     {{$this->sum_total_cost() ?? 0}}
                                                 </td> --}}
-
+                                                    <td></td>
+                                                    <td></td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -321,7 +327,7 @@
                                     <div class="input-wrapper">
 
                                         {!! Form::text('discount_value', null, [
-                                            'class' => ' initial-balance-input m-auto app()->isLocale("ar")? text-end : text-start',
+                                            'class' => ' initial-balance-input px-2 m-auto app()->isLocale("ar")? text-end : text-start',
                                             'style' => 'width:100%;',
                                             'placeholder' => __('lang.discount_value'),
                                             'wire:model' => 'discount_value',

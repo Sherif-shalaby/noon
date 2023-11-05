@@ -9,7 +9,6 @@
                     <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         @lang('lang.initial_balance')
                     </h4>
-
                     <div class="breadcrumb-list">
                         <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
