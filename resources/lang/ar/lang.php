@@ -203,7 +203,7 @@ return array(
     'date_and_time' => 'التاريخ والوقت',
     'select_products' => 'حدد المنتجات',
     'items_count' => 'عدد الأصناف',
-    'items_quantity' => 'كمية الأصناف',
+    'items_quantity' => 'الكميه الاجماليه',
     'total' => 'مجموع',
     'files' => 'الملفات',
     'invoice_no' => 'رقم الفاتورة',
@@ -579,5 +579,6 @@ return array(
     'basic_unit_for_import_product'=>'الوحدة الاساسية لاستيراد المنتج',
     'extra_quantity'=>'كمية اضافية',
     'contact_number'=>'رقم التواصل',
+    'units_count' => 'عدد الوحدات',
 );
 
