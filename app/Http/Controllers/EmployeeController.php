@@ -48,7 +48,7 @@ class EmployeeController extends Controller
    */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::orderBY('created_at','desc')->get();
 
         return view('employees.index')
             ->with(compact('employees'));

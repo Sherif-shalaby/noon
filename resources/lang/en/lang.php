@@ -560,6 +560,7 @@ return [
     'basic_unit_for_import_product'=>'Basic Unit For Import Product',
     'extra_quantity'=>'Extra Quantity',
     'contact_number'=>'Contact Number',
+    'units_count' => 'Units Count',
     'delivery_cost'=>'Delivery Cost',
     'deliveryman'=>'Delivery Man',
     'delivery'=>'Delivery',

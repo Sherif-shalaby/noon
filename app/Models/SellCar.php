@@ -15,6 +15,9 @@ class SellCar extends Model
     public function representative(){
         return $this->belongsTo(Employee::class, 'representative_id');
     }
+    public function driver(){
+        return $this->belongsTo(Employee::class, 'driver_id','id');
+    }
     public function createBy()
     {
         return $this->belongsTo(User::class, 'created_by');

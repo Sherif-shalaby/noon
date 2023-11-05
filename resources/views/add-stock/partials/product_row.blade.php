@@ -185,7 +185,7 @@
         </div>
     </td>
     <td>
-        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},null,{{$index}},1)" type="button">
+        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},'unit',{{$index}},1)" type="button">
             <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
         </button>
     </td>

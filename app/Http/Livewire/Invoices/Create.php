@@ -712,7 +712,8 @@ class Create extends Component
             $discount = ProductPrice::where('id', $this->items[$key]['discount'])->get()->last();
             $this->items[$key]['discount_type'] = $discount->price_type;
             $this->items[$key]['discount_category'] = $discount->price_category;
-            $amount = max(1, round($this->items[$key]['quantity'] / $discount->quantity));
+//            $amount = max(1, round($this->items[$key]['quantity'] / $discount->quantity));
+            $amount = (int)($this->items[$key]['quantity'] / $discount->quantity);
             $this->items[$key]['extra_quantity'] = ($this->items[$key]['quantity'] >= $discount->quantity) ? (($discount->bonus_quantity ?? 0) * $amount) : 0;
             $price = ($this->items[$key]['quantity'] >= $discount->quantity) ? $discount->price : 0;
         } else
@@ -728,13 +729,14 @@ class Create extends Component
 
     public function changeDiscount($key)
     {
-        $discounts = collect($this->items[$key]['discount_categories'])->sortBy('quantity')->toArray();
+        $discounts = collect($this->items[$key]['discount_categories'])->sortByDesc('quantity')->toArray();
         foreach ($discounts as $discount) {
             $currentQuantity = $this->items[$key]['quantity'];
             // Check if the quantity meets the current discount condition
             if (!empty($discount['quantity'])) {
-                if ($currentQuantity >= $discount['quantity'] && (isset($discounts[$key + 1]) ? $currentQuantity >= $discounts[$key + 1]['quantity'] : false)) {
+                if($currentQuantity >= $discount['quantity']){
                     $this->items[$key]['discount'] = $discount['id'];
+                    break;
                 }
             }
         }
@@ -798,9 +800,6 @@ class Create extends Component
         }
     }
 
-
-
-
     public function changeReceivedDinar()
     {
         if ($this->amount !== null && $this->amount !== 0) {
@@ -842,11 +841,6 @@ class Create extends Component
             }
         }
     }
-
-
-
-
-
 
     // calculate final_total : "النهائي دينار"
     public function changeTotal()
