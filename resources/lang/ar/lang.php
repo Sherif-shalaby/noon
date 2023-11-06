@@ -585,5 +585,9 @@ return array(
     'delivery'=>'التوصيل',
     'pending_orders'=>'طلبات معلقة',
     'add_transfer' => ""
+    'add_transfer' => 'أضف تحويل',
+    'receiver_store' => 'المتجر المستقبل',
+    'sender_store' => 'المتجر المرسل',
+    'has_store_pos' => 'لديها نقطه بيع',
 );
 
