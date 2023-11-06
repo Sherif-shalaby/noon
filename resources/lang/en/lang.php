@@ -569,6 +569,7 @@ return [
     'receiver_store' => 'Receiver Store',
     'sender_store' => 'Sender Store',
     'has_store_pos' => 'Has Store Pos',
+    'show_initial_balance' => 'Show Initial Balance'
 ];
 
 

@@ -33,7 +33,7 @@
                                     </button>
                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
                                         <li>
-                                            <a href="{{route('stocks.show', $stock->id)}}"
+                                            <a href="{{route('initial-balance.show', $stock->id)}}"
                                                class="btn"><i
                                                     class="fa fa-eye"></i>
                                                 @lang('lang.view') </a>
