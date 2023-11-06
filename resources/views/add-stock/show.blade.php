@@ -153,20 +153,22 @@
 
                                                     </td>
                                                     <td>
+                                                        {!! Form::label('price' ,!empty($price->price_type) && $price->price_type == 'fixed' ? __('lang.amount').'$: ' : __('lang.percent').'$: ') !!}
+                                                        {{ $price->price_after_desc ?? '' }}<br>
                                                         {!! Form::label('price' ,!empty($price->price_type) && $price->price_type == 'fixed' ? __('lang.amount').': ' : __('lang.percent').': ') !!}
-                                                        {{ $price->price_type ?? '' }}
+                                                        {{ $price->dinar_price_after_desc ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {!! Form::label('' ,__('lang.price').': ') !!}
-                                                        {{ $price->price_customers ?? '' }}
-                                                    </td>
-                                                    <td>
+                                                        {!! Form::label('total_price' , __('lang.total_price').'$: ') !!}
+                                                        {{ $price->total_price }}<br>
                                                         {!! Form::label('total_price' , __('lang.total_price').': ') !!}
-                                                        {{ $price->total_price }}
+                                                        {{ $price->dinar_total_price }}
                                                     </td>
                                                     <td>
+                                                        {!! Form::label('piece_price' , __('lang.piece_price').'$: ') !!}
+                                                        {{ $price->piece_price }}<br>
                                                         {!! Form::label('piece_price' , __('lang.piece_price').': ') !!}
-                                                        {{ $price->piece_price }}
+                                                        {{ $price->dinar_piece_price }}
                                                     </td>
                                                     <td>
                                                         {!! Form::label('customer_type',__('lang.customer_type').': ') !!}
