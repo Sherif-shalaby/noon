@@ -1420,14 +1420,22 @@ class Create extends Component
     // +++++++++++++++ create_purchase_order() method : When click on "امر شراء" button +++++++++++++++
     public function create_purchase_order($id)
     {
-        $stock = AddStockLine::where('product_id', $id)->latest()->first();
-        $stockTransactionId = $stock->stock_transaction_id;
-        $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
-        $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
-        $dinar_purchase_price = $stock->purchase_price;
-        $dollar_purchase_price = $stock->dollar_purchase_price;
-        try {
-            $transaction_data = [
+        try
+        {
+            $stock = AddStockLine::where('product_id', $id)->latest()->first();
+            if (!$stock)
+            {
+                // Product has no stock transaction
+                // throw new \Exception(__('Product has no stock transaction'));
+                dd("Product has no stock transaction");
+            }
+            $stockTransactionId = $stock->stock_transaction_id;
+            $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
+            $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+            $dinar_purchase_price = $stock->purchase_price;
+            $dollar_purchase_price = $stock->dollar_purchase_price;
+            $transaction_data =
+            [
                 'employee_id' => auth()->user()->id,
                 'product_id' => $id,
                 'store_id' => $this->store_id,
