@@ -19,7 +19,7 @@
 </style>
 <div style="background-color: rgba(214, 214, 214, 0.439);" class="mb-2 p-1">
     <div
-        class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif position-relative">
+        class="d-flex flex-wrap mb-0 justify-content-between align-items-center p-2 pb-0 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif position-relative">
 
 
         <div class="btn btn-sm btn-danger py-2 px-1 position-absolute"
@@ -36,11 +36,11 @@
         {{--  --}}
         <div style="animation-delay: 1.65s"
             class="d-flex col-md-11 flex-grow-1 flex-wrap justify-content-start
-         align-items-center p-2 rounded-3 text-center mb-3 animate__animated animate__fadeInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+         align-items-center p-2 rounded-3 text-center animate__animated animate__fadeInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
 
 
             <div style="
-     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                  font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
 
                 <span style="font-weight: 700;
@@ -54,10 +54,11 @@
                 @enderror
             </div>
             <div style="
-     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px 2px;height: 70px"
+                      font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px 2px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
-            font-size: 11px;" class="mb-2">@lang('lang.quantity')</span>
+                       font-size: 11px;"
+                    class="mb-2">@lang('lang.quantity')</span>
                 <input type="text" class="form-control quantity" wire:change="calculateTotalQuantity()"
                     wire:model="rows.{{ $index }}.quantity" style="width: 70px;font-size: 13px;font-weight:500;"
                     required>
@@ -70,10 +71,11 @@
 
 
             <div style="
-     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class="  table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
-              font-size: 11px;" class="mb-2">@lang('lang.unit')</span>
+                           font-size: 11px;"
+                    class="mb-2">@lang('lang.unit')</span>
                 <div class="d-flex justify-content-center" style="width: 65%;">
                     <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id'
                         data-index="{{ $index }}" required
@@ -92,10 +94,11 @@
             </div>
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                       font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
-            font-size: 11px;" class="mb-2">@lang('lang.fill_from_basic_unit')</span>
+                       font-size: 11px;"
+                    class="mb-2">@lang('lang.fill_from_basic_unit')</span>
                 <input type="text" class="form-control unit_equal" wire:model="rows.{{ $index }}.equal"
                     style="width: 70px;font-size: 13px;font-weight:500;" required>
             </div>
@@ -104,10 +107,11 @@
 
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                      font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
-            font-size: 11px;" class="mb-2">@lang('lang.basic_unit')</span>
+                        font-size: 11px;"
+                    class="mb-2">@lang('lang.basic_unit')</span>
                 <div class="d-flex justify-content-center align-items-center" style="width: 65%;">
 
                     <select wire:model="rows.{{ $index }}.basic_unit_id" data-name='basic_unit_id'
@@ -127,7 +131,7 @@
             </div>
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                          font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" double-table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
                 font-size: 11px;" class="mb-2">@lang('lang.to_get_sell_price')</span>
@@ -161,7 +165,7 @@
 
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class="dollar-cell  table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
                 font-size: 11px;"
@@ -176,10 +180,11 @@
             </div>
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class="dollar-cell  table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
-            font-size: 11px;" class="mb-2">@lang('lang.selling_price')$</span>
+                        font-size: 11px;"
+                    class="mb-2">@lang('lang.selling_price')$</span>
                 <input type="text" class="form-control "
                     wire:model="rows.{{ $index }}.dollar_selling_price"
                     wire:change="changeSellingPrice({{ $index }})"
@@ -190,10 +195,11 @@
             </div>
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class="dollar-cell  table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
-             font-size: 11px;" class="mb-2">@lang('lang.sub_total')
+                      font-size: 11px;"
+                    class="mb-2">@lang('lang.sub_total')
                     $</span>
                 @if (isset($row['quantity']) && (!empty($row['dollar_purchase_price']) || isset($row['purchase_price'])))
                     <span class="sub_total_span" style="font-size: 13px;font-weight:500;">
@@ -205,7 +211,7 @@
             {{-- @endif --}}
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                         font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
                     font-size: 11px;"
@@ -221,7 +227,7 @@
 
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                     font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
                 font-size: 11px;"
@@ -236,7 +242,7 @@
 
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                       font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;
                 font-size: 11px;"
@@ -251,7 +257,7 @@
 
 
             <div style="
-    font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
+                          font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;height: 70px"
                 class=" table-width px-0 d-flex justify-content-center align-items-center flex-column">
                 <span style="font-weight: 700;font-size: 11px;" class="mb-2">@lang('lang.new_stock')</span>
                 <span class="current_stock_text" style="font-size: 13px;font-weight:500;">
@@ -267,7 +273,7 @@
 
     <div style="width: 100%;" class="accordion animate__animated animate__lightSpeedInLeft m-1">
         <div class="accordion-item" style="border: none">
-            <h2 class="accordion-header d-flex justify-content-end m-1">
+            <h2 class="accordion-header d-flex justify-content-end m-1 mt-0">
                 @if ($rows[$index])
                     <div class="accordion-discount-button"
                         onclick="toggleAccordion(`collapseOne{{ $index }}`)">
