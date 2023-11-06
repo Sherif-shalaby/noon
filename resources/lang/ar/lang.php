@@ -584,6 +584,8 @@ return array(
     'deliveryman'=>'رجل التوصيل',
     'delivery'=>'التوصيل',
     'pending_orders'=>'طلبات معلقة',
-    'add_transfer' => ""
+    'add_transfer' => 'أضف تحويل',
+    'receiver_store' => 'المتجر المستقبل',
+    'sender_store' => 'المتجر المرسل',
 );
 
