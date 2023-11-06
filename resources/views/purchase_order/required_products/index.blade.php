@@ -25,7 +25,7 @@
                             {{-- ////////////////////// Filters ////////////////////// --}}
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    @include('purchase_order.partials.filters')
+                                    @include('purchase_order.required_products.partials.filters')
                                 </div>
                             </div>
                             <div class="col-sm-12">
