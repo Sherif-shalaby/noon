@@ -2,25 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Store;
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\RequiredProduct;
+use App\Models\StockTransaction;
+use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\PurchaseOrderLine;
-use App\Models\PurchaseOrderTransaction;
-use App\Models\StockTransaction;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PurchaseOrderTransaction;
 
 class RequiredProductController extends Controller
 {
     /* ++++++++++++++++++++ index() +++++++++++++++++++++  */
-    public function index()
+    public function index(Request $request)
     {
-        $requiredProducts = RequiredProduct::all();
-        // return $requiredProducts;
-        return view('purchase_order.required_products.index',compact('requiredProducts'));
+        // $requiredProducts = RequiredProduct::all();
+        $stores = Store::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $products = Product::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $query = RequiredProduct::query();
+        //
+        $requiredProducts=RequiredProduct::query();
+        if( request()->ajax() )
+        {
+           $requiredProducts = $requiredProducts
+           ->when( $request->store_id != null, function ($query) use ( $request ) {
+               $query->where('store_id', $request->store_id);
+           })
+           ->when( $request->supplier_id != null, function ($query) use ( $request ) {
+               $query->where('supplier_id', $request->supplier_id);
+           })
+           ->when( $request->product_id != null, function ($query) use ( $request ) {
+               $query->where('product_id', $request->product_id);
+           })
+           ->when( $request->start_date != null && $request->end_date != null , function ($query) use ( $request ) {
+                $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+           })
+           // ->latest()->get();
+           ->orderBy("created_at","asc")->with('stores','branch','supplier','employee','product')->get();
+           return $requiredProducts;
+       }else{
+           // $employee_products = $employee_products->latest()->get();
+           $requiredProducts = $requiredProducts->with('stores','branch','supplier','employee','product')->orderBy("created_at","asc")->get();
+       }
+        return view('purchase_order.required_products.index',
+                    compact('requiredProducts','stores','suppliers','products'));
     }
 
     /**
@@ -45,8 +75,10 @@ class RequiredProductController extends Controller
             $checkedRows = collect($request->input('products'))->filter(function ($product) {
                 return isset($product['checkbox']) && $product['checkbox'] == 1;
             });
+            // return $checkedRows ;
             // Group by supplier_id
             $groupedProducts = $checkedRows->groupBy('supplier_id');
+            // return $groupedProducts ;
             foreach ($groupedProducts as $supplierId => $productsForSupplier)
             {
                 foreach ($productsForSupplier as $productData)
@@ -81,6 +113,7 @@ class RequiredProductController extends Controller
                         $purchaseOrderLine->created_by = auth()->user()->id;
                         // Set other fields of the purchase order line as needed
                         $purchaseOrderLine->save(); // Save the purchase order line to the database
+                        RequiredProduct::where('product_id', $productData['product_id'])->update(['status' => 'final']);
                     };
                     $output =
                     [
@@ -89,6 +122,11 @@ class RequiredProductController extends Controller
                     ];
                 }
             }
+            // You can return a success response or redirect to a success page here
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
         }
         catch (\Exception $e)
         {
@@ -162,6 +200,46 @@ class RequiredProductController extends Controller
         //     ];
         // }
         return redirect()->back()->with('status', $output);
+    }
+    /* +++++++++++++++++++++ filterProducts() ++++++++++++++++++ */
+    public function filterProducts(Request $request)
+    {
+        try
+        {
+            $store_id     = $request->input('store_id');
+            $supplier_id  = $request->input('supplier_id');
+            $product_id   = $request->input('product_id');
+            $from = $request->input('from');
+            $to = $request->input('to');
+            $filtered_Products = Product::query();
+            if ($store_id)
+            {
+                $filtered_Products->where('store_id', $store_id);
+            }
+            if ($supplier_id) {
+                $filtered_Products->where('supplier_id', $supplier_id);
+            }
+            if ($product_id) {
+                $filtered_Products->where('product_id', $product_id);
+            }
+            if ($from) {
+                $filtered_Products->where('from', $from);
+            }
+            if ($to) {
+                $filtered_Products->where('to', $to);
+            }
+
+            // Execute the query and get the filtered products
+            $filteredProducts = $filtered_Products->get();
+
+            // Return the filtered products as a JSON response
+            return response()->json(['success' => true, 'products' => $filteredProducts]);
+        }
+        catch (\Exception $e)
+        {
+            dd($e); // Log the error for debugging
+            // return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 
     /**

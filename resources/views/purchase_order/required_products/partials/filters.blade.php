@@ -74,33 +74,32 @@
         // Function to update subcategories based on the selected category ID
         function updateSubcategories()
         {
-            console.log( $('body').find('.end_date').val() );
             $.ajax({
                 method : "get",
                 url: "{{ route('required-products.index') }}",
                 // get "all inputFields of form that have name and value"
                 data : {
-                    store_id : $('body').find('.store_id option:selected').val(),
+                    store_id    : $('body').find('.stores').val(),
                     supplier_id : $('body').find('.suppliers option:selected').val(),
-                    product_id : $('body').find('.products option:selected').val(),
-                    start_date : $('body').find('.start_date').val(),
-                    end_date : $('body').find('.end_date').val(),
+                    product_id  : $('body').find('.products option:selected').val(),
+                    start_date  : $('body').find('.start_date').val(),
+                    end_date    : $('body').find('.end_date').val(),
                 },
                 success: function (response) {
                     console.log("The Response Data : ");
                     console.log(response)
                     // Clear existing table content
-                    $('#productTable tbody').empty();
+                    $('#productTable .tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
                     $.each(response, function(index, product) {
-                        console.log(product);
+                        // console.log(product);
                         var row = '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
-                            '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
+                            '<td><input type="checkbox" name="products[' + index + '][checkbox]" class="checkbox_ids"  value="1" /></td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][employee_id]" value="' + product.employee_id + '">' +
-                                (product.employee_id ? product.employee.employee_name : '') +
+                                (product.employee ? product.employee.employee_name : '') +
                             '</td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][order_date]" value="' + product.order_date + '">' +
@@ -108,11 +107,11 @@
                             '</td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][product_id]" value="' + product.product_id + '">' +
-                                (product.product_id ? product.product.name : '') +
+                                (product.product? product.product.name : '') +
                             '</td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][store_id]" value="' + product.store_id + '">' +
-                                (product.store_id ? product.stores.name : '') +
+                                (product.stores ? product.stores.name : '') +
                             '</td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][status]" value="' + product.status + '">' +
@@ -120,23 +119,22 @@
                             '</td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][supplier_id]" value="' + product.supplier_id + '">' +
-                                (product.supplier_id ? product.supplier.name : '') +
+                                (product.supplier ? product.supplier.name : '') +
                             '</td>' +
                             '<td>' +
                                 '<input type="hidden" class="form-control" name="products[' + index + '][branch_id]" value="' + product.branch_id + '">' +
-                                (product.branch_id ? product.branch.name : '') +
+                                (product.branch ? product.branch.name : '') +
                             '</td>' +
                             '<td>' +
                                 // dinar_purchase_price
-                                '<input type="hidden" class="form-control" name="products[' + index + '][purchase_price]" id="purchase_price" value="' + product.purchase_price + '">' +
-                                (product.purchase_price ? product.purchase_price : '') + ' Dinar<br/>' +
+                                '<input type="hidden" class="form-control" name="products[' + index + '][purchase_price]" id="purchase_price" value="' + (product.purchase_price ? product.purchase_price : '0')  + '">' +
+                                (product.purchase_price ? product.purchase_price : '0') + '<br/>' +
                                 // dollar_purchase_price
-                                '<input type="hidden" class="form-control" name="products[' + index + '][dollar_purchase_price]" id="dollar_purchase_price" value="' + product.dollar_purchase_price + '">' +
-                                (product.dollar_purchase_price ? product.dollar_purchase_price : '') + ' $' +
+                                '<input type="hidden" class="form-control" name="products[' + index + '][dollar_purchase_price]" id="dollar_purchase_price" value="' + (product.dollar_purchase_price ? product.dollar_purchase_price : '0') + '">' +
+                                (product.dollar_purchase_price ? product.dollar_purchase_price : '0') + ' $' +
                             '</td>' +
                             '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][required_quantity]" value="' + product.required_quantity + '">' +
-                                (product.required_quantity ? product.required_quantity : '') +
+                                '<input type="text" class="form-control" name="products[' + index + '][required_quantity]" value="' + (product.required_quantity ? product.required_quantity : '1') + '">' +
                             '</td>' +
                             '<td>' +
                                 '<a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">' +
@@ -144,7 +142,7 @@
                                 '</a>' +
                             '</td>' +
                         '</tr>';
-                        $('#productTable tbody').append(row);
+                        $('#productTable .tbody').append(row);
                     });
 
                 },
@@ -156,70 +154,6 @@
         // when clicking on "filter button" , call "updateSubcategories()" method
         $('#filter_btn').click(function(){
             updateSubcategories();
-        });
-        // +++++++++++++++++++++++++++++++++ subcategory1 filter +++++++++++++++++++++++++++++++++
-        $('#categoryId').change(function(event) {
-            var idSubcategory1 = this.value;
-            // alert(idSubcategory1);
-            $('#subcategory_id1').html('');
-                $.ajax({
-                    url: "/api/fetch-sub_categories1",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {subcategories1_id: idSubcategory1,_token:"{{ csrf_token() }}"},
-                    success:function(response)
-                    {
-                        $('#subcategory_id1').html('<option value="10">{{ __("lang.subcategory") }}</option>');
-
-                        $.each(response.subcategory_id1,function(index, val)
-                        {
-                            // console.log(val);
-                            $('#subcategory_id1').append('<option value="'+val.id+'">'+val.name+'</option>')
-                        });
-                    }
-                })
-            });
-        // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
-        $('#subcategory_id1').change(function(event) {
-                var idSubcategory2 = this.value;
-                // alert(idSubcategory2);
-                $('#subcategory_id2').html('');
-                $.ajax({
-                url: "/api/fetch-sub_categories2",
-                type: 'POST',
-                dataType: 'json',
-                data: {subcategories2_id: idSubcategory2,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#subcategory_id2').html('<option value="10">{{ __("lang.subcategory").'2' }}</option>');
-                    $.each(response.subcategory_id2,function(index, val)
-                    {
-                        console.log(val);
-                        $('#subcategory_id2').append('<option value="'+val.id+'">'+val.name+'</option>')
-                    });
-                }
-            })
-        });
-        // +++++++++++++++++++++++++++++++++ subcategory3 filter +++++++++++++++++++++++++++++++++
-        $('#subcategory_id2').change(function(event) {
-                var idSubcategory3 = this.value;
-                // alert(idSubcategory3);
-                $('#subcategory_id3').html('');
-                $.ajax({
-                url: "/api/fetch-sub_categories3",
-                type: 'POST',
-                dataType: 'json',
-                data: {subcategories3_id: idSubcategory3,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#subcategory_id3').html('<option value="10">{{ __("lang.subcategory").'3' }}</option>');
-                    $.each(response.subcategory_id3,function(index, val)
-                    {
-                        // console.log(val);
-                        $('#subcategory_id3').append('<option value="'+val.id+'">'+val.name+'</option>')
-                    });
-                }
-            })
         });
 
     });
