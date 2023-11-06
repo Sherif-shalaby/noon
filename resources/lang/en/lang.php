@@ -565,6 +565,9 @@ return [
     'deliveryman'=>'Delivery Man',
     'delivery'=>'Delivery',
     'pending_orders'=>'Pending Orders',
+    'add_transfer' => 'Add Transfer',
+    'receiver_store' => 'Receiver Store',
+    'sender_store' => 'Sender Store',
 ];
 
 
