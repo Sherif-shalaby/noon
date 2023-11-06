@@ -137,7 +137,7 @@
                         ]) !!}
                     </div>
                 </div>
-                @if ($this->checkRepresentativeUser())
+                @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car)
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('deliveryman_id', __('lang.deliveryman') . ':*', []) !!}
