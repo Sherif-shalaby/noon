@@ -15,6 +15,7 @@ use App\Models\Store;
 use App\Models\Supplier;
 use App\Models\System;
 use App\Models\Unit;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -82,11 +83,19 @@ class InitialBalanceController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function show($id)
     {
-        //
+        $add_stock = StockTransaction::find($id);
+        $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $users = User::Notview()->pluck('name', 'id');
+
+        return view('initial-balance.show')->with(compact(
+            'add_stock',
+            'payment_type_array',
+            'users',
+        ));
     }
 
     /**

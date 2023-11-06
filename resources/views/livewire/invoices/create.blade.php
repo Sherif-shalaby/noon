@@ -268,6 +268,14 @@
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
+    @if(empty($store_pos))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const noUserPosEvent = new Event('NoUserPos');
+                window.dispatchEvent(noUserPosEvent);
+            });
+        </script>
+    @endif
     <script>
         document.addEventListener('livewire:load', function () {
             $('.depart').select().on('change', function (e) {
@@ -304,6 +312,17 @@
                 }
             });
         });
+
+{{--        @if(empty($store_pos))--}}
+            window.addEventListener('NoUserPos', function(event) {
+                Swal.fire({
+                    title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
+                    icon: 'error',
+                }).then((result) => {
+                    window.location.href = "{{ route('home') }}";
+                });
+            });
+        {{--@@endif--}}
         $(document).ready(function() {
             $('select').on('change', function(e) {
 

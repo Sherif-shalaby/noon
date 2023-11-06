@@ -49,7 +49,7 @@ class Create extends Component
         $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar, $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost,
         // "الباقي دولار" , "الباقي دينار"
         $dollar_remaining = 0, $dinar_remaining = 0,
-        $searchProduct, $stores,
+        $searchProduct, $stores, $reprsenative_sell_car = false,
         $final_total, $dollar_final_total, $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final',
         $draft_transactions, $show_modal = false,  $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter, $dollar_highest_price, $dollar_lowest_price;
 
@@ -64,6 +64,7 @@ class Create extends Component
 
 
     protected $listeners = ['listenerReferenceHere', 'create_purchase_order'];
+
     public function listenerReferenceHere($data)
     {
         if (isset($data['var1'])) {
@@ -96,7 +97,11 @@ class Create extends Component
         } else {
             $this->allproducts = Product::get();
         }
-        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
+        $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
+        if(empty($this->store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+
+        }
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->client_id = 1;
         $this->payment_status = 'paid';
@@ -127,36 +132,32 @@ class Create extends Component
     public function render()
     {
         $store_pos = StorePos::find($this->store_pos_id);
-
-        $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
-
-        // $this->stores = $store_pos->user->employee->stores()->pluck('name','id');
-        // Check if a valid StorePos record is found
-//         if ($store_pos)
-//         {
-//             // Access relationships and update the stores property
-//             $this->stores = $store_pos->user->employee->stores()->pluck('name', 'id');
-//         }
-//         else
-//         {
-//             // Handle the case where no StorePos record is found
-//             // superadmin has no "store" , "branch" , "sale_point"
-//             $this->stores = [];
-//         }
+        if(empty($store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+        }
+        if(!empty($store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+            $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
+            $branch = $store_pos->user->employee->branch;
+        }
+        if(empty($this->stores)){
+            $this->stores = Store::getDropdown();
+        }
+        if(!empty($branch)){
+            if( $branch->type == 'sell_car' ){
+                $this->reprsenative_sell_car = true;
+            }
+        }
         $departments = Category::get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
         $languages = System::getLanguageDropdown();
         $currenciesId = [System::getProperty('currency'), 2];
-        // $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $customer_types = CustomerType::latest()->pluck('name', 'id');
         $delivery_job_type = JobType::where('title', 'Deliveryman')->first();
         $deliverymen = Employee::where('job_type_id', $delivery_job_type->id)->pluck('employee_name', 'id');
         $search_result = '';
-        //        if (empty($store_pos)) {
-        //            $this->dispatchBrowserEvent('showCreateProductConfirmation');
-        //        }
         if (!empty($this->search_by_product_symbol)) {
             $search_result = Product::when($this->search_by_product_symbol, function ($query) {
                 return $query->where('product_symbol', 'like', '%' . $this->search_by_product_symbol . '%');
@@ -188,16 +189,12 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
-        // dd($search_result);
-        // $variations=Variation::orderBy('created_at','desc')->get();
-        // $this->variations=Variation::all();
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->get();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.invoices.create', compact(
             'departments',
             'languages',
             'selected_currencies',
-            //            'stores',
             'customer_types',
             'search_result',
             'deliverymen'
@@ -208,7 +205,6 @@ class Create extends Component
     {
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
-        //        dd($this->allproducts);
     }
 
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
@@ -380,9 +376,6 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
-        //        return $html_content;
-
-        //
     }
 
     public function changeStatus()
@@ -452,13 +445,6 @@ class Create extends Component
                         $q->whereDate('expiry_date', '>', Carbon::now());
                     });
                 }])->orderBy('expiry_date', 'asc');
-
-
-                // $query->whereHas('stock_lines', function ($query) {
-                //     $query->where(function ($q) {
-                //         $q->whereDate('expiry_date', '>', Carbon::now());
-                //     })->orderBy('expiry_date', 'asc');
-                // });
             })
             ->when($name == 'longest_expiry_filter' && $this->longest_expiry_filter == "1", function ($query) {
                 $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
@@ -468,7 +454,6 @@ class Create extends Component
                 }])->orderBy('expiry_date', 'desc');
             })
             ->get();
-        // dd($this->allproducts);
     }
 
     public function addCustomer()
@@ -642,10 +627,6 @@ class Create extends Component
 
             $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier'] *  $this->items[$key]['quantity'];
             $this->subtotal($key);
-            //            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['total_quantity'] ) -
-            //                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            //            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['total_quantity'] ) -
-            //                ( $this->items[$key]['total_quantity'] * $this->items[$key]['discount_price']);
         } else {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
         }
@@ -656,14 +637,8 @@ class Create extends Component
     {
         if ($this->items[$key]['quantity'] > 1) {
             $this->items[$key]['quantity']--;
-            //            $this->items[$key]['total_quantity'] = $this->items[$key]['base_unit_multiplier']*  $this->items[$key]['quantity'] ;
-            //            $this->items[$key]['sub_total']  =  ( $this->items[$key]['price'] * $this->items[$key]['quantity'] ) -
-            //                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-            //            $this->items[$key]['dollar_sub_total']  =  ( $this->items[$key]['dollar_price'] * $this->items[$key]['quantity'] ) -
-            //                ( $this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
             $this->subtotal($key);
         }
-
         $this->computeForAll();
     }
 
@@ -750,6 +725,7 @@ class Create extends Component
         // Task : dollar_remaining : الباقي دولار
         $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
     }
+
     public function changeReceivedDollar()
     {
         if ($this->dollar_amount !== null && $this->dollar_amount !== 0) {
@@ -785,16 +761,7 @@ class Create extends Component
                             $this->dinar_remaining = 0;
                         }
                     }
-                    // else{
-                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
-                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
 
-                    // }
-
-                    // // If dollar_final_total is 0, set dollar_remaining to 0
-                    // if ($this->dollar_final_total == 0) {
-                    //     $this->dollar_remaining = 0;
-                    // }
                 }
             }
         }
@@ -916,6 +883,7 @@ class Create extends Component
 
         return $invoice_no;
     }
+
     public function updateSoldQuantityInAddStockLine($product_id, $store_id, $new_quantity, $stock_id = null, $variation_id)
     {
         $stock = AddStockLine::where('product_id', $product_id)->first();
@@ -991,6 +959,7 @@ class Create extends Component
 
         return true;
     }
+
     public function updateTransactionPaymentStatus($transaction_id)
     {
         $transaction_payments = PaymentTransactionSellLine::where('transaction_id', $transaction_id)->get();
@@ -1024,6 +993,7 @@ class Create extends Component
 
         return $transaction;
     }
+
     public function addPayments($transaction, $payment, $type = 'credit', $user_id = null, $transaction_payment_id = null)
     {
         if (empty($user_id)) {
@@ -1077,6 +1047,7 @@ class Create extends Component
 
         return true;
     }
+
     public function getCurrentCashRegisterOrCreate($user_id)
     {
         $register =  CashRegister::where('user_id', $user_id)
@@ -1095,6 +1066,7 @@ class Create extends Component
 
         return $register;
     }
+
     public function decreaseProductQuantity($product_id, $store_id, $new_quantity, $variation_id = null)
     {
         $product_store = ProductStore::where('product_id', $product_id)
@@ -1184,6 +1156,7 @@ class Create extends Component
         // }
         return true;
     }
+
     public function getInvoicePrint($transaction, $payment_types, $transaction_invoice_lang = null)
     {
         $print_gift_invoice = request()->print_gift_invoice;
@@ -1239,6 +1212,7 @@ class Create extends Component
 
         return $html_content;
     }
+
     public function num_uf($input_number, $currency_details = null)
     {
         $thousand_separator  = ',';
@@ -1249,6 +1223,7 @@ class Create extends Component
 
         return (float)$num;
     }
+
     public function getPaymentTypeArrayForPos()
     {
         return [
@@ -1331,7 +1306,6 @@ class Create extends Component
         }
     }
 
-
     public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id)
     {
         $qtyByUnit = 1;
@@ -1364,59 +1338,7 @@ class Create extends Component
         }
         return $qtyByUnit;
     }
-    // +++++++++++++++ create_purchase_order() method : When click on "امر شراء" button +++++++++++++++
-    // public function create_purchase_order($id)
-    // {
-    //     $stock = AddStockLine::where('product_id',$id)->latest()->first();
-    //     $po_count = PurchaseOrderTransaction::count() + 1;
-    //     $number = 'PO' . $po_count;
-    //     // dd($po_count);
-    //     try {
-    //         $transaction_data = [
-    //             'store_id' => $this->store_id,
-    //             'supplier_id' => null,
-    //             'type' => 'purchase_order',
-    //             'status' => 'draft',
-    //             'order_date' => Carbon::now(),
-    //             'transaction_date' => Carbon::now(),
-    //             'payment_status' => 'pending',
-    //             'po_no' => $number,
-    //             'final_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
-    //             'grand_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
-    //             'details' => 'Created from POS page',
-    //             'created_by' => Auth::user()->id
-    //         ];
 
-    //         DB::beginTransaction();
-    //         $transaction = PurchaseOrderTransaction::create($transaction_data);
-
-    //         $purchase_order_line_data = [
-    //             'purchase_order_transaction_id' => $transaction->id,
-    //             'product_id' => $id,
-    //             'quantity' => 1,
-    //             'purchase_price' => !empty($stock) ? $stock->purchase_price ?? null : null,
-    //             'purchase_price_dollar' => !empty($stock) ? $stock->dollar_purchase_price ?? null : null,
-    //             'sub_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
-    //         ];
-
-    //         PurchaseOrderLine::create($purchase_order_line_data);
-    //         DB::commit();
-
-    //         $output = [
-    //             'success' => true,
-    //             'msg' => __('lang.success')
-    //         ];
-    //     }
-    //     catch (\Exception $e) {
-    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-    //         $output = [
-    //             'success' => false,
-    //             'msg' => __('lang.something_went_wrong')
-    //         ];
-    //         dd($e);
-    //     }
-    //     return $output;
-    // }
     // +++++++++++++++ create_purchase_order() method : When click on "امر شراء" button +++++++++++++++
     public function create_purchase_order($id)
     {

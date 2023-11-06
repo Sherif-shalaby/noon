@@ -72,6 +72,19 @@ class SellCarController extends Controller
                 $store->created_by = Auth::user()->id;
                 $store->branch_id  = $branch->id;
                 $store->save();
+                if(!empty($request->representative_id )){
+                    $employee = Employee::find($request->representative_id );
+                    $employee->branch_id  = $branch->id;
+                    $employee->stores()->sync($store->id);
+                    $employee->save();
+
+                }
+                if(!empty($request->driver_id  )){
+                    $employee = Employee::find($request->driver_id  );
+                    $employee->branch_id  = $branch->id;
+                    $employee->stores()->sync($store->id);
+                    $employee->save();
+                }
             }
             DB::commit();
             $output = [

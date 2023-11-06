@@ -603,5 +603,6 @@ return array(
     'add_transfer' => 'أضف تحويل',
     'receiver_store' => 'المتجر المستقبل',
     'sender_store' => 'المتجر المرسل',
+    'show_initial_balance' => 'عرض رصيد أولي',
 );
 
