@@ -21,6 +21,7 @@ use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\PurchaseOrderLine;
 use App\Models\PurchaseOrderTransaction;
+use App\Models\RequiredProduct;
 use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
@@ -1363,48 +1364,93 @@ class Create extends Component
         }
         return $qtyByUnit;
     }
+    // +++++++++++++++ create_purchase_order() method : When click on "امر شراء" button +++++++++++++++
+    // public function create_purchase_order($id)
+    // {
+    //     $stock = AddStockLine::where('product_id',$id)->latest()->first();
+    //     $po_count = PurchaseOrderTransaction::count() + 1;
+    //     $number = 'PO' . $po_count;
+    //     // dd($po_count);
+    //     try {
+    //         $transaction_data = [
+    //             'store_id' => $this->store_id,
+    //             'supplier_id' => null,
+    //             'type' => 'purchase_order',
+    //             'status' => 'draft',
+    //             'order_date' => Carbon::now(),
+    //             'transaction_date' => Carbon::now(),
+    //             'payment_status' => 'pending',
+    //             'po_no' => $number,
+    //             'final_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
+    //             'grand_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
+    //             'details' => 'Created from POS page',
+    //             'created_by' => Auth::user()->id
+    //         ];
+
+    //         DB::beginTransaction();
+    //         $transaction = PurchaseOrderTransaction::create($transaction_data);
+
+    //         $purchase_order_line_data = [
+    //             'purchase_order_transaction_id' => $transaction->id,
+    //             'product_id' => $id,
+    //             'quantity' => 1,
+    //             'purchase_price' => !empty($stock) ? $stock->purchase_price ?? null : null,
+    //             'purchase_price_dollar' => !empty($stock) ? $stock->dollar_purchase_price ?? null : null,
+    //             'sub_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
+    //         ];
+
+    //         PurchaseOrderLine::create($purchase_order_line_data);
+    //         DB::commit();
+
+    //         $output = [
+    //             'success' => true,
+    //             'msg' => __('lang.success')
+    //         ];
+    //     }
+    //     catch (\Exception $e) {
+    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+    //         $output = [
+    //             'success' => false,
+    //             'msg' => __('lang.something_went_wrong')
+    //         ];
+    //         dd($e);
+    //     }
+    //     return $output;
+    // }
+    // +++++++++++++++ create_purchase_order() method : When click on "امر شراء" button +++++++++++++++
     public function create_purchase_order($id)
     {
         $stock = AddStockLine::where('product_id', $id)->latest()->first();
-        $po_count = PurchaseOrderTransaction::count() + 1;
-        $number = 'PO' . $po_count;
-
+        $stockTransactionId = $stock->stock_transaction_id;
+        $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
+        $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+        $dinar_purchase_price = $stock->purchase_price;
+        $dollar_purchase_price = $stock->dollar_purchase_price;
         try {
             $transaction_data = [
+                'employee_id' => auth()->user()->id,
+                'product_id' => $id,
                 'store_id' => $this->store_id,
-                'supplier_id' => null,
-                'type' => 'purchase_order',
-                'status' => 'draft',
-                'order_date' => Carbon::now(),
-                'transaction_date' => Carbon::now(),
-                'payment_status' => 'pending',
-                'po_no' => $number,
-                'final_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
-                'grand_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
-                'details' => 'Created from POS page',
+                'supplier_id' => $supplier_id->supplier_id,
+                'branch_id' => $branch_id->branch_id,
+                'status' => 'pending',
+                'order_date' => now(),
+                'purchase_price' => $dinar_purchase_price ,
+                'dollar_purchase_price' => $dollar_purchase_price,
+                'required_quantity' => null,
                 'created_by' => Auth::user()->id
             ];
 
             DB::beginTransaction();
-            $transaction = PurchaseOrderTransaction::create($transaction_data);
-
-            $purchase_order_line_data = [
-                'purchase_order_transaction_id' => $transaction->id,
-                'product_id' => $id,
-                'quantity' => 1,
-                'purchase_price' => !empty($stock) ? $stock->purchase_price ?? null : null,
-                'purchase_price_dollar' => !empty($stock) ? $stock->dollar_purchase_price ?? null : null,
-                'sub_total' => !empty($stock) ? $stock->purchase_price ?? $stock->dollar_purchase_price : 0,
-            ];
-
-            PurchaseOrderLine::create($purchase_order_line_data);
+            $required_product = RequiredProduct::create($transaction_data);
             DB::commit();
 
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
             ];
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
