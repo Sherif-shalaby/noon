@@ -3,7 +3,8 @@
         background-color: transparent
     }
 
-    .accordion-button {
+
+    .accordion-discount-button {
         padding: 8px !important;
         width: fit-content !important;
         background-color: #596fd7 !important;
@@ -268,15 +269,12 @@
         <div class="accordion-item" style="border: none">
             <h2 class="accordion-header d-flex justify-content-end m-1">
                 @if ($rows[$index])
-                    <div class="accordion-button" onclick="toggleAccordion(`collapseOne{{ $index }}`)">
+                    <div class="accordion-discount-button"
+                        onclick="toggleAccordion(`collapseOne{{ $index }}`)">
+                        <span class="collapseOne{{ $index }} mx-2">
+                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                        </span>
                         @lang('lang.discount')
-                        {{-- <span class="accordion-arrow"> --}}
-                        {{-- @if ($rows[$index]['show_prices'])
-                                <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
-                            @else
-                                <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                            @endif --}}
-                        {{-- </span> --}}
                     </div>
                 @endif
             </h2>
@@ -285,7 +283,7 @@
                     @if (!empty($rows[$index]['prices']))
                         @foreach ($rows[$index]['prices'] as $key => $price)
                             <div class="accordion-body mb-3 p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                style="background-color: #eee">
+                                style="background-color: #ddd">
                                 <div style="width: 100px;font-size: 12px;border-radius: 6px;margin: 6px;padding: 8px;"
                                     class="d-flex justify-content-around align-items-center">
                                     <button type="button" class="btn btn-sm btn-primary"
@@ -491,7 +489,8 @@
                                                 class="form-control js-example-basic-multiple" multiple='multiple'
                                                 placeholder="{{ __('lang.please_select') }}">
                                                 @foreach ($customer_types as $type)
-                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                    <option value="{{ $type->id }}">{{ $type->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
 

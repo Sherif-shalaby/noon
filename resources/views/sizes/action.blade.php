@@ -1,10 +1,10 @@
 <div class="bn-group">
-    <button type="button" class="btn btn-info btn-sm text-white mx-1" data-toggle="modal"
+    <button type="button" class="btn btn-primary btn-sm text-white mx-1" data-toggle="modal"
         data-target="#edit{{ $size->id }}" title="{{ __('Edit') }}">
         <i class="fa fa-edit"></i>
     </button>
     <a data-href="{{ route('sizes.destroy', $size->id) }}" title="{{ __('Delete') }}"
-        class="btn btn-warning btn-sm delete_item"><i class="fa fa-trash"></i>
+        class="btn btn-danger text-white btn-sm delete_item"><i class="fa fa-trash"></i>
     </a>
 </div>
 
@@ -13,8 +13,7 @@
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content @if (app()->isLocale('ar')) text-end @else text-start @endif">
-            <div
-                class="modal-header mb-4 d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div class="modal-header mb-4 d-flex justify-content-between py-0 flex-row">
                 <h5 class="modal-title" id="exampleModalLabel">{{ __('sizes.editsize') }}</h5>
                 <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>

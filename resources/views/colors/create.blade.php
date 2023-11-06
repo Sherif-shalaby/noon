@@ -1,5 +1,6 @@
 <!-- Modal -->
-<div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal modal-add-color animate__animated" data-animate-in="animate__rollIn" data-animate-out="animate__rollOut"
+    id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div
@@ -45,3 +46,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        var modelEl = $('.modal-add-color');
+
+        modelEl.addClass(modelEl.attr('data-animate-in'));
+
+        modelEl.on('hide.bs.modal', function(event) {
+                if (!$(this).attr('is-from-animation-end')) {
+                    event.preventDefault();
+                    $(this).addClass($(this).attr('data-animate-out'))
+                    $(this).removeClass($(this).attr('data-animate-in'))
+                }
+                $(this).removeAttr('is-from-animation-end')
+            })
+            .on('animationend', function() {
+                if ($(this).hasClass($(this).attr('data-animate-out'))) {
+                    $(this).attr('is-from-animation-end', true);
+                    $(this).modal('hide')
+                    $(this).removeClass($(this).attr('data-animate-out'))
+                    $(this).addClass($(this).attr('data-animate-in'))
+                }
+            })
+    })
+</script>

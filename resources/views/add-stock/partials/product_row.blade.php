@@ -416,6 +416,9 @@
                     <div class="accordion-button"
                         onclick="toggleAccordion(`collapseOne{{ $index }}discount`)">
                         @lang('lang.discount')
+                        <span class="collapseOne{{ $index }}discount mx-2">
+                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                        </span>
                     </div>
                 </h2>
                 <div id="collapseOne{{ $index }}discount" class="accordion-content">
@@ -576,6 +579,9 @@
                     <div class="accordion-button"
                         onclick="toggleAccordion(`collapseOne{{ $index }}validity`)">
                         @lang('lang.validity')
+                        <span class="collapseOne{{ $index }}validity mx-2">
+                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                        </span>
                     </div>
                 </h2>
                 <div id="collapseOne{{ $index }}validity" class="accordion-content">

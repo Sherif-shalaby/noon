@@ -1,7 +1,8 @@
 <!-- Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
-    style="display: none;" aria-hidden="true">
-    <div class="modal-dialog  rollIn  animated" role="document">
+<div class="modal modal-store-pos animate__animated" data-animate-in="animate__rollIn" data-animate-out="animate__rollOut"
+    id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel" style="display: none;"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content  @if (app()->isLocale('ar')) text-end @else text-start @endif">
             {!! Form::open(['url' => route('store-pos.store'), 'method' => 'post']) !!}
 
@@ -15,7 +16,7 @@
             <div class="modal-body p-0">
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('store_id', __('lang.store') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('store_id', __('lang.store') . '*', ['class' => 'width-quarter mr-4']) !!}
                     <div class="input-wrapper">
                         {!! Form::select('store_id', $stores, null, [
                             'class' =>
@@ -30,16 +31,16 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('name', __('lang.name') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('name', __('lang.name') . '*', ['class' => 'width-quarter mr-4']) !!}
                     {!! Form::text('name', null, [
-                        'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
+                        'class' => 'form-control initial-balance-input mx-0 my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.name'),
                         'required',
                     ]) !!}
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('user_id', __('lang.user') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('user_id', __('lang.user') . '*', ['class' => 'width-quarter mr-4']) !!}
                     <div class="input-wrapper">
                         {!! Form::select('user_id', $users, null, [
                             'class' =>
@@ -63,4 +64,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        var modelEl = $('.modal-store-pos');
+
+        modelEl.addClass(modelEl.attr('data-animate-in'));
+
+        modelEl.on('hide.bs.modal', function(event) {
+                if (!$(this).attr('is-from-animation-end')) {
+                    event.preventDefault();
+                    $(this).addClass($(this).attr('data-animate-out'))
+                    $(this).removeClass($(this).attr('data-animate-in'))
+                }
+                $(this).removeAttr('is-from-animation-end')
+            })
+            .on('animationend', function() {
+                if ($(this).hasClass($(this).attr('data-animate-out'))) {
+                    $(this).attr('is-from-animation-end', true);
+                    $(this).modal('hide')
+                    $(this).removeClass($(this).attr('data-animate-out'))
+                    $(this).addClass($(this).attr('data-animate-in'))
+                }
+            })
+    })
+</script>
 {!! JsValidator::formRequest('App\Http\Requests\MoneySafeUpdateRequest', '#money-safe-update-form') !!}
