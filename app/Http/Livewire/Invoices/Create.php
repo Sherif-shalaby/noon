@@ -98,6 +98,10 @@ class Create extends Component
             $this->allproducts = Product::get();
         }
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
+        if(empty($this->store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+
+        }
         $this->store_pos_id = array_key_first($this->store_pos);
         $this->client_id = 1;
         $this->payment_status = 'paid';
@@ -128,9 +132,17 @@ class Create extends Component
     public function render()
     {
         $store_pos = StorePos::find($this->store_pos_id);
-
-        $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
-        $branch = $store_pos->user->employee->branch;
+        if(empty($store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+        }
+        if(!empty($store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+            $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
+            $branch = $store_pos->user->employee->branch;
+        }
+        if(empty($this->stores)){
+            $this->stores = Store::getDropdown();
+        }
         if(!empty($branch)){
             if( $branch->type == 'sell_car' ){
                 $this->reprsenative_sell_car = true;
