@@ -106,6 +106,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- +++++++++++++++++++++++++++++++ start_date +++++++++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label for="start_date">@lang('lang.start_date')</label>
@@ -122,7 +123,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{----}}
+                                    {{-- +++++++++++++++++++++++++++++++ end_date +++++++++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label for="end_date">@lang('lang.end_date')</label>
@@ -199,8 +200,8 @@
                                             </div>
                                         </div>
                                     </div> --}}
-                                     {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
-                                     <div class="col-md-4">
+                                    {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
                                         <label for="owner_debt_in_dinar">@lang('lang.owner_debt_in_dinar')</label>
                                         <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dinar" id="owner_debt_in_dinar" />
                                     </div>

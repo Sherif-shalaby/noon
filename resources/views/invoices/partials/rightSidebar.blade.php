@@ -158,7 +158,7 @@
                 </div>
                 @endif
             </div>
-       
+
             <div class="row hide-print">
                 {{--                <div class="me-auto"> --}}
                 {{--                    <div class="btns-control row"> --}}
