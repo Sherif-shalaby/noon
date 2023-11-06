@@ -26,7 +26,6 @@
     <section class="forms">
         <div class="container-fluid">
             <div class="col-md-12 print-only">
-{{--                @include('layouts.partials.print_header')--}}
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -80,9 +79,6 @@
                                             <th style="width: 12%" class="col-sm-4">@lang( 'lang.final_cost' ) $</th>
                                             <th style="width: 12%" class="col-sm-4">@lang( 'lang.sub_total' )</th>
                                             <th style="width: 12%" class="col-sm-4">@lang( 'lang.sub_total' ) $</th>
-{{--                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.batch_number' )</th>--}}
-{{--                                            <th style="width: 12%" class="col-sm-4">@lang( 'lang.manufacturing_date' )--}}
-                                            </th>
                                             <th style="width: 12%" class="col-sm-4">@lang( 'lang.expiry_date' )</th>
                                             <th style="width: 12%" class="col-sm-4">@lang(
                                                 'lang.days_before_the_expiry_date' )</th>
@@ -137,6 +133,47 @@
                                                 <td>{{$line->expiry_warning}}</td>
                                                 <td>{{$line->convert_status_expire}}</td>
                                             </tr>
+                                            @foreach($line->prices as $price)
+                                                <tr>
+                                                    <td>
+                                                        {!! Form::label('price' ,__('lang.quantity').': ') !!}
+                                                        {{ $price->quantity ?? '' }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('price_category' ,__('lang.price_category').': ') !!}
+                                                        {{ $price->price_category ?? '' }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('b_qty',__('lang.b_qty').': ') !!}
+                                                        {{ $price->bonus_quantity ?? '' }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('price_type' ,__('lang.type').': ') !!}
+                                                        {{ $price_customer_types ?? '' }}
+
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('price' ,!empty($price->price_type) && $price->price_type == 'fixed' ? __('lang.amount').': ' : __('lang.percent').': ') !!}
+                                                        {{ $price->price_type ?? '' }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('' ,__('lang.price').': ') !!}
+                                                        {{ $price->price_customers ?? '' }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('total_price' , __('lang.total_price').': ') !!}
+                                                        {{ $price->total_price }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('piece_price' , __('lang.piece_price').': ') !!}
+                                                        {{ $price->piece_price }}
+                                                    </td>
+                                                    <td>
+                                                        {!! Form::label('customer_type',__('lang.customer_type').': ') !!}
+                                                        {{ is_array($price->price_customer_types) ? implode(', ', $price->price_customer_types) : $price->price_customer_types }}
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         @endforeach
                                         </tbody>
                                     </table>
@@ -188,15 +225,6 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         {!! Form::label('files', __('lang.files'), []) !!}: <br>
-{{--                                        @php--}}
-{{--                                            $mediaItems = $add_stock->getMedia('add_stock');--}}
-{{--                                        @endphp--}}
-{{--                                        @if(!empty($mediaItems))--}}
-{{--                                            @foreach ($mediaItems as $item)--}}
-{{--                                                <a href="{{$item->getUrl()}}">{{$item->name}}</a> <br>--}}
-{{--                                            @endforeach--}}
-
-{{--                                        @endif--}}
 
                                     </div>
                                 </div>
@@ -206,7 +234,6 @@
                 </div>
             </div>
             <div class="col-md-12 print-only">
-{{--                @include('layouts.partials.print_footer')--}}
             </div>
         </div>
 
@@ -214,7 +241,7 @@
     </section>
 @endsection
 
-@section('javascript')
+@push('javascripts')
     <script type="text/javascript">
         @if(!empty(request()->print))
         $(document).ready(function(){
@@ -224,4 +251,4 @@
         })
         @endif
     </script>
-@endsection
+@endpush

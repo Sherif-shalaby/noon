@@ -83,7 +83,7 @@ class Create extends Component
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ?? null ;
                 $this->supplier = $recent_stock->supplier_id?? null;
-                $this->transaction_date = $recent_stock->transaction_date ?? null;
+//                $this->transaction_date = $recent_stock->transaction_date ?? null;
                 $this->transaction_currency = $recent_stock->transaction_currency ?? null;
                 $this->purchase_type = $recent_stock->purchase_type ?? null;
                 $this->divide_costs = $recent_stock->divide_costs ?? null;
