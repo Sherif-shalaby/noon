@@ -51,16 +51,12 @@ class RequiredProductController extends Controller
             {
                 foreach ($productsForSupplier as $productData)
                 {
-                    // +++++++++++++++ Second Way : Store +++++++++++++++++++
                     // +++++++++++++++++++++ Store in "purchaseOrderTransaction" +++++++++++++++++++
                     $purchaseOrderTransaction = new PurchaseOrderTransaction();
                     $purchaseOrderTransaction->store_id = $request['store_id'];
                     $purchaseOrderTransaction->supplier_id = isset($supplierId) ? $supplierId : null ;
                     $purchaseOrderTransaction->grand_total = (isset($productData['purchase_price']) && isset($productData['required_quantity'])) ? $productData['purchase_price'] * $productData['required_quantity'] : 0;
                     $purchaseOrderTransaction->final_total = (isset($productData['purchase_price']) && isset($productData['required_quantity'])) ? $productData['purchase_price'] * $productData['required_quantity'] : 0;
-                    // $purchaseOrderTransaction->quantity = (isset($productData['required_quantity']) ) ? $productData['purchase_price'] * $productData['required_quantity'] : 1 ;
-                    // $purchaseOrderTransaction->sub_total = (isset($productData['purchase_price']) && isset($productData['required_quantity'])) ? $productData['purchase_price'] * $productData['required_quantity'] : 0;
-                    // $purchaseOrderTransaction->po_no = $this->getNumberByType('purchase_order');
                     $purchaseOrderTransaction->po_no ='purchase_order';
                     $purchaseOrderTransaction->created_by = auth()->user()->id;
                     $purchaseOrderTransaction->order_date = (isset($productData['order_date'])) ? $productData['order_date'] : now() ;
