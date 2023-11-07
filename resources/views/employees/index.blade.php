@@ -81,7 +81,6 @@
                                         <td>
                                             {{$employee->fixed_wage_value}}
                                         </td>
-{{--                                        <td></td>--}}
                                         <td>
                                             {{\Carbon\Carbon::parse($employee->date_of_birth)->diff(\Carbon\Carbon::now())->format('%y')}}
                                         </td>
@@ -121,7 +120,6 @@
                                                <li class="divider"></li>
                                                 <li>
                                                     <a data-href="{{route('employees.destroy', $employee->id)}}"
-{{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}"--}}
                                                        class="btn delete_item text-red delete_item"><i
                                                             class="fa fa-trash"></i>
                                                         @lang('lang.delete')</a>
@@ -138,11 +136,9 @@
                                                 @endif
                                             </ul>
                                         </td>
-
                                     </tr>
                                 @endforeach
                             </tbody>
-
                         </table>
                     </div>
                 </div>
