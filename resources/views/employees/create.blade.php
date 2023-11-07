@@ -202,7 +202,7 @@
                                                     for="branch_id">@lang('lang.branch')</label>
                                                 <div class="input-wrapper">
                                                     {!! Form::select('branch_id', $branches, null, [
-                                                        'class' => 'form-control selectpicker',
+                                                        'class' => 'form-control select2',
                                                         'placeholder' => __('lang.please_select'),
                                                         'data-live-search' => 'true',
                                                         'id' => 'branch_id',
@@ -215,13 +215,14 @@
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="store_id">@lang('lang.stores')</label>
                                                 <div class="input-wrapper">
+                                                    <select name="store_id" id="store_id" class="form-control "
+                                                        data-live-search=true>
+                                                        {{-- @foreach ($stores as $storeValue => $storeLabel)
+                                                            <option value="{{ $storeValue }}">{{ $storeLabel }}
+                                                            </option>
+                                                        @endforeach --}}
+                                                    </select>
 
-                                                    {!! Form::select('store_id[]', $stores, null, [
-                                                        'class' => 'form-control select2',
-                                                        'multiple',
-                                                        'data-live-search' => 'true',
-                                                        'id' => 'store_id',
-                                                    ]) !!}
                                                 </div>
                                             </div>
 

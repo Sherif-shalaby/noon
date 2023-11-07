@@ -49,6 +49,8 @@ class Create extends Component
             'exchange_rate' => 0,
             'product_symbol' => '',
             'balance_return_request' => '',
+            'show_tax' => false,
+            'show_size' => false
         ]
     ];
     public $subcategories1 = [], $subcategories2 = [], $subcategories3 = [];
@@ -126,6 +128,14 @@ class Create extends Component
             // 'rows.*.prices.*.bonus_quantity' => 'required',
         ]);
         $this->messages();
+    }
+    public function showHideTax()
+    {
+        $this->item[0]['show_tax'] = !$this->item[0]['show_tax'];
+    }
+    public function showHideSize()
+    {
+        $this->item[0]['show_size'] = !$this->item[0]['show_size'];
     }
     public function changeSize()
     {
