@@ -151,16 +151,15 @@ class EmployeeController extends Controller
     }
 
   /* =========================== store() =========================== */
-  public function store(Request $request)
-  {
-    //   return response($request);
+    public function store(Request $request)
+    {
+        //   return response($request);
         $request->validate([
             'email' => 'required|email|unique:users|max:255',
             'name' => 'required|max:255',
             'password' => 'required|confirmed|max:255',
         ]);
-        try
-        {
+        try {
             DB::beginTransaction();
             $data = $request->except('_token');
             $data['fixed_wage'] = !empty($data['fixed_wage']) ? 1 : 0;
@@ -184,12 +183,12 @@ class EmployeeController extends Controller
             $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
             $employee->number_of_days_any_leave_added = !empty($data['number_of_days_any_leave_added']) ?  $data['number_of_days_any_leave_added'] : 0;
             // Working per week
-            $employee->working_day_per_week =json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []) ;
-            $employee->check_in =json_encode(!empty($data['check_in']) ?  $data['check_in'] : []) ;
+            $employee->working_day_per_week = json_encode(!empty($data['working_day_per_week']) ?  $data['working_day_per_week'] : []);
+            $employee->check_in = json_encode(!empty($data['check_in']) ?  $data['check_in'] : []);
             $employee->check_out = json_encode(!empty($data['check_out']) ?  $data['check_out'] : []);
             // Evening shift
-            $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox'])  ?  $data['evening_shift_checkbox'] : []) ;
-            $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in'])  ?  $data['evening_shift_check_in'] : []) ;
+            $employee->evening_shift_checkbox  = json_encode(!empty($data['evening_shift_checkbox'])  ?  $data['evening_shift_checkbox'] : []);
+            $employee->evening_shift_check_in  = json_encode(!empty($data['evening_shift_check_in'])  ?  $data['evening_shift_check_in'] : []);
             $employee->evening_shift_check_out = json_encode(!empty($data['evening_shift_check_out']) ?  $data['evening_shift_check_out'] : []);
 
             $employee->fixed_wage = $data['fixed_wage'];
@@ -209,13 +208,10 @@ class EmployeeController extends Controller
             }
             $employee->save();
             // insert "employee_id" and "product_id" of employee's product into "employee_product" table
-            if(isset($data['ids']))
-            {
-                for($i = 0; $i < count($data['ids']); $i++)
-                {
+            if (isset($data['ids'])) {
+                for ($i = 0; $i < count($data['ids']); $i++) {
                     $product = Product::find($data['ids'][$i]);
-                    if($product)
-                    {
+                    if ($product) {
                         // Assuming $employee is already defined or fetched from somewhere
                         $employee->products()->attach($product->id);
                     }
@@ -242,8 +238,7 @@ class EmployeeController extends Controller
             ];
 
             return redirect()->route('employees.index')->with('status', $output);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
@@ -252,7 +247,6 @@ class EmployeeController extends Controller
             ];
 
             return redirect()->back()->with('status', $output);
-
         }
     }
     /* ============================= show() ============================= */
@@ -491,5 +485,3 @@ class EmployeeController extends Controller
 
 
 }
-
-?>

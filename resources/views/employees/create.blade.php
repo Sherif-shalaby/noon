@@ -65,20 +65,87 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div
-                            class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                            <h4>
-                                @lang('lang.add_employee')</h4>
+                            class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                            <h4>@lang('lang.add_employee')</h4>
                         </div>
                         <div class="card-body">
-                            <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                {{-- ////////////////////// employee's products ////////////////////// --}}
-                                {{-- ======== Filters ======== --}}
+                            <div class="row">
+
+                                <div id="filter-wrap" style="display: none">
+                                    {{-- ======== Filters ======== --}}
+                                    @include('employees.partials.filters')
+                                </div>
+
                                 <div class="col-sm-12">
-                                    <form class="form-group mb-1" id="productForm" action="{{ route('employees.store') }}"
+                                    <form class="form-group" id="productForm" action="{{ route('employees.store') }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
+                                        {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
+                                        <div class="accordion mb-1">
+                                            <div class="accordion-item" style="border: none">
+                                                <h2 class="accordion-header d-flex justify-content-end"
+                                                    id="employee-products">
+                                                    <div class="accordion-button"
+                                                        onclick="toggleAccordion(`collapseOneEmployeesProducts`)">
+                                                        <span class="collapseOneEmployeesProducts mx-2">
+                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                        </span>
+                                                        @lang('lang.employee_products')
+                                                    </div>
+                                                </h2>
+                                                <div id="collapseOneEmployeesProducts" class="accordion-content">
+                                                    <div class="accordion-body p-0">
 
-
+                                                        <div class="row mt-4 m-auto"
+                                                            style="max-height: 70vh;overflow: scroll">
+                                                            {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
+                                                            <table id="productTable"
+                                                                class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        {{-- "select_all" checkbox --}}
+                                                                        <th> <input type="checkbox" id="select_all_ids" />
+                                                                        </th>
+                                                                        <th>@lang('lang.product_name')</th>
+                                                                        <th>@lang('lang.sku')</th>
+                                                                        <th>@lang('lang.category')</th>
+                                                                        <th>@lang('lang.subcategories_name')</th>
+                                                                        <th>@lang('lang.brand')</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($employee_products as $index => $product)
+                                                                        <tr>
+                                                                            <td>{{ $index + 1 }}</td>
+                                                                            {{-- "select" checkbox --}}
+                                                                            <td>
+                                                                                {{-- get "all checked products" --}}
+                                                                                <input type="checkbox" name="ids[]"
+                                                                                    class="checkbox_ids"
+                                                                                    value="{{ $product->id }}" />
+                                                                            </td>
+                                                                            <td>{{ $product->name }}</td>
+                                                                            <td>{{ $product->sku }}</td>
+                                                                            <td>{{ $product->category->name ?? '' }}</td>
+                                                                            <td>
+                                                                                {{ $product->subCategory1->name ?? '' }}
+                                                                                <br>
+                                                                                {{ $product->subCategory2->name ?? '' }}
+                                                                                <br>
+                                                                                {{ $product->subCategory3->name ?? '' }}
+                                                                            </td>
+                                                                            <td>{{ !empty($product->brand) ? $product->brand->name : '' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                         <div
                                             class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -110,7 +177,7 @@
                                                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="password">@lang('lang.password'):*</label>
+                                                    for="password">@lang('lang.password')*</label>
                                                 <div class="input-wrapper">
                                                     <input type="password" class="form-control initial-balance-input"
                                                         style="width: 100%;" name="password" id="password"
@@ -178,12 +245,15 @@
                                                     for="mobile">@lang('lang.phone_number')*</label>
                                                 <div class="input-wrapper">
                                                     <input type="mobile"
-                                                        class="form-control initial-balance-input width-full" name="mobile"
-                                                        id="mobile" placeholder="@lang('lang.mobile')">
+                                                        class="form-control initial-balance-input width-full"
+                                                        name="mobile" id="mobile" placeholder="@lang('lang.mobile')">
                                                 </div>
                                             </div>
 
                                         </div>
+
+
+
                                         <div class="accordion mb-1">
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end">
@@ -251,127 +321,32 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
-                                        <div class="accordion mb-1">
-                                            <div class="accordion-item" style="border: none">
-                                                <h2 class="accordion-header d-flex justify-content-end">
-                                                    <div class="accordion-button"
-                                                        onclick="toggleAccordion(`collapseOneEmployeesProducts`)">
-                                                        <span class="collapseOneEmployeesProducts mx-2">
-                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                                                        </span>
-                                                        @lang('lang.employee_products')
-                                                    </div>
-                                                </h2>
-                                                <div id="collapseOneEmployeesProducts" class="accordion-content">
-                                                    <div class="accordion-body p-0">
-                                                        @include('employees.partials.filters')
-                                                        <div class="row mt-4 m-auto"
-                                                            style="max-height: 70vh;overflow: scroll">
-                                                            {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
-                                                            <table id="productTable"
-                                                                class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        {{-- "select_all" checkbox --}}
-                                                                        <th> <input type="checkbox" id="select_all_ids" />
-                                                                        </th>
-                                                                        <th>@lang('lang.product_name')</th>
-                                                                        <th>@lang('lang.sku')</th>
-                                                                        <th>@lang('lang.category')</th>
-                                                                        <th>@lang('lang.subcategories_name')</th>
-                                                                        <th>@lang('lang.brand')</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach ($employee_products as $index => $product)
-                                                                        <tr>
-                                                                            <td>{{ $index + 1 }}</td>
-                                                                            {{-- "select" checkbox --}}
-                                                                            <td>
-                                                                                {{-- get "all checked products" --}}
-                                                                                <input type="checkbox" name="ids[]"
-                                                                                    class="checkbox_ids"
-                                                                                    value="{{ $product->id }}" />
-                                                                            </td>
-                                                                            <td>{{ $product->name }}</td>
-                                                                            <td>{{ $product->sku }}</td>
-                                                                            <td>{{ $product->category->name ?? '' }}</td>
-                                                                            <td>
-                                                                                {{ $product->subCategory1->name ?? '' }}
-                                                                                <br>
-                                                                                {{ $product->subCategory2->name ?? '' }}
-                                                                                <br>
-                                                                                {{ $product->subCategory3->name ?? '' }}
-                                                                            </td>
-                                                                            <td>{{ !empty($product->brand) ? $product->brand->name : '' }}
-                                                                            </td>
-                                                                        </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
 
-
-
-                                        <div
-                                            class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <div class="row">
                                             @foreach ($leave_types as $leave_type)
-                                                <div
-                                                    class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-                                                    <div class="i-checks">
-
-                                                        <input id="number_of_leaves{{ $leave_type->id }}"
-                                                            name="number_of_leaves[{{ $leave_type->id }}][enabled]"
-                                                            type="checkbox" value="1">
-
-                                                        <label style="font-size: 12px;font-weight: 500;"
-                                                            class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                            for="number_of_leaves{{ $leave_type->id }}"><strong>{{ $leave_type->name }}</strong></label>
-                                                        <div class="input-wrapper">
-
-                                                            <input type="number"
-                                                                class="form-control initial-balance-input width-full"
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <div class="i-checks">
+                                                            <input id="number_of_leaves{{ $leave_type->id }}"
+                                                                name="number_of_leaves[{{ $leave_type->id }}][enabled]"
+                                                                type="checkbox" value="1">
+                                                            <label
+                                                                for="number_of_leaves{{ $leave_type->id }}"><strong>{{ $leave_type->name }}</strong></label>
+                                                            <input type="number" class="form-control"
                                                                 name="number_of_leaves[{{ $leave_type->id }}][number_of_days]"
                                                                 id="number_of_leaves"
                                                                 placeholder="{{ $leave_type->name }}" readonly
                                                                 value="{{ $leave_type->number_of_days_per_year }}">
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             @endforeach
                                         </div>
 
-                                        {{-- <div class="accordion mb-1">
-                                            <div class="accordion-item" style="border: none">
-                                                <h2 class="accordion-header d-flex justify-content-end">
-                                                    <div class="accordion-button"
-                                                        onclick="toggleAccordion(`collapseOneEmployeesSalaryDetails`)">
-                                                        <span class="collapseOneEmployeesSalaryDetails mx-2">
-                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                                                        </span>
-                                                        @lang('lang.salary_details')
-                                                    </div>
-                                                </h2>
-                                                <div id="collapseOneEmployeesSalaryDetails" class="accordion-content">
-                                                    <div class="accordion-body p-0">
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-
-                                        <div
-                                            class="row mb-1 mr-0  @if (app()->isLocale('ar')) justify-content-end @endif">
+                                        <div class="row justify-content-end mr-0 mb-1">
                                             <!-- Button salary modal -->
-                                            <button type="button" class="btn btn-primary width-fit"
+                                            <button type="button"
                                                 style=" padding: 6px;
                                                         width: 300px;
                                                         background-color: #596fd7;
@@ -381,12 +356,12 @@
                                                         font-size: 15px;
                                                         font-weight: 700;
                                                         text-align: end"
-                                                data-toggle="modal" data-target="#salary_details">
+                                                class="btn btn-primary" data-toggle="modal"
+                                                data-target="#salary_details">
                                                 @lang('lang.salary_details')
                                             </button>
                                             @include('employees.partials.salary_details')
                                         </div>
-
 
                                         {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                         <div class="accordion mb-1">
@@ -490,6 +465,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
                                         <div class="accordion mb-1">
                                             <div class="accordion-item" style="border: none">
@@ -509,9 +485,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
-
 
                                         {{-- +++++++++++++ save Button +++++++++++ --}}
                                         <div class="row mt-4">
@@ -752,5 +725,61 @@
             // });
 
         });
+    </script>
+    <script>
+        function toggleAccordion(sectionId) {
+            const section = document.getElementById(sectionId);
+            let arrow = document.querySelector(`.${sectionId}`);
+
+            if (section.style.display === "block") {
+                section.style.display = "none";
+
+                // Check if the element exists
+                if (arrow) {
+                    // Remove all children from the "wrap" element
+                    while (arrow.firstChild) {
+                        arrow.removeChild(arrow.firstChild);
+                    }
+
+                    // Create a new <i> element with the desired attributes
+                    let newIElement = document.createElement('i');
+                    newIElement.className = 'fas fa-arrow-down';
+                    newIElement.style.fontSize = '0.8rem';
+
+                    // Append the new <i> element to the "wrap" element
+                    arrow.appendChild(newIElement);
+                }
+            } else {
+                section.style.display = "block";
+
+                // Check if the element exists
+                if (arrow) {
+                    // Remove all children from the "wrap" element
+                    while (arrow.firstChild) {
+                        arrow.removeChild(arrow.firstChild);
+                    }
+
+                    // Create a new <i> element with the desired attributes
+                    let newIElement = document.createElement('i');
+                    newIElement.className = 'fas fa-arrow-up';
+                    newIElement.style.fontSize = '0.8rem';
+
+                    // Append the new <i> element to the "wrap" element
+                    arrow.appendChild(newIElement);
+                }
+            }
+        }
+    </script>
+    <script>
+        const employeeProducts = document.getElementById('employee-products');
+        const filterWrap = document.getElementById('filter-wrap');
+
+        employeeProducts.addEventListener('click', function() {
+            if (filterWrap.style.display === 'block') {
+                filterWrap.style.display = 'none'
+            } else {
+                filterWrap.style.display = 'block'
+            }
+        })
     </script>
 @endpush
