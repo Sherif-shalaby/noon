@@ -83,7 +83,7 @@ class Create extends Component
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ?? null ;
                 $this->supplier = $recent_stock->supplier_id?? null;
-                $this->transaction_date = $recent_stock->transaction_date ?? null;
+//                $this->transaction_date = $recent_stock->transaction_date ?? null;
                 $this->transaction_currency = $recent_stock->transaction_currency ?? null;
                 $this->purchase_type = $recent_stock->purchase_type ?? null;
                 $this->divide_costs = $recent_stock->divide_costs ?? null;
@@ -980,6 +980,32 @@ class Create extends Component
 
     public function delete_product($index){
         unset($this->items[$index]);
+    }
+
+    public function countItems(){
+        $count = 0;
+        if (!empty($this->items)){
+            $collection = collect($this->items);
+            // Filter out elements where show_product_data is false
+            $filteredCollection = $collection->filter(function ($item) {
+                return $item['show_product_data'] !== false;
+            });
+            $count = $filteredCollection->count();
+        }
+        return $count;
+    }
+
+    public function countUnitsItems(){
+        $count = 0;
+        if (!empty($this->items)){
+            $collection = collect($this->items);
+            // Filter out elements where show_product_data is false
+            $filteredCollection = $collection->filter(function ($item) {
+                return $item['show_product_data'] == false;
+            });
+            $count = $filteredCollection->count();
+        }
+        return $count;
     }
 
     public function getPurchaseOrderStatusArray()

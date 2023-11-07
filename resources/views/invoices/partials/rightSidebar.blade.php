@@ -205,7 +205,7 @@
                 @if ($this->checkRepresentativeUser())
                     <div class="col-sm-6 p-1">
                         <div class="form-group">
-                            {!! Form::label('deliveryman_id', __('lang.deliveryman') . '*', [
+                            {!! Form::label('s', __('lang.deliveryman') . '*', [
                                 'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
                                 'style' => 'width:100%;font-weight: 700;font-size: 10px',
                             ]) !!}
@@ -259,6 +259,15 @@
                         @lang('lang.draft')</button>
                     {{--                            @include('invoices.partials.payment') --}}
                 </div>
+                @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
+                    <div class="col-md-3">
+                        <button data-method="cash" style="width: 100%" type="button"
+                            class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
+                                class="fa-solid fa-money-bill"></i>
+                            @lang('lang.pay')</button>
+                        {{--                            @include('invoices.partials.payment') --}}
+                    </div>
+                @endif
                 @if (!$this->checkRepresentativeUser())
                     <div class="mb-2 col-md-6 p-1">
                         <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
@@ -268,6 +277,7 @@
                         @include('invoices.partials.draft_transaction')
                     </div>
                 @endif
+
             </div>
             {{--                    </div> --}}
             {{--                </div> --}}

@@ -67,7 +67,7 @@
                                     @foreach ($sell_cars as $index => $sell_car)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $sell_car->driver_name }}</td>
+                                            <td>{{ $sell_car->driver->employee_name ?? '' }}</td>
                                             <td>{{ $sell_car->car_name }}</td>
                                             <td>{{ $sell_car->car_no }}</td>
                                             <td>{{ $sell_car->representative->employee_name ?? '' }}</td>
@@ -122,6 +122,13 @@
                                                                 class="btn delete_item text-red delete_item"><i
                                                                     class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                            <a href="{{ route('transfer.create', $sell_car->id) }}"
+                                                                class="btn">
+                                                                <i class="dripicons-document-edit"></i> @lang('lang.add_stock')
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                 </div>

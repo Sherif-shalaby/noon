@@ -434,9 +434,10 @@
                 @endif
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
-                <li class="scroll mx-2 mb-0 p-0">
-                    <a class="purchases-order-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        href="{{ route('purchase_order.create') }}" style="cursor: pointer;text-decoration: none">
+                <li class="scroll mx-2 mb-0 p-0 dropdown">
+                    <a href="javaScript:void();"
+                        class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                        data-toggle="dropdown">
                         <div style="width: 25px">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                 <g data-name="box exchange money">
@@ -456,23 +457,23 @@
                                 </g>
                             </svg>
                         </div>
-                        {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1" alt="components"> --}}
                         <span class="mx-2" style="font-weight: 600">{{ __('lang.purchase_order') }}</span>
                     </a>
-                    {{-- <ul class="dropdown-menu"> --}}
-                    {{-- +++++++++++ purchase_order : index +++++++++++ --}}
-                    {{-- <li>
-                            <a href="{{route('purchase_order.index')}}">
-                                <i class="mdi mdi-circle"></i>{{__('lang.show_purchase_order')}}
-                            </a>
-                        </li> --}}
-                    {{-- +++++++++++ purchase_order : create +++++++++++ --}}
-                    {{-- <li>
-                            <a href="{{route('purchase_order.create')}}">
-                                <i class="mdi mdi-circle"></i>{{__('lang.create_purchase_order')}}
-                            </a>
-                        </li> --}}
-                    {{-- </ul> --}}
+                    <ul class="dropdown-menu" list-style-none
+                        @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        {{-- ########### purchase_order : اوامر الشراء########### --}}
+                        <li>
+                            <a class="purchases-order-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                href="{{ route('purchase_order.index') }}"
+                                style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
+                                    class="mdi mdi-circle"></i>@lang('lang.show_purchase_order')</a>
+                        </li>
+                        {{-- ########### required_products : المواد المطلوبة ########### --}}
+                        <li><a class="required-products-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                href="{{ route('required-products.index') }}"
+                                style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
+                                    class="mdi mdi-circle"></i>@lang('lang.required_products')</a></li>
+                    </ul>
                 </li>
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
@@ -1380,6 +1381,12 @@
     $('.purchases-order-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('purchase_order.create') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.required-products-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('required-products.index') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

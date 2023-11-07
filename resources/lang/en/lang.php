@@ -556,7 +556,7 @@ return [
     'add_branch' => 'Add Branch',
     'branch_name' => 'Branch Name',
     'branch' => 'Branch',
-    'discount_from_original_price' => 'خصم من السعر الأصلي',
+    'discount_from_original_price' => 'Discount from original price',
     'discount_from_original_price_with_free_quantity' => 'Discount from original price with free quantity',
     'add_new_unit' => 'Add New Unit',
     'basic_unit_for_import_product' => 'Basic Unit For Import Product',
@@ -568,4 +568,10 @@ return [
     'deliveryman' => 'Delivery Man',
     'delivery' => 'Delivery',
     'pending_orders' => 'Pending Orders',
+    'units_count' => 'Units Count',
+    'add_transfer' => 'Add Transfer',
+    'receiver_store' => 'Receiver Store',
+    'sender_store' => 'Sender Store',
+    'has_store_pos' => 'Has Store Pos',
+    'show_initial_balance' => 'Show Initial Balance'
 ];

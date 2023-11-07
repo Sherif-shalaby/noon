@@ -2,6 +2,51 @@
 @section('title', __('lang.products'))
 
 @section('breadcrumbbar')
+    <style>
+        .wrapper1,
+        .wrapper2 {
+            overflow-x: scroll;
+            overflow-y: hidden;
+        }
+
+        .wrapper1 {
+            height: 20px;
+        }
+
+        .div1 {
+            height: 20px;
+        }
+
+        .div2 {
+            overflow: auto;
+            width: fit-content;
+        }
+
+        .custom-tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .custom-tooltip::before {
+            content: attr(data-tooltip);
+            display: none;
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 3px;
+            top: 120%;
+            left: 0%;
+            font-size: 10px;
+            font-weight: 700;
+            z-index: 999;
+            /* transform: translateX(-50%); */
+        }
+
+        .custom-tooltip:hover::before {
+            display: block;
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -68,196 +113,274 @@
                                 </div>
                             </div>
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <div class="my-2">
-                                    <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
-                                        data-check_password="{{ url('user/check-password') }}"
-                                        class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
-                                        @lang('lang.delete_all')</a>
-                                </div>
-                                <div id="status"></div>
-                                <table id="datatable-buttons" class="table table-striped table-bordered ">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>@lang('lang.image')</th>
-                                            <th>@lang('lang.product_name')</th>
-                                            <th>@lang('lang.sku')</th>
-                                            <th>@lang('lang.select_to_delete')</th>
-                                            <th>@lang('lang.stock')</th>
-                                            <th>@lang('lang.category')</th>
-                                            <th>@lang('lang.subcategories_name')</th>
-                                            <th>@lang('lang.height')</th>
-                                            <th>@lang('lang.length')</th>
-                                            <th>@lang('lang.width')</th>
-                                            <th>@lang('lang.size')</th>
-                                            {{-- <th>@lang('lang.unit')</th> --}}
-                                            <th>@lang('lang.weight')</th>
-                                            <th>{{ __('lang.basic_unit_for_import_product') }}</th>
-                                            <th>@lang('lang.stores')</th>
-                                            <th>@lang('lang.brand')</th>
-                                            {{--                                    <th>@lang('lang.discount')</th> --}}
-                                            <th>@lang('added_by')</th>
-                                            <th>@lang('updated_by')</th>
-                                            <th>@lang('lang.action')</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($products as $index => $product)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td><img src="{{ !empty($product->image) ? '/uploads/products/' . $product->image : '/uploads/' . $settings['logo'] }}"
-                                                        style="width: 50px; height: 50px;" alt="{{ $product->name }}"></td>
-                                                <td>{{ $product->name }}</td>
-                                                <td>{{ $product->sku }}</td>
-                                                <td>
-                                                    <input type="checkbox" name="product_selected_delete"
-                                                        class="product_selected_delete" value=" {{ $product->id }} "
-                                                        data-product_id="{{ $product->id }}" />
-                                                </td>
-                                                <td>
-                                                    @foreach ($product->product_stores as $store)
-                                                        @php
-                                                            $unit = !empty($store->variations) ? $store->variations : [];
-                                                            $amount = 0;
-                                                        @endphp
-                                                    @endforeach
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2">
+                                    <!-- content goes here -->
+                                    <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
+                                        style="width: 1550px;height: 90vh;">
+                                        <div class="my-2">
+                                            <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
+                                                data-check_password="{{ url('user/check-password') }}"
+                                                class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                                                @lang('lang.delete_all')</a>
+                                        </div>
+                                        <div id="status"></div>
 
-                                                    @foreach ($product->variations as $variation)
-                                                        @if (isset($unit->unit_id) && $unit->unit_id == $variation->unit_id)
-                                                            <span class="product_unit"
-                                                                data-variation_id="{{ $variation->id }}"
-                                                                data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
-                                                                <span
-                                                                    class="unit_value">{{ $product->product_stores->sum('quantity_available') }}</span></span>
-                                                        @else
-                                                            <span class="product_unit"
-                                                                data-variation_id="{{ $variation->id }}"
-                                                                data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
-                                                                <span class="unit_value">0</span></span>
-                                                        @endif
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ $product->category->name ?? '' }}</td>
-                                                <td>
-                                                    {{ $product->subCategory1->name ?? '' }} <br>
-                                                    {{ $product->subCategory2->name ?? '' }} <br>
-                                                    {{ $product->subCategory3->name ?? '' }}
-                                                </td>
-                                                <td>{{ $product->product_dimensions->height ?? 0 }}</td>
-                                                <td>{{ $product->product_dimensions->length ?? 0 }}</td>
-                                                <td>{{ $product->product_dimensions->width ?? 0 }}</td>
-                                                <td><span
-                                                        class="text-primary">{{ $product->product_dimensions->size ?? 0 }}</span>
-                                                </td>
-                                                {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
-                                                <td>{{ $product->product_dimensions->weight ?? 0 }}</td>
-                                                <td>
-                                                    {{ !empty($product->product_dimensions->variations)
-                                                        ? (!empty($product->product_dimensions->variations->unit)
-                                                            ? $product->product_dimensions->variations->unit->name
-                                                            : '')
-                                                        : '' }}
-                                                </td>
-                                                <td>
-                                                    @foreach ($product->stores as $store)
-                                                        {{ $store->name }}<br>
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ !empty($product->brand) ? $product->brand->name : '' }}</td>
-                                                {{--                                    <td> --}}
-                                                {{--                                        @foreach ($product->product_prices as $price) --}}
-                                                {{--                                        {{$price->price_category." : ".$price->price}} <br> --}}
-                                                {{--                                        @endforeach --}}
-                                                {{--                                    </td> --}}
-                                                {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
-                                                <td>
-                                                    @if ($product->created_by > 0 and $product->created_by != null)
-                                                        {{ $product->created_at->diffForHumans() }} <br>
-                                                        {{ $product->created_at->format('Y-m-d') }}
-                                                        ({{ $product->created_at->format('h:i') }})
-                                                        {{ $product->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $product->createBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
-                                                </td>
-                                                {{-- ++++++++++++++++++++++ updated_at column ++++++++++++++++++++++ --}}
-                                                <td>
-                                                    @if ($product->edited_by > 0 and $product->edited_by != null)
-                                                        {{ $product->updated_at->diffForHumans() }} <br>
-                                                        {{ $product->updated_at->format('Y-m-d') }}
-                                                        ({{ $product->updated_at->format('h:i') }})
-                                                        {{ $product->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $product->updateBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button"
-                                                            class="btn btn-default btn-sm dropdown-toggle"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">خيارات
-                                                            <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                            user="menu" x-placement="bottom-end"
-                                                            style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                            <li>
-                                                                <a data-href="{{ route('products.show', $product->id) }}"
-                                                                    data-container=".view_modal" class="btn btn-modal">
-                                                                    <i class="fa fa-eye"></i>
-                                                                    @lang('lang.view')
-                                                                </a>
-                                                            </li>
-                                                            <li class="divider"></li>
-                                                            <li>
-                                                                <a target="_blank"
-                                                                    href="{{ route('get_remove_damage', $product->id) }}"
-                                                                    class="btn"><i class="fa fa-filter"></i>
-                                                                    @lang('lang.remove_damage')
-                                                                </a>
-                                                            </li>
-                                                            <li class="divider"></li>
-                                                            <li>
-                                                                <a href="{{ route('products.edit', $product->id) }}"
-                                                                    class="btn" target="_blank">
-                                                                    <i class="dripicons-document-edit"></i>
-                                                                    @lang('lang.update')
-                                                                </a>
-                                                            </li>
-                                                            <li class="divider"></li>
-                                                            <li>
-                                                                <a data-href="{{ route('products.destroy', $product->id) }}"
-                                                                    class="btn text-red delete_item">
-                                                                    <i class="fa fa-trash"></i>
-                                                                    @lang('lang.delete')
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            {{-- @include('products.edit',$product) --}}
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
 
-                                        <td colspan="5" style="text-align: right">@lang('lang.total')</td>
-                                        <td id="sum"></td>
-                                        <td colspan="12">
-                                        </td>
-                                    </tfoot>
-                                </table>
-                                <div class="view_modal no-print">
+                                        <table id="datatable-buttons"
+                                            class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>@lang('lang.image')</th>
+                                                    <th>@lang('lang.product_name')</th>
+                                                    <th>@lang('lang.sku')</th>
+                                                    <th>@lang('lang.select_to_delete')</th>
+                                                    <th>@lang('lang.stock')</th>
+                                                    <th>@lang('lang.category')</th>
+                                                    <th>@lang('lang.subcategories_name')</th>
+                                                    <th>@lang('lang.height')</th>
+                                                    <th>@lang('lang.length')</th>
+                                                    <th>@lang('lang.width')</th>
+                                                    <th>@lang('lang.size')</th>
+                                                    {{-- <th>@lang('lang.unit')</th> --}}
+                                                    <th>@lang('lang.weight')</th>
+                                                    <th>{{ __('lang.basic_unit_for_import_product') }}</th>
+                                                    <th>@lang('lang.stores')</th>
+                                                    <th>@lang('lang.brand')</th>
+                                                    {{--                                    <th>@lang('lang.discount')</th> --}}
+                                                    <th>@lang('added_by')</th>
+                                                    <th>@lang('updated_by')</th>
+                                                    <th>@lang('lang.action')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($products as $index => $product)
+                                                    <tr>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="#">
+                                                                {{ $index + 1 }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.image')">
+                                                                <img src="{{ !empty($product->image) ? '/uploads/products/' . $product->image : '/uploads/' . $settings['logo'] }}"
+                                                                    style="width: 50px; height: 50px;"
+                                                                    alt="{{ $product->name }}">
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.product_name')">
+                                                                {{ $product->name }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.sku')">
+                                                                {{ $product->sku }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.select_to_delete')">
+                                                                <input type="checkbox" name="product_selected_delete"
+                                                                    class="product_selected_delete"
+                                                                    value=" {{ $product->id }} "
+                                                                    data-product_id="{{ $product->id }}" />
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            @foreach ($product->product_stores as $store)
+                                                                @php
+                                                                    $unit = !empty($store->variations) ? $store->variations : [];
+                                                                    $amount = 0;
+                                                                @endphp
+                                                            @endforeach
 
+                                                            @foreach ($product->variations as $variation)
+                                                                @if (isset($unit->unit_id) && $unit->unit_id == $variation->unit_id)
+                                                                    <span class="product_unit custom-tooltip"
+                                                                        data-tooltip="@lang('lang.stock')"
+                                                                        data-variation_id="{{ $variation->id }}"
+                                                                        data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
+                                                                        <span
+                                                                            class="unit_value">{{ $product->product_stores->sum('quantity_available') }}</span></span>
+                                                                @else
+                                                                    <span class="product_unit custom-tooltip"
+                                                                        data-tooltip="@lang('lang.stock')"
+                                                                        data-variation_id="{{ $variation->id }}"
+                                                                        data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
+                                                                        <span class="unit_value">0</span></span>
+                                                                @endif
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.category')">
+                                                                {{ $product->category->name ?? '' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.subcategories_name')">
+                                                                {{ $product->subCategory1->name ?? '' }} <br>
+                                                                {{ $product->subCategory2->name ?? '' }} <br>
+                                                                {{ $product->subCategory3->name ?? '' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.height')">
+                                                                {{ $product->product_dimensions->height ?? 0 }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.length')">
+                                                                {{ $product->product_dimensions->length ?? 0 }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.width')">
+                                                                {{ $product->product_dimensions->width ?? 0 }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="text-primary custom-tooltip"
+                                                                data-tooltip="@lang('lang.size')">
+                                                                {{ $product->product_dimensions->size ?? 0 }}
+                                                            </span>
+                                                        </td>
+                                                        {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.weight')">
+                                                                {{ $product->product_dimensions->weight ?? 0 }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.basic_unit_for_import_product')">
+                                                                {{ !empty($product->product_dimensions->variations)
+                                                                    ? (!empty($product->product_dimensions->variations->unit)
+                                                                        ? $product->product_dimensions->variations->unit->name
+                                                                        : '')
+                                                                    : '' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.stores')">
+                                                                @foreach ($product->stores as $store)
+                                                                    {{ $store->name }}<br>
+                                                                @endforeach
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.brand')">
+                                                                {{ !empty($product->brand) ? $product->brand->name : '' }}
+                                                            </span>
+                                                        </td>
+                                                        {{--                                    <td> --}}
+                                                        {{--                                        @foreach ($product->product_prices as $price) --}}
+                                                        {{--                                        {{$price->price_category." : ".$price->price}} <br> --}}
+                                                        {{--                                        @endforeach --}}
+                                                        {{--                                    </td> --}}
+                                                        {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.added_by')">
+
+                                                                @if ($product->created_by > 0 and $product->created_by != null)
+                                                                    {{ $product->created_at->diffForHumans() }} <br>
+                                                                    {{ $product->created_at->format('Y-m-d') }}
+                                                                    ({{ $product->created_at->format('h:i') }})
+                                                                    {{ $product->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                                    <br>
+                                                                    {{ $product->createBy?->name }}
+                                                                @else
+                                                                    {{ __('no_update') }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        {{-- ++++++++++++++++++++++ updated_at column ++++++++++++++++++++++ --}}
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+
+                                                                @if ($product->edited_by > 0 and $product->edited_by != null)
+                                                                    {{ $product->updated_at->diffForHumans() }} <br>
+                                                                    {{ $product->updated_at->format('Y-m-d') }}
+                                                                    ({{ $product->updated_at->format('h:i') }})
+                                                                    {{ $product->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                                    <br>
+                                                                    {{ $product->updateBy?->name }}
+                                                                @else
+                                                                    {{ __('no_update') }}
+                                                                @endif
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div class=" btn-group">
+                                                                <button type="button"
+                                                                    class="btn btn-default btn-sm dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">خيارات
+                                                                    <span class="caret"></span>
+                                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                    user="menu" x-placement="bottom-end"
+                                                                    style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                    <li>
+                                                                        <a data-href="{{ route('products.show', $product->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn btn-modal">
+                                                                            <i class="fa fa-eye"></i>
+                                                                            @lang('lang.view')
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="divider"></li>
+                                                                    <li>
+                                                                        <a target="_blank"
+                                                                            href="{{ route('get_remove_damage', $product->id) }}"
+                                                                            class="btn"><i class="fa fa-filter"></i>
+                                                                            @lang('lang.remove_damage')
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="divider"></li>
+                                                                    <li>
+                                                                        <a href="{{ route('products.edit', $product->id) }}"
+                                                                            class="btn" target="_blank">
+                                                                            <i class="dripicons-document-edit"></i>
+                                                                            @lang('lang.update')
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="divider"></li>
+                                                                    <li>
+                                                                        <a data-href="{{ route('products.destroy', $product->id) }}"
+                                                                            class="btn text-red delete_item">
+                                                                            <i class="fa fa-trash"></i>
+                                                                            @lang('lang.delete')
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {{-- @include('products.edit',$product) --}}
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+
+                                                <td colspan="5" style="text-align: right">@lang('lang.total')</td>
+                                                <td id="sum"></td>
+                                                <td colspan="12">
+                                                </td>
+                                            </tfoot>
+                                        </table>
+
+                                        <div class="view_modal no-print">
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -269,6 +392,30 @@
 
 <div class="view_modal no-print">@endsection
     @push('javascripts')
+        <script>
+            // Select both elements by their class names
+            var div1 = document.querySelector('.div1');
+            var div2 = document.querySelector('.div2');
+
+            // Get the width of the "div2" element
+            var div2Width = div2.offsetWidth;
+
+            // Set the width of "div1" to the width of "div2"
+            div1.style.width = div2Width + 'px';
+
+            document.addEventListener("DOMContentLoaded", function() {
+                var wrapper1 = document.querySelector(".wrapper1");
+                var wrapper2 = document.querySelector(".wrapper2");
+
+                wrapper1.addEventListener("scroll", function() {
+                    wrapper2.scrollLeft = wrapper1.scrollLeft;
+                });
+
+                wrapper2.addEventListener("scroll", function() {
+                    wrapper1.scrollLeft = wrapper2.scrollLeft;
+                });
+            });
+        </script>
         <script src="{{ asset('js/product/product.js') }}"></script>
         <script>
             $(document).ready(function() {

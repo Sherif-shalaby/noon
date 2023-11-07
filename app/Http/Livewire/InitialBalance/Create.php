@@ -76,8 +76,6 @@ class Create extends Component
         'change_price_stock' => '',
         'equal' => '',
         'method' => '',
-        'show_prices' => false,
-        'show_price_button' => true,
         'prices' => [
             [
                 'price_type' => null,
@@ -138,15 +136,6 @@ class Create extends Component
     public function showHideSize()
     {
         $this->item[0]['show_size'] = !$this->item[0]['show_size'];
-    }
-    public function showPrices($index)
-    {
-        $this->rows[$index]['show_prices'] = true;
-    }
-    public function stayShow($index)
-    {
-        $this->rows[$index]['show_prices'] =
-            !$this->rows[$index]['show_prices'];
     }
     public function changeSize()
     {
@@ -294,8 +283,6 @@ class Create extends Component
             'change_price_stock' => '',
             'equal' => '',
             'method' => '',
-            'show_prices' => false,
-            'show_price_button' => true,
             'prices' => [
                 [
                     'price_type' => null,

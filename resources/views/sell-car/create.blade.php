@@ -15,16 +15,16 @@
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <div
                         class="col-md-4 mb-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('driver_name', __('lang.driver_name') . '*', [
+                        {!! Form::label('driver_id', __('lang.driver_name') . '*', [
                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                             'style' => 'font-size: 14px;font-weight: 500;',
                         ]) !!}
                         <div class="input-wrapper">
 
-                            {!! Form::text('driver_name', null, [
-                                'class' => 'form-control initial-balance-input m-auto text-right',
+                            {!! Form::select('driver_id', $deliveries, null, [
+                                'class' => 'form-control select2 initial-balance-input m-auto text-right',
                                 'style' => 'width:100%',
-                                'placeholder' => __('lang.driver_name'),
+                                'placeholder' => __('lang.please_select'),
                                 'required',
                             ]) !!}
                         </div>
@@ -63,21 +63,7 @@
                             ]) !!}
                         </div>
                     </div>
-                    <div
-                        class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('sell_representative', __('lang.sell_representative'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                            'style' => 'font-size: 14px;font-weight: 500;',
-                        ]) !!}
-                        <div class="input-wrapper">
 
-                            {!! Form::select('representative_id', $representatives, null, [
-                                'class' => 'select p-0 initial-balance-input m-auto',
-                                'style' => 'width:100%;border: 2px solid #ccc;',
-                                'placeholder' => __('lang.please_select'),
-                            ]) !!}
-                        </div>
-                    </div>
                     <div
                         class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::label('car_type', __('lang.car_type'), [
@@ -152,13 +138,37 @@
                             ]) !!}
                         </div>
                     </div>
+                    <div
+                        class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        {!! Form::label('sell_representative', __('lang.sell_representative'), [
+                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                            'style' => 'font-size: 14px;font-weight: 500;',
+                        ]) !!}
+                        <div class="input-wrapper">
+
+                            {!! Form::select('representative_id', $representatives, null, [
+                                'class' => 'select p-0 initial-balance-input m-auto',
+                                'style' => 'width:100%;border: 2px solid #ccc;',
+                                'placeholder' => __('lang.please_select'),
+                            ]) !!}
+                        </div>
+                    </div>
                     <div class="col-md-4 pt-3">
                         <div class="form-group">
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="customSwitch1"
+                                <input type="checkbox" class="custom-control-input" id="has_store_pos"
+                                    name="has_store_pos">
+                                <label class="custom-control-label" for="has_store_pos">@lang('lang.has_store_pos')</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 pt-3">
+                        <div class="form-group">
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="notify_by_end_car_license"
                                     name="notify_by_end_car_license">
                                 <label style="font-size: 14px;font-weight: 500" class="custom-control-label"
-                                    for="customSwitch1">@lang('lang.notify_by_end_car_license')</label>
+                                    for="notify_by_end_car_license">@lang('lang.notify_by_end_car_license')</label>
                             </div>
                         </div>
                     </div>
@@ -192,13 +202,20 @@
     // jQuery code to toggle the input field based on checkbox state
     $(document).ready(function() {
         // when check "التنبيه قبل موعد انتهاء ترخيص العربة" checkbox Then appear "days_number_notify" inputField
-        $('#customSwitch1').change(function() {
+        $('#notify_by_end_car_license').change(function() {
             if ($(this).is(':checked')) {
                 $('#days_number_notify').show(); // Show the input field
             } else {
                 $('#days_number_notify').hide(); // Hide the input field
             }
         });
+    });
+    $('#has_store_pos').change(function() {
+        if ($(this).is(':checked')) {
+            $('#sell_representative').show();
+        } else {
+            $('#sell_representative').hide();
+        }
     });
 </script>
 

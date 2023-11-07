@@ -29,7 +29,7 @@
         </div>
         <div class="col-md-6 d-flex justify-content-end ">
             <button class="btn btn btn-primary"
-                wire:click="add_product({{ $product['product']['id'] }},null,{{ $index }},1)" type="button">
+                wire:click="add_product({{ $product['product']['id'] }},'unit',{{ $index }},1)" type="button">
                 <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
             </button>
         </div>

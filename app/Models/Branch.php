@@ -26,6 +26,10 @@ class Branch extends Model
     {
         return $this->hasMany(Employee::class);
     }
+    public function required_products()
+    {
+        return $this->hasMany(RequiredProduct::class);
+    }
     public function stores()
     {
         return $this->hasMany(Store::class);
