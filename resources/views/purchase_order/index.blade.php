@@ -4,63 +4,95 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-       <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.show_purchase_order')</h4> <br/>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('purchase_order.index')}}">@lang('lang.purchase_order')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.show_purchase_order')</li>
-                    </ol>
+    <div class="animate-in-page">
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.show_purchase_order')</h4>
+                    <div class="breadcrumb-list">
+                        <ul
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a></li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7"
+                                    href="{{ route('purchase_order.index') }}">/ @lang('lang.purchase_order')</a>
+                            </li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                                aria-current="page">@lang('lang.show_purchase_order')</li>
+                        </ul>
+                    </div>
+                    <br />
                 </div>
-                <br/>
-            </div>
-            <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{route('purchase_order.create')}}" class="btn btn-primary">
-                        @lang('lang.create_purchase_order')
-                      </a>
+                <div class="col-md-4">
+                    <div
+                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                        <a href="{{ route('purchase_order.create') }}" class="btn btn-primary">
+                            @lang('lang.create_purchase_order')
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('content')
-    <div class="table-responsive">
-        <table id="datatable-buttons" class="table dataTable">
-            <thead>
-                <tr>
-                    <th>@lang('lang.po_ref_no')</th>
-                    <th>@lang('lang.date')</th>
-                    <th>@lang('lang.created_by')</th>
-                    <th>@lang('lang.supplier')</th>
-                    <th class="sum">@lang('lang.value')</th>
-                    <th>@lang('lang.status')</th>
-                    {{-- <th class="notexport">@lang('lang.action')</th> --}}
-                </tr>
-            </thead>
+    <div class="animate-in-page">
 
-            <tbody>
-                @foreach ($purchase_orders as $purchase_order)
-                <tr>
-                    <td>{{$purchase_order->transaction->po_no}}</td>
-                    <td> {{@format_date($purchase_order->transaction->transaction_date)}}</td>
+        <div class="contentbar">
+            <!-- Start row -->
+            <div class="row">
+                <!-- Start col -->
+                <div class="col-lg-12">
+                    <div class="card m-b-30">
+                        <div class="card-header">
+                            <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.products')</h5>
+                        </div>
+                        <div class="card-body">
 
-                    <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}</td>
 
-                    <td>
-                        @if(!empty($purchase_order->transaction->supplier)){{$purchase_order->transaction->supplier->name}}@endif
-                    </td>
-                    <td>
-                        {{@num_format($purchase_order->transaction->final_total)}}
-                    </td>
-                    <td>
-                        {{ $purchase_order->transaction->status }}
-                    </td>
+                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="height: 90vh;">
+                                <table id="datatable-buttons" class="table dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>@lang('lang.po_ref_no')</th>
+                                            <th>@lang('lang.date')</th>
+                                            <th>@lang('lang.created_by')</th>
+                                            <th>@lang('lang.supplier')</th>
+                                            <th class="sum">@lang('lang.value')</th>
+                                            <th>@lang('lang.status')</th>
+                                            {{-- <th class="notexport">@lang('lang.action')</th> --}}
+                                        </tr>
+                                    </thead>
 
-                    {{-- <td>
+                                    <tbody>
+                                        @foreach ($purchase_orders as $purchase_order)
+                                            <tr>
+                                                <td>{{ $purchase_order->transaction->po_no }}</td>
+                                                <td> {{ @format_date($purchase_order->transaction->transaction_date) }}
+                                                </td>
+
+                                                <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}
+                                                </td>
+
+                                                <td>
+                                                    @if (!empty($purchase_order->transaction->supplier))
+                                                        {{ $purchase_order->transaction->supplier->name }}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    {{ @num_format($purchase_order->transaction->final_total) }}
+                                                </td>
+                                                <td>
+                                                    {{ $purchase_order->transaction->status }}
+                                                </td>
+
+                                                {{-- <td>
 
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -101,22 +133,27 @@
                             </ul>
                         </div>
                     </td> --}}
-                </tr>
+                                            </tr>
+                                        @endforeach
+                                        {{-- <tfoot>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot> --}}
+                                    </tbody>
+                                    <tfoot>
 
-                @endforeach
-                <tfoot>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </tbody>
-            <tfoot>
+                                    </tfoot>
+                                </table>
 
-            </tfoot>
-        </table>
-
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

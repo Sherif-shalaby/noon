@@ -637,3 +637,47 @@ body {
 .card-deck .card:hover .card-title {
     color: white;
 }
+
+.wrapper1,
+.wrapper2 {
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
+.wrapper1 {
+    height: 20px;
+}
+
+.div1 {
+    height: 20px;
+}
+
+.div2 {
+    overflow: auto;
+    width: fit-content;
+}
+
+.custom-tooltip {
+    position: relative;
+    cursor: pointer;
+}
+
+.custom-tooltip::before {
+    content: attr(data-tooltip);
+    display: none;
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    top: 120%;
+    left: 0%;
+    font-size: 10px;
+    font-weight: 700;
+    z-index: 999;
+    /* transform: translateX(-50%); */
+}
+
+.custom-tooltip:hover::before {
+    display: block;
+}

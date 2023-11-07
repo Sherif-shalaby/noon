@@ -442,32 +442,27 @@
                                 //                            // Count the remaining elements
                                 //                            $count = $filteredCollection->count();
                             @endphp
-                            <div class="col-md-12 text-center mt-1 ">
-                                <h4>@lang('lang.items_count'):
+                            <div class="col-md-12 text-center mt-1 d-flex justify-content-center">
+                                <h4 class="mx-5">@lang('lang.items_count'):
                                     <span class="items_count_span"
-                                        style="margin-right: 15px;">{{ $this->countItems() }}</span>
+                                        style="margin-right: 5px;">{{ $this->countItems() }}</span>
                                 </h4>
-                                <h4>
+                                <h4 class=" mx-5">
                                     @lang('lang.units_count'): <span class="items_quantity_span"
-                                        style="margin-right: 15px;">{{ $this->countUnitsItems() }}</span>
+                                        style="margin-right: 5px;">{{ $this->countUnitsItems() }}</span>
                                 </h4>
-                                <h4>
+                                <h4 class="mx-5">
                                     @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                        style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
+                                        style="margin-right: 5px;">{{ $this->total_quantity() }}</span>
                                 </h4>
-                            </div>
-
-                            <div class="col-md-12 mb-3">
-                                <div class="col-md-3 offset-md-8 text-right">
-                                    <h3> @lang('lang.total') :
-                                        @if ($paying_currency == 2)
-                                            {{ $this->sum_dollar_total_cost() ?? 0.0 }}
-                                        @else
-                                            {{ $this->sum_total_cost() ?? 0.0 }}
-                                        @endif
-                                        <span class="final_total_span"></span>
-                                    </h3>
-                                </div>
+                                <h4 class="mx-5"> @lang('lang.total') :
+                                    @if ($paying_currency == 2)
+                                        {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                    @else
+                                        {{ $this->sum_total_cost() ?? 0.0 }}
+                                    @endif
+                                    <span class="final_total_span"></span>
+                                </h4>
                             </div>
 
                             <div

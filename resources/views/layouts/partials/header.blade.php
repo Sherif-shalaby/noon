@@ -1380,7 +1380,7 @@
     })
     $('.purchases-order-button').on('click', function(e) {
         e.preventDefault();
-        let url = "{{ route('purchase_order.create') }}"
+        let url = "{{ route('purchase_order.index') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

@@ -2,51 +2,7 @@
 @section('title', __('lang.products'))
 
 @section('breadcrumbbar')
-    <style>
-        .wrapper1,
-        .wrapper2 {
-            overflow-x: scroll;
-            overflow-y: hidden;
-        }
 
-        .wrapper1 {
-            height: 20px;
-        }
-
-        .div1 {
-            height: 20px;
-        }
-
-        .div2 {
-            overflow: auto;
-            width: fit-content;
-        }
-
-        .custom-tooltip {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .custom-tooltip::before {
-            content: attr(data-tooltip);
-            display: none;
-            position: absolute;
-            background-color: #333;
-            color: #fff;
-            padding: 5px;
-            border-radius: 3px;
-            top: 120%;
-            left: 0%;
-            font-size: 10px;
-            font-weight: 700;
-            z-index: 999;
-            /* transform: translateX(-50%); */
-        }
-
-        .custom-tooltip:hover::before {
-            display: block;
-        }
-    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -392,30 +348,6 @@
 
 <div class="view_modal no-print">@endsection
     @push('javascripts')
-        <script>
-            // Select both elements by their class names
-            var div1 = document.querySelector('.div1');
-            var div2 = document.querySelector('.div2');
-
-            // Get the width of the "div2" element
-            var div2Width = div2.offsetWidth;
-
-            // Set the width of "div1" to the width of "div2"
-            div1.style.width = div2Width + 'px';
-
-            document.addEventListener("DOMContentLoaded", function() {
-                var wrapper1 = document.querySelector(".wrapper1");
-                var wrapper2 = document.querySelector(".wrapper2");
-
-                wrapper1.addEventListener("scroll", function() {
-                    wrapper2.scrollLeft = wrapper1.scrollLeft;
-                });
-
-                wrapper2.addEventListener("scroll", function() {
-                    wrapper1.scrollLeft = wrapper2.scrollLeft;
-                });
-            });
-        </script>
         <script src="{{ asset('js/product/product.js') }}"></script>
         <script>
             $(document).ready(function() {
