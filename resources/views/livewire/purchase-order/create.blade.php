@@ -141,13 +141,13 @@
                                                 <th style="width: 10%">@lang('lang.purchase_price')$</th>
                                                 {{-- <th style="width: 20%">@lang('lang.selling_price')$</th> --}}
                                                 {{-- <th style="width: 10%">@lang('lang.sub_total')$</th>  --}}
-                                                <th style="width: 10%">@lang('lang.purchase_price')  </th>
+                                                <th style="width: 10%">@lang('lang.dinar_purchase_price')  </th>
                                                 {{-- <th style="width: 20%">@lang('lang.selling_price') </th> --}}
                                                 {{-- <th style="width: 10%">@lang('lang.sub_total')</th> --}}
                                                 {{-- <th style="width: 10%">@lang('lang.cost')$</th>  --}}
-                                                <th style="width: 10%">@lang('lang.total_cost')$</th>
+                                                <th style="width: 10%">@lang('lang.dollar_total_prices')</th>
                                                 {{-- <th style="width: 10%">@lang('lang.cost') </th>  --}}
-                                                <th style="width: 10%">@lang('lang.total_cost')</th>
+                                                <th style="width: 10%">@lang('lang.dinar_total_prices')</th>
                                                 <th style="width: 10%">@lang('lang.current_stock')</th>
                                                 <th style="width: 10%">@lang('lang.delete')</th>
                                             </tr>
