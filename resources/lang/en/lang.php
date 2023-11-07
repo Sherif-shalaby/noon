@@ -564,6 +564,16 @@ return [
     'deliveryman'=>'Delivery Man',
     'delivery'=>'Delivery',
     'pending_orders'=>'Pending Orders',
+    'supplier_details'=>'Supplier Details',
+    'statement_of_account'=>'Statement Of Account',
+    'info'=>'Info',
+    'clear_filter'=>'Clear Filters',
+    'debits'=>'Debits',
+    'total_purchase'=>'Total Purchase',
+    'card_number'=>'Card Number',
+    'month'=>'Month',
+    'year'=>'Year',
+    'mobile'=>'Mobile'
 ];
 
 

@@ -583,5 +583,15 @@ return array(
     'deliveryman'=>'رجل التوصيل',
     'delivery'=>'التوصيل',
     'pending_orders'=>'طلبات معلقة',
+    'supplier_details'=>'تفاصيل المورد',
+    'statement_of_account'=>'كشف حساب',
+    'info'=>'معلومات',
+    'clear_filter'=>'مسح عوامل التصفية',
+    'debits'=>'متأخرات',
+    'total_purchase'=>'اجمالى المشتريات',
+    'card_number'=>'رقم الفيزا',
+    'month'=>'الشهر',
+    'year'=>'السنة',
+    'mobile'=>'رقم التليفون'
 );
 
