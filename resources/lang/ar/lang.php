@@ -604,5 +604,6 @@ return array(
     'receiver_store' => 'المتجر المستقبل',
     'sender_store' => 'المتجر المرسل',
     'show_initial_balance' => 'عرض رصيد أولي',
+    'clear_filters' => 'مسح عوامل التصفية',
 );
 

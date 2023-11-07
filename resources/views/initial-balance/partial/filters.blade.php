@@ -45,8 +45,8 @@
             </div>
             <div class="col-2">
                 <div class="form-group">
-                    <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
-                        <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
+                    <button type="button" name="submit" class="btn btn-danger width-100" title="search" wire:click="clear_filters">
+                         {{ __('lang.clear_filters') }}</button>
                 </div>
             </div>
         </div>
