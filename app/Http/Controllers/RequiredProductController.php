@@ -49,6 +49,7 @@ class RequiredProductController extends Controller
            // $employee_products = $employee_products->latest()->get();
            $requiredProducts = $requiredProducts->with('stores','branch','supplier','employee','product')->orderBy("created_at","asc")->get();
        }
+    //    dd($requiredProducts);
         return view('purchase_order.required_products.index',
                     compact('requiredProducts','stores','suppliers','products'));
     }
