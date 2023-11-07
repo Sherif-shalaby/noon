@@ -141,4 +141,12 @@ class Index extends Component
             'cash' => __('lang.cash'),
         ];
     }
+    public function clear_filters(){
+        $this->product_symbol = null;
+        $this->product_name = null;
+        $this->created_by = null;
+        $this->supplier_id = null;
+        $this->product_sku = null;
+        $this->stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])->orderBy('created_at', 'desc')->get();
+    }
 }
