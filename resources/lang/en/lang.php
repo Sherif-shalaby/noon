@@ -574,7 +574,7 @@ return [
     'card_number'=>'Card Number',
     'month'=>'Month',
     'year'=>'Year',
-    'mobile'=>'Mobile'
+    'mobile'=>'Mobile',
     'add_transfer' => 'Add Transfer',
     'receiver_store' => 'Receiver Store',
     'sender_store' => 'Sender Store',
