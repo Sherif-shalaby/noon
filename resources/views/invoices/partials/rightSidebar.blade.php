@@ -137,7 +137,7 @@
                         ]) !!}
                     </div>
                 </div>
-                @if ($this->checkRepresentativeUser())
+                @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car)
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('deliveryman_id', __('lang.deliveryman') . ':*', []) !!}
@@ -158,11 +158,21 @@
                 </div>
                 @endif
             </div>
-       
+
             <div class="row hide-print">
+                @if($this->checkRepresentativeUser() && $reprsenative_sell_car)
+                    <div class="col-md-3">
+                        <button data-method="cash" style="width: 100%" type="button"
+                                class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
+                                class="fa-solid fa-money-bill"></i>
+                            @lang('lang.pay')</button>
+                        {{--                            @include('invoices.partials.payment') --}}
+                    </div>
+                @endif
                 {{--                <div class="me-auto"> --}}
                 {{--                    <div class="btns-control row"> --}}
                 {{-- ++++++++++++++++++++++ زرار الدفع ++++++++++++++++++++ --}}
+
                 @if (!$this->checkRepresentativeUser())
                     <div class="col-md-3">
                         <button data-method="cash" style="width: 100%" type="button"

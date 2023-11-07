@@ -560,6 +560,7 @@ return [
     'basic_unit_for_import_product'=>'Basic Unit For Import Product',
     'extra_quantity'=>'Extra Quantity',
     'contact_number'=>'Contact Number',
+    'units_count' => 'Units Count',
     'delivery_cost'=>'Delivery Cost',
     'deliveryman'=>'Delivery Man',
     'delivery'=>'Delivery',
@@ -574,6 +575,12 @@ return [
     'month'=>'Month',
     'year'=>'Year',
     'mobile'=>'Mobile'
+    'add_transfer' => 'Add Transfer',
+    'receiver_store' => 'Receiver Store',
+    'sender_store' => 'Sender Store',
+    'has_store_pos' => 'Has Store Pos',
+    'show_initial_balance' => 'Show Initial Balance',
+    'clear_filters' => 'Clear Filters',
 ];
 
 
