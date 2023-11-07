@@ -214,7 +214,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        var modelEl = $('.modal-store');
+        var modelEl = $('.modal-salary');
 
         modelEl.addClass(modelEl.attr('data-animate-in'));
 

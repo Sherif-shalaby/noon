@@ -607,4 +607,6 @@ return array(
     'sender_store' => 'المتجر المرسل',
     'has_store_pos' => 'لديها نقطه بيع',
     'show_initial_balance' => 'عرض رصيد أولي',
+    'more_details' => 'تفاصيل أخرى',
+
 );

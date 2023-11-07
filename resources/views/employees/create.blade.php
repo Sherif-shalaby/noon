@@ -1,12 +1,32 @@
 @extends('layouts.app')
 @section('title', __('lang.jobs'))
 @section('breadcrumbbar')
+    <style>
+        .accordion-item {
+            background-color: transparent
+        }
+
+        .accordion-button {
+            padding: 8px !important;
+            width: 300px !important;
+            background-color: #596fd7 !important;
+            color: white !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between
+        }
+
+        .accordion-content {
+            display: none;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
                 class="d-flex align-items-center justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
-                    <h4 class="page-title c">
+                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         @lang('lang.add_employee')</h4>
                     <div class="breadcrumb-list">
                         <ul
@@ -52,62 +72,13 @@
                         <div class="card-body">
                             <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {{-- ////////////////////// employee's products ////////////////////// --}}
-                                <div class="col-md-12 text-center">
-                                    <h3>@lang('lang.employee_products')</h3>
-                                </div>
                                 {{-- ======== Filters ======== --}}
-                                <div class="col-lg-12">
-                                    <div class="container-fluid">
-                                        @include('employees.partials.filters')
-                                    </div>
-                                </div>
                                 <div class="col-sm-12">
-                                    <form class="form-group" id="productForm" action="{{ route('employees.store') }}"
+                                    <form class="form-group mb-1" id="productForm" action="{{ route('employees.store') }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
-                                        <div class="row mt-4 m-auto" style="max-height: 70vh;overflow: scroll">
-                                            {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
-                                            <table id="productTable"
-                                                class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        {{-- "select_all" checkbox --}}
-                                                        <th> <input type="checkbox" id="select_all_ids" /> </th>
-                                                        <th>@lang('lang.product_name')</th>
-                                                        <th>@lang('lang.sku')</th>
-                                                        <th>@lang('lang.category')</th>
-                                                        <th>@lang('lang.subcategories_name')</th>
-                                                        <th>@lang('lang.brand')</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($employee_products as $index => $product)
-                                                        <tr>
-                                                            <td>{{ $index + 1 }}</td>
-                                                            {{-- "select" checkbox --}}
-                                                            <td>
-                                                                {{-- get "all checked products" --}}
-                                                                <input type="checkbox" name="ids[]" class="checkbox_ids"
-                                                                    value="{{ $product->id }}" />
-                                                            </td>
-                                                            <td>{{ $product->name }}</td>
-                                                            <td>{{ $product->sku }}</td>
-                                                            <td>{{ $product->category->name ?? '' }}</td>
-                                                            <td>
-                                                                {{ $product->subCategory1->name ?? '' }} <br>
-                                                                {{ $product->subCategory2->name ?? '' }} <br>
-                                                                {{ $product->subCategory3->name ?? '' }}
-                                                            </td>
-                                                            <td>{{ !empty($product->brand) ? $product->brand->name : '' }}
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <br />
+
+
                                         {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                         <div
                                             class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -186,32 +157,7 @@
                                                     ]) !!}
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                <label style="font-size: 12px;font-weight: 500;"
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="date_of_start_working">@lang('lang.date_of_start_working')</label>
-                                                <div class="input-wrapper">
 
-                                                    <input type="date"
-                                                        class="form-control initial-balance-input width-full"
-                                                        name="date_of_start_working" id="date_of_start_working"
-                                                        placeholder="@lang('lang.date_of_start_working')">
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                <label style="font-size: 12px;font-weight: 500;"
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="date_of_birth">@lang('lang.date_of_birth')</label>
-                                                <div class="input-wrapper">
-
-                                                    <input type="date"
-                                                        class="form-control initial-balance-input width-full"
-                                                        name="date_of_birth" id="date_of_birth"
-                                                        placeholder="@lang('lang.date_of_birth')">
-                                                </div>
-                                            </div>
                                             <div
                                                 class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                 <label style="font-size: 12px;font-weight: 500;"
@@ -232,31 +178,146 @@
                                                     for="mobile">@lang('lang.phone_number')*</label>
                                                 <div class="input-wrapper">
                                                     <input type="mobile"
-                                                        class="form-control initial-balance-input width-full"
-                                                        name="mobile" id="mobile" placeholder="@lang('lang.mobile')">
+                                                        class="form-control initial-balance-input width-full" name="mobile"
+                                                        id="mobile" placeholder="@lang('lang.mobile')">
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                <label style="font-size: 12px;font-weight: 500;"
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="upload_files">@lang('lang.upload_files')</label>
-                                                <div class="input-wrapper">
-                                                    {!! Form::file('upload_files[]', ['class' => 'form-control initial-balance-input width-full', 'multiple']) !!}
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                <label style="font-size: 12px;font-weight: 500;"
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="photo">@lang('lang.profile_photo')</label>
-                                                <div class="input-wrapper">
 
-                                                    <input type="file" name="photo" id="photo"
-                                                        class="form-control initial-balance-input width-full" />
+                                        </div>
+                                        <div class="accordion mb-1">
+                                            <div class="accordion-item" style="border: none">
+                                                <h2 class="accordion-header d-flex justify-content-end">
+                                                    <div class="accordion-button"
+                                                        onclick="toggleAccordion(`collapseOneEmployeesOtherDetails`)">
+                                                        <span class="collapseOneEmployeesOtherDetails mx-2">
+                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                        </span>
+                                                        @lang('lang.more_details')
+                                                    </div>
+                                                </h2>
+                                                <div id="collapseOneEmployeesOtherDetails" class="accordion-content">
+                                                    <div class="accordion-body p-0">
+                                                        <div
+                                                            class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                            <div
+                                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                <label style="font-size: 12px;font-weight: 500;"
+                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    for="date_of_start_working">@lang('lang.date_of_start_working')</label>
+                                                                <div class="input-wrapper">
+
+                                                                    <input type="date"
+                                                                        class="form-control initial-balance-input width-full"
+                                                                        name="date_of_start_working"
+                                                                        id="date_of_start_working"
+                                                                        placeholder="@lang('lang.date_of_start_working')">
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                <label style="font-size: 12px;font-weight: 500;"
+                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    for="date_of_birth">@lang('lang.date_of_birth')</label>
+                                                                <div class="input-wrapper">
+
+                                                                    <input type="date"
+                                                                        class="form-control initial-balance-input width-full"
+                                                                        name="date_of_birth" id="date_of_birth"
+                                                                        placeholder="@lang('lang.date_of_birth')">
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                <label style="font-size: 12px;font-weight: 500;"
+                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    for="upload_files">@lang('lang.upload_files')</label>
+                                                                <div class="input-wrapper">
+                                                                    {!! Form::file('upload_files[]', ['class' => 'form-control initial-balance-input width-full', 'multiple']) !!}
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                <label style="font-size: 12px;font-weight: 500;"
+                                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                                    for="photo">@lang('lang.profile_photo')</label>
+                                                                <div class="input-wrapper">
+
+                                                                    <input type="file" name="photo" id="photo"
+                                                                        class="form-control initial-balance-input width-full" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
+                                        <div class="accordion mb-1">
+                                            <div class="accordion-item" style="border: none">
+                                                <h2 class="accordion-header d-flex justify-content-end">
+                                                    <div class="accordion-button"
+                                                        onclick="toggleAccordion(`collapseOneEmployeesProducts`)">
+                                                        <span class="collapseOneEmployeesProducts mx-2">
+                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                        </span>
+                                                        @lang('lang.employee_products')
+                                                    </div>
+                                                </h2>
+                                                <div id="collapseOneEmployeesProducts" class="accordion-content">
+                                                    <div class="accordion-body p-0">
+                                                        @include('employees.partials.filters')
+                                                        <div class="row mt-4 m-auto"
+                                                            style="max-height: 70vh;overflow: scroll">
+                                                            {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
+                                                            <table id="productTable"
+                                                                class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        {{-- "select_all" checkbox --}}
+                                                                        <th> <input type="checkbox" id="select_all_ids" />
+                                                                        </th>
+                                                                        <th>@lang('lang.product_name')</th>
+                                                                        <th>@lang('lang.sku')</th>
+                                                                        <th>@lang('lang.category')</th>
+                                                                        <th>@lang('lang.subcategories_name')</th>
+                                                                        <th>@lang('lang.brand')</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($employee_products as $index => $product)
+                                                                        <tr>
+                                                                            <td>{{ $index + 1 }}</td>
+                                                                            {{-- "select" checkbox --}}
+                                                                            <td>
+                                                                                {{-- get "all checked products" --}}
+                                                                                <input type="checkbox" name="ids[]"
+                                                                                    class="checkbox_ids"
+                                                                                    value="{{ $product->id }}" />
+                                                                            </td>
+                                                                            <td>{{ $product->name }}</td>
+                                                                            <td>{{ $product->sku }}</td>
+                                                                            <td>{{ $product->category->name ?? '' }}</td>
+                                                                            <td>
+                                                                                {{ $product->subCategory1->name ?? '' }}
+                                                                                <br>
+                                                                                {{ $product->subCategory2->name ?? '' }}
+                                                                                <br>
+                                                                                {{ $product->subCategory3->name ?? '' }}
+                                                                            </td>
+                                                                            <td>{{ !empty($product->brand) ? $product->brand->name : '' }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
 
                                         <div
                                             class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -287,11 +348,40 @@
                                                 </div>
                                             @endforeach
                                         </div>
+
+                                        {{-- <div class="accordion mb-1">
+                                            <div class="accordion-item" style="border: none">
+                                                <h2 class="accordion-header d-flex justify-content-end">
+                                                    <div class="accordion-button"
+                                                        onclick="toggleAccordion(`collapseOneEmployeesSalaryDetails`)">
+                                                        <span class="collapseOneEmployeesSalaryDetails mx-2">
+                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                        </span>
+                                                        @lang('lang.salary_details')
+                                                    </div>
+                                                </h2>
+                                                <div id="collapseOneEmployeesSalaryDetails" class="accordion-content">
+                                                    <div class="accordion-body p-0">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> --}}
+
                                         <div
-                                            class="row my-2 mr-3  @if (app()->isLocale('ar')) justify-content-end @endif">
+                                            class="row mb-1 mr-0  @if (app()->isLocale('ar')) justify-content-end @endif">
                                             <!-- Button salary modal -->
-                                            <button type="button" class="btn btn-primary width-fit" data-toggle="modal"
-                                                data-target="#salary_details">
+                                            <button type="button" class="btn btn-primary width-fit"
+                                                style=" padding: 6px;
+                                                        width: 300px;
+                                                        background-color: #596fd7;
+                                                        color: white;
+                                                        border-radius: 6px;
+                                                        cursor: pointer;
+                                                        font-size: 15px;
+                                                        font-weight: 700;
+                                                        text-align: end"
+                                                data-toggle="modal" data-target="#salary_details">
                                                 @lang('lang.salary_details')
                                             </button>
                                             @include('employees.partials.salary_details')
@@ -299,104 +389,129 @@
 
 
                                         {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label class=" d-block text-center "
-                                                    for="working_day_per_week">@lang('lang.select_working_day_per_week')</label>
-                                                <table style="width: 100%"
-                                                    class="@if (app()->isLocale('ar')) dir-rtl @endif">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th class="text-center">@lang('lang.check_in')</th>
-                                                            <th class="text-center">@lang('lang.check_out')</th>
-                                                            <th class="text-center">@lang('lang.evening_shift')</th>
-                                                            <th class="text-center" id="label1" class="hidden">
-                                                                @lang('lang.check_in')</th>
-                                                            <th id="label2" class="hidden text-center">
-                                                                @lang('lang.check_out')</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($week_days as $key => $week_day)
-                                                            <tr>
-                                                                {{-- "working_day_per_week" checkbox --}}
-                                                                <td class="text-center">
-                                                                    <div class="form-group">
-                                                                        <div class="i-checks">
-                                                                            <input
-                                                                                id="working_day_per_week{{ $key }}"
-                                                                                name="working_day_per_week[{{ $key }}]"
-                                                                                type="checkbox" value="1">
-                                                                            <label
-                                                                                for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                {{-- "check_in" inputField --}}
-                                                                <td class="text-center">
-                                                                    {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
-                                                                    {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}"> --}}
-                                                                    <input type="time" class="form-control"
-                                                                        name="check_in[{{ $key }}]"
-                                                                        id="input10{{ $key }}">
-                                                                </td>
-                                                                {{-- "check_out" inputField --}}
-                                                                <td class="text-center">
-                                                                    {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}"> --}}
-                                                                    {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
-                                                                    <input type="time" class="form-control"
-                                                                        name="check_out[{{ $key }}]"
-                                                                        id="input20{{ $key }}">
-                                                                    {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
-                                                                </td>
-                                                                {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
-                                                                <td class="text-center">
-                                                                    <input type="checkbox" class="checkbox-toggle"
-                                                                        id="checkbox2{{ $key }}"
-                                                                        name="evening_shift_checkbox[{{ $key }}]">
-                                                                </td>
-                                                                {{--  "تسجيل الدخول" , "تسجيل الخروج" --}}
-                                                                <td
-                                                                    class="text-center d-flex justify-content-center align-items-center">
-                                                                    <table class="hidden inputFields_evening_shift"
-                                                                        id="inputFields_evening_shift{{ $key }}">
-                                                                        <tr>
-                                                                            {{-- تسجيل الدخول --}}
-                                                                            <td>
-                                                                                {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}"> --}}
-                                                                                <input type="time" class="form-control"
-                                                                                    name="evening_shift_check_in[{{ $key }}]"
-                                                                                    id="input1{{ $key }}">
-                                                                            </td>
-                                                                            {{-- تسجيل الخروج --}}
-                                                                            <td>
-                                                                                {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}"> --}}
-                                                                                <input type="time" class="form-control"
-                                                                                    name="evening_shift_check_out[{{ $key }}]"
-                                                                                    id="input2{{ $key }}">
-                                                                            </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                </td>
-                                                                {{-- <br/>  --}}
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
+                                        <div class="accordion mb-1">
+                                            <div class="accordion-item" style="border: none">
+                                                <h2 class="accordion-header d-flex justify-content-end">
+                                                    <div class="accordion-button"
+                                                        onclick="toggleAccordion(`collapseOneEmployeesWorkDays`)">
+                                                        <span class="collapseOneEmployeesWorkDays mx-2">
+                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                        </span>
+                                                        @lang('lang.select_working_day_per_week')
+                                                    </div>
+                                                </h2>
+                                                <div id="collapseOneEmployeesWorkDays" class="accordion-content">
+                                                    <div class="accordion-body p-0">
+                                                        <table style="width: 100%"
+                                                            class="@if (app()->isLocale('ar')) dir-rtl @endif">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th></th>
+                                                                    <th class="text-center">@lang('lang.check_in')</th>
+                                                                    <th class="text-center">@lang('lang.check_out')</th>
+                                                                    <th class="text-center">@lang('lang.evening_shift')</th>
+                                                                    <th class="text-center" id="label1"
+                                                                        class="hidden">
+                                                                        @lang('lang.check_in')</th>
+                                                                    <th id="label2" class="hidden text-center">
+                                                                        @lang('lang.check_out')</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($week_days as $key => $week_day)
+                                                                    <tr>
+                                                                        {{-- "working_day_per_week" checkbox --}}
+                                                                        <td class="text-center">
+                                                                            <div class="form-group">
+                                                                                <div class="i-checks">
+                                                                                    <input
+                                                                                        id="working_day_per_week{{ $key }}"
+                                                                                        name="working_day_per_week[{{ $key }}]"
+                                                                                        type="checkbox" value="1">
+                                                                                    <label
+                                                                                        for="working_day_per_week{{ $key }}"><strong>{{ $week_day }}</strong></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        {{-- "check_in" inputField --}}
+                                                                        <td class="text-center">
+                                                                            {{-- {!! Form::text('check_in[' . $key . ']', null, ['class' => 'form-control input-md check_in time_picker']) !!}  --}}
+                                                                            {{-- <input type="datetime-local" class="form-control" name="check_in[{{ $key }}]" id="input10{{ $key }}"> --}}
+                                                                            <input type="time" class="form-control"
+                                                                                name="check_in[{{ $key }}]"
+                                                                                id="input10{{ $key }}">
+                                                                        </td>
+                                                                        {{-- "check_out" inputField --}}
+                                                                        <td class="text-center">
+                                                                            {{-- <input type="datetime-local" class="form-control" name="check_out[{{ $key }}]" id="input20{{ $key }}"> --}}
+                                                                            {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
+                                                                            <input type="time" class="form-control"
+                                                                                name="check_out[{{ $key }}]"
+                                                                                id="input20{{ $key }}">
+                                                                            {{-- {!! Form::text('check_out[' . $key . ']', null, ['class' => 'form-control input-md check_out time_picker']) !!} --}}
+                                                                        </td>
+                                                                        {{-- ++++++++++++++++++ Evening Shift +++++++++++++++ --}}
+                                                                        <td class="text-center">
+                                                                            <input type="checkbox" class="checkbox-toggle"
+                                                                                id="checkbox2{{ $key }}"
+                                                                                name="evening_shift_checkbox[{{ $key }}]">
+                                                                        </td>
+                                                                        {{--  "تسجيل الدخول" , "تسجيل الخروج" --}}
+                                                                        <td
+                                                                            class="text-center d-flex justify-content-center align-items-center">
+                                                                            <table class="hidden inputFields_evening_shift"
+                                                                                id="inputFields_evening_shift{{ $key }}">
+                                                                                <tr>
+                                                                                    {{-- تسجيل الدخول --}}
+                                                                                    <td>
+                                                                                        {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_in[{{ $key }}]" id="input1{{ $key }}"> --}}
+                                                                                        <input type="time"
+                                                                                            class="form-control"
+                                                                                            name="evening_shift_check_in[{{ $key }}]"
+                                                                                            id="input1{{ $key }}">
+                                                                                    </td>
+                                                                                    {{-- تسجيل الخروج --}}
+                                                                                    <td>
+                                                                                        {{-- <input type="datetime-local" class="form-control" name="evening_shift_check_out[{{ $key }}]" id="input2{{ $key }}"> --}}
+                                                                                        <input type="time"
+                                                                                            class="form-control"
+                                                                                            name="evening_shift_check_out[{{ $key }}]"
+                                                                                            id="input2{{ $key }}">
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                        {{-- <br/>  --}}
+                                                                    </tr>
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <br>
-                                        <br>
                                         {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
-                                        <div class="row">
-                                            <div class="col-md-12 text-center">
-                                                <h3>@lang('lang.user_rights')</h3>
-                                            </div>
-                                            <div class="col-md-12">
-                                                @include('employees.partials.permission')
+                                        <div class="accordion mb-1">
+                                            <div class="accordion-item" style="border: none">
+                                                <h2 class="accordion-header d-flex justify-content-end">
+                                                    <div class="accordion-button"
+                                                        onclick="toggleAccordion(`collapseOneEmployeesRights`)">
+                                                        <span class="collapseOneEmployeesRights mx-2">
+                                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                                        </span>
+                                                        @lang('lang.user_rights')
+                                                    </div>
+                                                </h2>
+                                                <div id="collapseOneEmployeesRights" class="accordion-content">
+                                                    <div class="accordion-body p-0">
+                                                        @include('employees.partials.permission')
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+
+
+
 
                                         {{-- +++++++++++++ save Button +++++++++++ --}}
                                         <div class="row mt-4">
