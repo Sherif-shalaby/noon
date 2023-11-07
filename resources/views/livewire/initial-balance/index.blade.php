@@ -4,6 +4,13 @@
             <div class="card-header d-flex align-items-center">
                 <h3 class="print-title">@lang('lang.initial_balance')</h3>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        @include('initial-balance.partial.filters')
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="datatable-buttons" class="table dataTable">
@@ -90,5 +97,20 @@
         window.addEventListener('closeAddPaymentModal', event => {
             $("#addPayment").modal('hide');
         })
+
+        $(document).ready(function() {
+            $('select').on('change', function(e) {
+
+                var name = $(this).data('name');
+                var index = $(this).data('index');
+                var select2 = $(this); // Save a reference to $(this)
+                Livewire.emit('listenerReferenceHere',{
+                    var1 :name,
+                    var2 :select2.select2("val") ,
+                    var3:index
+                });
+
+            });
+        });
     </script>
 @endpush
