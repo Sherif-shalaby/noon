@@ -1349,7 +1349,9 @@ class Create extends Component
             {
                 // Product has no stock transaction
                 // throw new \Exception(__('Product has no stock transaction'));
-                dd("Product has no stock transaction");
+                // dd("Product has no stock transaction");
+                // $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'Product has no stock transaction']);
+                // return $this->redirect('/invoices/create');
             }
             $stockTransactionId = $stock->stock_transaction_id;
             $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
