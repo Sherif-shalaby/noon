@@ -608,7 +608,7 @@ return array(
     'card_number'=>'رقم الفيزا',
     'month'=>'الشهر',
     'year'=>'السنة',
-    'mobile'=>'رقم التليفون'
+    'mobile'=>'رقم التليفون',
     'has_store_pos' => 'لديها نقطه بيع',
     'add_transfer' => 'أضف تحويل',
     'receiver_store' => 'المتجر المستقبل',
