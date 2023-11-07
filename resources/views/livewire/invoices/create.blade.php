@@ -497,7 +497,7 @@
                 window.location.href = "{{ route('home') }}";
             });
         });
-        // @@endif
+        // @endif
         $(document).ready(function() {
             $('select').on('change', function(e) {
 
