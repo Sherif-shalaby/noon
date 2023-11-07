@@ -217,7 +217,7 @@
                                                 <div class="input-wrapper">
 
                                                     {!! Form::select('store_id[]', $stores, null, [
-                                                        'class' => 'form-control selectpicker',
+                                                        'class' => 'form-control select2',
                                                         'multiple',
                                                         'data-live-search' => 'true',
                                                         'id' => 'store_id',
@@ -485,7 +485,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        {{-- . --}}
                                         {{-- +++++++++++++ save Button +++++++++++ --}}
                                         <div class="row mt-4">
                                             <div class="col-sm-12">
