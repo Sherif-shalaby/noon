@@ -605,5 +605,7 @@ return array(
     'sender_store' => 'المتجر المرسل',
     'show_initial_balance' => 'عرض رصيد أولي',
     'clear_filters' => 'مسح عوامل التصفية',
+    'import_stock' => 'اضافه مخزون',
+    'export_stock' => 'تصدير مخزون',
 );
 

@@ -269,7 +269,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
 
     // Transfer
-    Route::view('transfer/create/{id}','transfer.create')->name('transfer.create');
+    Route::view('transfer/import/{id}','transfer.import')->name('transfer.import');
+    Route::view('transfer/export/{id}','transfer.export')->name('transfer.export');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

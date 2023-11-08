@@ -6,8 +6,8 @@ use App\Models\AddStockLine;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductStore;
-use App\Models\Store;
 use App\Models\SellCar;
+use App\Models\Store;
 use App\Models\System;
 use App\Models\TransferLine;
 use App\Models\TransferTransaction;
@@ -19,34 +19,27 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
-class Create extends Component
+class Export extends Component
 {
     public $sell_car_id, $store_id, $receiver_store_id, $sender_store_id, $stores, $products , $items = [], $searchProduct,
-        $search_by_product_symbol, $notes, $files;
+        $search_by_product_symbol, $notes, $files, $sender_store_name;
 
-    protected $listeners = ['listenerReferenceHere'];
-
-    public function listenerReferenceHere($data)
-    {
-        if(isset($data['var1'])) {
-            $this->{$data['var1']} = (int)$data['var2'];
-        }
-        if (isset($data['var1']) && $data['var1'] == "sender_store_id") {
-            $this->changeAllProducts();
-        }
-    }
 
     public function mount($id){
         $this->sell_car_id = $id;
-        $this->receiver_store_id = $this->sell_car_id;
+        $sell_car = SellCar::find($this->sell_car_id);
+        $this->sender_store_id = $sell_car->branch->stores->first()->id;
+//        dd($this->sender_store_id);
+        $this->sender_store_name = $sell_car->car_name;
         $this->stores = Store::pluck('name', 'id');
-        $this->sender_store_id =  key(reset($this->stores));
+        $this->receiver_store_id =  key(reset($this->stores));
         if (!empty($this->sender_store_id)) {
-            $products_store = ProductStore::where('store_id', $this->sender_store_id)->pluck('product_id');
-            $this->products = Product::whereIn('id', $products_store)->get();
-        } else {
-            $this->products = Product::get();
+//            $products_store = ProductStore::where('store_id', $this->sender_store_id)->pluck('product_id');
+            $this->products = $sell_car->branch->stores->first()->products;
         }
+//        dd($this->products);
+        $this->dispatchBrowserEvent('initialize-select2');
+
     }
 
     public function updating($propertyName, $value)
@@ -72,18 +65,20 @@ class Create extends Component
         return true;
     }
 
+    protected $listeners = ['listenerReferenceHere'];
+
+    public function listenerReferenceHere($data)
+    {
+        if(isset($data['var1'])) {
+            $this->{$data['var1']} = (int)$data['var2'];
+        }
+        if (isset($data['var1']) && $data['var1'] == "sender_store_id") {
+            $this->changeAllProducts();
+        }
+    }
+
     public function render()
     {
-        if(!empty($this->sell_car_id)){
-            $sell_car = SellCar::find($this->sell_car_id);
-            $car_stores = $sell_car->branch->stores()->pluck('name', 'id');
-//            dd( );
-            $this->receiver_store_id = key(reset($car_stores));
-        }
-        else{
-            $car_stores = Store::pluck('name', 'id');
-        }
-
         $departments = Category::get();
         $search_result = '';
         if (!empty($this->search_by_product_symbol)){
@@ -118,7 +113,9 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
-        return view('livewire.transfer.create',compact('car_stores','departments','search_result'));
+        $this->dispatchBrowserEvent('initialize-select2');
+
+        return view('livewire.transfer.export',compact('departments','search_result'));
     }
 
     public function store(){
@@ -172,7 +169,7 @@ class Create extends Component
         }
         catch (\Exception $e) {
 //            dd($e);
-        Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'lang.something_went_wrongs',]);
 
         }
@@ -427,6 +424,12 @@ class Create extends Component
                     unset($this->items[$key]);
                 }
             }
+        }
+        if (!empty($this->sender_store_id)) {
+            $products_store = ProductStore::where('store_id', $this->sender_store_id)->pluck('product_id');
+            $this->products = Product::whereIn('id', $products_store)->get();
+        } else {
+            $this->products = Product::get();
         }
     }
 

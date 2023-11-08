@@ -100,11 +100,34 @@ class Create extends Component
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if(empty($this->store_pos)){
             $this->dispatchBrowserEvent('NoUserPos');
-
         }
+
         $this->store_pos_id = array_key_first($this->store_pos);
+        $store_pos = StorePos::find($this->store_pos_id);
+        if(empty($store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+        }
+        if(!empty($store_pos)){
+//            $this->dispatchBrowserEvent('NoUserPos');
+            $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
+            $branch = $store_pos->user->employee->branch;
+        }
+        if(empty($this->stores)){
+            $this->stores = Store::getDropdown();
+        }
+//        dd($this->stores);
+        $this->store_id = array_key_first($this->stores);
+        $this->changeAllProducts();
+
+        if(!empty($branch)){
+            if( $branch->type == 'sell_car' ){
+                $this->reprsenative_sell_car = true;
+            }
+        }
         $this->client_id = 1;
         $this->payment_status = 'paid';
+        $this->dispatchBrowserEvent('initialize-select2');
+
     }
 
     public function updated($propertyName)
@@ -131,23 +154,6 @@ class Create extends Component
 
     public function render()
     {
-        $store_pos = StorePos::find($this->store_pos_id);
-        if(empty($store_pos)){
-            $this->dispatchBrowserEvent('NoUserPos');
-        }
-        if(!empty($store_pos)){
-            $this->dispatchBrowserEvent('NoUserPos');
-            $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
-            $branch = $store_pos->user->employee->branch;
-        }
-        if(empty($this->stores)){
-            $this->stores = Store::getDropdown();
-        }
-        if(!empty($branch)){
-            if( $branch->type == 'sell_car' ){
-                $this->reprsenative_sell_car = true;
-            }
-        }
         $departments = Category::get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
@@ -189,7 +195,7 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
-        $this->draft_transactions = TransactionSellLine::where('status', 'draft')->get();
+        $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at','desc')->get();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.invoices.create', compact(
             'departments',
