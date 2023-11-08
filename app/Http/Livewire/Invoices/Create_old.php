@@ -1352,7 +1352,7 @@ class Create extends Component
                 return $this->redirect('/invoices/create');
 
             }
-            
+
             $stockTransactionId = $stock->stock_transaction_id;
             $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
             $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();

@@ -138,68 +138,6 @@ class RequiredProductController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-        // try
-        // {
-        //     DB::beginTransaction();
-
-        //     for ($i = 0; $i < count($employeeIds); $i++)
-        //     {
-        //         // =============================== PurchaseOrderTransaction ===============================
-        //         // Create a new PurchaseOrderTransaction instance and populate it with data from the request
-        //         $purchaseOrderTransaction = new PurchaseOrderTransaction();
-        //         // $purchaseOrderTransaction->employee_id = $employeeIds[$i];
-        //         $purchaseOrderTransaction->order_date = isset($orderDates[$i]) ? $orderDates[$i] : now();
-        //         $purchaseOrderTransaction->supplier_id = $supplierIds[$i];
-        //         $purchaseOrderTransaction->grand_total = 0;
-        //         $purchaseOrderTransaction->final_total = 0;
-        //         $purchaseOrderTransaction->type = "purchase_order";
-        //         $purchaseOrderTransaction->status = "final";
-        //         $purchaseOrderTransaction->transaction_date = now(); // Add missing fields
-        //         $purchaseOrderTransaction->details = "";
-        //         $purchaseOrderTransaction->store_id = $storeIds[$i]; // Add missing fields
-        //         $purchaseOrderTransaction->created_by = auth()->user()->id; // Add missing fields
-        //         // $purchaseOrderTransaction->purchase_price = $purchase_prices[$i]; // Add missing fields
-        //         // $purchaseOrderTransaction->dollar_purchase_price = $dollar_purchase_prices[$i]; // Add missing fields
-        //         // $purchaseOrderTransaction->required_quantity = $required_quantities[$i]; // Add missing fields
-        //         $purchaseOrderTransaction->save();
-        //         // =============================== PurchaseOrderTransaction ===============================
-
-        //     }
-
-        //     DB::commit();
-        //     // Loop through each product and create a new PurchaseOrderLine instance for each
-        //     // for ($i = 0; $i < count($request['product_id']); $i++)
-        //     // {
-        //     //     $purchaseOrderLine = new PurchaseOrderLine();
-        //     //     $purchaseOrderLine->product_id = $request['product_id'][$i];
-        //     //     $purchaseOrderLine->quantity = $request['quantity'][$i];
-        //     //     $purchaseOrderLine->purchase_price = $request['purchase_price'][$i];
-        //     //     $purchaseOrderLine->purchase_price_dollar = $request['purchase_price_dollar'][$i];
-        //     //     $purchaseOrderLine->sub_total = $request['sub_total'][$i];
-        //     //     // Set the purchase_transaction_id to the retrieved transaction ID
-        //     //     $purchaseOrderLine->purchase_order_transaction_id = $transactionId;
-        //     //     $purchaseOrderLine->save();
-        //     //     // Push the purchase order line to the array
-        //     // }
-        //     // // Now, you can update the grand_total and details of the PurchaseOrderTransaction
-        //     // $purchaseOrderTransaction->grand_total = $request['total_subtotal'];
-        //     // $purchaseOrderTransaction->details = $request['details'];
-        //     // Save the updated PurchaseOrderTransaction
-        //     // You can return a success response or redirect to a success page here
-        //     $output = [
-        //         'success' => true,
-        //         'msg' => __('lang.success')
-        //     ];
-        // }
-        // catch (\Exception $e)
-        // {
-        //     dd($e);
-        //     Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-        //     $output = [
-        //         'success' => false,
-        //         'msg' => __('lang.something_went_wrong')
-        //     ];
-        // }
         return redirect()->back()->with('status', $output);
     }
     /* +++++++++++++++++++++ filterProducts() ++++++++++++++++++ */
