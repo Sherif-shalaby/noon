@@ -142,9 +142,9 @@
                                                                 </tbody>
                                                             </table>
                                                             {{-- ######## pagination ######## --}}
-                                                            <div class="pagination my-3 mx-auto">
+                                                            {{-- <div class="pagination my-3 mx-auto">
                                                                 {{ $employee_products->links() }}
-                                                            </div>
+                                                            </div> --}}
                                                         </div>
                                                     </div>
                                                 </div>
