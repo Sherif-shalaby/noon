@@ -40,55 +40,59 @@ class EmployeeController extends Controller
         $this->commonUtil = $commonUtil;
 
     }
-    /* +++++++++++++++++++++++++++ index() +++++++++++++++++++ */
+
+    /**
+   * Display a listing of the resource.
+   *
+   *
+   */
     public function index()
     {
         $employees = Employee::orderBY('created_at','desc')->get();
-        return view('employees.index')->with(compact('employees'));
+
+        return view('employees.index')
+            ->with(compact('employees'));
     }
     /* +++++++++++++++++++++ filterProducts() ++++++++++++++++++ */
-    // public function filterProducts(Request $request)
-    // {
-    //     try
-    //     {
-    //         $category_id       = $request->input('category_id');
-    //         $subcategory1_id   = $request->input('subcategory1_id');
-    //         $subcategory2_id   = $request->input('subcategory2_id');
-    //         $subcategory3_id   = $request->input('subcategory3_id');
-    //         $product_id        = $request->input('product_id');
-    //         $brand             = $request->input('brand');
-    //         $filtered_Products = Product::query();
-    //         if ($category_id)
-    //         {
-    //             $filtered_Products->where('category_id', $category_id);
-    //         }
-    //         if ($subcategory1_id) {
-    //             $filtered_Products->where('subcategory_id1', $subcategory1_id);
-    //         }
-    //         if ($subcategory2_id) {
-    //             $filtered_Products->where('subcategory_id2', $subcategory2_id);
-    //         }
-    //         if ($subcategory3_id) {
-    //             $filtered_Products->where('subcategory_id3', $subcategory3_id);
-    //         }
-    //         if ($product_id) {
-    //             $filtered_Products->where('id',$product_id);
-    //         }
-    //         if ($brand) {
-    //             $filtered_Products->where('brand_id', $brand);
-    //         }
-    //         // Execute the query and get the filtered products
-    //         $filteredProducts = $filtered_Products->get();
+    public function filterProducts(Request $request)
+    {
+        try
+        {
+            $category_id     = $request->input('category_id');
+            $subcategory1_id = $request->input('subcategory1_id');
+            $subcategory2_id = $request->input('subcategory2_id');
+            $subcategory3_id = $request->input('subcategory3_id');
+            $brand = $request->input('brand');
+            $filtered_Products = Product::query();
+            if ($category_id)
+            {
+                $filtered_Products->where('category_id', $category_id);
+            }
+            if ($subcategory1_id) {
+                $filtered_Products->where('subcategory_id1', $subcategory1_id);
+            }
+            if ($subcategory2_id) {
+                $filtered_Products->where('subcategory_id2', $subcategory2_id);
+            }
+            if ($subcategory3_id) {
+                $filtered_Products->where('subcategory_id3', $subcategory3_id);
+            }
+            if ($brand) {
+                $filtered_Products->where('brand_id', $brand);
+            }
 
-    //         // Return the filtered products as a JSON response
-    //         return response()->json(['success' => true, 'products' => $filteredProducts]);
-    //     }
-    //     catch (\Exception $e)
-    //     {
-    //         dd($e); // Log the error for debugging
-    //         // return response()->json(['error' => 'Internal Server Error'], 500);
-    //     }
-    // }
+            // Execute the query and get the filtered products
+            $filteredProducts = $filtered_Products->get();
+
+            // Return the filtered products as a JSON response
+            return response()->json(['success' => true, 'products' => $filteredProducts]);
+        }
+        catch (\Exception $e)
+        {
+            dd($e); // Log the error for debugging
+            // return response()->json(['error' => 'Internal Server Error'], 500);
+        }
+    }
 
     // +++++++++++++++++++++++++++++ create() +++++++++++++++++++++++++++
     public function create(Request $request)
@@ -121,28 +125,20 @@ class EmployeeController extends Controller
             ->when( $request->subcategory_id3 != null, function ($query) use ( $request ) {
                 $query->where('subcategory_id3', $request->subcategory_id3);
             })
-            ->when( $request->subcategory_id3 != null, function ($query) use ( $request ) {
-                $query->where('subcategory_id3', $request->subcategory_id3);
-            })
-            ->when( $request->product_id != null, function ($query) use ( $request ) {
-                $query->where('id', $request->product_id);
-            })
             ->when( $request->brand_id != null, function ($query) use ( $request ) {
                 $query->where('brand_id', $request->brand_id);
             })
-            // ->orderBy("created_at","asc")->get();
-            ->orderBy("created_at","asc")->paginate(10);
-            // return $employee_products;
-            return response()->json($employee_products);
+            // ->latest()->get();
+            ->orderBy("created_at","asc")->get();
+            return $employee_products;
         }else{
-            // $employee_products = $employee_products->orderBy("created_at","asc")->get();
-            $employee_products = $employee_products->orderBy('created_at', 'asc')->paginate(10);
+            // $employee_products = $employee_products->latest()->get();
+            $employee_products = $employee_products->orderBy("created_at","asc")->get();
         }
         // ++++++++++++++++++++++++++++ end : for "employee's products" Filters +++++++++++++++++++++++++++++
         $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $subcategories= Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
-        $products=Product::orderBy('created_at', 'desc')->pluck('name','id');
         return view('employees.create')
             ->with(
                 compact('stores','jobs','leave_types' ,'employee_products',
