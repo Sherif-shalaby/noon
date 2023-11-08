@@ -1,4 +1,3 @@
-{{-- @livewire('add-stock.add-payment') --}}
 <section class="">
     <div class="col-md-22">
         <div class="card mt-3">
@@ -19,33 +18,22 @@
                     <table id="datatable-buttons" class="table dataTable">
                         <thead>
                             <tr>
-
                                 <th>@lang('lang.date_and_time')</th>
                                 <th>@lang('lang.product')</th>
-
                                 <th>@lang('lang.supplier')</th>
                                 <th>@lang('lang.created_by')</th>
-
                                 <th class="notexport">@lang('lang.action')</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($stocks as $index => $stock)
                                 <tr>
-
-
                                     <td>{{ $stock->created_at }}</td>
                                     <td>
                                         {{ $stock->add_stock_lines->first()->product->name ?? '' }}
-
                                     </td>
-
                                     <td>{{ $stock->supplier->name ?? '' }}</td>
                                     <td>{{ $stock->created_by_relationship->name ?? '' }}</td>
-
-
-
-
                                     <td>
                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

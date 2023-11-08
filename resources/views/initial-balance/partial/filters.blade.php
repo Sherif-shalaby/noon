@@ -32,8 +32,8 @@
             <div class="form-group">
                 {!! Form::select('supplier_id', $suppliers, $supplier_id, [
                     'class' => 'form-control select2',
-                    'placeholder' => __('lang.supplier'),
                     'data-name' => 'supplier_id',
+                    'placeholder' => __('lang.supplier'),
                     'wire:model' => 'supplier_id',
                 ]) !!}
             </div>

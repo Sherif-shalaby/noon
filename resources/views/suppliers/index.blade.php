@@ -286,9 +286,6 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            <div class="view_modal no-print">
-
-                            </div>
                         </div>
                     </div>
                 </div>

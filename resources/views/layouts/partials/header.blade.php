@@ -459,7 +459,8 @@
                         </div>
                         <span class="mx-2" style="font-weight: 600">{{ __('lang.purchase_order') }}</span>
                     </a>
-                    <ul class="dropdown-menu" list-style-none
+                    <ul
+                        class="dropdown-menu list-style-none
                         @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         {{-- ########### purchase_order : اوامر الشراء########### --}}
                         <li>
@@ -620,7 +621,7 @@
                                         class="mdi mdi-circle"></i>@lang('lang.wages')</a>
                             </li>
                             {{-- ########### Attendance : الحضور و الانصراف ########### --}}
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li><a tyle="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('attendance.index') }}"
                                     class="attendance-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>
@@ -1425,7 +1426,6 @@
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
-
     $('.customers-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('customers.create') }}"

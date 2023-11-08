@@ -250,8 +250,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('api/fetch-state',[SuppliersController::class,'fetchState']);
     // general_setting : fetch "city" of selected "state" selectbox
     Route::post('api/fetch-cities',[SuppliersController::class,'fetchCity']);
-    Route::post('supplier/pay-supplier-due/{supplier_id}', [SuppliersController::class,'postPayContactDue'])->name('supplier.pay-supplier-due');
-    Route::get('supplier/pay-supplier-due/{supplier_id}', [SuppliersController::class,'getPayContactDue'])->name('supplier.pay-supplier-due');
+
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');
@@ -268,11 +267,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
-    // Route::get('customer/pay-customer-due/{customer_id}', [CustomerController::class,'getPayContactDue'])->name('customer.pay-customer-due');
-    Route::get('transaction-payment/add-payment/{id}', [StockTransactionPaymentController::class,'addPayment']);
 
     // Transfer
-    Route::view('transfer/create/{id}','transfer.create')->name('transfer.create');
+    Route::view('transfer/import/{id}','transfer.import')->name('transfer.import');
+    Route::view('transfer/export/{id}','transfer.export')->name('transfer.export');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

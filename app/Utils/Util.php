@@ -13,7 +13,6 @@ use App\Models\Notification;
 use App\Models\Project;
 use App\Models\ReceivedInvoice;
 use App\Models\ReceivedInvoicePayment;
-use App\Models\StockTransactionPayment;
 use App\Models\System;
 use App\Models\User;
 use App\Models\WageTransaction;
@@ -156,15 +155,7 @@ class Util
 
         return $total_paid;
     }
-    public function getStockTotalPaid($transaction_id)
-    {
-        $total_paid = StockTransactionPayment::where('stock_transaction_id', $transaction_id)
-            ->select(DB::raw('SUM(IF( is_return = 0, amount, amount*-1))as total_paid'))
-            ->first()
-            ->total_paid;
 
-        return $total_paid;
-    }
     /**
      * Calculates percentage
      *

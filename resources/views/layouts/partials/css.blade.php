@@ -4,10 +4,10 @@
 <!-- Start css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 <!-- Switchery css -->
-{{-- <link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css"> --}}
+<link href="{{ asset('plugins/animate/animate.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('plugins/switchery/switchery.min.css') }}" rel="stylesheet">
 <!-- Select2 css -->
-{{-- <link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css"> --}}
+<link href="{{ asset('plugins/select2/select2.min.css') }}" rel="stylesheet" type="text/css">
 <!-- Tagsinput css -->
 {{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" rel="stylesheet" type="text/css"> --}}
 {{--    <link href="{{asset('plugins/bootstrap-tagsinput/bootstrap-tagsinput-typeahead.css')}}" rel="stylesheet" type="text/css"> --}}
@@ -15,9 +15,7 @@
 <link href="{{ asset('plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <!---->
-
-{{-- select picker --}}
-{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"> --}}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
 <!-- Pnotify css -->
 <link href="{{ asset('plugins/pnotify/css/pnotify.custom.min.css') }}" rel="stylesheet" type="text/css">
@@ -34,7 +32,7 @@
 <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
 <link rel="stylesheet" href="{{ asset('js/cropperjs/cropper.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/style2.css') }}">
-{{-- <link rel="stylesheet" type="text/css" href="{{ asset('js/select/select2.min.css') }}"> --}}
+<link rel="stylesheet" type="text/css" href="{{ asset('js/select/select2.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('css/crop/crop.css') }}">
 {{-- <script src="{{asset('js/jquery.min.js')}}"></script> --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -42,10 +40,6 @@
 <script type="text/javascript" src="{{ asset('js/toastr/toastr.min.js') }}"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <link rel="stylesheet" href="{{ asset('js/jquery-ui.css') }}">
-
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 <style>
     .error-help-block {
         color: red;

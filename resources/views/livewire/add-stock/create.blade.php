@@ -433,7 +433,15 @@
                                     @endif
                                 </div>
                             </div>
-
+                            @php
+                                //                            $collection = collect($items);
+                                //                            // Filter out elements where show_product_data is false
+                                //                            $filteredCollection = $collection->filter(function ($item) {
+                                //                                return $item['show_product_data'] !== false;
+                                //                            });
+                                //                            // Count the remaining elements
+                                //                            $count = $filteredCollection->count();
+                            @endphp
                             <div class="col-md-12 text-center mt-1 d-flex justify-content-center">
                                 <h4 class="mx-5">@lang('lang.items_count'):
                                     <span class="items_count_span"
@@ -692,7 +700,6 @@
         </div>
 </section>
 <div class="view_modal no-print"></div>
-
 {{-- <!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @include('suppliers.quick_add', ['quick_add' => 1])

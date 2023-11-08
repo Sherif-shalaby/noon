@@ -618,5 +618,7 @@ return array(
     'card_number' => 'رقم الفيزا',
     'month' => 'الشهر',
     'year' => 'السنة',
-    'mobile' => 'رقم التليفون'
+    'mobile' => 'رقم التليفون',
+    'import_stock' => 'اضافه مخزون',
+    'export_stock' => 'تصدير مخزون',
 );

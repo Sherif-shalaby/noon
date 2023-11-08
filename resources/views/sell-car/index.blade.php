@@ -123,13 +123,22 @@
                                                                     class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
                                                         </li>
-                                                        <li class="divider"></li>
-                                                        <li>
-                                                            <a href="{{ route('transfer.create', $sell_car->id) }}"
-                                                                class="btn">
-                                                                <i class="dripicons-document-edit"></i> @lang('lang.add_stock')
-                                                            </a>
-                                                        </li>
+                                                        @if (!empty($sell_car->branch))
+                                                            <li class="divider"></li>
+                                                            <li>
+                                                                <a href="{{ route('transfer.import', $sell_car->id) }}"
+                                                                    class="btn">
+                                                                    <i class="fas fa-plus"></i>@lang('lang.import_stock')
+                                                                </a>
+                                                            </li>
+                                                            <li class="divider"></li>
+                                                            <li>
+                                                                <a href="{{ route('transfer.export', $sell_car->id) }}"
+                                                                    class="btn">
+                                                                    <i class="fas fa-minus"></i>@lang('lang.export_stock')
+                                                                </a>
+                                                            </li>
+                                                        @endif
                                                     </ul>
                                                 </div>
                                             </td>

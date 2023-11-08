@@ -141,6 +141,10 @@
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
+                                                            {{-- ######## pagination ######## --}}
+                                                            <div class="pagination my-3 mx-auto">
+                                                                {{ $employee_products->links() }}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -516,7 +520,6 @@
                 success: function(response) {
                     console.log(response)
                     $("#store_id").empty().append(response).change();
-
                     $('#store_id').selectpicker('refresh');
                 }
             });
