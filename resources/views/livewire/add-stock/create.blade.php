@@ -211,7 +211,12 @@
                                         <select class="form-control select2" data-name="department_id" wire:model="department_id">
                                             <option  value="" readonly selected >اختر </option>
                                             @foreach ($departments as $depart)
-                                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                                @if ($depart->parent_id === null)
+                                                    <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                                    @if ($depart->subCategories->count() > 0)
+                                                        @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-'])
+                                                    @endif
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -229,7 +234,7 @@
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
-{{--                                        <hr/>--}}
+                                        <hr/>
                                     @endforeach
                                 </div>
                             </div>
@@ -308,11 +313,22 @@
                                 </table>
                             </div>
                         </div>
+                        @php
+//                            $collection = collect($items);
+//                            // Filter out elements where show_product_data is false
+//                            $filteredCollection = $collection->filter(function ($item) {
+//                                return $item['show_product_data'] !== false;
+//                            });
+//                            // Count the remaining elements
+//                            $count = $filteredCollection->count();
+                        @endphp
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{!empty($items)? count($items) : 0}}</span>
-                                <br> @lang('lang.items_quantity'): <span
-                                    class="items_quantity_span" style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
+                                <span class="items_count_span" style="margin-right: 15px;">{{ $this->countItems() }}</span><br>
+                                @lang('lang.units_count'):
+                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->countUnitsItems() }}</span><br>
+                                @lang('lang.items_quantity'):
+                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
                             </h4>
                         </div>
                         <br>

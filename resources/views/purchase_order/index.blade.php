@@ -11,7 +11,7 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{route('products.index')}}">@lang('lang.purchase_order')</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('purchase_order.index')}}">@lang('lang.purchase_order')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.show_purchase_order')</li>
                     </ol>
                 </div>
@@ -29,7 +29,7 @@
 @endsection
 @section('content')
     <div class="table-responsive">
-        <table class="table dataTable">
+        <table id="datatable-buttons" class="table dataTable">
             <thead>
                 <tr>
                     <th>@lang('lang.po_ref_no')</th>

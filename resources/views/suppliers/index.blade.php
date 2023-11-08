@@ -8,7 +8,7 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        {{-- <li class="breadcrumb-item"><a href="#">Brands</a></li> --}}
+                         <li class="breadcrumb-item"><a href="{{ route('suppliers.create') }}">@lang('lang.add_supplier')</a></li>
                         <li class="breadcrumb-item active" aria-current="page">@lang('lang.suppliers')</li>
                     </ol>
                 </div>
@@ -242,6 +242,26 @@
                                                             class="btn text-red delete_item"><i class="fa fa-trash"></i>
                                                             @lang('lang.delete')</a>
                                                 </li>
+                                                <li class="divider"></li>
+                                                <li>
+
+                                                    <a href="{{ route('suppliers.show', $supplier->id) }}"
+                                                        class="btn"><i class="fa fa-eye"></i>
+                                                        @lang('lang.view')</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="{{ route('suppliers.show', $supplier->id) }}?show=statement_of_account"
+                                                        class="btn"><i class="dripicons-document"></i>
+                                                        @lang('lang.statement_of_account')</a>
+                                                </li>
+                                                @if (!empty($supplier->stock_transactions->whereIn('payment_status',['pending','partial'])->first()))
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a data-href="{{ route('supplier.pay-supplier-due', $supplier->id) }}" data-container=".view_modal" class="btn-modal" data-toggle="modal"><i
+                                                                class="fa fa-money btn"></i>@lang('lang.pay')</a>
+                                                    </li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </td>
@@ -250,6 +270,9 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div class="view_modal no-print" >
+
+                            </div>
                         </div>
                     </div>
                 </div>

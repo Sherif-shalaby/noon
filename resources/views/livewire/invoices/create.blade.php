@@ -179,7 +179,7 @@
                                                         <option value="0.00">select</option>
                                                          @if(!empty($item['variation']))
                                                            @foreach($item['variation'] as $i=>$var)
-                                                               @if(!empty($var->unit_id))
+                                                               @if(!empty($var['unit_id']))
                                                                     <option value="{{$var['id']}}" {{$i==0?'selected':''}}>
                                                                         {{$var['unit']['name']??''}}
                                                                     </option>
@@ -204,15 +204,15 @@
                                                                               wire:model="items.{{ $key }}.discount_price">
                                                 </td>
                                                 <td>
-                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}})">
+                                                    <select class="form-control discount_category " style="height:30% !important;width:80px;font-size:14px;" wire:model="items.{{ $key }}.discount"  wire:change="subtotal({{$key}},'discount')">
                                                         <option selected value="0">select</option>
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
-                                                                    @if($discount['price_category']!==null)
+{{--                                                                    @if($discount['price_category']!==null)--}}
                                                         {{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
                                                                             <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
-                                                                    @endif
+{{--                                                                    @endif--}}
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
@@ -258,6 +258,7 @@
             @include('invoices.partials.rightSidebar')
         </div>
         {!! Form::close() !!}
+        <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>
 </section>
 @include('customers.quick_add',['quick_add'=>1])
@@ -267,6 +268,14 @@
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
+    @if(empty($store_pos))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const noUserPosEvent = new Event('NoUserPos');
+                window.dispatchEvent(noUserPosEvent);
+            });
+        </script>
+    @endif
     <script>
         document.addEventListener('livewire:load', function () {
             $('.depart').select().on('change', function (e) {
@@ -303,6 +312,17 @@
                 }
             });
         });
+
+{{--        @if(empty($store_pos))--}}
+            window.addEventListener('NoUserPos', function(event) {
+                Swal.fire({
+                    title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
+                    icon: 'error',
+                }).then((result) => {
+                    window.location.href = "{{ route('home') }}";
+                });
+            });
+        {{--@@endif--}}
         $(document).ready(function() {
             $('select').on('change', function(e) {
 

@@ -4,7 +4,7 @@
         {{$index+1}}
     </td>
 
-    <td> 
+    <td>
         <input type="text" class="form-control name"  wire:model="rows.{{ $index }}.name"  style="width: 61px;" required >
     </td>
     <td>

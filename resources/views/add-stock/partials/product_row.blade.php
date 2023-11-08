@@ -9,6 +9,7 @@
     </td>
     <td title="{{__('lang.sku')}}">
 {{--        @if($product['show_product_data'])--}}
+
             {{ $product['product']['sku'] }}
 {{--        @endif--}}
     </td>
@@ -25,14 +26,15 @@
                 <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
                     <option value="" selected>{{__('lang.please_select')}}</option>
                     @foreach($product['variations'] as $variant)
-                        @if(!empty($variant->unit_id))
-                            <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                        @if(!empty($variant['unit_id']))
+                            <option value="{{$variant['id']}}">{{$variant['unit']['name'] ?? ''}}</option>
                         @endif
                     @endforeach
                 </select>
-                <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
+                {{-- {{dd($product['variations'])}} --}}
+                {{-- <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
                     <i class="fa fa-plus"></i>
-                </button>
+                </button> --}}
             </div>
         @else
             <span>@lang('lang.no_units')</span>
@@ -183,7 +185,7 @@
         </div>
     </td>
     <td>
-        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},null,{{$index}},1)" type="button">
+        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},'unit',{{$index}},1)" type="button">
             <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
         </button>
     </td>

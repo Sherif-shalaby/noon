@@ -6,6 +6,7 @@ use App\Models\AddStockLine;
 use App\Models\Category;
 use App\Models\CustomerType;
 use App\Models\Product;
+use App\Models\ProductDimension;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\ProductTax;
@@ -43,6 +44,7 @@ class Edit extends Component
             'height' => 0,
             'length' => 0,
             'size' => 0,
+            'basic_unit_variation_id'=>'',
             'isExist' => 0, 'status' => '',
             'product_tax_id' => '',
             'change_current_stock' => 0,
@@ -61,7 +63,7 @@ class Edit extends Component
         $supplier, $exchange_rate, $exchangeRate, $transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
-        $deleted_items = [], $deleted_prices = [], $discount_from_original_price;
+        $deleted_items = [], $deleted_prices = [], $discount_from_original_price,$basic_unit_variations=[],$unit_variations=[];
 
     public $rows = [];
     public function messages()
@@ -86,7 +88,7 @@ class Edit extends Component
         'item.*.length' => 'numeric',
         'item.*.size' => 'numeric',
         'item.*.product_tax_id' => 'nullable',
-        'item.*.product_symbol'=>   'required|string|max:255|unique:products,product_symbol,'.$this->item[0]['id'].',id,deleted_at,NULL',
+        'item.*.product_symbol'=>   'nullable|string|max:255|unique:products,product_symbol,'.$this->item[0]['id'].',id,deleted_at,NULL',
         'rows.*.sku' => 'required',
         // 'rows.*.sku' => 'required|unique:variations,sku,rows.*.id,id,deleted_at,NULL',
         'rows.*.purchase_price' => 'required',
@@ -197,11 +199,11 @@ class Edit extends Component
                 $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
             }
             $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
-            $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->height ?? null;
-            $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->length ?? null;
-            $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->width ?? null;
-            $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->weight ?? null;
-            $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->size ?? null;
+            $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
+            $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
+            $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
+            $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->weight ?? null;
+            $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
             $this->item[0]['method'] = $recent_stock->add_stock_lines->first()->product->method ?? null;
             $this->item[0]['product_tax_id'] = ProductTax::where('product_id', $this->item[0]['id'])->first()->product_tax_id ?? null;
             foreach ($recent_stock->add_stock_lines as $stock) {
@@ -218,9 +220,11 @@ class Edit extends Component
                     'basic_unit_id' => $stock->variation->basic_unit_id,
                     'change_price_stock' => '',
                     'equal' => $stock->variation->equal,
-                    'fill_currency'=>'dollar',
+                    'fill_currency'=>'dinar',
                     'prices' => [],
                 ];
+                $this->unit_variations[]=$stock->variation->unit_id;
+
                 // $new_price=[];
                 if (!empty($stock->prices)) {
                     foreach ($stock->prices as $price) {
@@ -265,6 +269,10 @@ class Edit extends Component
                 }
                 array_unshift($this->rows, $newRow);
             }
+            $this->basic_unit_variations = Unit::whereIn('id',$this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
+            $this->item[0]['basic_unit_variation_id'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->variation_id ?? null;
+
+
         }
         $this->calculateTotalQuantity();
         $this->exchange_rate = $this->changeExchangeRate();
@@ -297,7 +305,7 @@ class Edit extends Component
             'id' => '', 'sku' => '', 'quantity' => '',
             'fill_quantity' => '',
             'fill_type' => 'fixed',
-            'fill_currency'=>'dollar',
+            'fill_currency'=>'dinar',
             'purchase_price' => '',
             'selling_price' => '',
             'dollar_purchase_price' => '',
@@ -332,6 +340,15 @@ class Edit extends Component
     }
     public function changeUnit($index)
     {
+        ///////////////////////////product dimension variation ///////////////////
+        foreach($this->rows as $i=>$row){
+            if(!empty($this->rows[$i]['unit_id']) && $this->rows[$i]['unit_id']!==''){
+                $this->unit_variations[]=$this->rows[$i]['unit_id'];
+            }
+        }
+        $this->basic_unit_variations = Unit::whereIn('id',$this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
+        ////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////// calculate row based on other rows//////////////
         $unit = $this->rows[$index]['unit_id'];
         $unit_index = '';
         foreach ($this->rows as $i => $item) {
@@ -345,13 +362,80 @@ class Edit extends Component
             $this->rows[$index]['quantity'] = 0;
             $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
             if ((float)$this->rows[$unit_index]['equal'] != 0) {
-                $this->rows[$index]['dollar_purchase_price'] = ((float)$this->rows[$unit_index]['dollar_purchase_price'] / (float)$this->rows[$unit_index]['equal']);
+                $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price']) / (float)$this->rows[$unit_index]['equal']);
+                $this->rows[$index]['dollar_selling_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_selling_price']) / (float)$this->rows[$unit_index]['equal']);
+                $this->rows[$index]['purchase_price'] = ($this->num_uf($this->rows[$unit_index]['purchase_price']) / (float)$this->rows[$unit_index]['equal']);
+                $this->rows[$index]['selling_price'] = ($this->num_uf($this->rows[$unit_index]['selling_price']) / (float)$this->rows[$unit_index]['equal']);
                 if ($this->rows[$index]['fill_type'] == "fixed") {
                     $this->rows[$index]['fill_quantity'] = (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
+                    $this->rows[$index]['fill_currency'] = $this->rows[$unit_index]['fill_currency'];
                 } else {
                     $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
                 }
-                $this->changePurchasePrice($index);
+                // $this->changePurchasePrice($index);
+            }
+        }
+    }
+    public function changeBaseUnit($index)
+    {
+         //////////////////////////////// calculate row based on other rows//////////////
+        $base_unit = $this->rows[$index]['basic_unit_id'];
+        $unit_index = '';
+        $basic_unit_index = '';
+        foreach ($this->rows as $i => $item) {
+            if($i !=$index){
+                if ($item['unit_id'] === $base_unit) {
+                    $unit_index = $i;
+                    break;
+                }
+            }
+        }
+        if ($unit_index == '') {
+            foreach ($this->rows as $i => $item) {
+                if($i !=$index){
+                    if ($item['basic_unit_id'] === $base_unit) {
+                        $basic_unit_index = $i;
+                        break;
+                    }
+                }
+            }
+        }
+        if ($unit_index !== '') {
+            // $this->rows[$index]['equal'] = 1;
+            $this->rows[$index]['quantity'] = 0;
+            $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
+            if ((float)$this->rows[$unit_index]['equal'] != 0) {
+                $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price'])) * (float)$this->rows[$index]['equal'];
+                $this->rows[$index]['dollar_selling_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_selling_price'])) * (float)$this->rows[$index]['equal'];
+                $this->rows[$index]['purchase_price'] = ($this->num_uf($this->rows[$unit_index]['purchase_price'])) * (float)$this->rows[$index]['equal'];
+                $this->rows[$index]['selling_price'] = ($this->num_uf($this->rows[$unit_index]['selling_price'])) * (float)$this->rows[$index]['equal'];
+                // dd($this->rows[$unit_index]);
+                if ($this->rows[$index]['fill_type'] == "fixed") {
+                    $this->rows[$index]['fill_quantity'] = ($this->num_uf($this->rows[$unit_index]['fill_quantity']) )*(float)$this->rows[$index]['equal'];
+                    $this->rows[$index]['fill_currency'] = $this->rows[$unit_index]['fill_currency'];
+                } else {
+                    $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
+                }
+                // $this->changePurchasePrice($index);
+            }
+        }else{
+            if ($basic_unit_index !== '') {
+                $this->rows[$index]['quantity'] = 0;
+                $this->rows[$index]['fill_type'] = $this->rows[$basic_unit_index]['fill_type'];
+                if ((float)$this->rows[$basic_unit_index]['equal'] != 0) {
+                    $this->rows[$index]['dollar_purchase_price'] = number_format(($this->num_uf($this->rows[$basic_unit_index]['dollar_purchase_price']) / (float)$this->rows[$basic_unit_index]['equal']) * (float)$this->rows[$index]['equal'],3);
+                    $this->rows[$index]['purchase_price'] = number_format(($this->num_uf($this->rows[$basic_unit_index]['purchase_price']) / (float)$this->rows[$basic_unit_index]['equal']) * (float)$this->rows[$index]['equal'],3);
+                    $this->rows[$index]['dollar_selling_price'] = number_format(($this->num_uf($this->rows[$basic_unit_index]['dollar_selling_price']) / (float)$this->rows[$basic_unit_index]['equal']) * (float)$this->rows[$index]['equal'],3);
+                    $this->rows[$index]['selling_price'] = number_format(($this->num_uf($this->rows[$basic_unit_index]['selling_price']) / (float)$this->rows[$basic_unit_index]['equal']) * (float)$this->rows[$index]['equal'],3);
+                    // dd($this->rows[$basic_unit_index]);
+                    if ($this->rows[$index]['fill_type'] == "fixed") {
+                        $this->rows[$index]['fill_quantity'] =  number_format(((float)$this->rows[$basic_unit_index]['fill_quantity'] / (float)$this->rows[$basic_unit_index]['equal'] )*(float)$this->rows[$index]['equal'],3);
+                        $this->rows[$index]['fill_currency'] = $this->rows[$basic_unit_index]['fill_currency'];
+                    } else {
+                        $this->rows[$index]['fill_quantity'] = $this->rows[$basic_unit_index]['fill_quantity'];
+                    }
+                    // $this->changePurchasePrice($index);
+                }
             }
         }
     }
@@ -384,11 +468,6 @@ class Edit extends Component
                 $product->subcategory_id1 = $this->item[0]['subcategory_id1'];
                 $product->subcategory_id2 = $this->item[0]['subcategory_id2'];
                 $product->subcategory_id3 = $this->item[0]['subcategory_id3'];
-                $product->height = $this->item[0]['height'];
-                $product->length = $this->item[0]['length'];
-                $product->width = $this->item[0]['width'];
-                $product->weight = $this->item[0]['weight'];
-                $product->size = $this->item[0]['size'];
                 $product->method = $this->item[0]['method'];
                 $product->product_symbol = $this->item[0]['product_symbol'];
                 $product->balance_return_request=$this->item[0]['balance_return_request']??0;
@@ -495,6 +574,20 @@ class Edit extends Component
                         }
                     }
                 }
+                if ($this->item[0]['height'] ==(''||0) && $this->item[0]['length'] ==(''||0) && $this->item[0]['width'] ==(''||0)
+                    || $this->item[0]['size'] ==(''||0) && $this->item[0]['weight'] ==(''||0)) {
+                        ProductDimension::where('product_id',$product->id)->delete();
+                    }else{
+                    ProductDimension::where('product_id',$product->id)->update([
+                        'product_id'=>$product->id,
+                        'variation_id'=>!empty($this->item[0]['basic_unit_variation_id'])?(Variation::where('product_id',$product->id)->where('unit_id',$this->item[0]['basic_unit_variation_id'])->first()->id??''):null,
+                        'height' => !empty($this->item[0]['height'])?$this->item[0]['height']:0,
+                        'length' => !empty($this->item[0]['length'])?$this->item[0]['length']:0,
+                        'width '=> !empty($this->item[0]['width'])?$this->item[0]['width']:0,
+                        'weight' => !empty($this->item[0]['weight'])?$this->item[0]['weight']:0,
+                        'size'=> !empty($this->item[0]['size'])?$this->item[0]['size']:0,
+                    ]);
+                }
                 DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
                 return redirect('/initial-balance/' . $this->stockId . '/edit');
@@ -568,7 +661,7 @@ class Edit extends Component
                 'sku' => $variation->sku,
                 'quantity' => '',
                 'fill_quantity' => '',
-                'fill_currency'=>'dollar',
+                'fill_currency'=>'dinar',
                 'fill_type' => 'fixed',
                 'purchase_price' => '',
                 'selling_price' => '',
@@ -717,6 +810,11 @@ class Edit extends Component
         $this->rows[$index]['purchase_price'] = (float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->exchange_rate;
         $this->changeFilling($index);
     }
+    public function changeDollarPurchasePrice($index)
+    {
+        $this->rows[$index]['dollar_purchase_price'] = number_format((float)$this->num_uf($this->rows[$index]['purchase_price']) / (float)$this->exchange_rate,3) ;
+        $this->changeDollarFilling($index);
+    }
     public function changeExchangeRateBasedPrices()
     {
         // $this->exchange_rate=$this->changeExchangeRate();
@@ -731,17 +829,34 @@ class Edit extends Component
     public function changeFilling($index)
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
-            if ($this->rows[$index]['purchase_price'] != "") {
+            if ($this->rows[$index]['purchase_price'] != "" && ($this->rows[$index]['fill_currency'] == "dollar")) {
                 if ($this->rows[$index]['fill_type'] == 'fixed') {
-                    $this->rows[$index]['dollar_selling_price'] = ($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']);
-                    $this->rows[$index]['selling_price'] = ($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate;
+                        $this->rows[$index]['dollar_selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']), 3);
+                        $this->rows[$index]['selling_price'] = number_format(($this->rows[$index]['dollar_purchase_price'] + (float)$this->rows[$index]['fill_quantity']) * $this->exchange_rate, 3);
                 } else {
-                    $percent = ((float)$this->rows[$index]['dollar_purchase_price'] * (float)$this->rows[$index]['fill_quantity']) / 100;
-                    $this->rows[$index]['dollar_selling_price'] = ((float)$this->rows[$index]['dollar_purchase_price'] + $percent);
-                    $this->rows[$index]['selling_price'] = ((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate;
+                $percent = ($this->num_uf($this->rows[$index]['dollar_purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
+                $this->rows[$index]['dollar_selling_price'] = number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent),3) ;
+                $this->rows[$index]['selling_price'] =  number_format(((float)$this->rows[$index]['dollar_purchase_price'] + $percent) * $this->exchange_rate,3);
                 }
             }
-
+            else{
+                $this->changeDollarFilling($index);
+            }
+        }
+    }
+    public function changeDollarFilling($index)
+    {
+        if (!empty($this->rows[$index]['fill_quantity'])) {
+            if ($this->rows[$index]['dollar_purchase_price'] != "" && ($this->rows[$index]['fill_currency'] == "dinar")) {
+                if ($this->rows[$index]['fill_type'] == 'fixed') {
+                        $this->rows[$index]['selling_price'] = number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + (float)$this->rows[$index]['fill_quantity']), 3);
+                        $this->rows[$index]['dollar_selling_price'] = number_format((float)$this->num_uf($this->rows[$index]['selling_price']) / (float)$this->exchange_rate, 3);
+                    } else {
+                    $percent = ($this->num_uf($this->rows[$index]['purchase_price']) * (float)$this->rows[$index]['fill_quantity']) / 100;
+                    $this->rows[$index]['selling_price'] =  number_format(($this->num_uf($this->rows[$index]['purchase_price']) + $percent),3) ;
+                    $this->rows[$index]['dollar_selling_price'] =  number_format(((float)$this->num_uf($this->rows[$index]['purchase_price']) + $percent) / $this->exchange_rate  ,3) ;
+                }
+            }
         }
     }
     public function changeSellingPrice($index)

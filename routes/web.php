@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SellCarController;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +11,9 @@ use App\Http\Controllers\WageController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SellCarController;
 use App\Http\Controllers\SellPosController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AddStockController;
@@ -20,28 +21,29 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DailyReportSummary;
 use App\Http\Controllers\DeliveryController;
-use App\Http\Controllers\GetDueReportController;
-use App\Http\Controllers\InitialBalanceController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StorePosController;
 use App\Http\Controllers\MoneySafeController;
 use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\GeneralTaxController;
 use App\Http\Controllers\ProductTaxController;
 use App\Http\Controllers\ReceivableController;
 use App\Http\Controllers\SellReturnController;
 use App\Http\Controllers\SalesReportController;
 use App\Http\Controllers\CustomerTypeController;
+use App\Http\Controllers\GetDueReportController;
 use App\Http\Controllers\PayableReportController;
+use App\Http\Controllers\InitialBalanceController;
 use App\Http\Controllers\SupplierReportController;
 use App\Http\Controllers\CustomersReportController;
 use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
-use App\Http\Controllers\GeneralTaxController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\BranchController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
+use App\Http\Controllers\RequiredProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,8 +77,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('brands', BrandController::class);
     Route::resource('store', App\Http\Controllers\StoreController::class);
     Route::resource('jobs',App\Http\Controllers\JobTypeController::class);
-    //employees
+    // ======================== employees
     Route::resource('employees',App\Http\Controllers\EmployeeController::class);
+    // ---------- attendance ------------
+    Route::resource('attendance', AttendanceController::class);
+    // add "new_row"
+    Route::get('attendance/get-attendance-row/{row_index}', [AttendanceController::class , 'getAttendanceRow']);
+
     Route::get('add_point', [App\Http\Controllers\EmployeeController::class,'addPoints'])->name('employees.add_points');
     // +++++++++++++++++++++++ filters of "employees products" +++++++++++++++++++++
     Route::get('/employees/filter/{id}', [App\Http\Controllers\EmployeeController::class,'filterProducts']);
@@ -128,6 +135,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('units/get-unit-data/{id}', [UnitController::class,'getUnitData']);
     Route::get('units/get-dropdown', [UnitController::class,'getDropdown']);
     Route::get('variations/units/get-dropdown', [UnitController::class,'getUnitsDropdown']);
+    Route::get('product/get-unit-store', [UnitController::class,'getUnitStore']);
 
     Route::resource('units', UnitController::class)->except(['show']);
     Route::get('product/get-raw-price', [ProductController::class,'getRawPrice']);
@@ -144,10 +152,6 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
-
-    //    Route::get('add-stock/get-source-by-type-dropdown/{type}', [AddStockController::class , 'getSourceByTypeDropdown']);
-    //    Route::get('add-stock/get-paying-currency/{currency}', [AddStockController::class , 'getPayingCurrency']);
-    //    Route::get('add-stock/update-by-exchange-rate/{exchange_rate}', [AddStockController::class , 'updateByExchangeRate']);
     Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
@@ -201,11 +205,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('daily-report-summary', DailyReportSummary::class);
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ---- required_products ----
+    Route::resource('required-products', RequiredProductController::class);
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
-    Route::get('search', [PurchaseOrderLineController::class,'search'])->name('purchase_order.search');
+
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
@@ -225,6 +231,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('customer_price_offer/edit/{id}', 'customer_price_offer.edit')->name('customer_price_offer.edit');
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
+    // ################################# Task : purchase_order : Livewire #################################
+    Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
 
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
@@ -242,7 +250,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('api/fetch-state',[SuppliersController::class,'fetchState']);
     // general_setting : fetch "city" of selected "state" selectbox
     Route::post('api/fetch-cities',[SuppliersController::class,'fetchCity']);
-
+    Route::post('supplier/pay-supplier-due/{supplier_id}', [SuppliersController::class,'postPayContactDue'])->name('supplier.pay-supplier-due');
+    Route::get('supplier/pay-supplier-due/{supplier_id}', [SuppliersController::class,'getPayContactDue'])->name('supplier.pay-supplier-due');
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');
@@ -251,21 +260,23 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('moneysafe/watch-money-to-safe-transaction/{id}', [MoneySafeController::class,'getMoneySafeTransactions'])->name('moneysafe.watch-money-to-safe-transaction');
     Route::resource('moneysafe', MoneySafeController::class);
 
-    // sell car
+    // Sell car
     Route::resource('sell-car', SellCarController::class);
 
-    // branch
+    // Branch
     Route::resource('branches',BranchController::class);
     Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
 
-
-
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
+    // Route::get('customer/pay-customer-due/{customer_id}', [CustomerController::class,'getPayContactDue'])->name('customer.pay-customer-due');
+    Route::get('transaction-payment/add-payment/{id}', [StockTransactionPaymentController::class,'addPayment']);
+
+    // Transfer
+    Route::view('transfer/create/{id}','transfer.create')->name('transfer.create');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 

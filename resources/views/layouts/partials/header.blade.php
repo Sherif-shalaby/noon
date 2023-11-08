@@ -122,7 +122,7 @@
 {{--</div>--}}
 <!-- End Topbar -->
 <!-- Start Navigationbar -->
-<div class="navigationbar">
+<div class="navigationbar no-print">
     <!-- Start container-fluid -->
     <div class="container-fluid">
         <!-- Start Horizontal Nav -->
@@ -168,25 +168,20 @@
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
                 <li>
-                    <a href="{{route('purchase_order.create')}}">
-                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
-                        <span>{{__('lang.purchase_order')}}</span>
-                    </a>
-                    {{-- <ul class="dropdown-menu"> --}}
-                        {{-- +++++++++++ purchase_order : index +++++++++++ --}}
-                        {{-- <li>
-                            <a href="{{route('purchase_order.index')}}">
-                                <i class="mdi mdi-circle"></i>{{__('lang.show_purchase_order')}}
-                            </a>
-                        </li> --}}
-                        {{-- +++++++++++ purchase_order : create +++++++++++ --}}
-                        {{-- <li>
-                            <a href="{{route('purchase_order.create')}}">
-                                <i class="mdi mdi-circle"></i>{{__('lang.create_purchase_order')}}
-                            </a>
-                        </li> --}}
-                    {{-- </ul> --}}
+                    <li class="dropdown">
+                        <a href="#">
+                            <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                            <span>{{__('lang.purchase_order')}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {{-- ########### purchase_order : اوامر الشراء########### --}}
+                            <li><a href="{{route('purchase_order.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.show_purchase_order')</a></li>
+                            {{-- ########### required_products : المواد المطلوبة ########### --}}
+                            <li><a href="{{ route('required-products.index') }}"><i class="mdi mdi-circle"></i>@lang('lang.required_products')</a></li>
+                        </ul>
+                    </li>
                 </li>
+
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
                     @if(!empty($module_settings['return_module']))
@@ -207,6 +202,8 @@
                                     <li><a href="{{route('jobs.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.jobs')</a></li>
                                     <li><a href="{{route('employees.create')}}"><i class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
                                     <li><a href="{{route('wages.create')}}"><i class="mdi mdi-circle"></i>@lang('lang.wages')</a></li>
+                                    {{-- ########### Attendance : الحضور و الانصراف ########### --}}
+                                    <li><a href="{{route('attendance.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>
                                 </ul>
                             </li>
                     @endif
