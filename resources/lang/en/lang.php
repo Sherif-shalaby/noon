@@ -573,5 +573,17 @@ return [
     'receiver_store' => 'Receiver Store',
     'sender_store' => 'Sender Store',
     'has_store_pos' => 'Has Store Pos',
-    'show_initial_balance' => 'Show Initial Balance'
+    'show_initial_balance' => 'Show Initial Balance',
+    'more_details' => 'More Details',
+    'clear_filters' => 'Clear Filters',
+    'supplier_details' => 'Supplier Details',
+    'statement_of_account' => 'Statement Of Account',
+    'info' => 'Info',
+    'clear_filter' => 'Clear Filters',
+    'debits' => 'Debits',
+    'total_purchase' => 'Total Purchase',
+    'card_number' => 'Card Number',
+    'month' => 'Month',
+    'year' => 'Year',
+    'mobile' => 'Mobile'
 ];

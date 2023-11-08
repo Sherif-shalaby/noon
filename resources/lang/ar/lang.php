@@ -608,5 +608,15 @@ return array(
     'has_store_pos' => 'لديها نقطه بيع',
     'show_initial_balance' => 'عرض رصيد أولي',
     'more_details' => 'تفاصيل أخرى',
-
+    'clear_filters' => 'مسح عوامل التصفية',
+    'supplier_details' => 'تفاصيل المورد',
+    'statement_of_account' => 'كشف حساب',
+    'info' => 'معلومات',
+    'clear_filter' => 'مسح عوامل التصفية',
+    'debits' => 'متأخرات',
+    'total_purchase' => 'اجمالى المشتريات',
+    'card_number' => 'رقم الفيزا',
+    'month' => 'الشهر',
+    'year' => 'السنة',
+    'mobile' => 'رقم التليفون'
 );

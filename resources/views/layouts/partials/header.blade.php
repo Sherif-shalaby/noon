@@ -619,6 +619,11 @@
                                     class="wages-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.wages')</a>
                             </li>
+                            {{-- ########### Attendance : الحضور و الانصراف ########### --}}
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                    href="{{ route('attendance.index') }}"
+                                    class="attendance-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                        class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>
                         </ul>
                     </li>
                 @endif
@@ -1414,6 +1419,13 @@
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
+    $('.attendance-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('attendance.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+
     $('.customers-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('customers.create') }}"

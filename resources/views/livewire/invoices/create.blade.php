@@ -453,6 +453,7 @@
             });
         </script>
     @endif
+
     <script>
         document.addEventListener('livewire:load', function() {
             $('.depart').select().on('change', function(e) {
