@@ -92,13 +92,13 @@
                     brand_id : $('body').find('.brand option:selected').val(),
                 },
                 success: function (response) {
-                    console.log("The Response Data : ",response);
+                    console.log("The Response Data : ",response.data);
                     // Clear existing table content
                     $('#productTable tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
-                    $.each(response, function(index, product) {
-                        console.log(product);
+                    $.each(response.data, function(index, product) {
+                        // console.log(product);
                         var row = '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
                             '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +

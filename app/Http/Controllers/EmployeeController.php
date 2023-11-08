@@ -130,12 +130,13 @@ class EmployeeController extends Controller
             ->when( $request->brand_id != null, function ($query) use ( $request ) {
                 $query->where('brand_id', $request->brand_id);
             })
-            ->orderBy("created_at","asc")->get();
-            // ->orderBy("created_at","asc")->paginate(10);
-            return $employee_products;
+            // ->orderBy("created_at","asc")->get();
+            ->orderBy("created_at","asc")->paginate(10);
+            // return $employee_products;
+            return response()->json($employee_products);
         }else{
-            $employee_products = $employee_products->orderBy("created_at","asc")->get();
-            // $employee_products = $employee_products->orderBy('created_at', 'asc')->paginate(10);
+            // $employee_products = $employee_products->orderBy("created_at","asc")->get();
+            $employee_products = $employee_products->orderBy('created_at', 'asc')->paginate(10);
         }
         // ++++++++++++++++++++++++++++ end : for "employee's products" Filters +++++++++++++++++++++++++++++
         $categories= Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
