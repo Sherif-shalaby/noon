@@ -122,7 +122,10 @@
                                         <td></td>
                                         <td>
                                             @foreach($line->transaction_sell_lines as $sell_line)
-                                                {{$sell_line->product->name .' '.$sell_line->product->sku }}<br>
+                                                @if(!empty($sell_line->product))
+                                                    {{$sell_line->product->name ?? ' ' }} -
+                                                    {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                @endif
                                             @endforeach
                                         </td>
                                         <td>

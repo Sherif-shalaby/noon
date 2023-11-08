@@ -32,13 +32,6 @@
                     ) !!}
                 </div>
             </div>
-            {{-- ++++++++++++++++++ "products" filter ++++++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select('product_id',$products,null,['class' => 'form-control select2 product','placeholder'=>__('lang.product') ,'id' => 'product_id']
-                    ) !!}
-                </div>
-            </div>
             {{-- ++++++++++++++++++ "brand" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
@@ -88,29 +81,29 @@
                     subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
                     subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
                     subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
-                    product_id : $('body').find('.product option:selected').val(),
                     brand_id : $('body').find('.brand option:selected').val(),
                 },
                 success: function (response) {
-                    console.log("The Response Data : ",response.data);
+                    console.log("The Response Data : ");
+                    console.log(response)
                     // Clear existing table content
                     $('#productTable tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
-                    $.each(response.data, function(index, product) {
-                        // console.log(product);
+                    $.each(response, function(index, product) {
+                        console.log(product);
                         var row = '<tr>' +
                             '<td>' + (index + 1) + '</td>' +
                             '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
                             '<td>' + product.name + '</td>' +
                             '<td>' + product.sku + '</td>' +
-                            '<td>' + (product.category_id ? product.category_id : '') + '</td>' +
+                            '<td>' + (product.category ? product.category.name : '') + '</td>' +
                             '<td>' +
-                            (product.subcategory_id1 ? product.subcategory_id1 + '<br>' : '') +
-                            (product.subcategory_id2 ? product.subcategory_id2 + '<br>' : '') +
-                            (product.subcategory_id3 ? product.subcategory_id3 : '') +
+                            (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
+                            (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
+                            (product.subCategory3 ? product.subCategory3.name : '') +
                             '</td>' +
-                            '<td>' + (product.brand_id ? product.brand_id : '') + '</td>' +
+                            '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
                             '</tr>';
                         $('#productTable tbody').append(row);
                     });

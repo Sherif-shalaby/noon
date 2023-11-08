@@ -1,28 +1,27 @@
-
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
                     <div class="card-header d-flex align-items-center">
-                        <h4>@lang('lang.add-stock')</h4>
+                        <h4>@lang('lang.add_transfer') {{ $sender_store_name }}</h4>
                     </div>
                     <div class="row ">
                         <div class="col-md-7">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
                         </div>
-{{--                        <div class="col-md-3">--}}
-{{--                            <div class="i-checks">--}}
-{{--                                <input id="clear_all_input_form" name="clear_all_input_form"--}}
-{{--                                       type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif--}}
-{{--                                       class="">--}}
-{{--                                <label for="clear_all_input_form" style="font-size: 0.75rem">--}}
-{{--                                    <strong>--}}
-{{--                                        @lang('lang.clear_all_input_form')--}}
-{{--                                    </strong>--}}
-{{--                                </label>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        {{--                        <div class="col-md-3">--}}
+                        {{--                            <div class="i-checks">--}}
+                        {{--                                <input id="clear_all_input_form" name="clear_all_input_form"--}}
+                        {{--                                       type="checkbox" @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif--}}
+                        {{--                                       class="">--}}
+                        {{--                                <label for="clear_all_input_form" style="font-size: 0.75rem">--}}
+                        {{--                                    <strong>--}}
+                        {{--                                        @lang('lang.clear_all_input_form')--}}
+                        {{--                                    </strong>--}}
+                        {{--                                </label>--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
                     </div>
                     {!! Form::open([ 'id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
                     <div class="card-body">
@@ -30,16 +29,16 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     {!! Form::label('sender_store_id', __('lang.sender_store') . ':*', []) !!}
-                                    {!! Form::select('sender_store_id', $stores, null, ['class' => ' form-control select2', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),
-                                    'data-name' => 'sender_store_id', 'wire:model' => 'sender_store_id', 'wire:change' => 'check_items_store']) !!}
+                                    {!! Form::text('sender_store_id', $sender_store_name,
+                                        ['class' => ' form-control ','readonly', 'data-live-search' => 'true', 'required']) !!}
                                     @error('store_id')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-3">
                                     {!! Form::label('receiver_store_id', __('lang.receiver_store') . ':*', []) !!}
-                                    {!! Form::select('receiver_store_id', $car_stores, null,
-                                        ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'receiver_store_id', 'placeholder' => __('lang.please_select'),
+                                    {!! Form::select('receiver_store_id', $stores, $receiver_store_id,
+                                        ['class' => 'form-control select2','data-live-search' => 'true', 'id' => 'receiver_store_id', 'placeholder' => __('lang.please_select'),
                                         'data-name' => 'receiver_store_id', 'wire:model' => 'receiver_store_id']) !!}
                                     @error('supplier')
                                     <span class="error text-danger">{{ $message }}</span>
@@ -184,6 +183,16 @@
                             </h4>
                         </div>
                         <br>
+                        <div class="col-md-12">
+                            <div class="col-md-3 offset-md-8 text-right">
+                                <h3> @lang('lang.total') $:
+                                    {{ $this->sum_dollar_sub_total() ?? 0.00 }} <br>
+                                    @lang('lang.total') :
+                                    {{ $this->sum_sub_total() ?? 0.00 }}
+                                    <span class="final_total_span"></span> </h3>
+                            </div>
+                        </div>
+                        <br>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
@@ -213,20 +222,6 @@
 </section>
 @push('javascripts')
     <script>
-        // $(document).on("click", "#clear_all_input_form", function () {
-        //     var value = $('#clear_all_input_form').is(':checked')?1:0;
-        //     $.ajax({
-        //         method: "get",
-        //         url: "/create-or-update-system-property/clear_all_input_stock_form/"+value,
-        //         contentType: "html",
-        //         success: function (result) {
-        //             if (result.success) {
-        //                 Swal.fire("Success", response.msg, "success");
-        //             }
-        //         },
-        //     });
-        // });
-
         $(document).ready(function() {
             $('.select2').on('change', function(e) {
                 var name = $(this).data('name');

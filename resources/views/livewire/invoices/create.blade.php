@@ -296,6 +296,21 @@
                 window.print("#receipt_section");
             });
         });
+        $(document).on("click", ".print-invoice", function () {
+            // $(".modal").modal("hide");
+            $.ajax({
+                method: "get",
+                url: $(this).data("href"),
+                data: {},
+                success: function (result) {
+                    if (result.success) {
+                        Livewire.emit('printInvoice', result.html_content);
+                        window.location.reload(true)
+
+                    }
+                },
+            });
+        });
         window.addEventListener('quantity_not_enough', function(event) {
             var id = event.detail.id;
             Swal.fire({
