@@ -94,7 +94,7 @@ class EmployeeController extends Controller
     public function create(Request $request)
     {
         $stores = Store::pluck('name', 'id')->toArray();
-        $branches = Branch::pluck('name', 'id')->toArray();
+        $branches = Branch::where('type','branch')->pluck('name', 'id')->toArray();
         $jobs = JobType::pluck('title', 'id')->toArray();
         $leave_types = LeaveType::all();
         $week_days =  Employee::getWeekDays();
@@ -225,7 +225,9 @@ class EmployeeController extends Controller
                     }
                 }
             }
-            $employee->stores()->sync($data['store_id']);
+            if(!empty($data['store_id'])){
+                $employee->stores()->sync($data['store_id']);
+            }
             //add of update number of leaves
             $this->createOrUpdateNumberofLeaves($request, $employee->id);
             //assign permissions to employee
@@ -415,8 +417,12 @@ class EmployeeController extends Controller
                     $employee->addMedia($file)->toMediaCollection('employee_files');
                 }
             }
-
-            $employee->stores()->sync($data['store_id']);
+            if(!empty($data['store_id'])){
+                $employee->stores()->sync($data['store_id']);
+            }
+            else {
+                $employee->stores()->detach();
+            }
 
             //add of update number of leaves
             $this->createOrUpdateNumberofLeaves($request, $id);
