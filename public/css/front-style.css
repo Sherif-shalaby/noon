@@ -18,10 +18,11 @@
     background: #596fd7;
 }
 
+/*
 .select2-selection {
     background-color: transparent !important;
     border: none !important;
-}
+} */
 
 
 
@@ -123,6 +124,7 @@
     margin-top: 0 !important;
 }
 
+/*
 select.form-control {
     border: 2px solid #cececf !important;
     border-radius: 12px !important;
@@ -130,7 +132,7 @@ select.form-control {
     padding: 0;
     text-align: end;
     font-weight: 400;
-}
+} */
 
 .accordion-button:not(.collapsed) {
     color: var(--bs-accordion-active-color);
@@ -343,26 +345,6 @@ select.form-control {
 
     width: 100% !important;
 
-}
-
-.bootstrap-select {
-    background-color: transparent;
-    width: 100%;
-}
-
-.bootstrap-select button {
-    background-color: transparent;
-    width: 100%;
-    height: 30px;
-}
-
-.dropdown-toggle {
-    background-color: transparent;
-    width: 100%;
-}
-
-.filter-option {
-    display: none;
 }
 
 #bs-select-1 ul li.selected {

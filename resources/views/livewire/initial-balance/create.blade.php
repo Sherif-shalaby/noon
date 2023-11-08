@@ -56,7 +56,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('store_id', $stores, $item[0]['store_id'], [
-                                        'class' => ' form-control select2 store_id',
+                                        'class' => 'select2 form-control store_id',
                                         'data-name' => 'store_id',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
@@ -68,17 +68,6 @@
                                         data-toggle="modal" data-target=".add-store"
                                         href="{{ route('store.create') }}"><i class="fas fa-plus"></i>
                                     </button>
-
-                                    {{-- <a data-href="{{ route('store.create') }}" data-container=".view_modal"
-                                        style="cursor: pointer;color: white" onMouseOver="this.style.color='#F9C751'"
-                                        onMouseOut="this.style.color='white'"
-                                        class="add-button store-button btn-modal d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-target=".add-store">
-                                        <i class="fas fa-plus"></i></a> --}}
-
-
-
-
                                 </div>
                                 @error('item.0.store_id')
                                     <span style="font-size: 10px;font-weight: 700;"

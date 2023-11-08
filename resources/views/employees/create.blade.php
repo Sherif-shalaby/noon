@@ -200,9 +200,9 @@
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="branch_id">@lang('lang.branch')</label>
-                                                <div class="input-wrapper">
+                                                <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('branch_id', $branches, null, [
-                                                        'class' => 'form-control select2',
+                                                        'class' => ' selectpicker p-0 width-full',
                                                         'placeholder' => __('lang.please_select'),
                                                         'data-live-search' => 'true',
                                                         'id' => 'branch_id',
@@ -214,15 +214,13 @@
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="store_id">@lang('lang.stores')</label>
-                                                <div class="input-wrapper">
-                                                    <select name="store_id" id="store_id" class="form-control "
-                                                        data-live-search=true>
-                                                        {{-- @foreach ($stores as $storeValue => $storeLabel)
-                                                            <option value="{{ $storeValue }}">{{ $storeLabel }}
-                                                            </option>
-                                                        @endforeach --}}
-                                                    </select>
-
+                                                <div class="input-wrapper" style="background-color: transparent">
+                                                    {!! Form::select('store_id[]', $stores, null, [
+                                                        'class' => 'selectpicker  p-0 width-full',
+                                                        'multiple',
+                                                        'data-live-search' => 'true',
+                                                        'id' => 'store_id',
+                                                    ]) !!}
                                                 </div>
                                             </div>
 
@@ -231,9 +229,9 @@
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="job_type">@lang('lang.jobs')</label>
-                                                <div class="input-wrapper">
+                                                <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('job_type_id', $jobs, null, [
-                                                        'class' => 'form-control selectpicker initial-balance-input width-full',
+                                                        'class' => 'selectpicker p-0 width-full',
                                                         'placeholder' => __('lang.select_job_type'),
                                                         'data-live-search' => 'true',
                                                     ]) !!}
@@ -518,6 +516,8 @@
                 success: function(response) {
                     console.log(response)
                     $("#store_id").empty().append(response).change();
+
+                    $('#store_id').selectpicker('refresh');
                 }
             });
         });

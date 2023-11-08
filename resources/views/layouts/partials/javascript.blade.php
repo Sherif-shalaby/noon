@@ -118,7 +118,6 @@
 <script src="{{ asset('js/custom/custom-table-datatable.js') }}"></script>
 
 
-{{-- select library --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 
@@ -134,8 +133,8 @@
 
 {{-- select library --}}
 
-<script type="text/javascript" src="{{ asset('js/select/select2.full.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/select/form-select2.js') }}"></script>
+{{-- <script type="text/javascript" src="{{ asset('js/select/select2.full.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/select/form-select2.js') }}"></script> --}}
 <script src="{{ asset('js/summernote.min.js') }}" referrerpolicy="origin"></script>
 <script type="text/javascript" src="{{ asset('js/submitform/submit-form.js') }}"></script>
 <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
@@ -151,6 +150,10 @@
 <script src="{{ asset('plugins/switchery/switchery.min.js') }}"></script>
 <!-- Core js -->
 {{-- <script src="{{asset('js/core.js')}}"></script> --}}
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 <script>
     $(document).on("click", "#discount_from_original_price", function() {
         var value = $('#discount_from_original_price').is(':checked') ? 1 : 0;
