@@ -99,35 +99,12 @@ class Create extends Component
         }
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if(empty($this->store_pos)){
-            $this->dispatchBrowserEvent('NoUserPos');
-        }
+            // $this->dispatchBrowserEvent('NoUserPos');
 
+        }
         $this->store_pos_id = array_key_first($this->store_pos);
-        $store_pos = StorePos::find($this->store_pos_id);
-        if(empty($store_pos)){
-            $this->dispatchBrowserEvent('NoUserPos');
-        }
-        if(!empty($store_pos)){
-//            $this->dispatchBrowserEvent('NoUserPos');
-            $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
-            $branch = $store_pos->user->employee->branch;
-        }
-        if(empty($this->stores)){
-            $this->stores = Store::getDropdown();
-        }
-//        dd($this->stores);
-        $this->store_id = array_key_first($this->stores);
-        $this->changeAllProducts();
-
-        if(!empty($branch)){
-            if( $branch->type == 'sell_car' ){
-                $this->reprsenative_sell_car = true;
-            }
-        }
         $this->client_id = 1;
         $this->payment_status = 'paid';
-        $this->dispatchBrowserEvent('initialize-select2');
-
     }
 
     public function updated($propertyName)
@@ -154,6 +131,23 @@ class Create extends Component
 
     public function render()
     {
+        $store_pos = StorePos::find($this->store_pos_id);
+        if(empty($store_pos)){
+            $this->dispatchBrowserEvent('NoUserPos');
+        }
+        if(!empty($store_pos)){
+            // $this->dispatchBrowserEvent('NoUserPos');
+            $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
+            $branch = $store_pos->user->employee->branch;
+        }
+        if(empty($this->stores)){
+            $this->stores = Store::getDropdown();
+        }
+        if(!empty($branch)){
+            if( $branch->type == 'sell_car' ){
+                $this->reprsenative_sell_car = true;
+            }
+        }
         $departments = Category::get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
@@ -195,7 +189,7 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
-        $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at','desc')->get();
+        $this->draft_transactions = TransactionSellLine::where('status', 'draft')->get();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.invoices.create', compact(
             'departments',
@@ -1351,46 +1345,33 @@ class Create extends Component
         try
         {
             $stock = AddStockLine::where('product_id', $id)->latest()->first();
-            $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
             if (!$stock)
             {
-                $transaction_data =
-                [
-                    'employee_id' => auth()->user()->id,
-                    'product_id' => $id,
-                    'store_id' => null,
-                    'supplier_id' => null,
-                    'branch_id' => $branch_id->branch_id,
-                    'status' => 'pending',
-                    'order_date' => now(),
-                    'purchase_price' => null ,
-                    'dollar_purchase_price' => null,
-                    'required_quantity' => null,
-                    'created_by' => Auth::user()->id
-                ];
+                // Product has no stock transaction
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'Product has no stock transaction']);
+                return $this->redirect('/invoices/create');
 
             }
-            else
-            {
-                $stockTransactionId = $stock->stock_transaction_id;
-                $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
-                $dinar_purchase_price = $stock->purchase_price;
-                $dollar_purchase_price = $stock->dollar_purchase_price;
-                $transaction_data =
-                [
-                    'employee_id' => auth()->user()->id,
-                    'product_id' => $id,
-                    'store_id' => $this->store_id,
-                    'supplier_id' => $supplier_id->supplier_id,
-                    'branch_id' => $branch_id->branch_id,
-                    'status' => 'pending',
-                    'order_date' => now(),
-                    'purchase_price' => $dinar_purchase_price ,
-                    'dollar_purchase_price' => $dollar_purchase_price,
-                    'required_quantity' => null,
-                    'created_by' => Auth::user()->id
-                ];
-            }
+
+            $stockTransactionId = $stock->stock_transaction_id;
+            $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
+            $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+            $dinar_purchase_price = $stock->purchase_price;
+            $dollar_purchase_price = $stock->dollar_purchase_price;
+            $transaction_data =
+            [
+                'employee_id' => auth()->user()->id,
+                'product_id' => $id,
+                'store_id' => $this->store_id,
+                'supplier_id' => $supplier_id->supplier_id,
+                'branch_id' => $branch_id->branch_id,
+                'status' => 'pending',
+                'order_date' => now(),
+                'purchase_price' => $dinar_purchase_price ,
+                'dollar_purchase_price' => $dollar_purchase_price,
+                'required_quantity' => null,
+                'created_by' => Auth::user()->id
+            ];
 
             DB::beginTransaction();
             $required_product = RequiredProduct::create($transaction_data);

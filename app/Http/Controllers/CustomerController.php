@@ -239,6 +239,7 @@ class CustomerController extends Controller
         $output = [$customers_dp , array_key_last($customers)];
         return $output;
     }
+    
 }
 
 ?>
