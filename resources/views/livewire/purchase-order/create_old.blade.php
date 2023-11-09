@@ -1,7 +1,6 @@
 
 <section class="forms">
-    {{-- <div class="container-fluid"> --}}
-    <div>
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
@@ -36,7 +35,7 @@
                                             @lang('lang.store'):<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="store_id" id="Client_Select" required >
+                                            <select class="form-control client" wire:model="store_id" id="Client_Select" required>
                                                 <option  value="" readonly selected> {{ __('lang.please_select') }} </option>
                                                 @foreach ($stores as $store)
                                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
@@ -106,80 +105,32 @@
                             <br>
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row">
-                                <div class="col-md-3 border border-1 mr-1 p-0">
-                                    {{-- +++++++++++++++++++++ filter : الموردين ++++++++++++++++++++++ --}}
-                                    {{-- <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
-                                        <div class="form-group">
-                                            {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                                            {!! Form::select('supplier_id', $suppliers->pluck('name', 'id'), null, [
-                                                'class' => 'select2 form-control',
-                                                'data-live-search' => 'true',
-                                                'id' => 'supplier_id',
-                                                'placeholder' => __('lang.please_select'),
-                                                'wire:model' => 'supplier_id'
-                                            ]) !!}
-                                            @error('supplier_id')
-                                                <span class="error text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
-                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
-                                        <div class="form-group">
-                                            {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                                            <select class="select2 form-control" wire:model="supplier_id" id="supplier_id" required>
-                                                <option  value="" readonly selected > {{ __('lang.please_select') }} </option>
-                                                @foreach ($suppliers as $supplier)
-                                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @error('supplier_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    {{-- +++++++++++++++++++++ filter : العلامة التجارية ++++++++++++++++++++++ --}}
-                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
-                                        <div class="form-group">
-                                            {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
-                                            {!! Form::select('brand_id', $brands, null,
-                                            ['class' => 'select2 form-control', 'id'=>'brand_id', 'required', 'placeholder' => __('lang.please_select'),
-                                             'data-name' => 'brand_id','wire:model' => 'brand_id']) !!}
-                                            @error('brand_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    {{-- +++++++++++++++++++++ filter : الأقسام الرئيسيه ++++++++++++++++++++++ --}}
-                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
+                                <div class="col-md-2 border border-1 mr-3 p-0">
+                                    {{-- +++++++++++++++++++++ الأقسام الرئيسيه ++++++++++++++++++++++ --}}
+                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;">
                                         الأقسام الرئيسيه
-                                        <div for="" class="d-flex align-items-center text-nowrap gap-1">
-                                            {{-- الاقسام --}}
-                                            <select class="form-control depart select2" wire:model="department_id" data-name="department_id">
-                                                <option  value="0" readonly selected >اختر </option>
+                                        <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                                            {{-- /////////// الاقسام /////////// --}}
+                                            <select class="form-control select2" data-name="department_id" wire:model="department_id">
+                                                <option  value="" readonly selected >اختر </option>
                                                 @foreach ($departments as $depart)
-                                                    {{-- @if ($depart->parent_id === null) --}}
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}</option>
-                                                        {{-- @if ($depart->subCategories->count() > 0)
-                                                            @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-'])
-                                                        @endif --}}
-                                                    {{-- @endif --}}
+                                                    <option value="{{ $depart->id }}">{{ $depart->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- /////////// products of filters :  filters المنتجات بناءاً علي ال /////////// --}}
+                                    {{-- /////////// المنتجات /////////// --}}
                                     <div class="p-2">
-                                        {{-- @foreach ($products as $product)
+                                        @foreach ($products as $product)
                                             <div class="order-btn" wire:click='add_product({{ $product->id }})' >
                                                 <span>{{ $product->name }}</span>
                                                 <span>{{ $product->sku }} </span>
                                             </div>
                                             <hr/>
-                                        @endforeach --}}
-                                        @include('purchase_order.partials.products');
+                                        @endforeach
                                     </div>
                                 </div>
-                                <div class="table-responsive col-md-8 border m-0 p-0 border-1">
+                                <div class="table-responsive col-md-9 border border-1">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
                                     <table class="table" style="width: auto" >
                                         <thead>
@@ -322,9 +273,10 @@
                 },
             });
         });
-        // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
+
         $(document).ready(function() {
             $('select').on('change', function(e) {
+
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)

@@ -119,8 +119,7 @@
                         @enderror
                     </div>
                 </div>
-                {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-
+                {{-- +++++++++++++++++ search inputField +++++++++++++++++ --}}
                 @include('invoices.partials.search')
             </div>
         </div>
