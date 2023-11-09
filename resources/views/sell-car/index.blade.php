@@ -79,13 +79,7 @@
                                             }
                                     @endphp
                                     <td>
-                                        @if(isset($store_sell_car) && !empty($store_sell_car))
-                                            @foreach($products_store as $product)
-{{--                                                @dd()--}}
-                                                {{'('. $product->quantity_available }}
-                                                {{ !empty($product->variations->unit) ? $product->variations->unit->name .')' : ')' }}
-                                                {{ $product->product->name }}<br>
-                                            @endforeach
+                                        @if(isset($store_sell_car) && !empty($store_sell_car))$
                                         @endif
 
                                     </td>
