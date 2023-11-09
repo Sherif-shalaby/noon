@@ -595,6 +595,7 @@ class Create extends Component
             $product = $orderLine->product;
             $variations = Variation::where('product_id',$product->id)->get();
             $new_item = [
+            'show_product_data' => 'false',
             'variations' => $variations,
             'variation_id' => $variations->first()->id ?? null,
             'product' => $product,
