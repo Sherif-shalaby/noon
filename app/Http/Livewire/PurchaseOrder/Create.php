@@ -86,13 +86,52 @@ class Create extends Component
         }
     }
     // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
+    // public function updatedDepartmentId($value, $name)
+    // {
+    //     // Handle department and brand filters
+    //     $query = Product::query();
+    //     // "department" filter
+    //     if ($name == 'department_id')
+    //     {
+    //         $query->where(function ($query) use ($value)
+    //         {
+    //             $query->where('category_id', $value)
+    //                 ->orWhere('subcategory_id1', $value)
+    //                 ->orWhere('subcategory_id2', $value)
+    //                 ->orWhere('subcategory_id3', $value);
+    //         });
+    //     }
+    //     // "brand" filter
+    //     if ($name == 'brand_id')
+    //     {
+    //         $query->where('brand_id', $value);
+    //     }
+    //     // "supplier" filter
+    //     if ($name == 'supplier_id')
+    //     {
+    //         // Get the stock transaction IDs associated with the supplier ID
+    //         $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
+    //         // Get all product IDs associated with the stock transaction IDs
+    //         $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
+    //         // Apply the filter to the products based on the retrieved product IDs
+    //         $query->whereIn('id', $productIds);
+    //     }
+    //     // Get the filtered products
+    //     $this->allproducts = $query->get();
+    // }
     public function updatedDepartmentId($value, $name)
     {
         // Handle department and brand filters
         $query = Product::query();
-        // "department" filter
-        if ($name == 'department_id')
-        {
+        // Initialize flag variables for filters
+        $hasSupplierFilter = false;
+        $valueSupplierFilter='';
+        $hasBrandFilter = false;
+        $valueBrandFilter='';
+        $hasDepartmentFilter = false;
+        $valueDepartmentFilter='';
+        // Apply filters based on the given name
+        if ($name == 'department_id') {
             $query->where(function ($query) use ($value)
             {
                 $query->where('category_id', $value)
@@ -100,14 +139,19 @@ class Create extends Component
                     ->orWhere('subcategory_id2', $value)
                     ->orWhere('subcategory_id3', $value);
             });
+            $hasDepartmentFilter = true;
+            $hasBrandFilter = false;
+            $hasSupplierFilter = false;
+            $valueDepartmentFilter = $value;
         }
-        // "brand" filter
-        if ($name == 'brand_id')
-        {
+        elseif ($name == 'brand_id'){
             $query->where('brand_id', $value);
+            $hasBrandFilter = true;
+            $hasDepartmentFilter = false;
+            $hasSupplierFilter = false;
+            $valueBrandFilter=$value;
         }
-        // "supplier" filter
-        if ($name == 'supplier_id')
+        elseif ($name == 'supplier_id')
         {
             // Get the stock transaction IDs associated with the supplier ID
             $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
@@ -115,10 +159,38 @@ class Create extends Component
             $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
             // Apply the filter to the products based on the retrieved product IDs
             $query->whereIn('id', $productIds);
+            $hasSupplierFilter = true;
+            $hasDepartmentFilter = false;
+            $hasBrandFilter = false;
+            $valueSupplierFilter=$value;
+        }
+        // If supplier, brand, and department filters are present, combine them with AND condition
+        elseif ($hasDepartmentFilter && $hasBrandFilter)
+        {
+            $query->where(function ($query) use ($valueDepartmentFilter, $valueBrandFilter) {
+                $query->where('category_id', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id1', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id2', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id3', $valueDepartmentFilter)
+                    ->where('brand_id', $valueBrandFilter);
+            });
+        }
+        elseif ($hasDepartmentFilter && $hasBrandFilter && $hasSupplierFilter)
+        {
+            // dd($hasDepartmentFilter);
+            $query->where(function ($query) use ($valueDepartmentFilter, $valueBrandFilter) {
+                $query->where('category_id', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id1', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id2', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id3', $valueDepartmentFilter)
+                    ->where('brand_id', $valueBrandFilter);
+            });
         }
         // Get the filtered products
         $this->allproducts = $query->get();
+        // dd($this->allproducts);
     }
+
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
