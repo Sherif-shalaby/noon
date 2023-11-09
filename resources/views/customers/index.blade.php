@@ -221,10 +221,10 @@
                                         <th class="col6">@lang('lang.city')</th>
                                         <th class="col7">@lang('lang.min_amount_in_dinar')</th>
                                         <th class="col8">@lang('lang.max_amount_in_dinar')</th>
-                                        <th class="col9">@lang('lang.min_amount_in_dollar')</th>
-                                        <th class="col10">@lang('lang.max_amount_in_dollar')</th>
+                                        <th class="col9 dollar-cell">@lang('lang.min_amount_in_dollar')</th>
+                                        <th class="col10 dollar-cell">@lang('lang.max_amount_in_dollar')</th>
                                         <th class="col11">@lang('lang.balance_in_dinar')</th>
-                                        <th class="col12">@lang('lang.balance_in_dollar')</th>
+                                        <th class="col12 dollar-cell">@lang('lang.balance_in_dollar')</th>
                                         <th class="col13">@lang('lang.balance')</th>
                                         <th class="col14">@lang('lang.purchases')</th>
                                         <th class="col15">@lang('lang.discount')</th>
@@ -273,10 +273,10 @@
                                             <td class="col6">{{ $city ? $city->name : '' }}</td>
                                             <td class="col7">{{ $customer->min_amount_in_dinar }}</td>
                                             <td class="col8">{{ $customer->max_amount_in_dinar }}</td>
-                                            <td class="col9">{{ $customer->min_amount_in_dollar }}</td>
-                                            <td class="col10">{{ $customer->max_amount_in_dollar }}</td>
+                                            <td class="col9 dollar-cell">{{ $customer->min_amount_in_dollar }}</td>
+                                            <td class="col10 dollar-cell">{{ $customer->max_amount_in_dollar }}</td>
                                             <td class="col11">{{ $customer->balance_in_dinar }}</td>
-                                            <td class="col12">{{ $customer->balance_in_dollar }}</td>
+                                            <td class="col12 dollar-cell">{{ $customer->balance_in_dollar }}</td>
                                             <td class="col13">{{ $customer->added_balance }}</td>
                                             <td class="col14">{{ $customer->added_balance }}</td>
                                             <td class="col15">{{ $customer->added_balance }}</td>

@@ -527,15 +527,5 @@
             });
         });
     </script>
-    <script>
-        const value = localStorage.getItem("showHideDollar");
 
-        var dollarCells = document.getElementsByClassName('dollar-cell');
-
-        for (var i = 0; i < dollarCells.length; i++) {
-            if (value === "hide") {
-                dollarCells[i].classList.add('showHideDollarCells')
-            }
-        }
-    </script>
 @endpush

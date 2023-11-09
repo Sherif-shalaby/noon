@@ -621,7 +621,7 @@
                                         class="mdi mdi-circle"></i>@lang('lang.wages')</a>
                             </li>
                             {{-- ########### Attendance : الحضور و الانصراف ########### --}}
-                            <li><a tyle="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('attendance.index') }}"
                                     class="attendance-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>

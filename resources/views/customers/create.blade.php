@@ -95,7 +95,7 @@
 
                             {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
                             <div
-                                class="col-md-3 mb-2 d-flex align-items-center
+                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -107,9 +107,10 @@
                                         name="min_amount_in_dollar" id="min_amount_in_dollar" />
                                 </div>
                             </div>
+
                             {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
                             <div
-                                class="col-md-3 mb-2 d-flex align-items-center
+                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -150,7 +151,7 @@
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
                             <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                class=" col-md-3 mb-2 d-flex align-items-center dollar-cell @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'

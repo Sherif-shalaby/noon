@@ -40,7 +40,7 @@
                                                 @lang('lang.store'):<span style="color:#dc3545;">*</span>
                                             </label>
                                             <div class="input-wrapper mx-2">
-                                                <select class="form-control width-full client" style="height: 100%"
+                                                <select class="select2 width-full client" style="height: 100%"
                                                     wire:model="store_id" id="Client_Select" required>
                                                     <option value="" readonly selected>
                                                         {{ __('lang.please_select') }}
@@ -64,7 +64,7 @@
                                                 @lang('lang.suppliers'):<span style="color:#dc3545;">*</span>
                                             </label>
                                             <div class="input-wrapper mx-2">
-                                                <select class="form-control width-full client" style="height: 100%"
+                                                <select class=" select2 width-full client" style="height: 100%"
                                                     wire:model="supplier_id" id="Client_Select" required>
                                                     <option value="" readonly selected>
                                                         {{ __('lang.please_select') }}

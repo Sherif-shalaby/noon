@@ -74,7 +74,7 @@
 
                             {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
                             <div
-                                class="col-md-3 mb-2 d-flex align-items-center
+                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -88,7 +88,7 @@
                             </div>
                             {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
                             <div
-                                class="col-md-3 mb-2 d-flex align-items-center
+                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -130,7 +130,7 @@
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
                             <div
-                                class="col-md-3 mb-2 d-flex align-items-center
+                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"

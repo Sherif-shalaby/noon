@@ -1,54 +1,65 @@
 @extends('layouts.app')
 @section('title', __('lang.attend_and_leave'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-       <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.attend_and_leave')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.attendance_list')</li>
-                    </ol>
+    <div class="animate-in-page">
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.attend_and_leave')</h4>
+                    <div class="breadcrumb-list">
+                        <ul
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7"
+                                    href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                                aria-current="page">@lang('lang.attendance_list')</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{ route('attendance.create') }}" class="btn btn-primary">
-                        @lang('lang.add_attendance_and_leave')
-                    </a>
+                <div class="col-md-4">
+                    <div
+                        class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                        <a href="{{ route('attendance.create') }}" class="btn btn-primary">
+                            @lang('lang.add_attendance_and_leave')
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header d-flex align-items-center">
-                        <h4 class="print-title">@lang('lang.attendance_list')</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            {{-- +++++++++++++ Table +++++++++++++ --}}
-                            <div class="col-sm-12">
-                                <br>
-                                <table class="table dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>@lang('lang.date')</th>
-                                            <th>@lang('lang.employee_name')</th>
-                                            <th>@lang('lang.check_in')</th>
-                                            <th>@lang('lang.check_out')</th>
-                                            <th>@lang('lang.status')</th>
-                                            <th>@lang('lang.created_by')</th>
-                                        </tr>
-                                    </thead>
+    <div class="animate-in-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div
+                            class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                            <h4 class="print-title">@lang('lang.attendance_list')</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                {{-- +++++++++++++ Table +++++++++++++ --}}
+                                <div class="col-sm-12">
 
-                                    <tbody>
-                                        {{-- @foreach ($attendances as $attendance)
+                                    <table class="table dataTable @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('lang.date')</th>
+                                                <th>@lang('lang.employee_name')</th>
+                                                <th>@lang('lang.check_in')</th>
+                                                <th>@lang('lang.check_out')</th>
+                                                <th>@lang('lang.status')</th>
+                                                <th>@lang('lang.created_by')</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {{-- @foreach ($attendances as $attendance)
                                         <tr>
                                             <td>
                                                 {{@format_date($attendance->date)}}
@@ -65,7 +76,7 @@
                                             <td>
                                                 <span
                                                     class="badge @attendance_status($attendance->status)">{{__('lang.' . $attendance->status)}}</span>
-                                                @if($attendance->status == 'late')
+                                                @if ($attendance->status == 'late')
                                                 @php
                                                 $check_in_data = [];
                                                 $employee = App\Models\Employee::find($attendance->employee_id);
@@ -81,11 +92,11 @@
                                                 \Carbon\Carbon::parse($attendance->check_in)->diffInMinutes($check_in_time);
                                                 }
                                                 @endphp
-                                                @if($late_time > 0)
+                                                @if ($late_time > 0)
                                                 +{{$late_time}}
                                                 @endif
                                                 @endif
-                                                @if($attendance->status == 'on_leave')
+                                                @if ($attendance->status == 'on_leave')
                                                 @php
                                                 $leave = App\Models\Leave::leftjoin('leave_types', 'leave_type_id',
                                                 'leave_types.id')
@@ -95,7 +106,7 @@
                                                     ->select('leave_types.name')
                                                     ->first()
                                                     @endphp
-                                                    @if(!empty($leave))
+                                                    @if (!empty($leave))
                                                     {{$leave->name}}
                                                     @endif
                                                     @endif
@@ -105,9 +116,10 @@
                                             </td>
                                         </tr>
                                         @endforeach --}}
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -118,7 +130,5 @@
 @endsection
 
 @section('javascript')
-<script>
-
-</script>
+    <script></script>
 @endsection

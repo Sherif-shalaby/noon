@@ -387,9 +387,9 @@
                                         <div class="d-flex justify-content-between align-items-center">
 
                                             <div>
-                                                <span
-                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total')</span>
-                                                <span style="font-weight:700;font-size: 16px;">
+                                                <span style="font-weight:700;font-size: 14px;"
+                                                    class="dollar-cell">$@lang('lang.total')</span>
+                                                <span style="font-weight:700;font-size: 16px;" class="dollar-cell">
                                                     {{ $this->sum_dollar_sub_total() }} </span>
                                             </div>
 
@@ -401,24 +401,23 @@
                                             </div>
 
                                             <div>
-                                                <span
-                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total_size')</span>
+                                                <span style="font-weight:700;font-size: 14px;">@lang('lang.total_size')</span>
                                                 <span
                                                     style="font-weight:700;font-size: 16px;">{{ $this->sum_size() ?? 0 }}</span>
                                             </div>
 
                                             <div>
                                                 <span
-                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total_weight')</span>
+                                                    style="font-weight:700;font-size: 14px;">@lang('lang.total_weight')</span>
                                                 <span
                                                     style="font-weight:700;font-size: 16px;">{{ $this->sum_weight() ?? 0 }}</span>
                                             </div>
 
                                             <div>
-                                                <span
-                                                    style="font-weight:700;font-size: 14px;">$@lang('lang.total_cost')</span>
-                                                <span
-                                                    style="font-weight:700;font-size: 16px;">{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
+                                                <span style="font-weight:700;font-size: 14px;"
+                                                    class="dollar-cell">$@lang('lang.total_cost')</span>
+                                                <span style="font-weight:700;font-size: 16px;"
+                                                    class="dollar-cell">{{ $this->sum_dollar_total_cost() ?? 0 }}</span>
                                             </div>
 
                                             <div>
@@ -597,7 +596,8 @@
                                             class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
                                             <label
                                                 class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                                for="due_amount" style="margin-top: 25px;">@lang('lang.duePaid'):
+                                                for="due_amount"
+                                                style="margin-top: 25px;font-size: 12px;font-weight: 500;">@lang('lang.duePaid'):
                                                 <span class="due_amount_span">
                                                     @if ($paying_currency == 2)
                                                         {{ $this->sum_dollar_total_cost() - $amount ?? '' }}
@@ -611,10 +611,11 @@
                                     @endif
                                     <div
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
-                                        dssdcsdcsd
+
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
-                                            for="due_date">@lang('lang.due')</label>
+                                            for="due_date"
+                                            style="font-size: 12px;font-weight: 500;">@lang('lang.due')</label>
                                         <input class="form-control m-0 initial-balance-input"
                                             placeholder="@lang('lang.due')" name="due_date" type="date"
                                             id="due_date" autocomplete="off" fdprocessedid="pipnea"
@@ -625,6 +626,7 @@
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
                                         {!! Form::label('due_date', __('lang.due_date'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         {!! Form::text(
                                             'due_date',
@@ -645,6 +647,7 @@
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
                                         {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         {!! Form::text(
                                             'notify_before_days',
@@ -675,6 +678,7 @@
                                         'class' => app()->isLocale('ar')
                                             ? 'd-block text-end  mx-2 mb-0 width-quarter width-full'
                                             : 'mr-3 mb-0 width-quarter width-full',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper" style="width: 90% !important;">
                                         {!! Form::textarea(
@@ -764,16 +768,5 @@
 
             });
         });
-    </script>
-    <script>
-        const value = localStorage.getItem("showHideDollar");
-
-        var dollarCells = document.getElementsByClassName('dollar-cell');
-
-        for (var i = 0; i < dollarCells.length; i++) {
-            if (value === "hide") {
-                dollarCells[i].classList.add('showHideDollarCells')
-            }
-        }
     </script>
 @endpush
