@@ -14,7 +14,7 @@
             </div>
 
             <div class="modal-body p-0">
-                <div
+                {{-- <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {!! Form::label('store_id', __('lang.store') . '*', ['class' => 'width-quarter mr-4']) !!}
                     <div class="input-wrapper">
@@ -28,7 +28,7 @@
                             'placeholder' => __('lang.please_select'),
                         ]) !!}
                     </div>
-                </div>
+                </div> --}}
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {!! Form::label('name', __('lang.name') . '*', ['class' => 'width-quarter mr-4']) !!}
