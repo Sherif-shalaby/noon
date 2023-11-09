@@ -49,7 +49,9 @@ class StoreController extends Controller
    */
   public function create()
   {
-      return view('store.create');
+      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+
+      return view('store.create',compact('branches'));
   }
 
   /**
