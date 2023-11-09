@@ -7,6 +7,13 @@
                 <h3 class="print-title ">
                     @lang('lang.stock')</h3>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        @include('add-stock.partials.filters')
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="table-responsive  @if (app()->isLocale('ar')) dir-rtl @endif">
                     <table id="datatable-buttons" class="table dataTable">
@@ -17,6 +24,7 @@
                                 <th>@lang('lang.date_and_time')</th>
                                 <th>@lang('lang.invoice_date')</th>
                                 <th>@lang('lang.supplier')</th>
+                                <th>@lang('lang.products')</th>
                                 <th>@lang('lang.created_by')</th>
                                 <th class="sum">@lang('lang.value')</th>
                                 <th class="sum">@lang('lang.paid_amount')</th>
@@ -34,6 +42,13 @@
                                     <td>{{ $stock->created_at }}</td>
                                     <td>{{ $stock->transaction_date }}</td>
                                     <td>{{ $stock->supplier->name ?? '' }}</td>
+                                    <td>
+                                        @if (!empty($stock->add_stock_lines))
+                                            @foreach ($stock->add_stock_lines as $stock_line)
+                                                {{ $stock_line->product->name ?? '' }}<br>
+                                            @endforeach
+                                        @endif
+                                    </td>
                                     <td>{{ $stock->created_by_relationship->first()->name }}</td>
                                     @if ($stock->transaction_currency == 2)
                                         <td>{{ number_format($stock->dollar_final_total, 2) }}</td>

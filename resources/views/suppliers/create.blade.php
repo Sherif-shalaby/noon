@@ -239,7 +239,7 @@
                                         </div>
                                         {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
                                         <div
-                                            class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            class="col-md-4 mb-2 d-flex align-items-center dollar-cell @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                 for="owner_debt_in_dollar">@lang('lang.owner_debt_in_dollar')</label>

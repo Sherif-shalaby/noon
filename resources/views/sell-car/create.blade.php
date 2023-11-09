@@ -130,7 +130,6 @@
                             'style' => 'font-size: 11px;font-weight: 500;',
                         ]) !!}
                         <div class="input-wrapper">
-
                             {!! Form::date('car_license_end_date', null, [
                                 'class' => 'form-control initial-balance-input m-auto',
                                 'style' => 'width:100%',
@@ -138,53 +137,65 @@
                             ]) !!}
                         </div>
                     </div>
-                    <div
-                        class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {!! Form::label('sell_representative', __('lang.sell_representative'), [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                            'style' => 'font-size: 14px;font-weight: 500;',
-                        ]) !!}
-                        <div class="input-wrapper">
-
-                            {!! Form::select('representative_id', $representatives, null, [
-                                'class' => 'select p-0 initial-balance-input m-auto',
-                                'style' => 'width:100%;border: 2px solid #ccc;',
-                                'placeholder' => __('lang.please_select'),
-                            ]) !!}
-                        </div>
-                    </div>
-                    <div class="col-md-4 pt-3">
-                        <div class="form-group">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="has_store_pos"
-                                    name="has_store_pos">
-                                <label class="custom-control-label" for="has_store_pos">@lang('lang.has_store_pos')</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 pt-3">
-                        <div class="form-group">
-                            <div class="custom-control custom-switch">
-                                <input type="checkbox" class="custom-control-input" id="notify_by_end_car_license"
-                                    name="notify_by_end_car_license">
-                                <label style="font-size: 14px;font-weight: 500" class="custom-control-label"
-                                    for="notify_by_end_car_license">@lang('lang.notify_by_end_car_license')</label>
-                            </div>
-                        </div>
-                    </div>
                     {{-- ++++++ days_number_notify ++++++ --}}
+                </div>
+                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                    <div class="form-group hidden col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        id="days_number_notify">
-                        <div class="input-wrapper">
-                            {!! Form::number('days_number_notify', null, [
-                                'class' => 'form-control initial-balance-input m-auto text-right',
-                                'style' => 'width:100%;',
-                                'placeholder' => __('lang.days_number_notify'),
-                                'min' => '0',
+                    <div class="col-md-6 d-flex flex-row-reverse justify-content-start align-items-center">
+                        <div class="form-group hidden col-md-6 align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            id="sell_representative" style="display: none">
+                            {!! Form::label('sell_representative', __('lang.sell_representative'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 11px;font-weight: 500;',
                             ]) !!}
+                            <div class="input-wrapper">
+                                {!! Form::select('representative_id', $representatives, null, [
+                                    'class' => ' form-control select2 representative_id width-full',
+                                    'placeholder' => __('lang.please_select'),
+                                ]) !!}
+                            </div>
+                        </div>
+                        <div class="col-md-4 mt-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-switch" style="width: fit-content">
+                                    <input type="checkbox" class="custom-control-input" id="has_store_pos"
+                                        name="has_store_pos">
+                                    <label style="font-size: 11px;font-weight: 500;" class="custom-control-label"
+                                        for="has_store_pos">@lang('lang.has_store_pos')</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="col-md-6 d-flex flex-row-reverse justify-content-start align-items-center">
+                        {{-- ++++++ days_number_notify ++++++ --}}
+                        <div
+                            class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="form-group hidden" id="days_number_notify" style="display: none">
+                                {!! Form::number('days_number_notify', null, [
+                                    'class' => 'form-control initial-balance-input width-full m-0',
+                                    'placeholder' => __('lang.days_number_notify'),
+                                    'min' => '0',
+                                ]) !!}
+                            </div>
+                        </div>
+                        {{-- ++++++ التنبيه قبل موعد انتهاء ترخيص العربة ++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <div class="custom-control custom-switch" style="width: fit-content">
+                                    <input type="checkbox" class="custom-control-input" id="notify_by_end_car_license"
+                                        name="notify_by_end_car_license">
+                                    <label style="font-size: 11px;font-weight: 500;" class="custom-control-label"
+                                        for="notify_by_end_car_license">@lang('lang.notify_by_end_car_license')</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
 
 
                 </div>

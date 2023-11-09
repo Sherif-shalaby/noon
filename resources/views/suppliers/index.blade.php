@@ -187,7 +187,7 @@
                                         <th class="col6">@lang('lang.city')</th>
                                         <th class="col7">@lang('lang.exchange_rate')</th>
                                         <th class="col8">@lang('lang.owner_debt_in_dinar')</th>
-                                        <th class="col9">@lang('lang.owner_debt_in_dollar')</th>
+                                        <th class="col9 dollar-cell">@lang('lang.owner_debt_in_dollar')</th>
                                         <th class="col10">@lang('lang.created_by')</th>
                                         <th class="col11">@lang('lang.updated_by')</th>
                                         <th class="col12">@lang('lang.action')</th>
@@ -231,7 +231,7 @@
                                             <td class="col6">{{ $city ? $city->name : '' }}</td>
                                             <td class="col7">{{ $supplier->exchange_rate }}</td>
                                             <td class="col8">{{ $supplier->owner_debt_in_dinar }}</td>
-                                            <td class="col9">{{ $supplier->owner_debt_in_dollar }}</td>
+                                            <td class="col9 dollar-cell">{{ $supplier->owner_debt_in_dollar }}</td>
                                             <td class="col10">{{ $supplier->created_by_user->name }}</td>
                                             <td class="col11">{{ $supplier->updated_by_user->name ?? '' }}</td>
                                             <td class="col12">
