@@ -43,6 +43,9 @@
                                 <th>@lang('lang.car_license')</th>
                                 <th>@lang('lang.car_model')</th>
                                 <th>@lang('lang.car_license_end_date')</th>
+                                <th>@lang('lang.stock_module')</th>
+                                <th>@lang('lang.total_sells') @lang('lang.driver_name')</th>
+                                <th>@lang('lang.total_sells') @lang('lang.sell_representative')</th>
                                 <th>@lang('lang.added_by')</th>
                                 <th>@lang('lang.updated_by')</th>
                                 <th class="notexport">@lang('lang.action')</th>
@@ -61,6 +64,43 @@
                                     <td>{{$sell_car->car_license}}</td>
                                     <td>{{$sell_car->car_model}}</td>
                                     <td>{{$sell_car->car_license_end_date}}</td>
+                                    @php
+                                        $branchExists = false;
+                                        if($sell_car->branch){
+                                            $branchExists = true;
+                                            // Assuming you want to get the first store of the first sell car with a branch
+                                            $store_sell_car = $sell_car->branch->stores->first();
+                                            $products_store = \App\Models\ProductStore::where('store_id',$store_sell_car->id)->get();
+                                             $transaction_sell_lines_for_driver  = \App\Models\TransactionSellLine::where('store_pos_id',$sell_car->driver_id)
+                                                ->where('store_id',$store_sell_car->id)->get();
+                                             $transaction_sell_lines_for_rep  = \App\Models\TransactionSellLine::where('store_pos_id',$sell_car->representative_id)
+                                                ->where('store_id',$store_sell_car->id)->get();
+
+                                            }
+                                    @endphp
+                                    <td>
+                                        @if(isset($store_sell_car) && !empty($store_sell_car))
+                                            @foreach($products_store as $product)
+{{--                                                @dd()--}}
+                                                {{'('. $product->quantity_available }}
+                                                {{ !empty($product->variations->unit) ? $product->variations->unit->name .')' : ')' }}
+                                                {{ $product->product->name }}<br>
+                                            @endforeach
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        @if(isset($transaction_sell_lines_for_driver) && !empty($transaction_sell_lines_for_driver))
+                                            <span> {{ '( $ '. $transaction_sell_lines_for_driver->sum('dollar_final_total') . ')' }} </span><br>
+                                            <span> {{ '( '. $transaction_sell_lines_for_driver->sum('final_total') . ')' }} </span><br>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(isset($transaction_sell_lines_for_rep) && !empty($transaction_sell_lines_for_rep))
+                                            <span> {{ '( $ '. $transaction_sell_lines_for_rep->sum('dollar_final_total') . ')' }} </span><br>
+                                            <span> {{ '( '. $transaction_sell_lines_for_rep->sum('final_total') . ')' }} </span><br>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if ($sell_car->created_by  > 0 and $sell_car->created_by != null)
                                             {{ $sell_car->created_at->diffForHumans() }} <br>

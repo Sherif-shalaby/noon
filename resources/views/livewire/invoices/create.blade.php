@@ -73,7 +73,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                            {!! Form::select('store_id', $stores, $store_id,
+                            {!! Form::select('store_id', $stores ?? [], $store_id,
                             ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'store_id', 'required', 'placeholder' => __('lang.please_select'),
                              'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeAllProducts']) !!}
                             @error('store_id')
@@ -91,16 +91,6 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
-{{--                    <div class="col-md-2">--}}
-{{--                        <div class="form-group">--}}
-{{--                            {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}--}}
-{{--                            {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}--}}
-{{--                            @error('payment_status')--}}
-{{--                            <span class="error text-danger">{{ $message }}</span>--}}
-{{--                            @enderror--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
                     <div class="col-md-4">
                         <label for="" class="text-primary">العملاء</label>
@@ -208,10 +198,7 @@
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
-{{--                                                                    @if($discount['price_category']!==null)--}}
-                                                        {{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
-                                                                            <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
-{{--                                                                    @endif--}}
+                                                                    <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
@@ -267,7 +254,7 @@
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
-    @if(empty($store_pos))
+    @if(empty($store_pos) || empty($stores))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const noUserPosEvent = new Event('NoUserPos');
