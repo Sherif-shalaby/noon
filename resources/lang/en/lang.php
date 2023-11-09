@@ -572,7 +572,8 @@ return [
     'show_initial_balance' => 'Show Initial Balance',
     'clear_filters' => 'Clear Filters',
     'import_stock' => 'Add Stock',
-    'export_stock' => 'Export Stock'
+    'export_stock' => 'Export Stock',
+    'total_sells'  => 'Total Sells',
 
 ];
 

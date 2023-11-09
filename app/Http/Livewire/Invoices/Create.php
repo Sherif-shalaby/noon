@@ -89,14 +89,6 @@ class Create extends Component
         $this->payment_types = $commonUtil->getPaymentTypeArrayForPos();
         $this->department_id = null;
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
-        $stores = Store::getDropdown();
-        $this->store_id = array_key_first($stores);
-        if (!empty($this->store_id)) {
-            $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
-            $this->allproducts = Product::whereIn('id', $products_store)->get();
-        } else {
-            $this->allproducts = Product::get();
-        }
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if(empty($this->store_pos)){
             $this->dispatchBrowserEvent('NoUserPos');
@@ -108,17 +100,11 @@ class Create extends Component
             $this->dispatchBrowserEvent('NoUserPos');
         }
         if(!empty($store_pos)){
-//            $this->dispatchBrowserEvent('NoUserPos');
             $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
             $branch = $store_pos->user->employee->branch;
+            $this->store_id = array_key_first($this->stores);
+            $this->changeAllProducts();
         }
-        if(empty($this->stores)){
-            $this->stores = Store::getDropdown();
-        }
-//        dd($this->stores);
-        $this->store_id = array_key_first($this->stores);
-        $this->changeAllProducts();
-
         if(!empty($branch)){
             if( $branch->type == 'sell_car' ){
                 $this->reprsenative_sell_car = true;
