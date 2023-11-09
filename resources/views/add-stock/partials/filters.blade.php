@@ -1,5 +1,4 @@
 <div class="card-body">
-    {{--    <form action="{{route('initial-balance.index')}}" method="get">--}}
     <div class="row">
         <div class="col-2">
             <div class="form-group">
@@ -37,16 +36,26 @@
             <div class="form-group">
                 {!! Form::select(
                     'supplier_id',
-                    $suppliers,$supplier_id,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.supplier'), 'data-name' => 'supplier_id','wire:model' => 'supplier_id']
+                    $brands, $brand_id,
+                    ['class' => 'form-control select2','placeholder'=>__('lang.brand'), 'data-name' => 'brand_id','wire:model' => 'brand_id']
                 ) !!}
             </div>
         </div>
         <div class="col-2">
             <div class="form-group">
                 {!! Form::select(
+                    'supplier_id',
+                    $suppliers, $supplier_id,
+                    ['class' => 'form-control select2','placeholder'=>__('lang.supplier'), 'data-name' => 'supplier_id','wire:model' => 'supplier_id']
+                ) !!}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                <label for="created_by"></label>
+                {!! Form::select(
                     'created_by',
-                    $users,$created_by,
+                    $users, $created_by,
                     ['class' => 'form-control select2',' data-name' => 'created_by','placeholder'=>__('lang.created_by'),'wire:model' => 'created_by']
                 ) !!}
             </div>
@@ -55,7 +64,7 @@
             <div class="form-group">
                 <label for="from">{{__('site.From')}}</label>
                 {!! Form::date(
-                    'from',$from,
+                    'from', $from,
                     ['class' => 'form-control','placeholder'=>__('lang.from'),'wire:model' => 'from']
                 ) !!}
             </div>
@@ -64,7 +73,7 @@
             <div class="form-group">
                 <label for="to">{{__('site.To')}}</label>
                 {!! Form::date(
-                    'to',$to,
+                    'to', $to,
                     ['class' => 'form-control','placeholder'=>__('lang.to'),'wire:model' => 'to']
                 ) !!}
             </div>
@@ -76,7 +85,6 @@
             </div>
         </div>
     </div>
-    {{--    </form>--}}
 </div>
 @push('javascripts')
     <script>

@@ -96,7 +96,6 @@
                                         @endif
                                     </ul>
                                 </td>
-
                             </tr>
                         @endforeach
                         </tbody>
