@@ -78,7 +78,6 @@ class Create extends Component
         // ++++++++++++ brand filter ++++++++++++
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
-            dd("True True True True True True");
 
         }
         // ++++++++++++ supplier filter ++++++++++++
@@ -87,55 +86,33 @@ class Create extends Component
         }
     }
     // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
-    // public function updatedDepartmentId($value, $name)
-    // {
-    //     // dd($value);
-    //     $this->allproducts = Product::when($name == 'department_id', function ($query) use ($value)
-    //     {
-    //         $query->where(function ($query) use ($value) {
-    //             $query->where('category_id', $value)
-    //                 ->orWhere('subcategory_id1', $value)
-    //                 ->orWhere('subcategory_id2', $value)
-    //                 ->orWhere('subcategory_id3', $value);
-    //         });
-    //     })
-    //     ->when($name == 'brand_id', function ($query) use ($value) {
-    //         $query->where('brand_id', $value);
-    //     })
-    //     ->when($name == 'supplier_id', function ($query) use ($value) {
-    //         $stock_transaction_id =  StockTransaction::select('id')->where('supplier_id', $value)->first();
-    //         $stock_transaction = AddStockLine::select('product_id')->where('stock_transaction_id',$stock_transaction_id)->get();
-    //         $query->where('product_id', $stock_transaction->product_id);
-    //     })
-    //     ->get();
-    //     // dd($this->allproducts);
-    // }
     public function updatedDepartmentId($value, $name)
     {
         // Handle department and brand filters
         $query = Product::query();
-
-        if ($name == 'department_id') {
-            $query->where(function ($query) use ($value) {
+        // "department" filter
+        if ($name == 'department_id')
+        {
+            $query->where(function ($query) use ($value)
+            {
                 $query->where('category_id', $value)
                     ->orWhere('subcategory_id1', $value)
                     ->orWhere('subcategory_id2', $value)
                     ->orWhere('subcategory_id3', $value);
             });
         }
-
-        if ($name == 'brand_id') {
+        // "brand" filter
+        if ($name == 'brand_id')
+        {
             $query->where('brand_id', $value);
         }
-
-        if ($name == 'supplier_id') {
-            dd($name);
+        // "supplier" filter
+        if ($name == 'supplier_id')
+        {
             // Get the stock transaction IDs associated with the supplier ID
             $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
-
             // Get all product IDs associated with the stock transaction IDs
             $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
-
             // Apply the filter to the products based on the retrieved product IDs
             $query->whereIn('id', $productIds);
         }
