@@ -108,25 +108,10 @@
                             <div class="row">
                                 <div class="col-md-3 border border-1 mr-1 p-0">
                                     {{-- +++++++++++++++++++++ filter : الموردين ++++++++++++++++++++++ --}}
-                                    {{-- <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
-                                        <div class="form-group">
-                                            {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                                            {!! Form::select('supplier_id', $suppliers->pluck('name', 'id'), null, [
-                                                'class' => 'select2 form-control',
-                                                'data-live-search' => 'true',
-                                                'id' => 'supplier_id',
-                                                'placeholder' => __('lang.please_select'),
-                                                'wire:model' => 'supplier_id'
-                                            ]) !!}
-                                            @error('supplier_id')
-                                                <span class="error text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div> --}}
                                     <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
                                         <div class="form-group">
                                             {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                                            <select class="select2 form-control" wire:model="supplier_id" id="supplier_id" required>
+                                            <select class="select2 form-control supplier_class" wire:model="supplier_id" id="supplier_id" data-name="supplier_id" required>
                                                 <option  value="" readonly selected > {{ __('lang.please_select') }} </option>
                                                 @foreach ($suppliers as $supplier)
                                                     <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
@@ -141,8 +126,8 @@
                                     <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
                                         <div class="form-group">
                                             {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
-                                            {!! Form::select('brand_id', $brands, null,
-                                            ['class' => 'select2 form-control', 'id'=>'brand_id', 'required', 'placeholder' => __('lang.please_select'),
+                                            {!! Form::select('brand_id', $brands, $brand_id,
+                                            ['class' => 'select2 form-control brand_class', 'id'=>'brand_id', 'required', 'placeholder' => __('lang.please_select'),
                                              'data-name' => 'brand_id','wire:model' => 'brand_id']) !!}
                                             @error('brand_id')
                                             <span class="error text-danger">{{ $message }}</span>
@@ -157,12 +142,7 @@
                                             <select class="form-control depart select2" wire:model="department_id" data-name="department_id">
                                                 <option  value="0" readonly selected >اختر </option>
                                                 @foreach ($departments as $depart)
-                                                    {{-- @if ($depart->parent_id === null) --}}
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}</option>
-                                                        {{-- @if ($depart->subCategories->count() > 0)
-                                                            @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-'])
-                                                        @endif --}}
-                                                    {{-- @endif --}}
+                                                    <option value="{{ $depart->id }}">{{ $depart->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -176,7 +156,7 @@
                                             </div>
                                             <hr/>
                                         @endforeach --}}
-                                        @include('purchase_order.partials.products');
+                                        @include('purchase_order.partials.products')
                                     </div>
                                 </div>
                                 <div class="table-responsive col-md-8 border m-0 p-0 border-1">
@@ -323,8 +303,11 @@
             });
         });
         // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
-        $(document).ready(function() {
-            $('select').on('change', function(e) {
+        $(document).ready(function()
+        {
+            // --------- when select "option" in "selectbox" ---------
+            $('select').on('change', function(e)
+            {
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)
@@ -333,7 +316,21 @@
                     var2 :select2.select2("val") ,
                     var3:index
                 });
-
+            });
+        });
+        // --------- to save "select option" in "selectbox" ---------
+        document.addEventListener('livewire:load', function () {
+            // "categories" filter
+            $('.depart').select().on('change', function (e) {
+                @this.set('department_id', $(this).val());
+            });
+            // "brands" filter
+            $('.brand_class').select().on('change', function (e) {
+                @this.set('brand_id', $(this).val());
+            });
+            // "supplier_class" filter
+            $('.supplier_class').select().on('change', function (e) {
+                @this.set('supplier_id', $(this).val());
             });
         });
 

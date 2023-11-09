@@ -78,7 +78,6 @@ class Create extends Component
         // ++++++++++++ brand filter ++++++++++++
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
-            dd("True True True True True True");
 
         }
         // ++++++++++++ supplier filter ++++++++++++
@@ -129,7 +128,6 @@ class Create extends Component
         }
 
         if ($name == 'supplier_id') {
-            dd($name);
             // Get the stock transaction IDs associated with the supplier ID
             $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
 
@@ -141,6 +139,7 @@ class Create extends Component
         }
         // Get the filtered products
         $this->allproducts = $query->get();
+        // dd($this->allproducts);
     }
 
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
