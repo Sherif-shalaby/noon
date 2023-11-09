@@ -586,5 +586,6 @@ return [
     'year' => 'Year',
     'mobile' => 'Mobile',
     'import_stock' => 'Add Stock',
-    'export_stock' => 'Export Stock'
+    'export_stock' => 'Export Stock',
+    'total_sells'  => 'Total Sells',
 ];

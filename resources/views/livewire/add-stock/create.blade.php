@@ -704,6 +704,17 @@
         </div>
 </section>
 <div class="view_modal no-print"></div>
+<div class="row">
+    <div class="col">
+        @php
+            $letter_header = App\Models\System::getProperty('letter_header');
+        @endphp
+        {{ asset('uploads/' . $letter_header) }}
+        <img src="@if (!empty($letter_header)) {{ asset('uploads/' . $letter_header) }}@else{{ asset('/uploads/' . session('logo')) }} @endif"
+            alt="header" id="header_invoice_img" style="width: auto; margin: auto;  max-height: 150px;">
+
+    </div>
+</div>
 {{-- <!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @include('suppliers.quick_add', ['quick_add' => 1])

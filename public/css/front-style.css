@@ -566,8 +566,8 @@ body {
 .showHideDollarCells {
     position: relative;
     z-index: 100;
-    /* opacity: 0; */
-    display: none;
+    opacity: 0;
+    /* display: none; */
 }
 
 .showHideDollarCells::after {

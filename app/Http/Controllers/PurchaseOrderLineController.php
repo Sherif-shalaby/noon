@@ -6,6 +6,8 @@ use App\Utils\ProductUtil;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrderLine;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\PurchaseOrderTransaction;
 use App\Models\Store;
@@ -53,11 +55,14 @@ class PurchaseOrderLineController extends Controller
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
         $stores = Store::getDropdown();
         $po_no = $this->productUtil->getNumberByType('purchase_order');
+        $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+        $brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         return view('purchase_order.create')->with(compact(
             'suppliers',
             'stores',
             'po_no',
-            'products'
+            'products',
+            'brands','brand_id'
         ));
     }
     /* +++++++++++++++ deleteAll() +++++++++++++++ */

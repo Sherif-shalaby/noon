@@ -59,7 +59,7 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>@lang('lang.store')</th>
+                                            {{-- <th>@lang('lang.store')</th> --}}
                                             <th>@lang('lang.name')</th>
                                             <th>@lang('lang.user')</th>
                                             <th>@lang('lang.email')</th>
@@ -68,10 +68,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($store_poses as $store_pos)
+                                        @foreach ($store_poses as $key => $store_pos)
                                             <tr>
-                                                <td>{{ $store_pos->id }}</td>
-                                                <td>{{ $store_pos->store->name ?? '' }}</td>
+                                                <td>{{ $key + 1 }}</td>
+                                                {{-- <td>{{ $store_pos->store->name ?? '' }}</td> --}}
                                                 <td>{{ $store_pos->name }}</td>
                                                 <td>{{ $store_pos->user->name }}</td>
                                                 <td>{{ $store_pos->user->email }}</td>

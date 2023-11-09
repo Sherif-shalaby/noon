@@ -621,4 +621,5 @@ return array(
     'mobile' => 'رقم التليفون',
     'import_stock' => 'اضافه مخزون',
     'export_stock' => 'تصدير مخزون',
+    'total_sells' => 'اجمالي مبيعات',
 );

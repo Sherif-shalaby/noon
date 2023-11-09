@@ -15,7 +15,7 @@
                         ]) !!}
                         <div class="input-wrapper mx-2">
 
-                            {!! Form::select('store_id', $stores, $store_id, [
+                            {!! Form::select('store_id', $stores ?? [], $store_id, [
                                 'class' => 'select2 form-control',
                                 'data-live-search' => 'true',
                                 'id' => 'store_id',
@@ -445,7 +445,7 @@
 {{-- <!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
-    @if (empty($store_pos))
+    @if (empty($store_pos) || empty($stores))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const noUserPosEvent = new Event('NoUserPos');

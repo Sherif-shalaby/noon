@@ -3,7 +3,8 @@
         <div class="row ">
             <div class="col-md-12">
                 <div class="card mt-3">
-                    <div class="card-header d-flex align-items-center">
+                    <div
+                        class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @endif">
                         <h4>@lang('lang.customer_price_offer')</h4>
                     </div>
                     <div class="row align-items-center mb-2">
@@ -150,13 +151,14 @@
                                                     @lang('lang.products')</th>
                                                 <th style="width: 10%;text-align: center">@lang('lang.quantity')</th>
                                                 {{-- <th style="width: 10%;text-align: center">@lang('lang.purchase_price')$</th>  --}}
-                                                <th style="width: 20%">@lang('lang.selling_price')$</th>
+                                                <th style="width: 20%" class="dollar-cell">@lang('lang.selling_price')$</th>
                                                 {{-- <th style="width: 10%;text-align: center">@lang('lang.sub_total')$</th>  --}}
                                                 {{-- <th style="width: 10%;text-align: center">@lang('lang.purchase_price')  </th> --}}
                                                 <th style="width: 20%">@lang('lang.selling_price') </th>
                                                 {{-- <th style="width: 10%;text-align: center">@lang('lang.sub_total')</th> --}}
                                                 {{-- <th style="width: 10%;text-align: center">@lang('lang.cost')$</th>  --}}
-                                                <th style="width: 15%;text-align: center">@lang('lang.total_cost')$</th>
+                                                <th style="width: 15%;text-align: center" class="dollar-cell">
+                                                    @lang('lang.total_cost')$</th>
                                                 {{-- <th style="width: 10%;text-align: center">@lang('lang.cost') </th>  --}}
                                                 <th style="width: 10%;text-align: center">@lang('lang.total_cost')</th>
                                                 <th style="width: 10%;text-align: center">@lang('lang.current_stock')</th>
@@ -174,7 +176,8 @@
                                                         style="text-align: right;font-size: 14px;font-weight: 500;">
                                                         @lang('lang.total')
                                                     </td>
-                                                    <td class="text-center" style="font-size: 14px;font-weight: 500;">
+                                                    <td class="text-center dollar-cell"
+                                                        style="font-size: 14px;font-weight: 500;">
                                                         {{ $this->sum_dollar_sub_total() }} </td>
                                                     {{-- <td></td>  --}}
                                                     {{-- <td></td>

@@ -257,28 +257,7 @@
                                                                     class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
                                                         </li>
-                                                        <li class="divider"></li>
-                                                        <li>
 
-                                                            <a href="{{ route('suppliers.show', $supplier->id) }}"
-                                                                class="btn"><i class="fa fa-eye"></i>
-                                                                @lang('lang.view')</a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                        <li>
-                                                            <a href="{{ route('suppliers.show', $supplier->id) }}?show=statement_of_account"
-                                                                class="btn"><i class="dripicons-document"></i>
-                                                                @lang('lang.statement_of_account')</a>
-                                                        </li>
-                                                        @if (!empty($supplier->stock_transactions->whereIn('payment_status', ['pending', 'partial'])->first()))
-                                                            <li class="divider"></li>
-                                                            <li>
-                                                                <a data-href="{{ route('supplier.pay-supplier-due', $supplier->id) }}"
-                                                                    data-container=".view_modal" class="btn-modal"
-                                                                    data-toggle="modal"><i
-                                                                        class="fa fa-money btn"></i>@lang('lang.pay')</a>
-                                                            </li>
-                                                        @endif
                                                     </ul>
                                                 </div>
                                             </td>

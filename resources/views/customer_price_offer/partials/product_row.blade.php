@@ -26,7 +26,7 @@
         @enderror
     </td> --}}
     {{-- +++++++++++++++++++++ column 5 : سعر البيع بالدولار +++++++++++++++++++++ --}}
-    <td class="text-center">
+    <td class="text-center dollar-cell">
         <input type="text" class="form-control" wire:model="items.{{ $index }}.dollar_selling_price"
             style="width: 100%;font-size: 14px;font-weight: 500;" wire:keyup="convert_dinar_price({{ $index }})"
             required>
@@ -86,7 +86,7 @@
         @endif
     </td> --}}
     {{-- ++++++++++++++++++++ Task : اجمالي التكاليف بالدولار  ++++++++++++++++++++++ --}}
-    <td class="text-center" style="font-size: 14px;font-weight: 500;">
+    <td class="text-center dollar-cell" style="font-size: 14px;font-weight: 500;">
         @if (isset($product['quantity']) && isset($product['dollar_selling_price']))
             <span class="dollar_total_cost">
                 {{ $this->dollar_total_cost($index) }}

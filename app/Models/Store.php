@@ -47,7 +47,12 @@ class Store extends Model
             $stores = Store::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         } else {
             $employee = $user->employee;
-            $stores = $employee->stores()->orderBy('name','asc')->pluck('name','id')->toArray();
+            if(!empty($employee->stores)){
+                $stores = $employee->stores()->orderBy('name','asc')->pluck('name','id')->toArray();
+            }
+            else{
+                $stores  = null;
+            }
         }
         return $stores;
     }
