@@ -74,15 +74,29 @@ class SellCarController extends Controller
                 $store->save();
                 if(!empty($request->representative_id )){
                     $employee = Employee::find($request->representative_id );
+                    if(!empty($employee->stores)){
+                        foreach ($employee->stores as $store){
+                            if($store->branch->type == 'branch'){
+                                $employee->stores()->detach($store->id);
+                            }
+                        }
+                    }
                     $employee->branch_id  = $branch->id;
-                    $employee->stores()->sync($store->id);
+                    $employee->stores()->attach($store->id);
                     $employee->save();
 
                 }
                 if(!empty($request->driver_id  )){
                     $employee = Employee::find($request->driver_id  );
+                    if(!empty($employee->stores)){
+                        foreach ($employee->stores as $store){
+                            if($store->branch->type == 'branch'){
+                                $employee->stores()->detach($store->id);
+                            }
+                        }
+                    }
                     $employee->branch_id  = $branch->id;
-                    $employee->stores()->sync($store->id);
+                    $employee->stores()->attach($store->id);
                     $employee->save();
                 }
             }
