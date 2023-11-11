@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\InitialBalance;
 
 use App\Models\AddStockLine;
+use App\Models\Branch;
 use App\Models\Category;
 use App\Models\CustomerType;
 use App\Models\Product;
@@ -60,7 +61,7 @@ class Create extends Component
         $supplier, $exchange_rate, $exchangeRate, $transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category,
-        $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [];
+        $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [];
 
     public $rows = [[
         'id' => '', 'sku' => '', 'quantity' => '',
@@ -186,6 +187,7 @@ class Create extends Component
     }
     public function render()
     {
+        $this->branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $categories = Category::orderBy('name', 'asc')->where('parent_id', null)->pluck('name', 'id')->toArray();

@@ -1246,6 +1246,12 @@
                     </a>
                 </li>
                 {{-- @endcan --}}
+                <li>
+                    <a href="{{ route('representatives.index') }}">
+                        <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid" alt="components">
+                        <span>{{ __('lang.representatives_requests') }}</span>
+                    </a>
+                </li>
                 {{-- ###################### settings : الاعدادات ###################### --}}
                 {{-- @can('settings_module') --}}
                 @if (!empty($module_settings['settings_module']))

@@ -588,4 +588,8 @@ return [
     'import_stock' => 'Add Stock',
     'export_stock' => 'Export Stock',
     'total_sells'  => 'Total Sells',
+    'representatives_requests' => 'Rep Requests',
+    'representatives' => 'Representatives',
+    'remaining' => 'Remaining',
+    'representative' => 'Representative',
 ];
