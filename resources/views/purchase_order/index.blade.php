@@ -38,7 +38,7 @@
                     <th>@lang('lang.supplier')</th>
                     <th class="sum">@lang('lang.value')</th>
                     <th>@lang('lang.status')</th>
-                    {{-- <th class="notexport">@lang('lang.action')</th> --}}
+                    <th class="notexport">@lang('lang.action')</th>
                 </tr>
             </thead>
 
@@ -59,48 +59,51 @@
                     <td>
                         {{ $purchase_order->transaction->status }}
                     </td>
-
-                    {{-- <td>
+                    {{-- ++++++++++++++++++ Actions ++++++++++++ --}}
+                    <td>
 
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">@lang('lang.action')
+                                    aria-haspopup="true" aria-expanded="false">
+                                @lang('lang.action')
                                 <span class="caret"></span>
-                                <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                @can('purchase_order.purchase_order.view')
+                                {{-- @endcan
+                                @can('purchase_order.purchase_order.view') --}}
                                 <li>
-                                    <a href="{{action('PurchaseOrderController@show', $purchase_order->id)}}?print=true" target="_blank"
-                                        class=""><i class="dripicons-print btn"></i> @lang('lang.print')</a>
+                                    {{-- {{action('PurchaseOrderController@show', $purchase_order->id)}} --}}
+                                    <a href="#" target="_blank" class="" style="color:#000;">
+                                        <i class="fa fa-eye btn"></i>
+                                        @lang('lang.view')
+                                    </a>
                                 </li>
                                 <li class="divider"></li>
-                                @endcan
-                                @can('purchase_order.purchase_order.view')
+                                {{-- @endcan
+                                @can('purchase_order.purchase_order.create_and_edit') --}}
                                 <li>
-                                    <a href="{{action('PurchaseOrderController@show', $purchase_order->id)}}" target="_blank"
-                                        class=""><i class="fa fa-eye btn"></i> @lang('lang.view')</a>
+                                    {{--  href="{{action('PurchaseOrderController@edit', $purchase_order->id)}}" --}}
+                                    <a  href="#" style="color:#000;">
+                                        <i class="dripicons-document-edit btn"></i>@lang('lang.edit')
+                                    </a>
                                 </li>
                                 <li class="divider"></li>
-                                @endcan
-                                @can('purchase_order.purchase_order.create_and_edit')
+                                {{-- @endcan
+                                @can('purchase_order.purchase_order.delete') --}}
                                 <li>
-                                    <a href="{{action('PurchaseOrderController@edit', $purchase_order->id)}}"><i
-                                            class="dripicons-document-edit btn"></i>@lang('lang.edit')</a>
-                                </li>
-                                <li class="divider"></li>
-                                @endcan
-                                @can('purchase_order.purchase_order.delete')
-                                <li>
-                                    <a data-href="{{action('PurchaseOrderController@destroy', $purchase_order->id)}}"
-                                        data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
-                                        class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                    {{--    data-href="{{action('PurchaseOrderController@destroy', $purchase_order->id)}}"
+                                            data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
+                                    --}}
+                                    <a data-href="#"
+                                        data-check_password="#"
+                                        class="btn text-red delete_item" style="color:#000;"><i class="fa fa-trash"></i>
                                         @lang('lang.delete')</a>
                                 </li>
-                                @endcan
+                                {{-- @endcan --}}
                             </ul>
                         </div>
-                    </td> --}}
+                    </td>
+
                 </tr>
 
                 @endforeach

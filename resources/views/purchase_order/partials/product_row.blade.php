@@ -7,6 +7,7 @@
     <td>
         {{-- @if($product['show_product_data']) --}}
             {{ $product['product']['name'] }}
+            <input type="hidden" name="product_id" wire:model="product_id" value="{{ $product['product']['id'] }}" />
         {{-- @endif --}}
     </td>
     {{-- +++++++++++++++++++++ column 3 : quantity +++++++++++++++++++++ --}}
@@ -128,7 +129,7 @@
     {{-- +++++++++++++++++++++ column 4 : current_stock +++++++++++++++++++++ --}}
     <td>
         <input type="text" class="form-control current_stock" style="width: 65px;" required disabled
-            wire:model="items.{{ $index }}.current_stock">
+            wire:model="items.{{ $index }}.current_stock" >
     </td>
     {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}
     <td  class="text-center">

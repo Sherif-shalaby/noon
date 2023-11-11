@@ -52,7 +52,8 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
-        $allproducts = [] , $brand_id = 1, $brands = [] , $search_by_product_symbol;
+        $allproducts = [] , $brand_id = 1, $brands = [] , $search_by_product_symbol , $product_id;
+
     protected $rules =
     [
         'store_id' => 'required',
@@ -245,6 +246,9 @@ class Create extends Component
     // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
+        // Fetch and set the initial value of $current_stock
+        $this->updateCurrentStock();
+
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
 
         $status_array = $this->getPurchaseOrderStatusArray();
@@ -452,6 +456,7 @@ class Create extends Component
 
     public function add_product($id, $add_via = null)
     {
+        $this->product_id = $id;
         if(!empty($this->searchProduct)){
             $this->searchProduct = '';
 
@@ -499,8 +504,15 @@ class Create extends Component
         $dinar_purchase = AddStockLine::select('purchase_price')->where('product_id', $product['id'])->latest()->first();
         // Task_9_10_2023 : quantity
         $quantity = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        $this->product_id = $product['id'];
         // The "Total quantity" of "each product"
-        $current_stock = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // $current_stock = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // $current_stock = ProductStore::where('product_id', $product['id'])->pluck('quantity_available');
+        $current_stock_all = ProductStore::select('quantity_available')
+                            ->where('product_id', $product['id'])
+                            ->orderBy('created_at', 'desc')
+                            ->first();
+        $current_stock = $current_stock_all->quantity_available;
         // dd($current_stock);
         $new_item = [
             'show_product_data' => $show_product_data,
@@ -530,6 +542,37 @@ class Create extends Component
             'total_stock' => 0 + 1,
         ];
         array_push($this->items, $new_item);
+    }
+    // +++++++++++++++++++++++++ updateCurrentStock() +++++++++++++++++++
+    //  When change "store" Then Change "current_stock" column according to "selected Store"
+    public function updateCurrentStock()
+    {
+        if (!empty($this->store_id))
+        {
+            $store_id = (int)$this->store_id;
+            $product_id = $this->product_id;
+
+            $current_stock_all = ProductStore::select('quantity_available')
+                ->where('product_id', $product_id)
+                ->where('store_id', $store_id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
+
+            $this->current_stock = $current_stock;
+            dd($this->current_stock);
+
+        } else {
+            // Handle the case where store_id is empty, set $current_stock to null or a default value
+            $this->current_stock = null;
+        }
+
+    }
+    public function func()
+    {
+        // Update $current_stock when store_id changes
+        $this->updateCurrentStock();
     }
 
     public function getVariationData($index){

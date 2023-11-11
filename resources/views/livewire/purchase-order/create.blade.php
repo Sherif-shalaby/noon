@@ -36,7 +36,7 @@
                                             @lang('lang.store'):<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="store_id" id="Client_Select" required >
+                                            <select class="form-control client"  wire:change="updateCurrentStock" wire:model="store_id" id="Client_Select" required >
                                                 <option  value="" readonly selected> {{ __('lang.please_select') }} </option>
                                                 @foreach ($stores as $store)
                                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
