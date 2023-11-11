@@ -78,7 +78,6 @@ class Create extends Component
         // ++++++++++++ brand filter ++++++++++++
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
-
         }
         // ++++++++++++ supplier filter ++++++++++++
         if (isset($data['var1']) && $data['var1'] == "supplier_id") {
