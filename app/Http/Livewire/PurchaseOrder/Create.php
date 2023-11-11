@@ -557,11 +557,9 @@ class Create extends Component
                 ->where('store_id', $store_id)
                 ->orderBy('created_at', 'desc')
                 ->first();
-
             $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
-
-            $this->current_stock = $current_stock;
-            dd($this->current_stock);
+            $this->items[0]['current_stock'] = $current_stock;
+            // dd($this->current_stock);
 
         } else {
             // Handle the case where store_id is empty, set $current_stock to null or a default value
