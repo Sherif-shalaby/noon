@@ -52,7 +52,7 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
-        $allproducts = [] , $brand_id = 1, $brands = [];
+        $allproducts = [] , $brand_id = 1, $brands = [] , $search_by_product_symbol;
     protected $rules =
     [
         'store_id' => 'required',
@@ -271,23 +271,44 @@ class Create extends Component
         $brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
         // dd($suppliers);
-
-        if(!empty($this->searchProduct))
-        {
-            $search_result = Product::when($this->searchProduct,function ($query)
-            {
-                // return $query->where('name','like','%'.$this->searchProduct.'%');
-                return $query->where('name', 'like', '%' . $this->searchProduct . '%')
-                             ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
+        // ++++++++++++++++++++++++++++++ start : search_by_product_symbol ++++++++++++++++++++++++++++++
+        $search_result = '';
+        if (!empty($this->search_by_product_symbol)){
+            $search_result = Product::when($this->search_by_product_symbol,function ($query){
+                return $query->where('product_symbol','like','%'.$this->search_by_product_symbol.'%');
             });
             $search_result = $search_result->paginate();
+            if(count($search_result) === 1){
+                $this->add_product($search_result->first()->id);
+                $search_result = '';
+                $this->search_by_product_symbol = '';
+            }
+
+        }
+        // ++++++++++++++++++++++++++++++ end : search_by_product_symbol ++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++ start : search_by_product_name ++++++++++++++++++++++++++++++
+        if(!empty($this->searchProduct))
+        {
+            $search_result = Product::when($this->searchProduct,function ($query){
+                return $query->where('name','like','%'.$this->searchProduct.'%')
+                             ->orWhere('sku','like','%'.$this->searchProduct.'%');
+            });
+            $search_result = $search_result->paginate();
+            if(count($search_result) == 0){
+                $variation = Variation::when($this->searchProduct,function ($query){
+                    return $query->where('sku','like','%'.$this->searchProduct.'%');
+                })->pluck('product_id');
+                $search_result = Product::whereIn('id',$variation);
+                $search_result = $search_result->paginate();
+            }
+
             if(count($search_result) === 1){
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->searchProduct = '';
             }
         }
-
+        // ++++++++++++++++++++++++++++++ end : search_by_product_name ++++++++++++++++++++++++++++++
         if ($this->source_type == 'pos')
         {
             $users = StorePos::pluck('name', 'id');
