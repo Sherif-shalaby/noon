@@ -615,5 +615,9 @@ return array(
     'sender_store' => 'المتجر المرسل',
     'show_initial_balance' => 'عرض رصيد أولي',
     'clear_filters' => 'مسح عوامل التصفية',
+    'representatives_requests'=>'طلبات المناديب',
+    'representatives'=>'المناديب',
+    'remaining'=>'المتبقى',
+    'representative'=>'مندوب',
 );
 

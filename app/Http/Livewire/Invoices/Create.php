@@ -217,6 +217,7 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
+                'employee_id' =>Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,
                 'type' => 'sell',
@@ -1345,12 +1346,12 @@ class Create extends Component
         try
         {
             $stock = AddStockLine::where('product_id', $id)->latest()->first();
-            $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+            $branch_id = Employee::select('branch_id')->where('user_id', auth()->user()->id)->latest()->first();
             if (!$stock)
             {
                 $transaction_data =
                 [
-                    'employee_id' => auth()->user()->id,
+                    'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                     'product_id' => $id,
                     'store_id' => null,
                     'supplier_id' => null,
@@ -1372,7 +1373,7 @@ class Create extends Component
                 $dollar_purchase_price = $stock->dollar_purchase_price;
                 $transaction_data =
                 [
-                    'employee_id' => auth()->user()->id,
+                    'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
                     'product_id' => $id,
                     'store_id' => $this->store_id,
                     'supplier_id' => $supplier_id->supplier_id,

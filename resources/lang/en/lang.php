@@ -581,6 +581,10 @@ return [
     'has_store_pos' => 'Has Store Pos',
     'show_initial_balance' => 'Show Initial Balance',
     'clear_filters' => 'Clear Filters',
+    'representatives_requests'=>'Rep Requests',
+    'representatives'=>'Representatives',
+    'remaining'=>'Remaining',
+    'representative'=>'Representative',
 ];
 
 

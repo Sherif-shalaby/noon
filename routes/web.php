@@ -41,6 +41,7 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
@@ -273,6 +274,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Transfer
     Route::view('transfer/create/{id}','transfer.create')->name('transfer.create');
+
+    Route::resource('representatives', RepresentativeController::class);
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
