@@ -22,7 +22,7 @@
                         <div class="input-wrapper">
 
                             {!! Form::select('driver_id', $deliveries, null, [
-                                'class' => 'form-control select2 initial-balance-input m-auto text-right',
+                                'class' => 'form-control selectpicker initial-balance-input m-auto text-right',
                                 'style' => 'width:100%',
                                 'placeholder' => __('lang.please_select'),
                                 'required',

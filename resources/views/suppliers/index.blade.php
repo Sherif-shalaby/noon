@@ -196,8 +196,16 @@
                                 <tbody>
                                     @foreach ($suppliers as $supplier)
                                         <tr>
-                                            <td class="col1">{{ $supplier->name }}</td>
-                                            <td class="col2">{{ $supplier->company_name }}</td>
+                                            <td class="col1">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.name')">
+                                                    {{ $supplier->name }}
+                                                </span>
+                                            </td>
+                                            <td class="col2">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.company_name')">
+                                                    {{ $supplier->company_name }}
+                                                </span>
+                                            </td>
                                             {{-- Convert the email and phone strings to arrays --}}
                                             @php
                                                 $emailArray = explode(',', $supplier->email);
@@ -214,26 +222,58 @@
                                             <td class="col3">
                                                 {{-- Iterate over the email array elements --}}
                                                 @foreach ($emailArray as $email)
-                                                    {{ $email }}<br>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.email')">
+                                                        {{ $email }}<br>
+                                                    </span>
                                                 @endforeach
                                             </td>
                                             <td class="col4">
                                                 {{-- Iterate over the phone array elements --}}
                                                 @foreach ($phoneArray as $phone)
-                                                    {{ $phone }}<br>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.mobile_number')">
+                                                        {{ $phone }}<br>
+                                                    </span>
                                                 @endforeach
                                             </td>
                                             @php
                                                 $state = \App\Models\State::find($supplier->state_id);
                                                 $city = \App\Models\City::find($supplier->city_id);
                                             @endphp
-                                            <td class="col5">{{ $state ? $state->name : '' }}</td>
-                                            <td class="col6">{{ $city ? $city->name : '' }}</td>
-                                            <td class="col7">{{ $supplier->exchange_rate }}</td>
-                                            <td class="col8">{{ $supplier->owner_debt_in_dinar }}</td>
-                                            <td class="col9 dollar-cell">{{ $supplier->owner_debt_in_dollar }}</td>
-                                            <td class="col10">{{ $supplier->created_by_user->name }}</td>
-                                            <td class="col11">{{ $supplier->updated_by_user->name ?? '' }}</td>
+                                            <td class="col5">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.state')">
+                                                    {{ $state ? $state->name : '' }}
+                                                </span>
+                                            </td>
+                                            <td class="col6">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.city')">
+                                                    {{ $city ? $city->name : '' }}
+                                                </span>
+                                            </td>
+                                            <td class="col7">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.exchange_rate')">
+                                                    {{ $supplier->exchange_rate }}
+                                                </span>
+                                            </td>
+                                            <td class="col8">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.owner_debt_in_dinar')">
+                                                    {{ $supplier->owner_debt_in_dinar }}
+                                                </span>
+                                            </td>
+                                            <td class="col9 dollar-cell">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.owner_debt_in_dollar')">
+                                                    {{ $supplier->owner_debt_in_dollar }}
+                                                </span>
+                                            </td>
+                                            <td class="col10">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                                    {{ $supplier->created_by_user->name }}
+                                                </span>
+                                            </td>
+                                            <td class="col11">
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+                                                    {{ $supplier->updated_by_user->name ?? '' }}
+                                                </span>
+                                            </td>
                                             <td class="col12">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle"

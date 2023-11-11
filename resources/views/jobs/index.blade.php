@@ -11,8 +11,9 @@
                         @lang('lang.jobs')
                     </h4>
                     <div class="breadcrumb-list">
-                        <ul style=" list-style: none;"
+                        <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            >
                             <li class="breadcrumb-item  @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
                                     style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                     @lang('lang.dashboard')</a>
@@ -64,17 +65,25 @@
                                     @foreach ($jobs as $job)
                                         <tr>
                                             <td>
-                                                {{ $job->title }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.job_title')">
+                                                    {{ $job->title }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ @format_date($job->date_of_creation) }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.date_of_creation')">
+                                                    {{ @format_date($job->date_of_creation) }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $job->created_by()->get()[0]->name }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                                    {{ $job->created_by()->get()[0]->name }}
+                                                </span>
                                             </td>
                                             <td>
                                                 @if (isset($job->updated_by))
-                                                    {{ $job->updated_by()->get()[0]->name }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+                                                        {{ $job->updated_by()->get()[0]->name }}
+                                                    </span>
                                                 @endif
                                             </td>
                                             <td>

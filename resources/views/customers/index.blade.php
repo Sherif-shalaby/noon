@@ -263,8 +263,16 @@
                                             @foreach ($customers as $index => $customer)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td class="col1">{{ $customer->name }}</td>
-                                                    <td class="col2">{{ $customer->customer_type->name }}</td>
+                                                    <td class="col1">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.customer_name')">
+                                                            {{ $customer->name }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col2">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.customer_type')">
+                                                            {{ $customer->customer_type->name }}
+                                                        </span>
+                                                    </td>
                                                     {{-- Convert the email and phone strings to arrays --}}
                                                     @php
                                                         $emailArray = explode(',', $customer->email);
@@ -281,13 +289,19 @@
                                                     <td class="col3">
                                                         {{-- Iterate over the email array elements --}}
                                                         @foreach ($emailArray as $email)
-                                                            {{ $email }}<br>
+                                                            <span class="custom-tooltip"
+                                                                data-tooltip="@lang('lang.email')">
+                                                                {{ $email }}<br>
+                                                            </span>
                                                         @endforeach
                                                     </td>
                                                     <td class="col4">
                                                         {{-- Iterate over the phone array elements --}}
                                                         @foreach ($phoneArray as $phone)
-                                                            {{ $phone }}<br>
+                                                            <span class="custom-tooltip"
+                                                                data-tooltip="@lang('lang.phone')">
+                                                                {{ $phone }}<br>
+                                                            </span>
                                                         @endforeach
                                                     </td>
 
@@ -295,42 +309,88 @@
                                                         $state = \App\Models\State::find($customer->state_id);
                                                         $city = \App\Models\City::find($customer->city_id);
                                                     @endphp
-                                                    <td class="col5">{{ $state ? $state->name : '' }}</td>
-                                                    <td class="col6">{{ $city ? $city->name : '' }}</td>
-                                                    <td class="col7">{{ $customer->min_amount_in_dinar }}</td>
-                                                    <td class="col8">{{ $customer->max_amount_in_dinar }}</td>
-                                                    <td class="col9 dollar-cell">{{ $customer->min_amount_in_dollar }}
+                                                    <td class="col5">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.state')">
+                                                            {{ $state ? $state->name : '' }}
+                                                        </span>
                                                     </td>
-                                                    <td class="col10 dollar-cell">{{ $customer->max_amount_in_dollar }}
+                                                    <td class="col6">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.city')">
+                                                            {{ $city ? $city->name : '' }}
+                                                        </span>
                                                     </td>
-                                                    <td class="col11">{{ $customer->balance_in_dinar }}</td>
-                                                    <td class="col12 dollar-cell">{{ $customer->balance_in_dollar }}</td>
-                                                    <td class="col13">{{ $customer->added_balance }}</td>
-                                                    <td class="col14">{{ $customer->added_balance }}</td>
-                                                    <td class="col15">{{ $customer->added_balance }}</td>
+                                                    <td class="col7">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.min_amount_in_dinar')">
+                                                            {{ $customer->min_amount_in_dinar }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col8">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.max_amount_in_dinar')">
+                                                            {{ $customer->max_amount_in_dinar }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col9 dollar-cell">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.min_amount_in_dollar')">
+                                                            {{ $customer->min_amount_in_dollar }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col10 dollar-cell">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.max_amount_in_dollar')">
+                                                            {{ $customer->max_amount_in_dollar }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col11">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.balance_in_dinar')">
+                                                            {{ $customer->balance_in_dinar }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col12 dollar-cell">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.balance_in_dollar')">
+                                                            {{ $customer->balance_in_dollar }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col13">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.balance')">
+                                                            {{ $customer->added_balance }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col14">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.purchases')">
+                                                            {{ $customer->added_balance }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="col15">
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.discount')">
+                                                            {{ $customer->added_balance }}
+                                                        </span>
+                                                    </td>
                                                     <td class="col16">
-                                                        @if ($customer->created_by > 0 and $customer->created_by != null)
-                                                            {{ $customer->created_at->diffForHumans() }} <br>
-                                                            {{ $customer->created_at->format('Y-m-d') }}
-                                                            ({{ $customer->created_at->format('h:i') }})
-                                                            {{ $customer->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                            <br>
-                                                            {{ $customer->createBy?->name }}
-                                                        @else
-                                                            {{ __('no_update') }}
-                                                        @endif
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.points')">
+                                                            @if ($customer->created_by > 0 and $customer->created_by != null)
+                                                                {{ $customer->created_at->diffForHumans() }} <br>
+                                                                {{ $customer->created_at->format('Y-m-d') }}
+                                                                ({{ $customer->created_at->format('h:i') }})
+                                                                {{ $customer->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                                <br>
+                                                                {{ $customer->createBy?->name }}
+                                                            @else
+                                                                {{ __('no_update') }}
+                                                            @endif
+                                                        </span>
                                                     </td>
                                                     <td class="col17">
-                                                        @if ($customer->updated_by > 0 and $customer->updated_by != null)
-                                                            {{ $customer->updated_at->diffForHumans() }} <br>
-                                                            {{ $customer->updated_at->format('Y-m-d') }}
-                                                            ({{ $customer->updated_at->format('h:i') }})
-                                                            {{ $customer->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                            <br>
-                                                            {{ $customer->updateBy?->name }}
-                                                        @else
-                                                            {{ __('no_update') }}
-                                                        @endif
+                                                        <span class="custom-tooltip" data-tooltip="@lang('updated_by')">
+                                                            @if ($customer->updated_by > 0 and $customer->updated_by != null)
+                                                                {{ $customer->updated_at->diffForHumans() }} <br>
+                                                                {{ $customer->updated_at->format('Y-m-d') }}
+                                                                ({{ $customer->updated_at->format('h:i') }})
+                                                                {{ $customer->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                                <br>
+                                                                {{ $customer->updateBy?->name }}
+                                                            @else
+                                                                {{ __('no_update') }}
+                                                            @endif
+                                                        </span>
                                                     </td>
                                                     <td class="col18">
                                                         <div class="btn-group">

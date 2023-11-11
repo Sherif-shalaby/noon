@@ -81,62 +81,93 @@
                                         @foreach ($wages as $index => $wage)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $wage->date_of_creation }}</td>
-                                                <td>{{ $wage->employee->employee_name }}</td>
                                                 <td>
-                                                    @if ($wage->payment_type == 'salary')
-                                                        {{ \Carbon\Carbon::parse($wage->account_period)->format('F') }}
-                                                    @else
-                                                        @if (!empty($wage->acount_period_start_date))
-                                                            {{ @format_date($wage->acount_period_start_date) }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.date_of_creation')">
+                                                        {{ $wage->date_of_creation }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.name')">
+                                                        {{ $wage->employee->employee_name }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.account_period')">
+
+                                                        @if ($wage->payment_type == 'salary')
+                                                            {{ \Carbon\Carbon::parse($wage->account_period)->format('F') }}
+                                                        @else
+                                                            @if (!empty($wage->acount_period_start_date))
+                                                                {{ @format_date($wage->acount_period_start_date) }}
+                                                            @endif
+                                                            -
+                                                            @if (!empty($wage->acount_period_end_date))
+                                                                {{ @format_date($wage->acount_period_end_date) }}
+                                                            @endif
                                                         @endif
-                                                        -
-                                                        @if (!empty($wage->acount_period_end_date))
-                                                            {{ @format_date($wage->acount_period_end_date) }}
-                                                        @endif
-                                                    @endif
+                                                    </span>
                                                 </td>
                                                 <td></td>
                                                 {{-- <td>{{$wage->employee->job_type->title}}</td> --}}
                                                 <td>
                                                     {{-- {{ $settings['currency'] }} --}}
-                                                    {{ @num_format($wage->net_amount) }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.amount_paid')">
+                                                        {{ @num_format($wage->net_amount) }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    @if (!empty($payment_types[$wage->payment_type]))
-                                                        {{ $payment_types[$wage->payment_type] }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ @format_date($wage->payment_date) }}</td>
-                                                <td>
-                                                    @if (!empty($wage->wage_transaction))
-                                                        {{ $wage->wage_transaction->source->name }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ ucfirst($wage->status) }}</td>
-                                                <td>
-                                                    @if ($wage->created_by > 0 and $wage->created_by != null)
-                                                        {{ $wage->created_at->diffForHumans() }} <br>
-                                                        {{ $wage->created_at->format('Y-m-d') }}
-                                                        ({{ $wage->created_at->format('h:i') }})
-                                                        {{ $wage->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $wage->createBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.type_of_payment')">
+
+                                                        @if (!empty($payment_types[$wage->payment_type]))
+                                                            {{ $payment_types[$wage->payment_type] }}
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    @if ($wage->updated_by > 0 and $wage->updated_by != null)
-                                                        {{ $wage->updated_at->diffForHumans() }} <br>
-                                                        {{ $wage->updated_at->format('Y-m-d') }}
-                                                        ({{ $wage->updated_at->format('h:i') }})
-                                                        {{ $wage->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $wage->updateBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.date_of_payment')">
+                                                        {{ @format_date($wage->payment_date) }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.paid_by')">
+                                                        @if (!empty($wage->wage_transaction))
+                                                            {{ $wage->wage_transaction->source->name }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.status')">
+                                                        {{ ucfirst($wage->status) }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('added_by')">
+
+                                                        @if ($wage->created_by > 0 and $wage->created_by != null)
+                                                            {{ $wage->created_at->diffForHumans() }} <br>
+                                                            {{ $wage->created_at->format('Y-m-d') }}
+                                                            ({{ $wage->created_at->format('h:i') }})
+                                                            {{ $wage->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $wage->createBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('updated_by')">
+                                                        @if ($wage->updated_by > 0 and $wage->updated_by != null)
+                                                            {{ $wage->updated_at->diffForHumans() }} <br>
+                                                            {{ $wage->updated_at->format('Y-m-d') }}
+                                                            ({{ $wage->updated_at->format('h:i') }})
+                                                            {{ $wage->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $wage->updateBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">

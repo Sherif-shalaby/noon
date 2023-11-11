@@ -69,16 +69,54 @@
                                 <tbody>
                                     @foreach ($sell_cars as $index => $sell_car)
                                         <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $sell_car->driver->employee_name ?? '' }}</td>
-                                            <td>{{ $sell_car->car_name }}</td>
-                                            <td>{{ $sell_car->car_no }}</td>
-                                            <td>{{ $sell_car->representative->employee_name ?? '' }}</td>
-                                            <td>{{ $sell_car->car_type }}</td>
-                                            <td>{{ $sell_car->car_size }}</td>
-                                            <td>{{ $sell_car->car_license }}</td>
-                                            <td>{{ $sell_car->car_model }}</td>
-                                            <td>{{ $sell_car->car_license_end_date }}</td>
+                                            <td>
+                                                {{ $index + 1 }}
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.driver_name')">
+                                                    {{ $sell_car->driver->employee_name ?? '' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_name')">
+                                                    {{ $sell_car->car_name }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_number')">
+                                                    {{ $sell_car->car_no }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.sell_representative')">
+                                                    {{ $sell_car->representative->employee_name ?? '' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_type')">
+                                                    {{ $sell_car->car_type }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_size')">
+                                                    {{ $sell_car->car_size }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_license')">
+                                                    {{ $sell_car->car_license }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_model')">
+                                                    {{ $sell_car->car_model }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_license_end_date')">
+                                                    {{ $sell_car->car_license_end_date }}
+                                                </span>
+                                            </td>
                                             @php
                                                 $branchExists = false;
                                                 if ($sell_car->branch) {
@@ -95,54 +133,73 @@
                                                 }
                                             @endphp
                                             <td>
-                                                @if (isset($store_sell_car) && !empty($store_sell_car))
-                                                    $
-                                                @endif
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.stock_module')">
+
+                                                    @if (isset($store_sell_car) && !empty($store_sell_car))
+                                                        $
+                                                    @endif
+
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.total_sells')">
+
+                                                    @if (isset($transaction_sell_lines_for_driver) && !empty($transaction_sell_lines_for_driver))
+                                                        <span>
+                                                            {{ '( $ ' . $transaction_sell_lines_for_driver->sum('dollar_final_total') . ')' }}
+                                                        </span><br>
+                                                        <span>
+                                                            {{ '( ' . $transaction_sell_lines_for_driver->sum('final_total') . ')' }}
+                                                        </span><br>
+                                                    @endif
+                                                </span>
 
                                             </td>
                                             <td>
-                                                @if (isset($transaction_sell_lines_for_driver) && !empty($transaction_sell_lines_for_driver))
-                                                    <span>
-                                                        {{ '( $ ' . $transaction_sell_lines_for_driver->sum('dollar_final_total') . ')' }}
-                                                    </span><br>
-                                                    <span>
-                                                        {{ '( ' . $transaction_sell_lines_for_driver->sum('final_total') . ')' }}
-                                                    </span><br>
-                                                @endif
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.total_sells')">
+
+                                                    @if (isset($transaction_sell_lines_for_rep) && !empty($transaction_sell_lines_for_rep))
+                                                        <span>
+                                                            {{ '( $ ' . $transaction_sell_lines_for_rep->sum('dollar_final_total') . ')' }}
+                                                        </span><br>
+                                                        <span>
+                                                            {{ '( ' . $transaction_sell_lines_for_rep->sum('final_total') . ')' }}
+                                                        </span><br>
+                                                    @endif
+                                                </span>
+
                                             </td>
                                             <td>
-                                                @if (isset($transaction_sell_lines_for_rep) && !empty($transaction_sell_lines_for_rep))
-                                                    <span>
-                                                        {{ '( $ ' . $transaction_sell_lines_for_rep->sum('dollar_final_total') . ')' }}
-                                                    </span><br>
-                                                    <span>
-                                                        {{ '( ' . $transaction_sell_lines_for_rep->sum('final_total') . ')' }}
-                                                    </span><br>
-                                                @endif
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.added_by')">
+
+                                                    @if ($sell_car->created_by > 0 and $sell_car->created_by != null)
+                                                        {{ $sell_car->created_at->diffForHumans() }} <br>
+                                                        {{ $sell_car->created_at->format('Y-m-d') }}
+                                                        ({{ $sell_car->created_at->format('h:i') }})
+                                                        {{ $sell_car->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                        <br>
+                                                        {{ $sell_car->createBy?->name }}
+                                                    @else
+                                                        {{ __('no_update') }}
+                                                    @endif
+                                                </span>
+
                                             </td>
                                             <td>
-                                                @if ($sell_car->created_by > 0 and $sell_car->created_by != null)
-                                                    {{ $sell_car->created_at->diffForHumans() }} <br>
-                                                    {{ $sell_car->created_at->format('Y-m-d') }}
-                                                    ({{ $sell_car->created_at->format('h:i') }})
-                                                    {{ $sell_car->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $sell_car->createBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($sell_car->edited_by > 0 and $sell_car->edited_by != null)
-                                                    {{ $sell_car->updated_at->diffForHumans() }} <br>
-                                                    {{ $sell_car->updated_at->format('Y-m-d') }}
-                                                    ({{ $sell_car->updated_at->format('h:i') }})
-                                                    {{ $sell_car->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $sell_car->updateBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+
+                                                    @if ($sell_car->edited_by > 0 and $sell_car->edited_by != null)
+                                                        {{ $sell_car->updated_at->diffForHumans() }} <br>
+                                                        {{ $sell_car->updated_at->format('Y-m-d') }}
+                                                        ({{ $sell_car->updated_at->format('h:i') }})
+                                                        {{ $sell_car->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                        <br>
+                                                        {{ $sell_car->updateBy?->name }}
+                                                    @else
+                                                        {{ __('no_update') }}
+                                                    @endif
+                                                </span>
+
                                             </td>
                                             <td class="no-print">
                                                 <div class="btn-group">

@@ -73,38 +73,58 @@
                                         @foreach ($sell_returns as $return)
                                             <tr>
                                                 <td>
-                                                    {{ $return->transaction_date }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
+                                                        {{ $return->transaction_date }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ $return->invoice_no }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.reference')">
+                                                        {{ $return->invoice_no }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ $return->customer->name }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.customer')">
+                                                        {{ $return->customer->name }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ __('lang.' . $return->payment_status) }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.payment_status')">
+                                                        {{ __('lang.' . $return->payment_status) }}
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     @foreach ($return->transaction_payments as $payment)
-                                                        {{ __('lang.' . $payment->method) }}<br>
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.payment_type')">
+                                                            {{ __('lang.' . $payment->method) }}<br>
+                                                        </span>
                                                     @endforeach
                                                 </td>
                                                 <td>
                                                     @foreach ($return->transaction_payments as $payment)
-                                                        {{ $payment->received_currency_relation->symbol ?? '' }}<br>
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.paying_currency')">
+                                                            {{ $payment->received_currency_relation->symbol ?? '' }}<br>
+                                                        </span>
                                                     @endforeach
                                                 </td>
                                                 <td>
-                                                    {{ number_format($return->final_total, 2) }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.grand_total')">
+                                                        {{ number_format($return->final_total, 2) }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ $return->transaction_payments->sum('amount') }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.paid')">
+                                                        {{ $return->transaction_payments->sum('amount') }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ $return->transaction_payments->last()->paid_on ?? '' }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.due')">
+                                                        {{ $return->transaction_payments->last()->paid_on ?? '' }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ $return->notes }}
+                                                    <span class="custom-tooltip" data-tooltip=">@lang('lang.notes')">
+                                                        {{ $return->notes }}
+                                                    </span>
                                                 </td>
                                                 <td></td>
                                                 <td>

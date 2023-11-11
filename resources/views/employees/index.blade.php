@@ -74,39 +74,65 @@
                                     @foreach ($employees as $key => $employee)
                                         <tr>
                                             <td>
-                                                @if (!empty($employee->photo))
-                                                    <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
-                                                        width="50" height="50">
-                                                @else
-                                                    <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
-                                                        width="50" height="50">
-                                                @endif
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.profile_photo')">
+                                                    @if (!empty($employee->photo))
+                                                        <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
+                                                            width="50" height="50">
+                                                    @else
+                                                        <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
+                                                            width="50" height="50">
+                                                    @endif
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ !empty($employee->user) ? $employee->user->name : '' }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.employee_name')">
+
+                                                    {{ !empty($employee->user) ? $employee->user->name : '' }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ !empty($employee->user) ? $employee->user->email : '' }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.email')">
+
+                                                    {{ !empty($employee->user) ? $employee->user->email : '' }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $employee->mobile }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.phone_number')">
+
+                                                    {{ $employee->mobile }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ !empty($employee->job_type) ? $employee->job_type->title : '' }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.job_title')">
+
+                                                    {{ !empty($employee->job_type) ? $employee->job_type->title : '' }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $employee->fixed_wage_value }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.wage')">
+
+                                                    {{ $employee->fixed_wage_value }}
+                                                </span>
                                             </td>
                                             {{--                                        <td></td> --}}
                                             <td>
-                                                {{ \Carbon\Carbon::parse($employee->date_of_birth)->diff(\Carbon\Carbon::now())->format('%y') }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.age')">
+
+                                                    {{ \Carbon\Carbon::parse($employee->date_of_birth)->diff(\Carbon\Carbon::now())->format('%y') }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $employee->date_of_start_working }}
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.date_of_start_working')">
+
+                                                    {{ $employee->date_of_start_working }}
+                                                </span>
                                             </td>
                                             <td>
+
                                                 @foreach ($employee->stores()->get() as $store)
-                                                    {{ $store->name }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.stores')">
+                                                        {{ $store->name }}
+                                                    </span>
                                                 @endforeach
                                             </td>
                                             <td></td>

@@ -1,26 +1,7 @@
 @extends('layouts.app')
 @section('title', __('lang.sells'))
 @section('breadcrumbbar')
-    <style>
-        .wrapper1,
-        .wrapper2 {
-            overflow-x: scroll;
-            overflow-y: hidden;
-        }
 
-        .wrapper1 {
-            height: 20px;
-        }
-
-        .div1 {
-            height: 20px;
-        }
-
-        .div2 {
-            overflow: auto;
-            width: fit-content;
-        }
-    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -110,67 +91,106 @@
                                                 @foreach ($sell_lines as $index => $line)
                                                     <tr>
                                                         <td>
-                                                            {{ $line->transaction_date ?? '' }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.date_and_time')">
+                                                                {{ $line->transaction_date ?? '' }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->invoice_no ?? '' }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.reference')">
+                                                                {{ $line->invoice_no ?? '' }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->store->name ?? '' }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.store')">
+                                                                {{ $line->store->name ?? '' }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->customer->name ?? '' }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.customer')">
+                                                                {{ $line->customer->name ?? '' }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->customer->phone ?? '' }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.phone')">
+                                                                {{ $line->customer->phone ?? '' }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            <span
-                                                                class="badge badge-success">{{ $line->status ?? '' }}</span>
+                                                            <span class="badge badge-success custom-tooltip"
+                                                                data-tooltip="@lang('lang.sale_status')">{{ $line->status ?? '' }}</span>
                                                         </td>
-                                                        <td>{{ $line->payment_status }}</td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.payment_status')">
+                                                                {{ $line->payment_status }}
+                                                            </span>
+                                                        </td>
                                                         <td>
                                                             @foreach ($line->transaction_payments as $payment)
-                                                                {{ __('lang.' . $payment->method) }}<br>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.payment_type')">
+                                                                    {{ __('lang.' . $payment->method) }}<br>
+                                                                </span>
                                                             @endforeach
                                                         </td>
                                                         <td>
                                                             @foreach ($line->transaction_payments as $payment)
-                                                                {{ $payment->ref_no ?? '' }}<br>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.ref_number')">
+                                                                    {{ $payment->ref_no ?? '' }}<br>
+                                                                </span>
                                                             @endforeach
                                                         </td>
                                                         <td>
                                                             @foreach ($line->transaction_payments as $payment)
-                                                                {{ $payment->received_currency_relation->symbol ?? '' }}<br>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.received_currency')">
+                                                                    {{ $payment->received_currency_relation->symbol ?? '' }}<br>
+                                                                </span>
                                                             @endforeach
                                                         </td>
                                                         <td>
-                                                            {{ number_format($line->final_total, 2) }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.grand_total')">
+                                                                {{ number_format($line->final_total, 2) }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->transaction_payments->sum('amount') }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.paid')">
+                                                                {{ $line->transaction_payments->sum('amount') }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->final_total - $line->transaction_payments->sum('amount') }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.due_sale_list')">
+                                                                {{ $line->final_total - $line->transaction_payments->sum('amount') }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->transaction_payments->last()->paid_on ?? '' }}
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.payment_date')">
+                                                                {{ $line->transaction_payments->last()->paid_on ?? '' }}
+                                                            </span>
                                                         </td>
                                                         <td>
-                                                            {{ $line->created_by_user->name }}
+                                                            <span class="custom-tooltip" data-tooltip=">@lang('lang.cashier_man')">
+                                                                {{ $line->created_by_user->name }}
+                                                            </span>
                                                         </td>
                                                         <td></td>
                                                         <td>
                                                             @foreach ($line->transaction_sell_lines as $sell_line)
                                                                 @if (!empty($sell_line->product))
-                                                                    {{ $sell_line->product->name ?? ' ' }} -
-                                                                    {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                                    <span class="custom-tooltip"
+                                                                        data-tooltip="@lang('lang.products')">
+                                                                        {{ $sell_line->product->name ?? ' ' }} -
+                                                                        {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                                    </span>
                                                                 @endif
                                                             @endforeach
                                                         </td>
                                                         <td>
                                                             @foreach ($line->transaction_payments as $payment)
-                                                                {{ $payment->received_currency_relation->payment_note ?? '' }}<br>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.sale_note')">
+                                                                    {{ $payment->received_currency_relation->payment_note ?? '' }}<br>
+                                                                </span>
                                                             @endforeach
                                                         </td>
                                                         <td></td>
@@ -191,7 +211,6 @@
                                                                     </a>
                                                                 </li>
                                                                 <li class="divider"></li>
-
                                                             </ul>
                                                         </td>
                                                     </tr>
@@ -211,28 +230,4 @@
         <!-- End Contentbar -->
     </div>
 
-    <script>
-        // Select both elements by their class names
-        var div1 = document.querySelector('.div1');
-        var div2 = document.querySelector('.div2');
-
-        // Get the width of the "div2" element
-        var div2Width = div2.offsetWidth;
-
-        // Set the width of "div1" to the width of "div2"
-        div1.style.width = div2Width + 'px';
-
-        document.addEventListener("DOMContentLoaded", function() {
-            var wrapper1 = document.querySelector(".wrapper1");
-            var wrapper2 = document.querySelector(".wrapper2");
-
-            wrapper1.addEventListener("scroll", function() {
-                wrapper2.scrollLeft = wrapper1.scrollLeft;
-            });
-
-            wrapper2.addEventListener("scroll", function() {
-                wrapper1.scrollLeft = wrapper2.scrollLeft;
-            });
-        });
-    </script>
 @endsection

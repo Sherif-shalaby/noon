@@ -4,8 +4,8 @@
         <div class="card mt-3">
             <div
                 class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                <h3 class="print-title ">
-                    @lang('lang.stock')</h3>
+                <h4 class="print-title ">
+                    @lang('lang.stock')</h4>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -37,28 +37,79 @@
                         <tbody>
                             @foreach ($stocks as $index => $stock)
                                 <tr>
-                                    <td>{{ $stock->po_no ?? '' }}</td>
-                                    <td>{{ $stock->invoice_no ?? '' }}</td>
-                                    <td>{{ $stock->created_at }}</td>
-                                    <td>{{ $stock->transaction_date }}</td>
-                                    <td>{{ $stock->supplier->name ?? '' }}</td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.po_ref_no')">
+                                            {{ $stock->po_no ?? '' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.invoice_no')">
+                                            {{ $stock->invoice_no ?? '' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.date_and_time')">
+                                            {{ $stock->created_at }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.invoice_date')">
+                                            {{ $stock->transaction_date }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.supplier')">
+                                            {{ $stock->supplier->name ?? '' }}
+                                        </span>
+                                    </td>
                                     <td>
                                         @if (!empty($stock->add_stock_lines))
                                             @foreach ($stock->add_stock_lines as $stock_line)
-                                                {{ $stock_line->product->name ?? '' }}<br>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.products')">
+
+                                                    {{ $stock_line->product->name ?? '' }}<br>
+                                                </span>
                                             @endforeach
                                         @endif
                                     </td>
-                                    <td>{{ $stock->created_by_relationship->first()->name }}</td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                            {{ $stock->created_by_relationship->first()->name }}
+                                        </span>
+                                    </td>
                                     @if ($stock->transaction_currency == 2)
-                                        <td>{{ number_format($stock->dollar_final_total, 2) }}</td>
+                                        <td>
+                                            <span class="custom-tooltip" data-tooltip="@lang('lang.value')">
+                                                {{ number_format($stock->dollar_final_total, 2) }}
+                                            </span>
+                                        </td>
                                     @else
-                                        <td>{{ number_format($stock->final_total, 2) }}</td>
+                                        <td>
+                                            <span class="custom-tooltip" data-tooltip="@lang('lang.value')">
+                                                {{ number_format($stock->final_total, 2) }}
+                                            </span>
+                                        </td>
                                     @endif
-                                    <td>{{ $this->calculatePaidAmount($stock->id) }}</td>
-                                    <td>{{ $this->calculatePendingAmount($stock->id) }}</td>
-                                    <td>{{ $stock->due_date ?? '' }}</td>
-                                    <td>{{ $stock->notes ?? '' }}</td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.paid_amount')">
+                                            {{ $this->calculatePaidAmount($stock->id) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.pending_amount')">
+                                            {{ $this->calculatePendingAmount($stock->id) }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.due_date')">
+                                            {{ $stock->due_date ?? '' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.notes')">
+                                            {{ $stock->notes ?? '' }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

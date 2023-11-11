@@ -73,23 +73,39 @@
                                     <tbody>
                                         @foreach ($purchase_orders as $purchase_order)
                                             <tr>
-                                                <td>{{ $purchase_order->transaction->po_no }}</td>
-                                                <td> {{ @format_date($purchase_order->transaction->transaction_date) }}
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.po_ref_no')">
+                                                        {{ $purchase_order->transaction->po_no }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
+                                                        {{ @format_date($purchase_order->transaction->transaction_date) }}
+                                                    </span>
                                                 </td>
 
-                                                <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}
+                                                <td>
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                                        {{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}
+                                                    </span>
                                                 </td>
 
                                                 <td>
                                                     @if (!empty($purchase_order->transaction->supplier))
-                                                        {{ $purchase_order->transaction->supplier->name }}
+                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.supplier')">
+                                                            {{ $purchase_order->transaction->supplier->name }}
+                                                        </span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{ @num_format($purchase_order->transaction->final_total) }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.value')">
+                                                        {{ @num_format($purchase_order->transaction->final_total) }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    {{ $purchase_order->transaction->status }}
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.status')">
+                                                        {{ $purchase_order->transaction->status }}
+                                                    </span>
                                                 </td>
 
                                                 {{-- <td>

@@ -2,7 +2,6 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card m-b-30">
-                <br>
                 {{-- ++++++++++++++++++++++++++++++ Filters +++++++++++++++++++++++ --}}
                 <div class="col-md-12 no-print">
                     <div class="card">
@@ -13,16 +12,22 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             {!! Form::label('store_id', __('lang.store'), []) !!}
-                                            {!! Form::select('store_id', $stores, request()->store_id, ['class' =>
-                                            'form-control', 'wire:model' => 'store_id', 'placeholder' => __('lang.please_select'),'data-live-search'=>"true"]) !!}
+                                            {!! Form::select('store_id', $stores, request()->store_id, [
+                                                'class' => 'form-control',
+                                                'wire:model' => 'store_id',
+                                                'placeholder' => __('lang.please_select'),
+                                                'data-live-search' => 'true',
+                                            ]) !!}
                                         </div>
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
                                     <div class="col-md-2" wire:ignore>
                                         <label for="customer_id" class="text-primary">@lang('lang.customers')</label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="customer_id" id="Client_Select">
-                                                <option  value="0 " readonly selected > {{ __('lang.please_select') }} </option>
+                                            <select class="form-control client" wire:model="customer_id"
+                                                id="Client_Select">
+                                                <option value="0 " readonly selected> {{ __('lang.please_select') }}
+                                                </option>
                                                 @foreach ($customers as $customer)
                                                     <option value="{{ $customer->id }}">{{ $customer->name }}</option>
                                                 @endforeach
@@ -50,7 +55,8 @@
                                     {{-- +++++++++++++++ clear_filter Button +++++++++++++++ --}}
                                     <div class="col-md-2">
                                         <br>
-                                        <a href="{{route('customer_price_offer.index')}}" class="btn btn-danger mt-2 ml-0">@lang('lang.clear_filters')</a>
+                                        <a href="{{ route('customer_price_offer.index') }}"
+                                            class="btn btn-danger mt-2 ml-0">@lang('lang.clear_filters')</a>
                                     </div>
                                 </div>
                             </form>
@@ -75,35 +81,72 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($customer_offer_prices as $offer)
+                                    @foreach ($customer_offer_prices as $offer)
                                         <tr>
-                                            <td>{{@format_date($offer->created_at)}}</td>
-                                            <td>{{ucfirst($offer->created_by_user->name ?? '')}}</td>
-                                            <td>@if(!empty($offer->customer)){{$offer->customer->name}}@endif</td>
-                                            <td>{{ucfirst($offer->store->name ?? '')}}</td>
-                                            <td>@if(!empty($offer->block_qty)) @lang('lang.blocked') @else @lang('lang.not_blocked')@endif</td>
-                                            <td>{{ucfirst($offer->status)}}</td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
+                                                    {{ @format_date($offer->created_at) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                                    {{ ucfirst($offer->created_by_user->name ?? '') }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if (!empty($offer->customer))
+                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.customer')">
+                                                        {{ $offer->customer->name }}
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.store')">
+                                                    {{ ucfirst($offer->store->name ?? '') }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.customer_offer_status')">
+                                                    @if (!empty($offer->block_qty))
+                                                        @lang('lang.blocked')
+                                                    @else
+                                                        @lang('lang.not_blocked')
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="custom-tooltip" data-tooltip="@lang('lang.quotation_status')">
+                                                    {{ ucfirst($offer->status) }}
+                                                </span>
+                                            </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات
+                                                    <button type="button"
+                                                        class="btn btn-default btn-sm dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">خيارات
                                                         <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                     </button>
-                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                        user="menu" x-placement="bottom-end"
+                                                        style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         {{-- ++++++++++++++ edit button ++++++++++++++ --}}
                                                         <li>
-                                                            <a href="{{ route('customer_price_offer.edit', $offer->id) }}" class="btn"><i
-                                                                class="dripicons-document-edit"></i> @lang('lang.edit')</a>
+                                                            <a href="{{ route('customer_price_offer.edit', $offer->id) }}"
+                                                                class="btn"><i class="dripicons-document-edit"></i>
+                                                                @lang('lang.edit')</a>
                                                         </li>
                                                         <li class="divider"></li>
-                                                            {{-- ++++++++++++++ delete button ++++++++++++++ --}}
-                                                            <form method="POST" action="{{ route('customer_price_offer.destroy', $offer->id) }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn text-red">
-                                                                    @lang('lang.delete') <i class="fa fa-trash"></i>
-                                                                </button>
-                                                            </form>
+                                                        {{-- ++++++++++++++ delete button ++++++++++++++ --}}
+                                                        <form method="POST"
+                                                            action="{{ route('customer_price_offer.destroy', $offer->id) }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn text-red">
+                                                                @lang('lang.delete') <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </form>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -132,4 +175,3 @@
         </div>
     </div>
 </div>
-

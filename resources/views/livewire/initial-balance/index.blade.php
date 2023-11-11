@@ -28,12 +28,26 @@
                         <tbody>
                             @foreach ($stocks as $index => $stock)
                                 <tr>
-                                    <td>{{ $stock->created_at }}</td>
                                     <td>
-                                        {{ $stock->add_stock_lines->first()->product->name ?? '' }}
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.date_and_time')">
+                                            {{ $stock->created_at }}
+                                        </span>
                                     </td>
-                                    <td>{{ $stock->supplier->name ?? '' }}</td>
-                                    <td>{{ $stock->created_by_relationship->name ?? '' }}</td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.product')">
+                                            {{ $stock->add_stock_lines->first()->product->name ?? '' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.supplier')">
+                                            {{ $stock->supplier->name ?? '' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                            {{ $stock->created_by_relationship->name ?? '' }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

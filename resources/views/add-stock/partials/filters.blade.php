@@ -40,7 +40,7 @@
         <div class="col-2">
             <div class="form-group">
                 {!! Form::select('supplier_id', $suppliers, $supplier_id, [
-                    'class' => 'form-control select2',
+                    'class' => 'form-control selectpicker',
                     'placeholder' => __('lang.supplier'),
                     'data-name' => 'supplier_id',
                     'wire:model' => 'supplier_id',
@@ -50,7 +50,7 @@
         <div class="col-2">
             <div class="form-group">
                 {!! Form::select('created_by', $users, $created_by, [
-                    'class' => 'form-control select2',
+                    'class' => 'form-control selectpicker',
                     ' data-name' => 'created_by',
                     'placeholder' => __('lang.created_by'),
                     'wire:model' => 'created_by',
@@ -73,7 +73,7 @@
                 {!! Form::date('to', $to, ['class' => 'form-control', 'placeholder' => __('lang.to'), 'wire:model' => 'to']) !!}
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-2 d-flex justify-content-center align-items-end">
             <div class="form-group">
                 <button type="button" name="submit" class="btn btn-danger width-100" title="search"
                     wire:click="clear_filters">
