@@ -13,7 +13,7 @@
                     </ol>
                 </div>
             </div>
-            
+
         </div>
     </div>
 @endsection
@@ -58,7 +58,7 @@
                                                         id="date" placeholder="@lang('lang.date')">
                                                 </div>
                                             </div>
-                                            
+
                                             {{-- <div class="col-2"></div> --}}
                                             <div class="col-1">
                                                 <div class="form-group">
@@ -69,7 +69,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
 
                                 @foreach($plans as $key => $plan)
                                     <tr>
-                                        
+
                                         <td>
                                             {{$plan->date}}
                                         </td>
@@ -98,7 +98,8 @@
                                             {{$plan->city->name}}
                                         </td>
                                         <td>
-                                            {{$plan->employee->user->name}}
+{{--                                            @dd($plan->employee)--}}
+                                            {{!empty($plan->employee->user) ? $plan->employee->user->name : ''}}
                                         </td>
                                         <td>
                                             @php
@@ -117,7 +118,7 @@
                                                 @else
                                                 {{'-'}}
                                                 @endif
-                                            
+
                                         </td>
                                         <td>
                                              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"

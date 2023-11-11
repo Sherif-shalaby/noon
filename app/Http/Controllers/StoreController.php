@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\Store;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -33,10 +35,11 @@ class StoreController extends Controller
    */
   public function index()
   {
-      $stores = Store::all();
+      $stores = Store::orderBy('created_by','desc')->get();
+      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
 
       return view('store.index')->with(compact(
-          'stores'));
+          'stores','branches'));
   }
 
   /**
@@ -46,7 +49,9 @@ class StoreController extends Controller
    */
   public function create()
   {
-      return view('store.create');
+      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+
+      return view('store.create',compact('branches'));
   }
 
   /**
@@ -57,13 +62,16 @@ class StoreController extends Controller
 // ++++++++++++++++++++++ Task : store() +++++++++++++++
   public function store(Request $request)
   {
-    //  dd($request);
       $request->validate([
           'name' => 'max:255|required',
       ]);
+//      dd($request);
+
       try {
           $data = $request->except('_token', 'quick_add');
           $data['created_by'] = Auth::user()->id;
+          $data['branch_id'] = (int) $request->branch_id;
+//          dd($data);
           $store=Store::create($data);
           $output = [
               'success' => true,

@@ -14,7 +14,7 @@ class Store extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = array('name', 'location', 'phone_number', 'email', 'manager_name', 'manager_mobile_number', 'details', 'created_by', 'deleted_by', 'updated_by');
+    protected $fillable = array('name', 'location', 'phone_number', 'email', 'manager_name', 'manager_mobile_number', 'details', 'created_by', 'deleted_by', 'updated_by', 'branch_id');
 
     public function products()
     {
