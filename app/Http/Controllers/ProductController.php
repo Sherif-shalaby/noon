@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\AddStockLine;
+use App\Models\Branch;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
@@ -88,8 +89,9 @@ class ProductController extends Controller
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
-      $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-    return view('products.index',compact('products','categories','brands','units','stores','users','subcategories'));
+    $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+
+      return view('products.index',compact('products','categories','brands','units','stores','users','subcategories','branches'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
@@ -110,8 +112,10 @@ class ProductController extends Controller
     $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-    return view('products.create',
-    compact('categories','brands','units','stores',
+      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+
+      return view('products.create',
+    compact('categories','brands','units','stores','branches',
         'product_tax','quick_add','unitArray','subcategories',
         'clear_all_input_form','recent_product'));
   }

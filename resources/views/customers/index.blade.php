@@ -49,6 +49,25 @@
         #checkboxes label span {
             font-weight: normal;
         }
+
+        .wrapper1,
+        .wrapper2 {
+            overflow-x: scroll;
+            overflow-y: hidden;
+        }
+
+        .wrapper1 {
+            height: 20px;
+        }
+
+        .div1 {
+            height: 20px;
+        }
+
+        .div2 {
+            overflow: auto;
+            width: fit-content;
+        }
     </style>
 
     <div class="breadcrumbbar m-0 px-3 py-0">
@@ -209,131 +228,144 @@
                             </div>
                             <br /><br />
                             {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
-                            <table id="datatable-buttons" class="table table-striped table-bordered hideShowTable">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th class="col1">@lang('lang.customer_name')</th>
-                                        <th class="col2">@lang('lang.customer_type')</th>
-                                        <th class="col3">@lang('lang.email')</th>
-                                        <th class="col4">@lang('lang.phone')</th>
-                                        <th class="col5">@lang('lang.state')</th>
-                                        <th class="col6">@lang('lang.city')</th>
-                                        <th class="col7">@lang('lang.min_amount_in_dinar')</th>
-                                        <th class="col8">@lang('lang.max_amount_in_dinar')</th>
-                                        <th class="col9 dollar-cell">@lang('lang.min_amount_in_dollar')</th>
-                                        <th class="col10 dollar-cell">@lang('lang.max_amount_in_dollar')</th>
-                                        <th class="col11">@lang('lang.balance_in_dinar')</th>
-                                        <th class="col12 dollar-cell">@lang('lang.balance_in_dollar')</th>
-                                        <th class="col13">@lang('lang.balance')</th>
-                                        <th class="col14">@lang('lang.purchases')</th>
-                                        <th class="col15">@lang('lang.discount')</th>
-                                        <th class="col16">@lang('lang.points')</th>
-                                        <th class="col17">@lang('updated_by')</th>
-                                        <th class="col18">@lang('lang.action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($customers as $index => $customer)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td class="col1">{{ $customer->name }}</td>
-                                            <td class="col2">{{ $customer->customer_type->name }}</td>
-                                            {{-- Convert the email and phone strings to arrays --}}
-                                            @php
-                                                $emailArray = explode(',', $customer->email);
-                                                $phoneArray = explode(',', $customer->phone);
-                                                // Remove square brackets from each element in the emailArray
-                                                foreach ($emailArray as $key => $email) {
-                                                    $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
-                                                }
-                                                // Remove square brackets from each element in the emailArray
-                                                foreach ($phoneArray as $key => $phone) {
-                                                    $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
-                                                }
-                                            @endphp
-                                            <td class="col3">
-                                                {{-- Iterate over the email array elements --}}
-                                                @foreach ($emailArray as $email)
-                                                    {{ $email }}<br>
-                                                @endforeach
-                                            </td>
-                                            <td class="col4">
-                                                {{-- Iterate over the phone array elements --}}
-                                                @foreach ($phoneArray as $phone)
-                                                    {{ $phone }}<br>
-                                                @endforeach
-                                            </td>
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2">
+                                    <!-- content goes here -->
+                                    <table id="datatable-buttons" class="table table-striped table-bordered hideShowTable"
+                                        style="width: 1550px;">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th class="col1">@lang('lang.customer_name')</th>
+                                                <th class="col2">@lang('lang.customer_type')</th>
+                                                <th class="col3">@lang('lang.email')</th>
+                                                <th class="col4">@lang('lang.phone')</th>
+                                                <th class="col5">@lang('lang.state')</th>
+                                                <th class="col6">@lang('lang.city')</th>
+                                                <th class="col7">@lang('lang.min_amount_in_dinar')</th>
+                                                <th class="col8">@lang('lang.max_amount_in_dinar')</th>
+                                                <th class="col9 dollar-cell">@lang('lang.min_amount_in_dollar')</th>
+                                                <th class="col10 dollar-cell">@lang('lang.max_amount_in_dollar')</th>
+                                                <th class="col11">@lang('lang.balance_in_dinar')</th>
+                                                <th class="col12 dollar-cell">@lang('lang.balance_in_dollar')</th>
+                                                <th class="col13">@lang('lang.balance')</th>
+                                                <th class="col14">@lang('lang.purchases')</th>
+                                                <th class="col15">@lang('lang.discount')</th>
+                                                <th class="col16">@lang('lang.points')</th>
+                                                <th class="col17">@lang('updated_by')</th>
+                                                <th class="col18">@lang('lang.action')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($customers as $index => $customer)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td class="col1">{{ $customer->name }}</td>
+                                                    <td class="col2">{{ $customer->customer_type->name }}</td>
+                                                    {{-- Convert the email and phone strings to arrays --}}
+                                                    @php
+                                                        $emailArray = explode(',', $customer->email);
+                                                        $phoneArray = explode(',', $customer->phone);
+                                                        // Remove square brackets from each element in the emailArray
+                                                        foreach ($emailArray as $key => $email) {
+                                                            $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                        }
+                                                        // Remove square brackets from each element in the emailArray
+                                                        foreach ($phoneArray as $key => $phone) {
+                                                            $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
+                                                        }
+                                                    @endphp
+                                                    <td class="col3">
+                                                        {{-- Iterate over the email array elements --}}
+                                                        @foreach ($emailArray as $email)
+                                                            {{ $email }}<br>
+                                                        @endforeach
+                                                    </td>
+                                                    <td class="col4">
+                                                        {{-- Iterate over the phone array elements --}}
+                                                        @foreach ($phoneArray as $phone)
+                                                            {{ $phone }}<br>
+                                                        @endforeach
+                                                    </td>
 
-                                            @php
-                                                $state = \App\Models\State::find($customer->state_id);
-                                                $city = \App\Models\City::find($customer->city_id);
-                                            @endphp
-                                            <td class="col5">{{ $state ? $state->name : '' }}</td>
-                                            <td class="col6">{{ $city ? $city->name : '' }}</td>
-                                            <td class="col7">{{ $customer->min_amount_in_dinar }}</td>
-                                            <td class="col8">{{ $customer->max_amount_in_dinar }}</td>
-                                            <td class="col9 dollar-cell">{{ $customer->min_amount_in_dollar }}</td>
-                                            <td class="col10 dollar-cell">{{ $customer->max_amount_in_dollar }}</td>
-                                            <td class="col11">{{ $customer->balance_in_dinar }}</td>
-                                            <td class="col12 dollar-cell">{{ $customer->balance_in_dollar }}</td>
-                                            <td class="col13">{{ $customer->added_balance }}</td>
-                                            <td class="col14">{{ $customer->added_balance }}</td>
-                                            <td class="col15">{{ $customer->added_balance }}</td>
-                                            <td class="col16">
-                                                @if ($customer->created_by > 0 and $customer->created_by != null)
-                                                    {{ $customer->created_at->diffForHumans() }} <br>
-                                                    {{ $customer->created_at->format('Y-m-d') }}
-                                                    ({{ $customer->created_at->format('h:i') }})
-                                                    {{ $customer->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $customer->createBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td class="col17">
-                                                @if ($customer->updated_by > 0 and $customer->updated_by != null)
-                                                    {{ $customer->updated_at->diffForHumans() }} <br>
-                                                    {{ $customer->updated_at->format('Y-m-d') }}
-                                                    ({{ $customer->updated_at->format('h:i') }})
-                                                    {{ $customer->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $customer->updateBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td class="col18">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">خيارات <span class="caret"></span>
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                        user="menu" x-placement="bottom-end"
-                                                        style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                        <li>
-                                                            <a href="{{ route('customers.edit', $customer->id) }}"
-                                                                class="btn" target="_blank"><i
-                                                                    class="dripicons-document-edit"></i>
-                                                                @lang('lang.update')</a>
-                                                        </li>
-                                                        <li class="divider"></li>
-                                                        <li>
-                                                            <a data-href="{{ route('customers.destroy', $customer->id) }}"
-                                                                class="btn text-red delete_item"><i
-                                                                    class="fa fa-trash"></i>
-                                                                @lang('lang.delete')</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                    @php
+                                                        $state = \App\Models\State::find($customer->state_id);
+                                                        $city = \App\Models\City::find($customer->city_id);
+                                                    @endphp
+                                                    <td class="col5">{{ $state ? $state->name : '' }}</td>
+                                                    <td class="col6">{{ $city ? $city->name : '' }}</td>
+                                                    <td class="col7">{{ $customer->min_amount_in_dinar }}</td>
+                                                    <td class="col8">{{ $customer->max_amount_in_dinar }}</td>
+                                                    <td class="col9 dollar-cell">{{ $customer->min_amount_in_dollar }}
+                                                    </td>
+                                                    <td class="col10 dollar-cell">{{ $customer->max_amount_in_dollar }}
+                                                    </td>
+                                                    <td class="col11">{{ $customer->balance_in_dinar }}</td>
+                                                    <td class="col12 dollar-cell">{{ $customer->balance_in_dollar }}</td>
+                                                    <td class="col13">{{ $customer->added_balance }}</td>
+                                                    <td class="col14">{{ $customer->added_balance }}</td>
+                                                    <td class="col15">{{ $customer->added_balance }}</td>
+                                                    <td class="col16">
+                                                        @if ($customer->created_by > 0 and $customer->created_by != null)
+                                                            {{ $customer->created_at->diffForHumans() }} <br>
+                                                            {{ $customer->created_at->format('Y-m-d') }}
+                                                            ({{ $customer->created_at->format('h:i') }})
+                                                            {{ $customer->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $customer->createBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </td>
+                                                    <td class="col17">
+                                                        @if ($customer->updated_by > 0 and $customer->updated_by != null)
+                                                            {{ $customer->updated_at->diffForHumans() }} <br>
+                                                            {{ $customer->updated_at->format('Y-m-d') }}
+                                                            ({{ $customer->updated_at->format('h:i') }})
+                                                            {{ $customer->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $customer->updateBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </td>
+                                                    <td class="col18">
+                                                        <div class="btn-group">
+                                                            <button type="button"
+                                                                class="btn btn-default btn-sm dropdown-toggle"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">خيارات <span class="caret"></span>
+                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                            </button>
+                                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                user="menu" x-placement="bottom-end"
+                                                                style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                <li>
+                                                                    <a href="{{ route('customers.edit', $customer->id) }}"
+                                                                        class="btn" target="_blank"><i
+                                                                            class="dripicons-document-edit"></i>
+                                                                        @lang('lang.update')</a>
+                                                                </li>
+                                                                <li class="divider"></li>
+                                                                <li>
+                                                                    <a data-href="{{ route('customers.destroy', $customer->id) }}"
+                                                                        class="btn text-red delete_item"><i
+                                                                            class="fa fa-trash"></i>
+                                                                        @lang('lang.delete')</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -345,6 +377,31 @@
     <!-- End Contentbar -->
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        // Select both elements by their class names
+        var div1 = document.querySelector('.div1');
+        var div2 = document.querySelector('.div2');
+
+        // Get the width of the "div2" element
+        var div2Width = div2.offsetWidth;
+
+        // Set the width of "div1" to the width of "div2"
+        div1.style.width = div2Width + 'px';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var wrapper1 = document.querySelector(".wrapper1");
+            var wrapper2 = document.querySelector(".wrapper2");
+
+            wrapper1.addEventListener("scroll", function() {
+                wrapper2.scrollLeft = wrapper1.scrollLeft;
+            });
+
+            wrapper2.addEventListener("scroll", function() {
+                wrapper1.scrollLeft = wrapper2.scrollLeft;
+            });
+        });
+    </script>
     <script>
         // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
         $("input:checkbox:not(:checked)").each(function() {

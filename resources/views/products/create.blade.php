@@ -115,7 +115,7 @@
                         </div>
 
                         <div
-                            class="mb-2 col-md-3 animate__animated animate__flipInX d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            class="mb-2 col-md-3  animate__flipInX d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {!! Form::label('store', __('lang.store'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -132,12 +132,12 @@
                                 {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
                                     'class' => 'form-control selectpicker',
                                     'multiple' => 'multiple',
-                                    'style' => 'background-color:transparent',
                                     'placeholder' => __('lang.please_select'),
                                     'id' => 'store_id',
                                 ]) !!}
-                                <button type="button" class="add-button" data-toggle="modal" data-target=".add-store"
-                                    href="{{ route('store.create') }}"><i class="fas fa-plus"></i></button>
+                                <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                                    data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
+                                        class="fas fa-plus"></i></button>
 
                             </div>
                         </div>

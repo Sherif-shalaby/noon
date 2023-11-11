@@ -51,6 +51,7 @@
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.name')</th>
+                                        <th>@lang('lang.branch')</th>
                                         <th>@lang('lang.phone_number')</th>
                                         <th>@lang('lang.email')</th>
                                         <th>@lang('lang.manager_name')</th>
@@ -62,6 +63,7 @@
                                     @foreach ($stores as $store)
                                         <tr>
                                             <td>{{ $store->name }}</td>
+                                            <td>{{ !empty($store->branch) ? $store->branch->name : '' }}</td>
                                             <td>{{ $store->phone_number }}</td>
                                             <td>{{ $store->email }}</td>
                                             <td>{{ $store->manager_name }}</td>
@@ -103,7 +105,7 @@
         </div>
     </div>
 
-    {{--     create store modal      --}}
     @include('store.create')
+
 @endsection
 <div class="view_modal no-print"></div>

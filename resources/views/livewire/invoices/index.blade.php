@@ -89,93 +89,103 @@
                         </div>
                     </div>
                     @if (@isset($invoices) && !@empty($invoices) && count($invoices) > 0)
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('site.invoice_number') }}</th>
-                                        <th>{{ __('site.The_Employee') }}</th>
-                                        <th>{{ __('site.Client') }}</th>
-                                        <th>{{ __('site.Amount') }}</th>
-                                        <th>{{ __('site.Tax') }}</th>
-                                        <th>{{ __('site.Total') }}</th>
-                                        <th>{{ __('site.Discount') }}</th>
-                                        <th>{{ __('site.Cash') }}</th>
-                                        <th>{{ __('site.rest') }}</th>
-                                        <th>{{ __('site.Status') }}</th>
-                                        <th>@lang('added_by')</th>
-                                        <th>@lang('updated_by')</th>
-                                        <th>{{ __('site.Control') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($invoices as $index => $invoice)
+
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div1"></div>
+                        </div>
+                        <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div2">
+                                <!-- content goes here -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>{{ __('site.invoice_number') }}</th>
+                                                <th>{{ __('site.The_Employee') }}</th>
+                                                <th>{{ __('site.Client') }}</th>
+                                                <th>{{ __('site.Amount') }}</th>
+                                                <th>{{ __('site.Tax') }}</th>
+                                                <th>{{ __('site.Total') }}</th>
+                                                <th>{{ __('site.Discount') }}</th>
+                                                <th>{{ __('site.Cash') }}</th>
+                                                <th>{{ __('site.rest') }}</th>
+                                                <th>{{ __('site.Status') }}</th>
+                                                <th>@lang('added_by')</th>
+                                                <th>@lang('updated_by')</th>
+                                                <th>{{ __('site.Control') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($invoices as $index => $invoice)
+                                                <tr>
+                                                    <td>{{ $invoice->id }}</td>
+                                                    <td>{{ $invoice->user?->name }}</td>
+                                                    <td>{{ $invoice->customer ? $invoice->customer?->name : 'عميل نقدي' }}
+                                                    </td>
+                                                    <td>{{ $invoice->price }}</td>
+                                                    <td>{{ $invoice->tax }}</td>
+                                                    <td>{{ $invoice->total }}</td>
+                                                    <td>{{ $invoice->discount }}</td>
+                                                    <td>{{ $invoice->cash }}</td>
+                                                    <td>{{ $invoice->rest }}</td>
+                                                    <td>{{ __($invoice->status) }}</td>
+                                                    <td>
+                                                        @if ($invoice->user_id > 0 and $invoice->user_id != null)
+                                                            {{ $invoice->created_at->diffForHumans() }} <br>
+                                                            {{ $invoice->created_at->format('Y-m-d') }}
+                                                            ({{ $invoice->created_at->format('h:i') }})
+                                                            {{ $invoice->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $invoice->createBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($invoice->last_update > 0 and $invoice->last_update != null)
+                                                            {{ $invoice->updated_at->diffForHumans() }} <br>
+                                                            {{ $invoice->updated_at->format('Y-m-d') }}
+                                                            ({{ $invoice->updated_at->format('h:i') }})
+                                                            {{ $invoice->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $invoice->updateBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @include('invoices.action')
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            <tr>
+                                                <td>{{ __('site.The_Total') }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{ $total }}</td>
+                                                <td></td>
+                                                <td>{{ $totalcash }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <tfoot>
                                         <tr>
-                                            <td>{{ $invoice->id }}</td>
-                                            <td>{{ $invoice->user?->name }}</td>
-                                            <td>{{ $invoice->customer ? $invoice->customer?->name : 'عميل نقدي' }}</td>
-                                            <td>{{ $invoice->price }}</td>
-                                            <td>{{ $invoice->tax }}</td>
-                                            <td>{{ $invoice->total }}</td>
-                                            <td>{{ $invoice->discount }}</td>
-                                            <td>{{ $invoice->cash }}</td>
-                                            <td>{{ $invoice->rest }}</td>
-                                            <td>{{ __($invoice->status) }}</td>
-                                            <td>
-                                                @if ($invoice->user_id > 0 and $invoice->user_id != null)
-                                                    {{ $invoice->created_at->diffForHumans() }} <br>
-                                                    {{ $invoice->created_at->format('Y-m-d') }}
-                                                    ({{ $invoice->created_at->format('h:i') }})
-                                                    {{ $invoice->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $invoice->createBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($invoice->last_update > 0 and $invoice->last_update != null)
-                                                    {{ $invoice->updated_at->diffForHumans() }} <br>
-                                                    {{ $invoice->updated_at->format('Y-m-d') }}
-                                                    ({{ $invoice->updated_at->format('h:i') }})
-                                                    {{ $invoice->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $invoice->updateBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @include('invoices.action')
-                                            </td>
+                                            <th colspan="12">
+                                                <div class="float-right">
+                                                    {!! $invoices->appends(request()->all())->links() !!}
+                                                </div>
+                                            </th>
                                         </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td>{{ __('site.The_Total') }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>{{ $total }}</td>
-                                        <td></td>
-                                        <td>{{ $totalcash }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="12">
-                                        <div class="float-right">
-                                            {!! $invoices->appends(request()->all())->links() !!}
-                                        </div>
-                                    </th>
-                                </tr>
-                            </tfoot>
+                                    </tfoot>
+                                </div>
+                            </div>
                         </div>
                     @else
                         <div class="alert alert-danger">
@@ -187,4 +197,3 @@
         </div>
     </div>
 </div>
-
