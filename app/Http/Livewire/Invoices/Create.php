@@ -209,6 +209,7 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
+                'employee_id' =>Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,
                 'type' => 'sell',

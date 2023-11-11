@@ -21,7 +21,10 @@ class Employee extends Model
     {
         return $this->belongsTo(JobType::class, 'job_type_id');
     }
-
+    public function transaction_sell_lines()
+    {
+        return $this->hasMany(TransactionSellLine::class);
+    }
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'employee_stores');
