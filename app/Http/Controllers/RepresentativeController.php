@@ -129,4 +129,7 @@ class RepresentativeController extends Controller
           }
           return $output;
     }
+    public function printRepresentativeInvoice(Request $request){
+
+    }
 }

@@ -565,16 +565,6 @@ return [
     'deliveryman'=>'Delivery Man',
     'delivery'=>'Delivery',
     'pending_orders'=>'Pending Orders',
-    'supplier_details'=>'Supplier Details',
-    'statement_of_account'=>'Statement Of Account',
-    'info'=>'Info',
-    'clear_filter'=>'Clear Filters',
-    'debits'=>'Debits',
-    'total_purchase'=>'Total Purchase',
-    'card_number'=>'Card Number',
-    'month'=>'Month',
-    'year'=>'Year',
-    'mobile'=>'Mobile',
     'add_transfer' => 'Add Transfer',
     'receiver_store' => 'Receiver Store',
     'sender_store' => 'Sender Store',
@@ -585,6 +575,10 @@ return [
     'representatives'=>'Representatives',
     'remaining'=>'Remaining',
     'representative'=>'Representative',
+    'import_stock' => 'Add Stock',
+    'export_stock' => 'Export Stock',
+    'total_sells'  => 'Total Sells',
+
 ];
 
 

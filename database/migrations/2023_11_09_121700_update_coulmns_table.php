@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('transaction_sell_lines', function (Blueprint $table) {
-            $table->string('card_number')->nullable();
-            $table->string('card_month')->nullable();
-            $table->string('card_year')->nullable();
+        Schema::table('store_pos', function (Blueprint $table) {
+            $table->unsignedInteger('store_id')->nullable()->change();
+
         });
     }
 
@@ -27,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('store_pos', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -31,10 +31,11 @@ class SellPosController extends Controller
      * @param ProductUtils $product
      * @return void
      */
-    public function __construct(Util $commonUtil, ProductUtil $productUtil)
+    public function __construct(Util $commonUtil, ProductUtil $productUtil, TransactionUtil $transactionUtil)
     {
         $this->commonUtil = $commonUtil;
         $this->productUtil = $productUtil;
+        $this->transactionUtil = $transactionUtil;
     }
     /**
      * Display a listing of the resource.

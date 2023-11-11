@@ -140,6 +140,12 @@
                                                             class="fa fa-trash"></i>
                                                         @lang('lang.delete')</a>
                                                 </li>
+                                                <li>
+                                                    <a data-href="{{ route('representatives.print_representative_invoice', $transaction->id) }}"
+                                                        class="btn text-red"><i
+                                                            class="fa fa-print"></i>
+                                                        @lang('lang.print')</a>
+                                                </li>
                                                 {{-- @if (!empty($transaction->job_type) && $transaction->job_type->title == 'Representative')
                                                     <li class="divider"></li>
                                                     <li>
@@ -165,3 +171,32 @@
 
 
 @endsection
+@push('javascripts')
+<script>
+    $(document).on('click','.print-transaction',function(){
+         $.ajax({
+            method: "get",
+            url: $(this).data('href'),
+            success: function (response) {
+                console.log(response)
+                if(response!==''){
+                pos_print(response);
+                }
+            }
+        });
+    });
+    function pos_print(receipt) {
+    $("#receipt_section").html(receipt);
+    const sectionToPrint = document.getElementById('receipt_section');
+    __print_receipt(sectionToPrint);
+    }
+    function __print_receipt(section= null) {
+        setTimeout(function () {
+            section.style.display = 'block';
+            window.print();
+            section.style.display = 'none';
+        
+        }, 1000);
+    }  
+</script>
+@endpush
