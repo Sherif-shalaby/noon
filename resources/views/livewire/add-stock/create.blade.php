@@ -432,27 +432,29 @@
                                     @endif
                                 </div>
                             </div>
-                            @php
-                                //                            $collection = collect($items);
-                                //                            // Filter out elements where show_product_data is false
-                                //                            $filteredCollection = $collection->filter(function ($item) {
-                                //                                return $item['show_product_data'] !== false;
-                                //                            });
-                                //                            // Count the remaining elements
-                                //                            $count = $filteredCollection->count();
-                            @endphp
+
                             <div class="col-md-12 text-center mt-1 d-flex justify-content-center">
                                 <h4 class="mx-5">@lang('lang.items_count'):
                                     <span class="items_count_span"
                                         style="margin-right: 5px;">{{ $this->countItems() }}</span>
                                 </h4>
                                 <h4 class=" mx-5">
-                                    @lang('lang.units_count'): <span class="items_quantity_span"
-                                        style="margin-right: 5px;">{{ $this->countUnitsItems() }}</span>
+                                    {{-- @lang('lang.units_count'): <span class="items_quantity_span"
+                                        style="margin-right: 5px;">{{ $this->countUnitsItems() }}</span> --}}
                                 </h4>
                                 <h4 class="mx-5">
-                                    @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                        style="margin-right: 5px;">{{ $this->total_quantity() }}</span>
+                                    {{-- @lang('lang.items_quantity'): <span class="items_quantity_span"
+                                        style="margin-right: 5px;">{{ $this->total_quantity() }}</span> --}}
+                                </h4>
+                                <h4 class=" mx-5">
+                                    {{ $this->count_total_by_variations() }}
+                                    @if (!empty($variationSums))
+                                        @foreach ($variationSums as $unit_name => $variant)
+                                            {{ $unit_name }}:
+                                            <span class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $variant }} </span><br>
+                                        @endforeach
+                                    @endif
                                 </h4>
                                 <h4 class="mx-5"> @lang('lang.total') :
                                     @if ($paying_currency == 2)

@@ -643,9 +643,20 @@
                                     @lang('lang.items_count'):
                                     <span class="items_count_span">{{ count($rows) }}</span>
                                 </h5>
-                                <h5 class=" fw-bold animate__animated animate__lightSpeedInRight"
+                                {{-- <h5 class=" fw-bold animate__animated animate__lightSpeedInRight"
                                     style="animation-delay: 1.8s">
                                     @lang('lang.items_quantity'): <span class="items_quantity_span">{{ $totalQuantity }}</span>
+                                </h5> --}}
+                                <h5 class=" fw-bold animate__animated animate__lightSpeedInLeft"
+                                    style="animation-delay: 1.8s">
+                                    {{ $this->count_total_by_variations() }}
+                                    @if (!empty($variationSums))
+                                        @foreach ($variationSums as $unit_name => $variant)
+                                            {{ $unit_name }}:
+                                            <span class="items_quantity_span" style="margin-right: 15px;">
+                                                {{ $variant }} </span><br>
+                                        @endforeach
+                                    @endif
                                 </h5>
                             </div>
                         </div>

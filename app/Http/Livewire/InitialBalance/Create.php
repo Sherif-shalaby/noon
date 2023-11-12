@@ -60,7 +60,7 @@ class Create extends Component
         $sub_total = [], $change_price_stock = [], $store_id, $status,
         $supplier, $exchange_rate, $exchangeRate, $transaction_date,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
-        $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category,
+        $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [];
 
     public $rows = [[
@@ -155,6 +155,7 @@ class Create extends Component
                 $this->rows[$data['var3']][$data['var1']] = $data['var2'];
                 if ($data['var1'] == "unit_id") {
                     $this->changeUnit($data['var3']);
+                    $this->count_total_by_variations();
                 }
                 if ($data['var1'] == "basic_unit_id") {
                     // dd($data['var1']);
@@ -194,6 +195,7 @@ class Create extends Component
         $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $products = Product::all();
         $stores = Store::getDropdown();
+        $branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
         $units = Unit::orderBy('created_at', 'desc')->get();
         $basic_units = Unit::orderBy('created_at', 'desc')->pluck('name', 'id');
         $product_taxes = Tax::select('name', 'id', 'status')->get();
@@ -209,7 +211,8 @@ class Create extends Component
                 'units',
                 'basic_units',
                 'categories',
-                'customer_types'
+                'customer_types',
+                'branches'
             )
         );
     }
@@ -249,10 +252,6 @@ class Create extends Component
         $this->exchange_rate = $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
     }
-    // public function updated($propertyName)
-    // {
-    //     $this->validateOnly($propertyName);
-    // }
 
     public function setSubCategoryValue($value)
     {
@@ -309,6 +308,7 @@ class Create extends Component
     }
     public function changeUnit($index)
     {
+
         ///////////////////////////product dimension variation ///////////////////
         foreach ($this->rows as $i => $row) {
             if (!empty($this->rows[$i]['unit_id']) && $this->rows[$i]['unit_id'] !== '') {
@@ -345,6 +345,7 @@ class Create extends Component
             }
         }
     }
+
     public function changeBaseUnit($index)
     {
         //////////////////////////////// calculate row based on other rows//////////////
@@ -700,6 +701,22 @@ class Create extends Component
     public function get_product($index)
     {
         return Unit::where('id', $this->rows[$index]['unit_id'])->first();
+    }
+
+    public function count_total_by_variations()
+    {
+        $this->variationSums = [];
+        foreach ($this->rows as $row) {
+            if (!empty($row['unit_id'])) {
+                $unit = Unit::find($row['unit_id']);
+                $variation_name = $unit->name;
+                if (isset($this->variationSums[$variation_name])) {
+                    $this->variationSums[$variation_name] += $row['quantity'];
+                } else {
+                    $this->variationSums[$variation_name] = $row['quantity'];
+                }
+            }
+        }
     }
 
     public function sub_total($index)

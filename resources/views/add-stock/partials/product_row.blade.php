@@ -108,7 +108,7 @@
         </div>
     </div>
 
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
+    {{-- <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
              align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
@@ -131,7 +131,7 @@
 
 
         </div>
-    </div>
+    </div> --}}
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex
