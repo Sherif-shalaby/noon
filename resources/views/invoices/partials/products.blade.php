@@ -26,7 +26,8 @@
                 @if ($allproducts and $allproducts != null)
                     @forelse ($allproducts as $product)
                         <div class="col-md-4 d-flex justify-content-between flex-column align-items-center p-0 order-btn"
-                            wire:click='add_product({{ $product->id }})' style="min-height: 50px">
+                            wire:click='add_product({{ $product->id }})'
+                            style="min-height: 50px;border:1px solid #ccc;">
                             @if ($product->image)
                                 <div style="width: 60px;height: 60px;">
                                     <img src="{{ asset('uploads/products/' . $product->image) }}"
