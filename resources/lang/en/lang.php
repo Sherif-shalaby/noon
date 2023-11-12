@@ -581,6 +581,8 @@ return [
     'location'=>'Location',
     'print'=>'Print',
     'customer_details' => 'Customer Details',
+    'final'=>'Final',
+    'draft'=>'Draft',
 ];
 
 

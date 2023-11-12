@@ -615,5 +615,7 @@ return array(
     'print'=>'طباعة',
     'location'=>'الموقع',
     'customer_details' => 'تفاصيل العميل',
+    'final'=>'دفعت',
+    'draft'=>'مسودة',
 );
 
