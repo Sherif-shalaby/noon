@@ -199,25 +199,32 @@
             </div>
             <!-- ======== row 3 ========  -->
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <p class="text-left">
                         <b>@lang('lang.phone') </b> : <span style="text-decoration: underline"> {{$transaction->customer->phone}} </span>
                     </p>
                 </div>
-
-                <div class="col-sm-4">
+                <div class="col-sm-3">
+                    <p class="text-right">
+                        <span style="text-decoration: underline">@lang('lang.' . $transaction->status . '.')</span>
+                        <b> : @lang('lang.status') </b>
+                    </p>
+                </div>
+                <div class="col-sm-3">
                     <p class="text-center">
                        <span style="text-decoration: underline"> Address is {{$transaction->customer->address}} </span>  :
                        <b>@lang('lang.address')</b>
                     </p>
                 </div>
 
-                <div class="col-sm-4">
+                <div class="col-sm-3">
                     <p class="text-right">
                         <span style="text-decoration: underline">{{$transaction->customer->name}}</span>
                         <b> : @lang('lang.dear')  @lang('lang.respected') </b>
                     </p>
                 </div>
+                
+               
             </div>
         </div>
     </div>
