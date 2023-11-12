@@ -30,11 +30,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header d-flex align-items-center no-print">
+                        {{-- <div class="card-header d-flex align-items-center no-print">
                             <h4>@lang('lang.invoice_no'): {{$add_stock->invoice_no}}</h4>
-                        </div>
-
-                        <div class="card-body">
+                        </div> --}}
+                        {{ $purchase_order }}
+                        {{-- <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
                                     {!! Form::label('supplier_name', __('lang.supplier_name'), []) !!}:
@@ -125,8 +125,6 @@
                                                 <td>
                                                     {{number_format($line->dollar_sub_total,2) }}
                                                 </td>
-{{--                                                <td>{{$line->batch_number}}</td>--}}
-{{--                                                <td>@if(!empty($line->manufacturing_date)){{@format_date($line->manufacturing_date)}}@endif--}}
                                                 </td>
                                                 <td>@if(!empty($line->expiry_date)){{@format_date($line->expiry_date)}}@endif
                                                 </td>
@@ -231,7 +229,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

@@ -59,9 +59,8 @@
                     <td>
                         {{ $purchase_order->transaction->status }}
                     </td>
-                    {{-- ++++++++++++++++++ Actions ++++++++++++ --}}
+                    {{-- =========================== Actions =========================== --}}
                     <td>
-
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
@@ -69,10 +68,9 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                {{-- @endcan
-                                @can('purchase_order.purchase_order.view') --}}
+                                {{-- +++++++++++++++++++ show button +++++++++++++++++++ --}}
                                 <li>
-                                    <a href="{{action('PurchaseOrderLineController@show', $purchase_order->id)}}" target="_blank" class="" style="color:#000;">
+                                    <a href="{{route('purchase_order.show', $purchase_order->id)}}" target="_blank" style="color:#000;">
                                         <i class="fa fa-eye btn"></i>
                                         @lang('lang.view')
                                     </a>

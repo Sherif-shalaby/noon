@@ -550,22 +550,20 @@ class Create extends Component
         if (!empty($this->store_id))
         {
             $store_id = (int)$this->store_id;
-            $product_id = $this->product_id;
-
-            $current_stock_all = ProductStore::select('quantity_available')
-                ->where('product_id', $product_id)
-                ->where('store_id', $store_id)
-                ->orderBy('created_at', 'desc')
-                ->first();
-            $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
-            $this->items[0]['current_stock'] = $current_stock;
-            // dd($this->current_stock);
-
+            foreach( $this->items as $key => $item )
+            {
+                $current_stock_all = ProductStore::select('quantity_available')
+                    ->where('product_id', $item['product']['id'])
+                    ->where('store_id', $store_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
+                $this->items[$key]['current_stock'] = $current_stock;
+            }
         } else {
             // Handle the case where store_id is empty, set $current_stock to null or a default value
             $this->current_stock = null;
         }
-
     }
     public function func()
     {

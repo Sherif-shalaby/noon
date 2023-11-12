@@ -135,7 +135,12 @@ class PurchaseOrderLineController extends Controller
 
     public function show($id)
     {
-        dd($id);
+        $purchase_order = PurchaseOrderLine::with('transaction')->findOrFail($id);
+        $supplier = Supplier::find($purchase_order->supplier_id);
+
+        // dd($supplier);
+        // return view('purchase_order.show',compact('purchase_order'));
+        // dd($purchase_order);
     }
 
     /**
