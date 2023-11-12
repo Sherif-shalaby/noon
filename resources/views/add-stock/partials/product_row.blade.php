@@ -410,7 +410,7 @@
     </div>
 
     <div class="d-flex flex-column" style="width: 100%">
-        <div class="accordion mb-1">
+        <div class="accordion mb-1" wire:ignore>
             <div class="accordion-item" style="border: none">
                 <h2 class="accordion-header">
                     <div class="accordion-button"
@@ -573,7 +573,7 @@
             </div>
         </div>
 
-        <div class="accordion">
+        <div class="accordion" wire:ignore>
             <div class="accordion-item" style="border: none">
                 <h2 class="accordion-header">
                     <div class="accordion-button"

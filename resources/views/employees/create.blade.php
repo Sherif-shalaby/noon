@@ -81,7 +81,7 @@
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
-                                        <div class="accordion mb-1">
+                                        <div class="accordion mb-1" wire:ignore>
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end"
                                                     id="employee-products">
@@ -257,7 +257,7 @@
 
 
 
-                                        <div class="accordion mb-1">
+                                        <div class="accordion mb-1" wire:ignore>
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end">
                                                     <div class="accordion-button"

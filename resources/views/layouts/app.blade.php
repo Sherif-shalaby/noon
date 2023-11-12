@@ -217,7 +217,7 @@
         <!-- Start Rightbar -->
         <div class="rightbar">
             <!-- Start Topbar Mobile -->
-            {{-- <div class="topbar-mobile">
+            {{-- <div class="topbar-mobile no-print">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="mobile-logobar">

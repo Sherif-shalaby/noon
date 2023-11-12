@@ -627,4 +627,8 @@ return array(
     'remaining' => 'المتبقى',
     'representative' => 'مندوب',
     'customer_details' => 'تفاصيل العميل',
+    'print' => 'طباعة',
+    'location' => 'الموقع',
+     'final'=>'دفعت',
+    'draft'=>'مسودة',
 );

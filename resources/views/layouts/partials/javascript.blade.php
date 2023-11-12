@@ -45,8 +45,6 @@
                 arrow.appendChild(newIElement);
             }
         }
-
-
     }
 </script>
 

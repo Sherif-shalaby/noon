@@ -271,7 +271,7 @@
 
     </div>
 
-    <div style="width: 100%;" class="accordion animate__animated animate__lightSpeedInLeft m-1">
+    <div style="width: 100%;" class="accordion animate__animated animate__lightSpeedInLeft m-1" wire:ignore>
         <div class="accordion-item" style="border: none">
             <h2 class="accordion-header d-flex justify-content-end m-1 mt-0">
                 @if ($rows[$index])
@@ -313,7 +313,8 @@
                                             'style' => 'font-weight: 700;font-size: 10px',
                                             'class' => 'pt-2',
                                         ]) !!}
-                                        <input type="text" class="form-control price_category"
+
+                                        <input type="text" class="form-control price_category "
                                             name="price_category"
                                             wire:model="rows.{{ $index }}.prices.{{ $key }}.price_category"
                                             maxlength="6"
@@ -491,9 +492,8 @@
                                             <select
                                                 wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
                                                 data-name='price_customer_types' data-index="{{ $index }}"
-                                                data-key="{{ $key }}"
-                                                class="form-control js-example-basic-multiple" multiple='multiple'
-                                                placeholder="{{ __('lang.please_select') }}">
+                                                data-key="{{ $key }}" class="form-control select2"
+                                                multiple='multiple' placeholder="{{ __('lang.please_select') }}">
                                                 @foreach ($customer_types as $type)
                                                     <option value="{{ $type->id }}">{{ $type->name }}
                                                     </option>
@@ -510,7 +510,7 @@
                                         <option value="{{ $type->id }}">{{ $type->name }}</option>
                                     @endforeach
                                 </select> --}}
-{{--  --}}
+                                            {{--  --}}
 
                                         </div>
                                     </div>

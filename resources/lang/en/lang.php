@@ -593,4 +593,8 @@ return [
     'remaining' => 'Remaining',
     'representative' => 'Representative',
     'customer_details' => 'Customer Details',
+    'location' => 'Location',
+    'print' => 'Print',
+    'final' => 'Final',
+    'draft' => 'Draft',
 ];
