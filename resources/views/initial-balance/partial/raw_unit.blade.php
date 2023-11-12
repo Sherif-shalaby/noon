@@ -22,17 +22,16 @@
         class="d-flex flex-wrap mb-0 justify-content-between align-items-center p-2 pb-0 rounded-3 text-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif position-relative">
 
 
-        <div class="btn btn-sm btn-danger py-2 px-1 position-absolute"
-            style="width: fit-content;bottom:40%;left: 8%;z-index: 99;" wire:click="delete_product({{ $index }})">
+        <div class="btn btn-sm btn-danger py-2 px-1 col-md-1 d-inline-flex justify-content-center align-items-center text-white"
+            style="width: fit-content" wire:click="delete_product({{ $index }})">
             <i class="fa fa-trash"></i>
         </div>
 
 
-        <div class="col-md-1 d-inline-flex justify-content-center align-items-center text-white"
+        {{-- <div class="col-md-1 d-inline-flex justify-content-center align-items-center text-white"
             style="width: 30px;height: 30px; border-radius: 50%;background-color: #596fd7">
             {{ $index + 1 }}
-
-        </div>
+        </div> --}}
         {{--  --}}
         <div style="animation-delay: 1.65s"
             class="d-flex col-md-11 flex-grow-1 flex-wrap justify-content-start
