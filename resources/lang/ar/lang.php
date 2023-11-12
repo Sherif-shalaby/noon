@@ -614,5 +614,6 @@ return array(
     'total_sells'  => 'اجمالي مبيعات',
     'print'=>'طباعة',
     'location'=>'الموقع',
+    'customer_details' => 'تفاصيل العميل',
 );
 

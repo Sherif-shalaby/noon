@@ -1,7 +1,5 @@
 <div class="row mb-2">
-    <div class="col-xl-2 ">
-    </div>
-    <div class="col-xl-7 ">
+    <div class="col-xl-12">
         <div class="row">
             <div class="col-md-3 m-t-15">
                 <div class="search-box input-group">
@@ -30,7 +28,7 @@
                     {{--                                    {{$search_result->links()}}--}}
                 </div>
             </div>
-            <div class="col-md-7 m-t-15">
+            <div class="col-md-9 m-t-15">
                 <div class="search-box input-group">
                     <button type="button" class="btn btn-secondary" id="search_button"><i
                             class="fa fa-search"></i>

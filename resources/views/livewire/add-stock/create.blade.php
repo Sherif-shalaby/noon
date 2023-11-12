@@ -248,8 +248,8 @@
                                         <th style="width: 10%" >@lang('lang.sku')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.unit')</th>
-                                        <th style="width: 10%">@lang('lang.fill')</th>
-                                        <th style="width: 10%">@lang('lang.basic_unit')</th>
+{{--                                        <th style="width: 10%">@lang('lang.fill')</th>--}}
+{{--                                        <th style="width: 10%">@lang('lang.basic_unit')</th>--}}
                                         <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
 {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
 {{--                                        @if ($showColumn)--}}
@@ -313,22 +313,19 @@
                                 </table>
                             </div>
                         </div>
-                        @php
-//                            $collection = collect($items);
-//                            // Filter out elements where show_product_data is false
-//                            $filteredCollection = $collection->filter(function ($item) {
-//                                return $item['show_product_data'] !== false;
-//                            });
-//                            // Count the remaining elements
-//                            $count = $filteredCollection->count();
-                        @endphp
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
                                 <span class="items_count_span" style="margin-right: 15px;">{{ $this->countItems() }}</span><br>
-                                @lang('lang.units_count'):
-                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->countUnitsItems() }}</span><br>
-                                @lang('lang.items_quantity'):
-                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
+{{--                                @lang('lang.units_count'):--}}
+{{--                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->countUnitsItems() }}</span><br>--}}
+                                {{ $this->count_total_by_variations() }}
+                            @if(!empty($variationSums))
+                                @foreach($variationSums as $unit_name => $variant)
+                                    {{ $unit_name }}:
+                                    <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }} </span><br>
+                                @endforeach
+                            @endif
+
                             </h4>
                         </div>
                         <br>
