@@ -42,18 +42,12 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
-                                {{-- {!! Form::select('customer_type_id', $customer_types, null, [
-                                    'class' => 'form-control select2',
-                                    'required',
-                                    'placeholder' => __('lang.please_select'),
-                                ]) !!} --}}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('customer_type_id', $customer_types, null, [
                                         'class' => 'form-control select2',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                     ]) !!}
-                                    {{-- "add new customer_type" button --}}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal">
                                        <i class="fas fa-plus"></i>
                                     </button>
@@ -96,7 +90,7 @@
                                                         class="form-control"
                                                         placeholder="@lang('lang.email')"
                                                         name="email[]"
-                                                        value="{{ old('email') }}" required >
+                                                        value="" required >
                                                     @error('email')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
@@ -325,7 +319,7 @@
         var tr = `<tr>
                     <td>
                         <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
+                                value="" required >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

@@ -190,7 +190,7 @@
                             <div class="form-group">
                                 <label for="city-dd">@lang('lang.city')</label>
                                 <select id="city-dd" name="city_id"  class="form-control select2" >
-                                    <option selected > @lang('lang.please_select')</option>
+                                    <option  @if(empty($customer->city_id)) selected @endif> @lang('lang.please_select')</option>
                                     @if(!empty($cities))
                                         @foreach($cities as $city)
                                             <option value="{{ $city->id }}"

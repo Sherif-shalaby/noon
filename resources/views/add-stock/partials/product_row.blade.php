@@ -43,12 +43,12 @@
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
-    <td title="{{__('lang.fill')}}">
+{{--    <td title="{{__('lang.fill')}}">--}}
 
-    </td>
-    <td title="{{__('lang.basic_unit')}}">
-        <span>{{$product['unit']}}</span>
-    </td>
+{{--    </td>--}}
+{{--    <td title="{{__('lang.basic_unit')}}">--}}
+{{--        <span>{{$product['unit']}}</span>--}}
+{{--    </td>--}}
     <td title="{{__('lang.to_get_sell_price')}}">
         <div class="d-flex justify-content-between">
             <select class="custom-select " style="width:65px;font-size:10px;height:38px;" wire:model="items.{{ $index }}.fill_type" wire:change="changeFilling({{$index}})">

@@ -580,6 +580,7 @@ return [
     'total_sells'  => 'Total Sells',
     'location'=>'Location',
     'print'=>'Print'
+    'customer_details' => 'Customer Details',
 ];
 
 

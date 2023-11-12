@@ -52,7 +52,6 @@
                             <label for="dollar_lowest_price">@lang('lang.dollar_lowest_price')</label>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-check-inline checkbox-dark">
                             <input type="checkbox" id="nearest_expiry_filter" wire:model="nearest_expiry_filter" name="customCheckboxInline2">
@@ -109,8 +108,45 @@
                         @enderror
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        @include('invoices.partials.search')
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card-app">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <span> @lang('lang.min_amount_in_dollar') : {{ $customer_data->min_amount_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.max_amount_in_dollar') : {{ $customer_data->max_amount_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.min_amount_in_dinar') : {{ $customer_data->min_amount_in_dinar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.max_amount_in_dinar') : {{ $customer_data->max_amount_in_dinar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.balance_in_dinar') : {{ $customer_data->balance_in_dinar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.balance_in_dollar') : {{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
+                                            class="btn btn-primary payment-btn">
+                                        @lang('lang.customer_details')
+                                    </button>
+                                </div>
+                            </div>
+                            <button></button>
+
+                        </div>
+                    </div>
+                </div>
                 {{-- +++++++++++++++++ search inputField +++++++++++++++++ --}}
-                @include('invoices.partials.search')
+
             </div>
         </div>
         <div class="row g-3 cards hide-print ">
