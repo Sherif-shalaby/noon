@@ -100,4 +100,7 @@ class Employee extends Model
     {
         return $this->belongsToMany(Product::class, 'employee_products', 'employee_id', 'product_id');
     }
+    public function delivery_locations(){
+        return $this->hasMany(DeliveryLocation::class,'id', 'delivery_id');
+    }
 }

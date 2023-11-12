@@ -578,7 +578,7 @@ return [
     'import_stock' => 'Add Stock',
     'export_stock' => 'Export Stock',
     'total_sells'  => 'Total Sells',
-
+    'location'=>'Location',
 ];
 
 

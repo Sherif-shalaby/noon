@@ -1,13 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Print</title>
+</head>
 <style>
-    *  , *::after , *::before
-    {
-        color: #000 !important;
-    }
+   
     .print-only {
         display: none;
     }
 
     @media print {
+        *  , *::after , *::before
+        {
+            color: #000 !important;
+        }
         * {
             font-size: 12px;
             line-height: 20px;
@@ -66,10 +76,10 @@
         .ui-pnotify-container{
             display: none !important;
         }
-        @livewireScripts {
+        /* @livewireScripts {
             display: none !important;
-        }
-    }
+        } */
+   
     section{
         max-width: 90%;
         margin: 0 auto
@@ -98,7 +108,10 @@
     .d-flex{
         display: flex;
     }
+}
 </style>
+<body style="background-color:transparent !important;">
+
 
     @php
         if (empty($invoice_lang)) {
@@ -313,3 +326,6 @@
 </section>
 
 
+</body>
+
+</html>
