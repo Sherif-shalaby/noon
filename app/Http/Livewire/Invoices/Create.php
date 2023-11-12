@@ -43,15 +43,14 @@ use Livewire\Component;
 class Create extends Component
 {
     public $products = [], $variations = [], $department_id = null, $items = [], $price, $total, $client_phone,
-        $client_id, $client, $cash = 0, $rest, $invoice, $invoice_id, $date, $payment_status,
-        $data = [], $payments = [], $invoice_lang, $transaction_currency, $store_id, $store_pos_id,
-        $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note, $payment_types,
-        $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar, $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost,
-        // "الباقي دولار" , "الباقي دينار"
-        $dollar_remaining = 0, $dinar_remaining = 0,
-        $searchProduct, $stores, $reprsenative_sell_car = false,
-        $final_total, $dollar_final_total, $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final',
-        $draft_transactions, $show_modal = false,  $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter, $dollar_highest_price, $dollar_lowest_price;
+        $client_id, $client, $cash = 0, $rest, $invoice, $invoice_id, $date, $payment_status, $data = [], $payments = [],
+        $invoice_lang, $transaction_currency, $store_id, $store_pos_id, $showColumn = false, $anotherPayment = false, $sale_note,
+        $payment_note, $staff_note, $payment_types, $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar,
+        $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost, $dollar_remaining = 0,
+        $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
+        $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
+        $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
+        $dollar_highest_price, $dollar_lowest_price;
 
     protected $rules = [
         'items' => 'array|min:1',
@@ -70,6 +69,7 @@ class Create extends Component
         if (isset($data['var1'])) {
             if ($data['var1'] == 'client_id') {
                 $this->{$data['var1']} = (int)$data['var2'];
+                $this->getCustomerData($this->client_id);
             } else
                 $this->{$data['var1']} = $data['var2'];
         }
@@ -111,6 +111,7 @@ class Create extends Component
             }
         }
         $this->client_id = 1;
+        $this->getCustomerData($this->client_id);
         $this->payment_status = 'paid';
         $this->dispatchBrowserEvent('initialize-select2');
 
@@ -396,6 +397,11 @@ class Create extends Component
         }
     }
 
+    public function getCustomerData($id){
+        $this->customer_data = Customer::find($id);
+//        dd($this->customer_data);
+    }
+
     public function updatedDepartmentId($value, $name)
     {
         $this->allproducts = Product::when($name == 'department_id', function ($query) {
@@ -447,6 +453,11 @@ class Create extends Component
                 }])->orderBy('expiry_date', 'desc');
             })
             ->get();
+    }
+
+    public function redirectToCustomerDetails($clientId)
+    {
+        return redirect()->route('customers.show', $clientId);
     }
 
     public function addCustomer()

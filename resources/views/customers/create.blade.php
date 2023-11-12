@@ -258,8 +258,8 @@
                                                     style="width: 100%">
                                                     <input type="text" class=" initial-balance-input m-0"
                                                         width="100%;" style="flex-grow: 1"
-                                                        placeholder="@lang('lang.email')" name="email[]"
-                                                        value="{{ old('email') }}" required>
+                                                        placeholder="@lang('lang.email')" name="email[]" value=""
+                                                        required>
                                                     @error('email')
                                                         <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
@@ -433,7 +433,7 @@
                             style="width: 100%">
                         <input  type="text" class=" initial-balance-input m-0"
                             width="100%"  style="flex-grow: 1" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
+                                value="" required >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

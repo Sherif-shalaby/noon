@@ -2,93 +2,90 @@
     <div class="">
         {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
         <div class="">
-
-            <div>
+            <div
+                class="row justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
                 <div
-                    class="row justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
-                    <div
-                        class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
-                        {!! Form::label('store_id', __('lang.store') . '*', [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-0 width-fit' : ' mb-0 h5 width-fit',
-                            'style' => 'font-size: 12px;font-weight: 500;',
-                        ]) !!}
-                        <div class="input-wrapper mx-2">
+                    class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                    {!! Form::label('store_id', __('lang.store') . '*', [
+                        'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-0 width-fit' : ' mb-0 h5 width-fit',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
+                    <div class="input-wrapper mx-2">
 
-                            {!! Form::select('store_id', $stores ?? [], $store_id, [
-                                'class' => 'select2 form-control',
-                                'data-live-search' => 'true',
-                                'id' => 'store_id',
-                                'required',
-                                'placeholder' => __('lang.please_select'),
-                                'data-name' => 'store_id',
-                                'wire:model' => 'store_id',
-                                'wire:change' => 'changeAllProducts',
-                            ]) !!}
-                        </div>
-                        @error('store_id')
-                            <span class="error text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
-                    <div
-                        class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
-                        {!! Form::label('store_pos_id', __('lang.pos') . '*', [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end h5   mb-0 width-fit' : '  mb-0 h5 width-fit',
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                        {!! Form::select('store_id', $stores ?? [], $store_id, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'store_id',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'store_id',
+                            'wire:model' => 'store_id',
+                            'wire:change' => 'changeAllProducts',
                         ]) !!}
-                        <div class="input-wrapper mx-2">
-                            {!! Form::select('store_pos_id', $store_pos, $store_pos_id, [
-                                'class' => 'select2 form-control',
-                                'data-name' => 'store_pos_id',
-                                'data-live-search' => 'true',
-                                'required',
-                                'placeholder' => __('lang.please_select'),
-                                'wire:model' => 'store_pos_id',
-                            ]) !!}
-                        </div>
-                        @error('store_pos_id')
-                            <span class="error text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
-                    {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
-                    {{--                    <div class="col-md-2"> --}}
-                    {{--                        <div class="form-group"> --}}
-                    {{--                            {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!} --}}
-                    {{--                            {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!} --}}
-                    {{--                            @error('payment_status') --}}
-                    {{--                            <span class="error text-danger">{{ $message }}</span> --}}
-                    {{--                            @enderror --}}
-                    {{--                        </div> --}}
-                    {{--                    </div> --}}
-                    {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
-                            style="font-size: 12px;font-weight: 500;">العملاء</label>
-                        <div class="input-wrapper mx-2">
-                            <select class="form-control client select2" wire:model="client_id" id="client_id"
-                                data-name="client_id">
-                                <option value="0 " readonly>اختر </option>
-                                @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}"
-                                        {{ $client_id == $customer->id ? 'selected' : '' }}>
-                                        {{ $customer->name }}</option>
-                                @endforeach
-                            </select>
-                            <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                                data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
-                        </div>
-                        @error('client_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    @include('invoices.partials.search')
+                    @error('store_id')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+                {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
+                <div
+                    class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                    {!! Form::label('store_pos_id', __('lang.pos') . '*', [
+                        'class' => app()->isLocale('ar') ? 'd-block text-end h5   mb-0 width-fit' : '  mb-0 h5 width-fit',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
+                    <div class="input-wrapper mx-2">
+                        {!! Form::select('store_pos_id', $store_pos, $store_pos_id, [
+                            'class' => 'select2 form-control',
+                            'data-name' => 'store_pos_id',
+                            'data-live-search' => 'true',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'wire:model' => 'store_pos_id',
+                        ]) !!}
+                    </div>
+                    @error('store_pos_id')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
+                {{--                    <div class="col-md-2"> --}}
+                {{--                        <div class="form-group"> --}}
+                {{--                            {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!} --}}
+                {{--                            {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!} --}}
+                {{--                            @error('payment_status') --}}
+                {{--                            <span class="error text-danger">{{ $message }}</span> --}}
+                {{--                            @enderror --}}
+                {{--                        </div> --}}
+                {{--                    </div> --}}
                 {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+                <div
+                    class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
+                        style="font-size: 12px;font-weight: 500;">العملاء</label>
+                    <div class="input-wrapper mx-2">
+                        <select class="form-control client select2" wire:model="client_id" id="client_id"
+                            data-name="client_id">
+                            <option value="0 " readonly>اختر </option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                            data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+                    </div>
+                    @error('client_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                @include('invoices.partials.search')
+
+
 
             </div>
-
+            {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div
                     class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
@@ -216,12 +213,74 @@
 
             </div>
 
+
+            <div
+                class="row justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="row col-md-10 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <div class="col-md-2 p-0 d-flex flex-column justify-content-center align-items-center dollar-cell px-2"
+                        style="border-left: 1px solid #ccc;width: 120px">
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>@lang('lang.min_amount_in_dollar')</span>
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->min_amount_in_dollar ?? 0 }}</span>
+                    </div>
+                    <div class="col-md-2 dollar-cell p-0 d-flex flex-column justify-content-center align-items-center px-2"
+                        style="border-left: 1px solid #ccc;width: 120px">
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.max_amount_in_dollar')</span>
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->max_amount_in_dollar ?? 0 }}</span>
+                    </div>
+                    <div class="col-md-2 p-0 d-flex flex-column justify-content-center align-items-center px-2"
+                        style="border-left: 1px solid #ccc;width: 120px">
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.min_amount_in_dinar')</span>
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->min_amount_in_dinar ?? 0 }}</span>
+                    </div>
+                    <div class="col-md-2 p-0 d-flex flex-column justify-content-center align-items-center px-2"
+                        style="border-left: 1px solid #ccc;width: 120px">
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.max_amount_in_dinar')</span>
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->max_amount_in_dinar ?? 0 }}</span>
+                    </div>
+                    <div class="col-md-2 p-0 d-flex flex-column justify-content-center align-items-center px-2"
+                        style="border-left: 1px solid #ccc;width: 120px">
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.balance_in_dinar')</span>
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance_in_dinar ?? 0 }}</span>
+                    </div>
+                    <div
+                        class="col-md-1 p-0 dollar-cell d-flex flex-column justify-content-center align-items-center px-2">
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'> @lang('lang.balance_in_dollar')</span>
+                        <span class="d-flex justify-content-center align-items-center"
+                            style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                    </div>
+                </div>
+
+                <div class="col-md-1 mx-1 p-0 ">
+                    <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
+                        wire:click="redirectToCustomerDetails({{ $client_id }})"
+                        class="btn btn-primary payment-btn">
+                        @lang('lang.customer_details')
+                    </button>
+                </div>
+
+                <button></button>
+
+            </div>
+
+
+
         </div>
 
         <div class="row cards hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             @include('invoices.partials.products')
 
-            <div class="col-xl-9 p-0 special-medal-col" style="height: 280px;overflow: scroll">
+            <div class="col-xl-9 p-0 special-medal-col" style="height: 300px;overflow: scroll">
                 <div class="card-app ">
                     <div class="body-card-app content p-0">
                         <div class="tab-content" id="v-pills-tabContent">

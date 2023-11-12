@@ -592,4 +592,5 @@ return [
     'representatives' => 'Representatives',
     'remaining' => 'Remaining',
     'representative' => 'Representative',
+    'customer_details' => 'Customer Details',
 ];

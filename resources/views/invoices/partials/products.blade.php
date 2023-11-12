@@ -1,4 +1,4 @@
-<div class="col-xl-3 p-0 special-col" style="max-height: 90vh;">
+<div class="col-xl-3 p-0 special-col" style="height: 300px;overflow: scroll">
     <div class="card-app">
         <div class="title-card-app">
             الاقسام

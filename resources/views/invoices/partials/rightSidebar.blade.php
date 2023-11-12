@@ -1,6 +1,6 @@
 <div class="p-0">
     <div class="card-app">
-        <div class=" d-flex flex-row-reverse body-card-app pt-2" style="background-color: #eee">
+        <div class=" d-flex flex-row-reverse justify-content-between body-card-app pt-2" style="background-color: #eee">
             <div class="col-md-2"
                 style="display: flex;
                         justify-content: center;
@@ -9,35 +9,17 @@
                         font-weight: 500;">
                 الاجماليات
             </div>
-            <input type="text" wire:model.defer="client_phone" id="" class="form-control col-md-8 w-60 mb-1"
-                placeholder="{{ __('بحث برقم العميل') }}">
-            {{--            <input readonly type="text" class="{{ $client ? '' : 'd-none' }} form-control w-25" --}}
-            {{--                   value="{{ $client?->name }}"> --}}
-            <div class="d-flex justify-content-center align-items-center col-md-2">
-                <button wire:click='getClient' class="w-100 btn btn-sm btn-primary">{{ __('Search') }}</button>
-            </div>
-        </div>
-
-        {{-- +++++++++++++++++ الاجماليات +++++++++++++++++ --}}
-
-
-
-        <div class="body-card-app pt-2 d-flex flex-wrap justify-content-end align-items-center">
-
-            {{-- <div style="width: 100%"
-                class="row col-md-4  hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"> --}}
-            <div class="col-md-4 p-0 d-flex">
+            <div class="d-flex justify-content-between align-items-center">
                 @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
-                    <div class="col-md-6">
-                        <button data-method="cash" style="width: 100%" type="button"
-                            class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
-                                class="fa-solid fa-money-bill"></i>
+                    <div class="col-md-4">
+                        <button data-method="cash" style="width: 100%" type="button" class="btn btn-success payment-btn"
+                            wire:click="submit" id="cash-btn"><i class="fa-solid fa-money-bill"></i>
                             @lang('lang.pay')</button>
                         {{--                            @include('invoices.partials.payment') --}}
                     </div>
                 @endif
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-6 ">
+                    <div class=" col-md-4 ">
                         <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                             class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
                                 class="fa-solid fa-money-bill"></i>
@@ -46,7 +28,7 @@
                     </div>
                 @endif
 
-                <div class=" col-md-6 ">
+                <div class=" col-md-4 ">
                     <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
                         {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
@@ -54,9 +36,48 @@
                     @include('invoices.partials.draft_transaction')
 
                 </div>
+                <div class=" col-md-4">
+                    <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
+                        class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
+                            class="fa-solid fa-flag"></i>
+                        @lang('lang.draft')</button>
+                </div>
+
+                @if (!$this->checkRepresentativeUser())
+                    <div class=" col-md-4">
+                        <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
+                            class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
+                                class="fa fa-hourglass-start"></i>
+                            @lang('lang.pay_later')</button>
+                    </div>
+                @endif
             </div>
+        </div>
+
+
+
+
+        <div class="body-card-app pt-2 d-flex flex-wrap justify-content-end align-items-center">
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
+                @if (!$reprsenative_sell_car)
+                    <div class="col-sm-2">
+                        {!! Form::label('s', __('lang.deliveryman') . '*', [
+                            'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                            'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                        ]) !!}
+                        <div class="input-wrapper width-full">
+                            {!! Form::select('deliveryman_id', $deliverymen, null, [
+                                'class' => 'select2 form-control width-full',
+                                'data-live-search' => 'true',
+                                'id' => 'deliveryman_id',
+                                'placeholder' => __('lang.please_select'),
+                                'data-name' => 'deliveryman_id',
+                                'wire:model' => 'deliveryman_id',
+                            ]) !!}
+                        </div>
+                    </div>
+                @endif
                 {{-- +++++++++++ الاجمالي بالدولار +++++++++++ --}}
                 <div class="col-sm-2 dollar-cell">
                     <div class="form-group">
@@ -74,7 +95,6 @@
                         ]) !!}
                     </div>
                 </div>
-
 
                 {{-- +++++++++++ الخصم دولار +++++++++++ --}}
                 <div class="col-sm-2 dollar-cell">
@@ -138,28 +158,28 @@
                         ]) !!}
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4 p-0 d-flex">
-                <div class="mb-2 col-md-6">
-                    <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
-                        class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
-                            class="fa-solid fa-flag"></i>
-                        @lang('lang.draft')</button>
-                </div>
 
-                @if (!$this->checkRepresentativeUser())
-                    <div class="mb-2 col-md-6">
-                        <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
-                            class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
-                                class="fa fa-hourglass-start"></i>
-                            @lang('lang.pay_later')</button>
-                    </div>
-                @endif
             </div>
 
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
+                @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car)
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            {!! Form::label('delivery_cost', __('lang.delivery_cost'), [
+                                'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                            ]) !!}
+                            {!! Form::number('delivery_cost', null, [
+                                'class' => 'form-control py-1',
+                                'style' => 'height:30px',
+                                'wire:model' => 'delivery_cost',
+                                'placeholder' => __('lang.delivery_cost'),
+                            ]) !!}
+                        </div>
+                    </div>
+                @endif
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
                 <div class="col-sm-2">
                     <div class="form-group">
@@ -242,52 +262,13 @@
                         ]) !!}
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-8 p-0 d-flex justify-content-end">
-                @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car)
-                    <div class="col-sm-2">
-                        {!! Form::label('s', __('lang.deliveryman') . '*', [
-                            'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
-                            'style' => 'width:100%;font-weight: 700;font-size: 10px',
-                        ]) !!}
-                        <div class="input-wrapper width-full">
-                            {!! Form::select('deliveryman_id', $deliverymen, null, [
-                                'class' => 'select2 form-control width-full',
-                                'data-live-search' => 'true',
-                                'id' => 'deliveryman_id',
-                                'placeholder' => __('lang.please_select'),
-                                'data-name' => 'deliveryman_id',
-                                'wire:model' => 'deliveryman_id',
-                            ]) !!}
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            {!! Form::label('delivery_cost', __('lang.delivery_cost'), [
-                                'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
-                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
-                            ]) !!}
-                            {!! Form::number('delivery_cost', null, [
-                                'class' => 'form-control py-1',
-                                'style' => 'height:30px',
-                                'wire:model' => 'delivery_cost',
-                                'placeholder' => __('lang.delivery_cost'),
-                            ]) !!}
-                        </div>
-                    </div>
-                @endif
+
             </div>
 
 
 
 
-            {{-- ++++++++++++++++++++++ زرار الدفع ++++++++++++++++++++ --}}
-            {{-- <div style="width: 100%"
-                class="row col-md-4  hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"> --}}
-
-
-            {{-- </div> --}}
 
         </div>
     </div>

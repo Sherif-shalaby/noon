@@ -206,7 +206,8 @@
                                 <div class="input-wrapper">
                                     <select id="city-dd" name="city_id"
                                         class="form-control selectpicker initial-balance-input m-auto width-full">
-                                        <option selected> @lang('lang.please_select')</option>
+                                        <option @if (empty($customer->city_id)) selected @endif> @lang('lang.please_select')
+                                        </option>
                                         @if (!empty($cities))
                                             @foreach ($cities as $city)
                                                 <option value="{{ $city->id }}"

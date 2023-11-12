@@ -626,4 +626,5 @@ return array(
     'representatives' => 'المناديب',
     'remaining' => 'المتبقى',
     'representative' => 'مندوب',
+    'customer_details' => 'تفاصيل العميل',
 );
