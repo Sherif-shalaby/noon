@@ -579,7 +579,7 @@ return [
     'export_stock' => 'Export Stock',
     'total_sells'  => 'Total Sells',
     'location'=>'Location',
-    'print'=>'Print'
+    'print'=>'Print',
     'customer_details' => 'Customer Details',
 ];
 
