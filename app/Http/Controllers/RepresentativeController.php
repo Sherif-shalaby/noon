@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\JobType;
+use App\Models\PaymentTransactionSellLine;
 use App\Models\SellCar;
 use App\Models\SellLine;
 use App\Models\Store;
+use App\Models\System;
 use App\Models\TransactionSellLine;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -111,7 +114,6 @@ class RepresentativeController extends Controller
     {
         try {
             $transaction=TransactionSellLine::find($id);
-
             $sell_lines=SellLine::where('transaction_id',$transaction->id)->delete();
             $transaction->deleted_by = Auth::user()->id;
             $transaction->save();
@@ -129,7 +131,68 @@ class RepresentativeController extends Controller
           }
           return $output;
     }
-    public function printRepresentativeInvoice(Request $request){
-
+    public function printRepresentativeInvoice(Request $request,$transaction_id){
+        $transaction=TransactionSellLine::find($transaction_id);
+        if (!empty($request->transaction_invoice_lang)) {
+            $invoice_lang = $request->transaction_invoice_lang;
+        } else {
+            $invoice_lang = System::getProperty('invoice_lang');
+            if (empty($invoice_lang)) {
+                $invoice_lang = request()->session()->get('language');
+            }
+        }
+        $payment_types = $this->getPaymentTypeArrayForPos();
+        $print_gift_invoice=null;
+        return $html_content = view('invoices.partials.invoice')->with(compact(
+            'transaction',
+            'payment_types',
+            'invoice_lang',
+            //                'total_due',
+            'print_gift_invoice'
+        ))->render();
+    }
+    public function getPaymentTypeArrayForPos()
+    {
+        return [
+            'cash' => __('lang.cash'),
+            //            'cheque' => __('lang.cheque'),
+            //            'deposit' => __('lang.use_the_balance'),
+            //            'paypal' => __('lang.paypal'),
+        ];
+    }
+    public function pay($transaction_id){
+        try {
+            $transaction=TransactionSellLine::find($transaction_id);
+            $transaction->status="final";
+            $transaction->save();
+            $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction_id)->first();
+            if(!empty($transaction_payment )){
+                $transaction_payment->amount=$transaction->final_total;
+                $transaction_payment->final_amount=$transaction->dollar_final_total;
+                $transaction_payment->save();
+            }else{
+                PaymentTransactionSellLine::create([
+                    'transaction_id'=> $transaction_id,
+                    'amount'=>$transaction->final_total,
+                    'dollar_amount'=>$transaction->dollar_final_total,
+                    'method'=>'cash',
+                    'paid_on' => Carbon::now(),
+                    'created_by' => Auth::user()->id,
+                    'payment_for' =>  $transaction->customer_id,
+                    'exchange_rate' => isset($transaction->exchange_rate)?$transaction->exchange_rate:System::getProperty('dollar_exchange'),
+                ]);
+            }
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
     }
 }

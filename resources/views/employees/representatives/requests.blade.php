@@ -1,10 +1,10 @@
 @extends('layouts.app')
-@section('title', __('lang.employees'))
+@section('title', __('lang.representatives_requests'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="row align-items-center">
             <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.employees')</h4>
+                <h4 class="page-title">@lang('lang.representatives')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
@@ -14,12 +14,12 @@
                 </div>
             </div>
             <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a class="btn btn-primary" href="{{ route('employees.create') }}">@lang('lang.add_employee')</a>
+                {{-- <div class="widgetbar"> --}}
+                    {{-- <a class="btn btn-primary" href="{{ route('employees.create') }}">@lang('lang.add_employee')</a> --}}
                     {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i --}}
                     {{--                            class="dripicons-plus"></i> --}}
                     {{--                        @lang('lang.add_new_employee')</a> --}}
-                </div>
+                {{-- </div> --}}
             </div>
         </div>
     </div>
@@ -46,6 +46,7 @@
                                 <tr>
                                     <th>@lang('lang.invoice_no')</th>
                                     <th>@lang('lang.employee_name')</th>
+                                    <th>@lang('lang.location')</th>
                                     <th>@lang('lang.stores')</th>
                                     <th>@lang('lang.pos')</th>
                                     <th>@lang('lang.customers')</th>
@@ -66,6 +67,10 @@
                                         <td>{{ $transaction->invoice_no }}</td>
                                         <td>
                                             {{ !empty($transaction->employee->user) ? $transaction->employee->user->name : '' }}
+                                        </td>
+                                        <td>
+                                            {{App\Models\DeliveryLocation::where('delivery_id',$transaction->employee_id)->latest()->first()->city->name}}
+                                            {{-- {{ !empty($transaction->employee->delivery_locations) ? $transaction->employee->delivery_locations : '' }} --}}
                                         </td>
                                         <td>
                                             {{ !empty($transaction->store) ? $transaction->store->name : '' }}
@@ -132,20 +137,29 @@
                                                         target="_blank" class="btn edit_employee"><i
                                                             class="fa fa-pencil-square-o"></i>
                                                         @lang('lang.edit')</a>
-                                                </li>
-                                                <li class="divider"></li> --}}
+                                                </li>--}}
                                                 <li>
                                                     <a data-href="{{ route('representatives.destroy', $transaction->id) }}"
                                                         class="btn delete_item text-red delete_item"><i
                                                             class="fa fa-trash"></i>
                                                         @lang('lang.delete')</a>
                                                 </li>
+                                                <li class="divider"></li>
                                                 <li>
                                                     <a data-href="{{ route('representatives.print_representative_invoice', $transaction->id) }}"
-                                                        class="btn text-red"><i
+                                                        class="btn text-red print_representative_invoice"><i
                                                             class="fa fa-print"></i>
                                                         @lang('lang.print')</a>
                                                 </li>
+                                                @if(empty($transaction->transaction_payments->first()))
+                                                    <li class="divider"></li>
+                                                    <li>
+                                                        <a href="{{ route('representatives.pay', $transaction->id) }}"
+                                                            class="btn text-red"><i
+                                                                class="fa fa-money"></i>
+                                                            @lang('lang.pay')</a>
+                                                    </li>
+                                                @endif
                                                 {{-- @if (!empty($transaction->job_type) && $transaction->job_type->title == 'Representative')
                                                     <li class="divider"></li>
                                                     <li>
@@ -168,12 +182,13 @@
             </div>
         </div>
     </div>
-
+<!-- This will be printed -->
+<section class="invoice print_section print-only" id="receipt_section"> </section>
 
 @endsection
 @push('javascripts')
 <script>
-    $(document).on('click','.print-transaction',function(){
+    $(document).on('click','.print_representative_invoice',function(){
          $.ajax({
             method: "get",
             url: $(this).data('href'),

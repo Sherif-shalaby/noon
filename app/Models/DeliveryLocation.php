@@ -19,7 +19,7 @@ class DeliveryLocation extends Model
 
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'delivery_id');
+        return $this->belongsTo(Employee::class, 'delivery_id','id');
     }
 
     public function city()

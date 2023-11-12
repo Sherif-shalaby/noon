@@ -612,6 +612,8 @@ return array(
     'import_stock' => 'اضافه مخزون',
     'export_stock' => 'تصدير مخزون',
     'total_sells'  => 'اجمالي مبيعات',
+    'print'=>'طباعة',
+    'location'=>'الموقع',
     'customer_details' => 'تفاصيل العميل',
 );
 
