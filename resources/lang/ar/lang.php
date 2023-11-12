@@ -612,5 +612,6 @@ return array(
     'import_stock' => 'اضافه مخزون',
     'export_stock' => 'تصدير مخزون',
     'total_sells'  => 'اجمالي مبيعات',
+    'customer_details' => 'تفاصيل العميل',
 );
 
