@@ -1,4 +1,4 @@
-<section class="app my-3 no-print" style="padding: 0 20px;">
+<section class="app mb-3 no-print" style="padding: 0 20px;">
     <div class="">
         {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
         <div class="">
@@ -89,83 +89,81 @@
 
             </div>
 
+            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div
+                    class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                    {!! Form::label('brand_id', __('lang.brand') . '*', [
+                        'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-0 width-fit' : '  mb-0 h5 width-fit',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
+                    <div class="input-wrapper mx-2">
 
-            <div>
-                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <div
-                        class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
-                        {!! Form::label('brand_id', __('lang.brand') . '*', [
-                            'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-0 width-fit' : '  mb-0 h5 width-fit',
-                            'style' => 'font-size: 12px;font-weight: 500;',
+                        {!! Form::select('brand_id', $brands, $brand_id, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'brand_id',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'brand_id',
+                            'wire:model' => 'brand_id',
                         ]) !!}
-                        <div class="input-wrapper mx-2">
-
-                            {!! Form::select('brand_id', $brands, $brand_id, [
-                                'class' => 'select2 form-control',
-                                'data-live-search' => 'true',
-                                'id' => 'brand_id',
-                                'required',
-                                'placeholder' => __('lang.please_select'),
-                                'data-name' => 'brand_id',
-                                'wire:model' => 'brand_id',
-                            ]) !!}
-                        </div>
-                        @error('brand_id')
-                            <span class="error text-danger">{{ $message }}</span>
-                        @enderror
                     </div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2">
+                    @error('brand_id')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-2">
 
-                        <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
-                            class=" d-flex mb-3 justify-content-between rounded p-2">
+                    <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
+                        class=" d-flex mb-3 justify-content-between rounded p-2">
 
 
-                            <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-                                <input type="checkbox" id="from_a_to_z" wire:model="from_a_to_z"
-                                    name="customCheckboxInline2" class="sorting_filter filterInput">
-                                <label style="font-size: 11px;font-weight: 600;" for="from_a_to_z"
-                                    class="checkbox-inline filterLabel mb-0 ml-2">
-                                    @lang('lang.from_a_to_z')
-                                </label>
-                            </div>
+                        <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
+                            <input type="checkbox" id="from_a_to_z" wire:model="from_a_to_z"
+                                name="customCheckboxInline2" class="sorting_filter filterInput">
+                            <label style="font-size: 11px;font-weight: 600;" for="from_a_to_z"
+                                class="checkbox-inline filterLabel mb-0 ml-2">
+                                @lang('lang.from_a_to_z')
+                            </label>
+                        </div>
 
-                            <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-                                <input type="checkbox" id="from_z_to_a" wire:model="from_z_to_a"
-                                    name="customCheckboxInline2" class="sorting_filter filterInput">
-                                <label style="font-size: 11px;font-weight: 600;"
-                                    class="checkbox-inline filterLabel mb-0 ml-2"
-                                    for="from_z_to_a">@lang('lang.from_z_to_a')</label>
-                            </div>
+                        <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
+                            <input type="checkbox" id="from_z_to_a" wire:model="from_z_to_a"
+                                name="customCheckboxInline2" class="sorting_filter filterInput">
+                            <label style="font-size: 11px;font-weight: 600;"
+                                class="checkbox-inline filterLabel mb-0 ml-2"
+                                for="from_z_to_a">@lang('lang.from_z_to_a')</label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
+                        class=" d-flex mb-3 justify-content-between rounded  p-2">
+                        <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
+
+                            <input type="checkbox" id="highest_price" wire:model="highest_price"
+                                name="customCheckboxInline2" class="sorting_filter filterInput">
+                            <label style="font-size: 11px;font-weight: 600;"
+                                class="checkbox-inline filterLabel mb-0 ml-2"
+                                for="highest_price">@lang('lang.highest_price')</label>
 
                         </div>
-                    </div>
 
-                    <div class="col-md-2">
-                        <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
-                            class=" d-flex mb-3 justify-content-between rounded  p-2">
-                            <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
+                        <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
 
-                                <input type="checkbox" id="highest_price" wire:model="highest_price"
-                                    name="customCheckboxInline2" class="sorting_filter filterInput">
-                                <label style="font-size: 11px;font-weight: 600;"
-                                    class="checkbox-inline filterLabel mb-0 ml-2"
-                                    for="highest_price">@lang('lang.highest_price')</label>
+                            <input type="checkbox" id="lowest_price" wire:model="lowest_price"
+                                name="customCheckboxInline2" class="sorting_filter filterInput">
+                            <label style="font-size: 11px;font-weight: 600;"
+                                class="checkbox-inline filterLabel mb-0 ml-2"
+                                for="lowest_price">@lang('lang.lowest_price')</label>
 
-                            </div>
-
-                            <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-
-                                <input type="checkbox" id="lowest_price" wire:model="lowest_price"
-                                    name="customCheckboxInline2" class="sorting_filter filterInput">
-                                <label style="font-size: 11px;font-weight: 600;"
-                                    class="checkbox-inline filterLabel mb-0 ml-2"
-                                    for="lowest_price">@lang('lang.lowest_price')</label>
-
-                            </div>
                         </div>
                     </div>
-                    {{-- <div class="col-md-2">
+                </div>
+                {{-- <div class="col-md-2">
 
                         <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                             class=" d-flex mb-3 justify-content-between rounded p-2  dollar-cell">
@@ -190,40 +188,40 @@
                             </div>
                         </div>
                     </div> --}}
-                    <div class="col-md-3">
+                <div class="col-md-3">
 
-                        <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
-                            class=" d-flex mb-3 justify-content-between rounded p-2">
-                            <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-                                <input class="sorting_filter filterInput" type="checkbox" id="nearest_expiry_filter"
-                                    wire:model="nearest_expiry_filter" name="customCheckboxInline2">
-                                <label style="font-size: 11px;font-weight: 600;"
-                                    class="checkbox-inline filterLabel mb-0 ml-2"
-                                    for="nearest_expiry_filter">@lang('lang.nearest_expiry_filter')</label>
-
-                            </div>
-
-                            <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-
-                                <input class="sorting_filter filterInput" type="checkbox" id="longest_expiry_filter"
-                                    wire:model="longest_expiry_filter" name="customCheckboxInline2">
-                                <label style="font-size: 11px;font-weight: 600;"
-                                    class="checkbox-inline filterLabel mb-0 ml-2"
-                                    for="longest_expiry_filter">@lang('lang.longest_expiry_filter')</label>
-
-                            </div>
+                    <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
+                        class=" d-flex mb-3 justify-content-between rounded p-2">
+                        <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
+                            <input class="sorting_filter filterInput" type="checkbox" id="nearest_expiry_filter"
+                                wire:model="nearest_expiry_filter" name="customCheckboxInline2">
+                            <label style="font-size: 11px;font-weight: 600;"
+                                class="checkbox-inline filterLabel mb-0 ml-2"
+                                for="nearest_expiry_filter">@lang('lang.nearest_expiry_filter')</label>
 
                         </div>
-                    </div>
 
+                        <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
+
+                            <input class="sorting_filter filterInput" type="checkbox" id="longest_expiry_filter"
+                                wire:model="longest_expiry_filter" name="customCheckboxInline2">
+                            <label style="font-size: 11px;font-weight: 600;"
+                                class="checkbox-inline filterLabel mb-0 ml-2"
+                                for="longest_expiry_filter">@lang('lang.longest_expiry_filter')</label>
+
+                        </div>
+
+                    </div>
                 </div>
+
             </div>
 
         </div>
 
         <div class="row cards hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             @include('invoices.partials.products')
-            <div class="col-xl-9 p-0 special-medal-col" style="max-height: 90vh;">
+
+            <div class="col-xl-9 p-0 special-medal-col" style="height: 280px;overflow: scroll">
                 <div class="card-app ">
                     <div class="body-card-app content p-0">
                         <div class="tab-content" id="v-pills-tabContent">
@@ -432,6 +430,7 @@
                     </div>
                 </div>
             </div>
+
             @include('invoices.partials.rightSidebar')
         </div>
         {!! Form::close() !!}

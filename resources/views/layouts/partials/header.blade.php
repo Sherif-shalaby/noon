@@ -126,7 +126,7 @@
     <!-- Start container-fluid -->
     <div class="container-fluid"> --}}
 <!-- Start Horizontal Nav -->
-<nav class="navbar no-print navbar-expand-lg bg-white">
+<nav class="navbar no-print navbar-expand-lg bg-white py-0">
     <div class="container-fluid">
         <a style="width: 150px;" class="ml-2 d-lg-none" href="index.html">
             <img style="width: 100%" src="{{ asset('images/logo.svg') }}" class="img-fluid" alt="logo">

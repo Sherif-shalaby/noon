@@ -1,4 +1,4 @@
-<div class="col-xl-1 p-0 special-col" style="max-height: 90vh;">
+<div class="col-xl-3 p-0 special-col" style="max-height: 90vh;">
     <div class="card-app">
         <div class="title-card-app">
             الاقسام
@@ -25,17 +25,17 @@
                 {{-- <div class="row flex-wrap" style="width: 100%"> --}}
                 @if ($allproducts and $allproducts != null)
                     @forelse ($allproducts as $product)
-                        <div class="col-md-6 d-flex justify-content-between flex-column align-items-center p-0 order-btn"
+                        <div class="col-md-4 d-flex justify-content-between flex-column align-items-center p-0 order-btn"
                             wire:click='add_product({{ $product->id }})' style="min-height: 50px">
                             @if ($product->image)
-                                <div style="width: 30px;height: 30px;">
+                                <div style="width: 60px;height: 60px;">
                                     <img src="{{ asset('uploads/products/' . $product->image) }}"
                                         alt="{{ $product->name }}" class=""
                                         style="width:100%;
                                             height:100%">
                                 </div>
                             @else
-                                <div style="width: 30px;height: 30px;">
+                                <div style="width: 60px;height: 60px;">
                                     <img src="{{ asset('uploads/' . $settings['logo']) }}" alt="{{ $product->name }}"
                                         class=""
                                         style="width:100%;
@@ -44,10 +44,10 @@
                             @endif
                             <div>
                                 <span
-                                    style="width: 100%;font-size: 8px;font-weight: 500; word-break: break-all;display: block;">{{ $product->sku }}
+                                    style="width: 100%;font-size: 12px;font-weight: 500; word-break: break-all;display: block;">{{ $product->sku }}
                                 </span>
                                 <span
-                                    style="width: 100%;font-size: 8px;font-weight: 500; word-break: break-all;display: block;">{{ $product->name }}</span>
+                                    style="width: 100%;font-size: 12px;font-weight: 500; word-break: break-all;display: block;">{{ $product->name }}</span>
                                 {{--                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}"> --}}
                                 {{--                                                {{ $product->store?->quantity_available < 1 ? __('out_of_stock'): __('available') }} --}}
                                 {{--                                            </span> --}}
