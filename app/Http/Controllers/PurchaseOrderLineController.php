@@ -131,19 +131,11 @@ class PurchaseOrderLineController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
+    /* ++++++++++++++++++++++++++++++ show() ++++++++++++++++++++++++++ */
 
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PurchaseOrderLine $purchaseOrderLine)
+    public function show($id)
     {
-        //
+        dd($id);
     }
 
     /**

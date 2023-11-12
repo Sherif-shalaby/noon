@@ -72,8 +72,7 @@
                                 {{-- @endcan
                                 @can('purchase_order.purchase_order.view') --}}
                                 <li>
-                                    {{-- {{action('PurchaseOrderController@show', $purchase_order->id)}} --}}
-                                    <a href="#" target="_blank" class="" style="color:#000;">
+                                    <a href="{{action('PurchaseOrderLineController@show', $purchase_order->id)}}" target="_blank" class="" style="color:#000;">
                                         <i class="fa fa-eye btn"></i>
                                         @lang('lang.view')
                                     </a>
