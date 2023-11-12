@@ -209,6 +209,7 @@ class Create extends Component
             $transaction_data = [
                 'store_id' => $this->store_id,
                 'customer_id' => $this->client_id,
+                'employee_id' =>Employee::where('user_id', auth()->user()->id)->first()->id,
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,
                 'type' => 'sell',
@@ -1337,8 +1338,47 @@ class Create extends Component
         try
         {
             $stock = AddStockLine::where('product_id', $id)->latest()->first();
+            $branch_id = Employee::select('branch_id')->where('user_id', auth()->user()->id)->latest()->first();
             if (!$stock)
             {
+                $transaction_data =
+                [
+                    'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
+                    'product_id' => $id,
+                    'store_id' => null,
+                    'supplier_id' => null,
+                    'branch_id' => $branch_id->branch_id,
+                    'status' => 'pending',
+                    'order_date' => now(),
+                    'purchase_price' => null ,
+                    'dollar_purchase_price' => null,
+                    'required_quantity' => null,
+                    'created_by' => Auth::user()->id
+                ];
+
+            }
+            else
+            {
+                $stockTransactionId = $stock->stock_transaction_id;
+                $supplier_id = StockTransaction::select('supplier_id')->where('id', $stockTransactionId)->latest()->first();
+                $dinar_purchase_price = $stock->purchase_price;
+                $dollar_purchase_price = $stock->dollar_purchase_price;
+                $transaction_data =
+                [
+                    'employee_id' => Employee::where('user_id', auth()->user()->id)->first()->id,
+                    'product_id' => $id,
+                    'store_id' => $this->store_id,
+                    'supplier_id' => $supplier_id->supplier_id,
+                    'branch_id' => $branch_id->branch_id,
+                    'status' => 'pending',
+                    'order_date' => now(),
+                    'purchase_price' => $dinar_purchase_price ,
+                    'dollar_purchase_price' => $dollar_purchase_price,
+                    'required_quantity' => null,
+                    'created_by' => Auth::user()->id
+                ];
+            // if (!$stock)
+            // {
                 // Product has no stock transaction
                 // throw new \Exception(__('Product has no stock transaction'));
                 // dd("Product has no stock transaction");

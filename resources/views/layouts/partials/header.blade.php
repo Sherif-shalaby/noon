@@ -256,6 +256,12 @@
                         <span>{{__('lang.sell_car')}}</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('representatives.index')}}">
+                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                        <span>{{__('lang.representatives_requests')}}</span>
+                    </a>
+                </li>
                 {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}
                 {{-- @can('settings_module') --}}

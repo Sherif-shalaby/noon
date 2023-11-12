@@ -41,6 +41,7 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
@@ -271,6 +272,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Transfer
     Route::view('transfer/import/{id}','transfer.import')->name('transfer.import');
     Route::view('transfer/export/{id}','transfer.export')->name('transfer.export');
+
+    Route::resource('representatives', RepresentativeController::class);
+    Route::get('representatives/print-representative-invoice', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
