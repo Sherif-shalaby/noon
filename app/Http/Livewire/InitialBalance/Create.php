@@ -955,7 +955,7 @@ class Create extends Component
             if (!empty($this->rows[$index]['prices'][$key]['dinar_price'])) {
                 //                if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
                 $actual_price = (float)$this->rows[$index]['prices'][$key]['dinar_price'];
-                $this->rows[$index]['prices'][$key]['dinar_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_price'] / (float)$this->exchange_rate, 3);
+                $this->rows[$index]['prices'][$key]['dinar_price'] = number_format((float)$this->rows[$index]['prices'][$key]['dinar_price'] * (float)$this->exchange_rate, 3);
                 // dd($this->rows[$index]['prices'][$key]['dinar_price']);
                 //                }
             }

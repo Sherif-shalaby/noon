@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('title', __('categories.categories'))
 @section('breadcrumbbar')
+    <style>
+        th {
+            position: sticky;
+            top: 0;
+        }
+    </style>
     <div class="breadcrumbbar m-0 px-3 py-0">
         <div
             class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -44,10 +50,11 @@
                     <div class="card-body">
                         @if (@isset($categories) && !@empty($categories) && count($categories) > 0)
                             @include('categories.filter')
-                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
+                                style="max-height: 400px">
                                 <table id="" class="table table-striped table-bordered">
                                     <thead>
-                                        <tr>
+                                        <tr class="position-relative">
                                             <th>#</th>
                                             <th>@lang('categories.cover')</th>
                                             <th>@lang('categories.categorie_name')</th>

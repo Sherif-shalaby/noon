@@ -121,12 +121,26 @@
             }
         }
 
-
-
         var dollarCells = document.getElementsByClassName('dollar-cell');
 
         for (var i = 0; i < dollarCells.length; i++) {
             dollarCells[i].classList.toggle('showHideDollarCells')
         }
+
+        var exRateCells = document.getElementsByClassName('ex-rate-cell');
+
+        for (var i = 0; i < dollarCells.length; i++) {
+            exRateCells[i].classList.toggle('showHideExRateCells')
+        }
+    })
+
+    toggleDollarButton.addEventListener('click', function() {
+
+        var myExRateCells = document.getElementsByClassName('my-ex-rate-cell');
+
+        for (var i = 0; i < dollarCells.length; i++) {
+            myExRateCells[i].classList.toggle('showHideMyExRateCell')
+        }
+
     })
 </script>

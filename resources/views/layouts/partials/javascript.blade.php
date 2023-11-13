@@ -83,6 +83,24 @@
             dollarCells[i].classList.add('showHideDollarCells')
         }
     }
+
+    var exRateCells = document.getElementsByClassName('ex-rate-cell');
+
+    for (var i = 0; i < dollarCells.length; i++) {
+        if (value === "hide") {
+            exRateCells[i].classList.add('showHideExRateCells')
+        }
+    }
+</script>
+<script>
+    const value1 = localStorage.getItem("showHideDollar");
+    var myExRateCells = document.getElementsByClassName('my-ex-rate-cell');
+
+    for (var i = 0; i < dollarCells.length; i++) {
+        if (value1 === "hide") {
+            myExRateCells[i].classList.add('showHideMyExRateCell')
+        }
+    }
 </script>
 
 

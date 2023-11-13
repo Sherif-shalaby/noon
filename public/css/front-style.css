@@ -583,6 +583,18 @@ body {
     bottom: 0;
 }
 
+.showHideExRateCells {
+    display: none;
+}
+
+.my-ex-rate-cell {
+    display: none;
+}
+
+.showHideMyExRateCell {
+    display: block;
+}
+
 .mdi-circle::before {
     font-size: 8px;
     margin: 2px;
