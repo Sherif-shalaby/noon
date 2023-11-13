@@ -947,11 +947,11 @@ class Create extends Component
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if($this->rows[$index]['prices'][$key]['price_currency']=='dollar'){
             if(!empty($this->rows[$index]['prices'][$key]['dinar_price'])) {
-//                if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
+        //                if(!empty($this->discount_from_original_price) && !empty($this->rows[$index]['prices'][$key]['discount_quantity'])){
                     $actual_price=(float)$this->rows[$index]['prices'][$key]['dinar_price'];
-                    $this->rows[$index]['prices'][$key]['dinar_price']=number_format((float)$this->rows[$index]['prices'][$key]['dinar_price']/(float)$this->exchange_rate,3);
+                    $this->rows[$index]['prices'][$key]['dinar_price']=number_format((float)$this->rows[$index]['prices'][$key]['dinar_price']*(float)$this->exchange_rate,3);
                     // dd($this->rows[$index]['prices'][$key]['dinar_price']);
-//                }
+            //                }
             }
         }
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
