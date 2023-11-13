@@ -204,10 +204,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
-    // ########### Purchase Order ###########
-    Route::resource('purchase_order', PurchaseOrderLineController::class);
-    // ---- required_products ----
-    Route::resource('required-products', RequiredProductController::class);
+
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
@@ -234,7 +231,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
-
+    // ########### Purchase Order ###########
+    Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
+    // ---- required_products ----
+    Route::resource('required-products', RequiredProductController::class);
+    Route::get('purchase-order/edit/{id}', function ($id) {
+        return view('purchase-order.edit', compact('id'));
+    })->name('invoices.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));

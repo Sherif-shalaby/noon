@@ -65,7 +65,6 @@
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.date')</th>
-                                        {{-- <th>@lang('lang.reference')</th> --}}
                                         <th>@lang('lang.created_by')</th>
                                         <th>@lang('lang.customer')</th>
                                         <th>@lang('lang.store')</th>

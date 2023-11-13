@@ -19,6 +19,7 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'edit_purchase_order' => 'Edit purchase order',
     'delete_msg' => 'Deleted Successfully',
     'show_hide_columns' => 'Show/Hide Columns' ,
     'success' => 'Success',

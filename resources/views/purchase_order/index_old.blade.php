@@ -45,19 +45,19 @@
             <tbody>
                 @foreach ($purchase_orders as $purchase_order)
                 <tr>
-                    <td>{{$purchase_order->po_no}}</td>
-                    <td> {{@format_date($purchase_order->transaction_date)}}</td>
+                    <td>{{$purchase_order->transaction->po_no}}</td>
+                    <td> {{@format_date($purchase_order->transaction->transaction_date)}}</td>
 
-                    <td>{{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}</td>
+                    <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}</td>
 
                     <td>
-                        @if(!empty($purchase_order->supplier)){{$purchase_order->supplier->name}}@endif
+                        @if(!empty($purchase_order->transaction->supplier)){{$purchase_order->transaction->supplier->name}}@endif
                     </td>
                     <td>
-                        {{@num_format($purchase_order->final_total)}}
+                        {{@num_format($purchase_order->transaction->final_total)}}
                     </td>
                     <td>
-                        {{ $purchase_order->status }}
+                        {{ $purchase_order->transaction->status }}
                     </td>
                     {{-- =========================== Actions =========================== --}}
                     <td>
@@ -79,12 +79,10 @@
                                 {{-- @endcan
                                 @can('purchase_order.purchase_order.create_and_edit') --}}
                                 <li>
-                                    {{-- <a  href="{{route('purchase_order.edit', $purchase_order->id)}}" style="color:#000;">
+                                    {{--  href="{{action('PurchaseOrderController@edit', $purchase_order->id)}}" --}}
+                                    <a  href="#" style="color:#000;">
                                         <i class="dripicons-document-edit btn"></i>@lang('lang.edit')
-                                    </a> --}}
-                                    <a href="{{route('purchase_order.edit', $purchase_order->id)}}" style="color:#000;" class="btn">
-                                        <i class="fa fa-edit"></i>
-                                         @lang('lang.edit') </a>
+                                    </a>
                                 </li>
                                 <li class="divider"></li>
                                 {{-- @endcan

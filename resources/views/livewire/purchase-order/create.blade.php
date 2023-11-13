@@ -36,7 +36,8 @@
                                             @lang('lang.store'):<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="store_id" id="Client_Select" required >
+                                            <select class="form-control client"  wire:change="updateCurrentStock" wire:model="store_id"
+                                                    id="Client_Select" required >
                                                 <option  value="" readonly selected> {{ __('lang.please_select') }} </option>
                                                 @foreach ($stores as $store)
                                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
@@ -75,24 +76,57 @@
                                 </div>
                             </div>
                             <br><br>
-                            {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
+                            {{-- ++++++++++++++++++++++ search inputFields ++++++++++++++++++++++ --}}
                             <div class="row">
-                                <div class="col-md-8 m-t-15 offset-md-2">
+                                {{-- ++++++ "البحث "برمز المنتج ++++++ --}}
+                                <div class="col-md-3 m-t-15">
                                     <div class="search-box input-group">
-                                        {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
-                                        <button type="button" class="btn btn-secondary" id="search_button"><i
-                                                class="fa fa-search"></i>
-                                        </button>
-                                        <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
-                                            placeholder="@lang('lang.enter_product_name_to_print_labels')"
-                                            class="form-control" autocomplete="off">
-                                        {{-- ++++++++++ search_result  ++++++++++ --}}
-                                        @if(!empty($search_result))
+                                        <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.200ms="search_by_product_symbol"
+                                               placeholder="@lang('lang.enter_product_symbol')"
+                                               class="form-control" autocomplete="off">
+
+                                        @if(!empty($search_result) && !empty($search_by_product_symbol))
                                             <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                                 @foreach($search_result as $product)
                                                     <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                                         <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                            <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png" width="50px" height="50px">
+                                                            @if ($product->image)
+                                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                     alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                                            @else
+                                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                                     class="img-thumbnail" width="100px">
+                                                            @endif
+                                                            {{$product->product_symbol ?? ''}} - {{$product->name}}
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    </div>
+                                </div>
+                                {{-- ++++++ "البحث "باسم المنتج" و "الباركود ++++++ --}}
+                                <div class="col-md-7 m-t-15">
+                                    <div class="search-box input-group">
+                                        <button type="button" class="btn btn-secondary" id="search_button"><i
+                                                class="fa fa-search"></i>
+                                        </button>
+                                        <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
+                                               placeholder="@lang('lang.enter_product_name_to_print_labels')"
+                                               class="form-control" autocomplete="off">
+
+                                        @if(!empty($search_result) && !empty($searchProduct))
+                                            <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                                                @foreach($search_result as $product)
+                                                    <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
+                                                        <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                                            @if ($product->image)
+                                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                                                     alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                                            @else
+                                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
+                                                                     class="img-thumbnail" width="100px">
+                                                            @endif
                                                             {{$product->sku ?? ''}} - {{$product->name}}
                                                         </div>
                                                     </li>
@@ -100,14 +134,13 @@
                                             </ul>
                                         @endif
                                     </div>
-
                                 </div>
                             </div>
                             <br>
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row">
                                 <div class="col-md-3 border border-1 mr-1 p-0">
-                                    {{-- +++++++++++++++++++++ filter : الموردين ++++++++++++++++++++++ --}}
+                                    {{-- ============= filter : الموردين ============= --}}
                                     <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
                                         <div class="form-group">
                                             {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
@@ -122,7 +155,7 @@
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    {{-- +++++++++++++++++++++ filter : العلامة التجارية ++++++++++++++++++++++ --}}
+                                    {{-- ============= filter : العلامة التجارية ============= --}}
                                     <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
                                         <div class="form-group">
                                             {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
@@ -134,7 +167,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    {{-- +++++++++++++++++++++ filter : الأقسام الرئيسيه ++++++++++++++++++++++ --}}
+                                    {{-- ============= filter : الأقسام الرئيسيه ============= --}}
                                     <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
                                         الأقسام الرئيسيه
                                         <div for="" class="d-flex align-items-center text-nowrap gap-1">
@@ -208,7 +241,7 @@
                                     </table>
                                 </div>
                             </div>
-                            {{-- ++++++++ total_quantity ++++++++++  --}}
+                            {{-- ++++++++++++++++++++++ total_quantity ++++++++++++++++++++++ --}}
                             <div class="col-md-12 text-center mt-1 ">
                                 <h4>@lang('lang.items_count'):
                                     <span class="items_count_span" style="margin-right: 15px;">{{!empty($items)? count($items) : 0}}</span>
@@ -217,7 +250,7 @@
                                 </h4>
                             </div>
                             <br>
-                            {{-- ++++++++ total ++++++++++  --}}
+                            {{-- ++++++++++++++++++++++ total ++++++++++++++++++++++ --}}
                             <div class="col-md-12">
                                 <div class="col-md-3 offset-md-8 text-right">
                                     <h3> @lang('lang.total') :
