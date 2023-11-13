@@ -38,29 +38,29 @@
                     <th>@lang('lang.supplier')</th>
                     <th class="sum">@lang('lang.value')</th>
                     <th>@lang('lang.status')</th>
-                    {{-- <th class="notexport">@lang('lang.action')</th> --}}
+                    <th class="notexport">@lang('lang.action')</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($purchase_orders as $purchase_order)
+                @foreach ($purchase_order_transactions as $purchase_order_transaction)
                 <tr>
-                    <td>{{$purchase_order->transaction->po_no}}</td>
-                    <td> {{@format_date($purchase_order->transaction->transaction_date)}}</td>
+                    <td>{{$purchase_order_transaction->po_no}}</td>
+                    <td> {{@format_date($purchase_order_transaction->transaction_date)}}</td>
 
-                    <td>{{ App\Models\User::where('id', $purchase_order->transaction->created_by)->first()->name }}</td>
+                    <td>{{ App\Models\User::where('id', $purchase_order_transaction->created_by)->first()->name }}</td>
 
                     <td>
-                        @if(!empty($purchase_order->transaction->supplier)){{$purchase_order->transaction->supplier->name}}@endif
+                        @if(!empty($purchase_order_transaction->supplier)){{$purchase_order_transaction->supplier->name}}@endif
                     </td>
                     <td>
-                        {{@num_format($purchase_order->transaction->final_total)}}
+                        {{@num_format($purchase_order_transaction->final_total)}}
                     </td>
                     <td>
-                        {{ $purchase_order->transaction->status }}
+                        {{ $purchase_order_transaction->status }}
                     </td>
 
-                    {{-- <td>
+                    <td>
 
                         <div class="btn-group">
                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -69,38 +69,31 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                @can('purchase_order.purchase_order.view')
+                                {{-- @can('purchase_order.purchase_order.view') --}}
                                 <li>
-                                    <a href="{{action('PurchaseOrderController@show', $purchase_order->id)}}?print=true" target="_blank"
-                                        class=""><i class="dripicons-print btn"></i> @lang('lang.print')</a>
-                                </li>
-                                <li class="divider"></li>
-                                @endcan
-                                @can('purchase_order.purchase_order.view')
-                                <li>
-                                    <a href="{{action('PurchaseOrderController@show', $purchase_order->id)}}" target="_blank"
+                                    <a href="{{ route('purchase_order.show', $purchase_order_transaction->id)}}" target="_blank" style="color:#000;"
                                         class=""><i class="fa fa-eye btn"></i> @lang('lang.view')</a>
                                 </li>
-                                <li class="divider"></li>
-                                @endcan
-                                @can('purchase_order.purchase_order.create_and_edit')
-                                <li>
+                                {{-- <li class="divider"></li> --}}
+                                {{-- @endcan --}}
+                                {{-- @can('purchase_order.purchase_order.create_and_edit') --}}
+                                {{-- <li>
                                     <a href="{{action('PurchaseOrderController@edit', $purchase_order->id)}}"><i
                                             class="dripicons-document-edit btn"></i>@lang('lang.edit')</a>
-                                </li>
-                                <li class="divider"></li>
-                                @endcan
-                                @can('purchase_order.purchase_order.delete')
-                                <li>
+                                </li> --}}
+                                {{-- <li class="divider"></li> --}}
+                                {{-- @endcan --}}
+                                {{-- @can('purchase_order.purchase_order.delete') --}}
+                                {{-- <li>
                                     <a data-href="{{action('PurchaseOrderController@destroy', $purchase_order->id)}}"
                                         data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
                                         class="btn text-red delete_item"><i class="fa fa-trash"></i>
                                         @lang('lang.delete')</a>
-                                </li>
-                                @endcan
+                                </li> --}}
+                                {{-- @endcan --}}
                             </ul>
                         </div>
-                    </td> --}}
+                    </td>
                 </tr>
 
                 @endforeach

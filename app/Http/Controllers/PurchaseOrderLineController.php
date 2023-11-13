@@ -48,8 +48,8 @@ class PurchaseOrderLineController extends Controller
     /* +++++++++++++++ index() +++++++++++++++ */
     public function index()
     {
-        $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->orderBy('created_at','desc')->get();
-        return view('purchase_order.index',compact('purchase_orders'));
+       $purchase_order_transactions =  PurchaseOrderTransaction::where('status', '!=', 'draft')->get();
+        return view('purchase_order.index',compact('purchase_order_transactions'));
     }
     /* +++++++++++++++ create() +++++++++++++++ */
     public function create()
@@ -155,19 +155,17 @@ class PurchaseOrderLineController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
-
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PurchaseOrderLine $purchaseOrderLine)
+    /* ++++++++++++++++++++++++++++++ show() ++++++++++++++++++++++++++ */
+    public function show($id)
     {
-        //
+        // dd($id);
+        $purchase_order_transaction = PurchaseOrderTransaction::findOrFail($id);
+        $supplier = Supplier::find($purchase_order_transaction->supplier_id);
+
+        return view('purchase_order.show')->with(compact(
+            'purchase_order_transaction',
+            'supplier'
+        ));
     }
 
     /**
