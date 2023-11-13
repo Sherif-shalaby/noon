@@ -24,7 +24,8 @@ class DeliveryController extends Controller
     public function index()
     {
         $delivery_men  = Employee::whereHas('job_type', function ($query) {
-            $query->where('title', 'Deliveryman');
+            $query->where('title', 'Deliveryman')
+            ->orWhere('title', 'Representative');
         })->get();
         return view('delivery.index',compact('delivery_men'));
     }
