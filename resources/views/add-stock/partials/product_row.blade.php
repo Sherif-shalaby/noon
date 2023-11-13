@@ -9,6 +9,7 @@
     </td>
     <td title="{{__('lang.sku')}}">
 {{--        @if($product['show_product_data'])--}}
+
             {{ $product['product']['sku'] }}
 {{--        @endif--}}
     </td>
@@ -25,12 +26,15 @@
                 <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
                     <option value="" selected>{{__('lang.please_select')}}</option>
                     @foreach($product['variations'] as $variant)
-                        <option value="{{$variant['id']}}">{{$variant['unit']['name']}}</option>
+                        @if(!empty($variant['unit_id']))
+                            <option value="{{$variant['id']}}">{{$variant['unit']['name'] ?? ''}}</option>
+                        @endif
                     @endforeach
                 </select>
-                <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
+                {{-- {{dd($product['variations'])}} --}}
+                {{-- <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
                     <i class="fa fa-plus"></i>
-                </button>
+                </button> --}}
             </div>
         @else
             <span>@lang('lang.no_units')</span>
@@ -39,12 +43,12 @@
         <span class="error text-danger">{{ $message }}</span>
         @enderror
     </td>
-    <td title="{{__('lang.fill')}}">
+{{--    <td title="{{__('lang.fill')}}">--}}
 
-    </td>
-    <td title="{{__('lang.basic_unit')}}">
-        <span>{{$product['unit']}}</span>
-    </td>
+{{--    </td>--}}
+{{--    <td title="{{__('lang.basic_unit')}}">--}}
+{{--        <span>{{$product['unit']}}</span>--}}
+{{--    </td>--}}
     <td title="{{__('lang.to_get_sell_price')}}">
         <div class="d-flex justify-content-between">
             <select class="custom-select " style="width:65px;font-size:10px;height:38px;" wire:model="items.{{ $index }}.fill_type" wire:change="changeFilling({{$index}})">
@@ -179,6 +183,11 @@
              wire:click="delete_product({{ $index }})">
             <i class="fa fa-trash"></i>
         </div>
+    </td>
+    <td>
+        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},'unit',{{$index}},1)" type="button">
+            <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
+        </button>
     </td>
 </tr>
 

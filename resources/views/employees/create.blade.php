@@ -93,11 +93,13 @@
                                     {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                     <div class="row">
                                         {{-- ============= name ============= --}}
+                                        {{-- ============= name ============= --}}
                                         <div class="col-sm-6">
                                             <label for="fname">@lang('lang.name'):*</label>
                                             <input type="text" class="form-control" name="name" id="name" required
                                                    placeholder="Name">
                                         </div>
+                                        {{-- ============= email ============= --}}
                                         {{-- ============= email ============= --}}
                                         <div class="col-sm-6">
                                             <label for="email">@lang('lang.email'):*
@@ -108,11 +110,14 @@
                                     </div>
                                     <div class="row mt-4">
                                         {{-- ============= password ============= --}}
+                                        {{-- ============= password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
                                                     placeholder="Create New Password">
+                                                    placeholder="Create New Password">
                                         </div>
+                                        {{-- ============= confirm_password ============= --}}
                                         {{-- ============= confirm_password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
@@ -139,14 +144,15 @@
                                     </div>
 
                                     <div class="row mt-4">
-
+                                        {{-- ============= job_type ============= --}}
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
                                             {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
                                         </div>
+                                        {{-- ============= phone_number ============= --}}
                                         <div class="col-sm-6">
                                             <label for="mobile">@lang('lang.phone_number'):*</label>
-                                            <input type="mobile" class="form-control" name="mobile" id="mobile" required
+                                            <input type="mobile" class="form-control" name="mobile" id="mobile"
                                                    placeholder="@lang('lang.mobile')">
                                         </div>
 

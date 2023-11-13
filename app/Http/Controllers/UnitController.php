@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UnitRequest;
 use App\Http\Requests\UnitupdateRequest;
+use App\Models\Product;
+use App\Models\ProductStore;
 use App\Models\Unit;
+use App\Models\Variation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -112,5 +115,43 @@ class UnitController extends Controller
     }
     public function getUnitData($id){
         return Unit::Find($id);
+    }
+    public function getUnitsDropdown(Request $request){
+        // return $request->all();
+        $dataArray = json_decode($request->selectBoxValues, true);
+        $units = Unit::whereIn('id',$dataArray)->orderBy('name', 'asc')->pluck('name', 'id');
+        $units_dp = $this->Util->createDropdownHtml($units, __('lang.please_select'));
+        return $units_dp;
+    }
+    public function getUnitStore(Request $request){
+        $variation=Variation::find($request->variation_id);
+        $product=Product::find($request->product_id);
+        foreach($product->product_stores as $store){
+            $unit=!empty($store->variations)?$store->variations:[];
+        }
+        $amount=0;
+        if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id)){
+            return ['name'=>$variation->unit->name,'store'=>$product->product_stores->sum('quantity_available')];
+        }else if(isset($unit->unit_id) && ($unit->unit_id == $variation->basic_unit_id)){
+            return ['name'=>$variation->unit->name,'store'=>$product->product_stores->sum('quantity_available')/ $variation->equal];
+        }else if(isset($unit->basic_unit_id) && ($unit->basic_unit_id == $variation->unit_id)){
+            return ['name'=>$variation->unit->name,'store'=>number_format( $unit->equal * $product->product_stores->sum('quantity_available'),3)];
+        }else{
+            $amount=1;
+            foreach($product->variations as $var){
+                    if($var->unit_id==$unit->unit_id){
+                        continue;
+                    }else{
+                        if(isset($var->equal)){
+                            $amount *= $var->equal;
+                        }
+                        if($var->unit_id == $variation->unit_id){
+                            break;
+                        }
+                    }
+            }
+            return ['name'=>$variation->unit->name,'store'=>number_format( $product->product_stores->sum('quantity_available') / $amount,3)];
+
+        }
     }
 }

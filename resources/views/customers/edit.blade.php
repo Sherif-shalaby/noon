@@ -28,7 +28,7 @@
                 <div class="container-fluid">
                     <div class="row pt-4">
                         {{-- ++++++++++++++++++ customer_type ++++++++++++++++ --}}
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
                                 {!! Form::select('customer_type_id', $customer_types, $customer->customer_type_id, [
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         {{-- ++++++++++++++++++ name ++++++++++++++++ --}}
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                             {!! Form::label('name', __('lang.name')) !!}
                             {!! Form::text('name',  $customer->name, [
@@ -69,20 +69,6 @@
                                         <tr>
                                             <td class="col-md-12 p-0">
                                                 <div class="select_body d-flex justify-content-between align-items-center" >
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        placeholder="@lang('lang.email')"
-                                                        name="email[]"
-                                                        value="{{ old('email') }}" required >
-                                                    <td  class="col-md-6">
-                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                        <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_email" type="button">
-                                                            <i class="fa fa-plus"></i>
-                                                        </a>
-                                                    </td>
-                                                    @error('email')
-                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                    @enderror
                                                     @php
                                                         $emailArray = explode(',', $customer->email);
                                                         // Remove square brackets from each element in the emailArray
@@ -92,27 +78,130 @@
                                                         }
                                                     @endphp
                                                     {{-- Iterate over the email array elements --}}
-                                                    @foreach ($emailArray as $email)
-                                                        <tr>
-                                                            <td>
-                                                                <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                                                        value="{{ $email }}" required >
-                                                                        @error('email')
-                                                                            <div class="alert alert-danger">{{ $message }}</div>
-                                                                        @enderror
+                                                    @foreach ($emailArray as $key => $email)
+                                                        @if($key == 0)
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   placeholder="@lang('lang.email')"
+                                                                   name="email[]"
+                                                                   value="{{ $email }}" required >
+                                                            <td  class="col-md-6">
+                                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                                <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_email" type="button">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </a>
                                                             </td>
-                                                            <td>
-                                                                <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tr>
+                                                            @error('email')
+                                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        @else
+                                                            <tr>
+                                                                <td>
+                                                                    <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                                                                            value="{{ $email }}" required >
+                                                                    @error('email')
+                                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                                    @enderror
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
+                                                    @endforeach
                                                 </div>
                                             </td>
-
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-md-4 mb-3 ">
+                            <div class="form-group">
+                                <label for="min_amount_in_dollar">@lang('lang.min_amount_in_dollar')</label>
+                                <input type="number" class="form-control" value="{{$customer->min_amount_in_dollar}}" name="min_amount_in_dollar" id="min_amount_in_dollar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-md-4 mb-3 ">
+                            <div class="form-group">
+                                <label for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
+                                <input type="number" class="form-control" value="{{$customer->max_amount_in_dollar}}" name="max_amount_in_dollar" id="max_amount_in_dollar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="col-md-4 mb-3 ">
+                            <div class="form-group">
+                                <label for="min_amount_in_dinar">@lang('lang.min_amount_in_dinar')</label>
+                                <input type="number" class="form-control" value="{{ $customer->min_amount_in_dinar }}" name="min_amount_in_dinar" id="min_amount_in_dinar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="col-md-4 mb-3 ">
+                            <div class="form-group">
+                                <label for="max_amount_in_dinar">@lang('lang.max_amount_in_dinar')</label>
+                                <input type="number" class="form-control" value="{{$customer->max_amount_in_dinar}}" name="max_amount_in_dinar" id="max_amount_in_dinar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="balance_in_dollar">@lang('lang.balance_in_dollar')</label>
+                                <input type="text" class="form-control" value="{{ $customer->balance_in_dollar }}" name="balance_in_dollar" id="balance_in_dollar" />
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
+                                <input type="text" class="form-control" value="{{ $customer->balance_in_dinar }}" name="balance_in_dinar" id="balance_in_dinar" />
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <label for="country-dd">@lang('lang.country')</label>
+                            <select id="country-dd" name="country" class="form-control" disabled>
+                                <option value="{{ $countryId }}">
+                                    {{ $countryName }}
+                                </option>
+                            </select>
+                        </div>
+                        {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+                        @php
+                            $states = \App\Models\State::where('country_id', $countryId)->pluck('name','id');
+                        @endphp
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="state-dd">@lang('lang.state')</label>
+                                {!! Form::select('state_id', $states, 1730, [
+                                'class' => 'form-control select2', 'id' =>'state-dd',
+                                'placeholder' => __('lang.please_select')]) !!}
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
+                        @php
+                            if(!empty($customer->state_id)){
+                                $cities = \App\Models\City::where('state_id', $customer->state_id)->get(['id','name']);
+//                                dd($cities,$customer->state_id );
+                            }
+                        @endphp
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="city-dd">@lang('lang.city')</label>
+                                <select id="city-dd" name="city_id"  class="form-control select2" >
+                                    <option  @if(empty($customer->city_id)) selected @endif> @lang('lang.please_select')</option>
+                                    @if(!empty($cities))
+                                        @foreach($cities as $city)
+                                            <option value="{{ $city->id }}"
+                                            @if(!empty($customer->city_id))
+                                                {{$customer->city_id == $city->id ? 'selected' : ''}}
+                                            @endif>
+                                            {{ $city->name }} </option>
+                                        @endforeach
+                                    @endif
+                                </select>
+
                             </div>
                         </div>
                         {{-- +++++++++++++++++++++++++++++++ phone array ++++++++++++++++++++++++ --}}
@@ -132,20 +221,6 @@
                                         <tr>
                                             <td class="col-md-12 p-0">
                                                 <div class="select_body d-flex justify-content-between align-items-center" >
-                                                    <input type="text"
-                                                        class="form-control"
-                                                        placeholder="@lang('lang.phone')"
-                                                        name="phone[]"
-                                                        value="{{ old('phone') }}" required >
-                                                    <td class="col-md-6">
-                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                        <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_phone" type="button">
-                                                            <i class="fa fa-plus"></i>
-                                                        </a>
-                                                    </td>
-                                                    @error('phone')
-                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                    @enderror
                                                     @php
                                                         $phoneArray = explode(',', $customer->phone);
                                                         // Remove square brackets from each element in the emailArray
@@ -155,19 +230,36 @@
                                                         }
                                                     @endphp
                                                     {{-- Iterate over the email array elements --}}
-                                                    @foreach ($phoneArray as $phone)
-                                                        <tr>
-                                                            <td>
-                                                                <input  type="text" class="form-control" placeholder="@lang('lang.phone')" name="phone[]"
-                                                                    value="{{ $phone }}" required >
+                                                    @foreach ($phoneArray as $index => $phone)
+                                                        @if($index == 0)
+                                                            <input type="text"
+                                                                   class="form-control"
+                                                                   placeholder="@lang('lang.phone')"
+                                                                   name="phone[]"
+                                                                   value="{{ $phone }}" required >
+                                                            <td class="col-md-6">
+                                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                                <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_phone" type="button">
+                                                                    <i class="fa fa-plus"></i>
+                                                                </a>
+                                                            </td>
+                                                            @error('phone')
+                                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        @else
+                                                            <tr>
+                                                                <td>
+                                                                    <input  type="text" class="form-control" placeholder="@lang('lang.phone')" name="phone[]"
+                                                                            value="{{ $phone }}" required >
                                                                     @error('phone')
-                                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                                    <div class="alert alert-danger">{{ $message }}</div>
                                                                     @enderror
-                                                            </td>
-                                                            <td>
-                                                                <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_phone">-</a>
-                                                            </td>
-                                                        </tr>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_phone">-</a>
+                                                                </td>
+                                                            </tr>
+                                                        @endif
                                                     @endforeach
                                                 </div>
                                             </td>
@@ -186,6 +278,30 @@
                                  @error('address')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                  @enderror
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {!! Form::label('notes', __('lang.notes')) !!}
+                                {!! Form::textarea('notes', $customer->notes, [
+                                    'class' => 'form-control',
+                                ]) !!}
+                                @error('address')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
+                        </div>
+                        {{-- ++++++++++++ images ++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>@lang('lang.upload_image')</label>
+                                <input class="form-control img" name="image" type="file" accept="image/*" id="image">
+                                {{-- Crop Image : cropper.js --}}
+                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
                         </div>
                     </div>
@@ -231,51 +347,90 @@
     </div>
 @endsection
 @push('js')
-<script src="{{asset('js/product/customer.js')}}" ></script>
-<script>
-    // ============================== Email Repeater ==============================
-    // +++++++++++++ Add New Row in email +++++++++++++
-    $('.email_tbody').on('click','.addRow_email', function(){
-        console.log('new Email inputField was added');
-        var tr =`<tr>
+    <script src="{{asset('js/product/customer.js')}}" ></script>
+    {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
+    <script>
+        $('.phone_tbody').on('click','.addRow', function(){
+            console.log('new phone inputField was added');
+            var tr = `<tr>
                     <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
-                                @error('email')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
+                        <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
                     </td>
                     <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
-                    </td>
-                </tr>`;
-        $('.email_tbody').append(tr);
-    });
-    // +++++++++++++ Delete Row in email +++++++++++++
-    $('.email_tbody').on('click','.deleteRow_email',function(){
-        $(this).parent().parent().remove();
-    });
-    // ================================= phone Repeater =================================
-    $('.phone_tbody').on('click','.addRow_phone', function(){
-        console.log('new phone_number inputField was added');
-        var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.phone')" name="phone[]"
-                                value="{{ old('phone') }}" required >
-                                @error('phone')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_phone">-</a>
+                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
                     </td>
 
                 </td>
             </tr>`;
-        $('.phone_tbody').append(tr);
-    } );
-    $('.phone_tbody').on('click','.deleteRow_phone',function(){
-        $(this).parent().parent().remove();
-    });
-</script>
+            $('.phone_tbody').append(tr);
+        } );
+        $('.phone_tbody').on('click','.deleteRow',function(){
+            $(this).parent().parent().remove();
+        });
+        // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
+        $('.email_tbody').on('click','.addRow_email', function(){
+            console.log('new Email inputField was added');
+            var tr = `<tr>
+                    <td>
+                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                                value="{{ old('email') }}" required >
+                                @error('email')
+            <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+            </td>
+            <td>
+                <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
+            </td>
+
+        </td>
+    </tr>`;
+            $('.email_tbody').append(tr);
+        } );
+        $('.email_tbody').on('click','.deleteRow_email',function(){
+            $(this).parent().parent().remove();
+        });
+        // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
+        // ================ countries selectbox ================
+        // $('#country-dd').on('click',function(event) {
+        //     var idCountry = this.value;
+        //     // console.log(idCountry);
+        //     $('#state-dd').html('');
+        //     $.ajax({
+        //         url: "/api/fetch-state",
+        //         type: 'POST',
+        //         dataType: 'json',
+        //         data: { country_id : idCountry , _token : "{{ csrf_token() }}" } ,
+        //         success:function(response)
+        //         {
+        //             $('#state-dd').html('<option value="">Select State</option>');
+        //             $.each(response.states,function(index, val)
+        //             {
+        //                 $('#state-dd').append('<option value="'+val.id+'"> '+val.name+' </option>')
+        //             });
+        //             $('#city-dd').html('<option value="">Select City</option>');
+        //         }
+        //     })
+        // });
+
+        // ================ state selectbox ================
+        $('#state-dd').change(function(event) {
+            var idState = this.value;
+            $('#city-dd').html('');
+            $.ajax({
+                url: "/api/fetch-cities",
+                type: 'POST',
+                dataType: 'json',
+                data: {state_id: idState,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    $('#city-dd').html('<option value="">Select State</option>');
+                    console.log(response);
+                    $.each(response.cities,function(index, val)
+                    {
+                        $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+    </script>
 @endpush

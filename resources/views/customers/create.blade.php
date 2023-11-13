@@ -42,18 +42,12 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . ':*') !!}
-                                {{-- {!! Form::select('customer_type_id', $customer_types, null, [
-                                    'class' => 'form-control select2',
-                                    'required',
-                                    'placeholder' => __('lang.please_select'),
-                                ]) !!} --}}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('customer_type_id', $customer_types, null, [
                                         'class' => 'form-control select2',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                     ]) !!}
-                                    {{-- "add new customer_type" button --}}
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCustomerTypesModal">
                                        <i class="fas fa-plus"></i>
                                     </button>
@@ -96,7 +90,7 @@
                                                         class="form-control"
                                                         placeholder="@lang('lang.email')"
                                                         name="email[]"
-                                                        value="{{ old('email') }}" required >
+                                                        value="" required >
                                                     @error('email')
                                                     <div class="alert alert-danger">{{ $message }}</div>
                                                     @enderror
@@ -253,8 +247,6 @@
                                 @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
                             </div>
                         </div>
-
-
                     </div>
                     <div class="row pt-4 pb-5">
                         <div class="col-md-12">
@@ -268,8 +260,10 @@
                                             <th style="width: 20%;">@lang('lang.important_date')</th>
                                             <th style="width: 20%;">@lang('lang.date')</th>
                                             <th style="width: 20%;">@lang('lang.notify_before_days')</th>
-                                            <th style="width: 10%;"><button type="button"
-                                                    class="add_date btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                                            <th style="width: 10%;">
+                                                <button type="button" class="add_date btn btn-success btn-xs">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
                                             </th>
                                         </tr>
                                     </thead>
@@ -325,7 +319,7 @@
         var tr = `<tr>
                     <td>
                         <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
+                                value="" required >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
@@ -341,29 +335,7 @@
     $('.email_tbody').on('click','.deleteRow_email',function(){
         $(this).parent().parent().remove();
     });
-    // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
-    // ================ countries selectbox ================
-    // $('#country-dd').on('click',function(event) {
-    //     var idCountry = this.value;
-    //     // console.log(idCountry);
-    //     $('#state-dd').html('');
-    //     $.ajax({
-    //         url: "/api/fetch-state",
-    //         type: 'POST',
-    //         dataType: 'json',
-    //         data: { country_id : idCountry , _token : "{{ csrf_token() }}" } ,
-    //         success:function(response)
-    //         {
-    //             $('#state-dd').html('<option value="">Select State</option>');
-    //             $.each(response.states,function(index, val)
-    //             {
-    //                 $('#state-dd').append('<option value="'+val.id+'"> '+val.name+' </option>')
-    //             });
-    //             $('#city-dd').html('<option value="">Select City</option>');
-    //         }
-    //     })
-    // });
-
+    // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
     // ================ state selectbox ================
     $('#state-dd').change(function(event) {
         var idState = this.value;

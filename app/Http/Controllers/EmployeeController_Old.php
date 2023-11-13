@@ -208,14 +208,14 @@ class EmployeeController extends Controller
         }
         $employee->save();
         // ++++++++++++++ store "employee_id" and "product_ids" in "employee_product" table ++++++++++++++
-            for($i = 0; $i < count($request->input('ids')); $i++) {
-                $product = Product::find($request->input('ids')[$i]);
-                if($product)
-                {
-                    // Assuming $employee is already defined or fetched from somewhere
-                    $employee->products()->attach($product->id);
-                }
+        for($i = 0; $i < count($request->input('ids')); $i++) {
+            $product = Product::find($request->input('ids')[$i]);
+            if($product)
+            {
+                // Assuming $employee is already defined or fetched from somewhere
+                $employee->products()->attach($product->id);
             }
+        }
         // }
         $employee->stores()->sync($request->input('store_id'));
         //   if ($request->hasFile('upload_files')) {

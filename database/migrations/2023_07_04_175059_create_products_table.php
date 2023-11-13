@@ -26,11 +26,6 @@ return new class extends Migration
 			// $table->unsignedBigInteger('unit_id')->nullable();
 			$table->string('details')->nullable();
 			$table->text('details_translations')->nullable();
-			$table->decimal('height', 10,2)->nullable();
-			$table->decimal('length', 10,2)->nullable();
-			$table->decimal('width', 10,2)->nullable();
-			$table->decimal('size', 10,2)->nullable()->default(0);
-			$table->decimal('weight', 10,2)->nullable();
 			$table->boolean('active')->default(1);
 			$table->integer('brand_id')->unsigned()->nullable();
 			$table->foreignId('created_by')->nullable()->constrained('users', 'id')->cascadeOnDelete();

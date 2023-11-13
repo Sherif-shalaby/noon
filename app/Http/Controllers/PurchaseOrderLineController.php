@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use App\Utils\StockTransactionUtil;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Employee;
 use App\Models\PurchaseOrderTransaction;
 use App\Notifications\AddPurchaseOrderNotification;
 use Illuminate\Support\Facades\Notification;
@@ -46,8 +48,7 @@ class PurchaseOrderLineController extends Controller
     /* +++++++++++++++ index() +++++++++++++++ */
     public function index()
     {
-        $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->get();
-        // return $purchase_orders;
+        $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->orderBy('created_at','desc')->get();
         return view('purchase_order.index',compact('purchase_orders'));
     }
     /* +++++++++++++++ create() +++++++++++++++ */
@@ -57,56 +58,24 @@ class PurchaseOrderLineController extends Controller
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
         $stores = Store::getDropdown();
         $po_no = $this->productUtil->getNumberByType('purchase_order');
+        $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+        $brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         return view('purchase_order.create')->with(compact(
             'suppliers',
             'stores',
             'po_no',
-            'products'
+            'products',
+            'brands','brand_id'
         ));
     }
+    /* +++++++++++++++ deleteAll() +++++++++++++++ */
     public function deleteAll(Request $request)
     {
         $ids = $request->ids;
         $products = Product::with('stock_lines')->whereIn('id', $ids)->get();
         return $products;
     }
-    // ++++++++++++++++++++++++++++++ Ajax Search : get_products() ++++++++++++++++++++++++++++++++
-    // public function search(Request $request)
-    // {
-    //     // return $request;
 
-    //     // if($request->ajax())
-    //     // {
-    //     //     $data = Product::all();
-    //     //     $output='';
-    //     //     if( count($data) > 0 )
-    //     //     {
-    //     //         $output ='
-    //     //                 <thead>
-    //     //                     <tr>
-    //     //                         <th scope="col">#</th>
-    //     //                         <th scope="col">name</th>
-    //     //                     </tr>
-    //     //                 </thead>
-    //     //                 <tbody>';
-    //     //                 foreach($data as $row){
-    //     //                     $output .='
-    //     //                     <tr>
-    //     //                     <th scope="row">'.$row->id.'</th>
-    //     //                     <td>'.$row->name.'</td>
-    //     //                     </tr>
-    //     //                     ';
-    //     //                 }
-    //     //         $output .= '
-    //     //             </tbody>';
-    //     //     }
-    //     //     else
-    //     //     {
-    //     //         $output .='No results';
-    //     //     }
-    //     //     return $output;
-    //     // }
-    // }
     /* ++++++++++++++++++++++++++++++ store() ++++++++++++++++++++++++++ */
     public function store(Request $request)
     {
@@ -121,7 +90,7 @@ class PurchaseOrderLineController extends Controller
             $purchaseOrderTransaction->grand_total = 0; // You'll update this after saving the transaction
             $purchaseOrderTransaction->final_total = $request['total_subtotal'];
             $purchaseOrderTransaction->po_no = $request['po_no'];
-            $purchaseOrderTransaction->created_by = auth()->user()->id;
+            // $purchaseOrderTransaction->created_by = auth()->user()->id;
             $purchaseOrderTransaction->order_date = now();
             $purchaseOrderTransaction->transaction_date = now();
             // Save the purchase order transaction to the database

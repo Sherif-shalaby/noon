@@ -188,7 +188,7 @@
         <!-- Start Rightbar -->
         <div class="rightbar">
             <!-- Start Topbar Mobile -->
-            <div class="topbar-mobile">
+            <div class="topbar-mobile no-print">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="mobile-logobar">
@@ -266,7 +266,8 @@
                     }
                 });
         });
-        
+
+
     </script>
 {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
@@ -281,7 +282,7 @@
         // if(data.product_id){
         // }
         if (data) {
-           
+
             let badge_count = parseInt($('.online-balance-badge').text()) + 1;
             alert(badge_count)
             $('.online-balance-badge').text(badge_count);

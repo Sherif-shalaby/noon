@@ -1,7 +1,5 @@
 <div class="row mb-2">
-    <div class="col-xl-2 ">
-    </div>
-    <div class="col-xl-7 ">
+    <div class="col-xl-12">
         <div class="row">
             <div class="col-md-3 m-t-15">
                 <div class="search-box input-group">
@@ -10,7 +8,7 @@
                            class="form-control" autocomplete="off">
 
                     @if(!empty($search_by_product_symbol))
-                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important; max-height: 300px !important; border: 1px solid #ccc !important;">
                             @foreach($search_result as $product)
                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
@@ -30,7 +28,7 @@
                     {{--                                    {{$search_result->links()}}--}}
                 </div>
             </div>
-            <div class="col-md-7 m-t-15">
+            <div class="col-md-9 m-t-15">
                 <div class="search-box input-group">
                     <button type="button" class="btn btn-secondary" id="search_button"><i
                             class="fa fa-search"></i>
@@ -40,7 +38,7 @@
                         class="form-control" autocomplete="off">
 
                     @if(!empty($search_result) && !empty($searchProduct))
-                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
+                        <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important; max-height: 300px !important; border: 1px solid #ccc !important;">
                             @foreach($search_result as $product)
                                 <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                     <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">

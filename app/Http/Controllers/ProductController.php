@@ -2,40 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Tax;
-use App\Utils\Util;
-use App\Models\Unit;
-use App\Models\User;
+use App\Http\Requests\ProductRequest;
+use App\Models\AddStockLine;
+use App\Models\Branch;
 use App\Models\Brand;
-use App\Models\Store;
-use App\Models\System;
-use App\Models\Product;
 use App\Models\Category;
 use App\Models\Customer;
-use App\Models\Variation;
-use App\Models\AddStockLine;
 use App\Models\CustomerType;
-use App\Models\ProductPrice;
-use Illuminate\Http\Request;
-use PhpParser\Builder\Class_;
+use App\Models\Product;
+use App\Models\ProductDimension;
 use App\Models\ProductExpiryDamage;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use App\Http\Requests\ProductRequest;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\AddProductNotification;
-use Illuminate\Contracts\Foundation\Application;
+use App\Models\ProductPrice;
 use App\Models\ProductStore;use App\Models\ProductTax;
+use App\Models\Store;
+use App\Models\System;
+use App\Models\Tax;
+use App\Models\Unit;
+use App\Models\User;
+use App\Models\Variation;
+use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
+use PhpParser\Builder\Class_;
+use App\Utils\Util;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     protected $Util;
-
+    protected $transactionUtil;
     /**
      * Constructor
      *
@@ -49,7 +49,7 @@ class ProductController extends Controller
   /**
    * Display a listing of the resource.
    *
-   * @return Response
+   * @return Application|Factory|View
    */
   public function index(Request $request)
   {
@@ -89,8 +89,9 @@ class ProductController extends Controller
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
-      $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-    return view('products.index',compact('products','categories','brands','units','stores','users','subcategories'));
+    $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+
+      return view('products.index',compact('products','categories','brands','units','stores','users','subcategories','branches'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
@@ -111,8 +112,10 @@ class ProductController extends Controller
     $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-    return view('products.create',
-    compact('categories','brands','units','stores',
+      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+
+      return view('products.create',
+    compact('categories','brands','units','stores','branches',
         'product_tax','quick_add','unitArray','subcategories',
         'clear_all_input_form','recent_product'));
   }
@@ -130,11 +133,6 @@ class ProductController extends Controller
         'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-        'height' => $request->height,
-        'length' => $request->length,
-        'width' => $request->width,
-        'size' => $request->size,
-        'weight' => $request->weight,
         'details' => $request->details,
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
@@ -193,6 +191,25 @@ class ProductController extends Controller
         }
     }
 
+
+    if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
+    || $request->size ==(''||0) && $request->weight ==(''||0)) {
+    }else{
+        $product_dimensions=[
+            'product_id'=>$product->id??null,
+            'variation_id'=>Variation::where('product_id',$product->id)->where('unit_id',$request->variation_id)->first()->id??null,
+            'height' => $request->height,
+            'length' => $request->length,
+            'width' => $request->width,
+            'size' => $request->size,
+            'weight' => $request->weight
+        ];
+        ProductDimension::create($product_dimensions);
+
+    }
+
+
+
     $index_prices=[];
     if($request->has('price_category')){
         if(count($request->price_category)>0){
@@ -217,35 +234,24 @@ class ProductController extends Controller
         ProductPrice::create($data_des);
     }
 
+
+
     $output = [
         'success' => true,
         'msg' => __('lang.success')
     ];
      } catch (\Exception $e) {
-            dd($e);
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
             $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
     }
-    // +++++++++++++++ Start : Notification ++++++++++++++++++++++
-    // Fetch the user
-    $users = User::where('id','!=',auth()->user()->id)->get();
-    $product_name = $product->name;
-    // Get the name of the user creating the employee
-    $userCreateEmp = auth()->user()->name;
-    $type = "create_product";
-    // Send notification to All users Except "auth()->user()"
-    foreach ($users as $user)
-    {
-        Notification::send($user, new AddProductNotification($product->id ,$userCreateEmp,$product_name,$type));
-    }
-    // +++++++++++++++ End : Notification ++++++++++++++++++++++
     return redirect()->back()->with('status', $output);
   }
-    public function getPriceCustomerFromType($customer_types)
+  public function getPriceCustomerFromType($customer_types)
     {
+
         $discount_customers = [];
         if (!empty($customer_types)) {
             $customers = Customer::whereIn('customer_type_id', $customer_types)->get();
@@ -253,6 +259,7 @@ class ProductController extends Controller
                 $discount_customers[] = $customer->id;
             }
         }
+
         return $discount_customers;
     }
   public function generateSku($name, $number = 1)
@@ -312,7 +319,10 @@ class ProductController extends Controller
       $customer_types = CustomerType::pluck('name', 'id');
       $product_tax = Tax::all();
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      return view('products.edit',compact('unitArray','categories','brands','units','stores','quick_add','product','customer_types','product_tax','product_tax_id'));
+      $variation_units=Variation::where('product_id',$id)->pluck('unit_id');
+      $basic_units=Unit::whereIn('id',$variation_units)->pluck('name','id');
+      return view('products.edit',compact('unitArray','categories','brands'
+      ,'units','stores','quick_add','product','customer_types','product_tax','product_tax_id','basic_units'));
   }
 
   /**
@@ -324,9 +334,9 @@ class ProductController extends Controller
   public function update($id,Request $request)
   {
     // return $request->all();
-       $request->validate([
-        'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
-       ]);
+    //    $request->validate([
+    //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
+    //    ]);
     try{
       $product_data = [
         'name' => $request->name,
@@ -337,11 +347,11 @@ class ProductController extends Controller
         'subcategory_id3' => $request->subcategory_id3,
         'brand_id' => $request->brand_id,
         'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-        'height' => $request->height,
-        'length' => $request->length,
-        'width' => $request->width,
-        'size' => $request->size,
-        'weight' => $request->weight,
+        // 'height' => $request->height,
+        // 'length' => $request->length,
+        // 'width' => $request->width,
+        // 'size' => $request->size,
+        // 'weight' => $request->weight,
         'details' => $request->details,
         'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
         'active' => !empty($request->active) ? 1 : 0,
@@ -402,6 +412,23 @@ class ProductController extends Controller
         else{
         Variation::create($var_data);
         }
+    }
+
+
+    if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
+    || $request->size ==(''||0) && $request->weight ==(''||0)) {
+        ProductDimension::where('product_id',$product->id)->delete();
+    }else{
+        $product_dimensions=[
+            'product_id'=>$product->id??null,
+            'variation_id'=>Variation::where('product_id',$product->id)->where('unit_id',$request->variation_id)->first()->id??null,
+            'height' => $request->height,
+            'length' => $request->length,
+            'width' => $request->width,
+            'size' => $request->size,
+            'weight' => $request->weight
+        ];
+        ProductDimension::where('product_id',$product->id)->update($product_dimensions);
     }
 
     $output = [

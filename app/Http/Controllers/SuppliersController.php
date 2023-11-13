@@ -37,7 +37,7 @@ class SuppliersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
@@ -49,9 +49,6 @@ class SuppliersController extends Controller
         return view('suppliers.index')->with(compact(
             'suppliers','countryId' , 'countryName'
         ));
-        // return view('suppliers.index',compact(
-        //     'suppliers','countryId' , 'countryName'
-        // ));
     }
     /* ++++++++++++++++++++++++++ create() ++++++++++++++++++++ */
     public function create()
@@ -119,6 +116,7 @@ class SuppliersController extends Controller
         $data['email'] = json_encode($request->email);
 
         $data['created_by'] = Auth::user()->id;
+//        dd($data);
         if ($request->file('image')) {
             $data['image'] = store_file($request->file('image'), 'suppliers');
         }
@@ -186,6 +184,8 @@ class SuppliersController extends Controller
             $data['country'] = $request->country;
             $data['postal_code'] = $request->postal_code;
             $data['exchange_rate'] = $request->exchange_rate;
+            $data['start_date'] = $request->start_date;
+            $data['end_date'] = $request->end_date;
             $data['updated_by'] = Auth::user()->id;
             Supplier::find($id)->update($data);
 

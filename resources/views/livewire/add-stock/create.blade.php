@@ -68,8 +68,9 @@
                                 <div class="col-md-2">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')],$purchase_type ,
-                                    ['class' => 'form-control select2', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),
+                                    ['class' => 'form-control', 'required', 'placeholder' => __('lang.please_select'),
                                      'data-name' => 'purchase_type', 'wire:model' => 'purchase_type']) !!}
+
                                     @error('purchase_type')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
@@ -116,6 +117,24 @@
                                     </div>
                                 @endif
 
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
+                                        {!! Form::text('other_expenses', $other_expenses,
+                                        ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
+                                         'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
+                                        {!! Form::text('other_payments', $other_payments,
+                                        ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
+                                         'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <br>
@@ -192,7 +211,12 @@
                                         <select class="form-control select2" data-name="department_id" wire:model="department_id">
                                             <option  value="" readonly selected >اختر </option>
                                             @foreach ($departments as $depart)
-                                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                                @if ($depart->parent_id === null)
+                                                    <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                                    @if ($depart->subCategories->count() > 0)
+                                                        @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-'])
+                                                    @endif
+                                                @endif
                                             @endforeach
                                         </select>
                                     </div>
@@ -224,8 +248,8 @@
                                         <th style="width: 10%" >@lang('lang.sku')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.unit')</th>
-                                        <th style="width: 10%">@lang('lang.fill')</th>
-                                        <th style="width: 10%">@lang('lang.basic_unit')</th>
+{{--                                        <th style="width: 10%">@lang('lang.fill')</th>--}}
+{{--                                        <th style="width: 10%">@lang('lang.basic_unit')</th>--}}
                                         <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
 {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
 {{--                                        @if ($showColumn)--}}
@@ -291,9 +315,17 @@
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{!empty($items)? count($items) : 0}}</span>
-                                <br> @lang('lang.items_quantity'): <span
-                                    class="items_quantity_span" style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
+                                <span class="items_count_span" style="margin-right: 15px;">{{ $this->countItems() }}</span><br>
+{{--                                @lang('lang.units_count'):--}}
+{{--                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->countUnitsItems() }}</span><br>--}}
+                                {{ $this->count_total_by_variations() }}
+                            @if(!empty($variationSums))
+                                @foreach($variationSums as $unit_name => $variant)
+                                    {{ $unit_name }}:
+                                    <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }} </span><br>
+                                @endforeach
+                            @endif
+
                             </h4>
                         </div>
                         <br>
@@ -324,14 +356,7 @@
                                     'wire:model' => 'invoice_no']) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
-                                    {!! Form::text('other_expenses', $other_expenses,
-                                    ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
-                                     'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
-                                </div>
-                            </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('discount_amount', __('lang.discount'), []) !!} <br>
@@ -340,14 +365,7 @@
                                     'wire:model' => 'discount_amount','wire:change'=>'changeTotalAmount()']) !!}
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
-                                    {!! Form::text('other_payments', $other_payments,
-                                    ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
-                                     'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
-                                </div>
-                            </div>
+
                             <div class="col-md-3">
                                 <div class="form-group">
                                     {!! Form::label('source_type', __('lang.source_type'). ':*', []) !!} <br>
@@ -449,6 +467,16 @@
     </div>
 </section>
 <div class="view_modal no-print"></div>
+<div class="row">
+    <div class="col">
+        @php
+            $letter_header = App\Models\System::getProperty('letter_header');
+        @endphp
+        {{asset('uploads/'.$letter_header)}}
+        <img src="@if(!empty($letter_header)){{asset('uploads/'.$letter_header)}}@else{{asset('/uploads/'.session('logo'))}}@endif" alt="header" id="header_invoice_img" style="width: auto; margin: auto;  max-height: 150px;">
+
+    </div>
+    </div>
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @include('suppliers.quick_add',['quick_add'=>1])
@@ -499,7 +527,7 @@
     });
 
     $(document).ready(function() {
-        $('select').on('change', function(e) {
+        $('.select2').on('change', function(e) {
 
             var name = $(this).data('name');
             var index = $(this).data('index');
