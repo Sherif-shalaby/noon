@@ -9,11 +9,13 @@ use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
 use App\Models\System;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Utils\Util;
 
@@ -75,9 +77,9 @@ class CustomerController extends Controller
    */
   public function store(CustomerRequest $request)
   {
-    // return $request;
     try
     {
+        DB::beginTransaction();
         $data = $request->except('_token','phone','email');
         // ++++++++++++++ store phones in array ++++++++++++++++++
         $data['phone'] = json_encode($request->phone);
@@ -94,6 +96,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create($data);
 
+
         if (!empty($request->important_dates)) {
             $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
         }
@@ -105,10 +108,11 @@ class CustomerController extends Controller
         if($request->quick_add){
             return $output;
         }
-
+        DB::commit();
 
     } catch (\Exception $e) {
         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+        dd($e);
         $output = [
             'success' => false,
             'msg' => __('lang.something_went_wrong')
@@ -128,7 +132,7 @@ class CustomerController extends Controller
             $customer_important_date = CustomerImportantDate::firstOrNew(['customer_id' => $customer_id, 'id' => $id]);
             $customer_important_date->customer_id = $customer_id;
             $customer_important_date->details = $value['details'];
-            $customer_important_date->date = !empty($value['date']) ? $this->Util->uf_date($value['date']) : null;
+            $customer_important_date->date = !empty($value['date']) ? Carbon::createFromFormat('Y-m-d', $value['date']) : null;
             $customer_important_date->notify_before_days = $value['notify_before_days'] ?? 0;
             $customer_important_date->created_by = Auth::user()->id;
 
@@ -139,11 +143,12 @@ class CustomerController extends Controller
    * Display the specified resource.
    *
    * @param  int  $id
-   * @return Response
+   * @return Application|Factory|View
    */
   public function show($id)
   {
-
+      $customer = Customer::find($id);
+      return view('customers.show',compact('customer'));
   }
 
   /**
@@ -169,13 +174,13 @@ class CustomerController extends Controller
    * Update the specified resource in storage.
    *
    * @param  int  $id
-   * @return Response
+   * @return \Illuminate\Http\RedirectResponse
    */
   public function update(CustomerUpdateRequest $request,$id)
   {
     try {
-      $data = $request->except('_token');
-      $data['name'] = $request->name;
+        $data = $request->except('_token');
+        $data['name'] = $request->name;
       $data['updated_by'] = Auth::user()->id;
       Customer::find($id)->update($data);
       if (!empty($request->important_dates)) {
@@ -239,7 +244,6 @@ class CustomerController extends Controller
         $output = [$customers_dp , array_key_last($customers)];
         return $output;
     }
-    
 }
 
 ?>

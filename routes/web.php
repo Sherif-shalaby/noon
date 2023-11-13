@@ -41,6 +41,7 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
@@ -203,10 +204,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
-    // ########### Purchase Order ###########
-    Route::resource('purchase_order', PurchaseOrderLineController::class);
-    // ---- required_products ----
-    Route::resource('required-products', RequiredProductController::class);
+
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
@@ -233,7 +231,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
-
+    // ########### Purchase Order ###########
+    Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
+    // ---- required_products ----
+    Route::resource('required-products', RequiredProductController::class);
+    Route::get('purchase-order/edit/{id}', function ($id) {
+        return view('purchase-order.edit', compact('id'));
+    })->name('invoices.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));
@@ -250,8 +255,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('api/fetch-state',[SuppliersController::class,'fetchState']);
     // general_setting : fetch "city" of selected "state" selectbox
     Route::post('api/fetch-cities',[SuppliersController::class,'fetchCity']);
-    Route::post('supplier/pay-supplier-due/{supplier_id}', [SuppliersController::class,'postPayContactDue'])->name('supplier.pay-supplier-due');
-    Route::get('supplier/pay-supplier-due/{supplier_id}', [SuppliersController::class,'getPayContactDue'])->name('supplier.pay-supplier-due');
+
     //money safe
     Route::post('moneysafe/post-add-money-to-safe', [MoneySafeController::class,'postAddMoneyToSafe'])->name('moneysafe.post-add-money-to-safe');
     Route::get('moneysafe/get-add-money-to-safe/{id}', [MoneySafeController::class,'getAddMoneyToSafe'])->name('moneysafe.get-add-money-to-safe');
@@ -268,11 +272,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('get_branch_stores/{id}', [BranchController::class, 'getBranchStores']);
 
     Route::post('api/fetch-customers-by-city',[DeliveryController::class,'fetchCustomerByCity']);
-    // Route::get('customer/pay-customer-due/{customer_id}', [CustomerController::class,'getPayContactDue'])->name('customer.pay-customer-due');
-    Route::get('transaction-payment/add-payment/{id}', [StockTransactionPaymentController::class,'addPayment']);
 
     // Transfer
-    Route::view('transfer/create/{id}','transfer.create')->name('transfer.create');
+    Route::view('transfer/import/{id}','transfer.import')->name('transfer.import');
+    Route::view('transfer/export/{id}','transfer.export')->name('transfer.export');
+
+    Route::resource('representatives', RepresentativeController::class);
+    Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
+    Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

@@ -137,7 +137,7 @@
                         ]) !!}
                     </div>
                 </div>
-                @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car)
+                @if (!$reprsenative_sell_car)
                 <div class="col-md-6">
                     <div class="form-group">
                         {!! Form::label('deliveryman_id', __('lang.deliveryman') . ':*', []) !!}
@@ -189,7 +189,7 @@
                 </div>
                 <div class="col-md-5">
                     <button style="width: 100%" type="button" class="btn btn-primary payment-btn" data-toggle="modal"
-                        data-target="#draftTransaction" {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i
+                        data-target="#draftTransaction"  id="cash-btn"><i
                             class="fa-solid fa-flag"></i>
                         @lang('lang.view_draft')</button>
                     @include('invoices.partials.draft_transaction')

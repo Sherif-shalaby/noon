@@ -19,7 +19,10 @@ class TransactionSellLine extends Model
     {
         return $this->belongsTo(Employee::class,'deliveryman_id');
     }
-
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class,'employee_id');
+    }
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id')->withDefault(['name' => '']);
@@ -28,6 +31,10 @@ class TransactionSellLine extends Model
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withDefault(['name' => '']);
+    }
+    public function store_pos()
+    {
+        return $this->belongsTo(StorePos::class, 'store_pos_id', 'id')->withDefault(['name' => '']);
     }
 
     public function transaction_payments()

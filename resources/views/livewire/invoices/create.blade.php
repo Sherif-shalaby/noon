@@ -52,7 +52,6 @@
                             <label for="dollar_lowest_price">@lang('lang.dollar_lowest_price')</label>
                         </div>
                     </div>
-
                     <div class="col-md-4">
                         <div class="form-check-inline checkbox-dark">
                             <input type="checkbox" id="nearest_expiry_filter" wire:model="nearest_expiry_filter" name="customCheckboxInline2">
@@ -73,7 +72,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
-                            {!! Form::select('store_id', $stores, $store_id,
+                            {!! Form::select('store_id', $stores ?? [], $store_id,
                             ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'store_id', 'required', 'placeholder' => __('lang.please_select'),
                              'data-name' => 'store_id','wire:model' => 'store_id', 'wire:change' => 'changeAllProducts']) !!}
                             @error('store_id')
@@ -91,16 +90,6 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- +++++++++++++++++++++++++ حالة السداد ++++++++++++++++++++++++++++ --}}
-{{--                    <div class="col-md-2">--}}
-{{--                        <div class="form-group">--}}
-{{--                            {!! Form::label('payment_status', __('lang.payment_status') . ':', []) !!}--}}
-{{--                            {!! Form::select('payment_status', ['pending' => __('lang.pending'),'paid' => __('lang.paid'), 'partial' => __('lang.partial')],'paid', ['class' => 'form-control select2' ,'data-name'=>'payment_status', 'data-live-search' => 'true', 'placeholder' => __('lang.please_select'), 'wire:model' => 'payment_status']) !!}--}}
-{{--                            @error('payment_status')--}}
-{{--                            <span class="error text-danger">{{ $message }}</span>--}}
-{{--                            @enderror--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
                     <div class="col-md-4">
                         <label for="" class="text-primary">العملاء</label>
@@ -119,9 +108,45 @@
                         @enderror
                     </div>
                 </div>
-                {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
+                <div class="row">
+                    <div class="col-md-7">
+                        @include('invoices.partials.search')
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card-app">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <span> @lang('lang.min_amount_in_dollar') : {{ $customer_data->min_amount_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.max_amount_in_dollar') : {{ $customer_data->max_amount_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.min_amount_in_dinar') : {{ $customer_data->min_amount_in_dinar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.max_amount_in_dinar') : {{ $customer_data->max_amount_in_dinar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.balance_in_dinar') : {{ $customer_data->balance_in_dinar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.balance_in_dollar') : {{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-3">
+                                    <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
+                                            class="btn btn-primary payment-btn">
+                                        @lang('lang.customer_details')
+                                    </button>
+                                </div>
+                            </div>
+                            <button></button>
 
-                @include('invoices.partials.search')
+                        </div>
+                    </div>
+                </div>
+                {{-- +++++++++++++++++ search inputField +++++++++++++++++ --}}
+
             </div>
         </div>
         <div class="row g-3 cards hide-print ">
@@ -209,10 +234,7 @@
                                                         @if(!empty($item['discount_categories']))
                                                             @if(!empty($client_id))
                                                                 @foreach($item['discount_categories'] as $discount)
-{{--                                                                    @if($discount['price_category']!==null)--}}
-                                                        {{--                                                                        @if(in_array($client_id, $discount['price_customer_types']))--}}
-                                                                            <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
-{{--                                                                    @endif--}}
+                                                                    <option value="{{$discount['id']}}" >{{$discount['price_category']}}</option>
                                                                 @endforeach
                                                             @else
                                                                 @foreach($item['discount_categories'] as $discount)
@@ -268,7 +290,7 @@
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
-    @if(empty($store_pos))
+    @if(empty($store_pos) || empty($stores))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const noUserPosEvent = new Event('NoUserPos');
@@ -295,6 +317,21 @@
                 $("#receipt_section").html(htmlContent);
                 // Trigger the print action
                 window.print("#receipt_section");
+            });
+        });
+        $(document).on("click", ".print-invoice", function () {
+            // $(".modal").modal("hide");
+            $.ajax({
+                method: "get",
+                url: $(this).data("href"),
+                data: {},
+                success: function (result) {
+                    if (result.success) {
+                        Livewire.emit('printInvoice', result.html_content);
+                        window.location.reload(true)
+
+                    }
+                },
             });
         });
         window.addEventListener('quantity_not_enough', function(event) {

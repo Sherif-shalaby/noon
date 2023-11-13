@@ -1,7 +1,6 @@
 
 <section class="forms">
-    {{-- <div class="container-fluid"> --}}
-    <div>
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
@@ -36,8 +35,7 @@
                                             @lang('lang.store'):<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="d-flex justify-content-center">
-                                            <select class="form-control client"  wire:change="updateCurrentStock" wire:model="store_id"
-                                                    id="Client_Select" required >
+                                            <select class="form-control client" wire:model="store_id" id="Client_Select" required>
                                                 <option  value="" readonly selected> {{ __('lang.please_select') }} </option>
                                                 @foreach ($stores as $store)
                                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
@@ -76,57 +74,24 @@
                                 </div>
                             </div>
                             <br><br>
-                            {{-- ++++++++++++++++++++++ search inputFields ++++++++++++++++++++++ --}}
+                            {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
                             <div class="row">
-                                {{-- ++++++ "البحث "برمز المنتج ++++++ --}}
-                                <div class="col-md-3 m-t-15">
+                                <div class="col-md-8 m-t-15 offset-md-2">
                                     <div class="search-box input-group">
-                                        <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.200ms="search_by_product_symbol"
-                                               placeholder="@lang('lang.enter_product_symbol')"
-                                               class="form-control" autocomplete="off">
-
-                                        @if(!empty($search_result) && !empty($search_by_product_symbol))
-                                            <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
-                                                @foreach($search_result as $product)
-                                                    <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
-                                                        <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                            @if ($product->image)
-                                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                     alt="{{ $product->name }}" class="img-thumbnail" width="100px">
-                                                            @else
-                                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
-                                                                     class="img-thumbnail" width="100px">
-                                                            @endif
-                                                            {{$product->product_symbol ?? ''}} - {{$product->name}}
-                                                        </div>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                                    </div>
-                                </div>
-                                {{-- ++++++ "البحث "باسم المنتج" و "الباركود ++++++ --}}
-                                <div class="col-md-7 m-t-15">
-                                    <div class="search-box input-group">
+                                        {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
                                         <button type="button" class="btn btn-secondary" id="search_button"><i
                                                 class="fa fa-search"></i>
                                         </button>
                                         <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
-                                               placeholder="@lang('lang.enter_product_name_to_print_labels')"
-                                               class="form-control" autocomplete="off">
-
-                                        @if(!empty($search_result) && !empty($searchProduct))
+                                            placeholder="@lang('lang.enter_product_name_to_print_labels')"
+                                            class="form-control" autocomplete="off">
+                                        {{-- ++++++++++ search_result  ++++++++++ --}}
+                                        @if(!empty($search_result))
                                             <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                                 @foreach($search_result as $product)
                                                     <li class="ui-menu-item" wire:click="add_product({{$product->id}})">
                                                         <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                                            @if ($product->image)
-                                                                <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                     alt="{{ $product->name }}" class="img-thumbnail" width="100px">
-                                                            @else
-                                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"
-                                                                     class="img-thumbnail" width="100px">
-                                                            @endif
+                                                            <img src="https://mahmoud.s.sherifshalaby.tech/uploads/995_image.png" width="50px" height="50px">
                                                             {{$product->sku ?? ''}} - {{$product->name}}
                                                         </div>
                                                     </li>
@@ -134,65 +99,38 @@
                                             </ul>
                                         @endif
                                     </div>
+
                                 </div>
                             </div>
                             <br>
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row">
-                                <div class="col-md-3 border border-1 mr-1 p-0">
-                                    {{-- ============= filter : الموردين ============= --}}
-                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
-                                        <div class="form-group">
-                                            {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                                            <select class="select2 form-control supplier_class" wire:model="supplier_id" id="supplier_id" data-name="supplier_id" required>
-                                                <option  value="" readonly selected > {{ __('lang.please_select') }} </option>
-                                                @foreach ($suppliers as $supplier)
-                                                    <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @error('supplier_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    {{-- ============= filter : العلامة التجارية ============= --}}
-                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
-                                        <div class="form-group">
-                                            {!! Form::label('brand_id', __('lang.brand') . ':', []) !!}
-                                            {!! Form::select('brand_id', $brands, $brand_id,
-                                            ['class' => 'select2 form-control brand_class', 'id'=>'brand_id', 'required', 'placeholder' => __('lang.please_select'),
-                                             'data-name' => 'brand_id','wire:model' => 'brand_id']) !!}
-                                            @error('brand_id')
-                                            <span class="error text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    {{-- ============= filter : الأقسام الرئيسيه ============= --}}
-                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;" wire:ignore>
+                                <div class="col-md-2 border border-1 mr-3 p-0">
+                                    {{-- +++++++++++++++++++++ الأقسام الرئيسيه ++++++++++++++++++++++ --}}
+                                    <div class="p-3 text-center font-weight-bold "  style="background-color: #eee;">
                                         الأقسام الرئيسيه
-                                        <div for="" class="d-flex align-items-center text-nowrap gap-1">
-                                            {{-- الاقسام --}}
-                                            <select class="form-control depart select2" wire:model="department_id" data-name="department_id">
-                                                <option  value="0" readonly selected >اختر </option>
+                                        <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                                            {{-- /////////// الاقسام /////////// --}}
+                                            <select class="form-control select2" data-name="department_id" wire:model="department_id">
+                                                <option  value="" readonly selected >اختر </option>
                                                 @foreach ($departments as $depart)
                                                     <option value="{{ $depart->id }}">{{ $depart->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
-                                    {{-- /////////// products of filters :  filters المنتجات بناءاً علي ال /////////// --}}
+                                    {{-- /////////// المنتجات /////////// --}}
                                     <div class="p-2">
-                                        {{-- @foreach ($products as $product)
+                                        @foreach ($products as $product)
                                             <div class="order-btn" wire:click='add_product({{ $product->id }})' >
                                                 <span>{{ $product->name }}</span>
                                                 <span>{{ $product->sku }} </span>
                                             </div>
                                             <hr/>
-                                        @endforeach --}}
-                                        @include('purchase_order.partials.products')
+                                        @endforeach
                                     </div>
                                 </div>
-                                <div class="table-responsive col-md-8 border m-0 p-0 border-1">
+                                <div class="table-responsive col-md-9 border border-1">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
                                     <table class="table" style="width: auto" >
                                         <thead>
@@ -241,7 +179,7 @@
                                     </table>
                                 </div>
                             </div>
-                            {{-- ++++++++++++++++++++++ total_quantity ++++++++++++++++++++++ --}}
+                            {{-- ++++++++ total_quantity ++++++++++  --}}
                             <div class="col-md-12 text-center mt-1 ">
                                 <h4>@lang('lang.items_count'):
                                     <span class="items_count_span" style="margin-right: 15px;">{{!empty($items)? count($items) : 0}}</span>
@@ -250,7 +188,7 @@
                                 </h4>
                             </div>
                             <br>
-                            {{-- ++++++++++++++++++++++ total ++++++++++++++++++++++ --}}
+                            {{-- ++++++++ total ++++++++++  --}}
                             <div class="col-md-12">
                                 <div class="col-md-3 offset-md-8 text-right">
                                     <h3> @lang('lang.total') :
@@ -335,12 +273,10 @@
                 },
             });
         });
-        // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
-        $(document).ready(function()
-        {
-            // --------- when select "option" in "selectbox" ---------
-            $('select').on('change', function(e)
-            {
+
+        $(document).ready(function() {
+            $('select').on('change', function(e) {
+
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)
@@ -349,21 +285,7 @@
                     var2 :select2.select2("val") ,
                     var3:index
                 });
-            });
-        });
-        // --------- to save "select option" in "selectbox" ---------
-        document.addEventListener('livewire:load', function () {
-            // "categories" filter
-            $('.depart').select().on('change', function (e) {
-                @this.set('department_id', $(this).val());
-            });
-            // "brands" filter
-            $('.brand_class').select().on('change', function (e) {
-                @this.set('brand_id', $(this).val());
-            });
-            // "supplier_class" filter
-            $('.supplier_class').select().on('change', function (e) {
-                @this.set('supplier_id', $(this).val());
+
             });
         });
 

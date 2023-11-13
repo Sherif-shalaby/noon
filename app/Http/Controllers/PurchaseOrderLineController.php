@@ -6,6 +6,8 @@ use App\Utils\ProductUtil;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrderLine;
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\PurchaseOrderTransaction;
 use App\Models\Store;
@@ -43,7 +45,8 @@ class PurchaseOrderLineController extends Controller
     /* +++++++++++++++ index() +++++++++++++++ */
     public function index()
     {
-        $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->orderBy('created_at','desc')->get();
+        // $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->orderBy('created_at','desc')->get();
+        $purchase_orders = PurchaseOrderTransaction::orderBy('created_at','desc')->get();
         return view('purchase_order.index',compact('purchase_orders'));
     }
     /* +++++++++++++++ create() +++++++++++++++ */
@@ -53,11 +56,14 @@ class PurchaseOrderLineController extends Controller
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
         $stores = Store::getDropdown();
         $po_no = $this->productUtil->getNumberByType('purchase_order');
+        $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+        $brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         return view('purchase_order.create')->with(compact(
             'suppliers',
             'stores',
             'po_no',
-            'products'
+            'products',
+            'brands','branch_id'
         ));
     }
     /* +++++++++++++++ deleteAll() +++++++++++++++ */
@@ -126,40 +132,33 @@ class PurchaseOrderLineController extends Controller
         }
         return redirect()->back()->with('status', $output);
     }
-
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PurchaseOrderLine $purchaseOrderLine)
+    /* ++++++++++++++++++++++++++++++ show() ++++++++++++++++++++++++++ */
+    public function show($id)
     {
-        //
+        $purchase_order = PurchaseOrderTransaction::with('transaction_purchase_order_lines')->findOrFail($id);
+        $supplier = Supplier::find($purchase_order->supplier_id);
+        // dd($purchase_order);
+        return view('purchase_order.show',compact('purchase_order'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PurchaseOrderLine $purchaseOrderLine)
+    /* ++++++++++++++++++++++++++++++ edit() ++++++++++++++++++++++++++ */
+    public function edit($id)
     {
-        //
+        $purchase_order = PurchaseOrderTransaction::find($id);
+        // dd($purchase_order->status);
+        $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
+        $stores = Store::getDropdown();
+        // $status_array = $this->commonUtil->getPurchaseOrderStatusArray();
+        $status_array = ['received', 'pending'];
+        // dd($status_array);
+        return view('purchase_order.edit')->with(compact(
+            'purchase_order',
+            'status_array',
+            'suppliers',
+            'stores'
+        ));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PurchaseOrderLine $purchaseOrderLine)
+    /* ++++++++++++++++++++++++++++++ edit() ++++++++++++++++++++++++++ */
+    public function update(Request $request, $id)
     {
         //
     }

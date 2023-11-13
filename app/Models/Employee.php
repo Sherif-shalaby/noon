@@ -21,7 +21,10 @@ class Employee extends Model
     {
         return $this->belongsTo(JobType::class, 'job_type_id');
     }
-
+    public function transaction_sell_lines()
+    {
+        return $this->hasMany(TransactionSellLine::class);
+    }
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'employee_stores');
@@ -96,5 +99,8 @@ class Employee extends Model
     public function products()
     {
         return $this->belongsToMany(Product::class, 'employee_products', 'employee_id', 'product_id');
+    }
+    public function delivery_locations(){
+        return $this->hasMany(DeliveryLocation::class,'id', 'delivery_id');
     }
 }

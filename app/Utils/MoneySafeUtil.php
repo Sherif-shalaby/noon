@@ -9,7 +9,6 @@ use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\StorePos;
 use App\Models\System;
-use Illuminate\Support\Facades\DB;
 
 class MoneySafeUtil extends Util
 {
@@ -233,115 +232,5 @@ class MoneySafeUtil extends Util
 
         return $register;
     }
-    public function addPayment($transaction, $payment_data, $type, $transaction_payment_id = null, $money_safe = null)
-    {
-        if (empty($money_safe)) {
-            $money_safe = MoneySafe::where('store_id', $transaction->store_id)->where('type', 'bank')->first();
-            if (empty($money_safe)) {
-                $money_safe = MoneySafe::where('is_default', 1)->first();
-            }
-        }
-        $payment_data['amount'] = $this->num_uf($payment_data['amount']);
-        $employee = Employee::where('user_id', auth()->user()->id)->first();
 
-        if (!empty($employee)) {
-            $data['source_id'] = $employee->id;
-            $data['job_type_id'] = $employee->job_type_id;
-            $data['source_type'] = 'employee';
-        }
-
-        $currency_id = null;
-        if ($transaction->type == 'sell') {
-            $currency_id = $transaction->received_currency_id;
-        }
-        if ($transaction->type == 'add_stock') {
-            $currency_id = $transaction->paying_currency_id;
-            $data['comments'] = __('lang.add_stock');
-        }
-        if ($transaction->type == 'expense') {
-            $currency_id = $payment_data['currency_id'];
-            $data['comments'] = __('lang.expense');
-        }
-        if ($transaction->type == 'wages_and_compensation') {
-            $currency_id = $payment_data['currency_id'];
-            $data['comments'] = __('lang.wages_and_compensation');
-        }
-        if (!empty($money_safe)) {
-            if ($type == 'credit') {
-                $data['money_safe_id'] = $money_safe->id;
-                $data['transaction_date'] = $transaction->transaction_date;
-                $data['transaction_id'] = $transaction->id;
-                $data['transaction_payment_id'] = $transaction_payment_id;
-                $data['currency_id'] = $currency_id;
-                $data['type'] = $type;
-                $data['store_id'] = $transaction->store_id;
-                $data['amount'] = $this->num_uf($payment_data['amount']);
-                $data['created_by'] = $transaction->created_by;
-
-                MoneySafeTransaction::create($data);
-            }
-            if ($type == 'debit') {
-                $exchange_rate_currencies =  $this->getCurrenciesExchangeRateArray(true);
-                $amount = $this->num_uf($payment_data['amount']);
-
-                $data['money_safe_id'] = $money_safe->id;
-                $data['transaction_date'] = $transaction->transaction_date;
-                $data['transaction_id'] = $transaction->id;
-                $data['transaction_payment_id'] = $transaction_payment_id;
-                $data['currency_id'] = $currency_id;
-                $data['type'] = $type;
-                $data['store_id'] = $transaction->store_id;
-                $data['amount'] = $amount;
-                $data['created_by'] = $transaction->created_by;
-
-
-                $safe_balance = $this->getSafeBalance($money_safe->id, $currency_id);
-                if ($safe_balance > $amount) {
-                    $data['amount'] = $amount;
-                    $amount = 0;
-                    MoneySafeTransaction::create($data);
-                } elseif ($safe_balance < $amount && $safe_balance > 0) {
-                    $data['amount'] = $safe_balance;
-                    $amount -= $safe_balance;
-                    MoneySafeTransaction::create($data);
-                }
-                unset($exchange_rate_currencies[$currency_id]);
-                foreach ($exchange_rate_currencies as $key => $currency) {
-                    $amount_to_debit = 0;
-                    if ($amount > 0) {
-                        $safe_balance = $this->getSafeBalance($money_safe->id, $key);
-                        $converted_amount = $this->convertCurrencyAmount($amount, $currency_id, $key, $transaction->store_id);
-                        if ($safe_balance >= $converted_amount) {
-                            $amount_to_debit = $converted_amount;
-                            $amount = 0;
-                        } else {
-                            $amount_to_debit = $safe_balance;
-                            $revert_amount = $this->convertCurrencyAmount($safe_balance, $key, $currency_id, $transaction->store_id);
-                            $amount = $amount - $revert_amount;
-                        }
-
-                        $data['currency_id'] = $key;
-                        $data['amount'] = $amount_to_debit;
-                        if ($data['amount'] > 0) {
-                            MoneySafeTransaction::create($data);
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-    public function getSafeBalance($id, $currency_id = null)
-    {
-        $query = MoneySafe::leftjoin('money_safe_transactions', 'money_safes.id', '=', 'money_safe_transactions.money_safe_id')
-            ->where('money_safes.id', $id);
-
-        if (!empty($currency_id)) {
-            $query->where('money_safe_transactions.currency_id', $currency_id);
-        }
-
-        $safe = $query->select(DB::raw('SUM(IF(money_safe_transactions.type="credit", money_safe_transactions.amount, -1 * money_safe_transactions.amount)) as balance'))->first();
-        return $safe->balance ?? 0;
-    }
 }
