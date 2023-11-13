@@ -566,8 +566,8 @@ return array(
     'total_price' => 'السعر الكلى',
     'piece_price' => 'سعر القطعة',
     'delivery' => 'المناديب',
-    'plans' => 'خطط المناديب',
-    'plan' => 'خطة المندوب',
+    'plans' => 'الخطط',
+    'plan' => 'خطة',
     'add_plan' => 'اضافة خطة',
     'edit_plan' => 'تعديل الخطة',
     'enter_product_symbol' => 'البحث برمز المنتج',
@@ -629,6 +629,8 @@ return array(
     'customer_details' => 'تفاصيل العميل',
     'print' => 'طباعة',
     'location' => 'الموقع',
-     'final'=>'دفعت',
-    'draft'=>'مسودة',
+    'final' => 'دفعت',
+    'draft' => 'مسودة',
+    'edit_purchase_order' => 'تعديل امر شراء',
+    'show_plans' => 'عرض الخطط'
 );

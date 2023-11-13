@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.delivery_plans'))
+@section('title', __('lang.show_plans'))
 @section('breadcrumbbar')
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -7,16 +7,25 @@
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
                     <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        {{ __('lang.plans') }}</h4>
+                        {{ __('lang.show_plans') }}</h4>
                     <div class="breadcrumb-list">
                         <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
                                     style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                     @lang('lang.dashboard')</a></li>
-                            {{--                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"><a href="#">@lang('lang.employees')</a></li> --}}
+                            @if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives')
+                                <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
+                                    <a style="text-decoration: none;color: #596fd7"
+                                        href="{{ route('representatives.index') }}">@lang('lang.representatives')</a>
+                                </li>
+                            @else
+                                <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
+                                    <a style="text-decoration: none;color: #596fd7" href="#">@lang('lang.delivery')</a>
+                                </li>
+                            @endif
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">{{ __('lang.plans') }}</li>
+                                aria-current="page">@lang('lang.show_plans')</li>
                         </ul>
                     </div>
                 </div>
@@ -32,7 +41,7 @@
                 <div class="card mt-3">
                     <div
                         class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                        <h4 class="print-title">{{ __('lang.plans') }}</h4>
+                        <h4 class="print-title">{{ __('lang.show_plans') }}</h4>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -53,8 +62,14 @@
                                                 <div class="col-2">
                                                     <div class="form-group">
                                                         <select name="delivery_id" class="form-control select2"
-                                                            placeholder="{{ __('lang.delivery') }}">
-                                                            <option value="">{{ __('lang.delivery') }}</option>
+                                                            placeholder="@if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives') {{ __('lang.representatives') }} @else {{ __('lang.delivery') }} @endif">
+                                                            <option value="">
+                                                                @if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives')
+                                                                    {{ __('lang.representatives') }}
+                                                                @else
+                                                                    {{ __('lang.delivery') }}
+                                                                @endif
+                                                            </option>
                                                             @foreach ($delivery_men_data as $id => $name)
                                                                 <option value="{{ $id }}">{{ $name }}
                                                                 </option>

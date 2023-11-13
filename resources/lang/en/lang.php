@@ -597,4 +597,6 @@ return [
     'print' => 'Print',
     'final' => 'Final',
     'draft' => 'Draft',
+    'edit_purchase_order' => 'Edit purchase order',
+    'show_plans' => 'Show Plans'
 ];

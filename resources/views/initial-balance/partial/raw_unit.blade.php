@@ -323,7 +323,7 @@
                                         ]) !!}
                                         <input type="text" class="form-control discount_quantity"
                                             wire:model="rows.{{ $index }}.prices.{{ $key }}.discount_quantity"
-                                            wire:change="changePrice({{ $index }}, {{ $key }})"
+                                            wire:change="changePrice({{ $index }}, {{ $key }}, 'quantity')"
                                             placeholder = "{{ __('lang.quantity') }}"
                                             style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
                                         @error('rows.' . $index . '.prices.' . $key . '.discount_quantity')
@@ -338,7 +338,7 @@
                                         <input type="text" class="form-control bonus_quantity"
                                             style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;"
                                             wire:model="rows.{{ $index }}.prices.{{ $key }}.bonus_quantity"
-                                            wire:change="changePrice({{ $index }}, {{ $key }})"
+                                            wire:change="changePrice({{ $index }}, {{ $key }}, 'quantity')"
                                             placeholder="{{ __('lang.b_qty') }}">
                                         @error('rows.' . $index . '.prices.' . $key . '.bonus_quantity')
                                             <label class="text-danger error-msg">{{ $message }}</label>

@@ -70,15 +70,11 @@
                     ]) !!}
                     <div class="input-wrapper" style="width: 60%;margin-right: 14%;">
                         {!! Form::select('branch_id', $branches, null, [
-                            'class' => 'form-control selectpicker width-full m-auto',
+                            'class' => 'form-control select width-full m-auto',
                             'placeholder' => __('lang.branch'),
                         ]) !!}
                     </div>
                 </div>
-
-
-
-
 
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

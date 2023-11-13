@@ -22,7 +22,7 @@ myDropzone = new Dropzone("div#my-dropzone", {
     // },
     acceptedFiles: ".jpeg,.jpg,.png,.gif",
     init: function () {
-        this.on("success", function(file) {
+        this.on("success", function (file) {
             this.removeEventListeners();
             this.disable();
         });
@@ -39,12 +39,26 @@ myDropzone = new Dropzone("div#my-dropzone", {
                         data: $("#product-edit-form").serialize(),
                         success: function (response) {
                             // Swal.fire(response.status);
-                            Swal.fire("Success", response.status, "success");
+                            // Swal.fire("Success", response.status, "success");
+                            Swal.fire({
+                                title: "Success",
+                                text: response.status,
+                                icon: "success",
+                                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                                showConfirmButton: false // This will hide the "OK" button
+                            });
                             location.replace('/categories');
                         },
                         error: function (response) {
                             // Swal.fire(response.status);
-                            Swal.fire("Error", response.status, "error");
+                            // Swal.fire("Error", response.status, "error");
+                            Swal.fire({
+                                title: "Error",
+                                text: response.status,
+                                icon: "error",
+                                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                                showConfirmButton: false // This will hide the "OK" button
+                            });
                         },
                     });
                 }
@@ -68,17 +82,31 @@ myDropzone = new Dropzone("div#my-dropzone", {
     success: function (file, response) {
         if (response.success) {
             // Swal.fire("Success", response.status, "success");
-            Swal.fire("Error", response.status, "error");
+            // Swal.fire("Error", response.status, "error");
+            Swal.fire({
+                title: "Error",
+                text: response.status,
+                icon: "error",
+                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                showConfirmButton: false // This will hide the "OK" button
+            });
             // window.location.reload();
             // location.replace('/categories');
         }
         if (!response.success) {
             // Swal.fire("Error", response.status, "error");
-            Swal.fire("Success", response.status, "success");
+            // Swal.fire("Success", response.status, "success");
+            Swal.fire({
+                title: "Success",
+                text: response.status,
+                icon: "success",
+                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                showConfirmButton: false // This will hide the "OK" button
+            });
             location.replace('/categories');
         }
     },
-    completemultiple: function (file, response) {},
+    completemultiple: function (file, response) { },
     reset: function () {
         this.removeAllFiles(true);
     },

@@ -16,7 +16,14 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                Swal.fire("Success", result.msg, "success");
+                // Swal.fire("Success", result.msg, "success");
+                Swal.fire({
+                    title: "Success",
+                    text: response.status,
+                    icon: "success",
+                    timer: 700, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
                 $("#createBrandModal").modal("hide");
                 var brand_id = result.id;
                 $.ajax({
@@ -30,7 +37,14 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -88,7 +102,14 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -139,7 +160,14 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -221,7 +249,14 @@ $(".openCategoryModal").click(function (e) {
     if ((main_category_id !== '' && select_category != 0) || main_category_id === 0) {
         $(this).addClass('btn-modal');
     } else {
-        Swal.fire("warning", LANG.no_parent_category, "warning");
+        // Swal.fire("warning", LANG.no_parent_category, "warning");
+        Swal.fire({
+            title: "warning",
+            text: LANG.no_parent_category,
+            icon: "warning",
+            timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+            showConfirmButton: false // This will hide the "OK" button
+        });
     }
 });
 $("#create-category-btn").click(function (e) {
@@ -294,7 +329,14 @@ $(document).on("submit", "#create-category-form", function (e) {
                     }
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -325,7 +367,15 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                Swal.fire("Success", result.msg, "success");
+                // Swal.fire("Success", result.msg, "success");
+                Swal.fire({
+                    title: "Success",
+                    text: response.status,
+                    icon: "success",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
+
                 $("#add_product_tax_modal").modal("hide");
                 var product_tax_id = result.id;
                 $.ajax({
@@ -340,7 +390,14 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -364,7 +421,15 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                Swal.fire("Success", result.msg, "success");
+                // Swal.fire("Success", result.msg, "success");
+                Swal.fire({
+                    title: "Success",
+                    text: response.status,
+                    icon: "success",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
+
                 $("#add_customer").modal("hide");
                 var customer_id = result.id;
                 $.ajax({
@@ -378,7 +443,15 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
+
             }
         },
     });

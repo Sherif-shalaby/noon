@@ -1,131 +1,3 @@
-<!-- Start Topbar -->
-{{-- <div class="topbar no-print"> --}}
-{{--    <!-- Start container-fluid --> --}}
-{{--    <div class="container-fluid"> --}}
-{{--        <!-- Start row --> --}}
-{{--        <div class="row align-items-center"> --}}
-{{--            <!-- Start col --> --}}
-{{--            <div class="col-md-12 align-self-center"> --}}
-{{--                <div class="togglebar"> --}}
-{{--                    <ul class="list-inline mb-0"> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            <div class="logobar"> --}}
-{{--                                <a href="{{url('/')}}" class=""><img src="{{asset('/uploads/'.$settings['logo'])}}" width="45" height="45" class="img-fluid" alt="logo"></a> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            <div class="searchbar"> --}}
-{{--                                <form> --}}
-{{--                                    <div class="input-group"> --}}
-{{--                                      <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2"> --}}
-{{--                                      <div class="input-group-append"> --}}
-{{--                                        <button class="btn" type="submit" id="button-addon2"><img src="{{asset('images/svg-icon/search.svg')}}" class="img-fluid" alt="search"></button> --}}
-{{--                                      </div> --}}
-{{--                                    </div> --}}
-{{--                                </form> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                    </ul> --}}
-{{--                </div> --}}
-{{--                <div class="infobar"> --}}
-{{--                    <ul class="list-inline mb-0"> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            <div class="notifybar"> --}}
-{{--                                <a href="https://api.whatsapp.com/send?phone={{$settings['watsapp_numbers']}}"> --}}
-{{--                                    <img src="{{asset('images/topbar/whatsapp.jpg')}}" class="img-fluid" alt="notifications" width="45px" height="45px"> --}}
-{{--                                </a> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            <div class="notifybar"> --}}
-{{--                                <a href="{{ route('invoices.create') }}"> --}}
-{{--                                    <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px"> --}}
-{{--                                </a> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            <div class="notifybar"> --}}
-{{--                                <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon"> --}}
-{{--                                    <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications"> --}}
-{{--                                    <span class="live-icon"></span> --}}
-{{--                                </a> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            @php --}}
-{{--                                $flags=(object)[ --}}
-{{--                                    'en'=>'us', --}}
-{{--                                    'ar'=>'eg' --}}
-{{--                                    ]; --}}
-{{--                                $local_code=LaravelLocalization::getCurrentLocale(); --}}
-{{--                           @endphp --}}
-{{--                            <div class="languagebar"> --}}
-{{--                                <div class="dropdown"> --}}
-{{--                                  <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag flag-icon-{{ $flags->$local_code }} flag-icon-squared"></i>&nbsp;{{ LaravelLocalization::getCurrentLocaleNative() }}</a> --}}
-{{--                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink"> --}}
-{{--                                    @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) --}}
-{{--                                        <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"> --}}
-{{--                                            <i class="flag  flag-icon-{{$flags->$localeCode}} flag-icon-squared"></i>{{ $properties['native'] }} --}}
-{{--                                        </a> --}}
-{{--                                    @endforeach --}}
-{{--                                  </div> --}}
-{{--                                </div> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                        <li class="list-inline-item"> --}}
-{{--                            <div class="profilebar"> --}}
-{{--                                <div class="dropdown"> --}}
-{{--                                  <a class="dropdown-toggle" href="#" role="button" id="profilelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{asset('images/users/profile.svg')}}" class="img-fluid" alt="profile"><span class="feather icon-chevron-down live-icon"></span></a> --}}
-{{--                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profilelink"> --}}
-{{--                                    <div class="dropdown-item"> --}}
-{{--                                        <div class="profilename"> --}}
-{{--                                          <h5>Shourya Kumar</h5> --}}
-{{--                                          <p>Social Media Strategist</p> --}}
-{{--                                        </div> --}}
-{{--                                    </div> --}}
-{{--                                    <div class="dropdown-item"> --}}
-{{--                                        <div class="userbox"> --}}
-{{--                                            <ul class="list-inline mb-0"> --}}
-{{--                                                <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/user.svg')}}" class="img-fluid" alt="user"></a></li> --}}
-{{--                                                <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/email.svg')}}" class="img-fluid" alt="email"></a></li> --}}
-{{--                                                <li class="list-inline-item"> --}}
-{{--                                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="profile-icon"><img src="{{asset('images/svg-icon/logout.svg')}}" class="img-fluid" alt="logout"></a> --}}
-{{--                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" --}}
-{{--                                                        style="display: none;"> --}}
-{{--                                                        @csrf --}}
-{{--                                                    </form> --}}
-{{--                                                </li> --}}
-{{--                                            </ul> --}}
-{{--                                        </div> --}}
-{{--                                      </div> --}}
-{{--                                  </div> --}}
-{{--                                </div> --}}
-{{--                            </div> --}}
-{{--                        </li> --}}
-{{--                        <li class="list-inline-item menubar-toggle" @if (request()->segment(2) == 'invoices') style="display: inline-block;!important;"@endif> --}}
-{{--                            <div class="menubar"> --}}
-{{--                                <a class="menu-hamburger navbar-toggle bg-transparent" href="javascript:void();" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="true"> --}}
-{{--                                    <img src="{{asset('images/svg-icon/collapse.svg')}}" class="img-fluid menu-hamburger-collapse" alt="collapse"> --}}
-{{--                                    <img src="{{asset('images/svg-icon/close.svg')}}" class="img-fluid menu-hamburger-close" alt="close"> --}}
-{{--                                </a> --}}
-{{--                             </div> --}}
-{{--                        </li> --}}
-{{--                    </ul> --}}
-{{--                </div> --}}
-{{--            </div> --}}
-{{--            <!-- End col --> --}}
-{{--        </div> --}}
-{{--        <!-- End row --> --}}
-{{--    </div> --}}
-
-{{--    <!-- End container-fluid --> --}}
-{{-- </div> --}}
-<!-- End Topbar -->
-<!-- Start Navigationbar -->
-{{-- <div class="navigationbar">
-    <!-- Start container-fluid -->
-    <div class="container-fluid"> --}}
-<!-- Start Horizontal Nav -->
 <nav class="navbar no-print navbar-expand-lg bg-white py-0">
     <div class="container-fluid">
         <a style="width: 150px;" class="ml-2 d-lg-none" href="index.html">
@@ -1169,14 +1041,14 @@
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery.index') }}"
-                                class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                href="{{ route('sell-car.index') }}"
+                                class="sell-car-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
-                                {{ __('lang.index') }}</a>
+                                @lang('lang.sell_car')</a>
                         </li>
                         <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery_plan.plansList') }}"
-                                class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                href="{{ route('delivery.index') }}"
+                                class="sell-car-delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
                                 {{ __('lang.plans') }}</a></li>
                         {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
@@ -1184,12 +1056,10 @@
                     </ul>
                 </li>
                 {{-- ###################### sell car : عربة بيع ###################### --}}
-                {{-- @can('sell_car_module')  --}}
-                <li class="scroll mx-2 mb-0 p-0 ">
-                    <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                        href="{{ route('sell-car.index') }}"
-                        class="sell-car-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid pl-1" alt="components"> --}}
+                <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                    <a href="javaScript:void();"
+                        class="d-flex align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                        style="font-weight: 600" data-toggle="dropdown">
                         <div style="width: 25px">
                             <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 48 48">
                                 <defs>
@@ -1244,12 +1114,29 @@
                         </div>
                         <span class="mx-2">{{ __('lang.sell_car') }}</span>
                     </a>
+                    <ul
+                        class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        <li>
+                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                href="{{ route('delivery.index') }}"
+                                class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <i class="mdi mdi-circle"></i>
+                                {{ __('lang.index') }}</a>
+                        </li>
+                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                href="{{ route('delivery_plan.plansList') }}"
+                                class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <i class="mdi mdi-circle"></i>
+                                {{ __('lang.plans') }}</a></li>
+                        {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
+                        {{-- <a href="{{route('delivery.maps')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
+                    </ul>
                 </li>
-                {{-- @endcan --}}
-                <li class="scroll mx-2 mb-0 p-0 ">
-                    <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                        href="{{ route('representatives.index') }}"
-                        class="rep-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                {{-- ###################### sell car : عربة بيع ###################### --}}
+                <li class="dropdown scroll mx-2 mb-0 p-0 ">
+                    <a href="javaScript:void();"
+                        class="d-flex align-items-center text-decoration-none  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                        style="font-weight: 600" data-toggle="dropdown">
                         <div style="width: 25px">
                             <svg version="1.1" style="width: 100%" id="Layer_1"
                                 xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 256 256"
@@ -1362,7 +1249,26 @@
                         </div>
                         <span class="mx-2">{{ __('lang.representatives_requests') }}</span>
                     </a>
+                    <ul
+                        class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        <li>
+                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                href="{{ route('representatives.index') }}"
+                                class="rep-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <i class="mdi mdi-circle"></i>
+                                {{ __('lang.representatives_requests') }}</a>
+                        </li>
+                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                href="{{ route('rep_plan.index') }}"
+                                class="rep-plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <i class="mdi mdi-circle"></i>
+                                {{ __('lang.plans') }}</a></li>
+                        {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
+                        {{-- <a href="{{route('delivery.maps')}}"><img src="{{asset('images/topbar/inventory.png')}}" class="img-fluid" alt="widgets"><span>{{__('lang.delivery')}}</span></a> --}}
+                    </ul>
                 </li>
+
+                {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}
                 {{-- @can('settings_module') --}}
                 @if (!empty($module_settings['settings_module']))
@@ -1813,9 +1719,22 @@
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
+    $('.sell-car-delivery-button').on('click', function(e) {
+        e.preventDefault();
+        let url =
+            "{{ route('delivery.index') }} "
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
     $('.rep-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('representatives.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.rep-plans-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('rep_plan.index') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

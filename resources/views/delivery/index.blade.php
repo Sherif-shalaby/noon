@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.delivery'))
+@section('title', __('lang.plans'))
 @section('breadcrumbbar')
     <div class="animate-n-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -7,27 +7,35 @@
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div>
                     <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.delivery')</h4>
+                        @lang('lang.plans')</h4>
                     <div class="breadcrumb-list">
                         <ul
                             class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
                                     style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                     @lang('lang.dashboard')</a></li>
-                            {{--                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"><a href="#">@lang('lang.employees')</a></li> --}}
+                            @if (request()->segment(2) . '/' . request()->segment(3) == 'representative/plan')
+                                <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
+                                    <a style="text-decoration: none;color: #596fd7"
+                                        href="{{ route('representatives.index') }}">@lang('lang.representatives')</a>
+                                </li>
+                            @else
+                                <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
+                                    <a style="text-decoration: none;color: #596fd7" href="#">@lang('lang.delivery')</a>
+                                </li>
+                            @endif
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.delivery')</li>
+                                aria-current="page">@lang('lang.plans')</li>
                         </ul>
                     </div>
                 </div>
-                {{-- <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a  class="btn btn-primary" href="{{route('employees.create')}}">@lang('lang.add_employee')</a>
-                    {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i --}}
-                {{--                            class="dripicons-plus"></i> --}}
-                {{--                        @lang('lang.add_new_employee')</a> --}}
-                {{-- </div>
-            </div> --}}
+                    @if (request()->segment(2) . '/' . request()->segment(3) == 'representative/plan')
+                        <a class="btn btn-primary" href="{{ route('representatives.plansList') }}">@lang('lang.show_plans')</a>
+                    @else
+                        <a class="btn btn-primary" href="{{ route('delivery_plan.plansList') }}">@lang('lang.show_plans')</a>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

@@ -64,7 +64,7 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date, $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id, $variationSums = [];
+        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id, $variationSums = [];
 
 
     public function mount(){
@@ -79,7 +79,8 @@ class Create extends Component
         }
         else{
             $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
-            if(!empty($recent_stock)){
+            if(!empty($recent_stock))
+            {
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ?? null ;
                 $this->supplier = $recent_stock->supplier_id?? null;
@@ -541,8 +542,14 @@ class Create extends Component
             'variations' => $variations,
             'variation_id' => !empty($stock) ? $stock->variation_id : ($variations->first()->id ?? null) ,
             'product' => $product,
-            'purchase_price' => !empty($stock) ? $stock->purchase_price : null,
-            'dollar_purchase_price' => !empty($stock) ? $stock->dollar_purchase_price : null,
+            'purchase_price' =>  null,
+            'dollar_purchase_price' =>  null,
+            'purchase_price_span' => !empty($stock) ? $stock->purchase_price : null,
+            'dollar_purchase_price_span' => !empty($stock) ? $stock->dollar_purchase_price : null,
+            'dollar_selling_price' =>  null,
+            'selling_price' =>  null,
+            'selling_price_span' => !empty($stock) ? $stock->sell_price : null,
+            'dollar_selling_price_span' => !empty($stock) ? $stock->dollar_sell_price : null,
             'quantity' => 1,
             'unit' => !empty($variant) ? $variant->unit->name : '',
             'base_unit_multiplier' => !empty($variant) ? $variant->equal : 0,

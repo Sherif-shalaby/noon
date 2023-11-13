@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('title', __('lang.required_products'))
 @section('breadcrumbbar')
+    <style>
+        th {
+            position: sticky;
+            top: 0;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -28,173 +34,185 @@
     </div>
 @endsection
 @section('content')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <div class="row">
-                            {{-- ////////////////////// Filters ////////////////////// --}}
-                            <div class="col-lg-12">
-                                <div class="container-fluid">
-                                    @include('purchase_order.required_products.partials.filters')
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <form class="form-group" id="productForm" action="{{ route('required-products.store') }}"
-                                    method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row mt-4 m-auto" style="max-height: 100vh;overflow: scroll">
-                                        {{-- ++++++++++++++ required products Table ++++++++++ --}}
-                                        <table id="productTable"
-                                            class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    {{-- "select_all" checkbox --}}
-                                                    <th> <input type="checkbox" id="select_all_ids" /> </th>
-                                                    <th>@lang('lang.employee_name')</th>
-                                                    <th>@lang('lang.date')</th>
-                                                    <th>@lang('lang.product_name')</th>
-                                                    <th>@lang('lang.store')</th>
-                                                    <th>@lang('lang.status')</th>
-                                                    <th>@lang('lang.supplier_name')</th>
-                                                    <th>@lang('lang.branch_name')</th>
-                                                    <th>@lang('lang.purchase_price')</th>
-                                                    <th>@lang('lang.required_quantity')</th>
-                                                    <th>@lang('lang.action')</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="tbody">
-                                                @foreach ($requiredProducts as $index => $requiredProduct)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>
-                                                            <input type="checkbox"
-                                                                name="products[{{ $index }}][checkbox]"
-                                                                class="checkbox_ids" value="1" />
-                                                        </td>
-                                                        {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.employee_name')">
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][employee_id]"
-                                                                    value="{{ $requiredProduct->employee_id }}">
-                                                                {{ !empty($requiredProduct->employee_id) ? $requiredProduct->employee->employee_name : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ order_date +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][order_date]"
-                                                                    value="{{ $requiredProduct->order_date }}">
-                                                                {{ !empty($requiredProduct->order_date) ? $requiredProduct->order_date : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.product_name')">
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][product_id]"
-                                                                    value="{{ $requiredProduct->product_id }}">
-                                                                {{ !empty($requiredProduct->product_id) ? $requiredProduct->product->name : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.store')">
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][store_id]"
-                                                                    id="store_id"
-                                                                    value="{{ $requiredProduct->store_id }}">
-                                                                {{ !empty($requiredProduct->store_id) ? $requiredProduct->stores->name : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ status +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.status')">
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][status]"
-                                                                    id="status" value="final">
-                                                                {{ !empty($requiredProduct->status) ? $requiredProduct->status : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.supplier_name')">
-
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][supplier_id]"
-                                                                    id="supplier_id"
-                                                                    value="{{ $requiredProduct->supplier_id }}">
-                                                                {{ !empty($requiredProduct->supplier_id) ? $requiredProduct->supplier->name : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.branch_name')">
-
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][branch_id]"
-                                                                    id="branch_id"
-                                                                    value="{{ $requiredProduct->branch_id }}">
-                                                                {{ !empty($requiredProduct->branch_id) ? $requiredProduct->branch->name : '' }}
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ purchase_price , dollar_purchase_price +++++++++++++++++ --}}
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.purchase_price')">
-
-                                                                {{-- dinar_purchase_price --}}
-                                                                <input type="hidden" class="form-control"
-                                                                    name="products[{{ $index }}][purchase_price]"
-                                                                    id="purchase_price"
-                                                                    value="{{ $requiredProduct->purchase_price }}">
-                                                                {{ !empty($requiredProduct->purchase_price) ? $requiredProduct->purchase_price : '' }}
-                                                                <br />
-                                                                {{-- dollar_purchase_price --}}
-                                                                <span class="dollar-cell">
-                                                                    <input type="hidden" class="form-control"
-                                                                        name="products[{{ $index }}][dollar_purchase_price]"
-                                                                        id="dollar_purchase_price"
-                                                                        value="{{ $requiredProduct->dollar_purchase_price }}">
-                                                                    {{ !empty($requiredProduct->dollar_purchase_price) ? $requiredProduct->dollar_purchase_price : '' }}
-                                                                    $
-                                                                </span>
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.required_quantity')">
-                                                                <input type="text" class="form-control"
-                                                                    name="products[{{ $index }}][required_quantity]"
-                                                                    id="required_quantity"
-                                                                    placeholder="@lang('lang.required_quantity')">
-                                                            </span>
-                                                        </td>
-                                                        {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}
-                                                        <td class="text-center">
-                                                            <a href="javascript:void(0)"
-                                                                class="btn btn-xs btn-danger deleteRow">
-                                                                <i class="fa fa-trash"></i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+    <div class="animate-in-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <div class="row">
+                                {{-- ////////////////////// Filters ////////////////////// --}}
+                                <div class="col-lg-12">
+                                    <div class="container-fluid">
+                                        @include('purchase_order.required_products.partials.filters')
                                     </div>
-                                    <br />
-                                    {{-- +++++++++++++ save Button +++++++++++ --}}
-                                    <div class="row mt-4">
-                                        <div class="col-sm-12">
-                                            <div class="text-right">
-                                                <input type="submit" id="submit-btn" class="btn btn-primary"
-                                                    value="@lang('lang.save')" name="submit">
+                                </div>
+                                <div class="col-sm-12">
+                                    <form class="form-group" id="productForm"
+                                        action="{{ route('required-products.store') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="row mt-4 m-auto" style="max-height: 90vh;overflow: scroll">
+                                            {{-- ++++++++++++++ required products Table ++++++++++ --}}
+                                            <table id="productTable"
+                                                class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        {{-- "select_all" checkbox --}}
+                                                        <th> <input type="checkbox" id="select_all_ids" /> </th>
+                                                        <th>@lang('lang.employee_name')</th>
+                                                        <th>@lang('lang.date')</th>
+                                                        <th>@lang('lang.product_name')</th>
+                                                        <th>@lang('lang.store')</th>
+                                                        <th>@lang('lang.status')</th>
+                                                        <th>@lang('lang.supplier_name')</th>
+                                                        <th>@lang('lang.branch_name')</th>
+                                                        <th>@lang('lang.purchase_price')</th>
+                                                        <th>@lang('lang.required_quantity')</th>
+                                                        <th>@lang('lang.action')</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody">
+                                                    @foreach ($requiredProducts as $index => $requiredProduct)
+                                                        <tr>
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td>
+                                                                <input type="checkbox"
+                                                                    name="products[{{ $index }}][checkbox]"
+                                                                    class="checkbox_ids" value="1" />
+                                                            </td>
+                                                            {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.employee_name')">
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][employee_id]"
+                                                                        value="{{ $requiredProduct->employee_id }}">
+                                                                    {{ !empty($requiredProduct->employee_id) ? $requiredProduct->employee->employee_name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ order_date +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.date')">
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][order_date]"
+                                                                        value="{{ $requiredProduct->order_date }}">
+                                                                    {{ !empty($requiredProduct->order_date) ? $requiredProduct->order_date : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.product_name')">
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][product_id]"
+                                                                        value="{{ $requiredProduct->product_id }}">
+                                                                    {{ !empty($requiredProduct->product_id) ? $requiredProduct->product->name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.store')">
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][store_id]"
+                                                                        id="store_id"
+                                                                        value="{{ $requiredProduct->store_id }}">
+                                                                    {{ !empty($requiredProduct->store_id) ? $requiredProduct->stores->name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ status +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.status')">
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][status]"
+                                                                        id="status" value="final">
+                                                                    {{ !empty($requiredProduct->status) ? $requiredProduct->status : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.supplier_name')">
+
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][supplier_id]"
+                                                                        id="supplier_id"
+                                                                        value="{{ $requiredProduct->supplier_id }}">
+                                                                    {{ !empty($requiredProduct->supplier_id) ? $requiredProduct->supplier->name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.branch_name')">
+
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][branch_id]"
+                                                                        id="branch_id"
+                                                                        value="{{ $requiredProduct->branch_id }}">
+                                                                    {{ !empty($requiredProduct->branch_id) ? $requiredProduct->branch->name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ purchase_price , dollar_purchase_price +++++++++++++++++ --}}
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.purchase_price')">
+
+                                                                    {{-- dinar_purchase_price --}}
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][purchase_price]"
+                                                                        id="purchase_price"
+                                                                        value="{{ $requiredProduct->purchase_price }}">
+                                                                    {{ !empty($requiredProduct->purchase_price) ? $requiredProduct->purchase_price : '' }}
+                                                                    <br />
+                                                                    {{-- dollar_purchase_price --}}
+                                                                    <span class="dollar-cell">
+                                                                        <input type="hidden" class="form-control"
+                                                                            name="products[{{ $index }}][dollar_purchase_price]"
+                                                                            id="dollar_purchase_price"
+                                                                            value="{{ $requiredProduct->dollar_purchase_price }}">
+                                                                        {{ !empty($requiredProduct->dollar_purchase_price) ? $requiredProduct->dollar_purchase_price : '' }}
+                                                                        $
+                                                                    </span>
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.required_quantity')">
+                                                                    <input type="text" class="form-control"
+                                                                        name="products[{{ $index }}][required_quantity]"
+                                                                        id="required_quantity"
+                                                                        placeholder="@lang('lang.required_quantity')">
+                                                                </span>
+                                                            </td>
+                                                            {{-- +++++++++++++++++ delete button +++++++++++++++++ --}}
+                                                            <td class="text-center">
+                                                                <a href="javascript:void(0)"
+                                                                    class="btn btn-xs btn-danger deleteRow">
+                                                                    <i class="fa fa-trash"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <br />
+                                        {{-- +++++++++++++ save Button +++++++++++ --}}
+                                        <div class="row mt-4">
+                                            <div class="col-sm-12">
+                                                <div class="text-right">
+                                                    <input type="submit" id="submit-btn" class="btn btn-primary"
+                                                        value="@lang('lang.save')" name="submit">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

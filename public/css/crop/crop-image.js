@@ -48,13 +48,22 @@ fileImageInput.addEventListener("change", () => {
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Yes, delete it!",
+                        timer: 700
                     }).then((result) => {
                         if (result) {
-                            Swal.fire(
-                                "Deleted!",
-                                LANG.your_image_has_been_deleted,
-                                "success"
-                            );
+                            // Swal.fire(
+                            //     "Deleted!",
+                            //     LANG.your_image_has_been_deleted,
+                            //     "success"
+                            // );
+
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: LANG.your_image_has_been_deleted,
+                                icon: "success",
+                                timer: 700, // Set the timer to 1000 milliseconds (1 second)
+                                showConfirmButton: false // This will hide the "OK" button
+                            });
                             files.splice(file, 1);
                             preview.remove();
                             getImages();
@@ -82,6 +91,7 @@ fileImageInput.addEventListener("change", () => {
                 icon: "error",
                 title: '{{ __("Oops...") }}',
                 text: '{{ __("Sorry , You Should Upload Valid Image") }}',
+                timer: 700
             });
         }
     }

@@ -374,7 +374,7 @@
         </div>
     </div>
 </div>
-{{-- <script>
+<script>
     $(document).ready(function() {
         var modelEl = $('.modal-supplier-add');
 
@@ -397,4 +397,4 @@
                 }
             })
     })
-</script> --}}
+</script>

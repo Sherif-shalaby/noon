@@ -534,7 +534,15 @@
                 contentType: "html",
                 success: function(result) {
                     if (result.success) {
-                        Swal.fire("Success", response.msg, "success");
+                        // Swal.fire("Success", response.msg, "success");
+                        Swal.fire({
+                            title: "Success",
+                            text: response.status,
+                            icon: "success",
+                            timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                            showConfirmButton: false // This will hide the "OK" button
+                        });
+
                     }
                 },
             });

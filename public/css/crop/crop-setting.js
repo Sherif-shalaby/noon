@@ -91,7 +91,7 @@ fileHeaderInput.addEventListener("change", () => {
                 deleteBtn.addEventListener("click", () => {
                     Swal.fire({
                         title: LANG.are_you_sure,
-                        text:  LANG.you_wont_be_able_to_delete,
+                        text: LANG.you_wont_be_able_to_delete,
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
@@ -99,11 +99,18 @@ fileHeaderInput.addEventListener("change", () => {
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
                         if (result) {
-                            Swal.fire(
-                                "Deleted!",
-                                LANG.your_image_has_been_deleted,
-                                "success"
-                            );
+                            // Swal.fire(
+                            //     "Deleted!",
+                            //     LANG.your_image_has_been_deleted,
+                            //     "success"
+                            // );
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: LANG.your_image_has_been_deleted,
+                                icon: "success",
+                                timer: 700, // Set the timer to 1000 milliseconds (1 second)
+                                showConfirmButton: false // This will hide the "OK" button
+                            });
                             files.splice(file, 1);
                             preview.remove();
                             getHeaderImages();
@@ -131,6 +138,7 @@ fileHeaderInput.addEventListener("change", () => {
                 icon: "error",
                 title: '{{ __("Oops...") }}',
                 text: '{{ __("Sorry , You Should Upload Valid Image") }}',
+                timer: 1000
             });
         }
     }
@@ -269,11 +277,18 @@ fileFooterInput.addEventListener("change", () => {
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
                         if (result) {
-                            Swal.fire(
-                                "Deleted!",
-                                LANG.your_image_has_been_deleted,
-                                "success"
-                            );
+                            // Swal.fire(
+                            //     "Deleted!",
+                            //     LANG.your_image_has_been_deleted,
+                            //     "success"
+                            // );
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: LANG.your_image_has_been_deleted,
+                                icon: "success",
+                                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                                showConfirmButton: false // This will hide the "OK" button
+                            });
                             files.splice(file, 1);
                             preview.remove();
                             getFooterImages();
@@ -301,6 +316,7 @@ fileFooterInput.addEventListener("change", () => {
                 icon: "error",
                 title: '{{ __("Oops...") }}',
                 text: '{{ __("Sorry , You Should Upload Valid Image") }}',
+                timer: 1000
             });
         }
     }
@@ -431,11 +447,18 @@ fileLogoInput.addEventListener("change", () => {
                         confirmButtonText: "Yes, delete it!",
                     }).then((result) => {
                         if (result) {
-                            Swal.fire(
-                                "Deleted!",
-                                LANG.your_image_has_been_deleted,
-                                "success"
-                            );
+                            // Swal.fire(
+                            //     "Deleted!",
+                            //     LANG.your_image_has_been_deleted,
+                            //     "success"
+                            // );
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: LANG.your_image_has_been_deleted,
+                                icon: "success",
+                                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                                showConfirmButton: false // This will hide the "OK" button
+                            });
                             files.splice(file, 1);
                             preview.remove();
                             getLogoImages();
@@ -463,6 +486,7 @@ fileLogoInput.addEventListener("change", () => {
                 icon: "error",
                 title: '{{ __("Oops...") }}',
                 text: '{{ __("Sorry , You Should Upload Valid Image") }}',
+                timer: 1000
             });
         }
     }

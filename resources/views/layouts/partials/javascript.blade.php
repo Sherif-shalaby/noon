@@ -173,7 +173,15 @@
             contentType: "html",
             success: function(result) {
                 if (result.success) {
-                    Swal.fire("Success", response.msg, "success");
+                    // Swal.fire("Success", response.msg, "success");
+                    Swal.fire({
+                        title: "Success",
+                        text: response.status,
+                        icon: "success",
+                        timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                        showConfirmButton: false // This will hide the "OK" button
+                    });
+
                 }
             },
         });
@@ -205,6 +213,7 @@
         new PNotify({
             title: '{{ session('status.msg') }} !',
             text: '{{ session('status.msg') }}',
+            delay: 700,
             @if (session('status.success') == '1')
                 type: "success"
             @else
@@ -254,11 +263,19 @@
                             success: (data) => {
 
                                 if (data.success == true) {
-                                    Swal.fire(
-                                        'success',
-                                        "{!! __('lang.correct_password') !!}",
-                                        'success'
-                                    );
+                                    // Swal.fire(
+                                    //     'success',
+                                    //     "{!! __('lang.correct_password') !!}",
+                                    //     'success'
+                                    // );
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: {!! __('lang.correct_password') !!},
+                                        icon: "success",
+                                        timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                                        showConfirmButton: false // This will hide the "OK" button
+                                    });
+
                                     // location.reload();
                                     $.ajax({
                                         method: 'DELETE',
@@ -272,7 +289,8 @@
                                                     title: result
                                                         .msg,
                                                     text: 'Check me out! I\'m a notice.',
-                                                    type: 'success'
+                                                    type: 'success',
+                                                    delay: 700
                                                 });
                                                 setTimeout(() => {
                                                     location
@@ -284,18 +302,27 @@
                                                     title: result
                                                         .msg,
                                                     text: 'Check me out! I\'m a notice.',
-                                                    type: 'error'
+                                                    type: 'error',
+                                                    delay: 700
                                                 });
                                             }
                                         },
                                     });
 
                                 } else {
-                                    Swal.fire(
-                                        'Failed!',
-                                        'Wrong Password!',
-                                        'error'
-                                    )
+                                    // Swal.fire(
+                                    //     'Failed!',
+                                    //     'Wrong Password!',
+                                    //     'error'
+                                    // )
+                                    Swal.fire({
+                                        title: "Failed!",
+                                        text: Wrong Password!,
+                                        icon: "error",
+                                        timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                                        showConfirmButton: false // This will hide the "OK" button
+                                    });
+
 
                                 }
                             }

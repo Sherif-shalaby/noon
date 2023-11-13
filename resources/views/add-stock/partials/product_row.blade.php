@@ -166,6 +166,7 @@
             <input type="text" class="form-control" style="width: 61px;height:30px;font-size:12px;" required
                 wire:model="items.{{ $index }}.dollar_purchase_price"
                 wire:change="changeFilling({{ $index }})">
+            <span>{{ $product['dollar_purchase_price_span'] }}</span>
             @error('items.' . $index . '.dollar_purchase_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -181,6 +182,7 @@
     font-size: 10px;">@lang('lang.selling_price')$</span>
             <input type="text" class="form-control" style="width: 61px;height:30px;font-size:12px;" required
                 wire:model="items.{{ $index }}.dollar_selling_price">
+            <span>{{ $product['dollar_selling_price_span'] }}</span>
             @error('items.' . $index . '.dollar_selling_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -212,6 +214,7 @@
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price"
                 wire:change="changeFilling({{ $index }})" style="width: 61px;height:30px;font-size:12px;"
                 required>
+            <span>{{ $product['purchase_price_span'] }}</span>
             @error('items.' . $index . '.purchase_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -227,6 +230,7 @@
     font-size: 10px;">@lang('lang.selling_price')</span>
             <input type="text" class="form-control " wire:model="items.{{ $index }}.selling_price"
                 style="width: 61px;height:30px;font-size:12px;" required>
+            <span>{{ $product['selling_price_span'] }}</span>
             @error('items.' . $index . '.selling_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
