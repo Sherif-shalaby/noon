@@ -421,12 +421,17 @@
                                                         <div style="height: 100%;max-width: 100%;"
                                                             class="d-flex flex-wrap justify-content-center align-items-center text-center">
                                                             <input style="font-weight: 700;font-size: 10px;width: 65px"
-                                                                class="form-control p-1 text-center" type="text"
-                                                                min="1"
+                                                                class="form-control p-1 text-center ex-rate-cell"
+                                                                type="text" min="1"
                                                                 wire:model="items.{{ $key }}.exchange_rate">
-                                                            <input style="font-weight: 700;font-size: 10px;width: 65px"
-                                                                class="form-control p-1 text-center" type="text"
-                                                                min="1" value="123">
+                                                            @php
+                                                                $dollar_exchange = App\Models\System::where('key', '=', 'dollar_exchange')->get('value');
+                                                            @endphp
+                                                            <input
+                                                                style="font-weight: 700;font-size: 10px;width: 65px;"
+                                                                class="form-control p-1 text-center my-ex-rate-cell"
+                                                                type="text" min="1"
+                                                                value="{{ $dollar_exchange[0]['value'] }}">
                                                         </div>
                                                     </td>
 
@@ -500,34 +505,7 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td style="font-weight: 700;font-size: 10px;height: 50px;"
-                                                    class="px-1 border-right ">
-                                                    <div style="height: 100%;max-width: 100%;"
-                                                        class="d-flex flex-wrap justify-content-center align-items-center text-center ">
-                                                        <input style="font-weight: 700;font-size: 10px;width: 65px"
-                                                            class="form-control p-1 text-center ex-rate-cell"
-                                                            type="text" min="1">
-                                                        @php
-                                                            $dollar_exchange = App\Models\System::where('key', '=', 'dollar_exchange')->get('value');
-                                                        @endphp
-                                                        <input style="font-weight: 700;font-size: 10px;width: 65px;"
-                                                            class="form-control p-1 text-center my-ex-rate-cell"
-                                                            type="text" min="1"
-                                                            value="{{ $dollar_exchange[0]['value'] }}">
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+
                                         </table>
                                     </div>
                                 </div>
