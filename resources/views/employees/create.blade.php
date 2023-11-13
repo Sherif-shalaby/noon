@@ -111,13 +111,13 @@
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
-                                                   required placeholder="Create New Password">
+                                                    placeholder="Create New Password">
                                         </div>
                                         {{-- ============= confirm_password ============= --}}
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
-                                                   name="password_confirmation" required placeholder="Conform Password">
+                                                   name="password_confirmation" placeholder="Conform Password">
                                         </div>
 
                                     </div>

@@ -57,13 +57,13 @@
                                 {!! Form::select('store_id[]', $stores,$selected_stores, ['class' => 'form-control select2','multiple', 'placeholder' => __('lang.please_select'), 'data-live-search' => 'true', 'id' => 'store_id']) !!}
                             </div>
                         </div>
-
+                        {{-- ++++++++++++++++++++++++ password , confirm_password ++++++++++++++++++++++++ --}}
                         <div class="row mt-4">
 
                             <div class="col-sm-6">
                                 <label for="password">@lang('lang.password')</label>
                                 <input type="password" class="form-control" name="password" id="password"
-                                       placeholder="Create New Password" value="{{ $employee->pass_string }}">
+                                       placeholder="Create New Password">
                             </div>
                             <div class="col-sm-6">
                                 <label for="pass">@lang('lang.confirm_password')</label>

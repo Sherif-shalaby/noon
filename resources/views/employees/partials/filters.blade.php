@@ -8,27 +8,28 @@
                     ) !!}
                 </div>
             </div>
-            {{-- ++++++++++++++++ subcategory1 selectbox +++++++++++++++++ --}}
+            {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('subcategory_id1', ['' => __('lang.subcategory')." 1"], null, ['class' => 'form-control', 'id' => 'subcategory_id1']) !!}
+                    {!! Form::select( 'subcategory_id1', [],null,
+                        ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
+                    ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
-                {{-- <div class="form-group">
-                    {!! Form::select( 'subcategory_id2', $subcategories,null,
+                <div class="form-group">
+                    {!! Form::select( 'subcategory_id2', [] ,null,
                             ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
                     ) !!}
-                </div> --}}
-                <div class="form-group">
-                    {!! Form::select('subcategory_id2', ['' => __('lang.subcategory')." 2"], null, ['class' => 'form-control', 'id' => 'subcategory_id2']) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('subcategory_id3', ['' => __('lang.subcategory')." 3"], null, ['class' => 'form-control', 'id' => 'subcategory_id3']) !!}
+                    {!! Form::select('subcategory_id3', [] ,null,
+                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
+                    ) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "brand" filter ++++++++++++++++++ --}}
