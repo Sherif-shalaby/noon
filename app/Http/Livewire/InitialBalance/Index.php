@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\InitialBalance;
 
+use App\Models\Brand;
 use App\Models\StockTransaction;
 use App\Models\Supplier;
 use App\Models\User;
@@ -10,7 +11,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public  $stocks, $product_name, $product_sku, $product_symbol, $supplier_id, $created_by ;
+    public  $stocks, $product_name, $product_sku, $product_symbol, $supplier_id, $created_by, $from, $to, $brand_id ;
 
     protected $listeners = ['listenerReferenceHere'];
 
@@ -29,6 +30,7 @@ class Index extends Component
     public function render()
     {
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $users=User::orderBy('created_at', 'desc')->pluck('name','id');
         $this->stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])
             ->when(\request()->dont_show_zero_stocks =="on", function ($query) {
@@ -57,10 +59,20 @@ class Index extends Component
                     $subquery->where('product_symbol', 'like', '%' . $this->product_symbol . '%');
                 });
             })
-
+            ->when($this->brand_id != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('brand_id', $this->brand_id);
+                });
+            })
+            ->when($this->from != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') >= ?", [$this->from]);
+            })
+            ->when($this->to != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') <= ?", [$this->to]);
+            })
             ->orderBy('created_at', 'desc')->get();
         return view('livewire.initial-balance.index',
-            compact('suppliers','users'));
+            compact('suppliers','users','brands'));
     }
     public function calculatePendingAmount($transaction_id): string
     {

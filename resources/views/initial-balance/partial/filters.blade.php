@@ -45,10 +45,38 @@
             </div>
             <div class="col-2">
                 <div class="form-group">
+                    {!! Form::select(
+                        'brand_id',
+                        $brands, $brand_id,
+                        ['class' => 'form-control select2','placeholder'=>__('lang.brand'), 'data-name' => 'brand_id','wire:model' => 'brand_id']
+                    ) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="from">{{__('site.From')}}</label>
+                    {!! Form::date(
+                        'from', $from,
+                        ['class' => 'form-control','placeholder'=>__('lang.from'),'wire:model' => 'from']
+                    ) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="to">{{__('site.To')}}</label>
+                    {!! Form::date(
+                        'to', $to,
+                        ['class' => 'form-control','placeholder'=>__('lang.to'),'wire:model' => 'to']
+                    ) !!}
+                </div>
+            </div>
+            {{-- <div class="col-2">
+                <div class="form-group">
                     <button type="button" name="submit" class="btn btn-danger width-100" title="search" wire:click="clear_filters">
                          {{ __('lang.clear_filters') }}</button>
                 </div>
-            </div>
+            </div> --}}
+            
         </div>
 {{--    </form>--}}
 </div>
