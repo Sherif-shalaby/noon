@@ -171,8 +171,8 @@
                                         <th style="width: 10%" >@lang('lang.sku')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.unit')</th>
-                                        <th style="width: 10%">@lang('lang.fill')</th>
-                                        <th style="width: 10%">@lang('lang.basic_unit')</th>
+                                        {{-- <th style="width: 10%">@lang('lang.fill')</th> --}}
+                                        {{-- <th style="width: 10%">@lang('lang.basic_unit')</th> --}}
                                         <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
                                         {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
                                         {{--                                        @if ($showColumn)--}}

@@ -154,7 +154,7 @@
             </td>
             <td>
                 {!! Form::label('price' ,isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
-                <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}"
+                <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')}}"
                 @if(empty($rows[$index]['prices'][$key]['price_type'])) readonly @endif >
                 <p>
                     {{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount').' $': __('lang.percent').' $'}}:{{$this->rows[$index]['prices'][$key]['price']??''}}
