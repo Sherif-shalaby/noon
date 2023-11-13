@@ -1,15 +1,19 @@
 @extends('layouts.app')
-@section('title', __('lang.delivery_plans'))
+@section('title', __('lang.show_plans'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="row align-items-center">
             <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.delivery_plans')</h4>
+                <h4 class="page-title">@lang('lang.show_plans')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        {{--                        <li class="breadcrumb-item active"><a href="#">@lang('lang.employees')</a></li>--}}
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.delivery_plans')</li>
+                        @if((request()->segment(2).'/'.request()->segment(3)) == "plans/representatives")
+                            <li class="breadcrumb-item active"><a href="{{ route('representatives.index') }}">@lang('lang.representatives')</a></li>
+                        @else
+                            <li class="breadcrumb-item active"><a href="#">@lang('lang.delivery')</a></li>
+                        @endif
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.show_plans')</li>
                     </ol>
                 </div>
             </div>
@@ -23,7 +27,7 @@
         <div class="col-md-12  no-print">
             <div class="card mt-3">
                 <div class="card-header d-flex align-items-center">
-                    <h4 class="print-title">@lang('lang.delivery_plans')</h4>
+                    <h4 class="print-title">@lang('lang.show_plans')</h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -43,8 +47,9 @@
                                             </div>
                                             <div class="col-2">
                                                 <div class="form-group">
-                                                    <select name="delivery_id" class="form-control select2" placeholder="{{ __('lang.delivery') }}">
-                                                        <option value="">{{ __('lang.delivery') }}</option>
+                                                    <select name="delivery_id" class="form-control select2"
+                                                            placeholder="@if((request()->segment(2).'/'.request()->segment(3)) == "plans/representatives") {{ __('lang.representatives') }} @else {{ __('lang.delivery') }}@endif">
+                                                        <option value="">@if((request()->segment(2).'/'.request()->segment(3)) == "plans/representatives") {{ __('lang.representatives') }} @else {{ __('lang.delivery') }}@endif</option>
                                                         @foreach($delivery_men_data as $id => $name)
                                                             <option value="{{ $id }}">{{ $name }}</option>
                                                         @endforeach

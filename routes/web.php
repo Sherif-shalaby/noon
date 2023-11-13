@@ -168,9 +168,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
     //delivery
     Route::resource('delivery',  DeliveryController::class);
+    Route::get('representative/plan', [DeliveryController::class,'indexForRep'])->name('rep_plan.index');
     // Route::get('delivery/edit/{id}',   [DeliveryController::class,'edit'])->name('delivery.edit');
     Route::get('delivery/create/{id}', [DeliveryController::class,'create'])->name('delivery.create');
     Route::get('plans', [DeliveryController::class,'plansList'])->name('delivery_plan.plansList');
+    Route::get('plans/representatives', [DeliveryController::class,'plansListForRep'])->name('representatives.plansList');
     Route::post('delivery_plan/sign-in', [DeliveryController::class,'signIn']);
     Route::post('delivery_plan/sign-out', [DeliveryController::class,'signOut']);
 

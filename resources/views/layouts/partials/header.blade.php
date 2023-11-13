@@ -139,11 +139,16 @@
                       </ul>
                   </li>
 
-                <li>
-                    <a href="{{route('representatives.index')}}">
+                <li class="dropdown">
+                    <a href="#">
                         <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
                         <span>{{__('lang.representatives_requests')}}</span>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route('representatives.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.representatives_requests')}}</a></li>
+                        <li><a href="{{route('rep_plan.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.plans')}}</a></li>
+
+                    </ul>
                 </li>
                 {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}

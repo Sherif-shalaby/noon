@@ -584,6 +584,8 @@ return [
     'customer_details' => 'Customer Details',
     'final'=>'Final',
     'draft'=>'Draft',
+    'show_plans' => 'Show Plans'
+
 ];
 
 

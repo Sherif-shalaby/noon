@@ -618,5 +618,6 @@ return array(
     'customer_details' => 'تفاصيل العميل',
     'final'=>'دفعت',
     'draft'=>'مسودة',
+    'show_plans' => 'عرض الخطط'
 );
 
