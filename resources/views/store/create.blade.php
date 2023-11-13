@@ -40,7 +40,6 @@
                         {!! Form::label('details', __('lang.details'))  !!}
                         {!! Form::textarea('email',null, ['class' => 'form-control' , 'placeholder' => __('lang.details') , 'rows' => '2']);  !!}
                     </div>
-
                 </div>
 
                 <div class="modal-footer">
