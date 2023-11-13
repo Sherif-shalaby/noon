@@ -79,11 +79,12 @@ class Create extends Component
         }
         else{
             $recent_stock = StockTransaction::where('type','add_stock')->orderBy('created_at', 'desc')->first();
-            if(!empty($recent_stock)){
+            if(!empty($recent_stock))
+            {
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ?? null ;
                 $this->supplier = $recent_stock->supplier_id?? null;
-//                $this->transaction_date = $recent_stock->transaction_date ?? null;
+
                 $this->transaction_currency = $recent_stock->transaction_currency ?? null;
                 $this->purchase_type = $recent_stock->purchase_type ?? null;
                 $this->divide_costs = $recent_stock->divide_costs ?? null;
@@ -193,7 +194,6 @@ class Create extends Component
             $products = Product::paginate();
         }
 
-//        $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.add-stock.create',
             compact('status_array',

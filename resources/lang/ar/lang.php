@@ -49,6 +49,7 @@ return array(
     'general_settings'=>'الاعدادات العامة',
     'state' => 'المحافظة' ,
     'developed_by'=>'طور بواسطة',
+    'edit_purchase_order' => 'تعديل امر شراء',
     'site_title'=>'عنوان الموقع',
     'time_format'=>'تنسيق الوقت',
     'language'=>'لغة',
