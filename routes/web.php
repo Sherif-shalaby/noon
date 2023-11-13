@@ -278,7 +278,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('transfer/export/{id}','transfer.export')->name('transfer.export');
 
     Route::resource('representatives', RepresentativeController::class);
-    Route::get('representatives/print-representative-invoice', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
+    Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
+    Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

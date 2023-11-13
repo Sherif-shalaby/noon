@@ -64,7 +64,7 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id;
+        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id, $variationSums = [];
 
 
     public function mount(){
@@ -84,7 +84,6 @@ class Create extends Component
                 $transaction_payment = $recent_stock->transaction_payments->first();
                 $this->store_id =$recent_stock->store_id ?? null ;
                 $this->supplier = $recent_stock->supplier_id?? null;
-
                 $this->transaction_currency = $recent_stock->transaction_currency ?? null;
                 $this->purchase_type = $recent_stock->purchase_type ?? null;
                 $this->divide_costs = $recent_stock->divide_costs ?? null;
@@ -141,7 +140,9 @@ class Create extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-        $stores = Store::getDropdown();
+        $stores = Store::whereHas('branch', function ($query) {
+            $query->where('type', 'branch');
+        })->pluck('name','id');
         $departments = Category::get();
         $customer_types = CustomerType::latest()->get();
         $po_nos = PurchaseOrderTransaction::where('status', '!=', 'received')->pluck('po_no', 'id');
@@ -497,10 +498,11 @@ class Create extends Component
 
         }
         $product = Product::find($id);
+        $stock = $product->stock_lines->last();
         $variations = $product->variations;
         if($add_via == 'unit'){
             $show_product_data = false;
-            $this->addNewProduct($variations,$product,$show_product_data, $index);
+            $this->addNewProduct($variations,$product,$show_product_data, $index, $stock);
         }
         else{
             if(!empty($this->items) && $new_unit_raw==0){
@@ -519,30 +521,33 @@ class Create extends Component
                 else{
                     // dd(7);
                     $show_product_data = true;
-                    $this->addNewProduct($variations,$product,$show_product_data);
+                    $this->addNewProduct($variations,$product,$show_product_data,null, $stock);
                 }
             }
             else{
                 $show_product_data = true;
-                $this->addNewProduct($variations,$product,$show_product_data,$index);
+                $this->addNewProduct($variations,$product,$show_product_data,$index, $stock);
             }
         }
 
     }
 
-//    public function getCurrentStock($product_id){
-    public function addNewProduct($variations,$product,$show_product_data, $index = null){
+    public function addNewProduct($variations,$product,$show_product_data, $index = null, $stock){
+        $current_stock = $product->stock_lines->sum('quantity', '-','quantity_sold');
+        if(!empty($variations)){
+            $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id);
+        }
           $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
-            'variation_id' => $variations->first()->id ?? null,
+            'variation_id' => !empty($stock) ? $stock->variation_id : ($variations->first()->id ?? null) ,
             'product' => $product,
-            'purchase_price' => null,
-            'dollar_purchase_price' => null,
+            'purchase_price' => !empty($stock) ? $stock->purchase_price : null,
+            'dollar_purchase_price' => !empty($stock) ? $stock->dollar_purchase_price : null,
             'quantity' => 1,
-            'unit' => null,
-            'base_unit_multiplier' => null,
-            'fill_type' => 'fixed',
+            'unit' => !empty($variant) ? $variant->unit->name : '',
+            'base_unit_multiplier' => !empty($variant) ? $variant->equal : 0,
+            'fill_type' => !empty($stock) ? $stock->fill_type : 'fixed',
             'sub_total' => 0,
             'dollar_sub_total' => 0,
             'size' => isset($variations->first()->id)?(!empty(!empty($product->product_dimensions->size) && $variations->first()->id===$product->product_dimensions->variation_id) ? $product->product_dimensions->size :0):0,
@@ -553,9 +558,9 @@ class Create extends Component
             'cost' => 0,
             'dollar_total_cost' => 0,
             'total_cost' => 0,
-            'current_stock' =>0,
-            'total_stock' => 0 + 1,
-            'fill_quantity' => null,
+            'current_stock' => $current_stock,
+            'total_stock' => $current_stock + 1,
+            'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
             'prices' => [
                 [
                     'price_type' => null,
@@ -684,7 +689,7 @@ class Create extends Component
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
                 $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
-                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->items[$index]['prices'][$key]['price_after_desc'],3) ;
+                $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price'])/(!empty($total_quantity) ? $total_quantity : 1),3) ;
             }
             else{
                 $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? (float)$this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
@@ -1009,6 +1014,20 @@ class Create extends Component
         return $count;
     }
 
+    public function count_total_by_variations(){
+        $this->variationSums = [];
+        foreach ($this->items as $item) {
+            $variation_name = $item['unit'];
+
+            if (isset($this->variationSums[$variation_name])) {
+                // If the variation_id already exists in the sums array, add the quantity
+                $this->variationSums[$variation_name] += $item['quantity'];
+            } else {
+                // If the variation_id doesn't exist, create a new entry
+                $this->variationSums[$variation_name] = $item['quantity'];
+            }
+        }
+    }
     public function getPurchaseOrderStatusArray()
     {
         return [

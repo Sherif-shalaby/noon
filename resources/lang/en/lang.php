@@ -579,7 +579,11 @@ return [
     'import_stock' => 'Add Stock',
     'export_stock' => 'Export Stock',
     'total_sells'  => 'Total Sells',
-
+    'location'=>'Location',
+    'print'=>'Print',
+    'customer_details' => 'Customer Details',
+    'final'=>'Final',
+    'draft'=>'Draft',
 ];
 
 
