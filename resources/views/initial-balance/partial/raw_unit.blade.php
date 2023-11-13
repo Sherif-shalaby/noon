@@ -108,7 +108,7 @@
             <td></td>
             <td>
                 {!! Form::label('price' ,__('lang.quantity')) !!}
-                <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.quantity')}}" >
+                <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" wire:change="changePrice({{ $index }}, {{ $key }}, 'quantity')" placeholder = "{{__('lang.quantity')}}" >
                 @error('rows.'.$index.'.prices.'.$key.'.discount_quantity')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -120,7 +120,7 @@
             </td>
             <td >
                 {!! Form::label('b_qty',__('lang.b_qty')) !!}
-                <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.b_qty')}}" >
+                <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }}, 'quantity')" placeholder = "{{__('lang.b_qty')}}" >
                 @error('rows.'.$index.'.prices.'.$key.'.bonus_quantity')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
