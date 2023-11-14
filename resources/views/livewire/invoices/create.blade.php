@@ -494,7 +494,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
+                                        {{--  --}}
                                     </table>
                                 </div>
                                 @include('invoices.partials.rightSidebar')
