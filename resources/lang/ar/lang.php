@@ -620,5 +620,6 @@ return array(
     'draft'=>'مسودة',
     'show_plans' => 'عرض الخطط',
     'choose_unit_please'=>' ! اختر وحدة من فضلك',
+    'generate_invoice' => 'طباعة فاتورة',
 );
 

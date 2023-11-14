@@ -215,11 +215,8 @@ Route::group(['middleware' => ['auth']], function () {
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
-    Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
-    Route::get('invoices/{invoice}', function ($id) {
-        return view('invoices.show', compact('id'));
-    })->name('invoices.show');
+
     Route::get('invoices/edit/{invoice}', function ($id) {
         return view('invoices.edit', compact('id'));
     })->name('invoices.edit');
