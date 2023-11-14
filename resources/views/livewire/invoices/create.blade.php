@@ -396,6 +396,10 @@
             });
 
         });
+
+
+
+        
         $(document).on('change','.dollarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
