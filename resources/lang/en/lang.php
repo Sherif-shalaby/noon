@@ -598,5 +598,7 @@ return [
     'final' => 'Final',
     'draft' => 'Draft',
     'edit_purchase_order' => 'Edit purchase order',
-    'show_plans' => 'Show Plans'
+    'show_plans' => 'Show Plans',
+    'choose_unit_please' => 'Choose Unit, Please!',
+    'generate_invoice' => 'Print Invoice',
 ];

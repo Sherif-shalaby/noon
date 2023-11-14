@@ -315,6 +315,7 @@
                                             maxlength="6"
                                             style="border-radius: 12px;height: 30px;font-size: 13px;font-weight:500;">
                                     </div>
+
                                     <div
                                         style="width: 100px;font-size: 12px;background-color: white;border-radius: 6px;margin: 6px;padding: 8px;">
                                         {!! Form::label('price', __('lang.quantity'), [
@@ -356,6 +357,7 @@
                                             ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
                                             null,
                                             [
+                                                'id' => 'price_type',
                                                 'class' => ' p-0 price_type',
                                                 'placeholder' => __('lang.please_select'),
                                                 'style' => 'border-radius: 12px;height: 30px;',
@@ -363,8 +365,8 @@
                                                 'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
                                             ],
                                         ) !!}
-                                        <select class="custom-select "
-                                            style="width:68px;font-size:10px;height:38px; {{ $rows[$index]['prices'][$key]['price_type'] !== 'fixed' ? 'display:none;' : '' }}"
+                                        <select class="custom-select mt-2" id="price_type_custom_select"
+                                            style="font-size:10px;height:38px; {{ $rows[$index]['prices'][$key]['price_type'] !== 'fixed' ? 'display:none;' : '' }}"
                                             wire:model="rows.{{ $index }}.prices.{{ $key }}.price_currency">
                                             <option selected value="dollar">Dollar</option>
                                             <option value="dinar">Dinar</option>
@@ -496,17 +498,15 @@
                                             </select>
 
                                             {{-- <select class="selectpicker" data-live-search="true"
-                                    wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
-                                    data-name='price_customer_types' data-index="{{ $index }}"
-                                    data-key="{{ $key }}" multiple='multiple'
-                                    style="border-radius:6px !important; border: 2px solid gray"
-                                    title="{{ __('lang.please_select') }}">
-                                    @foreach ($customer_types as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                    @endforeach
-                                </select> --}}
-                                            {{--  --}}
-
+                                                wire:model="rows.{{ $index }}.prices.{{ $key }}.price_customer_types"
+                                                data-name='price_customer_types' data-index="{{ $index }}"
+                                                data-key="{{ $key }}" multiple='multiple'
+                                                style="border-radius:6px !important; border: 2px solid gray"
+                                                title="{{ __('lang.please_select') }}">
+                                                @foreach ($customer_types as $type)
+                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                @endforeach
+                                            </select> --}}
                                         </div>
                                     </div>
 
@@ -541,14 +541,14 @@
     //     }
     // });
 </script>
-{{-- <script>
-    $(document).ready(function() {
-        $('.dis-button').each(function() {
-            $(this).on('click', function() {
-                let index = $(this).attr('data-index');
-
-                $(`#panelsStayOpen-collapse${index}`).toggleClass('show')
-            });
-        })
+<script>
+    const price_type = document.getElementById('price_type');
+    const price_type_custom_select = document.getElementById('price_type_custom_select');
+    price_type.addEventListener("change", function() {
+        if (price_type.value === 'fixed') {
+            price_type_custom_select.style.display = "block"
+        } else {
+            price_type_custom_select.style.display = "none"
+        }
     })
-</script> --}}
+</script>

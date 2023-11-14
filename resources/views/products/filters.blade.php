@@ -27,6 +27,22 @@
                                         margin: auto;
                                         height: 30px;
                                         flex-wrap: nowrap;">
+                    {!! Form::select('supplier_id', $suppliers, request()->supplier_id, [
+                        'class' => 'form-control select2',
+                        'placeholder' => __('lang.supplier'),
+                    ]) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="d-flex justify-content-center align-items-center mb-2"
+                    style="background-color: #dedede; border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 90%;
+                                        margin: auto;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
                     {!! Form::select('category_id', $categories, request()->category_id, [
                         'class' => 'form-control select2 category',
                         'placeholder' => __('lang.category'),

@@ -404,7 +404,11 @@
                                                         class="px-1 border-right ">
                                                         <div style="height: 100%;max-width: 100%;"
                                                             class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                            {{ $item['price'] ?? '' }}
+                                                            <input class="form-control dinarPrice"
+                                                                data-key="{{ $key }}" type="text"
+                                                                wire:model="items.{{ $key }}.price"
+                                                                style="width: 65px" />
+                                                            {{-- {{ $item['price'] ?? '' }} --}}
                                                         </div>
                                                     </td>
 
@@ -412,7 +416,11 @@
                                                         class="px-1 border-right dollar-cell">
                                                         <div style="height: 100%;max-width: 100%;"
                                                             class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                            {{ number_format($item['dollar_price'] ?? 0, 2) }}
+                                                            <input class="form-control dollarPrice"
+                                                                data-key="{{ $key }}" type="text"
+                                                                wire:model="items.{{ $key }}.dollar_price"
+                                                                style="width: 65px" />
+                                                            {{-- {{ number_format($item['dollar_price'] ?? 0, 2) }} --}}
                                                         </div>
                                                     </td>
 
@@ -523,7 +531,6 @@
     @include('customers.quick_add', ['quick_add' => 1])
 
 
-
     {{-- <!-- This will be printed --> --}}
     <section class="invoice print_section print-only" id="receipt_section"> </section>
     @push('javascripts')
@@ -584,19 +591,18 @@
                     }
                 });
             });
-            //   @if (empty($store_pos))
-            window.addEventListener('NoUserPos', function(event) {
-                Swal.fire({
-                    title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>",
-                    icon: 'error',
-                }).then((result) => {
-                    window.location.href = "{{ route('home') }}";
+            @if (empty($store_pos))
+                window.addEventListener('NoUserPos', function(event) {
+                    Swal.fire({
+                        title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>",
+                        icon: 'error',
+                    }).then((result) => {
+                        window.location.href = "{{ route('home') }}";
+                    });
                 });
-            });
-            // @endif
+            @endif
             $(document).ready(function() {
                 $('select').on('change', function(e) {
-
                     var name = $(this).data('name');
                     var index = $(this).data('index');
                     var select2 = $(this); // Save a reference to $(this)
@@ -605,7 +611,41 @@
                         var2: select2.select2("val"),
                         var3: index
                     });
+                });
+            });
 
+            $(document).on('change', '.dinarPrice', function(e) {
+                var key = $(this).data('key');
+                Swal.fire({
+                    'type': 'info',
+                    'title': 'تأكيد',
+                    'text': 'هل نريد تغيير السعر بصورة دائمة ؟',
+                    'showCancelButton': true,
+                    'confirmButtonText': 'نعم',
+                    'cancelButtonText': 'إلغاء',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.emit('changeDinarPrice', key);
+                    } else {
+                        Livewire.emit('changePrices', key);
+                    }
+                });
+            });
+            $(document).on('change', '.dollarPrice', function(e) {
+                var key = $(this).data('key');
+                Swal.fire({
+                    'type': 'info',
+                    'title': 'تأكيد',
+                    'text': 'هل نريد تغيير السعر بصورة دائمة ؟',
+                    'showCancelButton': true,
+                    'confirmButtonText': 'نعم',
+                    'cancelButtonText': 'إلغاء',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.emit('changeDollarPrice', key);
+                    } else {
+                        Livewire.emit('changePrices', key);
+                    }
                 });
             });
         </script>

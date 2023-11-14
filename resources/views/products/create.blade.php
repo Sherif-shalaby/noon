@@ -138,8 +138,10 @@
                                 <button type="button" class="add-button d-flex justify-content-center align-items-center"
                                     data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
                                         class="fas fa-plus"></i></button>
-
                             </div>
+                            @error('store_id')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
                         </div>
 
                         <div

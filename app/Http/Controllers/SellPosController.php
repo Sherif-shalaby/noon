@@ -45,10 +45,7 @@ class SellPosController extends Controller
 
     public function index()
     {
-        $sell_lines = TransactionSellLine::all();
-//        dd($sell_lines);
-        return view('invoices.index',compact('sell_lines'));
-
+        return view('invoices.index');
     }
 
     public function showInvoice(){
@@ -123,10 +120,17 @@ class SellPosController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return Application|Factory|View
      */
     public function show($id)
     {
+        $sell_line = TransactionSellLine::find($id);
+        $payment_type_array = $this->commonUtil->getPaymentTypeArrayForPos();
+
+        return view('invoices.show')->with(compact(
+            'sell_line',
+            'payment_type_array',
+        ));
 
     }
 

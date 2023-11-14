@@ -32,6 +32,7 @@ class ProductRequest extends FormRequest
             'size'=>'nullable|numeric|between:0,99999999999.99',
             'weight'=>'nullable|numeric|between:0,99999999999.99',
             'category_id'=>'required',
+            'store_id'=>'required|array',
             'sku.*' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
             'product_symbol' => 'nullable|unique:products,product_symbol',
 
@@ -50,6 +51,7 @@ class ProductRequest extends FormRequest
         'size.numeric'=>__('lang.enter_correct_decimal_number'),
         'weight.numeric'=>__('lang.enter_correct_decimal_number'),
         'category_id.required'=>__('categories.categoryNameRequired'),
+        'store_id.required'=>__('lang.required'),
         ];
     }
 }

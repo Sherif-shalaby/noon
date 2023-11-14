@@ -488,7 +488,7 @@
                                         name="price" class="form-control price"
                                         wire:model="items.{{ $index }}.prices.{{ $key }}.price"
                                         wire:change="changePrice({{ $index }}, {{ $key }})"
-                                        placeholder = "{{ __('lang.percent') }}">
+                                        placeholder = "{{ !empty($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}">
                                 </div>
 
                                 <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"

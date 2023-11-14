@@ -632,5 +632,7 @@ return array(
     'final' => 'دفعت',
     'draft' => 'مسودة',
     'edit_purchase_order' => 'تعديل امر شراء',
-    'show_plans' => 'عرض الخطط'
+    'show_plans' => 'عرض الخطط',
+    'choose_unit_please' => ' ! اختر وحدة من فضلك',
+    'generate_invoice' => 'طباعة فاتورة',
 );
