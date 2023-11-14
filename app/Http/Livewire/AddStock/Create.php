@@ -505,7 +505,6 @@ class Create extends Component
         $product = Product::find($id);
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
-        // dd($variations);
         if($add_via == 'unit'){
             $show_product_data = false;
             $this->addNewProduct($variations,$product,$show_product_data, $index, $stock);
@@ -525,13 +524,11 @@ class Create extends Component
                     array_unshift($this->items, $item);
                 }
                 else{
-                    // dd(7);
                     $show_product_data = true;
                     $this->addNewProduct($variations,$product,$show_product_data,null, $stock);
                 }
             }
             else{
-                // dd(8);
                 $show_product_data = true;
                 $this->addNewProduct($variations,$product,$show_product_data,$index, $stock);
             }
@@ -541,7 +538,6 @@ class Create extends Component
 
     public function addNewProduct($variations,$product,$show_product_data, $index = null, $stock){
         $current_stock = $product->stock_lines->sum('quantity', '-','quantity_sold');
-        // dd($variations);
         if(!empty($variations)){
             $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id??0);
         }
@@ -598,7 +594,6 @@ class Create extends Component
         }else{
             array_unshift($this->items, $new_item);
         }
-        // dd($this->items);
     }
 
     public function add_by_po(){
