@@ -391,11 +391,15 @@
                 if (result.isConfirmed) {
                     Livewire.emit('changeDinarPrice',key);
                 } else {
-                    // Livewire.emit('create_purchase_order',id);
+                    Livewire.emit('changePrices',key);
                 }
             });
 
         });
+
+
+
+        
         $(document).on('change','.dollarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
@@ -409,7 +413,7 @@
                 if (result.isConfirmed) {
                     Livewire.emit('changeDollarPrice',key);
                 } else {
-                    // Livewire.emit('create_purchase_order',id);
+                    Livewire.emit('changePrices',key);
                 }
             });
 

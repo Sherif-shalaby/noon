@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice','changePrices'];
 
     public function listenerReferenceHere($data)
     {
@@ -1468,7 +1468,7 @@ class Create extends Component
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'warning', 'message' => 'lang.choose_unit_please',]);
             }
         } catch (\Exception $e) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
             dd($e);
         }
     }
@@ -1486,8 +1486,17 @@ class Create extends Component
                 $this->subtotal($key);
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
             } else {
-                $this->dispatchBrowserEvent('swal:modal', ['type' => 'warning', 'message' => 'lang.choose_unit_please',]);
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'warning', 'message' => __('lang.choose_unit_please'),]);
             }
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            dd($e);
+        }
+    }
+    public function changePrices($key)
+    {
+        try {
+            $this->subtotal($key);
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
