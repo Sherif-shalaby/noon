@@ -68,7 +68,11 @@ class Create extends Component
 
 
     public function mount(){
-
+        
+        if(isset($_GET['product_id'])){
+            $productId = $_GET['product_id'];
+            $this->add_product($productId);
+        }
         $this->paid_on = Carbon::now()->format('Y-m-d');
         $this->bank_deposit_date = Carbon::now()->format('Y-m-d');
         $this->transaction_date = date('Y-m-d\TH:i');
@@ -497,6 +501,7 @@ class Create extends Component
             $this->search_by_product_symbol = '';
 
         }
+    
         $product = Product::find($id);
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
@@ -505,7 +510,7 @@ class Create extends Component
             $this->addNewProduct($variations,$product,$show_product_data, $index, $stock);
         }
         else{
-            if(!empty($this->items) && $new_unit_raw==0){
+            if(!empty($this->items) && $new_unit_raw == 0){
                 $newArr = array_filter($this->items, function ($item) use ($product) {
                     return $item['product']['id'] == $product->id;
                 });
@@ -519,9 +524,8 @@ class Create extends Component
                     array_unshift($this->items, $item);
                 }
                 else{
-                    // dd(7);
                     $show_product_data = true;
-                    $this->addNewProduct($variations,$product,$show_product_data,null, $stock);
+                    $this->addNewProduct($variations,$product,$show_product_data,$index, $stock);
                 }
             }
             else{
@@ -535,7 +539,7 @@ class Create extends Component
     public function addNewProduct($variations,$product,$show_product_data, $index = null, $stock){
         $current_stock = $product->stock_lines->sum('quantity', '-','quantity_sold');
         if(!empty($variations)){
-            $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id);
+            $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id??0);
         }
           $new_item = [
             'show_product_data' => $show_product_data,
@@ -1027,10 +1031,10 @@ class Create extends Component
 
             if (isset($this->variationSums[$variation_name])) {
                 // If the variation_id already exists in the sums array, add the quantity
-                $this->variationSums[$variation_name] += $item['quantity'];
+                $this->variationSums[$variation_name] += (float)$item['quantity'];
             } else {
                 // If the variation_id doesn't exist, create a new entry
-                $this->variationSums[$variation_name] = $item['quantity'];
+                $this->variationSums[$variation_name] = (float)$item['quantity'];
             }
         }
     }

@@ -340,7 +340,20 @@
             }
         });
     </script> --}}
+    <script>
+        // Wait for the DOM content to be fully loaded
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set overflow to hidden initially
+            document.body.style.overflowY = "hidden";
+            document.body.style.height = "1000vh";
 
+            // Remove overflow hidden after 1.5 seconds
+            setTimeout(function() {
+                document.body.style.overflowY = "auto"; // Or "visible" depending on your requirements
+                document.body.style.height = "fit-content"; // Or "visible" depending on your requirements
+            }, 500);
+        });
+    </script>
     @push('javascripts')
         <script>
             document.addEventListener('livewire:load', function() {
@@ -363,20 +376,6 @@
                         }
                     },
                 });
-            });
-        </script>
-        <script>
-            // Wait for the DOM content to be fully loaded
-            document.addEventListener("DOMContentLoaded", function() {
-                // Set overflow to hidden initially
-                document.body.style.overflowY = "hidden";
-                document.body.style.height = "100vh";
-
-                // Remove overflow hidden after 1.5 seconds
-                setTimeout(function() {
-                    document.body.style.overflowY = "auto"; // Or "visible" depending on your requirements
-                    document.body.style.height = "fit-content"; // Or "visible" depending on your requirements
-                }, 500);
             });
         </script>
     @endpush

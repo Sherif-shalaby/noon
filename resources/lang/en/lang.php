@@ -601,4 +601,8 @@ return [
     'show_plans' => 'Show Plans',
     'choose_unit_please' => 'Choose Unit, Please!',
     'generate_invoice' => 'Print Invoice',
+    'add_new_stock' => 'Add New Stock',
+    'remove_expiry' => 'Remove Expiry',
+    'order_discount' => 'Order Discount',
+    'view_payments' => 'View Payments'
 ];

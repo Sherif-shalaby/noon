@@ -446,6 +446,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
@@ -678,4 +679,23 @@ body {
 
 .inner {
     max-height: 150px !important;
+}
+
+th {
+    padding: 10px 25px !important;
+    font-weight: 700 !important;
+    font-size: 11px !important;
+    width: fit-content !important;
+    text-align: center;
+    border: 1px solid white !important;
+    color: #fff !important;
+    background-color: #596fd7 !important;
+    text-transform: uppercase;
+}
+
+thead tr {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
 }

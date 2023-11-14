@@ -635,4 +635,8 @@ return array(
     'show_plans' => 'عرض الخطط',
     'choose_unit_please' => ' ! اختر وحدة من فضلك',
     'generate_invoice' => 'طباعة فاتورة',
+    'add_new_stock' => 'اضافة مخزون جديد',
+    'remove_expiry' => 'ازالة منهى الصلاحية',
+    'order_discount' => 'خصم',
+    'view_payments' => 'عرض المدفوعات',
 );
