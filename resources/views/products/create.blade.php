@@ -88,8 +88,10 @@
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
                                 data-target=".add-store" href="{{ route('store.create') }}"><i
                                     class="fas fa-plus"></i></button>
-
                         </div>
+                        @error('store_id')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
                     </div>
 
                     <div class="col-md-3">

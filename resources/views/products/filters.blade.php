@@ -13,6 +13,15 @@
         <div class="col-2">
             <div class="form-group">
                 {!! Form::select(
+                    'supplier_id',
+                    $suppliers,request()->supplier_id,
+                    ['class' => 'form-control select2','placeholder'=>__('lang.supplier')]
+                ) !!}
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="form-group">
+                {!! Form::select(
                     'category_id',
                     $categories,request()->category_id,
                     ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
