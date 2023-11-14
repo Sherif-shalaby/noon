@@ -22,20 +22,14 @@
     </td>
     <td title="{{__('lang.unit')}}">
         @if(count($product['variations']) > 0)
-            <div class="d-flex justify-content-center">
-                <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
-                    <option value="" selected>{{__('lang.please_select')}}</option>
-                    @foreach($product['variations'] as $variant)
-                        @if(!empty($variant['unit_id']))
-                            <option value="{{$variant['id']}}">{{$variant['unit']['name'] ?? ''}}</option>
-                        @endif
-                    @endforeach
-                </select>
-                {{-- {{dd($product['variations'])}} --}}
-                {{-- <button type="button" class="btn btn-primary btn-sm " wire:click="add_product({{$product['product']['id']}},'unit',{{ $index }})">
-                    <i class="fa fa-plus"></i>
-                </button> --}}
-            </div>
+            <select name="items.{{$index}}.variation_id" id="unit_name" class="form-control select" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+                <option value="" selected>{{__('lang.please_select')}}</option>
+                @foreach($product['variations'] as $variant)
+                    @if(!empty($variant['unit_id']))
+                        <option value="{{$variant['id']}}">{{$variant['unit']['name'] ?? ''}}</option>
+                    @endif
+                @endforeach
+            </select>
         @else
             <span>@lang('lang.no_units')</span>
         @endif

@@ -505,7 +505,7 @@ class Create extends Component
             $this->addNewProduct($variations,$product,$show_product_data, $index, $stock);
         }
         else{
-            if(!empty($this->items) && $new_unit_raw==0){
+            if(!empty($this->items) && $new_unit_raw == 0){
                 $newArr = array_filter($this->items, function ($item) use ($product) {
                     return $item['product']['id'] == $product->id;
                 });
@@ -521,7 +521,7 @@ class Create extends Component
                 else{
                     // dd(7);
                     $show_product_data = true;
-                    $this->addNewProduct($variations,$product,$show_product_data,null, $stock);
+                    $this->addNewProduct($variations,$product,$show_product_data,$index, $stock);
                 }
             }
             else{
@@ -1027,10 +1027,10 @@ class Create extends Component
 
             if (isset($this->variationSums[$variation_name])) {
                 // If the variation_id already exists in the sums array, add the quantity
-                $this->variationSums[$variation_name] += $item['quantity'];
+                $this->variationSums[$variation_name] += (float)$item['quantity'];
             } else {
                 // If the variation_id doesn't exist, create a new entry
-                $this->variationSums[$variation_name] = $item['quantity'];
+                $this->variationSums[$variation_name] = (float)$item['quantity'];
             }
         }
     }

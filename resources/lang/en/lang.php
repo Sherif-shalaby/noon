@@ -587,6 +587,8 @@ return [
     'show_plans' => 'Show Plans',
     'choose_unit_please'=>'Choose Unit, Please!',
     'generate_invoice' => 'Print Invoice',
+    'order_discount' => 'Order Discount',
+    'view_payments' => 'View Payments'
 ];
 
 

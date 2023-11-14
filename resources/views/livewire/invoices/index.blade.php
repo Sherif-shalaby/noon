@@ -133,7 +133,25 @@
                                                 <li>
                                                     <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
                                                 </li>
-
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{ route('show_payment', $line->id) }}"
+                                                       data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
+                                                        {{ __('lang.view_payments') }}
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="{{ route('invoices.edit', $line->id) }}" class="btn"><i
+                                                            class="dripicons-document-edit"></i> {{ __('lang.edit') }}</a>
+                                                </li>
+{{--                                                <li>--}}
+{{--                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"--}}
+{{--                                                       data-check_password="{{ action('UserController@checkPassword', Auth::user()->id) }} "--}}
+{{--                                                       class="btn text-red delete_item"><i class="fa fa-trash"></i>--}}
+{{--                                                        {{ __('lang.delete') }}--}}
+{{--                                                    </a>--}}
+{{--                                                </li>--}}
                                             </ul>
                                         </td>
                                     </tr>
@@ -170,7 +188,6 @@
                 data: {},
                 success: function (result) {
                     if (result.success) {
-                        alert(1)
                         Livewire.emit('printInvoice', result.html_content);
                     }
                 },

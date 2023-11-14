@@ -621,5 +621,7 @@ return array(
     'show_plans' => 'عرض الخطط',
     'choose_unit_please'=>' ! اختر وحدة من فضلك',
     'generate_invoice' => 'طباعة فاتورة',
+    'order_discount' => 'خصم',
+    'view_payments' => 'عرض المدفوعات',
 );
 

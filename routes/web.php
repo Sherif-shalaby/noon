@@ -222,6 +222,7 @@ Route::group(['middleware' => ['auth']], function () {
     })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
+    Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
     // ################################# Task : customer_price_offer #################################
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
@@ -237,7 +238,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('required-products', RequiredProductController::class);
     Route::get('purchase-order/edit/{id}', function ($id) {
         return view('purchase-order.edit', compact('id'));
-    })->name('invoices.edit');
+    })->name('purchase-order.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));
