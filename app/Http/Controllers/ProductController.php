@@ -14,7 +14,9 @@ use App\Models\ProductDimension;
 use App\Models\ProductExpiryDamage;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;use App\Models\ProductTax;
+use App\Models\StockTransaction;
 use App\Models\Store;
+use App\Models\Supplier;
 use App\Models\System;
 use App\Models\Tax;
 use App\Models\Unit;
@@ -53,6 +55,7 @@ class ProductController extends Controller
    */
   public function index(Request $request)
   {
+    $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
     $products=Product::
         when(\request()->dont_show_zero_stocks =="on", function ($query) {
             $query->whereHas('product_stores', function ($query) {
@@ -76,6 +79,11 @@ class ProductController extends Controller
                 $query->where('store_id',\request()->store_id);
             });
         })
+        ->when(\request()->supplier_id != null, function ($query) use ($stock_transaction_ids) {
+            $query->whereHas('stock_lines', function ($query) use ($stock_transaction_ids) {
+                $query->whereIn('stock_transaction_id', $stock_transaction_ids);
+            });
+        })
         ->when(\request()->brand_id != null, function ($query) {
             $query->where('brand_id',\request()->brand_id);
         })
@@ -89,9 +97,10 @@ class ProductController extends Controller
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
+    $suppliers=Supplier::orderBy('created_at', 'desc')->pluck('name','id');
     $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
-      return view('products.index',compact('products','categories','brands','units','stores','users','subcategories'));
+      return view('products.index',compact('products','categories','suppliers','brands','units','stores','users','subcategories'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()

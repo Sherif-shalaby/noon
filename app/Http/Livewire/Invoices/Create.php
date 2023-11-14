@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order','changeDinarPrice','changeDollarPrice'];
 
     public function listenerReferenceHere($data)
     {
@@ -95,6 +95,7 @@ class Create extends Component
         }
 
         $this->store_pos_id = array_key_first($this->store_pos);
+        // dd(Auth::user()->id);
         $store_pos = StorePos::find($this->store_pos_id);
         if(empty($store_pos)){
             $this->dispatchBrowserEvent('NoUserPos');
@@ -514,7 +515,7 @@ class Create extends Component
                     --$this->items[$key]['quantity'];
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
                 } else {
-                    $this->items[$key]['sub_total'] = ($this->items[$key]['price'] * $this->items[$key]['quantity']) - ($this->items[$key]['quantity'] * $this->items[$key]['discount']);
+                    $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
                 }
             } else {
                 $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price, 2) : 0;
@@ -699,10 +700,10 @@ class Create extends Component
             $price = 0;
 
         $this->items[$key]['discount_price'] = $price;
-        $this->items[$key]['sub_total'] = ($this->items[$key]['price'] * $this->items[$key]['quantity']) -
-            ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
-        $this->items[$key]['dollar_sub_total']  =  ($this->items[$key]['dollar_price'] * $this->items[$key]['quantity']) -
-            ($this->items[$key]['quantity'] * $this->items[$key]['discount_price']);
+        $this->items[$key]['sub_total'] = ((float)$this->num_uf($this->items[$key]['price']) * $this->items[$key]['quantity']) -
+            ($this->items[$key]['quantity'] * (float)$this->num_uf($this->items[$key]['discount_price']));
+        $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->items[$key]['quantity']) -
+            ($this->items[$key]['quantity'] * (float)$this->num_uf($this->items[$key]['discount_price']));
         $this->computeForAll();
     }
 
@@ -1482,5 +1483,39 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
+    }
+    public function changeDinarPrice($key){
+        try{
+        $stock_line=AddStockLine::where('product_id',$this->items[$key]['product']['id'])->where('variation_id',$this->items[$key]['unit_id'])->first();
+        $stock_line->sell_price=$this->num_uf($this->items[ $key]['price']);
+        if(isset($stock_line->dollar_sell_price)&& $stock_line->dollar_sell_price!==0){
+            $stock_line->dollar_sell_price=$this->num_uf($this->items[ $key]['price'])/$this->num_uf($this->items[ $key]['exchange_rate']);
+            $this->items[ $key]['dollar_price']=number_format($this->num_uf($this->items[ $key]['price'])/$this->num_uf($this->items[ $key]['exchange_rate']),3);
+        }
+        $stock_line->save();
+        $this->subtotal($key);
+        // $this->computeForAll();
+        $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
+        }catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            dd($e);
+        }
+    }
+    public function changeDollarPrice($key){
+        try{
+            $stock_line=AddStockLine::where('product_id',$this->items[$key]['product']['id'])->where('variation_id',$this->items[$key]['unit_id'])->first();
+            $stock_line->dollar_sell_price=$this->num_uf($this->items[ $key]['dollar_price']);
+            if(isset($stock_line->sell_price)&& $stock_line->sell_price!==0){
+                $stock_line->sell_price=$this->num_uf($this->items[ $key]['dollar_price'])*$this->num_uf($this->items[ $key]['exchange_rate']);
+                $this->items[ $key]['price']=number_format($this->num_uf($this->items[ $key]['dollar_price'])*$this->num_uf($this->items[ $key]['exchange_rate']),3);
+            }
+            $stock_line->save();
+            $this->subtotal($key);
+            // $this->computeForAll();
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
+            }catch (\Exception $e) {
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+                dd($e);
+            }
     }
 }
