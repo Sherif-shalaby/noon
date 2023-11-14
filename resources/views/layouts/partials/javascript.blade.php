@@ -186,6 +186,7 @@
             },
         });
     });
+
     $(document).on("click", "#clear_all_input_form", function() {
         var value = $('#clear_all_input_form').is(':checked') ? 1 : 0;
         $.ajax({
@@ -199,6 +200,7 @@
             },
         });
     });
+
     document.addEventListener('livewire:load', function() {
         window.addEventListener('initialize-select2', event => {
             $('.select2').select2();
@@ -209,6 +211,7 @@
 
         });
     });
+
     @if (session('status'))
         new PNotify({
             title: '{{ session('status.msg') }} !',
@@ -221,11 +224,13 @@
             @endif
         });
     @endif
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
     $(document).on('click', '.delete_item', function(e) {
         e.preventDefault();
         var deletetype = $(this).data('deletetype');
@@ -263,19 +268,11 @@
                             success: (data) => {
 
                                 if (data.success == true) {
-                                    // Swal.fire(
-                                    //     'success',
-                                    //     "{!! __('lang.correct_password') !!}",
-                                    //     'success'
-                                    // );
-                                    Swal.fire({
-                                        title: "Success",
-                                        text: {!! __('lang.correct_password') !!},
-                                        icon: "success",
-                                        timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                                        showConfirmButton: false // This will hide the "OK" button
-                                    });
-
+                                    Swal.fire(
+                                        'success',
+                                        "{!! __('lang.correct_password') !!}",
+                                        'success'
+                                    );
                                     // location.reload();
                                     $.ajax({
                                         method: 'DELETE',
@@ -289,8 +286,7 @@
                                                     title: result
                                                         .msg,
                                                     text: 'Check me out! I\'m a notice.',
-                                                    type: 'success',
-                                                    delay: 700
+                                                    type: 'success'
                                                 });
                                                 setTimeout(() => {
                                                     location
@@ -302,27 +298,18 @@
                                                     title: result
                                                         .msg,
                                                     text: 'Check me out! I\'m a notice.',
-                                                    type: 'error',
-                                                    delay: 700
+                                                    type: 'error'
                                                 });
                                             }
                                         },
                                     });
 
                                 } else {
-                                    // Swal.fire(
-                                    //     'Failed!',
-                                    //     'Wrong Password!',
-                                    //     'error'
-                                    // )
-                                    Swal.fire({
-                                        title: "Failed!",
-                                        text: Wrong Password!,
-                                        icon: "error",
-                                        timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                                        showConfirmButton: false // This will hide the "OK" button
-                                    });
-
+                                    Swal.fire(
+                                        'Failed!',
+                                        'Wrong Password!',
+                                        'error'
+                                    )
 
                                 }
                             }
@@ -332,6 +319,7 @@
             }
         });
     });
+
     //open edit modal for modules
     $(document).on('click', '.btn-modal', function(e) {
         e.preventDefault();
@@ -347,6 +335,7 @@
             },
         });
     });
+
     //make translation open if there is translation when edit
     $(document).ready(function() {
         $('table.editTogle')
@@ -366,12 +355,12 @@
                 }
             });
     });
-    // $('.js-example-basic-multiple').select2(
-    //     {
-    //         placeholder: LANG.please_select,
-    //         tags: true
-    //     }
-    // );
+
+    // $('.js-example-basic-multiple').select2({
+    //     placeholder: LANG.please_select,
+    //     tags: true
+    // });
+
     $('.select2').select2();
     $('.datepicker').datepicker();
 </script>

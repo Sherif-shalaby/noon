@@ -209,7 +209,7 @@
                                         class="add-button cat-button btn-modal openCategoryModal d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-select_category="0">
                                         <i class="fas fa-plus"></i></a>
-                                    {{--                                    @include('categories.create_modal', ['quick_add' => 1]) --}}
+                                    {{-- @include('categories.create_modal', ['quick_add' => 1]) --}}
                                 </div>
                                 @error('item.0.category_id')
                                     <label style="font-size: 10px;font-weight: 700;"
@@ -757,54 +757,10 @@
                     $("#consumption_table_price > tbody").prepend(result);
                 },
             });
-            //
         });
         $(document).on("click", ".remove_row", function() {
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.tax-button').on("click", function() {
-                $('#panelsStayOpen-collapseOne').toggleClass('show')
-                $('.tax-accordion-arrow i').remove();
-                if ($('#panelsStayOpen-collapseOne').hasClass('show')) {
-                    $('.tax-accordion-arrow').append(
-                        `<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
-                } else {
-                    // $('.tax-accordion-arrow').children('1').remove();
-                    $('.tax-accordion-arrow').append(
-                        `<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
-                }
-            })
-            $('.size-button').on("click", function() {
-                $('#panelsStayOpen-collapseTwo').toggleClass('show')
-                $('.size-accordion-arrow i').remove();
-
-                if ($('#panelsStayOpen-collapseTwo').hasClass('show')) {
-                    $('.size-accordion-arrow').append(
-                        `<i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>`)
-                } else {
-                    $('.size-accordion-arrow').append(
-                        `<i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>`)
-                }
-            })
-            $('.cat-button').click(function() {
-                $('html, body').animate({
-                    scrollTop: 0
-                }, 50);
-            });
-            $('.store-button').click(function() {
-                $('html, body').animate({
-                    scrollTop: 0
-                }, 50);
-            });
-            $('.supplier-button').click(function() {
-                $('html, body').animate({
-                    scrollTop: 0
-                }, 50);
-            });
         });
     </script>
 @endpush
