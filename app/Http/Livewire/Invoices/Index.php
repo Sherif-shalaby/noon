@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Invoices;
 
 use App\Models\Invoice;
+use App\Models\TransactionSellLine;
 use Livewire\Component;
 
 class Index extends Component
@@ -32,20 +33,8 @@ class Index extends Component
     }
     public function render()
     {
-        $invoices = Invoice::with(['user','customer'])->where(function ($q) {
-            $this->between($q);
-            if ($this->filter_status) {
-                $q->where('status', $this->filter_status);
-            }
-            if ($this->searchinvoiveno) {
-                $q->where('id', 'like', '%' . $this->searchinvoiveno . '%');
-            }
-            if ($this->searchemployee) {
-                $q->whereHas('user', function ($q) {
-                    $q->where('name', 'like', '%' . $this->searchemployee . '%');
-                });
-            }
-        })->latest('id')->paginate(10);
-        return view('livewire.invoices.index', compact('invoices'));
+        $sell_lines = TransactionSellLine::all();
+
+        return view('livewire.invoices.index', compact('sell_lines'));
     }
 }

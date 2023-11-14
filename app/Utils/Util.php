@@ -469,9 +469,9 @@ class Util
     {
         return [
             'cash' => __('lang.cash'),
-//            'cheque' => __('lang.cheque'),
-//            'deposit' => __('lang.use_the_balance'),
-//            'paypal' => __('lang.paypal'),
+            'cheque' => __('lang.cheque'),
+            'deposit' => __('lang.use_the_balance'),
+            'paypal' => __('lang.paypal'),
         ];
     }
 
