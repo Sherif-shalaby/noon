@@ -188,7 +188,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('grand_total', $total, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'data-live-search' => 'true',
                             'readonly',
@@ -206,7 +206,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('discount', null, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                         
                             'wire:model' => 'discount',
@@ -224,7 +224,7 @@
                         ]) !!}
 
                         {!! Form::number('final_total', $final_total, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'readonly',
                         ]) !!}
@@ -239,7 +239,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('amount', null, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'wire:model' => 'amount',
                             'wire:change' => 'changeReceivedDinar',
@@ -255,7 +255,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('dinar_remaining', $dinar_remaining, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'readonly',
                             'wire:model' => 'dinar_remaining',
