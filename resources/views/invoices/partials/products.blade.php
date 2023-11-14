@@ -1,4 +1,4 @@
-<div class="col-xl-3 p-0 special-col" style="height: 300px;overflow: scroll">
+<div class="col-xl-3 p-0 special-col" style="height: 600px;overflow: scroll">
     <div class="card-app">
         <div class="title-card-app">
             الاقسام
@@ -20,7 +20,7 @@
                 </select>
             </div>
         </div>
-        <div class="p-1">
+        <div class="p-1 body-card-app">
             <div class="nav nav-pills main-tap " id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 {{-- <div class="row flex-wrap" style="width: 100%"> --}}
                 @if ($allproducts and $allproducts != null)
