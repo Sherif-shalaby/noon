@@ -81,9 +81,9 @@
                 font-size: 10px;">@lang('lang.unit')</span>
 
             @if (count($product['variations']) > 0)
-                <div class="d-flex justify-content-center align-items-center">
-                    <select name="items.{{ $index }}.variation_id" id="unit_name" class="form-control select"
-                        style="width: 100%;font-size: 10px;" wire:model="items.{{ $index }}.variation_id"
+                <div class="d-flex justify-content-center">
+                    <select name="items.{{ $index }}.variation_id" class="form-control select unit_name"
+                        style="width: 130px" wire:model="items.{{ $index }}.variation_id"
                         wire:change="getVariationData({{ $index }})">
                         <option value="" selected>{{ __('lang.please_select') }}</option>
                         @foreach ($product['variations'] as $variant)
@@ -92,11 +92,6 @@
                             @endif
                         @endforeach
                     </select>
-                    {{-- <button type="button" class="btn btn-primary btn-sm "
-                        style="padding: 2px;font-size: 10px; height: 20px;"
-                        wire:click="add_product({{ $product['product']['id'] }},'unit',{{ $index }})">
-                        <i class="fa fa-plus"></i>
-                    </button> --}}
                 </div>
             @else
                 <span>@lang('lang.no_units')</span>

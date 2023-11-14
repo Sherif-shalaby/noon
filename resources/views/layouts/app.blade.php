@@ -340,21 +340,46 @@
             }
         });
     </script> --}}
-    <script>
-        // Wait for the DOM content to be fully loaded
-        document.addEventListener("DOMContentLoaded", function() {
-            // Set overflow to hidden initially
-            document.body.style.overflowY = "hidden";
-            document.body.style.height = "100vh";
 
-            // Remove overflow hidden after 1.5 seconds
-            setTimeout(function() {
-                document.body.style.overflowY = "auto"; // Or "visible" depending on your requirements
-                document.body.style.height = "fit-content"; // Or "visible" depending on your requirements
-            }, 500);
-        });
-    </script>
+    @push('javascripts')
+        <script>
+            document.addEventListener('livewire:load', function() {
+                Livewire.on('printInvoice', function(htmlContent) {
+                    // Set the generated HTML content
+                    $("#receipt_section").html(htmlContent);
+                    // Trigger the print action
+                    window.print("#receipt_section");
+                });
+            });
+            $(document).on("click", ".print-invoice", function() {
+                // $(".modal").modal("hide");
+                $.ajax({
+                    method: "get",
+                    url: $(this).data("href"),
+                    data: {},
+                    success: function(result) {
+                        if (result.success) {
+                            Livewire.emit('printInvoice', result.html_content);
+                        }
+                    },
+                });
+            });
+        </script>
+        <script>
+            // Wait for the DOM content to be fully loaded
+            document.addEventListener("DOMContentLoaded", function() {
+                // Set overflow to hidden initially
+                document.body.style.overflowY = "hidden";
+                document.body.style.height = "100vh";
 
+                // Remove overflow hidden after 1.5 seconds
+                setTimeout(function() {
+                    document.body.style.overflowY = "auto"; // Or "visible" depending on your requirements
+                    document.body.style.height = "fit-content"; // Or "visible" depending on your requirements
+                }, 500);
+            });
+        </script>
+    @endpush
 </body>
 
 <!-- Mirrored from themesbox.in/admin-templates/theta/html/light-horizontal/page-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 03 Jul 2023 09:24:31 GMT -->

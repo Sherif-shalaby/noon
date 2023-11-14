@@ -1,9 +1,3 @@
-<style>
-    th {
-        position: sticky;
-        top: 0;
-    }
-</style>
 <section class="forms">
     {{-- <div class="container-fluid"> --}}
     <div>
@@ -41,7 +35,7 @@
                                         class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                         <label for="store_id"
                                             class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                            style="width: 25%;font-size: 12px;font-weight: 500;">
+                                            style="width: 15%;font-size: 12px;font-weight: 500;">
                                             @lang('lang.store'):<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="input-wrapper">
@@ -63,7 +57,7 @@
                                         class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                         <label for="customer_id"
                                             class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                            style="width: 25%;font-size: 12px;font-weight: 500;">
+                                            style="width: 15%;font-size: 12px;font-weight: 500;">
                                             @lang('lang.suppliers'):<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="input-wrapper">
@@ -197,7 +191,7 @@
                                 <div class="table-responsive col-md-9 border m-0 p-0 border-1  @if (app()->isLocale('ar')) dir-rtl @endif"
                                     style="height: 90vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
-                                    <table class="table" style="width: auto">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -288,7 +282,6 @@
                             <button type="submit" name="submit" id="submit-save" style="margin: 10px"
                                 value="save" class="btn btn-primary pull-right btn-flat submit"
                                 wire:click.prevent = "store()">@lang('lang.save')</button>
-
                         </div>
                     </form>
                 </div>
@@ -340,15 +333,7 @@
                 contentType: "html",
                 success: function(result) {
                     if (result.success) {
-                        // Swal.fire("Success", response.msg, "success");
-                        Swal.fire({
-                            title: "Success",
-                            text: response.status,
-                            icon: "success",
-                            timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                            showConfirmButton: false // This will hide the "OK" button
-                        });
-
+                        Swal.fire("Success", response.msg, "success");
                     }
                 },
             });

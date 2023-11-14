@@ -15,7 +15,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                    <table id="datatable-buttons" class="table dataTable">
+                    <table id="datatable-buttons" class="table dataTable table-striped table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>@lang('lang.date_and_time')</th>
@@ -29,28 +29,34 @@
                             @foreach ($stocks as $index => $stock)
                                 <tr>
                                     <td>
-                                        <span class="custom-tooltip" data-tooltip="@lang('lang.date_and_time')">
+                                        <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                            style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.date_and_time')">
                                             {{ $stock->created_at }}
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="custom-tooltip" data-tooltip="@lang('lang.product')">
+                                        <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                            style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.product')">
                                             {{ $stock->add_stock_lines->first()->product->name ?? '' }}
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="custom-tooltip" data-tooltip="@lang('lang.supplier')">
+                                        <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                            style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.supplier')">
                                             {{ $stock->supplier->name ?? '' }}
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                        <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                            style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.created_by')">
                                             {{ $stock->created_by_relationship->name ?? '' }}
                                         </span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button"
+                                            class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
+                                            style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
                                             @lang('lang.action')
                                             <span class="caret"></span>
                                         </button>

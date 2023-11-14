@@ -3,6 +3,19 @@
 
 @section('breadcrumbbar')
     <style>
+        th {
+            padding: 10px 25px !important;
+            font-weight: 700 !important;
+            font-size: 11px !important;
+            width: fit-content !important;
+            text-align: center;
+            border: 1px solid white !important;
+            color: #fff !important;
+            background-color: #596fd7 !important;
+            text-transform: uppercase;
+        }
+    </style>
+    {{-- <style>
         h1 {
             font-size: 30px;
             color: #000;
@@ -28,15 +41,7 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        th {
-            padding: 20px 15px;
-            text-align: left;
-            font-weight: 500;
-            font-size: 12px;
-            color: #fff;
-            background-color: #596fd7;
-            text-transform: uppercase;
-        }
+
 
         td {
             padding: 15px;
@@ -48,10 +53,14 @@
             border-bottom: solid 1px rgba(0, 0, 0, 0.4);
         }
 
-        tr:hover {
+        tr:nth-child(even) {
             background-color: rgba(0, 0, 0, 0.1)
         }
-    </style>
+
+        tr:hover {
+            background-color: rgba(0, 0, 0, 0.2)
+        }
+    </style> --}}
 
     <div class="animate-in-page">
 
@@ -125,8 +134,7 @@
                             <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div2">
                                     <!-- content goes here -->
-                                    <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
-                                        style="width: 1550px;height: 90vh;">
+                                    <div style="width: 1800px;height: 90vh;">
                                         <div class="my-2">
                                             <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
                                                 data-check_password="{{ url('user/check-password') }}"
@@ -134,12 +142,13 @@
                                                 @lang('lang.delete_all')</a>
                                         </div>
                                         <div id="status"></div>
-
-
                                         <table id="datatable-buttons"
                                             class="table table-striped table-bordered table-hover">
                                             <thead>
-                                                <tr>
+                                                <tr
+                                                    style="position: sticky;
+                                                        top: 0;
+                                                        z-index: 1000;">
                                                     <th>#</th>
                                                     <th>@lang('lang.image')</th>
                                                     <th>@lang('lang.product_name')</th>
@@ -165,31 +174,45 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($products as $index => $product)
-                                                    <tr>
+                                                    <tr class="text-center">
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="#">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                data-tooltip="#">
                                                                 {{ $index + 1 }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.image')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="width: 50px;height: 50px;font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.image')">
                                                                 <img src="{{ !empty($product->image) ? '/uploads/products/' . $product->image : '/uploads/' . $settings['logo'] }}"
-                                                                    style="width: 50px; height: 50px;"
+                                                                    style="width: 100%; height: 100%;"
                                                                     alt="{{ $product->name }}">
+
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.product_name')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.product_name')">
                                                                 {{ $product->name }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.sku')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.sku')">
                                                                 {{ $product->sku }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.select_to_delete')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                data-tooltip="@lang('lang.select_to_delete')">
                                                                 <input type="checkbox" name="product_selected_delete"
                                                                     class="product_selected_delete"
                                                                     value=" {{ $product->id }} "
@@ -206,14 +229,19 @@
 
                                                             @foreach ($product->variations as $variation)
                                                                 @if (isset($unit->unit_id) && $unit->unit_id == $variation->unit_id)
-                                                                    <span class="product_unit custom-tooltip"
+                                                                    <span
+                                                                        class="product_unit custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
                                                                         data-tooltip="@lang('lang.stock')"
                                                                         data-variation_id="{{ $variation->id }}"
                                                                         data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
                                                                         <span
-                                                                            class="unit_value">{{ $product->product_stores->sum('quantity_available') }}</span></span>
+                                                                            class="unit_value d-flex justify-content-center align-items-center"
+                                                                            style="font-size: 12px;font-weight: 600">{{ $product->product_stores->sum('quantity_available') }}</span></span>
                                                                 @else
-                                                                    <span class="product_unit custom-tooltip"
+                                                                    <span
+                                                                        class="product_unit custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
                                                                         data-tooltip="@lang('lang.stock')"
                                                                         data-variation_id="{{ $variation->id }}"
                                                                         data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
@@ -222,46 +250,69 @@
                                                             @endforeach
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.category')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.category')">
                                                                 {{ $product->category->name ?? '' }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.subcategories_name')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.subcategories_name')">
                                                                 {{ $product->subCategory1->name ?? '' }} <br>
                                                                 {{ $product->subCategory2->name ?? '' }} <br>
                                                                 {{ $product->subCategory3->name ?? '' }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.height')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.height')">
                                                                 {{ $product->product_dimensions->height ?? 0 }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.length')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.length')">
                                                                 {{ $product->product_dimensions->length ?? 0 }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.width')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.width')">
                                                                 {{ $product->product_dimensions->width ?? 0 }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="text-primary custom-tooltip"
+                                                            <span
+                                                                class="text-primary custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.size')">
                                                                 {{ $product->product_dimensions->size ?? 0 }}
                                                             </span>
                                                         </td>
                                                         {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.weight')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.weight')">
                                                                 {{ $product->product_dimensions->weight ?? 0 }}
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.basic_unit_for_import_product')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.basic_unit_for_import_product')">
                                                                 {{ !empty($product->product_dimensions->variations)
                                                                     ? (!empty($product->product_dimensions->variations->unit)
                                                                         ? $product->product_dimensions->variations->unit->name
@@ -270,14 +321,20 @@
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.stores')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.stores')">
                                                                 @foreach ($product->stores as $store)
                                                                     {{ $store->name }}<br>
                                                                 @endforeach
                                                             </span>
                                                         </td>
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.brand')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.brand')">
                                                                 {{ !empty($product->brand) ? $product->brand->name : '' }}
                                                             </span>
                                                         </td>
@@ -288,14 +345,17 @@
                                                         {{--                                    </td> --}}
                                                         {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.added_by')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 10px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.added_by')">
 
                                                                 @if ($product->created_by > 0 and $product->created_by != null)
                                                                     {{ $product->created_at->diffForHumans() }} <br>
                                                                     {{ $product->created_at->format('Y-m-d') }}
-                                                                    ({{ $product->created_at->format('h:i') }})
                                                                     {{ $product->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                                    <br>
+                                                                    ({{ $product->created_at->format('h:i') }})
+
                                                                     {{ $product->createBy?->name }}
                                                                 @else
                                                                     {{ __('no_update') }}
@@ -304,7 +364,10 @@
                                                         </td>
                                                         {{-- ++++++++++++++++++++++ updated_at column ++++++++++++++++++++++ --}}
                                                         <td>
-                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 10px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.updated_by')">
 
                                                                 @if ($product->edited_by > 0 and $product->edited_by != null)
                                                                     {{ $product->updated_at->diffForHumans() }} <br>
@@ -321,7 +384,8 @@
                                                         <td>
                                                             <div class=" btn-group">
                                                                 <button type="button"
-                                                                    class="btn btn-default btn-sm dropdown-toggle"
+                                                                    class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-toggle="dropdown" aria-haspopup="true"
                                                                     aria-expanded="false">خيارات
                                                                     <span class="caret"></span>
@@ -342,8 +406,25 @@
                                                                     <li>
                                                                         <a target="_blank"
                                                                             href="{{ route('get_remove_damage', $product->id) }}"
+                                                                            class="btn"><i
+                                                                                class="fa fa-hourglass-half"></i>
+                                                                            @lang('lang.remove_expiry')
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="divider"></li>
+                                                                    <li>
+                                                                        <a target="_blank"
+                                                                            href="{{ route('get_remove_damage', $product->id) }}"
                                                                             class="btn"><i class="fa fa-filter"></i>
                                                                             @lang('lang.remove_damage')
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="divider"></li>
+                                                                    <li>
+                                                                        <a target="_blank"
+                                                                            href="{{ url('add-stock/create?product_id=' . $product->id) }}"
+                                                                            class="btn"><i class="fa fa-plus"></i>
+                                                                            @lang('lang.add_new_stock')
                                                                         </a>
                                                                     </li>
                                                                     <li class="divider"></li>
@@ -384,253 +465,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-                            {{-- <div class="tbl-header">
-                                <table cellpadding="0" cellspacing="0" border="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Code</th>
-                                            <th>Company</th>
-                                            <th>Price</th>
-                                            <th>Change</th>
-                                            <th>Change %</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                            <div class="tbl-content">
-                                <table cellpadding="0" cellspacing="0" border="0">
-                                    <tbody>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAC</td>
-                                            <td>AUSTRALIAN COMPANY </td>
-                                            <td>$1.38</td>
-                                            <td>+2.01</td>
-                                            <td>-0.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAD</td>
-                                            <td>AUSENCO</td>
-                                            <td>$2.38</td>
-                                            <td>-0.01</td>
-                                            <td>-1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AAX</td>
-                                            <td>ADELAIDE</td>
-                                            <td>$3.22</td>
-                                            <td>+0.01</td>
-                                            <td>+1.36%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>XXD</td>
-                                            <td>ADITYA BIRLA</td>
-                                            <td>$1.02</td>
-                                            <td>-1.01</td>
-                                            <td>+2.36%</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div> --}}
-
                         </div>
                     </div>
                 </div>

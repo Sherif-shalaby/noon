@@ -84,29 +84,44 @@
                                     @foreach ($customer_offer_prices as $offer)
                                         <tr>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.date')">
                                                     {{ @format_date($offer->created_at) }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.created_by')">
                                                     {{ ucfirst($offer->created_by_user->name ?? '') }}
                                                 </span>
                                             </td>
                                             <td>
                                                 @if (!empty($offer->customer))
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.customer')">
+                                                    <span
+                                                        class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.customer')">
                                                         {{ $offer->customer->name }}
                                                     </span>
                                                 @endif
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.store')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.store')">
                                                     {{ ucfirst($offer->store->name ?? '') }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.customer_offer_status')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.customer_offer_status')">
                                                     @if (!empty($offer->block_qty))
                                                         @lang('lang.blocked')
                                                     @else
@@ -115,16 +130,19 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.quotation_status')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.quotation_status')">
                                                     {{ ucfirst($offer->status) }}
                                                 </span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button"
-                                                        class="btn btn-default btn-sm dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">خيارات
+                                                        class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">خيارات
                                                         <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                     </button>

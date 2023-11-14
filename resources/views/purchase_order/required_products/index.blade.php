@@ -55,7 +55,7 @@
                                         <div class="row mt-4 m-auto" style="max-height: 90vh;overflow: scroll">
                                             {{-- ++++++++++++++ required products Table ++++++++++ --}}
                                             <table id="productTable"
-                                                class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
+                                                class="table table-striped table-bordered table-hover m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -76,15 +76,28 @@
                                                 <tbody class="tbody">
                                                     @foreach ($requiredProducts as $index => $requiredProduct)
                                                         <tr>
-                                                            <td>{{ $index + 1 }}</td>
                                                             <td>
-                                                                <input type="checkbox"
-                                                                    name="products[{{ $index }}][checkbox]"
-                                                                    class="checkbox_ids" value="1" />
+                                                                <span
+                                                                    class=" d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600">
+                                                                    {{ $index + 1 }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class=" d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600">
+
+                                                                    <input type="checkbox"
+                                                                        name="products[{{ $index }}][checkbox]"
+                                                                        class="checkbox_ids" value="1" />
+                                                                </span>
                                                             </td>
                                                             {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.employee_name')">
                                                                     <input type="hidden" class="form-control"
                                                                         name="products[{{ $index }}][employee_id]"
@@ -94,7 +107,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ order_date +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.date')">
                                                                     <input type="hidden" class="form-control"
                                                                         name="products[{{ $index }}][order_date]"
@@ -104,7 +119,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.product_name')">
                                                                     <input type="hidden" class="form-control"
                                                                         name="products[{{ $index }}][product_id]"
@@ -114,7 +131,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.store')">
                                                                     <input type="hidden" class="form-control"
                                                                         name="products[{{ $index }}][store_id]"
@@ -125,7 +144,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ status +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.status')">
                                                                     <input type="hidden" class="form-control"
                                                                         name="products[{{ $index }}][status]"
@@ -135,7 +156,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.supplier_name')">
 
                                                                     <input type="hidden" class="form-control"
@@ -147,7 +170,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.branch_name')">
 
                                                                     <input type="hidden" class="form-control"
@@ -159,7 +184,9 @@
                                                             </td>
                                                             {{-- +++++++++++++++++ purchase_price , dollar_purchase_price +++++++++++++++++ --}}
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.purchase_price')">
 
                                                                     {{-- dinar_purchase_price --}}
@@ -168,20 +195,23 @@
                                                                         id="purchase_price"
                                                                         value="{{ $requiredProduct->purchase_price }}">
                                                                     {{ !empty($requiredProduct->purchase_price) ? $requiredProduct->purchase_price : '' }}
-                                                                    <br />
-                                                                    {{-- dollar_purchase_price --}}
-                                                                    <span class="dollar-cell">
-                                                                        <input type="hidden" class="form-control"
-                                                                            name="products[{{ $index }}][dollar_purchase_price]"
-                                                                            id="dollar_purchase_price"
-                                                                            value="{{ $requiredProduct->dollar_purchase_price }}">
-                                                                        {{ !empty($requiredProduct->dollar_purchase_price) ? $requiredProduct->dollar_purchase_price : '' }}
-                                                                        $
-                                                                    </span>
+                                                                </span>
+                                                                <br />
+                                                                {{-- dollar_purchase_price --}}
+                                                                <span class="dollar-cell">
+                                                                    <input type="hidden" class="form-control"
+                                                                        name="products[{{ $index }}][dollar_purchase_price]"
+                                                                        id="dollar_purchase_price"
+                                                                        value="{{ $requiredProduct->dollar_purchase_price }}">
+                                                                    {{ !empty($requiredProduct->dollar_purchase_price) ? $requiredProduct->dollar_purchase_price : '' }}
+                                                                    $
+                                                                </span>
                                                                 </span>
                                                             </td>
                                                             <td>
-                                                                <span class="custom-tooltip"
+                                                                <span
+                                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.required_quantity')">
                                                                     <input type="text" class="form-control"
                                                                         name="products[{{ $index }}][required_quantity]"

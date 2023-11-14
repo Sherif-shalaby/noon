@@ -47,7 +47,7 @@
 @endsection
 @section('content')
     <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif" style="height: 90vh;overflow: scroll">
-        <table id="datatable-buttons" class="table dataTable">
+        <table id="datatable-buttons" class="table dataTable table-hover table-striped table-bordered ">
             <thead>
                 <tr>
                     <th>@lang('lang.po_ref_no')</th>
@@ -64,25 +64,29 @@
                 @foreach ($purchase_orders as $purchase_order)
                     <tr>
                         <td>
-                            <span class="custom-tooltip" data-tooltip="@lang('lang.po_ref_no')">
+                            <span class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.po_ref_no')">
                                 {{ $purchase_order->po_no }}
                             </span>
                         </td>
                         <td>
-                            <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
+                            <span class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.date')">
 
                             </span>
                             {{ @format_date($purchase_order->transaction_date) }}
                         </td>
 
                         <td>
-                            <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                            <span class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.created_by')">
                                 {{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}
                             </span>
                         </td>
 
                         <td>
-                            <span class="custom-tooltip" data-tooltip="@lang('lang.supplier')">
+                            <span class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.supplier')">
 
                                 @if (!empty($purchase_order->supplier))
                                     {{ $purchase_order->supplier->name }}
@@ -90,20 +94,24 @@
                             </span>
                         </td>
                         <td>
-                            <span class="custom-tooltip" data-tooltip="@lang('lang.value')">
+                            <span class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.value')">
                                 {{ @num_format($purchase_order->final_total) }}
                             </span>
                         </td>
                         <td>
-                            <span class="custom-tooltip" data-tooltip="@lang('lang.status')">
+                            <span class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.status')">
                                 {{ $purchase_order->status }}
                             </span>
                         </td>
                         {{-- =========================== Actions =========================== --}}
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">
+                                <button type="button"
+                                    class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
+                                    style="font-size: 12px;font-weight: 600" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
                                     @lang('lang.action')
                                     <span class="caret"></span>
                                 </button>

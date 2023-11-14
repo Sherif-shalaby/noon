@@ -51,7 +51,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons" class="table dataTable">
+                            <table id="datatable-buttons" class="table dataTable table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.job_title')</th>
@@ -65,23 +65,35 @@
                                     @foreach ($jobs as $job)
                                         <tr>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.job_title')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.job_title')">
                                                     {{ $job->title }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.date_of_creation')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.date_of_creation')">
                                                     {{ @format_date($job->date_of_creation) }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.created_by')">
+                                                <span
+                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.created_by')">
                                                     {{ $job->created_by()->get()[0]->name }}
                                                 </span>
                                             </td>
                                             <td>
                                                 @if (isset($job->updated_by))
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+                                                    <span
+                                                        class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.updated_by')">
                                                         {{ $job->updated_by()->get()[0]->name }}
                                                     </span>
                                                 @endif
@@ -90,7 +102,8 @@
                                                 @if (!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative']))
                                                     <a data-href="{{ route('jobs.edit', $job->id) }}"
                                                         data-container=".view_modal"
-                                                        class="btn btn-primary btn-modal text-white edit_job"><i
+                                                        class="btn btn-primary btn-modal text-white edit_job  d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"><i
                                                             class="fa fa-pencil-square-o"></i></a>
                                                     <a data-href="{{ route('jobs.destroy', $job->id) }}"
                                                         class="btn btn-danger text-white delete_item"><i

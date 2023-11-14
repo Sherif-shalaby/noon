@@ -66,14 +66,25 @@
                                     <tbody>
                                         @foreach ($customer_types as $index => $customertype)
                                             <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $customertype->name }}</td>
+                                                <td>
+                                                    <span class="d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600">
+                                                        {{ $index + 1 }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600">
+                                                        {{ $customertype->name }}
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <button type="button"
-                                                            class="btn btn-default btn-sm dropdown-toggle"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">خيارات <span class="caret"></span>
+                                                            class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false">خيارات <span
+                                                                class="caret"></span>
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"

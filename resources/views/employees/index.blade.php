@@ -74,55 +74,83 @@
                                     @foreach ($employees as $key => $employee)
                                         <tr>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.profile_photo')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.profile_photo')">
                                                     @if (!empty($employee->photo))
-                                                        <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
-                                                            width="50" height="50">
+                                                        <div style="width: 50px;height: 50px;">
+                                                            <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
+                                                                style="width: 100%;height: 100$;">
+                                                        </div>
                                                     @else
-                                                        <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
-                                                            width="50" height="50">
+                                                        <div style="width: 50px;height: 50px;">
+                                                            <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
+                                                                style="width: 100%;height: 100$;">
+                                                        </div>
                                                     @endif
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.employee_name')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.employee_name')">
 
                                                     {{ !empty($employee->user) ? $employee->user->name : '' }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.email')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.email')">
 
                                                     {{ !empty($employee->user) ? $employee->user->email : '' }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.phone_number')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.phone_number')">
 
                                                     {{ $employee->mobile }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.job_title')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.job_title')">
 
                                                     {{ !empty($employee->job_type) ? $employee->job_type->title : '' }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.wage')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.wage')">
 
                                                     {{ $employee->fixed_wage_value }}
                                                 </span>
                                             </td>
                                             {{--                                        <td></td> --}}
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.age')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.age')">
 
                                                     {{ \Carbon\Carbon::parse($employee->date_of_birth)->diff(\Carbon\Carbon::now())->format('%y') }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.date_of_start_working')">
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.date_of_start_working')">
 
                                                     {{ $employee->date_of_start_working }}
                                                 </span>
@@ -130,7 +158,10 @@
                                             <td>
 
                                                 @foreach ($employee->stores()->get() as $store)
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.stores')">
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.stores')">
                                                         {{ $store->name }}
                                                     </span>
                                                 @endforeach
@@ -140,8 +171,10 @@
                                             <td></td>
                                             <td></td>
                                             <td>
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <button type="button"
+                                                    class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
                                                     @lang('lang.action')
                                                     <span class="caret"></span>
                                                 </button>
