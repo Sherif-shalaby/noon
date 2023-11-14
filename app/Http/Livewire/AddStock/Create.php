@@ -68,7 +68,11 @@ class Create extends Component
 
 
     public function mount(){
-
+        
+        if(isset($_GET['product_id'])){
+            $productId = $_GET['product_id'];
+            $this->add_product($productId);
+        }
         $this->paid_on = Carbon::now()->format('Y-m-d');
         $this->bank_deposit_date = Carbon::now()->format('Y-m-d');
         $this->transaction_date = date('Y-m-d\TH:i');
@@ -497,9 +501,11 @@ class Create extends Component
             $this->search_by_product_symbol = '';
 
         }
+    
         $product = Product::find($id);
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
+        // dd($variations);
         if($add_via == 'unit'){
             $show_product_data = false;
             $this->addNewProduct($variations,$product,$show_product_data, $index, $stock);
@@ -525,6 +531,7 @@ class Create extends Component
                 }
             }
             else{
+                // dd(8);
                 $show_product_data = true;
                 $this->addNewProduct($variations,$product,$show_product_data,$index, $stock);
             }
@@ -534,8 +541,9 @@ class Create extends Component
 
     public function addNewProduct($variations,$product,$show_product_data, $index = null, $stock){
         $current_stock = $product->stock_lines->sum('quantity', '-','quantity_sold');
+        // dd($variations);
         if(!empty($variations)){
-            $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id);
+            $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id??0);
         }
           $new_item = [
             'show_product_data' => $show_product_data,
@@ -590,6 +598,7 @@ class Create extends Component
         }else{
             array_unshift($this->items, $new_item);
         }
+        // dd($this->items);
     }
 
     public function add_by_po(){
