@@ -618,6 +618,7 @@ return array(
     'customer_details' => 'تفاصيل العميل',
     'final'=>'دفعت',
     'draft'=>'مسودة',
-    'show_plans' => 'عرض الخطط'
+    'show_plans' => 'عرض الخطط',
+    'choose_unit_please'=>' ! اختر وحدة من فضلك',
 );
 
