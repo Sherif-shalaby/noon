@@ -391,7 +391,7 @@
                 if (result.isConfirmed) {
                     Livewire.emit('changeDinarPrice',key);
                 } else {
-                    // Livewire.emit('create_purchase_order',id);
+                    Livewire.emit('changePrices',key);
                 }
             });
 
@@ -409,7 +409,7 @@
                 if (result.isConfirmed) {
                     Livewire.emit('changeDollarPrice',key);
                 } else {
-                    // Livewire.emit('create_purchase_order',id);
+                    Livewire.emit('changePrices',key);
                 }
             });
 
