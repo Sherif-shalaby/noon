@@ -586,6 +586,8 @@ return [
     'draft'=>'Draft',
     'show_plans' => 'Show Plans',
     'choose_unit_please'=>'Choose Unit, Please!',
+    'add_new_stock'=>'Add New Stock',
+    'remove_expiry'=>'Remove Expiry',
     'generate_invoice' => 'Print Invoice',
 ];
 
