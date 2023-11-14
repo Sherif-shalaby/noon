@@ -170,8 +170,22 @@
                                                 <li class="divider"></li>
                                                 <li>
                                                     <a target="_blank" href="{{route('get_remove_damage',$product->id)}}"
+                                                       class="btn"><i class="fa fa-hourglass-half"></i>
+                                                         @lang('lang.remove_expiry')
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a target="_blank" href="{{route('get_remove_damage',$product->id)}}"
                                                        class="btn"><i class="fa fa-filter"></i>
                                                          @lang('lang.remove_damage')
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a target="_blank" href="{{url('add-stock/create?product_id='.$product->id)}}"
+                                                       class="btn"><i class="fa fa-plus"></i>
+                                                         @lang('lang.add_new_stock')
                                                     </a>
                                                 </li>
                                                 <li class="divider"></li>

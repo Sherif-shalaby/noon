@@ -620,6 +620,8 @@ return array(
     'draft'=>'مسودة',
     'show_plans' => 'عرض الخطط',
     'choose_unit_please'=>' ! اختر وحدة من فضلك',
+    'add_new_stock'=>'اضافة مخزون جديد',
+    'remove_expiry'=>'ازالة منهى الصلاحية',
     'generate_invoice' => 'طباعة فاتورة',
     'order_discount' => 'خصم',
     'view_payments' => 'عرض المدفوعات',
