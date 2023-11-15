@@ -1040,15 +1040,16 @@
                     </a>
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('sell-car.index') }}"
-                                class="sell-car-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <li>
+                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                href="{{ route('delivery.index') }}"
+                                class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
-                                @lang('lang.sell_car')</a>
+                                {{ __('lang.index') }}</a>
                         </li>
                         <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery.index') }}"
-                                class="sell-car-delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                href="{{ route('delivery_plan.plansList') }}"
+                                class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
                                 {{ __('lang.plans') }}</a></li>
                         {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
@@ -1114,18 +1115,18 @@
                         </div>
                         <span class="mx-2">{{ __('lang.sell_car') }}</span>
                     </a>
+
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li>
-                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery.index') }}"
-                                class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                href="{{ route('sell-car.index') }}"
+                                class="sell-car-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
-                                {{ __('lang.index') }}</a>
+                                @lang('lang.sell_car')</a>
                         </li>
                         <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                href="{{ route('delivery_plan.plansList') }}"
-                                class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                href="{{ route('delivery.index') }}"
+                                class="sell-car-delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
                                 {{ __('lang.plans') }}</a></li>
                         {{-- <li><a href="{{route('delivery.create')}}"><i class="mdi mdi-circle"></i>{{__('lang.create')}}</a></li> --}}
