@@ -639,4 +639,6 @@ return array(
     'remove_expiry' => 'ازالة منهى الصلاحية',
     'order_discount' => 'خصم',
     'view_payments' => 'عرض المدفوعات',
+    'cities' => 'المدن',
+    'regions' => 'المناطق',
 );

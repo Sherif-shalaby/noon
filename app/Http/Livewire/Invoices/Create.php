@@ -296,7 +296,34 @@ class Create extends Component
 
             // Add Payment Method
             if ($transaction->status != 'draft') {
-                if (!empty($this->dollar_amount) || !empty($this->amount)) {
+
+                if ($this->payment_status != 'pending') {
+                    $this->updateTransactionPaymentStatus($transaction->id);
+                } else {
+//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+
+                    $total_paid = 0;
+                    $dollar_total_paid = 0;
+
+                    $transaction = TransactionSellLine::find($transaction->id);
+
+                    //  final_amount : 'النهائي بالدينار'
+                    $final_amount = $transaction->final_total;
+                    //  dollar_final_amount : 'النهائي بالدولار'
+                    $dollar_final_amount = $transaction->dollar_final_total;
+                    // dinar_remaining : الباقي دينار
+                    $transaction->dinar_remaining =  $final_amount;
+                    //  dollar_remaining : 'الباقي بالدولار'
+                    $transaction->dollar_remaining =  $dollar_final_amount;
+//                    $transaction_payment->amount = $total_paid;
+//                    $transaction_payment->dollar_amount = $dollar_total_paid;
+                    $this->amount = $total_paid;
+                    $this->dollar_amount = $dollar_total_paid;
+//                    $transaction_payment->save();
+                    $transaction->save();
+                }
+                if ($this->dollar_amount > 0  || $this->amount > 0) {
+
                     $payment_data = [
                         'transaction_id' => $transaction->id,
                         'amount' => $this->amount,
@@ -318,43 +345,16 @@ class Create extends Component
                             $transaction_payment = PaymentTransactionSellLine::create($payment_data);
                         }
                     }
-                    if ($this->payment_status != 'pending') {
-                        $this->updateTransactionPaymentStatus($transaction->id);
-                    } else {
-                        $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
-
-                        $total_paid = 0;
-                        $dollar_total_paid = 0;
-
-                        $transaction = TransactionSellLine::find($transaction->id);
-
-                        //  final_amount : 'النهائي بالدينار'
-                        $final_amount = $transaction->final_total;
-                        //  dollar_final_amount : 'النهائي بالدولار'
-                        $dollar_final_amount = $transaction->dollar_final_total;
-                        // dinar_remaining : الباقي دينار
-                        $transaction->dinar_remaining =  $final_amount;
-                        //  dollar_remaining : 'الباقي بالدولار'
-                        $transaction->dollar_remaining =  $dollar_final_amount;
-                        $transaction_payment->amount = $total_paid;
-                        $transaction_payment->dollar_amount = $dollar_total_paid;
-                        $this->amount = $total_paid;
-                        $this->dollar_amount = $dollar_total_paid;
-                        $transaction_payment->save();
-                        $transaction->save();
-                    }
-
 
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
-
-
 
                 // update customer balance
                 $customer = Customer::find($transaction->customer_id);
                 $customer->dollar_balance += $this->dollar_amount - $this->total_dollar;
                 $customer->balance += $this->amount - $this->total;
                 $customer->save();
+
                 $payment_types = $this->getPaymentTypeArrayForPos();
                 $html_content = $this->getInvoicePrint($transaction, $payment_types, $this->invoice_lang);
 

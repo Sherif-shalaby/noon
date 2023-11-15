@@ -1,22 +1,5 @@
 {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> --}}
-<style>
-    .accordion-item {
-        background-color: transparent
-    }
 
-    .accordion-button {
-        padding: 8px !important;
-        width: fit-content !important;
-        background-color: #596fd7 !important;
-        color: white !important;
-        border-radius: 6px !important;
-        cursor: pointer;
-    }
-
-    .accordion-content {
-        display: none;
-    }
-</style>
 <div
     class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if ($index % 2 == 0) bg-light-gray @else bg-dark-gray @endif">
 
@@ -83,7 +66,8 @@
             @if (count($product['variations']) > 0)
                 <div class="d-flex justify-content-center">
                     <select name="items.{{ $index }}.variation_id" class="form-control select unit_name"
-                        style="width: 130px" wire:model="items.{{ $index }}.variation_id"
+                        style="width: 61px;height:30px;font-size:12px;"
+                        wire:model="items.{{ $index }}.variation_id"
                         wire:change="getVariationData({{ $index }})">
                         <option value="" selected>{{ __('lang.please_select') }}</option>
                         @foreach ($product['variations'] as $variant)
@@ -327,7 +311,7 @@
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="    font-weight: 700;
+            <span class="mb-2" style="font-weight: 700;
     font-size: 10px;">@lang('lang.total_cost')$</span>
             @if (!empty($product['quantity']) && (!empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="dollar_total_cost">
@@ -408,25 +392,39 @@
         </div>
     </div>
 
+
+
     <div class="d-flex flex-column" style="width: 100%">
-        <div class="accordion mb-1" wire:ignore>
+
+        <div style="width: 100%;" class="accordion m-1" id="accordionPanelsStayOpenExample">
             <div class="accordion-item" style="border: none">
                 <h2 class="accordion-header">
-                    <div class="accordion-button"
-                        onclick="toggleAccordion(`collapseOne{{ $index }}discount`)">
-                        @lang('lang.discount')
-                        <span class="collapseOne{{ $index }}discount mx-2">
-                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                    <button class="accordion-button dis-button collapsed"
+                        style="padding: 5px 15px;margin-bottom: 15px" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapse{{ $index }}discount"
+                        data-index="{{ $index }}" aria-expanded="true"
+                        aria-controls="panelsStayOpen-collapse{{ $index }}discount"
+                        wire:click="stayShowDiscount({{ $index }})">
+                        <h6>
+                            @lang('lang.discount')
+                        </h6>
+                        <span class="accordion-arrow">
+                            @if ($product['show_discount'])
+                                <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                            @else
+                                <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                            @endif
                         </span>
-                    </div>
+                    </button>
                 </h2>
-                <div id="collapseOne{{ $index }}discount" class="accordion-content">
+                <div id="panelsStayOpen-collapse{{ $index }}discount"
+                    class="accordion-collapse collapse @if ($product['show_discount']) show @endif">
                     <div class="accordion-body p-0">
                         @foreach ($product['prices'] as $key => $price)
                             <div class="d-flex flex-wrap justify-content-between width-full mb-2"
                                 style="background-color: whitesmoke;
-                                                                padding: 5px;
-                                                                border-radius: 6px;">
+                                                        padding: 5px;
+                                                        border-radius: 6px;">
 
                                 <div style="width: 80px;padding:0;margin:0;font-size: 12px;background-color: white;border-radius: 6px;"
                                     class="d-flex justify-content-center align-items-center flex-column">
@@ -448,6 +446,7 @@
                                             'class' => ' form-control price_type',
                                             'style' => 'width: 61px;height:30px;font-size:12px;',
                                             //                'data-index' =>$index,
+                                            'wire:key' => 'collapseOndiscountsaxas',
                                             'placeholder' => __('lang.please_select'),
                                             'wire:model' => 'items.' . $index . '.prices.' . $key . '.price_type',
                                             'wire:change' => 'changePrice(' . $index . ',' . $key . ')',
@@ -572,18 +571,30 @@
             </div>
         </div>
 
-        <div class="accordion" wire:ignore>
+
+        <div style="width: 100%;" class="accordion m-1" id="accordionPanelsStayOpenExample">
             <div class="accordion-item" style="border: none">
                 <h2 class="accordion-header">
-                    <div class="accordion-button"
-                        onclick="toggleAccordion(`collapseOne{{ $index }}validity`)">
-                        @lang('lang.validity')
-                        <span class="collapseOne{{ $index }}validity mx-2">
-                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                    <button class="accordion-button dis-button collapsed" style="padding: 5px 15px" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapse{{ $index }}validity"
+                        data-index="{{ $index }}" aria-expanded="true"
+                        aria-controls="panelsStayOpen-collapse{{ $index }}validity"
+                        wire:click="stayShowValidity({{ $index }})">
+                        <h6>
+                            @lang('lang.validity')
+                        </h6>
+                        <span class="accordion-arrow">
+                            @if ($product['show_validity'])
+                                <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                            @else
+                                <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                            @endif
                         </span>
-                    </div>
+                    </button>
                 </h2>
-                <div id="collapseOne{{ $index }}validity" class="accordion-content">
+                <div id="panelsStayOpen-collapse{{ $index }}validity"
+                    class="accordion-collapse collapse @if ($product['show_validity']) show @endif">
                     <div class="accordion-body p-0" style="">
 
                         <div class="p-0 d-flex flex-wrap justify-content-between align-items-center py-2 rounded-3 text-center"

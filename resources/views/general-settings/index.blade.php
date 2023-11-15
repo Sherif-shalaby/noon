@@ -202,15 +202,15 @@
                         {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
                         <div
                             class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <label for="country-dd"
-                                class=" mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif">@lang('lang.country')</label>
+                            {!! Form::label('country_id', __('lang.country'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
                             <div class="input-wrapper">
-                                <select id="country-dd" name="country" class=" initial-balance-input my-0"
-                                    style="width: 100%;border-radius: 12px;border:2px solid #ccc">
-                                    @foreach ($countries as $data)
-                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
-                                    @endforeach
-                                </select>
+
+                                {!! Form::select('country_id', $countries, !empty($settings['country_id']) ? $settings['country_id'] : null, [
+                                    'class' => 'form-control select2',
+                                ]) !!}
                             </div>
                         </div>
 

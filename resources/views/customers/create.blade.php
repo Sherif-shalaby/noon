@@ -217,9 +217,31 @@
                                     <select id="city-dd" name="city_id" class="form-control selectpicker"></select>
                                 </div>
                             </div>
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
+                                    style='font-size: 12px;font-weight: 500;' for="regions_id">@lang('lang.regions')</label>
+                                <div class="d-flex justify-content-center">
+                                    <div class="input-wrapper">
+                                        <select class="form-control select2" name="regions_id" id="regions_id"></select>
+                                    </div>
+                                    {{--                                    {!! Form::select( --}}
+                                    {{--                                        'store_id[]', --}}
+                                    {{--                                        $stores,null, --}}
+                                    {{--                                       [ --}}
+                                    {{--                                        'class' => 'form-control selectpicker', --}}
+                                    {{--                                        'placeholder' => __('lang.please_select'), --}}
+                                    {{--                                        'id' => 'store_id', --}}
+                                    {{--                                       ], --}}
+                                    {{--                                    ) !!} --}}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                                        data-target=".add-store"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
 
                             {{-- ++++++++++++ images ++++++++++++ --}}
-                            <div
+                            {{-- <div
                                 class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
@@ -227,15 +249,15 @@
                                 <div class="input-wrapper">
                                     <input class="form-control img  initial-balance-input m-auto width-full"
                                         name="image" type="file" accept="image/*" id="image">
-                                </div>
-                                {{-- Crop Image : cropper.js --}}
-                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                </div> --}}
+                            {{-- Crop Image : cropper.js --}}
+                            {{-- <div class="dropzone" id="my-dropzone2" required>
                                     <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
                                 </div> --}}
-                                @error('cover')
+                            {{-- @error('cover')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                             <div
@@ -317,7 +339,20 @@
                                     </table>
                                 </div>
                             </div>
-
+                            <div class="col-md-4 mb-3">
+                                <div class="form-group">
+                                    <label>@lang('lang.upload_image')</label>
+                                    <input class="form-control img" name="image" type="file" accept="image/*"
+                                        id="image">
+                                    {{-- Crop Image : cropper.js --}}
+                                    {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                    @error('cover')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                             {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
                             <div
                                 class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
