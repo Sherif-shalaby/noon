@@ -254,7 +254,7 @@
                             <table class="bordered">
                                 <thead class="email_thead">
                                     <tr>
-                                        <th class="text-left" style="font-weight: normal;">
+                                        <th class="text-left" style="font-weight: normal;background-color: transparent">
 
                                         </th>
                                     </tr>
@@ -302,7 +302,7 @@
                         <table class="bordered" style="width: 100%">
                             <thead class="phone_thead">
                                 <tr>
-                                    <th class="text-left" style="font-weight: normal;">
+                                    <th class="text-left" style="font-weight: normal;background-color: transparent">
 
                                     </th>
                                 </tr>
