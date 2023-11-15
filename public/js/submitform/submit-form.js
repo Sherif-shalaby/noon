@@ -189,6 +189,7 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
+                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
                     title: `${result.msg}`,
                     type: 'success',
@@ -207,20 +208,11 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#supplier_id").empty().append(data_html);
-                        $("#supplier_id").val(supplier_id).change();
+                        $("#supplier_id").val(supplier_id).trigger();
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
-                Swal.fire({
-                    title: `${result.msg}`,
-                    type: 'error',
-                    icon: 'error',
-                    showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
-                    timer: 1000
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
