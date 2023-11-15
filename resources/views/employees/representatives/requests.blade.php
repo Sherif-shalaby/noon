@@ -1,25 +1,32 @@
 @extends('layouts.app')
 @section('title', __('lang.representatives_requests'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.representatives')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        {{--                        <li class="breadcrumb-item active"><a href="#">@lang('lang.employees')</a></li> --}}
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.representatives')</li>
-                    </ol>
+    <div class="animate-in-page">
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.representatives')</h4>
+                    <div class="breadcrumb-list">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a></li>
+                            {{--                        <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"><a href="#">@lang('lang.employees')</a></li> --}}
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                                aria-current="page">@lang('lang.representatives')</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-lg-4">
-                {{-- <div class="widgetbar"> --}}
+                <div class="col-md-4">
+                    {{-- <div class="widgetbar"> --}}
                     {{-- <a class="btn btn-primary" href="{{ route('employees.create') }}">@lang('lang.add_employee')</a> --}}
                     {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i --}}
                     {{--                            class="dripicons-plus"></i> --}}
                     {{--                        @lang('lang.add_new_employee')</a> --}}
-                {{-- </div> --}}
+                    {{-- </div> --}}
+                </div>
             </div>
         </div>
     </div>
@@ -56,8 +63,8 @@
                                     <th>@lang('lang.product')</th>
                                     <th>@lang('lang.quantity')</th>
                                     <th>@lang('lang.unit')</th>
-                                    <th>@lang('lang.purchase_price')  </th>
-                                    <th>@lang('lang.sell_price')  </th>
+                                    <th>@lang('lang.purchase_price') </th>
+                                    <th>@lang('lang.sell_price') </th>
                                     <th class="notexport">@lang('lang.action')</th>
                                 </tr>
                             </thead>
@@ -69,7 +76,7 @@
                                             {{ !empty($transaction->employee->user) ? $transaction->employee->user->name : '' }}
                                         </td>
                                         <td>
-                                            {{App\Models\DeliveryLocation::where('delivery_id',$transaction->employee_id)->latest()->first()->city->name}}
+                                            {{ App\Models\DeliveryLocation::where('delivery_id', $transaction->employee_id)->latest()->first()->city->name }}
                                             {{-- {{ !empty($transaction->employee->delivery_locations) ? $transaction->employee->delivery_locations : '' }} --}}
                                         </td>
                                         <td>
@@ -95,7 +102,7 @@
                                                 @endforeach
                                             @endif
                                         </td>
-                                        <td>{{ $transaction->quantity??0 }}</td>
+                                        <td>{{ $transaction->quantity ?? 0 }}</td>
                                         <td>
                                             @if ($transaction->transaction_sell_lines)
                                                 @foreach ($transaction->transaction_sell_lines as $sellLine)
@@ -106,14 +113,16 @@
                                         <td>
                                             @if ($transaction->transaction_sell_lines)
                                                 @foreach ($transaction->transaction_sell_lines as $sellLine)
-                                                    {{ $sellLine->purchase_price ?? 0 }} , {{ $sellLine->dollar_purchase_price ?? 0 }} $  <br>
+                                                    {{ $sellLine->purchase_price ?? 0 }} ,
+                                                    {{ $sellLine->dollar_purchase_price ?? 0 }} $ <br>
                                                 @endforeach
                                             @endif
                                         </td>
                                         <td>
                                             @if ($transaction->transaction_sell_lines)
                                                 @foreach ($transaction->transaction_sell_lines as $sellLine)
-                                                    {{ $sellLine->sell_price ?? 0 }},{{ $sellLine->dollar_sell_price ?? 0 }}$  <br>
+                                                    {{ $sellLine->sell_price ?? 0 }},{{ $sellLine->dollar_sell_price ?? 0 }}$
+                                                    <br>
                                                 @endforeach
                                             @endif
                                         </td>
@@ -137,7 +146,7 @@
                                                         target="_blank" class="btn edit_employee"><i
                                                             class="fa fa-pencil-square-o"></i>
                                                         @lang('lang.edit')</a>
-                                                </li>--}}
+                                                </li> --}}
                                                 <li>
                                                     <a data-href="{{ route('representatives.destroy', $transaction->id) }}"
                                                         class="btn delete_item text-red delete_item"><i
@@ -151,12 +160,11 @@
                                                             class="fa fa-print"></i>
                                                         @lang('lang.print')</a>
                                                 </li>
-                                                @if(empty($transaction->transaction_payments->first()))
+                                                @if (empty($transaction->transaction_payments->first()))
                                                     <li class="divider"></li>
                                                     <li>
                                                         <a href="{{ route('representatives.pay', $transaction->id) }}"
-                                                            class="btn text-red"><i
-                                                                class="fa fa-money"></i>
+                                                            class="btn text-red"><i class="fa fa-money"></i>
                                                             @lang('lang.pay')</a>
                                                     </li>
                                                 @endif
@@ -182,36 +190,38 @@
             </div>
         </div>
     </div>
-<!-- This will be printed -->
-<section class="invoice print_section print-only" id="receipt_section"> </section>
+    <!-- This will be printed -->
+    <section class="invoice print_section print-only" id="receipt_section"> </section>
 
 @endsection
 @push('javascripts')
-<script>
-    $(document).on('click','.print_representative_invoice',function(){
-         $.ajax({
-            method: "get",
-            url: $(this).data('href'),
-            success: function (response) {
-                console.log(response)
-                if(response!==''){
-                pos_print(response);
+    <script>
+        $(document).on('click', '.print_representative_invoice', function() {
+            $.ajax({
+                method: "get",
+                url: $(this).data('href'),
+                success: function(response) {
+                    console.log(response)
+                    if (response !== '') {
+                        pos_print(response);
+                    }
                 }
-            }
+            });
         });
-    });
-    function pos_print(receipt) {
-    $("#receipt_section").html(receipt);
-    const sectionToPrint = document.getElementById('receipt_section');
-    __print_receipt(sectionToPrint);
-    }
-    function __print_receipt(section= null) {
-        setTimeout(function () {
-            section.style.display = 'block';
-            window.print();
-            section.style.display = 'none';
-        
-        }, 1000);
-    }  
-</script>
+
+        function pos_print(receipt) {
+            $("#receipt_section").html(receipt);
+            const sectionToPrint = document.getElementById('receipt_section');
+            __print_receipt(sectionToPrint);
+        }
+
+        function __print_receipt(section = null) {
+            setTimeout(function() {
+                section.style.display = 'block';
+                window.print();
+                section.style.display = 'none';
+
+            }, 1000);
+        }
+    </script>
 @endpush
