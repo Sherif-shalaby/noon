@@ -214,7 +214,9 @@ class DeliveryController extends Controller
 
     public function plansList(Request $request)
     {
-        $cities = City::pluck('name', 'id');
+//        $cities = City::pluck('name', 'id');
+        $country = Country::find(System::getProperty('country_id'));
+        $cities = $country->states->flatMap->cities->pluck('name', 'id');
         $delivery_men = Employee::whereHas('job_type', function ($query) {
             $query->where('title', 'Deliveryman');
         })->with('user')->get();
@@ -253,7 +255,8 @@ class DeliveryController extends Controller
     }
     public function plansListForRep(Request $request)
     {
-        $cities = City::pluck('name', 'id');
+        $country = Country::find(System::getProperty('country_id'));
+        $cities = $country->states->flatMap->cities->pluck('name', 'id');
         $delivery_men = Employee::whereHas('job_type', function ($query) {
             $query->where('title', 'Representative');
         })->with('user')->get();

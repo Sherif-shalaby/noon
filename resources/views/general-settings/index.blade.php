@@ -111,12 +111,13 @@
                     </div>
                     {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
                     <div class="col-md-3">
-                        <label for="country-dd" class="h5 pt-3">@lang('lang.country')</label>
-                        <select id="country-dd" name="country" class="form-control">
-                            @foreach ( $countries as $data )
-                                <option value="{{ $data->id }}">{{ $data->name }}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('country_id', __('lang.country'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::select(
+                            'country_id',
+                            $countries,
+                            !empty($settings['country_id']) ? $settings['country_id'] : null,
+                            ['class' => 'form-control select2'],
+                        ) !!}
                     </div>
                     <br>
                     <hr>

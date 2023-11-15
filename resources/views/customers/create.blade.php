@@ -143,14 +143,14 @@
                             </div>
                         </div>
                         {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="balance_in_dinar">@lang('lang.balance_in_dinar')</label>
                                 <input type="text" class="form-control" name="balance_in_dinar" id="balance_in_dinar" />
                             </div>
                         </div>
                         {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <label for="country-dd">@lang('lang.country')</label>
                             <select id="country-dd" name="country" class="form-control" disabled>
                                 <option value="{{ $countryId }}">
@@ -159,7 +159,7 @@
                             </select>
                         </div>
                         {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="state-dd">@lang('lang.state')</label>
                                 <select id="state-dd" name="state_id" class="form-control">
@@ -175,14 +175,34 @@
                             </div>
                         </div>
                         {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="city-dd">@lang('lang.city')</label>
                                 <select id="city-dd" name="city_id" class="form-control"></select>
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="regions_id">@lang('lang.regions')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select class="form-control select2" name="regions_id" id="regions_id"></select>
+{{--                                    {!! Form::select(--}}
+{{--                                        'store_id[]',--}}
+{{--                                        $stores,null,--}}
+{{--                                       [--}}
+{{--                                        'class' => 'form-control selectpicker',--}}
+{{--                                        'placeholder' => __('lang.please_select'),--}}
+{{--                                        'id' => 'store_id',--}}
+{{--                                       ],--}}
+{{--                                    ) !!}--}}
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                                            data-target=".add-store"><i
+                                            class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
                         {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
-                        <div class="col-md-4 mt-1">
+                        <div class="col-md-4 mt-1 mb-3">
                             <table class="bordered">
                                 <thead class="phone_thead">
                                     <tr>
@@ -211,12 +231,23 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group">
+                                <label>@lang('lang.upload_image')</label>
+                                <input class="form-control img" name="image" type="file" accept="image/*" id="image">
+                                {{-- Crop Image : cropper.js --}}
+                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
+                            </div>
+                        </div>
                         {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
-                        <div class="col-md-4">
+                        <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 {!! Form::label('address', __('lang.address')) !!}
                                 {!! Form::textarea('address', null, [
-                                    'class' => 'form-control',
+                                    'class' => 'form-control','rows'=> '4'
                                 ]) !!}
                                 @error('address')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -228,7 +259,7 @@
                             <div class="form-group">
                                 {!! Form::label('notes', __('lang.notes')) !!}
                                 {!! Form::textarea('notes', null, [
-                                    'class' => 'form-control',
+                                    'class' => 'form-control','rows'=> '4',
                                 ]) !!}
                                 @error('address')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -236,17 +267,7 @@
                             </div>
                         </div>
                         {{-- ++++++++++++ images ++++++++++++ --}}
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>@lang('lang.upload_image')</label>
-                                <input class="form-control img" name="image" type="file" accept="image/*" id="image">
-                                {{-- Crop Image : cropper.js --}}
-                                {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
-                            </div>
-                        </div>
+
                     </div>
                     <div class="row pt-4 pb-5">
                         <div class="col-md-12">

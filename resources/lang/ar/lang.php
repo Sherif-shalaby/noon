@@ -625,5 +625,7 @@ return array(
     'generate_invoice' => 'طباعة فاتورة',
     'order_discount' => 'خصم',
     'view_payments' => 'عرض المدفوعات',
+    'cities' => 'المدن',
+    'regions' => 'المناطق',
 );
 
