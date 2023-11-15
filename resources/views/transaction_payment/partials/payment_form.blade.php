@@ -22,7 +22,7 @@
     <div class="col-md-4">
         <div class="form-group">
             {!! Form::label('paid_on', __('lang.payment_date'). ':', []) !!} <br>
-            {!! Form::text('paid_on', !empty($payment) ? @format_date($payment->paid_on) :
+            {!! Form::date('paid_on', !empty($payment) ? @format_date($payment->paid_on) :
             @format_date(date('Y-m-d')), ['class' => 'form-control datepicker',
             'placeholder' => __('lang.payment_date'), 'wire:model' => 'paid_on']) !!}
         </div>

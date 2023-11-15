@@ -590,7 +590,9 @@ return [
     'remove_expiry'=>'Remove Expiry',
     'generate_invoice' => 'Print Invoice',
     'order_discount' => 'Order Discount',
-    'view_payments' => 'View Payments'
+    'view_payments' => 'View Payments',
+    'cities' => 'Cities',
+    'regions' => 'Regions',
 ];
 
 
