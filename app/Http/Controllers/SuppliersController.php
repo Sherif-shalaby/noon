@@ -41,7 +41,7 @@ class SuppliersController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::orderBy('id','desc')->get();
+        $suppliers = Supplier::orderBy('id','desc')->paginate(10);
         $countryId = System::getProperty('country_id');
         $countryName = Country::where('id', $countryId)->pluck('name')->first();
         // return $settings;
@@ -77,62 +77,68 @@ class SuppliersController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
-        // return $request;
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => ['nullable', 'max:30'],
-                'notes' => ['nullable', 'max:255'],
-                'company_name' => ['nullable', 'max:30'],
-                'vat_number' => ['nullable', 'max:30'],
-                'email' => ['nullable', 'max:50'],
-                'mobile_number' => ['required', 'max:30'],
-                'address' => ['nullable', 'max:60'],
-                'city' => ['nullable', 'max:30'],
-                'state' => ['nullable', 'max:30'],
-                'country' => ['nullable', 'max:30'],
-                'postal_code' => ['nullable', 'max:30']
-            ]
-        );
-        if ($validator->fails()) {
+        try {
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'name' => ['required', 'max:30'],
+                    'notes' => ['nullable', 'max:255'],
+                    'company_name' => ['required', 'max:30'],
+                    'vat_number' => ['nullable', 'max:30'],
+                    'email' => ['nullable', 'max:50'],
+                    'mobile_number' => ['required', 'max:30'],
+                    'address' => ['nullable', 'max:60'],
+                    'city' => ['nullable', 'max:30'],
+                    'state' => ['nullable', 'max:30'],
+                    'country' => ['nullable', 'max:30'],
+                ]
+            );
+            if ($validator->fails()) {
+                $output = [
+                    'success' => false,
+                    'msg' => $validator->getMessageBag()->first()
+                ];
+                if ($request->ajax()) {
+                    return $output;
+                }
+
+                return redirect()->back()->withInput()->with('status', $output);
+            }
+            $data = $request->except('_token','mobile_number','email');
+            // ++++++++++++++ store mobile_number in array ++++++++++++++++++
+            $data['mobile_number'] = json_encode($request->mobile_number);
+            // ++++++++++++++ store email in array ++++++++++++++++++
+            $data['email'] = json_encode($request->email);
+
+            $data['created_by'] = Auth::user()->id;
+            if ($request->file('image')) {
+                $data['image'] = store_file($request->file('image'), 'suppliers');
+            }
+
+            $supplier = Supplier::create($data);
+
             $output = [
-                'success' => false,
-                'msg' => $validator->getMessageBag()->first()
+                'success' => true,
+//                'id' => $supplier->id,
+                'msg' => __('lang.success')
             ];
             if ($request->ajax()) {
                 return $output;
             }
-
-            return redirect()->back()->withInput()->with('status', $output);
         }
-        $data = $request->except('_token','mobile_number','email');
-        // ++++++++++++++ store mobile_number in array ++++++++++++++++++
-        $data['mobile_number'] = json_encode($request->mobile_number);
-        // ++++++++++++++ store email in array ++++++++++++++++++
-        $data['email'] = json_encode($request->email);
-
-        $data['created_by'] = Auth::user()->id;
-//        dd($data);
-        if ($request->file('image')) {
-            $data['image'] = store_file($request->file('image'), 'suppliers');
+        catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
         }
 
-        $supplier = Supplier::create($data);
-        $output = [
-            'success' => true,
-            'id' => $supplier->id,
-            'msg' => __('lang.success')
-        ];
-        // return "test";
-        // return response()->json(['status' => __('lang.success')]);
-        if ($request->ajax()) {
-            return $output;
-        }
-        return redirect()->back()->with('status', __('lang.success'));
+        return redirect()->back()->with('status', $output);
     }
 
     /**
@@ -155,10 +161,12 @@ class SuppliersController extends Controller
     public function edit($id)
     {
         $supplier = Supplier::find($id);
-        $supplier_categories = Category::where('parent_id',null)->pluck('name', 'id');
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
         return view('suppliers.edit')->with(compact(
             'supplier',
-            'supplier_categories'
+            'countryId',
+            'countryName'
         ));
     }
 
@@ -173,21 +181,27 @@ class SuppliersController extends Controller
     {
 //        dd($request);
         try {
+            $supplier = Supplier::find($id);
             $data['name'] = $request->name;
             $data['company_name'] = $request->company_name;
-            $data['supplier_category_id'] = $request->supplier_category_id;
-            $data['vat_number'] = $request->vat_number;
-            $data['email'] = $request->email;
             $data['mobile_number'] = $request->mobile_number;
-            $data['address'] = $request->address;
-            $data['city'] = $request->city;
-            $data['country'] = $request->country;
-            $data['postal_code'] = $request->postal_code;
             $data['exchange_rate'] = $request->exchange_rate;
             $data['start_date'] = $request->start_date;
+            $data['country'] = $request->country;
+            $data['state_id'] = $request->state_id;
+            $data['city_id'] = $request->city_id;
             $data['end_date'] = $request->end_date;
+            $data['owner_debt_in_dinar'] = $request->owner_debt_in_dinar;
+            $data['owner_debt_in_dollar'] = $request->owner_debt_in_dollar;
+            $data['email'] = $request->email;
+            $data['address'] = $request->address;
+            $data['notes'] = $request->notes;
             $data['updated_by'] = Auth::user()->id;
-            Supplier::find($id)->update($data);
+            if ($request->hasFile('image')){
+                delete_file($supplier->image);
+                $data['image'] = store_file($request->file('image'),'suppliers');
+            }
+            $supplier->update($data);
 
             $output = [
                 'success' => true,
@@ -200,7 +214,6 @@ class SuppliersController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-//        return response()->json(['status' => $output]);
          return redirect()->route('suppliers.index')->with('status', $output);
     }
 

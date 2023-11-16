@@ -161,13 +161,14 @@
                                                        class="btn btn-modal"><i class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
                                                     </a>
                                                 </li>
-{{--                                                <li>--}}
-{{--                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"--}}
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"
 {{--                                                       data-check_password="{{ action('UserController@checkPassword', Auth::user()->id) }} "--}}
-{{--                                                       class="btn text-red delete_item"><i class="fa fa-trash"></i>--}}
-{{--                                                        {{ __('lang.delete') }}--}}
-{{--                                                    </a>--}}
-{{--                                                </li>--}}
+                                                       class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                        {{ __('lang.delete') }}
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </td>
                                     </tr>
