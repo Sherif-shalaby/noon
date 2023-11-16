@@ -593,6 +593,10 @@ return [
     'view_payments' => 'View Payments',
     'cities' => 'Cities',
     'regions' => 'Regions',
+    'show_invoices' => 'Show Invoices',
+    'view_plan' => 'View Plan',
+    'upload_receipt' => 'Upload Receipt',
+    'receipts' => 'Receipts',
 ];
 
 

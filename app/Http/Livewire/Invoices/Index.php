@@ -33,7 +33,7 @@ class Index extends Component
     }
     public function render()
     {
-        $sell_lines = TransactionSellLine::all();
+        $sell_lines = TransactionSellLine::OrderBy('created_at','desc')->paginate(10);
 
         return view('livewire.invoices.index', compact('sell_lines'));
     }
