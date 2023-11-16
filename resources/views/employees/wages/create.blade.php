@@ -124,6 +124,20 @@
                                 {!! Form::text('reasons_of_deductibles', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => __('lang.reasons_of_deductibles')]) !!}
                             </div>
                         </div>
+                        {{-- ++++++++++++++++++ الزيادات ++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="increases">@lang('lang.increases')</label>
+                                {!! Form::text('increases', null, ['class' => 'form-control', 'placeholder' => __('lang.increases'), 'id' => 'increases']) !!}
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++++ أسباب الزيادات ++++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="reasons_of_increases">@lang('lang.reasons_of_increases')</label>
+                                {!! Form::text('reasons_of_increases', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => __('lang.reasons_of_increases')]) !!}
+                            </div>
+                        </div>
                         {{-- ++++++++++++++++++ الصافي ++++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
@@ -232,6 +246,10 @@
             $('#deductibles').on('change', function() {
                 net_salary();
             });
+            // +++++++++++++++++ Calculate "net_value" : When Change "الزيادات" +++++++++++++++++
+            $('#increases').on('change', function() {
+                net_salary();
+            });
             // +++++++++++++++++ Calculate "net_value" : When Change "الراتب" +++++++++++++++++
             $('#other_payment').on('change', function() {
                 net_salary();
@@ -240,16 +258,22 @@
             function net_salary()
             {
                 let deductibles = parseFloat($('#deductibles').val());
+                let increases = parseFloat($('#increases').val());
                 let other_payment = parseFloat($('#other_payment').val());
-                console.log(other_payment);
-                console.log(deductibles);
-                if (!isNaN(deductibles) && !isNaN(other_payment)) {
+
+                if (!isNaN(deductibles) && !isNaN(other_payment) && !isNaN(increases) )
+                {
+                    let netAmount = (other_payment + increases) - deductibles;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                }
+                if (!isNaN(deductibles) && !isNaN(other_payment) && isNaN(increases))
+                {
                     let netAmount = other_payment - deductibles;
                     $('#net_amount').val(netAmount);
                     console.log(netAmount);
                 }
             }
-
             // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
             $('#source_type').change(function() {
             if ($(this).val() !== '') {
