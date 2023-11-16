@@ -16,13 +16,14 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
-                    title: "Success",
-                    text: response.status,
-                    icon: "success",
-                    timer: 700, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
                 });
                 $("#createBrandModal").modal("hide");
                 var brand_id = result.id;
@@ -37,14 +38,7 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });
@@ -359,15 +353,15 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
-                    title: "Success",
-                    text: response.status,
-                    icon: "success",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
                 });
-
                 $("#add_product_tax_modal").modal("hide");
                 var product_tax_id = result.id;
                 $.ajax({
@@ -382,14 +376,7 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });

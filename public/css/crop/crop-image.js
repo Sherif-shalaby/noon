@@ -48,7 +48,6 @@ fileImageInput.addEventListener("change", () => {
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Yes, delete it!",
-                        timer: 700
                     }).then((result) => {
                         if (result) {
                             // Swal.fire(

@@ -307,7 +307,7 @@
                                                 <table class="bordered m-0" style="width: 100%">
                                                     <thead class="email_thead">
                                                         <tr>
-                                                            <th
+                                                            <th style="background: transparent !important;color: black !important;"
                                                                 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                                 <label class="mb-0">
                                                                     <span class="text-danger">*</span>@lang('lang.email')
@@ -349,7 +349,7 @@
                                                 <table class="bordered m-0" style="width: 100%">
                                                     <thead class="phone_thead">
                                                         <tr>
-                                                            <th
+                                                            <th style="background: transparent !important;color: black !important;"
                                                                 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                                 <label class="mb-0">
                                                                     <span class="text-danger">*</span>@lang('lang.phone_number')

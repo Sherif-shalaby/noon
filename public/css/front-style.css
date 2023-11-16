@@ -699,3 +699,18 @@ thead tr {
     z-index: 1000;
 
 }
+
+.error-help-block {
+    font-size: 10px;
+    font-weight: 700;
+    color: #dc3545;
+}
+
+.bootstrap-select {
+    height: 100%;
+}
+
+.btn-light {
+    height: 100%;
+    padding: 0;
+}

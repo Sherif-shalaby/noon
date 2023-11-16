@@ -72,7 +72,8 @@
                             <div class="input-wrapper">
                                 @php $selected_stores=$product->stores->pluck('id'); @endphp
                                 {!! Form::select('store_id[]', $stores, $selected_stores, [
-                                    'class' => 'js-example-basic-multiple',
+                                    // 'class' => 'js-example-basic-multiple',
+                                    'class' => 'form-control selectpicker',
                                     'multiple' => 'multiple',
                                     'id' => 'store_id',
                                 ]) !!}
@@ -582,7 +583,9 @@
         </div>
     </div>
     </div>
+    {{-- @include('store.create', ['quick_add' => $quick_add]) --}}
     @include('store.create', ['quick_add' => $quick_add])
+
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
     @include('categories.create_modal', ['quick_add' => $quick_add])

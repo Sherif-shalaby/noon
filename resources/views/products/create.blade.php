@@ -89,7 +89,7 @@
                     ]) !!}
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
-                        <div class=" col-md-3 animate__animated animate__flipInX mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.15s">
                             {!! Form::label('brand', __('lang.brand'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0 width-quarter' : ' mb-0 width-quarter',
@@ -110,7 +110,6 @@
                                 ]) !!}
                                 <button type="button" class="add-button d-flex justify-content-center align-items-center"
                                     data-toggle="modal" data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
-
                             </div>
                         </div>
 
@@ -457,9 +456,10 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <button type="button" class="add-button" data-toggle="modal"
-                                                data-target="#add_product_tax_modal" data-select_category="2"><i
-                                                    class="fas fa-plus"></i></button>
+                                            <button type="button"
+                                                class="add-button d-flex justify-content-center align-items-center"
+                                                data-toggle="modal" data-target="#add_product_tax_modal"
+                                                data-select_category="2"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>

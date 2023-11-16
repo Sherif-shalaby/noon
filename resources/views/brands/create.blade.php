@@ -2,7 +2,7 @@
 <div class="modal modal-brand animate__animated  add-store" data-animate-in="animate__rollIn"
     data-animate-out="animate__rollOut" id="createBrandModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog  rollIn  animated" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div
                 class="modal-header d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -18,7 +18,6 @@
                 'id' => isset($quick_add) && $quick_add ? 'quick_add_brand_form' : 'brand-form',
             ]) !!}
             <div class="modal-body">
-
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <input type="hidden" name="quick_add"
@@ -30,7 +29,8 @@
                         'required',
                     ]) !!}
                     @error('name')
-                        <label class="text-danger error-msg">{{ $message }}</label>
+                        <span style="font-size: 10px;font-weight: 700;"
+                            class="text-danger error-msg">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
