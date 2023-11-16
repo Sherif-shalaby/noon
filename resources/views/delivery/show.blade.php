@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.add_customers'))
+@section('title', __('lang.view_plan'))
 @push('css')
 <style>
 /* Set the size of the div element that contains the map */
@@ -35,47 +35,36 @@
 @section('content')
     <!-- Start row -->
     <div class="row d-flex justify-content-center">
-        {{-- {{ dd($countryName) }}  --}}
         <!-- Start col -->
         <div class="col-lg-12">
             <div class="card m-b-30 p-2">
                 <div class="container-fluid">
                     <div class="row pt-5">
-                       
-
-                        {{-- <input type="hidden" class="form-control" name="delivery_id"
-                         value="{{$delivery_plan->id}}" > --}}
-                        {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                       
-                       
                         <div id='customers-checkboxes' class="col-md-6" style="margin-bottom: 20px">
                             @foreach ($delivery_plans as $delivery_plan)
                                 <div class="form-check" style="margin-bottom: 10px">
                                     <button class="btn btn-success btn-sm sign-in-btn" @if($delivery_plan->signed_at != null) disabled @endif data-customer-id="{{$delivery_plan->customers_id}}" data-delivery-location-id="{{$delivery_plan->delivery_location_id}}">Sign In</button>
-
                                     {{-- <input class="form-check-input" type="checkbox" name="customer" value="{{$delivery_plan->customers_id}}"> --}}
                                     <label class="form-check-label">{{$delivery_plan->customers->name}}</label>
                                     <button class="btn btn-primary btn-sm sign-out-btn"@if($delivery_plan->submitted_at != null) disabled @endif data-customer-id="{{$delivery_plan->customers_id}}" data-delivery-location-id="{{$delivery_plan->delivery_location_id}}">Sign Out</button>
+                                    <a data-href="{{route('show_customer_invoices',['customer_id' => $delivery_plan->customers->id, 'delivery_id' => $delivery_plan->delivery_location->delivery_id ])}}"
+                                       data-container=".view_modal"
+                                       class="btn btn-primary btn-modal text-white edit_job">
+                                        @lang('lang.show_invoices')
+                                    </a>
                                 </div>
                             @endforeach
                         </div>
-
-
                     </div>
                     <div id="map"></div>
-
-                    {{-- <div class="row pb-5">
-                        <div class="col-md-12">
-                            <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-                        </div>
-                    </div> --}}
                 </div>
-                {{-- {!! Form::close() !!} --}}
             </div>
-          
+
         </div>
     </div>
 @endsection
+<div class="view_modal no-print" ></div>
+
 @push('js')
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKqlJypSBrs_U2e1RfhpyM4CQ87hiVzCM&callback=initMap"></script>
 
@@ -87,10 +76,10 @@
 <script>
 
 
-   
+
     var map; // Declare map variable in an outer scope
     var bounds;
-    
+
     // Function to initialize the map and add markers
     function initMap() {
         const initialPosition = { lat: 33.312805, lng: 44.361488 };
@@ -172,7 +161,7 @@
                 type: 'POST',
                 url: '/delivery_plan/sign-out', // Replace this with your sign-out endpoint
                 data: { customer_id: customerId,
-                    delivery_location_id: deliveryLocationId, 
+                    delivery_location_id: deliveryLocationId,
                         sign_out :'sign_out' },
                 success: function(response) {
                     // Handle success response if needed

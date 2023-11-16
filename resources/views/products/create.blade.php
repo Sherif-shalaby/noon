@@ -235,7 +235,7 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div>
-                    
+
                     <div class="col-md-12 pt-5">
                         <div class="col-md-3">
                             <button class="btn btn btn-primary add_unit_row" type="button">
@@ -243,7 +243,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="col-md-12 product_unit_raws ">
                         @include('products.product_unit_raw')
                         <input type="hidden" id="raw_unit_index" value="0" />
@@ -353,20 +353,6 @@
                                             </div>
                                             <div class="col-4 offset-1">
                                                 <div class="preview-image-container">
-{{--                                                    @if (!empty($recent_product->image))--}}
-{{--                                                        <div class="preview">--}}
-{{--                                                            <img src="{{ asset('uploads/products/' . $recent_product->image) }}"--}}
-{{--                                                                 id="image_footer" alt="">--}}
-{{--                                                            <button type="button"--}}
-{{--                                                                    class="btn btn-xs btn-danger delete-btn remove_image "--}}
-{{--                                                                    data-type="image"><i style="font-size: 25px;"--}}
-{{--                                                                                         class="fa fa-trash"></i></button>--}}
-{{--                                                            <span class="btn btn-xs btn-primary  crop-btn"--}}
-{{--                                                                  id="crop-image-btn" data-toggle="modal"--}}
-{{--                                                                  data-target="#imageModal"><i style="font-size: 25px;"--}}
-{{--                                                                                               class="fas fa-crop"></i></span>--}}
-{{--                                                        </div>--}}
-{{--                                                    @endif--}}
                                                 </div>
                                             </div>
                                         </div>

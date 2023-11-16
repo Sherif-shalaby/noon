@@ -40,11 +40,13 @@
                                     <th>@lang('lang.commission')</th>
                                     <th>@lang('lang.products')</th>
                                     <th>@lang('lang.sale_note')</th>
-                                    <th>@lang('lang.files')</th>
+                                    <th>@lang('lang.receipts')</th>
                                     <th class="notexport">@lang('lang.action')</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @php
+                                @endphp
                                 @foreach($sell_lines as $index => $line)
                                     <tr>
                                         <td>
@@ -96,7 +98,8 @@
                                         <td>
                                             {{$line->created_by_user->name}}
                                         </td>
-                                        <td></td>
+                                        <td>
+                                        </td>
                                         <td>
                                             @foreach($line->transaction_sell_lines as $sell_line)
                                                 @if(!empty($sell_line->product))
@@ -110,7 +113,14 @@
                                                 {{$payment->received_currency_relation->payment_note ?? ''}}<br>
                                             @endforeach
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            @if(count($line->receipts) > 0)
+                                                <a data-href=" {{route('show_receipt', $line->id)}}"
+                                                   data-container=".view_modal"
+                                                   class="btn btn-default btn-modal"> {{__('lang.view')}}
+                                                </a>
+                                            @endif
+                                        </td>
                                         <td>
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                                     aria-haspopup="true" aria-expanded="false">
@@ -144,6 +154,12 @@
                                                 <li>
                                                     <a href="{{ route('invoices.edit', $line->id) }}" class="btn"><i
                                                             class="dripicons-document-edit"></i> {{ __('lang.edit') }}</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href=" {{route('upload_receipt', $line->id)}}" data-container=".view_modal" data-dismiss="modal"
+                                                       class="btn btn-modal"><i class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
+                                                    </a>
                                                 </li>
 {{--                                                <li>--}}
 {{--                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"--}}

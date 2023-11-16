@@ -8,7 +8,9 @@ use App\Models\Country;
 use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
+use App\Models\Employee;
 use App\Models\System;
+use App\Models\TransactionSellLine;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -243,6 +245,12 @@ class CustomerController extends Controller
         $customers_dp = $this->Util->createDropdownHtml($customers, __('lang.please_select'));
         $output = [$customers_dp , array_key_last($customers)];
         return $output;
+    }
+
+    public function show_customer_invoices($cus_id, $del_id){
+      $transactions = TransactionSellLine::where('customer_id', $cus_id)
+          ->where('deliveryman_id', $del_id)->get();
+      return view('customers.partials.show_invoices', compact('transactions'));
     }
 }
 

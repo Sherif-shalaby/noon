@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AddStockLine;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\Product;
+use App\Models\ReceiptTransactionSellLinesFiles;
 use App\Models\SellLine;
 use App\Models\System;
 use App\Models\TransactionSellLine;
@@ -236,5 +237,47 @@ class SellPosController extends Controller
         return [
             'cash' => __('lang.cash'),
         ];
+    }
+
+    public function upload_receipt($id){
+
+        return view('invoices.partials.upload_receipt_modal',compact('id'));
+    }
+    public function store_upload_receipt(Request $request){
+        try {
+            DB::beginTransaction();
+            if($request->hasFile('receipts')){
+                foreach ($request->file('receipts') as $file){
+                    $receipt = new ReceiptTransactionSellLinesFiles;
+                    $receipt->transaction_sell_line_id = $request->transaction_id;
+                    $receipt->path =  store_file($file, 'receipt');
+                    $receipt->save();
+                }
+                DB::commit();
+                $output = [
+                    'success' => true,
+                    'msg' => __('lang.success')
+                ];
+            }
+            else{
+                $output = [
+                    'success' => false,
+                    'msg' => __('lang.no_file_chosen')
+                ];
+            }
+
+        }
+        catch (\Exception $e){
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
+    }
+    public function show_receipt($line_id){
+        $uploaded_files = ReceiptTransactionSellLinesFiles::where('transaction_sell_line_id',$line_id)->get();
+        return view('general.uploaded_files',compact('uploaded_files'));
     }
 }
