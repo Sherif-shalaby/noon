@@ -584,6 +584,19 @@ return [
     'customer_details' => 'Customer Details',
     'final'=>'Final',
     'draft'=>'Draft',
+    'show_plans' => 'Show Plans',
+    'choose_unit_please'=>'Choose Unit, Please!',
+    'add_new_stock'=>'Add New Stock',
+    'remove_expiry'=>'Remove Expiry',
+    'generate_invoice' => 'Print Invoice',
+    'order_discount' => 'Order Discount',
+    'view_payments' => 'View Payments',
+    'cities' => 'Cities',
+    'regions' => 'Regions',
+    'show_invoices' => 'Show Invoices',
+    'view_plan' => 'View Plan',
+    'upload_receipt' => 'Upload Receipt',
+    'receipts' => 'Receipts',
 ];
 
 

@@ -65,5 +65,9 @@ class TransactionSellLine extends Model
     {
         return $this->belongsTo(User::class, 'created_by')->withDefault(['name' => '']);
     }
+    public function receipts()
+    {
+        return $this->hasMany(ReceiptTransactionSellLinesFiles::class,'transaction_sell_line_id');
+    }
 
 }

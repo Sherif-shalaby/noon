@@ -150,6 +150,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
 
 
     // stocks
@@ -168,9 +169,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('balance/get-raw-product', [ProductController::class,'getRawProduct']);
     //delivery
     Route::resource('delivery',  DeliveryController::class);
+    Route::get('representative/plan', [DeliveryController::class,'indexForRep'])->name('rep_plan.index');
     // Route::get('delivery/edit/{id}',   [DeliveryController::class,'edit'])->name('delivery.edit');
     Route::get('delivery/create/{id}', [DeliveryController::class,'create'])->name('delivery.create');
     Route::get('plans', [DeliveryController::class,'plansList'])->name('delivery_plan.plansList');
+    Route::get('plans/representatives', [DeliveryController::class,'plansListForRep'])->name('representatives.plansList');
     Route::post('delivery_plan/sign-in', [DeliveryController::class,'signIn']);
     Route::post('delivery_plan/sign-out', [DeliveryController::class,'signOut']);
 
@@ -213,16 +216,17 @@ Route::group(['middleware' => ['auth']], function () {
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
     // Sell Screen
-    Route::view('invoices', 'invoices.index')->name('invoices.index');
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
-    Route::get('invoices/{invoice}', function ($id) {
-        return view('invoices.show', compact('id'));
-    })->name('invoices.show');
+
     Route::get('invoices/edit/{invoice}', function ($id) {
         return view('invoices.edit', compact('id'));
     })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
+    Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
+    Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
+    Route::get('show/receipt/{id}',[SellPosController::class, 'show_receipt'])->name('show_receipt');
+    Route::post('add/receipt',[SellPosController::class, 'store_upload_receipt'])->name('store_upload_receipt');
     // ################################# Task : customer_price_offer #################################
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
@@ -238,7 +242,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('required-products', RequiredProductController::class);
     Route::get('purchase-order/edit/{id}', function ($id) {
         return view('purchase-order.edit', compact('id'));
-    })->name('invoices.edit');
+    })->name('purchase-order.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));

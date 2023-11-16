@@ -214,10 +214,13 @@
                                                     </select>
                                                 </td>
                                                 <td >
-                                                    {{$item['price']??''}}
+                                                    <input class="form-control dinarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.price" style="width: 65px"/>
+                                                    {{-- {{$item['price']??''}} --}}
                                                 </td>
                                                     <td >
-                                                        {{ number_format($item['dollar_price']??0 , 2)}}
+                                                    <input class="form-control dollarPrice" data-key="{{ $key }}" type="text" wire:model="items.{{ $key }}.dollar_price" style="width: 65px"/>
+
+                                                        {{-- {{ number_format($item['dollar_price']??0 , 2)}} --}}
                                                     </td>
                                                     <td>
                                                         <input class="form-control p-1 text-center" style="width: 65px" type="text" min="1"
@@ -350,7 +353,7 @@
             });
         });
 
-{{--        @if(empty($store_pos))--}}
+      @if(empty($store_pos))
             window.addEventListener('NoUserPos', function(event) {
                 Swal.fire({
                     title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
@@ -359,7 +362,7 @@
                     window.location.href = "{{ route('home') }}";
                 });
             });
-        {{--@@endif--}}
+        @endif
         $(document).ready(function() {
             $('select').on('change', function(e) {
 
@@ -373,6 +376,47 @@
                 });
 
             });
+        });
+        
+        $(document).on('change','.dinarPrice', function(e) {
+            var key=$(this).data('key');
+            Swal.fire({
+                'type' : 'info',
+                'title' : 'تأكيد',
+                'text' : 'هل نريد تغيير السعر بصورة دائمة ؟',
+                'showCancelButton' : true,
+                'confirmButtonText' : 'نعم',
+                'cancelButtonText' : 'إلغاء',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('changeDinarPrice',key);
+                } else {
+                    Livewire.emit('changePrices',key);
+                }
+            });
+
+        });
+
+
+
+        
+        $(document).on('change','.dollarPrice', function(e) {
+            var key=$(this).data('key');
+            Swal.fire({
+                'type' : 'info',
+                'title' : 'تأكيد',
+                'text' : 'هل نريد تغيير السعر بصورة دائمة ؟',
+                'showCancelButton' : true,
+                'confirmButtonText' : 'نعم',
+                'cancelButtonText' : 'إلغاء',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('changeDollarPrice',key);
+                } else {
+                    Livewire.emit('changePrices',key);
+                }
+            });
+
         });
     </script>
 
