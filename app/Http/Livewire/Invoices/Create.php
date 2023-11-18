@@ -48,7 +48,7 @@ class Create extends Component
         $dollar_remaining=0 , $dinar_remaining=0 ,
         $searchProduct, $stores,
         $final_total, $dollar_final_total, $dollar_amount = 0 , $amount = 0 ,$redirectToHome = false, $status = 'final',
-        $draft_transactions, $show_modal = false,  $search_by_product_symbol,$highest_price,$lowest_price,$from_a_to_z,$from_z_to_a,$nearest_expiry_filter,$longest_expiry_filter,$dollar_highest_price,$dollar_lowest_price;
+        $draft_transactions, $show_modal = false,  $search_by_product_symbol,$highest_price,$lowest_price,$from_a_to_z,$from_z_to_a,$nearest_expiry_filter,$longest_expiry_filter,$dollar_highest_price,$dollar_lowest_price,$due_date;
 
     protected $rules = [
             'items' => 'array|min:1',
@@ -313,6 +313,7 @@ class Create extends Component
                         'paid_on' => Carbon::now(),
                         'payment_note' => $this->payment_note,
                         'exchange_rate' => System::getProperty('dollar_exchange'),
+                        'due_date' => $this->due_date ?? null,
                     ];
                     if ($this->dollar_amount > 0 || $this->amount > 0) {
                         $transaction_payment = null;
@@ -1033,7 +1034,7 @@ class Create extends Component
         if ($final_amount <= $total_paid && $dollar_final_amount <= $dollar_total_paid ) {
             $payment_status = 'paid';
         }
-        elseif ($total_paid > 0 && $final_amount > $total_paid && $dollar_final_amount > $dollar_total_paid ) {
+        elseif (($total_paid > 0 && $final_amount > $total_paid) ||( $dollar_total_paid> 0 && $dollar_final_amount > $dollar_total_paid) ) {
             $payment_status = 'partial';
         }
         $transaction->payment_status = $payment_status;

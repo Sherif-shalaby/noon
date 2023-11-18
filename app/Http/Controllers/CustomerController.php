@@ -9,6 +9,7 @@ use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
 use App\Models\System;
+use App\Models\TransactionSellLine;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Utils\Util;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -238,6 +241,91 @@ class CustomerController extends Controller
         $customers_dp = $this->Util->createDropdownHtml($customers, __('lang.please_select'));
         $output = [$customers_dp , array_key_last($customers)];
         return $output;
+    }
+
+    public function get_due(Request $request){
+        $today = Carbon::today()->toDateString();
+    
+        if (!$request->date) {
+             $dues = TransactionSellLine::where('payment_status', '!=', 'paid')
+                ->where('status', 'final')
+                ->whereHas('transaction_payments', function ($query) use ($today) {
+                    $query->where('due_date', '=', $today);
+                })
+                ->get();
+        } else {
+            $dues = TransactionSellLine::where('payment_status', '!=', 'paid')
+                ->where('status', 'final')
+                ->whereHas('transaction_payments', function ($query) use ($request) {
+                    $query->where('due_date', '=', $request->date);
+                })
+                ->get();
+        }
+    
+        return view('customers.due', compact('dues'));
+    }
+    
+    public function pay_due_view($id){
+        // if(!$request->date){
+        $due = TransactionSellLine::where('id',$id)->first();
+        $totalPayments = $due->transaction_payments->sum('amount');
+        $totalDollarPayments = $due->transaction_payments->sum('dollar_amount');
+        $dueAmount = $due->final_total - $totalPayments;
+        $dueDollarAmount = $due->dollar_final_total - $totalDollarPayments;
+
+        return view('customers.due_modal')->with(compact('dueAmount', 'dueDollarAmount','due'));
+    }
+
+    public function pay_due(Request $request, $id){
+        $due = TransactionSellLine::where('id',$id)->first();
+        // $dueRecords = TransactionSellLine::where('payment_status', '!=', 'paid')
+        //     ->where('status', 'final')
+        //     ->whereHas('customer', function($query) use ($id) {
+        //         $query->where('id', $id);
+        //     })->whereHas('transaction_payments', function($query) use ($request) {
+        //         $query->where('due_date', '=',  $request->date);
+        //     })
+        //     ->get();
+        // if((($request->due && $request->due == $request->totalDueAmount) || ( $request->due_dollar &&   $request->due_dollar == $request->totalDueDollarAmount))&& $request->rest == null){
+        //     foreach ($dueRecords as $due) {
+        //         if($due->final_total > 0  && $due->dollar_final_total == 0 && $request->due > 0 && $request->due >= $due->final_total){
+        //             $due->transaction_payments->update([
+        //                 'amount'=>$due->final_total 
+        //             ]);
+        //         }else if($due->dollar_final_total > 0  && $due->final_total == 0 && $request->due_dollar > 0 && $request->due_dollar >= $due->dollar_final_total){
+        //             $due->transaction_payments->update([
+        //                 'dollar_amount'=>$due->dollar_final_total
+        //             ]);
+        //         }else if( $due->final_total > 0 && $due->dollar_final_total > 0 && $request->due_dollar > 0 &&  $request->due > 0 && $request->due_dollar >= $due->dollar_final_total && $request->due >= $due->final_total){
+        //             $due->transaction_payments->update([
+        //                 'amount'=>$due->final_total ,
+        //                 'dollar_amount'=>$due->dollar_final_total
+        //             ]);
+        //         }
+                
+                
+        //     }
+        // }else if (($request->due && $request->due < $request->totalDueAmount) || ( $request->due_dollar &&   $request->due_dollar < $request->totalDueDollarAmount)&& $request->rest == null){
+        //     foreach ($dueRecords as $due) {
+        //         if($due->final_total > 0  && $due->dollar_final_total == 0 && $request->due > 0 && $request->due < $due->final_total){
+        //             $due->transaction_payments->update([
+        //                 'amount'=>$request->due
+        //             ]);
+        //         }else if($due->dollar_final_total > 0  && $due->final_total == 0 && $request->due_dollar > 0 && $request->due_dollar < $due->dollar_final_total){
+        //             $due->transaction_payments->update([
+        //                 'dollar_amount'=>$request->due_dollar
+        //             ]);
+        //         }else if( $due->final_total > 0 && $due->dollar_final_total > 0 && $request->due_dollar > 0 &&  $request->due > 0 && $request->due_dollar < $due->dollar_final_total && $request->due < $due->final_total){
+        //             $due->transaction_payments->update([
+        //                 'amount'=>$request->due,
+        //                 'dollar_amount'=>$request->due_dollar
+        //             ]);
+        //         }
+                
+                
+        //     }
+        // }
+       
     }
 }
 
