@@ -48,7 +48,7 @@
                     <div class="card m-b-30">
                         <div class="card-header">
                             <h5 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                @lang('lang.suppliers')</h5>
+                                @lang('lang.add_supplier')</h5>
                         </div>
                         <div class="card-body">
                             <p class="italic"><small>@lang('lang.required_fields_info')</small></p>
@@ -64,12 +64,12 @@
                                             class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                for="name">@lang('lang.name')</label>
+                                                for="name"><span class="text-danger">*</span> @lang('lang.name')</label>
                                             <div
                                                 class="select_body input-wrapper d-flex justify-content-between align-items-center">
                                                 <input type="text" class="form-control initial-balance-input m-auto"
                                                     style="width: 100%" placeholder="@lang('lang.name')" name="name"
-                                                    value="{{ old('name') }}">
+                                                    value="{{ old('name') }}" required>
                                                 @error('name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -80,12 +80,12 @@
                                             class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                for="name">@lang('lang.company_name')</label>
+                                                for="name"><span class="text-danger">*</span> @lang('lang.company_name')</label>
                                             <div
                                                 class="select_body input-wrapper d-flex justify-content-between align-items-center">
                                                 <input type="text" class="form-control initial-balance-input m-auto"
                                                     style="width: 100%" placeholder="@lang('lang.company_name')" name="company_name"
-                                                    value="{{ old('company_name') }}">
+                                                    value="{{ old('company_name') }}" required>
                                                 @error('company_name')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -180,50 +180,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        {{-- +++++++++++++++++++++++++++++++ address ++++++++++++++++++++++++ --}}
-                                        {{-- <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="address">@lang('lang.address')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <textarea class="form-control" placeholder="@lang('lang.address')" name="address"value="{{ old('address') }}" ></textarea>
-                                                @error('address')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                        {{-- +++++++++++++++++++++++++++++++ city ++++++++++++++++++++++++ --}}
-                                        {{-- <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="city">@lang('lang.city')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.city')"
-                                                       name="city"
-                                                       value="{{ old('city') }}" >
-                                                @error('city')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                        {{-- ========================== country ==================== --}}
-                                        {{-- <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="country">@lang('lang.country')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.country')"
-                                                       name="country"
-                                                       value="{{ old('country') }}" >
-                                                @error('country')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
+
                                         {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
 
                                         <div
@@ -310,7 +267,7 @@
                                                             <th style="background: transparent !important;color: black !important;"
                                                                 class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                                 <label class="mb-0">
-                                                                    <span class="text-danger">*</span>@lang('lang.email')
+                                                                    @lang('lang.email')
                                                                 </label>
                                                             </th>
                                                         </tr>
@@ -463,7 +420,7 @@
     {{-- +++++++++++++++++++++++++++++++ Add New Row in mobile_number ++++++++++++++++++++++++ --}}
     <script>
         $('.phone_tbody').on('click', '.addRow', function() {
-            console.log('new mobile_number inputField was added');
+
             var tr = `<tr>
                     <td class="col-md-12 p-0 mb-2">
                         <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
@@ -496,7 +453,7 @@
                             style="width: 100%">
                         <input  type="text" class=" initial-balance-input m-0"
                             width="100%"  style="flex-grow: 1" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
+                                value="{{ old('email') }}" >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

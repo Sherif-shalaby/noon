@@ -231,7 +231,7 @@
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.email')">
-                                                        {{ $email }}<br>
+                                                        {{ $email == 'null' ? '' : $email }}<br>
                                                     </span>
                                                 @endforeach
                                             </td>
@@ -242,7 +242,7 @@
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.mobile_number')">
-                                                        {{ $phone }}<br>
+                                                        {{ $phone == 'null' ? '' : $phone }}<br>
                                                     </span>
                                                 @endforeach
                                             </td>

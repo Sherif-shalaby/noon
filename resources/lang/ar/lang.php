@@ -641,4 +641,8 @@ return array(
     'view_payments' => 'عرض المدفوعات',
     'cities' => 'المدن',
     'regions' => 'المناطق',
+    'show_invoices' => 'عرض الفواتير',
+    'view_plan' => 'تفاصيل الخطه',
+    'upload_receipt' => 'رفع وصل استلام',
+    'receipts' => 'وصولات الاستلام',
 );

@@ -381,17 +381,7 @@
 
                             </div>
 
-                            {{-- <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory'), ['class'=>'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select(
-                                        'subcategory_id[]',
-                                        $categories,[],
-                                        ['class' => 'js-example-basic-multiple subcategory','multiple'=>"multiple",'placeholder'=> __('lang.please_select'),'id'=>'subCategoryId']
-                                    ) !!}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2 openCategoryModal" data-toggle="modal" data-target="#createCategoryModal" data-select_category="2"><i class="fas fa-plus"></i></button>
-                                </div>
-                            </div> --}}
+
                         </div>
                     </div>
                     <div class="accordion mb-1">
@@ -586,19 +576,6 @@
                                         @enderror
                                     </div>
 
-                                    {{-- <div class="col-md-3">
-                                {!! Form::label('unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select(
-                                        'unit_id',
-                                        $units,null,
-                                        ['class' => 'form-control select2 unit_id','placeholder'=>__('lang.please_select'),'id'=>'unitId']
-                                    ) !!}
-                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                </div>
-                            </div> --}}
 
                                 </div>
                             </div>
@@ -615,66 +592,9 @@
                     <div class="col-md-12 product_unit_raws mx-auto" style="width: 95%">
                         @include('products.product_unit_raw')
                         <input type="hidden" id="raw_unit_index" value="0" />
-                        {{-- @if (!empty($recent_product->variations))
-                        @foreach ($recent_product->variations as $index => $variation)
-                            @include('products.product_unit_raw', [
-                                'index' => $index,
-                                'variation' => $variation,
-                            ])
-                        @endforeach
-                    @else
-                        @include('products.product_unit_raw', ['index' => 0])
-                    @endif
-                    @php
-                        if (!empty($recent_product->variations) && count($recent_product->variations) > 0) {
-                            $index = count($recent_product->variations) - 1;
-                        } else {
-                            $index = 0;
-                        }
-                    @endphp
-                    <input type="hidden" id="raw_unit_index" value="{{ $index }}" /> --}}
+
                     </div>
-                    {{-- sizes --}}
-                    {{-- add prices --}}
-                    {{-- <div class="col-md-12">
-                        <div class="container-fluid pt-5">
-                            <div class="row ">
-                                <div class="col-md-12 pt-5">
-                                    <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
-                                </div>
-                                <div class="col-md-12 ">
-                                    <table class="table table-bordered" id="consumption_table_price">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 10%;">@lang('lang.type')</th>
-                                                <th style="width: 10%;">@lang('lang.price_category')</th>
-                                                <th style="width: 10%;">@lang('lang.price')</th>
-                                                <th style="width: 10%;">@lang('lang.quantity')</th>
-                                                <th style="width: 11%;">@lang('lang.b_qty')</th>
-                                                <th style="width: 3%;"></th>
-                                                <th style="width: 17%;">@lang('lang.price_start_date')</th>
-                                                <th style="width: 17%;">@lang('lang.price_end_date')</th>
-                                                <th style="width: 20%;">@lang('lang.customer_type')
-                                                    <i class="dripicons-question" data-toggle="tooltip"
-                                                        title="@lang('lang.discount_customer_info')"></i>
-                                                </th>
-                                                <th style="width: 5%;">
-                                                    <button class="btn btn-xs btn-primary add_price_row" type="button">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @include('product.partial.raw_discount', ['row_id' => 0])
-                                        </tbody>
-                                    </table>
-                                    <input type="hidden" name="raw_price_index" id="raw_price_index" value="1">
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    {{-- add prices --}}
+
 
                     {{-- crop image --}}
                     <div class="col-md-12">
@@ -714,20 +634,7 @@
                                                 </div>
                                                 <div>
                                                     <div class="preview-image-container">
-                                                        {{-- @if (!empty($recent_product->image))
-                                                        <div class="preview">
-                                                            <img src="{{ asset('uploads/products/' . $recent_product->image) }}"
-                                                                id="image_footer" alt="">
-                                                            <button type="button"
-                                                                class="btn btn-xs btn-danger delete-btn remove_image "
-                                                                data-type="image"><i style="font-size: 25px;"
-                                                                    class="fa fa-trash"></i></button>
-                                                            <span class="btn btn-xs btn-primary  crop-btn"
-                                                                id="crop-image-btn" data-toggle="modal"
-                                                                data-target="#imageModal"><i style="font-size: 25px;"
-                                                                    class="fas fa-crop"></i></span>
-                                                        </div>
-                                                    @endif --}}
+
                                                     </div>
                                                 </div>
                                             </div>
