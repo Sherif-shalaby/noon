@@ -35,8 +35,8 @@
                                         class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                         <label for="store_id"
                                             class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                            style="width: 15%;font-size: 12px;font-weight: 500;">
-                                            @lang('lang.store'):<span style="color:#dc3545;">*</span>
+                                            style="width: 16%;font-size: 12px;font-weight: 500;">
+                                            @lang('lang.store')<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="input-wrapper">
                                             <select class="form-control select2 client" wire:model="store_id"
@@ -58,7 +58,7 @@
                                         <label for="customer_id"
                                             class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
                                             style="width: 15%;font-size: 12px;font-weight: 500;">
-                                            @lang('lang.suppliers'):<span style="color:#dc3545;">*</span>
+                                            @lang('lang.suppliers')<span style="color:#dc3545;">*</span>
                                         </label>
                                         <div class="input-wrapper">
                                             <select class="form-control select2 client" wire:model="supplier_id"

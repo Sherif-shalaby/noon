@@ -9,7 +9,8 @@
                     <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         @lang('lang.representatives')</h4>
                     <div class="breadcrumb-list">
-                        <ul class="breadcrumb">
+                        <ul
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
                                     style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                     @lang('lang.dashboard')</a></li>
@@ -36,7 +37,8 @@
     <div class="container-fluid">
         <div class="col-md-12  no-print">
             <div class="card mt-3">
-                <div class="card-header d-flex align-items-center">
+                <div
+                    class="card-headerd-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                     <h4 class="print-title">@lang('lang.employees')</h4>
                 </div>
                 <div class="card-body">
@@ -47,7 +49,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
                         <table id="datatable-buttons" class="table dataTable">
                             <thead>
                                 <tr>
@@ -71,64 +73,118 @@
                             <tbody>
                                 @foreach ($transactions as $key => $transaction)
                                     <tr>
-                                        <td>{{ $transaction->invoice_no }}</td>
                                         <td>
-                                            {{ !empty($transaction->employee->user) ? $transaction->employee->user->name : '' }}
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.invoice_no')">
+                                                {{ $transaction->invoice_no }}
+                                            </span>
                                         </td>
                                         <td>
-                                            {{ App\Models\DeliveryLocation::where('delivery_id', $transaction->employee_id)->latest()->first()->city->name }}
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.employee_name')">
+                                                {{ !empty($transaction->employee->user) ? $transaction->employee->user->name : '' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.location')">
+                                                {{ App\Models\DeliveryLocation::where('delivery_id', $transaction->employee_id)->latest()->first()->city->name }}
+                                            </span>
                                             {{-- {{ !empty($transaction->employee->delivery_locations) ? $transaction->employee->delivery_locations : '' }} --}}
                                         </td>
                                         <td>
-                                            {{ !empty($transaction->store) ? $transaction->store->name : '' }}
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.stores')">
+                                                {{ !empty($transaction->store) ? $transaction->store->name : '' }}
+                                            </span>
                                         </td>
                                         <td>
-                                            {{ !empty($transaction->store_pos) ? $transaction->store_pos->name : '' }}
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.pos')">
+                                                {{ !empty($transaction->store_pos) ? $transaction->store_pos->name : '' }}
+                                            </span>
                                         </td>
                                         <td>
-                                            {{ !empty($transaction->customer) ? $transaction->customer->name : '' }}
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.customers')">
+                                                {{ !empty($transaction->customer) ? $transaction->customer->name : '' }}
+                                            </span>
                                         </td>
                                         <td>
-                                            {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('Y-m-d') }}
-                                        </td>
-                                        <td>{{ @number_format($transaction->final_total) }} <br>
-                                            {{ @number_format($transaction->dollar_final_total) }} $</td>
-                                        <td>{{ @number_format($transaction->dinar_remaining) }} <br>
-                                            {{ @number_format($transaction->dollar_remaining) }} $</td>
-                                        <td>
-                                            @if ($transaction->transaction_sell_lines)
-                                                @foreach ($transaction->transaction_sell_lines as $sellLine)
-                                                    {{ $sellLine->product->name ?? '' }} <br>
-                                                @endforeach
-                                            @endif
-                                        </td>
-                                        <td>{{ $transaction->quantity ?? 0 }}</td>
-                                        <td>
-                                            @if ($transaction->transaction_sell_lines)
-                                                @foreach ($transaction->transaction_sell_lines as $sellLine)
-                                                    {{ $sellLine->variation->unit->name ?? '' }} <br>
-                                                @endforeach
-                                            @endif
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.date')">
+                                                {{ \Carbon\Carbon::parse($transaction->transaction_date)->format('Y-m-d') }}
+                                            </span>
                                         </td>
                                         <td>
-                                            @if ($transaction->transaction_sell_lines)
-                                                @foreach ($transaction->transaction_sell_lines as $sellLine)
-                                                    {{ $sellLine->purchase_price ?? 0 }} ,
-                                                    {{ $sellLine->dollar_purchase_price ?? 0 }} $ <br>
-                                                @endforeach
-                                            @endif
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.amount')">
+                                                {{ @number_format($transaction->final_total) }} <br>
+                                                {{ @number_format($transaction->dollar_final_total) }} $
+                                            </span>
                                         </td>
                                         <td>
-                                            @if ($transaction->transaction_sell_lines)
-                                                @foreach ($transaction->transaction_sell_lines as $sellLine)
-                                                    {{ $sellLine->sell_price ?? 0 }},{{ $sellLine->dollar_sell_price ?? 0 }}$
-                                                    <br>
-                                                @endforeach
-                                            @endif
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.remaining')">
+                                                {{ @number_format($transaction->dinar_remaining) }} <br>
+                                                {{ @number_format($transaction->dollar_remaining) }} $
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.product')">
+
+                                                @if ($transaction->transaction_sell_lines)
+                                                    @foreach ($transaction->transaction_sell_lines as $sellLine)
+                                                        {{ $sellLine->product->name ?? '' }} <br>
+                                                    @endforeach
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.quantity')">
+                                                {{ $transaction->quantity ?? 0 }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.unit')">
+                                                @if ($transaction->transaction_sell_lines)
+                                                    @foreach ($transaction->transaction_sell_lines as $sellLine)
+                                                        {{ $sellLine->variation->unit->name ?? '' }} <br>
+                                                    @endforeach
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.purchase_price')">
+
+                                                @if ($transaction->transaction_sell_lines)
+                                                    @foreach ($transaction->transaction_sell_lines as $sellLine)
+                                                        {{ $sellLine->purchase_price ?? 0 }} ,
+                                                        {{ $sellLine->dollar_purchase_price ?? 0 }} $ <br>
+                                                    @endforeach
+                                                @endif
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                style="font-size: 12px;font-weight: 600" data-tooltip="@lang('lang.sell_price')">
+
+                                                @if ($transaction->transaction_sell_lines)
+                                                    @foreach ($transaction->transaction_sell_lines as $sellLine)
+                                                        {{ $sellLine->sell_price ?? 0 }},{{ $sellLine->dollar_sell_price ?? 0 }}$
+                                                        <br>
+                                                    @endforeach
+                                                @endif
+                                            </span>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                style="font-size: 12px;font-weight: 600">
                                                 @lang('lang.action')
                                                 <span class="caret"></span>
                                             </button>

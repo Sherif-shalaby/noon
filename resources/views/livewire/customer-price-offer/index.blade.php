@@ -8,13 +8,19 @@
                     <div class="card">
                         <div class="card-body">
                             <form action="">
-                                <div class="row">
+                                <div
+                                    class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- +++++++++++++++ store filter +++++++++++++++ --}}
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            {!! Form::label('store_id', __('lang.store'), []) !!}
+                                    <div
+                                        class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        {!! Form::label('store_id', __('lang.store'), [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
+                                        ]) !!}
+                                        <div class="input-wrapper">
                                             {!! Form::select('store_id', $stores, request()->store_id, [
-                                                'class' => 'form-control',
+                                                'class' => 'form-control width-full',
+                                                'style' => 'height:100%',
                                                 'wire:model' => 'store_id',
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-live-search' => 'true',
@@ -22,11 +28,15 @@
                                         </div>
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-2" wire:ignore>
-                                        <label for="customer_id" class="text-primary">@lang('lang.customers')</label>
-                                        <div class="d-flex justify-content-center">
-                                            <select class="form-control client" wire:model="customer_id"
-                                                id="Client_Select">
+                                    <div class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                        wire:ignore>
+                                        <label
+                                            class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif"
+                                            style="font-size: 12px;font-weight: 500;"
+                                            for="customer_id">@lang('lang.customers')</label>
+                                        <div class="input-wrapper">
+                                            <select class="form-control client width-full" style="height: 100%"
+                                                wire:model="customer_id" id="Client_Select">
                                                 <option value="0 " readonly selected> {{ __('lang.please_select') }}
                                                 </option>
                                                 @foreach ($customers as $customer)
@@ -36,28 +46,31 @@
                                         </div>
                                     </div>
                                     {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
-                                    <div class="col-2">
-                                        <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
-                                            <div class=" w-100">
-                                                <label for="" class="small-label">{{ __('site.From') }}</label>
-                                                <input type="date" class="form-control w-100" wire:model="from">
-                                            </div>
-                                        </div>
+                                    <div
+                                        class="col-2  mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                                        <label for="" style="font-size: 12px;font-weight: 500;"
+                                            class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">{{ __('site.From') }}</label>
+                                        <input type="date" class="form-control initial-balance-input m-0"
+                                            wire:model="from">
+
                                     </div>
                                     {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
-                                    <div class="col-2">
-                                        <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
-                                            <div class="w-100">
-                                                <label for="" class="small-label">{{ __('site.To') }}</label>
-                                                <input type="date" class="form-control w-100" wire:model="to">
-                                            </div>
-                                        </div>
+                                    <div
+                                        class="col-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                                        <label style="font-size: 12px;font-weight: 500;" for=""
+                                            class="small-label">{{ __('site.To') }}</label>
+                                        <input type="date" class="form-control initial-balance-input m-0"
+                                            wire:model="to">
+
                                     </div>
                                     {{-- +++++++++++++++ clear_filter Button +++++++++++++++ --}}
-                                    <div class="col-md-2">
-                                        <br>
+                                    <div
+                                        class="col-md-2 d-flex align-items-center justify-content-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
                                         <a href="{{ route('customer_price_offer.index') }}"
-                                            class="btn btn-danger mt-2 ml-0">@lang('lang.clear_filters')</a>
+                                            class="btn btn-danger">@lang('lang.clear_filters')</a>
                                     </div>
                                 </div>
                             </form>
@@ -68,7 +81,7 @@
                 <div class="card-body">
                     @if (@isset($customer_offer_prices) && !@empty($customer_offer_prices) && count($customer_offer_prices) > 0)
                         <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.date')</th>
@@ -147,7 +160,7 @@
                             </tfoot>
                         </div>
                     @else
-                        <div class="alert alert-danger">
+                        <div class="alert alert-danger text-center">
                             {{ __('data_no_found') }}
                         </div>
                     @endif

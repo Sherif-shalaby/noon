@@ -70,50 +70,63 @@
                                     @foreach ($sell_cars as $index => $sell_car)
                                         <tr>
                                             <td>
-                                                {{ $index + 1 }}
+                                                <span style="font-size: 12px;font-weight: 600">
+                                                    {{ $index + 1 }}
+                                                </span>
+
+
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.driver_name')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.driver_name')">
                                                     {{ $sell_car->driver->employee_name ?? '' }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_name')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_name')">
                                                     {{ $sell_car->car_name }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_number')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_number')">
                                                     {{ $sell_car->car_no }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.sell_representative')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.sell_representative')">
                                                     {{ $sell_car->representative->employee_name ?? '' }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_type')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_type')">
                                                     {{ $sell_car->car_type }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_size')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_size')">
                                                     {{ $sell_car->car_size }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_license')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_license')">
                                                     {{ $sell_car->car_license }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_model')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_model')">
                                                     {{ $sell_car->car_model }}
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.car_license_end_date')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.car_license_end_date')">
                                                     {{ $sell_car->car_license_end_date }}
                                                 </span>
                                             </td>
@@ -133,7 +146,8 @@
                                                 }
                                             @endphp
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.stock_module')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.stock_module')">
 
                                                     @if (isset($store_sell_car) && !empty($store_sell_car))
                                                         $
@@ -142,7 +156,8 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.total_sells')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.total_sells')">
 
                                                     @if (isset($transaction_sell_lines_for_driver) && !empty($transaction_sell_lines_for_driver))
                                                         <span>
@@ -156,7 +171,8 @@
 
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.total_sells')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.total_sells')">
 
                                                     @if (isset($transaction_sell_lines_for_rep) && !empty($transaction_sell_lines_for_rep))
                                                         <span>
@@ -170,7 +186,8 @@
 
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.added_by')">
+                                                <span style="font-size: 10px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.added_by')">
 
                                                     @if ($sell_car->created_by > 0 and $sell_car->created_by != null)
                                                         {{ $sell_car->created_at->diffForHumans() }} <br>
@@ -186,7 +203,8 @@
 
                                             </td>
                                             <td>
-                                                <span class="custom-tooltip" data-tooltip="@lang('lang.updated_by')">
+                                                <span style="font-size: 12px;font-weight: 600" class="custom-tooltip"
+                                                    data-tooltip="@lang('lang.updated_by')">
 
                                                     @if ($sell_car->edited_by > 0 and $sell_car->edited_by != null)
                                                         {{ $sell_car->updated_at->diffForHumans() }} <br>
@@ -205,6 +223,7 @@
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
+                                                        style="font-size: 12px;font-weight: 600"
                                                         aria-expanded="false">خيارات
                                                         <span class="caret"></span></button>
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"

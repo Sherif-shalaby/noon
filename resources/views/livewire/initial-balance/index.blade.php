@@ -2,9 +2,9 @@
     <div class="col-md-22">
         <div class="card mt-3">
             <div class="card-header">
-                <h3 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                <h4 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
 
-                    @lang('lang.initial_balance')</h3>
+                    @lang('lang.initial_balance')</h4>
             </div>
             <div class="row">
                 <div class="col-lg-12">

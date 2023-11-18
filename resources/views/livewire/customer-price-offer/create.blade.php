@@ -50,7 +50,8 @@
                                             </select>
                                         </div>
                                         @error('store_id')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                            <span style="font-size: 10px;font-weight: 700;"
+                                                class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
@@ -73,7 +74,8 @@
                                             </select>
                                         </div>
                                         @error('customer_id')
-                                            <span class="error text-danger">{{ $message }}</span>
+                                            <span style="font-size: 10px;font-weight: 700;"
+                                                class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
@@ -143,7 +145,7 @@
                                 <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-10 border border-1"
                                     style="height: 90vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
-                                    <table class="table" style="width: auto">
+                                    <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
@@ -242,7 +244,7 @@
                                     class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {!! Form::label(
                                         'block_for_days',
-                                        __('lang.block_for_days') . ':<span style="color:#dc3545;">*</span>',
+                                        __('lang.block_for_days') . '<span style="color:#dc3545;">*</span>',
                                         [
                                             'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
                                         ],
@@ -259,7 +261,8 @@
                                         ]) !!}
                                     </div>
                                     @error('block_for_days')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 {{-- ========= validity_days ========= --}}
@@ -283,7 +286,8 @@
                                         ]) !!}
                                     </div>
                                     @error('validity_days')
-                                        <span class="error text-danger">{{ $message }}</span>
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 {{-- ========= tax ========= --}}
@@ -328,7 +332,6 @@
                                         'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
                                     ]) !!}
                                     <div class="input-wrapper">
-
                                         {!! Form::text('discount_value', null, [
                                             'class' => ' initial-balance-input px-2 m-auto app()->isLocale("ar")? text-end : text-start',
                                             'style' => 'width:100%;',

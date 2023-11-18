@@ -222,21 +222,13 @@
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="regions_id">@lang('lang.regions')</label>
-                                <div class="d-flex justify-content-center">
-                                    <div class="input-wrapper">
-                                        <select class="form-control select2" name="regions_id" id="regions_id"></select>
-                                    </div>
-                                    {{--                                    {!! Form::select( --}}
-                                    {{--                                        'store_id[]', --}}
-                                    {{--                                        $stores,null, --}}
-                                    {{--                                       [ --}}
-                                    {{--                                        'class' => 'form-control selectpicker', --}}
-                                    {{--                                        'placeholder' => __('lang.please_select'), --}}
-                                    {{--                                        'id' => 'store_id', --}}
-                                    {{--                                       ], --}}
-                                    {{--                                    ) !!} --}}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                        data-target=".add-store"><i class="fas fa-plus"></i></button>
+                                <div class="input-wrapper">
+                                    <select class="form-control width-full select2" name="regions_id"
+                                        id="regions_id"></select>
+
+                                    <button type="button"
+                                        class="add-button d-flex justify-content-center align-items-center"
+                                        data-toggle="modal" data-target=".add-store"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
 
@@ -258,101 +250,107 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div> --}}
-
-                            {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                             <div
-                                class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <table class="bordered m-0" style="width: 100%">
-                                    <thead class="email_thead">
-                                        <tr>
-                                            <th style="background: transparent !important;color: black !important;"
-                                                class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
-                                                <label class="mb-0">
-                                                    <span class="text-danger">*</span>@lang('lang.email')
-                                                </label>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="email_tbody">
-                                        <tr>
-                                            <td class="col-md-12 p-0 mb-2">
-                                                <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
-                                                    style="width: 100%">
-                                                    <input type="text" class=" initial-balance-input m-0"
-                                                        width="100%;" style="flex-grow: 1"
-                                                        placeholder="@lang('lang.email')" name="email[]" value=""
-                                                        required>
-                                                    @error('email')
-                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                    @enderror
-
-                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                    <a href="javascript:void(0)"
-                                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
-                                                        type="button">
-                                                        <i class="fa fa-plus"></i>
-                                                    </a>
-                                                </div>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
+                                <input class="form-control img" name="image" type="file" accept="image/*"
+                                    id="image">
+                                {{-- Crop Image : cropper.js --}}
+                                {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                @error('cover')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
+                            <div class="col-md-12 d-flex">
 
-                            {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div class="m-0 " style="width: 100%">
+                                {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
+                                <div
+                                    class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     <table class="bordered m-0" style="width: 100%">
-                                        <thead class="phone_thead">
+                                        <thead class="email_thead">
                                             <tr>
-                                                <th style="background: transparent !important;color: black !important;"
+                                                <th style="background: transparent !important;color: black !important;padding: 0!important;"
                                                     class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
                                                     <label class="mb-0">
-                                                        <span class="text-danger">*</span> @lang('lang.phone')
+                                                        <span class="text-danger">*</span>@lang('lang.email')
                                                     </label>
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody class="phone_tbody">
+                                        <tbody class="email_tbody">
                                             <tr>
                                                 <td class="col-md-12 p-0 mb-2">
                                                     <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
                                                         style="width: 100%">
-
-                                                        {!! Form::text('phone[]', null, [
-                                                            'class' => 'form-control required  initial-balance-input m-0 width-full',
-                                                            'style' => 'flex-grow: 1',
-                                                        ]) !!}
-                                                        @error('phone')
-                                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                                        <input type="text" class=" initial-balance-input m-0"
+                                                            width="100%;" style="flex-grow: 1"
+                                                            placeholder="@lang('lang.email')" name="email[]"
+                                                            value="" required>
+                                                        @error('email')
+                                                            <div class="alert alert-danger">{{ $message }}</div>
                                                         @enderror
 
                                                         {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
                                                         <a href="javascript:void(0)"
-                                                            class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
-                                                            style="margin-bottom: 10px;" type="button" id="submit-btn">
+                                                            class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none addRow_email"
+                                                            type="button">
                                                             <i class="fa fa-plus"></i>
                                                         </a>
-                                                </td>
+                                                    </div>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group">
-                                    <label>@lang('lang.upload_image')</label>
-                                    <input class="form-control img" name="image" type="file" accept="image/*"
-                                        id="image">
-                                    {{-- Crop Image : cropper.js --}}
-                                    {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                    @error('cover')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+
+                                {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
+                                <div
+                                    class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <div class="m-0 " style="width: 100%">
+                                        <table class="bordered m-0" style="width: 100%">
+                                            <thead class="phone_thead">
+                                                <tr>
+                                                    <th style="background: transparent !important;color: black !important;padding: 0!important"
+                                                        class="@if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                                        <label class="mb-0">
+                                                            <span class="text-danger">*</span> @lang('lang.phone')
+                                                        </label>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="phone_tbody">
+                                                <tr>
+                                                    <td class="col-md-12 p-0 mb-2">
+                                                        <div class="select_body input-wrapper d-flex justify-content-between align-items-center m-2"
+                                                            style="width: 100%">
+
+                                                            {!! Form::text('phone[]', null, [
+                                                                'class' => 'form-control required  initial-balance-input m-0 width-full',
+                                                                'style' => 'flex-grow: 1',
+                                                            ]) !!}
+                                                            @error('phone')
+                                                                <label
+                                                                    class="text-danger error-msg">{{ $message }}</label>
+                                                            @enderror
+
+                                                            {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                            <a href="javascript:void(0)"
+                                                                class="add-button d-flex justify-content-center mb-0 align-items-center text-decoration-none addRow"
+                                                                style="margin-bottom: 10px;" type="button"
+                                                                id="submit-btn">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
+
                             {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
                             <div
                                 class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

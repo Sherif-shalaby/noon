@@ -1,12 +1,11 @@
 <!-- Modal -->
-<div class="modal modal-tax animate__animated add-supplier" data-animate-in="animate__rollIn"
-    data-animate-out="animate__rollOut" id="add_product_tax_modal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog  rollIn  animated" role="document">
-        <div class="modal-content  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-            <div class="modal-header  mb-4 d-flex justify-content-between py-0 ">
+<div class="modal animate__animated product-tax-modal animate__rollIn" id="add_product_tax_modal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="exampleStandardModalLabel">{{ __('lang.product_tax') }}</h5>
-                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -16,7 +15,7 @@
                 'files' => true,
                 'id' => isset($quick_add) && $quick_add ? 'quick_add_product_tax_form' : 'product_tax-form',
             ]) !!}
-            <div class="modal-body p-0">
+            <div class="modal-body">
                 {{-- +++++++++++++++++++++++ tax_name +++++++++++++++++++++++ --}}
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse mr-3 @else flex-row ml-3 @endif">
@@ -82,22 +81,9 @@
     </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest', '#category-form') !!}
-<script>
-    {{-- $(document).ready(function () { --}}
-    {{--    // Attach a click event handler to the button --}}
-    {{--    $('.select_sub_category').click(function () { --}}
-    {{--        // Get the data-select_category attribute value --}}
-    {{--         {{ $selectCategoryValue }} = $(this).data('select_category'); --}}
-    {{--        // Set the value in the modal --}}
-    {{--        $('#selectedCategoryValue').text(selectCategoryValue); --}}
-    {{--    }); --}}
-    {{-- }); --}}
-</script>
-<script>
+{{-- <script>
     $(document).ready(function() {
-        var modelEl = $('.modal-tax');
+        var modelEl = $('.product-tax-modal');
 
         modelEl.addClass(modelEl.attr('data-animate-in'));
 
@@ -118,4 +104,7 @@
                 }
             })
     })
-</script>
+</script> --}}
+
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\CategoryRequest', '#category-form') !!}

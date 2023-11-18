@@ -52,7 +52,6 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('store_id', $stores, $item[0]['store_id'], [
@@ -99,7 +98,6 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('supplier_id', $suppliers, $item[0]['supplier_id'], [
@@ -116,7 +114,8 @@
                                         href="{{ route('suppliers.create') }}"><i class="fas fa-plus"></i></button>
                                 </div>
                                 @error('item.0.supplier_id ')
-                                    <span class="error text-danger">{{ $message }}</span>
+                                    <span style="font-size: 10px;font-weight: 700;"
+                                        class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             @include('suppliers.quick_add', ['quick_add' => 1])
@@ -167,7 +166,7 @@
                                 <div class="col-md-6 animate__animated animate__flipInX
                                 d-flex mb-2 align-items-center p-0
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    style="animation-delay: 0.9s">
+                                    style="animation-delay: 1.3s">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate') . '', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -192,7 +191,6 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('category_id', $categories, $item[0]['category_id'], [
@@ -229,7 +227,6 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('subcategory_id1', $subcategories1, null, [
@@ -246,7 +243,8 @@
                                         data-toggle="modal" data-select_category="1"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id1')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label style="font-size: 10px;font-weight: 700;"
+                                        class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                             <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -261,7 +259,6 @@
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
                                         width: 60%;
-
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
@@ -281,7 +278,8 @@
                                         data-select_category="2"><i class="fas fa-plus"></i></button> --}}
                                 </div>
                                 @error('item.0.subcategory_id2')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label style="font-size: 10px;font-weight: 700;"
+                                        class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                             <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -316,7 +314,8 @@
                                         data-toggle="modal" data-select_category="3"><i class="fas fa-plus"></i></a>
                                 </div>
                                 @error('item.0.subcategory_id3')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    <label style="font-size: 10px;font-weight: 700;"
+                                        class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ "balance return request +++++++++++++++++++++++ --}}
@@ -619,7 +618,6 @@
                                 <div class="fw-bold text-centeranimate__animated animate__flipInY "
                                     style="animation-delay: 3.7s">
                                     <div class=" mx-3 dollar-cell">
-
                                         <span>
                                             $@lang('lang.total')</span>
                                         {{-- @if ($showColumn) --}}

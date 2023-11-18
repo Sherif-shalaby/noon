@@ -326,12 +326,6 @@ $(document).ready(function () {
     });
 });
 
-// $("#create-product-tax-btn").click(function (e){
-//     e.preventDefault();
-//     setTimeout(()=>{
-//         $("#add_product_tax").submit();
-//     },500)
-// });
 $(document).on("submit", "#quick_add_product_tax_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -370,6 +364,9 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
         },
     });
 });
+
+
+
 $(document).ready(function () {
     $("#create-customer-btn").click(function (e) {
         e.preventDefault();

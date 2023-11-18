@@ -119,14 +119,29 @@
                                         <tr>
 
                                             <td>
-                                                {{ $plan->date }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.date')">
+                                                    {{ $plan->date }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $plan->city->name }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.city')">
+                                                    {{ $plan->city->name }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{--                                            @dd($plan->employee) --}}
-                                                {{ !empty($plan->employee->user) ? $plan->employee->user->name : '' }}
+                                                {{--                                           @dd($plan->employee) --}}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.delivery')">
+                                                    {{ !empty($plan->employee->user) ? $plan->employee->user->name : '' }}
+                                                </span>
                                             </td>
                                             <td>
                                                 @php
@@ -140,16 +155,23 @@
                                                         }
                                                     }
                                                 @endphp
-                                                @if ($allPlansSignedAndSubmitted)
-                                                    {{ 'completed' }}
-                                                @else
-                                                    {{ '-' }}
-                                                @endif
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.status')">
+
+                                                    @if ($allPlansSignedAndSubmitted)
+                                                        {{ 'completed' }}
+                                                    @else
+                                                        {{ '-' }}
+                                                    @endif
+                                                </span>
 
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    style="font-size: 12px;font-weight: 600">
                                                     @lang('lang.action')
                                                     <span class="caret"></span>
                                                 </button>

@@ -67,31 +67,59 @@
                                     @foreach ($delivery_men as $key => $employee)
                                         <tr>
                                             <td>
-                                                @if (!empty($employee->photo))
-                                                    <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
-                                                        width="50" height="50">
-                                                @else
-                                                    <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
-                                                        width="50" height="50">
-                                                @endif
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.profile_photo')">
+
+                                                    @if (!empty($employee->photo))
+                                                        <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
+                                                            width="50" height="50">
+                                                    @else
+                                                        <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
+                                                            width="50" height="50">
+                                                    @endif
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ !empty($employee->user) ? $employee->user->name : '' }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.employee_name')">
+                                                    {{ !empty($employee->user) ? $employee->user->name : '' }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ !empty($employee->user) ? $employee->user->email : '' }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.email')">
+                                                    {{ !empty($employee->user) ? $employee->user->email : '' }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $employee->mobile }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.phone_number')">
+                                                    {{ $employee->mobile }}
+                                                </span>
                                             </td>
                                             <td>
-                                                @foreach ($employee->stores()->get() as $store)
-                                                    {{ $store->name }}
-                                                @endforeach
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.stores')">
+
+                                                    @foreach ($employee->stores()->get() as $store)
+                                                        {{ $store->name }}
+                                                    @endforeach
+                                                </span>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    style="font-size: 12px;font-weight: 600">
                                                     @lang('lang.action')
                                                     <span class="caret"></span>
                                                 </button>
