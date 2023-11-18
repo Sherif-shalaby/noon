@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AddStockLine;
+use App\Models\CashRegisterTransaction;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\Product;
+use App\Models\ReceiptTransactionSellLinesFiles;
 use App\Models\SellLine;
 use App\Models\System;
 use App\Models\TransactionSellLine;
@@ -171,49 +173,36 @@ class SellPosController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return array
      */
     public function destroy($id)
     {
         try {
             $transaction = TransactionSellLine::find($id);
-
             DB::beginTransaction();
-
-            $transaction_sell_lines = SellLine::where('transaction_id', $id)->get();
-            $transaction_sell_payments = PaymentTransactionSellLine::where('transaction_id', $id)->get();
-            foreach ($transaction_sell_lines as $transaction_sell_line) {
+            $sell_lines = $transaction->transaction_sell_lines;
+            foreach ($sell_lines as $sell_line) {
                 if ($transaction->status == 'final') {
-                    $product = Product::find($transaction_sell_line->product_id);
-                    if (!$product->is_service) {
-                        $this->productUtil->updateProductQuantityStore($transaction_sell_line->product_id, $transaction_sell_line->variation_id, $transaction->store_id, $transaction_sell_line->quantity - $transaction_sell_line->quantity_returned);
-                        if(isset($transaction_sell_line->stock_line_id)){
-                            $stock = AddStockLine::where('id',$transaction_sell_line->stock_line_id)->first();
-                            $stock->update([
-                                'quantity_sold' =>  $stock->quantity - $transaction_sell_line->quantity
-                            ]);
-                        }
-
+                    $this->productUtil->updateProductQuantityStore($sell_line->product_id, $sell_line->variation_id, $transaction->store_id, $sell_line->quantity + $sell_line->extra_quantity - $sell_line->quantity_returned);
+                    if(isset($sell_line->stock_line_id)){
+                        $stock = AddStockLine::where('id',$sell_line->stock_line_id)->first();
+                        $stock->update([
+                            'quantity_sold' =>  $stock->quantity_sold - $sell_line->quantity
+                        ]);
                     }
                 }
-                $transaction_sell_line->delete();
+                $sell_line->delete();
             }
-
-            $return_ids =Transaction::where('return_parent_id', $id)->pluck('id');
-
+            $return_ids =TransactionSellLine::where('return_parent_id', $id)->pluck('id');
 
 
-            Transaction::where('return_parent_id', $id)->delete();
-            Transaction::where('parent_sale_id', $id)->delete();
 
+            TransactionSellLine::where('return_parent_id', $id)->delete();
+            TransactionSellLine::where('parent_sale_id', $id)->delete();
             CashRegisterTransaction::wherein('transaction_id', $return_ids)->delete();
-
-            $this->transactionUtil->updateCustomerRewardPoints($transaction->customer_id, 0, $transaction->rp_earned, 0, $transaction->rp_redeemed);
-
             $transaction->delete();
             CashRegisterTransaction::where('transaction_id', $id)->delete();
 
-            DiningTable::where('current_transaction_id', $id)->update(['current_transaction_id' => null, 'status' => 'available']);
 
             DB::commit();
             $output = [
@@ -236,5 +225,47 @@ class SellPosController extends Controller
         return [
             'cash' => __('lang.cash'),
         ];
+    }
+
+    public function upload_receipt($id){
+
+        return view('invoices.partials.upload_receipt_modal',compact('id'));
+    }
+    public function store_upload_receipt(Request $request){
+        try {
+            DB::beginTransaction();
+            if($request->hasFile('receipts')){
+                foreach ($request->file('receipts') as $file){
+                    $receipt = new ReceiptTransactionSellLinesFiles;
+                    $receipt->transaction_sell_line_id = $request->transaction_id;
+                    $receipt->path =  store_file($file, 'receipt');
+                    $receipt->save();
+                }
+                DB::commit();
+                $output = [
+                    'success' => true,
+                    'msg' => __('lang.success')
+                ];
+            }
+            else{
+                $output = [
+                    'success' => false,
+                    'msg' => __('lang.no_file_chosen')
+                ];
+            }
+
+        }
+        catch (\Exception $e){
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
+    }
+    public function show_receipt($line_id){
+        $uploaded_files = ReceiptTransactionSellLinesFiles::where('transaction_sell_line_id',$line_id)->get();
+        return view('general.uploaded_files',compact('uploaded_files'));
     }
 }

@@ -1,8 +1,5 @@
-{{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"> --}}
-
 <div
     class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if ($index % 2 == 0) bg-light-gray @else bg-dark-gray @endif">
-
     <div class="col-12 d-flex justify-content-between align-items-center" style="height: 40px">
         <div class="col-md-6">
             <div class=" d-flex justify-content-center align-items-center text-white"
@@ -10,6 +7,7 @@
                 {{ $index + 1 }}
             </div>
         </div>
+
         <div class="col-md-6 d-flex justify-content-end ">
             <button class="btn btn btn-primary"
                 wire:click="add_product({{ $product['product']['id'] }},'unit',{{ $index }},1)" type="button">
@@ -18,15 +16,20 @@
         </div>
     </div>
 
+
+
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
             align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="font-weight: 700;
-             font-size: 10px;">@lang('lang.products')</span>
+            <span class="mb-2" style="font-weight: 700;font-size: 10px;">
+                @lang('lang.products')
+            </span>
             {{ $product['product']['name'] }}
         </div>
     </div>
+
+
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
@@ -37,6 +40,8 @@
             {{ $product['product']['sku'] }}
         </div>
     </div>
+
+
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
@@ -87,30 +92,6 @@
         </div>
     </div>
 
-    {{-- <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-             align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
-            style="background-color: white;font-size: 11px;height: 70px;">
-
-            <span class="mb-2" style="    font-weight: 700;
-            font-size: 10px;">@lang('lang.fill')</span>
-
-
-        </div>
-    </div>
-
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
-        <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
-                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
-            style="background-color: white;font-size: 11px;height: 70px;">
-
-            <span class="mb-2" style="    font-weight: 700;
-            font-size: 10px;">@lang('lang.basic_unit')</span>
-            <span>{{ $product['unit'] }}</span>
-
-
-        </div>
-    </div> --}}
 
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex
@@ -135,13 +116,16 @@
         </div>
     </div>
 
+
+
+
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.purchase_price')$</span>
+            font-size: 10px;">@lang('lang.purchase_price')$</span>
             <input type="text" class="form-control" style="width: 61px;height:30px;font-size:12px;" required
                 wire:model="items.{{ $index }}.dollar_purchase_price"
                 wire:change="changeFilling({{ $index }})">
@@ -158,7 +142,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.selling_price')$</span>
+            font-size: 10px;">@lang('lang.selling_price')$</span>
             <input type="text" class="form-control" style="width: 61px;height:30px;font-size:12px;" required
                 wire:model="items.{{ $index }}.dollar_selling_price">
             <span>{{ $product['dollar_selling_price_span'] }}</span>
@@ -168,13 +152,16 @@
         </div>
     </div>
 
+
+
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1 ">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.sub_total')$</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                 font-size: 10px;">@lang('lang.sub_total')$</span>
             @if (!empty($product['quantity']) && (!empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="sub_total_span">
                     {{ $this->dollar_sub_total($index) }}
@@ -189,7 +176,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.purchase_price')</span>
+               font-size: 10px;">@lang('lang.purchase_price')</span>
             <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price"
                 wire:change="changeFilling({{ $index }})" style="width: 61px;height:30px;font-size:12px;"
                 required>
@@ -199,14 +186,14 @@
             @enderror
         </div>
     </div>
-
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
                align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.selling_price')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+              font-size: 10px;">@lang('lang.selling_price')</span>
             <input type="text" class="form-control " wire:model="items.{{ $index }}.selling_price"
                 style="width: 61px;height:30px;font-size:12px;" required>
             <span>{{ $product['selling_price_span'] }}</span>
@@ -221,8 +208,9 @@
               align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.sub_total')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                 font-size: 10px;">@lang('lang.sub_total')</span>
             @if (!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
                 <span class="sub_total_span">
                     {{ $this->sub_total($index) }}
@@ -236,21 +224,22 @@
                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.size')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                 font-size: 10px;">@lang('lang.size')</span>
             <span class="size">
                 {{ $product['size'] }}
             </span>
         </div>
     </div>
-
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.total_size')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                font-size: 10px;">@lang('lang.total_size')</span>
             @if (!empty($product['quantity']))
                 <span class="total_size">
                     {{ $this->total_size($index) }}
@@ -266,8 +255,9 @@
                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
 
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.weight')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                font-size: 10px;">@lang('lang.weight')</span>
             <span class="weight">
                 {{ $product['weight'] }}
             </span>
@@ -280,7 +270,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
 
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.total_weight')</span>
+             font-size: 10px;">@lang('lang.total_weight')</span>
             @if (!empty($product['quantity']))
                 <span class="total_weight">
                     {{ $this->total_weight($index) }}
@@ -290,13 +280,13 @@
             @endif
         </div>
     </div>
-
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                   align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.cost')$</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                 font-size: 10px;">@lang('lang.cost')$</span>
             @if (!empty($product['quantity']) && (!empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="dollar_cost">
                     {{ $this->dollar_cost($index) }}
@@ -311,8 +301,9 @@
         <div class="dollar-cell d-flex  flex-grow-1 flex-wrap justify-content-center
                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="font-weight: 700;
-    font-size: 10px;">@lang('lang.total_cost')$</span>
+            <span class="mb-2"
+                style="font-weight: 700;
+                  font-size: 10px;">@lang('lang.total_cost')$</span>
             @if (!empty($product['quantity']) && (!empty($product['dollar_purchase_price']) || !empty($product['purchase_price'])))
                 <span class="dollar_total_cost">
                     {{ $this->dollar_total_cost($index) }}
@@ -327,8 +318,9 @@
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
                   align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.cost')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                 font-size: 10px;">@lang('lang.cost')</span>
             @if (!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
                 <span class="cost">
                     {{ $this->cost($index) }}
@@ -338,16 +330,16 @@
             @endif
         </div>
     </div>
-
     <div class="col-6 col-sm-4 col-md-3 col-lg-2 col-xl-1 p-1">
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
                 align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.total_cost')</span>
-            @if (isset($product['quantity']) && (isset($product['purchase_price']) || isset($product['dollar_purchase_price'])))
+            <span class="mb-2"
+                style="    font-weight: 700;
+               font-size: 10px;">@lang('lang.total_cost')</span>
+            @if (!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
                 <span class="cost">
-                    {{ $this->cost($index) }}
+                    {{ $this->total_cost($index) }}
                 </span>
             @else
                 {{ 0.0 }}
@@ -359,8 +351,9 @@
         <div class=" d-flex  flex-grow-1 flex-wrap justify-content-center
               align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
-            <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.new_stock')</span>
+            <span class="mb-2"
+                style="    font-weight: 700;
+                  font-size: 10px;">@lang('lang.new_stock')</span>
             <span class="current_stock_text">
                 {{ $product['total_stock'] }}
             </span>
@@ -374,7 +367,7 @@
                  align-items-center rounded-3 text-center mb-1 flex-column align-items-center "
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.change_current_stock')</span>
+             font-size: 10px;">@lang('lang.change_current_stock')</span>
             <input type="checkbox" name="change_price" wire:model="items.{{ $index }}.change_price_stock">
         </div>
     </div>
@@ -385,13 +378,12 @@
             style="font-size: 11px;height: 70px;">
 
             {{-- <span class="mb-2" style="    font-weight: 700;
-    font-size: 10px;">@lang('lang.action')</span> --}}
+              font-size: 10px;">@lang('lang.action')</span> --}}
             <div class="btn btn-sm btn-danger py-0 px-1" wire:click="delete_product({{ $index }})">
                 <i class="fa fa-trash"></i>
             </div>
         </div>
     </div>
-
 
 
     <div class="d-flex flex-column" style="width: 100%">

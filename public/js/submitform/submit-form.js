@@ -128,10 +128,6 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire(`${result.msg}`, '', "success", {
-                //     timer: 500,
-                //     toast: true
-                // });
                 Swal.fire({
                     title: `${result.msg}`,
                     type: 'success',
@@ -154,14 +150,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
             }
         },
     });

@@ -278,6 +278,7 @@ class Create extends Component
                 $sell_line->exchange_rate = $item['exchange_rate'];
                 $sell_line->sub_total = $this->num_uf($item['sub_total']);
                 $sell_line->dollar_sub_total = $this->num_uf($item['dollar_sub_total']);
+                $sell_line->stock_line_id  = !empty($item['current_stock']['id']) ? $item['current_stock']['id'] : null;
                 //                $sell_line->tax_id = !empty($item['tax_id']) ? $item['tax_id'] : null;
                 //                $sell_line->tax_method = !empty($item['tax_method']) ? $item['tax_method'] : null;
                 //                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;

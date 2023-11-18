@@ -4,6 +4,24 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
+    <style>
+        .accordion-item {
+            background-color: transparent
+        }
+
+        .accordion-button {
+            padding: 8px !important;
+            width: fit-content !important;
+            background-color: #596fd7 !important;
+            color: white !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+        }
+
+        .accordion-content {
+            display: none;
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -44,6 +62,11 @@
                         'method' => 'put',
                         'enctype' => 'multipart/form-data',
                     ]) !!}
+
+
+
+
+
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div
                             class="mb-2 col-md-3 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -110,6 +133,7 @@
                                 'open_input' => true,
                             ])
                         </div>
+
                         <div class="col-md-3 d-flex">
                             <div
                                 class="mb-2 p-0 col-md-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -121,7 +145,6 @@
                                 ]) !!}
                                 {!! Form::text('product_symbol', isset($product->product_symbol) ? $product->product_symbol : null, [
                                     'class' => 'form-control initial-balance-input m-auto',
-                                    'required',
                                 ]) !!}
                                 <br>
                                 @error('product_symbol')
@@ -241,218 +264,240 @@
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    {!! Form::text(
-                                        'balance_return_request',
-                                        isset($product->balance_return_request) ? $product->balance_return_request : null,
-                                        [
-                                            'class' => 'form-control initial-balance-input m-auto',
-                                        ],
-                                    ) !!}
-                                </div>
 
-                            </div>
-                        </div>
-
-                        {{-- tax accordion  --}}
-                        <div class="my-3 ">
-                            <div class="accordion" id="accordionPanelsStayOpenExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button tax-button collapsed" style="padding: 5px 15px"
-                                            type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
-                                            aria-controls="panelsStayOpen-collapseOne">
-                                            <h6>
-                                                {{ __('lang.product_tax') }}
-                                            </h6>
-                                            <span class="tax-accordion-arrow">
-                                                <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                                            </span>
-                                        </button>
-                                    </h2>
-                                    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
-                                        <div class="accordion-body d-flex">
-                                            {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
-                                            <div
-                                                class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-                                                <label for="method"
-                                                    class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                    style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.tax_method') . ':*' }}</label>
-                                                <div class="input-wrapper">
-
-                                                    <select name="method" id="method" class='form-control select2'
-                                                        data-live-search='true'
-                                                        placeholder="{{ __('lang.please_select') }}" required>
-                                                        <option value="">{{ __('lang.please_select') }}</option>
-                                                        <option
-                                                            {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }}
-                                                            value="inclusive">{{ __('lang.inclusive') }}</option>
-                                                        <option
-                                                            {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }}
-                                                            value="exclusive">{{ __('lang.exclusive') }}</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
-                                            <div
-                                                class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
-                                                <label for="product_tax_id"
-                                                    class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
-                                                    style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.product_tax') . '*' }}</label>
-                                                <div class="input-wrapper">
-                                                    <select name="product_tax_id" id="product_tax"
-                                                        class="form-control select2"
-                                                        placeholder="{{ __('lang.please_select') }}" required>
-                                                        <option value="">{{ __('lang.please_select') }}</option>
-                                                        @foreach ($product_tax as $tax)
-                                                            <option @if ($product_tax_id == $tax->id) selected @endif
-                                                                value="{{ $tax->id }}">
-                                                                {{ $tax->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <button type="button"
-                                                        class="add-button d-flex justify-content-center align-items-center"
-                                                        data-toggle="modal" data-target="#add_product_tax_modal"
-                                                        data-select_category="2"><i class="fas fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="input-wrapper">
+                                        {!! Form::text(
+                                            'balance_return_request',
+                                            isset($product->balance_return_request) ? $product->balance_return_request : null,
+                                            [
+                                                'class' => 'form-control initial-balance-input m-auto',
+                                                'style' => 'width:100%',
+                                            ],
+                                        ) !!}
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                        {{-- sizes accordion --}}
-                        <div class="my-3">
-                            <div class="accordion " id="accordionPanelsStayOpenExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button size-button collapsed" style="padding: 5px 15px"
-                                            type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                                            aria-controls="panelsStayOpen-collapseTwo">
-                                            <h6>{{ __('lang.product_dimensions') }}</h6>
-                                            <span class="size-accordion-arrow">
-                                                <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
-                                            </span>
-                                        </button>
-                                    </h2>
 
-                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                        <div class="accordion mb-1">
+                            <div class="accordion-item" style="border: none">
+                                <h2 class="accordion-header d-flex justify-content-end">
+                                    <div class="accordion-button" onclick="toggleAccordion(`productTax`)">
+                                        <span class="productTax mx-2">
+                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                        </span>
+                                        {{ __('lang.product_tax') }}
+                                    </div>
+                                </h2>
+                                <div id="productTax" class="accordion-content">
+                                    <div class="accordion-body d-flex p-0">
+                                        {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
                                         <div
-                                            class="accordion-body d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <label for="method"
+                                                class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
+                                                style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.tax_method') . ':*' }}</label>
                                             <div
-                                                class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-                                                {!! Form::label('height', __('lang.height'), [
-                                                    'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                                ]) !!}
-                                                {!! Form::text(
-                                                    'height',
-                                                    isset($product->product_dimensions->height) ? $product->product_dimensions->height : 0,
-                                                    [
-                                                        'class' => 'form-control height initial-balance-input m-0',
-                                                    ],
-                                                ) !!}
-                                                @error('height')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
+                                                style="background-color: #dedede; border: none;
+                                                    border-radius: 16px;
+                                                    color: #373737;
+                                                    box-shadow: 0 8px 6px -5px #bbb;
+                                                    width: 25%;
+                                                    height: 30px;
+                                                    flex-wrap: nowrap;">
+                                                <select name="method" id="method" class='form-control select2'
+                                                    data-live-search='true' placeholder="{{ __('lang.please_select') }}">
+                                                    <option value="">{{ __('lang.please_select') }}</option>
+                                                    <option
+                                                        {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }}
+                                                        value="inclusive">{{ __('lang.inclusive') }}</option>
+                                                    <option
+                                                        {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }}
+                                                        value="exclusive">{{ __('lang.exclusive') }}</option>
+                                                </select>
                                             </div>
-
-                                            <div
-                                                class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
-                                                {!! Form::label('length', __('lang.length'), [
-                                                    'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                                ]) !!}
-                                                {!! Form::text(
-                                                    'length',
-                                                    isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0,
-                                                    [
-                                                        'class' => 'form-control length initial-balance-input m-0',
-                                                    ],
-                                                ) !!}
-                                                @error('length')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-
-                                            <div
-                                                class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                {!! Form::label('width', __('lang.width'), [
-                                                    'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                                ]) !!}
-                                                {!! Form::text('width', isset($product->product_dimensions->width) ? $product->product_dimensions->width : 0, [
-                                                    'class' => 'form-control width initial-balance-input m-0',
-                                                ]) !!}
-                                                @error('width')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-
-                                            <div
-                                                class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                {!! Form::label('size', __('lang.size'), [
-                                                    'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                                ]) !!}
-                                                {!! Form::text('size', isset($product->product_dimensions->size) ? $product->product_dimensions->size : 0, [
-                                                    'class' => 'form-control size initial-balance-input m-0',
-                                                ]) !!}
-                                                @error('size')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-
-
-                                            <div
-                                                class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                {!! Form::label('weight', __('lang.weight'), [
-                                                    'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                                ]) !!}
-                                                {!! Form::text(
-                                                    'weight',
-                                                    isset($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0,
-                                                    [
-                                                        'class' => 'form-control initial-balance-input m-0',
-                                                    ],
-                                                ) !!}
-                                                <br>
-                                                @error('weight')
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
-                                            </div>
-                                            <div
-                                                class="col-md-2 d-flex align-items-center pr-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                {!! Form::label('variation', __('lang.basic_unit_for_import_product'), [
-                                                    'class' => app()->isLocale('ar') ? 'd-block text-end mb-0' : 'mx-2 mb-0',
-                                                    'style' => 'font-size: 12px;font-weight: 500;',
-                                                ]) !!}
-                                                <div class="input-wrapper">
-                                                    {!! Form::select(
-                                                        'variation_id',
-                                                        $basic_units,
-                                                        isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0,
-                                                        [
-                                                            'class' => 'form-control select2',
-                                                            'placeholder' => __('lang.please_select'),
-                                                            'id' => 'variation_id',
-                                                        ],
-                                                    ) !!}
-                                                </div>
+                                        </div>
+                                        {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                                        <div
+                                            class="col-md-6 mb-1 d-flex justify-content-start align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                            <label for="product_tax_id"
+                                                class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
+                                                style="width: 25%;font-size: 12px;font-weight: 500;">{{ __('lang.product_tax') . '*' }}</label>
+                                            <div class="d-flex justify-content-center align-items-center"
+                                                style="background-color: #dedede; border: none;
+                                                        border-radius: 16px;
+                                                        color: #373737;
+                                                        box-shadow: 0 8px 6px -5px #bbb;
+                                                        width: 25%;
+                                                        height: 30px;
+                                                        flex-wrap: nowrap;">
+                                                <select name="product_tax_id" id="product_tax"
+                                                    class="form-control select2"
+                                                    placeholder="{{ __('lang.please_select') }}">
+                                                    <option value="">{{ __('lang.please_select') }}</option>
+                                                    @foreach ($product_tax as $tax)
+                                                        <option @if ($product_tax_id == $tax->id) selected @endif
+                                                            value="{{ $tax->id }}">
+                                                            {{ $tax->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="button"
+                                                    class="add-button d-flex justify-content-center align-items-center"
+                                                    data-toggle="modal" data-target="#add_product_tax_modal"
+                                                    data-select_category="2"><i class="fas fa-plus"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
+
+                        <div class="accordion mb-1">
+                            <div class="accordion-item" style="border: none">
+                                <h2 class="accordion-header d-flex justify-content-end">
+                                    <div class="accordion-button" onclick="toggleAccordion(`productSize`)">
+                                        <span class="productSize mx-2">
+                                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                                        </span>
+                                        {{ __('lang.product_dimensions') }}
+                                    </div>
+                                </h2>
+                                <div id="productSize" class="accordion-content">
+                                    <div class="accordion-body d-flex p-0">
+
+
+                                        <div
+                                            class="col-md-2 d-flex align-items-center pr-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('variation', __('lang.basic_unit_for_import_product'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            <div class="input-wrapper">
+                                                {!! Form::select(
+                                                    'variation_id',
+                                                    $basic_units,
+                                                    isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0,
+                                                    [
+                                                        'class' => 'form-control select2',
+                                                        'placeholder' => __('lang.please_select'),
+                                                        'id' => 'variation_id',
+                                                    ],
+                                                ) !!}
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('weight', __('lang.weight'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            {!! Form::text(
+                                                'weight',
+                                                isset($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0,
+                                                [
+                                                    'class' => 'form-control initial-balance-input m-0',
+                                                ],
+                                            ) !!}
+                                            <br>
+                                            @error('weight')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+
+                                        <div
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('size', __('lang.size'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            {!! Form::text('size', isset($product->product_dimensions->size) ? $product->product_dimensions->size : 0, [
+                                                'class' => 'form-control size initial-balance-input',
+                                            ]) !!}
+                                            <br>
+                                            @error('size')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+
+                                        <div
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('height', __('lang.height'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            {!! Form::text(
+                                                'height',
+                                                isset($product->product_dimensions->height) ? $product->product_dimensions->height : 0,
+                                                [
+                                                    'class' => 'form-control height initial-balance-input',
+                                                ],
+                                            ) !!}
+                                            <br>
+                                            @error('height')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+
+                                        <div
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('width', __('lang.width'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            {!! Form::text('width', isset($product->product_dimensions->width) ? $product->product_dimensions->width : 0, [
+                                                'class' => 'initial-balance-input form-control width',
+                                            ]) !!}
+                                            <br>
+                                            @error('width')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+
+                                        <div
+                                            class="col-md-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            {!! Form::label('length', __('lang.length'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-size: 12px;font-weight: 500;',
+                                            ]) !!}
+                                            {!! Form::text(
+                                                'length',
+                                                isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0,
+                                                [
+                                                    'class' => 'form-control initial-balance-input length',
+                                                ],
+                                            ) !!}
+                                            <br>
+                                            @error('length')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+
+
+
+
+                                        {{-- <div class="col-md-3">
+                                {!! Form::label('unit', __('lang.basic_unit'), ['class'=>'h5 pt-3']) !!}
+                                <div class="d-flex justify-content-center">
+                                    {!! Form::select(
+                                        'unit_id',
+                                        $units,null,
+                                        ['class' => 'form-control select2 unit_id','placeholder'=>__('lang.please_select'),'id'=>'unitId']
+                                    ) !!}
+                                 <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target="#create">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                </div>
+                            </div> --}}
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div
                             class="d-flex my-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
@@ -460,6 +505,7 @@
                                 <i class="fa fa-plus"></i> @lang('lang.add')
                             </button>
                         </div>
+
                         <div class="col-md-12 product_unit_raws ">
                             @php
                                 $index = 0;
@@ -483,7 +529,6 @@
                             @endphp
                             <input type="hidden" id="raw_unit_index" value="{{ $index }}" />
                         </div>
-                        {{-- sizes --}}
 
                         {{-- crop image --}}
                         <div class="col-md-12">
@@ -545,6 +590,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div id="cropped_images"></div>
                         {{-- crop image --}}
 
@@ -573,6 +619,15 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+
+
+
+
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                     </div>
@@ -582,10 +637,8 @@
             </div>
         </div>
     </div>
-    </div>
-    {{-- @include('store.create', ['quick_add' => $quick_add]) --}}
-    @include('store.create', ['quick_add' => $quick_add])
 
+    @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
     @include('categories.create_modal', ['quick_add' => $quick_add])

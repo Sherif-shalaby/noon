@@ -77,6 +77,7 @@
                                             'wire:model' => 'supplier',
                                             'wire:change' => 'changeExchangeRate()',
                                         ]) !!}
+
                                         <button type="button"
                                             class="add-button d-flex justify-content-center align-items-center"
                                             data-toggle="modal" data-target=".add-supplier"><i

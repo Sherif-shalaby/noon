@@ -605,7 +605,6 @@
                         </div>
                     </div>
 
-
                     <div
                         class="d-flex my-2 @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                         <button class="btn btn-primary add_unit_row " type="button">

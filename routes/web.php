@@ -150,6 +150,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
 
 
     // stocks
@@ -223,6 +224,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('pos',SellPosController::class);
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
     Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
+    Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
+    Route::get('show/receipt/{id}',[SellPosController::class, 'show_receipt'])->name('show_receipt');
+    Route::post('add/receipt',[SellPosController::class, 'store_upload_receipt'])->name('store_upload_receipt');
     // ################################# Task : customer_price_offer #################################
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');

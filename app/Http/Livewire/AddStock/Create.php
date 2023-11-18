@@ -595,7 +595,6 @@ class Create extends Component
         $this->items[$index]['show_validity'] =
             !$this->items[$index]['show_validity'];
     }
-
     public function add_by_po()
     {
         if (!empty($this->items)) {
@@ -633,6 +632,7 @@ class Create extends Component
                 'total_cost' => 0,
                 'current_stock' => 0,
                 'total_stock' => 0 + number_format($orderLine->quantity, 2),
+
                 'prices' => [
                     [
                         'price_type' => null,

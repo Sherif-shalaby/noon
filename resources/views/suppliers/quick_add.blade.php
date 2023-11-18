@@ -23,8 +23,9 @@
                         class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                         <label for="name"
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
-                                ">@lang('lang.name')</label>
+                            class="@if (app()->isLocale('ar')) d-block text-end mx-2 mb-0 width-quarter @else mx-2 mb-0 width-quarter @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;">@lang('lang.name')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
                         <input type="text"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -42,7 +43,7 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
-                            for="name">@lang('lang.company_name')</label>
+                            style ="font-size: 12px;font-weight: 500;" for="name">@lang('lang.company_name')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
                         <input type="text"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -77,7 +78,7 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
-                            for="exchange_rate">@lang('lang.exchange_rate')</label>
+                            style ="font-size: 12px;font-weight: 500;" for="exchange_rate">@lang('lang.exchange_rate')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
                         <input type="number"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -96,7 +97,7 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
-                            for="start_date">@lang('lang.start_date')</label>
+                            style ="font-size: 12px;font-weight: 500;" for="start_date">@lang('lang.start_date')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
                         <input type="date"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -116,7 +117,7 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
-                            for="end_date">@lang('lang.end_date')</label>
+                            style ="font-size: 12px;font-weight: 500;" for="end_date">@lang('lang.end_date')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
                         <input type="date"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -136,7 +137,7 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
-                            for="postal_code">@lang('lang.postal_code')</label>
+                            style ="font-size: 12px;font-weight: 500;" for="postal_code">@lang('lang.postal_code')</label>
                         {{-- <div class="select_body d-flex justify-content-between align-items-center"> --}}
                         <input type="text"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -197,6 +198,7 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
+                            style ="font-size: 12px;font-weight: 500;"
                             for="owner_debt_in_dinar">@lang('lang.owner_debt_in_dinar')</label>
                         <input type="number"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
@@ -209,10 +211,31 @@
                         <label
                             class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 "
+                            style ="font-size: 12px;font-weight: 500;"
                             for="owner_debt_in_dollar">@lang('lang.owner_debt_in_dollar')</label>
                         <input type="number"
                             class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
                             style="border-color:#aaa" name="owner_debt_in_dollar" id="owner_debt_in_dollar" />
+                    </div>
+                    {{-- ++++++++++++ images ++++++++++++ --}}
+                    <div
+                        class="col-md-4 d-flex mb-2 align-items-center
+                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                        <label
+                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                                "
+                            style ="font-size: 12px;font-weight: 500;">@lang('lang.image')</label>
+                        <input
+                            class="form-control img initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                            style="width: 100%" name="image" type="file" accept="image/*">
+                        {{-- <div class="dropzone" id="my-dropzone">
+                                <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                            </div> --}}
+                        @error('cover')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+
                     </div>
                     {{--                    --}}{{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
                     {{--                    <div class="col-md-4"> --}}
@@ -248,13 +271,14 @@
                     {{--                    </div> --}}
                     {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                     <div
-                        class="col-md-4 d-flex mb-2 align-items-center
+                        class="col-md-6 d-flex mb-2 align-items-center
                         @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div class="form-group ">
                             <table class="bordered">
                                 <thead class="email_thead">
                                     <tr>
-                                        <th class="text-left" style="font-weight: normal;background-color: transparent">
+                                        <th class="text-left"
+                                            style="font-weight: normal!important;background-color: transparent!important;color:black!important">
 
                                         </th>
                                     </tr>
@@ -265,7 +289,8 @@
                                             class="col-md-12 d-flex mb-2 align-items-center p-0  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             <label
                                                 class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
-                                ">
+                                "
+                                                style="font-size: 12px">
                                                 <span class="text-danger">*</span>@lang('lang.email')
                                             </label>
                                             <div class="d-flex justify-content-center align-items-center select_body"
@@ -278,7 +303,7 @@
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
                                                 <input type="text"
-                                                    class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                                    class="form-control width-full initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
                                                     placeholder="@lang('lang.email')" name="email[]"
                                                     value="{{ old('email') }}" required>
                                                 @error('email')
@@ -298,26 +323,30 @@
                         </div>
                     </div>
                     {{-- +++++++++++++++++++++++++++++++ mobile_number array ++++++++++++++++++++++++ --}}
-                    <div class="col-md-12" style="width: 100%;">
-                        <table class="bordered" style="width: 100%">
-                            <thead class="phone_thead">
-                                <tr>
-                                    <th class="text-left" style="font-weight: normal;background-color: transparent">
+                    <div class="col-md-6 d-flex mb-2 align-items-center
+                         flex-row-reverse">
+                        <div class="form-group">
 
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="phone_tbody">
-                                <tr>
-                                    <td
-                                        class="col-md-12 d-flex mb-2 align-items-center p-0  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                        <label style="width: fit-content"
-                                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
+                            <table class="bordered" style="width: 100%">
+                                <thead class="phone_thead">
+                                    <tr>
+                                        <th class="text-left"
+                                            style="font-weight: normal!important;background-color: transparent!important;color:black!important">
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="phone_tbody">
+                                    <tr>
+                                        <td
+                                            class="col-md-12 d-flex mb-2 align-items-center p-0  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <label style="font-size: 12px"
+                                                class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
                                 ">
-                                            <span class="text-danger">*</span>@lang('lang.phone_number')
-                                        </label>
-                                        <div class="d-flex justify-content-center align-items-center select_body"
-                                            style="background-color: #dedede; border: none;
+                                                <span class="text-danger">*</span>@lang('lang.phone_number')
+                                            </label>
+                                            <div class="d-flex justify-content-center align-items-center select_body"
+                                                style="background-color: #dedede; border: none;
                                                         border-radius: 16px;
                                                         color: #373737;
                                                         box-shadow: 0 8px 6px -5px #bbb;
@@ -325,44 +354,28 @@
                                                         margin: auto;
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
-                                            <input type="text"
-                                                class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                                                style="width: 100%" placeholder="@lang('lang.phone_number')"
-                                                name="mobile_number[]" value="{{ old('mobile_number') }}" required>
-                                            @error('mobile_number')
-                                                <div class="alert alert-danger">{{ $message }}</div>
-                                            @enderror
+                                                <input type="text"
+                                                    class="form-control initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
+                                                    style="width: 100%" placeholder="@lang('lang.phone_number')"
+                                                    name="mobile_number[]" value="{{ old('mobile_number') }}"
+                                                    required>
+                                                @error('mobile_number')
+                                                    <div class="alert alert-danger">{{ $message }}</div>
+                                                @enderror
 
-                                            {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                            <a href="javascript:void(0)"
-                                                class=" d-flex justify-content-center align-items-center text-center text-decoration-none text-white add-button addRow"
-                                                type="button">
-                                                <i class="fa fa-plus"></i>
-                                            </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                                {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                <a href="javascript:void(0)"
+                                                    class=" d-flex justify-content-center align-items-center text-center text-decoration-none text-white add-button addRow"
+                                                    type="button">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    {{-- ++++++++++++ images ++++++++++++ --}}
-                    <div
-                        class="col-md-4 d-flex mb-2 align-items-center
-                        @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                        <label
-                            class="@if (app()->isLocale('ar')) d-block text-end h5  mx-2 mb-0 width-quarter @else h5  mx-2 mb-0 width-quarter @endif
-                                ">@lang('lang.image')</label>
-                        <input
-                            class="form-control img initial-balance-input my-0 @if (app()->isLocale('ar')) text-end @endif"
-                            style="width: 100%" name="image" type="file" accept="image/*">
-                        {{-- <div class="dropzone" id="my-dropzone">
-                                <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                            </div> --}}
-                        @error('cover')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-
-                    </div>
                 </div>
             </div>
 

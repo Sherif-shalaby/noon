@@ -58,57 +58,58 @@
                                             @foreach ($sell_lines as $index => $line)
                                                 <tr>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.date_and_time')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->transaction_date ?? '' }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.reference')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->invoice_no ?? '' }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.store')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
 
                                                             {{ $line->store->name ?? '' }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.customer')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->customer->name ?? '' }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.phone')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->customer->phone ?? '' }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="badge badge-success d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.sale_status')"
+                                                            class="custom-tooltip
+                                                            badge badge-success d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">{{ $line->status ?? '' }}</span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.payment_status')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->payment_status }}
                                                         </span>
                                                     </td>
                                                     <td>
                                                         @foreach ($line->transaction_payments as $payment)
-                                                            <span
-                                                                class="d-flex justify-content-center align-items-center text-center"
+                                                            <span data-tooltip="@lang('lang.payment_type')"
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                                 style="font-size: 12px;font-weight: 600">
                                                                 {{ __('lang.' . $payment->method) }}<br>
                                                             </span>
@@ -116,8 +117,8 @@
                                                     </td>
                                                     <td>
                                                         @foreach ($line->transaction_payments as $payment)
-                                                            <span
-                                                                class="d-flex justify-content-center align-items-center text-center"
+                                                            <span data-tooltip="@lang('lang.ref_number')"
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                                 style="font-size: 12px;font-weight: 600">
                                                                 {{ $payment->ref_no ?? '' }}<br>
                                                             </span>
@@ -125,45 +126,45 @@
                                                     </td>
                                                     <td>
                                                         @foreach ($line->transaction_payments as $payment)
-                                                            <span
-                                                                class="d-flex justify-content-center align-items-center text-center"
+                                                            <span data-tooltip="@lang('lang.received_currency')"
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                                 style="font-size: 12px;font-weight: 600">
                                                                 {{ $payment->received_currency_relation->symbol ?? '' }}<br>
                                                             </span>
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.grand_total')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ number_format($line->final_total, 2) }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.paid')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->transaction_payments->sum('amount') }}
 
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.due_sale_list')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->final_total - $line->transaction_payments->sum('amount') }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.payment_date')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->transaction_payments->last()->paid_on ?? '' }}
                                                         </span>
                                                     </td>
                                                     <td>
-                                                        <span
-                                                            class="d-flex justify-content-center align-items-center text-center"
+                                                        <span data-tooltip="@lang('lang.cashier_man')"
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                             style="font-size: 12px;font-weight: 600">
                                                             {{ $line->created_by_user->name }}
                                                         </span>
@@ -172,8 +173,8 @@
                                                     <td>
                                                         @foreach ($line->transaction_sell_lines as $sell_line)
                                                             @if (!empty($sell_line->product))
-                                                                <span
-                                                                    class="d-flex justify-content-center align-items-center text-center mb-2"
+                                                                <span data-tooltip="@lang('lang.products')"
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center text-center mb-2"
                                                                     style="font-size: 10px;font-weight: 600">
                                                                     {{ $sell_line->product->name ?? ' ' }} -
                                                                     {{ $sell_line->product->sku ?? ' ' }}<br>
@@ -183,8 +184,8 @@
                                                     </td>
                                                     <td>
                                                         @foreach ($line->transaction_payments as $payment)
-                                                            <span
-                                                                class="d-flex justify-content-center align-items-center text-center"
+                                                            <span data-tooltip="@lang('lang.sale_note')"
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center text-center"
                                                                 style="font-size: 12px;font-weight: 600">
                                                                 {{ $payment->received_currency_relation->payment_note ?? '' }}<br>
                                                             </span>
