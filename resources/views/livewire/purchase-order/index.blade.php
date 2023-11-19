@@ -152,16 +152,18 @@
                                                         {{-- ++++++++++++++ edit button ++++++++++++++ --}}
                                                         <li>
                                                             <a href="{{ route('customer_price_offer.edit', $offer->id) }}"
-                                                                class="btn"><i class="dripicons-document-edit"></i>
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                    class="dripicons-document-edit"></i>
                                                                 @lang('lang.edit')</a>
                                                         </li>
-                                                        <li class="divider"></li>
+
                                                         {{-- ++++++++++++++ delete button ++++++++++++++ --}}
                                                         <form method="POST"
                                                             action="{{ route('customer_price_offer.destroy', $offer->id) }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn text-red">
+                                                            <button type="submit"
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red">
                                                                 @lang('lang.delete') <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>

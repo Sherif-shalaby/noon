@@ -97,25 +97,51 @@
                                 <tbody>
                                     @foreach ($customer_offer_prices as $offer)
                                         <tr>
-                                            <td>{{ @format_date($offer->created_at) }}</td>
-                                            <td>{{ ucfirst($offer->created_by_user->name ?? '') }}</td>
                                             <td>
-                                                @if (!empty($offer->customer))
-                                                    {{ $offer->customer->name }}
-                                                @endif
+                                                <span style="font-size: 12px;font-weight: 600;">
+                                                    {{ @format_date($offer->created_at) }}
+                                                </span>
                                             </td>
-                                            <td>{{ ucfirst($offer->store->name ?? '') }}</td>
                                             <td>
-                                                @if (!empty($offer->block_qty))
-                                                    @lang('lang.blocked')
-                                                @else
-                                                    @lang('lang.not_blocked')
-                                                @endif
+                                                <span style="font-size: 12px;font-weight: 600;">
+
+                                                    {{ ucfirst($offer->created_by_user->name ?? '') }}
+                                                </span>
                                             </td>
-                                            <td>{{ ucfirst($offer->status) }}</td>
                                             <td>
+                                                <span style="font-size: 12px;font-weight: 600;">
+
+                                                    @if (!empty($offer->customer))
+                                                        {{ $offer->customer->name }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: 12px;font-weight: 600;">
+
+                                                    {{ ucfirst($offer->store->name ?? '') }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: 12px;font-weight: 600;">
+
+                                                    @if (!empty($offer->block_qty))
+                                                        @lang('lang.blocked')
+                                                    @else
+                                                        @lang('lang.not_blocked')
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span style="font-size: 12px;font-weight: 600;">
+
+                                                    {{ ucfirst($offer->status) }}
+                                                </span>
+                                            </td>
+                                            <td>
+
                                                 <div class="btn-group">
-                                                    <button type="button"
+                                                    <button type="button" style="font-size: 12px;font-weight: 600;"
                                                         class="btn btn-default btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="false">خيارات
@@ -128,16 +154,19 @@
                                                         {{-- ++++++++++++++ edit button ++++++++++++++ --}}
                                                         <li>
                                                             <a href="{{ route('customer_price_offer.edit', $offer->id) }}"
-                                                                class="btn"><i class="dripicons-document-edit"></i>
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                    class="dripicons-document-edit"></i>
                                                                 @lang('lang.edit')</a>
                                                         </li>
-                                                        <li class="divider"></li>
+
                                                         {{-- ++++++++++++++ delete button ++++++++++++++ --}}
                                                         <form method="POST"
                                                             action="{{ route('customer_price_offer.destroy', $offer->id) }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="btn text-red">
+                                                            <button type="submit"
+                                                                class="btn width-full drop_down_item
+                                                                 text-red">
                                                                 @lang('lang.delete') <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>

@@ -183,14 +183,14 @@
                                                             style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                             <li>
                                                                 <a href="{{ route('wages.edit', $wage->id) }}"
-                                                                    class="btn" target="_blank"><i
-                                                                        class="dripicons-document-edit"></i>
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                    target="_blank"><i class="dripicons-document-edit"></i>
                                                                     @lang('lang.update')</a>
                                                             </li>
-                                                            <li class="divider"></li>
+
                                                             <li>
                                                                 <a data-href="{{ route('wages.destroy', $wage->id) }}"
-                                                                    class="btn text-red delete_item"><i
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
                                                                         class="fa fa-trash"></i>
                                                                     @lang('lang.delete')</a>
                                                             </li>

@@ -217,54 +217,63 @@
                                                         </button>
                                                         <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                                             user="menu">
+
                                                             <li>
                                                                 <a data-href="{{ route('print_invoice', $line->id) }}"
-                                                                    class="btn print-invoice"><i
-                                                                        class="dripicons-print"></i>
-                                                                    {{ __('lang.generate_invoice') }}</a>
+                                                                    class="btn print-invoice drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                                                                    <i class="dripicons-print"></i>
+                                                                    {{ __('lang.generate_invoice') }}
+                                                                </a>
                                                             </li>
-                                                            <li class="divider"></li>
+
+
                                                             <li>
                                                                 <a data-href=" {{ route('pos.show', $line->id) }}"
                                                                     data-container=".view_modal"
-                                                                    class="btn btn-modal"><i
+                                                                    class="btn btn-modal drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                         class="fa fa-eye"></i>{{ __('lang.view') }}
                                                                 </a>
                                                             </li>
-                                                            <li class="divider"></li>
+
+
                                                             <li>
                                                                 <a href="{{ route('sell.return', $line->id) }}"
-                                                                    class="btn"><i
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                         class="fa fa-undo"></i>@lang('lang.return') </a>
                                                             </li>
-                                                            <li class="divider"></li>
+
+
                                                             <li>
                                                                 <a data-href="{{ route('show_payment', $line->id) }}"
                                                                     data-container=".view_modal"
-                                                                    class="btn btn-modal"><i class="fa fa-money"></i>
+                                                                    class="btn btn-modal drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                        class="fa fa-money"></i>
                                                                     {{ __('lang.view_payments') }}
                                                                 </a>
                                                             </li>
-                                                            <li class="divider"></li>
+
+
                                                             <li>
                                                                 <a href="{{ route('invoices.edit', $line->id) }}"
-                                                                    class="btn"><i
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                         class="dripicons-document-edit"></i>
                                                                     {{ __('lang.edit') }}</a>
                                                             </li>
-                                                            <li class="divider"></li>
+
+
                                                             <li>
                                                                 <a data-href=" {{ route('upload_receipt', $line->id) }}"
                                                                     data-container=".view_modal" data-dismiss="modal"
-                                                                    class="btn btn-modal"><i
+                                                                    class="btn btn-modal drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                         class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
                                                                 </a>
                                                             </li>
-                                                            <li class="divider"></li>
+
+
                                                             <li>
                                                                 <a data-href="{{ route('pos.destroy', $line->id) }}"
                                                                     {{--                                                       data-check_password="{{ action('UserController@checkPassword', Auth::user()->id) }} " --}}
-                                                                    class="btn text-red delete_item"><i
+                                                                    class="btn text-red delete_item drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                         class="fa fa-trash"></i>
                                                                     {{ __('lang.delete') }}
                                                                 </a>

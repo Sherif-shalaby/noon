@@ -179,30 +179,31 @@
                                                     <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">';
+                                                    user="menu">
                                                     <li>
                                                         <a href="{{ route('employees.show', $employee->id) }}"
-                                                            class="btn"><i class="fa fa-eye"></i>
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                class="fa fa-eye"></i>
                                                             @lang('lang.view') </a>
                                                     </li>
-                                                    <li class="divider"></li>
+
 
                                                     <li>
                                                         <a href="{{ route('employees.edit', $employee->id) }}"
-                                                            target="_blank" class="btn edit_employee"><i
+                                                            target="_blank"
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif edit_employee"><i
                                                                 class="fa fa-pencil-square-o"></i>
                                                             @lang('lang.edit')</a>
                                                     </li>
-                                                    <li class="divider"></li>
+
                                                     <li>
                                                         <a data-href="{{ route('employees.destroy', $employee->id) }}"
                                                             {{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}" --}}
-                                                            class="btn delete_item text-red delete_item"><i
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif delete_item text-red delete_item"><i
                                                                 class="fa fa-trash"></i>
                                                             @lang('lang.delete')</a>
                                                     </li>
                                                     @if (!empty($employee->job_type) && $employee->job_type->title == 'Representative')
-                                                        <li class="divider"></li>
                                                         <li>
                                                             <a href="{{ route('employees.add_points') }}"
                                                                 class="btn add_point"><i class="fa fa-plus"></i>

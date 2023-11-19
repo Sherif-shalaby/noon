@@ -17,7 +17,7 @@
                             @if (request()->segment(2) . '/' . request()->segment(3) == 'representative/plan')
                                 <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
                                     <a style="text-decoration: none;color: #596fd7"
-                                        href="{{ route('representatives.index') }}">@lang('lang.representatives')</a>
+                                        href="{{ route('representatives.index') }}">/ @lang('lang.representatives')</a>
                                 </li>
                             @else
                                 <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
@@ -127,10 +127,11 @@
                                                     user="menu">
                                                     <li>
                                                         <a href="{{ route('delivery.create', $employee->id) }}"
-                                                            class="btn"><i class="fa fa-pencil-square-o"></i>
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                class="fa fa-pencil-square-o"></i>
                                                             @lang('lang.add_plan') </a>
                                                     </li>
-                                                    <li class="divider"></li>
+
 
                                                 </ul>
                                             </td>

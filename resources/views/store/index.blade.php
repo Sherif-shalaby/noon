@@ -79,15 +79,16 @@
                                                         style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <li>
                                                             <a data-href="{{ route('store.edit', $store->id) }}"
-                                                                data-container=".view_modal" class="btn btn-modal"><i
+                                                                data-container=".view_modal"
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
                                                                     class="dripicons-document-edit"></i>
                                                                 @lang('lang.edit')</a>
                                                         </li>
-                                                        <li class="divider"></li>
+
                                                         <li>
                                                             <a data-href="{{ route('store.destroy', $store->id) }}"
                                                                 {{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}" --}}
-                                                                class="btn delete_item text-red delete_item"><i
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif delete_item text-red delete_item"><i
                                                                     class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
                                                         </li>

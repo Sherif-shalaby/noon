@@ -140,28 +140,31 @@
                                         <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                             user="menu">
                                             <li>
-                                                <a href="{{ route('stocks.show', $stock->id) }}" class="btn"><i
+                                                <a href="{{ route('stocks.show', $stock->id) }}"
+                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                         class="fa fa-eye"></i>
                                                     @lang('lang.view') </a>
                                             </li>
-                                            <li class="divider"></li>
+
                                             <li>
-                                                <a href="{{ route('stocks.edit', $stock->id) }}" class="btn"><i
+                                                <a href="{{ route('stocks.edit', $stock->id) }}"
+                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                         class="fa fa-edit"></i>
                                                     @lang('lang.edit') </a>
                                             </li>
-                                            <li class="divider"></li>
+
                                             <li>
                                                 <a data-href="{{ route('stocks.delete', $stock->id) }}"
-                                                    {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}} class="btn text-red delete_item"><i
+                                                    {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
                                                         class="fa fa-trash"></i>
                                                     @lang('lang.delete')</a>
                                             </li>
                                             @if ($stock->payment_status != 'paid')
-                                                <li class="divider"></li>
                                                 <li>
                                                     <a data-href="{{ route('stocks.addPayment', $stock->id) }}"
-                                                        data-container=".view_modal" class="btn btn-modal">
+                                                        data-container=".view_modal"
+                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal">
                                                         <i class="fa fa-money"></i>
                                                         @lang('lang.pay')
                                                     </a>

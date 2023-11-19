@@ -89,14 +89,16 @@
                                                         {{-- ++++++++++++ Edit Button ++++++++++++  --}}
                                                         <li>
                                                             <a data-href="{{ route('general-tax.edit', $general_tax->id) }}"
-                                                                data-container=".view_modal" class="btn btn-modal"><i
+                                                                data-container=".view_modal"
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
                                                                     class="dripicons-document-edit"></i>
                                                                 @lang('lang.edit')</a>
                                                         </li>
                                                         {{-- ++++++++++++ destroy Button ++++++++++++  --}}
                                                         <li>
                                                             <a data-href="{{ route('general-tax.destroy', $general_tax->id) }}"
-                                                                data-check_password="" class="btn text-red delete_item">
+                                                                data-check_password=""
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item">
                                                                 <i class="fa fa-trash"></i>@lang('lang.delete')
                                                             </a>
                                                         </li>

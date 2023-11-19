@@ -118,33 +118,34 @@
                                 <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
                                     {{-- +++++++++++++++++++ show button +++++++++++++++++++ --}}
                                     <li>
-                                        <a href="{{ route('purchase_order.show', $purchase_order->id) }}" target="_blank"
-                                            style="color:#000;">
-                                            <i class="fa fa-eye btn"></i>
+                                        <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                            href="{{ route('purchase_order.show', $purchase_order->id) }}" target="_blank">
+                                            <i class="fa fa-eye"></i>
                                             @lang('lang.view')
                                         </a>
                                     </li>
-                                    <li class="divider"></li>
+
                                     {{-- @endcan
                                 @can('purchase_order.purchase_order.create_and_edit') --}}
                                     <li>
-                                        {{-- <a  href="{{route('purchase_order.edit', $purchase_order->id)}}" style="color:#000;">
+                                        {{-- <a  href="{{route('purchase_order.edit', $purchase_order->id)}}">
                                         <i class="dripicons-document-edit btn"></i>@lang('lang.edit')
                                     </a> --}}
-                                        <a href="{{ route('purchase_order.edit', $purchase_order->id) }}"
-                                            style="color:#000;" class="btn">
+                                        <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                            href="{{ route('purchase_order.edit', $purchase_order->id) }}" class="btn">
                                             <i class="fa fa-edit"></i>
                                             @lang('lang.edit') </a>
                                     </li>
-                                    <li class="divider"></li>
+
                                     {{-- @endcan
                                 @can('purchase_order.purchase_order.delete') --}}
                                     <li>
                                         {{--    data-href="{{action('PurchaseOrderController@destroy', $purchase_order->id)}}"
                                             data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
                                     --}}
-                                        <a data-href="#" data-check_password="#" class="btn text-red delete_item"
-                                            style="color:#000;"><i class="fa fa-trash"></i>
+                                        <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                            data-href="#" data-check_password="#" class="btn text-red delete_item"><i
+                                                class="fa fa-trash"></i>
                                             @lang('lang.delete')</a>
                                     </li>
                                     {{-- @endcan --}}

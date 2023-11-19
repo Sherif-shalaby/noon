@@ -728,7 +728,7 @@ thead tr {
 
 
 .filter-wrapper {
-    margin-bottom: 135px;
+    margin-top: 130px;
 }
 
 .table-button-wrapper {
@@ -738,7 +738,7 @@ thead tr {
 @media (min-width: 768px) {
 
     .filter-wrapper {
-        margin-bottom: 50px;
+        margin-top: 50px;
     }
 
     .table-button-wrapper {
@@ -749,4 +749,36 @@ thead tr {
 
 .card-body {
     padding-bottom: 0;
+}
+
+.drop_down_item {
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 15px;
+    border-radius: 0;
+}
+
+.drop_down_item:hover {
+    background-color: #596ed73e;
+}
+
+
+.drop_down_item::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 0;
+    background-color: #596fd7;
+    top: 0;
+    left: 0px;
+    transition: 0.5s;
+}
+
+.drop_down_item:hover::after {
+    height: 100%;
 }

@@ -101,14 +101,17 @@
                                             </td>
                                             <td>
                                                 @if (!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative']))
-                                                    <a data-href="{{ route('jobs.edit', $job->id) }}"
-                                                        data-container=".view_modal"
-                                                        class="btn btn-primary btn-modal text-white edit_job  d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"><i
-                                                            class="fa fa-pencil-square-o"></i></a>
-                                                    <a data-href="{{ route('jobs.destroy', $job->id) }}"
-                                                        class="btn btn-danger text-white delete_item"><i
-                                                            class="fa fa-trash"></i></a>
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <a data-href="{{ route('jobs.edit', $job->id) }}"
+                                                            data-container=".view_modal"
+                                                            class="btn mx-1 btn-primary btn-modal text-white edit_job  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600;width: fit-content;"><i
+                                                                class="fa fa-pencil-square-o"></i></a>
+                                                        <a data-href="{{ route('jobs.destroy', $job->id) }}"
+                                                            class="btn mx-1 btn-danger text-white delete_item"
+                                                            style="font-size: 12px;font-weight: 600;"><i
+                                                                class="fa fa-trash"></i></a>
+                                                    </div>
                                                 @endif
 
                                             </td>

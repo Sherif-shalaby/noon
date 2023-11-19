@@ -424,48 +424,51 @@
                                                                     <li>
                                                                         <a data-href="{{ route('products.show', $product->id) }}"
                                                                             data-container=".view_modal"
-                                                                            class="btn btn-modal">
+                                                                            class="btn btn-modal drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                             <i class="fa fa-eye"></i>
                                                                             @lang('lang.view')
                                                                         </a>
                                                                     </li>
-                                                                    <li class="divider"></li>
+
                                                                     <li>
                                                                         <a target="_blank"
                                                                             href="{{ route('get_remove_damage', $product->id) }}"
-                                                                            class="btn"><i
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                                 class="fa fa-hourglass-half"></i>
                                                                             @lang('lang.remove_expiry')
                                                                         </a>
                                                                     </li>
-                                                                    <li class="divider"></li>
+
                                                                     <li>
                                                                         <a target="_blank"
                                                                             href="{{ route('get_remove_damage', $product->id) }}"
-                                                                            class="btn"><i class="fa fa-filter"></i>
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                                class="fa fa-filter"></i>
                                                                             @lang('lang.remove_damage')
                                                                         </a>
                                                                     </li>
-                                                                    <li class="divider"></li>
+
                                                                     <li>
                                                                         <a target="_blank"
                                                                             href="{{ url('add-stock/create?product_id=' . $product->id) }}"
-                                                                            class="btn"><i class="fa fa-plus"></i>
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                                class="fa fa-plus"></i>
                                                                             @lang('lang.add_new_stock')
                                                                         </a>
                                                                     </li>
-                                                                    <li class="divider"></li>
+
                                                                     <li>
                                                                         <a href="{{ route('products.edit', $product->id) }}"
-                                                                            class="btn" target="_blank">
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                            target="_blank">
                                                                             <i class="dripicons-document-edit"></i>
                                                                             @lang('lang.update')
                                                                         </a>
                                                                     </li>
-                                                                    <li class="divider"></li>
+
                                                                     <li>
                                                                         <a data-href="{{ route('products.destroy', $product->id) }}"
-                                                                            class="btn text-red delete_item">
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item">
                                                                             <i class="fa fa-trash"></i>
                                                                             @lang('lang.delete')
                                                                         </a>

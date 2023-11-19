@@ -81,17 +81,17 @@
                                                             <li>
 
                                                                 <a data-href="{{ route('brands.edit', $brand->id) }}"
-                                                                    data-container=".view_modal" class="btn btn-modal"
+                                                                    data-container=".view_modal"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"
                                                                     data-toggle="modal"><i
                                                                         class="dripicons-document-edit"></i>
                                                                     @lang('lang.update')</a>
 
                                                             </li>
-                                                            <li class="divider"></li>
                                                             <li>
                                                                 <a data-href="{{ route('brands.destroy', $brand->id) }}"
                                                                     {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
-                                                                    class="btn text-red delete_item"><i
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
                                                                         class="fa fa-trash"></i>
                                                                     @lang('lang.delete')</a>
                                                             </li>

@@ -100,7 +100,7 @@
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive ">
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                            <div class="col-md-3 col-lg-3">
+                            <div class="col-md-3 col-lg-3 filter-wrapper">
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
@@ -176,7 +176,7 @@
                             <br /><br />
                             {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
                             <table id="datatable-buttons"
-                                class="table table-striped table-bordered table-hover table-button-wrapper @if (app()->isLocale('ar')) dir-rtl @endif">
+                                class="table table-striped table-bordered table-hover @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <thead>
                                     <tr>
                                         <th class="col1">@lang('lang.name')</th>
@@ -321,13 +321,15 @@
                                                         <li>
 
                                                             <a href="{{ route('suppliers.edit', $supplier->id) }}"
-                                                                target="_blank" class="btn edit_supplier">
+                                                                target="_blank"
+                                                                class="btn edit_supplier drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                 <i class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
                                                         </li>
-                                                        <li class="divider"></li>
+
                                                         <li>
                                                             <a data-href="{{ route('suppliers.destroy', $supplier->id) }}"
-                                                                {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}} class="btn text-red delete_item"><i
+                                                                {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
                                                                     class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
                                                         </li>

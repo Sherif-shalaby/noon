@@ -178,20 +178,21 @@
                                                 <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                                     user="menu">
                                                     <li>
-                                                        <a href="{{ route('delivery.show', $plan->id) }}" class="btn"><i
+                                                        <a href="{{ route('delivery.show', $plan->id) }}"
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                 class="fa fa-pencil-square-o"></i>
                                                             @lang('lang.view_details') </a>
                                                     </li>
-                                                    <li class="divider"></li>
                                                     <li>
                                                         <a href="{{ route('delivery.edit', $plan->id) }}"
-                                                            class="btn text-red "><i class="fa fa-pencil-square-o"></i>
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red "><i
+                                                                class="fa fa-pencil-square-o"></i>
                                                             @lang('lang.edit')</a>
                                                     </li>
-                                                    <li class="divider"></li>
                                                     <li>
                                                         <a data-href="{{ route('delivery.destroy', $plan->id) }}"
-                                                            class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
+                                                                class="fa fa-trash"></i>
                                                             @lang('lang.delete')</a>
                                                     </li>
 

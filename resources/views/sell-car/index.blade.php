@@ -231,30 +231,28 @@
                                                         style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <li>
                                                             <a data-href="{{ route('sell-car.edit', $sell_car->id) }}"
-                                                                data-container=".view_modal" class="btn btn-modal"><i
+                                                                data-container=".view_modal"
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
                                                                     class="dripicons-document-edit"></i>
                                                                 @lang('lang.edit')</a>
                                                         </li>
-                                                        <li class="divider"></li>
                                                         <li>
                                                             <a data-href="{{ route('sell-car.destroy', $sell_car->id) }}"
                                                                 {{--                                                       data-check_password="{{action('UserController@checkPassword', Auth::user()->id) }}" --}}
-                                                                class="btn delete_item text-red delete_item"><i
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif delete_item text-red delete_item"><i
                                                                     class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
                                                         </li>
                                                         @if (!empty($sell_car->branch))
-                                                            <li class="divider"></li>
                                                             <li>
                                                                 <a href="{{ route('transfer.import', $sell_car->id) }}"
-                                                                    class="btn">
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                     <i class="fas fa-plus"></i>@lang('lang.import_stock')
                                                                 </a>
                                                             </li>
-                                                            <li class="divider"></li>
                                                             <li>
                                                                 <a href="{{ route('transfer.export', $sell_car->id) }}"
-                                                                    class="btn">
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                     <i class="fas fa-minus"></i>@lang('lang.export_stock')
                                                                 </a>
                                                             </li>

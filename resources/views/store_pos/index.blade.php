@@ -55,7 +55,8 @@
                         <div class="card-body">
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <table id="datatable-buttons" class="table table-striped table-button-wrapper table-bordered">
+                                <table id="datatable-buttons"
+                                    class="table table-striped table-button-wrapper table-bordered">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -89,15 +90,15 @@
                                                             user="menu">
                                                             <li>
                                                                 <a data-href="{{ route('store-pos.edit', $store_pos->id) }}"
-                                                                    data-container=".view_modal" class="btn btn-modal"><i
+                                                                    data-container=".view_modal"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
                                                                         class="dripicons-document-edit"></i>
                                                                     @lang('lang.edit')</a>
                                                             </li>
-                                                            <li class="divider"></li>
                                                             <li>
                                                                 <a data-href="{{ route('store-pos.destroy', $store_pos->id) }}"
                                                                     data-check_password=""
-                                                                    class="btn text-red delete_item"><i
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
                                                                         class="fa fa-trash"></i>
                                                                     @lang('lang.delete')</a>
                                                             </li>
