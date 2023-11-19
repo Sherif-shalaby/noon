@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice','changePrices'];
 
     public function listenerReferenceHere($data)
     {
@@ -302,7 +302,7 @@ class Create extends Component
                 if ($this->payment_status != 'pending') {
                     $this->updateTransactionPaymentStatus($transaction->id);
                 } else {
-                    //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
 
                     $total_paid = 0;
                     $dollar_total_paid = 0;
@@ -317,11 +317,11 @@ class Create extends Component
                     $transaction->dinar_remaining =  $final_amount;
                     //  dollar_remaining : 'الباقي بالدولار'
                     $transaction->dollar_remaining =  $dollar_final_amount;
-                    //                    $transaction_payment->amount = $total_paid;
-                    //                    $transaction_payment->dollar_amount = $dollar_total_paid;
+//                    $transaction_payment->amount = $total_paid;
+//                    $transaction_payment->dollar_amount = $dollar_total_paid;
                     $this->amount = $total_paid;
                     $this->dollar_amount = $dollar_total_paid;
-                    //                    $transaction_payment->save();
+//                    $transaction_payment->save();
                     $transaction->save();
                 }
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
@@ -458,13 +458,13 @@ class Create extends Component
             ->get();
     }
 
-    // Livewire method to redirect to customer details
+
+// Livewire method to redirect to customer details
     public function redirectToCustomerDetails($clientId)
     {
         $route = route('customers.show', $clientId);
-        $this->emit('openNewTab', ['route' => $route]);
+        $this->emit( 'openNewTab', ['route' => $route]);
     }
-
     public function addCustomer()
     {
         $this->add_customer['created_by'] = Auth::user()->id;
@@ -1509,9 +1509,9 @@ class Create extends Component
     }
     public function check_items_store()
     {
-        if (!empty($this->items)) {
-            foreach ($this->items  as $key => $item) {
-                if ($item['store_id'] != $this->store_id) {
+        if(!empty($this->items)){
+            foreach ($this->items  as $key => $item){
+                if($item['store_id'] != $this->store_id){
                     unset($this->items[$key]);
                 }
             }

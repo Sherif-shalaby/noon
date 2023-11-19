@@ -9,10 +9,12 @@
         </div>
 
         <div class="col-md-6 d-flex justify-content-end ">
-            <button class="btn btn btn-primary"
-                wire:click="add_product({{ $product['product']['id'] }},'unit',{{ $index }},1)" type="button">
-                <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
-            </button>
+            @if (!empty($product['product']['id']))
+                <button class="btn btn btn-primary"
+                    wire:click="add_product({{ $product['product']['id'] }},'unit',{{ $index }},1)" type="button">
+                    <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
+                </button>
+            @endif
         </div>
     </div>
 
@@ -25,7 +27,7 @@
             <span class="mb-2" style="font-weight: 700;font-size: 10px;">
                 @lang('lang.products')
             </span>
-            {{ $product['product']['name'] }}
+            {{ $product['product']['name'] ?? '' }}
         </div>
     </div>
 
@@ -37,7 +39,7 @@
             style="background-color: white;font-size: 11px;height: 70px;">
             <span class="mb-2" style="    font-weight: 700;
          font-size: 10px;">@lang('lang.sku')</span>
-            {{ $product['product']['sku'] }}
+            {{ $product['product']['sku'] ?? '' }}
         </div>
     </div>
 
@@ -68,7 +70,7 @@
             <span class="mb-2" style="    font-weight: 700;
                 font-size: 10px;">@lang('lang.unit')</span>
 
-            @if (count($product['variations']) > 0)
+            @if (!empty($product['variations']) && count($product['variations']) > 0)
                 <div class="d-flex justify-content-center">
                     <select name="items.{{ $index }}.variation_id" class="form-control select unit_name"
                         style="width: 61px;height:30px;font-size:12px;"

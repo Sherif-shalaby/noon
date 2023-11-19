@@ -34,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
+                    {{-- {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!} --}}
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -694,7 +694,7 @@
                                 wire:click.prevent = "store()">@lang('lang.save')</button>
 
                         </div>
-                        {!! Form::close() !!}
+                        {{-- {!! Form::close() !!} --}}
                     </div>
                 </div>
             </div>

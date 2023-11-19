@@ -1,15 +1,20 @@
 <nav class="navbar no-print navbar-expand-lg bg-white py-0">
     <div class="container-fluid">
         <a style="width: 150px;" class="ml-2 d-lg-none" href="index.html">
-            <img style="width: 100%" src="{{ asset('images/logo.svg') }}" class="img-fluid" alt="logo">
+            <img style="width: 100%" src="{{ asset('images/logo1.png') }}" class="img-fluid" alt="logo">
         </a>
-        <button class="navbar-toggler menu-hamburger" type="button" data-bs-toggle="collapse"
+        {{-- <button class="navbar-toggler menu-hamburger" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">
             <img src="{{ asset('images/svg-icon/collapse.svg') }}" class="img-fluid menu-hamburger-collapse"
                 alt="collapse">
+        </button> --}}
+        <button class="navbar-toggler menu-hamburger" id="menu-button">
+            <img src="{{ asset('images/svg-icon/collapse.svg') }}" class="img-fluid menu-hamburger-collapse"
+                alt="collapse">
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
+        <div class="collapse navbar-collapse" id="menu">
             <ul style="width: 100%"
                 class="horizontal-menu navbar-nav d-flex flex-wrap justify-content-start mt-5 mt-md-0 @if (app()->isLocale('ar')) flex-column flex-md-row-reverse @else flex-row @endif">
                 {{-- ###################### Dashboard : نظرة عامة ###################### --}}
@@ -1606,6 +1611,17 @@
 <!-- End Navigationbar -->
 {{-- href="{{ route('initial-balance.create') }}" --}}
 <script>
+    const menuButton = document.getElementById('menu-button');
+    const menu = document.getElementById('menu');
+
+    menuButton.addEventListener('click', function() {
+        if (menu.style.display === 'block') {
+            menu.style.display = 'none'
+        } else {
+            menu.style.display = 'block'
+        }
+    })
+
     $('.initial-balance-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('initial-balance.create') }}"
