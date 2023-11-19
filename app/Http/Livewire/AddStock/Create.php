@@ -68,7 +68,7 @@ class Create extends Component
 
 
     public function mount(){
-        
+
         if(isset($_GET['product_id'])){
             $productId = $_GET['product_id'];
             $this->add_product($productId);
@@ -501,7 +501,7 @@ class Create extends Component
             $this->search_by_product_symbol = '';
 
         }
-    
+
         $product = Product::find($id);
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
@@ -698,7 +698,7 @@ class Create extends Component
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $total_quantity : 1),3) ;
                 $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price'])/(!empty($total_quantity) ? $total_quantity : 1),3) ;
             }
             else{
