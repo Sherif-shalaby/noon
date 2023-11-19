@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice','changePrices'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
 
     public function listenerReferenceHere($data)
     {
@@ -196,6 +196,7 @@ class Create extends Component
 
     public function changeAllProducts()
     {
+        $this->check_items_store();
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
     }
@@ -301,7 +302,7 @@ class Create extends Component
                 if ($this->payment_status != 'pending') {
                     $this->updateTransactionPaymentStatus($transaction->id);
                 } else {
-//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+                    //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
 
                     $total_paid = 0;
                     $dollar_total_paid = 0;
@@ -316,11 +317,11 @@ class Create extends Component
                     $transaction->dinar_remaining =  $final_amount;
                     //  dollar_remaining : 'الباقي بالدولار'
                     $transaction->dollar_remaining =  $dollar_final_amount;
-//                    $transaction_payment->amount = $total_paid;
-//                    $transaction_payment->dollar_amount = $dollar_total_paid;
+                    //                    $transaction_payment->amount = $total_paid;
+                    //                    $transaction_payment->dollar_amount = $dollar_total_paid;
                     $this->amount = $total_paid;
                     $this->dollar_amount = $dollar_total_paid;
-//                    $transaction_payment->save();
+                    //                    $transaction_payment->save();
                     $transaction->save();
                 }
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
@@ -457,9 +458,11 @@ class Create extends Component
             ->get();
     }
 
+    // Livewire method to redirect to customer details
     public function redirectToCustomerDetails($clientId)
     {
-        return redirect()->route('customers.show', $clientId);
+        $route = route('customers.show', $clientId);
+        $this->emit('openNewTab', ['route' => $route]);
     }
 
     public function addCustomer()
@@ -548,6 +551,7 @@ class Create extends Component
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
                     'unit_id' => ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->variation_id ?? '',
+                    'store_id' => $this->store_id,
                 ];
                 array_unshift($this->items, $new_item);
             }
@@ -1501,6 +1505,16 @@ class Create extends Component
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
+        }
+    }
+    public function check_items_store()
+    {
+        if (!empty($this->items)) {
+            foreach ($this->items  as $key => $item) {
+                if ($item['store_id'] != $this->store_id) {
+                    unset($this->items[$key]);
+                }
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 <section class="app my-3 no-print" style="margin-top: 35px!important;">
     <div class="">
-        {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
+        {{-- {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!} --}}
         <div class="">
             <div
                 class="row justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -98,7 +98,6 @@
                             'class' => 'select2 form-control',
                             'data-live-search' => 'true',
                             'id' => 'brand_id',
-                            'required',
                             'placeholder' => __('lang.please_select'),
                             'data-name' => 'brand_id',
                             'wire:model' => 'brand_id',
@@ -262,8 +261,8 @@
 
                 <div class="col-md-1 mx-1 p-0 ">
                     <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
-                        wire:click="redirectToCustomerDetails({{ $client_id }})"
-                        class="btn btn-primary payment-btn">
+                        wire:click="redirectToCustomerDetails({{ $client_id }})" class="btn "
+                        wire:loading.attr="disabled">
                         @lang('lang.customer_details')
                     </button>
                 </div>
@@ -505,7 +504,7 @@
                 </div>
             </div>
         </div>
-        {!! Form::close() !!}
+        {{-- {!! Form::close() !!} --}}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>
 </section>
@@ -639,6 +638,11 @@
                 }
             });
 
+        });
+        document.addEventListener('livewire:load', function() {
+            Livewire.on('openNewTab', function(data) {
+                window.open(data.route, '_blank');
+            });
         });
     </script>
 
