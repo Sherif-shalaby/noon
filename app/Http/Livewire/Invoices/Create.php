@@ -196,6 +196,7 @@ class Create extends Component
 
     public function changeAllProducts()
     {
+        $this->check_items_store();
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
     }
@@ -548,6 +549,7 @@ class Create extends Component
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
                     'unit_id' => ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->variation_id ?? '',
+                    'store_id' => $this->store_id,
                 ];
                 array_unshift($this->items, $new_item);
             }
@@ -1501,6 +1503,16 @@ class Create extends Component
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
+        }
+    }
+    public function check_items_store()
+    {
+        if(!empty($this->items)){
+            foreach ($this->items  as $key => $item){
+                if($item['store_id'] != $this->store_id){
+                    unset($this->items[$key]);
+                }
+            }
         }
     }
 }
