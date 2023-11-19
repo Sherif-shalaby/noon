@@ -196,11 +196,15 @@ class Edit extends Component
             if (!empty($this->item[0]['subcategory_id1'])) {
                 $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
             }
-            $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
+            if(count($this->subcategories2) > 0 ){
+                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
+            }
             if (!empty($this->item[0]['subcategory_id2'])) {
                 $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
             }
-            $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+            if(count($this->subcategories3) > 0 ){
+                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+            }
             $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
             $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
             $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
@@ -900,7 +904,7 @@ class Edit extends Component
         }
         unset($this->rows[$index]['prices'][$key]);
     }
-    public function changePrice($index, $key, $via ='price')
+    public function changePrice($index, $key, $via = 'price')
     {
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
@@ -943,8 +947,14 @@ class Edit extends Component
             }
             $price = !empty($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) : $this->num_uf($sell_price);
             $dollar_price = !empty($this->rows[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($dollar_sell_price);
-            $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
-            $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+            if($this->discount_from_original_price == '0'){
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf( $total_quantity ) : 1),3) ;
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf( $total_quantity ) : 1),3) ;
+            }
+            else{
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+            }
             $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3);
             $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
         }

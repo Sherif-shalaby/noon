@@ -647,7 +647,7 @@ class Edit extends Component
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf($this->items[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($sell_price);
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf($this->items[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($price) * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $total_quantity : 1),3) ;
                 $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price'])/(!empty($total_quantity) ? $total_quantity : 1),3) ;
 
             }
