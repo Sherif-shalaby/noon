@@ -17,7 +17,8 @@
             <div class="card-body">
                 <div class="table-responsive  @if (app()->isLocale('ar')) dir-rtl @endif"
                     style="height: 90vh;overflow: scroll">
-                    <table id="datatable-buttons" class="table dataTable table-hover table-bordered">
+                    <table id="datatable-buttons"
+                        class="table dataTable table-hover table-button-wrapper table-bordered">
                         <thead>
                             <tr>
                                 <th>@lang('lang.po_ref_no')</th>

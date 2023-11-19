@@ -51,7 +51,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons" class="table dataTable">
+                            <table id="datatable-buttons" class="table dataTable table-button-wrapper">
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.profile_photo')</th>

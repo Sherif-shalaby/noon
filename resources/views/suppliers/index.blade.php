@@ -176,7 +176,7 @@
                             <br /><br />
                             {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
                             <table id="datatable-buttons"
-                                class="table table-striped table-bordered table-hover @if (app()->isLocale('ar')) dir-rtl @endif">
+                                class="table table-striped table-bordered table-hover table-button-wrapper @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <thead>
                                     <tr>
                                         <th class="col1">@lang('lang.name')</th>

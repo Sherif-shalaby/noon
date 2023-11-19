@@ -94,7 +94,7 @@
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                 aria-labelledby="nav-home-tab">
                                 <table id="datatable-buttons"
-                                    class="table table-striped table-bordered  @if (app()->isLocale('ar')) dir-rtl @endif">
+                                    class="table table-striped table-bordered table-button-wrapper @if (app()->isLocale('ar')) dir-rtl @endif">
                                     <thead>
                                         <tr>
                                             <th>@lang('lang.date')</th>
@@ -139,7 +139,7 @@
                             </div>
                             {{-- +++++++++++++++++++++ Table 2 +++++++++++++++++++++ --}}
                             <div class="tab-pane fade"id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                <table id="datatable-buttons" class="table table-striped table-bordered">
+                                <table id="datatable-buttons" class="table table-button-wrapper table-striped table-bordered">
                                     <thead>
                                         <tr>
                                             <th>@lang('lang.date')</th>
@@ -186,7 +186,7 @@
                             </div>
                             {{-- +++++++++++++++++++++ Table 2 +++++++++++++++++++++ --}}
                             <div class="tab-pane fade"id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                <table id="datatable-buttons" class="table table-striped table-bordered">
+                                <table id="datatable-buttons" class="table table-striped table-button-wrapper table-bordered">
                                     <thead>
                                         <tr>
                                             <th>@lang('lang.date')</th>

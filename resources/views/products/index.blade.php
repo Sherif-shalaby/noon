@@ -143,7 +143,7 @@
                                         </div>
                                         <div id="status"></div>
                                         <table id="datatable-buttons"
-                                            class="table table-striped table-bordered table-hover">
+                                            class="table table-striped table-bordered table-hover table-button-wrapper">
                                             <thead>
                                                 <tr
                                                     style="position: sticky;

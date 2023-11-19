@@ -718,3 +718,35 @@ thead tr {
 .select2-results__option[aria-selected="true"]::before {
     color: #000 !important;
 }
+
+.table-top-head {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+
+.filter-wrapper {
+    margin-bottom: 135px;
+}
+
+.table-button-wrapper {
+    margin-top: 140px !important;
+}
+
+@media (min-width: 768px) {
+
+    .filter-wrapper {
+        margin-bottom: 50px;
+    }
+
+    .table-button-wrapper {
+        margin-top: 53px !important;
+    }
+
+}
+
+.card-body {
+    padding-bottom: 0;
+}

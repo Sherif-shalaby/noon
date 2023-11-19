@@ -120,9 +120,10 @@
                             </div>
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
+                            style="overflow: hidden">
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                            <div class="col-md-3 col-lg-3">
+                            <div class="col-md-3 col-lg-3 filter-wrapper">
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
@@ -226,7 +227,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <br /><br />
                             {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div1"></div>
@@ -234,9 +234,9 @@
                             <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div2">
                                     <!-- content goes here -->
-                                    <div style="width: 1950px;height: 90vh;">
+                                    <div style="width: 2100px;height: 90vh;">
                                         <table id="datatable-buttons"
-                                            class="table table-striped table-hover table-bordered hideShowTable">
+                                            class="table table-striped table-hover table-bordered table-button-wrapper hideShowTable">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>

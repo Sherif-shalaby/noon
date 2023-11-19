@@ -18,7 +18,7 @@ $(document).ready(function () {
 
         // lengthChange: false,
         // responsive: true,
-        dom: "<'row'<'col-md-3 'l><'col-md-5 text-center 'B><'col-md-4'f>>" +
+        dom: "<'row flex-wrap my-2 table-top-head'<'col-md-2'l><'col-md-6 text-center 'B><'col-md-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-4'i><'col-sm-4'p>>",
         lengthMenu: [10, 25, 50, 75, 100, 200, 300, 400],

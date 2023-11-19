@@ -47,7 +47,7 @@
 @endsection
 @section('content')
     <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif" style="height: 90vh;overflow: scroll">
-        <table id="datatable-buttons" class="table dataTable table-hover table-striped table-bordered ">
+        <table id="datatable-buttons" class="table dataTable table-hover table-striped table-bordered table-button-wrapper">
             <thead>
                 <tr>
                     <th>@lang('lang.po_ref_no')</th>

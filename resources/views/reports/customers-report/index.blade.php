@@ -85,7 +85,8 @@
                             {{-- +++++++++++++++++++++ Table 1 +++++++++++++++++++++ --}}
                             <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                 aria-labelledby="nav-home-tab">
-                                <table id="datatable-buttons" class="table table-striped table-bordered">
+                                <table id="datatable-buttons"
+                                    class="table table-striped table-button-wrapper table-bordered">
                                     <thead>
                                         <tr>
                                             <th>التاريخ</th>
@@ -134,7 +135,8 @@
                             </div>
                             {{-- +++++++++++++++++++++ Table 2 +++++++++++++++++++++ --}}
                             <div class="tab-pane fade"id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                <table id="datatable-buttons" class="table table-striped table-bordered">
+                                <table id="datatable-buttons"
+                                    class="table table-striped table-button-wrapper table-bordered">
                                     <thead>
                                         <tr>
                                             <th>التاريخ</th>

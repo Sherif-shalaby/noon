@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
+                            <table id="datatable-buttons" class="table table-striped table-bordered table-button-wrapper">
                                 <thead>
                                     <tr>
                                         <th>#</th>

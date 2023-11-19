@@ -51,7 +51,8 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons" class="table dataTable table-striped table-bordered table-hover">
+                            <table id="datatable-buttons"
+                                class="table dataTable table-button-wrapper table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>@lang('lang.job_title')</th>
