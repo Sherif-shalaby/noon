@@ -606,51 +606,62 @@ class Create extends Component
         $this->store_id = $transaction_purchase_order->store_id;
         $this->supplier = $transaction_purchase_order->supplier_id;
         $orderLines = $transaction_purchase_order->transaction_purchase_order_lines;
-        foreach ($orderLines as $orderLine){
+        foreach ($orderLines as $orderLine) {
             $product = $orderLine->product;
-            $variations = Variation::where('product_id',$product->id)->get();
-            $new_item = [
-            'show_product_data' => 'false',
-            'variations' => $variations,
-            'variation_id' => $variations->first()->id ?? null,
-            'product' => $product,
-            'purchase_price' => $orderLine->purchase_price ?? null,
-            'dollar_purchase_price' => $orderLine->purchase_price_dollar ?? null ,
-            'quantity' => number_format($orderLine->quantity,3),
-            'unit' => null,
-            'base_unit_multiplier' => null,
-            'fill_type' => 'fixed',
-            'sub_total' => $orderLine->purchase_price ? number_format($orderLine->sub_total,3) : 0,
-            'dollar_sub_total' => $orderLine->purchase_price_dollar ? number_format($orderLine->sub_total,3) : 0,
-            'size' => !empty($product->size) ? $product->size : 0,
-            'total_size' => !empty($product->size) ? $product->size * 1 : 0,
-            'weight' => !empty($product->weight) ? $product->weight : 0,
-            'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
-            'dollar_cost' => 0,
-            'cost' => 0,
-            'dollar_total_cost' => 0,
-            'total_cost' => 0,
-            'current_stock' =>0,
-            'total_stock' => 0 + number_format($orderLine->quantity,3),
-            'prices' => [
-                [
-                    'price_type' => null,
-                    'price_category' => null,
-                    'price' => null,
-                    'dinar_price' => null,
-                    'discount_quantity' => null,
-                    'bonus_quantity' => null,
-                    'price_customer_types' => null,
-                    'price_after_desc' => null,
-                    'dinar_price_after_desc' => null,
-                    'total_price' => null,
-                    'dinar_total_price' =>null,
-                    'piece_price' => null,
-                    'dinar_piece_price' => null,
-                ],
-            ],
-        ];
-        array_unshift($this->items, $new_item);
+            if (!empty($product->stock_lines)) {
+                $stock = $product->stock_lines->last();
+            } else {
+                $stock = null;
+            }
+            if (!empty($product)) {
+                $variations = Variation::where('product_id', $product->id)->get();
+                $new_item = [
+                    'show_product_data' => 'false',
+                    'variations' => $variations,
+                    'variation_id' => !empty($variations) ? $variations->first()->id : null,
+                    'product' => $product,
+                    'purchase_price' => $orderLine->purchase_price ?? null,
+                    'dollar_purchase_price' => null,
+                    'dollar_purchase_price_span' => !empty($stock) ? number_format($stock->dollar_purchase_price, 3) : null,
+                    'purchase_price_span' => !empty($stock) ? number_format($stock->purchase_price, 3) : null,
+                    'dollar_selling_price_span' => !empty($stock) ? number_format($stock->sell_price, 3) : null,
+                    'selling_price_span' => !empty($stock) ? number_format($stock->dollar_sell_price, 3) : null,
+                    'quantity' => number_format($orderLine->quantity, 3),
+                    'unit' => null,
+                    'base_unit_multiplier' => null,
+                    'fill_type' => 'fixed',
+                    'sub_total' => $orderLine->purchase_price ? number_format($orderLine->sub_total, 3) : 0,
+                    'dollar_sub_total' => $orderLine->purchase_price_dollar ? number_format($orderLine->sub_total, 3) : 0,
+                    'size' => !empty($product->size) ? $product->size : 0,
+                    'total_size' => !empty($product->size) ? $product->size * 1 : 0,
+                    'weight' => !empty($product->weight) ? $product->weight : 0,
+                    'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
+                    'dollar_cost' => 0,
+                    'cost' => 0,
+                    'dollar_total_cost' => 0,
+                    'total_cost' => 0,
+                    'current_stock' => 0,
+                    'total_stock' => 0 + number_format($orderLine->quantity, 3),
+                    'prices' => [
+                        [
+                            'price_type' => null,
+                            'price_category' => null,
+                            'price' => null,
+                            'dinar_price' => null,
+                            'discount_quantity' => null,
+                            'bonus_quantity' => null,
+                            'price_customer_types' => null,
+                            'price_after_desc' => null,
+                            'dinar_price_after_desc' => null,
+                            'total_price' => null,
+                            'dinar_total_price' => null,
+                            'piece_price' => null,
+                            'dinar_piece_price' => null,
+                        ],
+                    ],
+                ];
+                array_unshift($this->items, $new_item);
+            }
         }
     }
     public function addPriceRow($index){
