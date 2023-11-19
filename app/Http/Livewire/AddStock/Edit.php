@@ -446,7 +446,6 @@ class Edit extends Component
     }
     public function addStockProduct($line)
     {
-//        dd($line);
         $new_item = [
             'variations' => $line->product->variations??'',
             'variation_id' => $line->variation_id,
@@ -460,6 +459,10 @@ class Edit extends Component
             'selling_price' => $line->sell_price,
             'dollar_purchase_price' => $line->dollar_purchase_price,
             'dollar_selling_price' => $line->dollar_sell_price,
+            'purchase_price_span' => null,
+            'dollar_purchase_price_span' => null,
+            'selling_price_span' => null,
+            'dollar_selling_price_span' => null,
             'sub_total' => $line->sub_total,
             'dollar_sub_total' => $line->dollar_sub_total,
             'size' => !empty($line->product->size) ? $line->product->size : 0,
@@ -569,6 +572,10 @@ class Edit extends Component
             'fill_type' => 'fixed',
             'sub_total' => 0,
             'dollar_sub_total' => 0,
+            'purchase_price_span' => null,
+            'dollar_purchase_price_span' => null,
+            'selling_price_span' => null,
+            'dollar_selling_price_span' => null,
             'size' => !empty($product->size) ? $product->size : 0,
             'total_size' => !empty($product->size) ? $product->size * 1 : 0,
             'weight' => !empty($product->weight) ? $product->weight : 0,

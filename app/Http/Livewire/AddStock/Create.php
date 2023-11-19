@@ -321,7 +321,7 @@ class Create extends Component
                     'stock_transaction_id' => $transaction->id ,
                     'quantity' => $this->num_uf($item['quantity']),
                     'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
-                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
+                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : 0,
                     'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
                     'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
                     'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
@@ -548,12 +548,12 @@ class Create extends Component
             'product' => $product,
             'purchase_price' =>  null,
             'dollar_purchase_price' =>  null,
-            'purchase_price_span' => !empty($stock) ? $stock->purchase_price : null,
-            'dollar_purchase_price_span' => !empty($stock) ? $stock->dollar_purchase_price : null,
+            'purchase_price_span' => !empty($stock) ? number_format($stock->purchase_price,3) : null,
+            'dollar_purchase_price_span' => !empty($stock) ? number_format($stock->dollar_purchase_price,3) : null,
             'dollar_selling_price' =>  null,
             'selling_price' =>  null,
-            'selling_price_span' => !empty($stock) ? $stock->sell_price : null,
-            'dollar_selling_price_span' => !empty($stock) ? $stock->dollar_sell_price : null,
+            'selling_price_span' => !empty($stock) ? number_format($stock->sell_price,3) : null,
+            'dollar_selling_price_span' => !empty($stock) ? number_format($stock->dollar_sell_price ,3): null,
             'quantity' => 1,
             'unit' => !empty($variant) ? $variant->unit->name : '',
             'base_unit_multiplier' => !empty($variant) ? $variant->equal : 0,
@@ -570,7 +570,7 @@ class Create extends Component
             'total_cost' => 0,
             'current_stock' => $current_stock,
             'total_stock' => $current_stock + 1,
-            'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
+            'fill_quantity' => !empty($stock) ? number_format($stock->fill_quantity,3) : null,
             'prices' => [
                 [
                     'price_type' => null,
@@ -616,12 +616,12 @@ class Create extends Component
             'product' => $product,
             'purchase_price' => $orderLine->purchase_price ?? null,
             'dollar_purchase_price' => $orderLine->purchase_price_dollar ?? null ,
-            'quantity' => number_format($orderLine->quantity,2),
+            'quantity' => number_format($orderLine->quantity,3),
             'unit' => null,
             'base_unit_multiplier' => null,
             'fill_type' => 'fixed',
-            'sub_total' => $orderLine->purchase_price ? number_format($orderLine->sub_total,2) : 0,
-            'dollar_sub_total' => $orderLine->purchase_price_dollar ? number_format($orderLine->sub_total,2) : 0,
+            'sub_total' => $orderLine->purchase_price ? number_format($orderLine->sub_total,3) : 0,
+            'dollar_sub_total' => $orderLine->purchase_price_dollar ? number_format($orderLine->sub_total,3) : 0,
             'size' => !empty($product->size) ? $product->size : 0,
             'total_size' => !empty($product->size) ? $product->size * 1 : 0,
             'weight' => !empty($product->weight) ? $product->weight : 0,
@@ -631,7 +631,7 @@ class Create extends Component
             'dollar_total_cost' => 0,
             'total_cost' => 0,
             'current_stock' =>0,
-            'total_stock' => 0 + number_format($orderLine->quantity,2),
+            'total_stock' => 0 + number_format($orderLine->quantity,3),
             'prices' => [
                 [
                     'price_type' => null,
@@ -936,9 +936,9 @@ class Create extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalDollarCost,2));
+        $this->changeAmount(number_format($totalDollarCost,3));
 //        dd($totalDollarCost);
-        return number_format($this->num_uf($totalDollarCost),2);
+        return number_format($this->num_uf($totalDollarCost),3);
     }
 
     public function changeAmount($value){
