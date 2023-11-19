@@ -1,7 +1,7 @@
 
 <section class="app my-3 no-print" style="margin-top: 35px!important;">
     <div class="" >
-        {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}
+{{--        {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}--}}
         <div class="row">
             <div class="col-sm-3">
                 <div class="row">
@@ -9,7 +9,7 @@
                         <div class="form-group">
                             {!! Form::label('brand_id', __('lang.brand') . ':*', []) !!}
                             {!! Form::select('brand_id', $brands, $brand_id,
-                            ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'brand_id', 'required', 'placeholder' => __('lang.please_select'),
+                            ['class' => 'select2 form-control', 'data-live-search' => 'true','id'=>'brand_id', 'placeholder' => __('lang.please_select'),
                              'data-name' => 'brand_id','wire:model' => 'brand_id']) !!}
                             @error('brand_id')
                             <span class="error text-danger">{{ $message }}</span>
@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
-                                            class="btn btn-primary payment-btn">
+                                            class="btn " wire:loading.attr="disabled" >
                                         @lang('lang.customer_details')
                                     </button>
                                 </div>
@@ -282,7 +282,7 @@
             </div>
             @include('invoices.partials.rightSidebar')
         </div>
-        {!! Form::close() !!}
+{{--        {!! Form::close() !!}--}}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>
 </section>
@@ -353,7 +353,7 @@
             });
         });
 
-      @if(empty($store_pos))
+        @if(empty($store_pos))
             window.addEventListener('NoUserPos', function(event) {
                 Swal.fire({
                     title: "{{ __('lang.kindly_assign_pos_for_that_user_to_able_to_use_it') }}" + "<br>" ,
@@ -377,7 +377,7 @@
 
             });
         });
-        
+
         $(document).on('change','.dinarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
@@ -396,10 +396,6 @@
             });
 
         });
-
-
-
-        
         $(document).on('change','.dollarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
@@ -417,6 +413,12 @@
                 }
             });
 
+        });
+
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('openNewTab', function (data) {
+                window.open(data.route, '_blank');
+            });
         });
     </script>
 

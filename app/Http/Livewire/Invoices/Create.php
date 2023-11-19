@@ -458,11 +458,13 @@ class Create extends Component
             ->get();
     }
 
+
+// Livewire method to redirect to customer details
     public function redirectToCustomerDetails($clientId)
     {
-        return redirect()->route('customers.show', $clientId);
+        $route = route('customers.show', $clientId);
+        $this->emit( 'openNewTab', ['route' => $route]);
     }
-
     public function addCustomer()
     {
         $this->add_customer['created_by'] = Auth::user()->id;
