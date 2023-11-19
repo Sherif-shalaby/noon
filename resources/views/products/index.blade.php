@@ -89,19 +89,26 @@
                                     </td>
                                     <td>@foreach($product->product_stores as $store)
                                             @php
-                                            $unit=!empty($store->variations)?$store->variations:[];
-                                            $amount=0;
+                                            $unit = !empty($store->variations) ? $store->variations : [];
+                                            $amount = 0;
                                             @endphp
                                         @endforeach
 
-                                    @foreach($product->variations as $variation)
-                                        @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
-                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
-                                        @else
-                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
-                                        @endif
+                                    @forelse($product->variations as  $variation)
+                                            @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
+                                                <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}
+                                                <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span>
+                                            </span> <br>
+                                            @else
+                                                <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}"> {{$variation->unit->name  ?? ''}}
+                                                <span class="unit_value"> {{$product->product_stores->sum('quantity_available') ?? 0}} </span>
+                                            </span><br>
+                                            @endif
+                                        @empty
+                                            <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}"> {{$variation->unit->name  ?? ''}}
+                                                <span class="unit_value"> {{$product->product_stores->sum('quantity_available') ?? 0}} </span>
+                                    @endforelse
 
-                                    @endforeach
                                     </td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
