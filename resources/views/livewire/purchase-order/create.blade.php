@@ -325,6 +325,7 @@
                 window.print();
             });
         });
+
         $(document).on("click", "#clear_all_input_form", function() {
             var value = $('#clear_all_input_form').is(':checked') ? 1 : 0;
             $.ajax({
@@ -342,6 +343,7 @@
         $(document).ready(function() {
             // --------- when select "option" in "selectbox" ---------
             $('select').on('change', function(e) {
+
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)
@@ -350,6 +352,7 @@
                     var2: select2.select2("val"),
                     var3: index
                 });
+                //  $this->dispatchBrowserEvent('componentRefreshed');
             });
         });
         // --------- to save "select option" in "selectbox" ---------
@@ -366,6 +369,18 @@
             $('.supplier_class').select().on('change', function(e) {
                 @this.set('supplier_id', $(this).val());
             });
+        });
+        document.addEventListener('componentRefreshed', function() {
+            // Execute your JavaScript code here after Livewire component refreshes
+            const value = localStorage.getItem("showHideDollar");
+
+            var dollarCells = document.getElementsByClassName('dollar-cell');
+
+            for (var i = 0; i < dollarCells.length; i++) {
+                if (value === "hide") {
+                    dollarCells[i].classList.add('showHideDollarCells')
+                }
+            }
         });
     </script>
 @endpush

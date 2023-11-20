@@ -7,9 +7,9 @@
                 <h4 class="page-title">@lang('lang.customers')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active"><a href="{{route('customers.index')}}">@lang('lang.customers')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.customer') {{$customer->name}}</li>
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('customers.index') }}">@lang('lang.customers')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.customer') {{ $customer->name }}</li>
                     </ol>
                 </div>
             </div>
@@ -28,15 +28,16 @@
                 <div class="card mt-3">
                     <div class="card-header d-flex align-items-center">
                         <h4>@lang('lang.employee') </h4>
-                        {{--                        <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}"--}}
-                        {{--                            class="btn btn-primary btn-xs" style="margin-left: 10px;"><i class="fa fa-paper-plane"></i> @lang('lang.send_credentials')</a>--}}
+                        {{--                        <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}" --}}
+                        {{--                            class="btn btn-primary btn-xs" style="margin-left: 10px;"><i class="fa fa-paper-plane"></i> @lang('lang.send_credentials')</a> --}}
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label for="fname">@lang('lang.customer_type') : </label> {{$customer->customer_type->name ?? ''}}
+                                        <label for="fname">@lang('lang.customer_type') : </label>
+                                        {{ $customer->customer_type->name ?? '' }}
                                     </div>
                                     <div class="col-sm-6">
                                         <label for="name">@lang('lang.name') : </label> {{ $customer->name }}
@@ -46,14 +47,12 @@
                                         $emailArray = explode(',', $customer->email);
                                         $phoneArray = explode(',', $customer->phone);
                                         // Remove square brackets from each element in the emailArray
-                                        foreach ($emailArray as $key => $email)
-                                        {
-                                            $emailArray[$key] = str_replace(['[', ']','"'], '', $email);
+                                        foreach ($emailArray as $key => $email) {
+                                            $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
                                         }
                                         // Remove square brackets from each element in the emailArray
-                                        foreach ($phoneArray as $key => $phone)
-                                        {
-                                            $phoneArray[$key] = str_replace(['[', ']','"'], '', $phone);
+                                        foreach ($phoneArray as $key => $phone) {
+                                            $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
                                         }
                                     @endphp
                                     <div class="col-sm-6">
@@ -119,16 +118,16 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="thumbnail">
-                                    <img src="@if(!empty($customer->image)){{asset('uploads/'.$customer->image)}}@else{{asset('images/default.jpg')}}@endif"
-                                         style="" class="img-fluid" />
+                                    <img src="@if (!empty($customer->image)) {{ asset('uploads/' . $customer->image) }}@else{{ asset('images/default.jpg') }} @endif"
+                                        style="" class="img-fluid" />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-5">
-                                <label for="mobile"> @lang('lang.important_dates')  </label>
-                                @if($customer->customer_important_dates)
-                                    @foreach($customer->customer_important_dates as $date)
+                                <label for="mobile"> @lang('lang.important_dates') </label>
+                                @if ($customer->customer_important_dates)
+                                    @foreach ($customer->customer_important_dates as $date)
                                         <br>
                                         <div class="col-sm-6">
                                             <label for="important_date">@lang('lang.important_date') : </label>
@@ -144,9 +143,9 @@
 
                             </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endsection
+    @endsection

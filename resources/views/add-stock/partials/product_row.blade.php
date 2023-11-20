@@ -2,10 +2,10 @@
     class="d-flex flex-wrap justify-content-between align-items-center p-2 rounded-3 text-center mb-3 @if ($index % 2 == 0) bg-light-gray @else bg-dark-gray @endif">
     <div class="col-12 d-flex justify-content-between align-items-center" style="height: 40px">
         <div class="col-md-6">
-            <div class=" d-flex justify-content-center align-items-center text-white"
+            {{-- <div class=" d-flex justify-content-center align-items-center text-white"
                 style="width: 30px;height: 30px; border-radius: 50%;background-color: #596fd7">
                 {{ $index + 1 }}
-            </div>
+            </div> --}}
         </div>
 
         <div class="col-md-6 d-flex justify-content-end ">

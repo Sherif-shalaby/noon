@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice','changePrices'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
 
     public function listenerReferenceHere($data)
     {
@@ -83,6 +83,7 @@ class Create extends Component
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function mount(Util $commonUtil)
     {
@@ -199,6 +200,7 @@ class Create extends Component
         $this->check_items_store();
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
@@ -302,7 +304,7 @@ class Create extends Component
                 if ($this->payment_status != 'pending') {
                     $this->updateTransactionPaymentStatus($transaction->id);
                 } else {
-//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+                    //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
 
                     $total_paid = 0;
                     $dollar_total_paid = 0;
@@ -317,11 +319,11 @@ class Create extends Component
                     $transaction->dinar_remaining =  $final_amount;
                     //  dollar_remaining : 'الباقي بالدولار'
                     $transaction->dollar_remaining =  $dollar_final_amount;
-//                    $transaction_payment->amount = $total_paid;
-//                    $transaction_payment->dollar_amount = $dollar_total_paid;
+                    //                    $transaction_payment->amount = $total_paid;
+                    //                    $transaction_payment->dollar_amount = $dollar_total_paid;
                     $this->amount = $total_paid;
                     $this->dollar_amount = $dollar_total_paid;
-//                    $transaction_payment->save();
+                    //                    $transaction_payment->save();
                     $transaction->save();
                 }
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
@@ -459,11 +461,12 @@ class Create extends Component
     }
 
 
-// Livewire method to redirect to customer details
+    // Livewire method to redirect to customer details
     public function redirectToCustomerDetails($clientId)
     {
         $route = route('customers.show', $clientId);
-        $this->emit( 'openNewTab', ['route' => $route]);
+        $this->emit('openNewTab', ['route' => $route]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addCustomer()
     {
@@ -558,6 +561,7 @@ class Create extends Component
         }
         $this->computeForAll();
         //        $this->sumSubTotal();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function cancel()
@@ -641,6 +645,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function decrement($key)
@@ -650,6 +655,7 @@ class Create extends Component
             $this->subtotal($key);
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function delete_item($key)
@@ -1509,9 +1515,9 @@ class Create extends Component
     }
     public function check_items_store()
     {
-        if(!empty($this->items)){
-            foreach ($this->items  as $key => $item){
-                if($item['store_id'] != $this->store_id){
+        if (!empty($this->items)) {
+            foreach ($this->items  as $key => $item) {
+                if ($item['store_id'] != $this->store_id) {
                     unset($this->items[$key]);
                 }
             }

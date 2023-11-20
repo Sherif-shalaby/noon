@@ -521,6 +521,7 @@ class Create extends Component
                 $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
@@ -589,11 +590,13 @@ class Create extends Component
     {
         $this->items[$index]['show_discount'] =
             !$this->items[$index]['show_discount'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function stayShowValidity($index)
     {
         $this->items[$index]['show_validity'] =
             !$this->items[$index]['show_validity'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function add_by_po()
     {
@@ -1005,6 +1008,7 @@ class Create extends Component
     public function delete_product($index)
     {
         unset($this->items[$index]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function countItems()
