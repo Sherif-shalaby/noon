@@ -10,12 +10,9 @@ use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
 use App\Models\PaymentTransactionSellLine;
-use App\Models\System;
 use App\Models\TransactionSellLine;
 use App\Models\Employee;
 use App\Models\System;
-use App\Models\TransactionSellLine;
-use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -25,7 +22,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Utils\Util;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
