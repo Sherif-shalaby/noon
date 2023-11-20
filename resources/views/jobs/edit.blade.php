@@ -29,7 +29,7 @@
                     <div class="col-md-3">
                         {{$moudle}}
                         {!! Form::checkbox('permissions[' . $key_module . ']', 1,in_array($key_module,$uniqueModuleNames)?true:false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!}
-                        
+
                     </div>
                     @endforeach
                 </div>
@@ -42,3 +42,81 @@
         </div>
     </div>
 </div>
+@push('javascripts')
+    <script>
+        console.log("Welcome in JobType Edit Javascripts");
+        $('.checked_all').change(function() {
+            tr = $(this).closest('tr');
+            var checked_all = $(this).prop('checked');
+            console.log(checked_all);
+
+            tr.find('.check_box').each(function(item) {
+                if (checked_all === true) {
+                    $(this).prop('checked', true)
+                } else {
+                    $(this).prop('checked', false)
+                }
+            })
+        })
+        $('.all_module_check_all').change(function() {
+            var all_module_check_all = $(this).prop('checked');
+            $('#permission_table > tbody > tr').each((i, tr) => {
+                $(tr).find('.check_box').each(function(item) {
+                    if (all_module_check_all === true) {
+                        $(this).prop('checked', true)
+                    } else {
+                        $(this).prop('checked', false)
+                    }
+                })
+                $(tr).find('.module_check_all').each(function(item) {
+                    if (all_module_check_all === true) {
+                        $(this).prop('checked', true)
+                    } else {
+                        $(this).prop('checked', false)
+                    }
+                })
+                $(tr).find('.checked_all').each(function(item) {
+                    if (all_module_check_all === true) {
+                        $(this).prop('checked', true)
+                    } else {
+                        $(this).prop('checked', false)
+                    }
+                })
+
+            })
+        })
+        $('.module_check_all').change(function() {
+            let moudle_id = $(this).closest('tr').data('moudle');
+            if ($(this).prop('checked')) {
+                $('.sub_module_permission_' + moudle_id).find('.checked_all').prop('checked', true);
+                $('.sub_module_permission_' + moudle_id).find('.check_box').prop('checked', true);
+            } else {
+                $('.sub_module_permission_' + moudle_id).find('.checked_all').prop('checked', false);
+                $('.sub_module_permission_' + moudle_id).find('.check_box').prop('checked', false);
+            }
+        });
+        $(document).on('change', '.view_check_all', function() {
+            if ($(this).prop('checked')) {
+                $('.check_box_view').prop('checked', true);
+            } else {
+                $('.check_box_view').prop('checked', false);
+            }
+        });
+        $(document).on('change', '.create_check_all', function() {
+            if ($(this).prop('checked')) {
+                $('.check_box_create').prop('checked', true);
+            } else {
+                $('.check_box_create').prop('checked', false);
+            }
+        });
+        $(document).on('change', '.delete_check_all', function() {
+            if ($(this).prop('checked')) {
+                $('.check_box_delete').prop('checked', true);
+            } else {
+                $('.check_box_delete').prop('checked', false);
+            }
+        });
+    </script>
+@endpush
+
+

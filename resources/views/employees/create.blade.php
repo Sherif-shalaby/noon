@@ -101,30 +101,35 @@
                                                    placeholder="Email">
                                         </div>
                                     </div>
+                                    {{-- +++++++++++++++++ password , confirm_password +++++++++++++++++ --}}
                                     <div class="row mt-4">
-                                        {{-- ============= password ============= --}}
+                                        {{-- ========== password ========== --}}
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
                                                     placeholder="Create New Password">
                                         </div>
-                                        {{-- ============= confirm_password ============= --}}
+                                        {{-- ========== confirm_password ========== --}}
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
                                                      name="password_confirmation" placeholder="Conform Password">
                                         </div>
                                     </div>
+                                    {{-- ++++++++++++++++++++++ branch , stores ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
+                                        {{-- ========== branch ========== --}}
                                         <div class="col-sm-6">
                                             <label for="branch_id">@lang('lang.branch')</label>
                                             {!! Form::select('branch_id', $branches, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select') , 'data-live-search' => 'true', 'id' => 'branch_id']) !!}
                                         </div>
+                                        {{-- ========== stores ========== --}}
                                         <div class="col-sm-6">
                                             <label for="store_id">@lang('lang.stores')</label>
                                             {!! Form::select('store_id[]', $stores, null, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
                                         </div>
                                     </div>
+                                    {{-- ++++++++++++++++++++++ date_of_start_working , date_of_birth ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
 
                                         <div class="col-sm-6">
@@ -140,11 +145,12 @@
                                         </div>
 
                                     </div>
+                                    {{-- ++++++++++++++++++++++ job_type , phone_number ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
                                         {{-- ============= job_type ============= --}}
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
-                                            {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
+                                            {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true' , 'id'=>'job_type_id']) !!}
                                         </div>
                                         {{-- ============= phone_number ============= --}}
                                         <div class="col-sm-6">
@@ -154,6 +160,7 @@
                                         </div>
 
                                     </div>
+                                    {{-- ++++++++++++++++++++++ upload_files , profile_photo ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
 
                                         <div class="col-sm-6">
@@ -165,7 +172,8 @@
                                             <input type="file" name="photo" id="photo" class="form-control" />
                                         </div>
                                     </div>
-
+                                    {{-- ++++++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++  --}}
+                                    {{-- ============= حدد أيام العمل في الأسبوع ============= --}}
                                     <div class="row mt-4">
                                         @foreach ($leave_types as $leave_type)
                                             <div class="col-sm-6">
@@ -185,6 +193,7 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    {{-- ++++++++++++++++++++++ salary_details ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
                                         <!-- Button salary modal -->
                                         <button type="button" style="margin-left: 15px;" class="btn btn-primary"
@@ -274,7 +283,6 @@
                                             @include('employees.partials.permission')
                                         </div>
                                     </div>
-
                                     {{-- +++++++++++++ save Button +++++++++++ --}}
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
@@ -491,31 +499,36 @@
             $('#select_all_ids').click(function() {
                 $('.checkbox_ids').prop('checked', $(this).prop('checked'));
             });
-            // ++++++++++++++++++++++++++++ submit button +++++++++++++++++++++++++
-            // $('#submit-btn').click(function(event) {
-
-            //     // Prevent the default form submission behavior
-            //     event.preventDefault();
-            //     // Serialize the form data from the form with ID 'productForm'
-            //     var formData = $('#productForm').serialize();
-
-            //     // Make the AJAX request
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/products',
-            //         data: formData,
-            //         dataType: 'json',
-            //         success: function(response) {
-            //             console.log(response.message); // Output success message
-            //             // Handle success, for example, show a success message to the user
-            //         },
-            //         error: function(error) {
-            //             console.error('Error:', error);
-            //             // Handle errors, for example, show an error message to the user
-            //         }
-            //     });
-            // });
-
+            // ++++++++++++++++++++ Get "job_type" Permissions +++++++++++++++++++++++++
+            // when select "job_type" , it will get "all permissions" of "selected job type"
+            $('#job_type_id').change(function()
+            {
+                var jobTypeId = $(this).val();
+                console.log("The Selected 'job_type' = "+jobTypeId);
+                // Make an AJAX request to fetch permissions based on the selected job type
+                $.ajax({
+                    url: '/get-job-type-permissions/' + jobTypeId, // Replace with your actual route
+                    type: 'GET',
+                    success: function (data)
+                    {
+                        updatePermissionCheckboxes(data);
+                        console.log(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching job type permissions:', error);
+                    }
+                });
+            });
+            // ------- updatePermissionCheckboxes() -------------
+            function updatePermissionCheckboxes(permissions)
+            {
+                // Uncheck all checkboxes first
+                $('.check_box').prop('checked', false);
+                // Check checkboxes based on permissions array
+                permissions.forEach(function (permission) {
+                    $('input[name="permissions[' + permission + ']"]').prop('checked', true);
+                });
+            }
         });
     </script>
 @endpush

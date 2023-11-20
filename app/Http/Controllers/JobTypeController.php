@@ -72,7 +72,7 @@ class JobTypeController extends Controller
             // Check if $request->permissions is not null before looping through it
             if (!is_null($request->permissions))
             {
-                dd("True");
+                // dd("True");
                 foreach($request->permissions as $key=>$permission)
                 {
                     if (!empty($subModulePermissionArray[$key]))
@@ -129,37 +129,28 @@ class JobTypeController extends Controller
   {
       $job = JobType::findOrFail($id);
       $modulePermissionArray = User::modulePermissionArray();
+      $subModulePermissionArray = User::subModulePermissionArray();
       $role = Role::where('name',$job->title)->first();
       $permissions = $role->permissions;
 
-      $uniqueModuleNames = [];
-      foreach ($permissions as $permission)
-      {
-          $moduleName = $permission->module_name;
-          $uniqueModuleNames[$moduleName] = true;
-      }
-
-      $uniqueModuleNames = array_keys($uniqueModuleNames);
-      return view('jobs.edit')
-          ->with(compact('job','modulePermissionArray','permissions','uniqueModuleNames'));
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
-  public function update(Request $request ,$id)
-  {
-      try {
-          $data = [
-              'title' => $request->title,
-              'updated_by' => Auth::user()->id,
-          ];
-          $job=JobType::where('id', $id)->first();
-          $role=Role::where('name',$job->title)->first();
-          $role->update([
+        $uniqueModuleNames = [];
+        foreach ($permissions as $permission)
+        {
+            $moduleName = $permission->module_name;
+            $uniqueModuleNames[$moduleName] = true;
+        }
+        $uniqueModuleNames = array_keys($uniqueModuleNames);
+        return view('jobs.edit',compact('job','modulePermissionArray','subModulePermissionArray','permissions','uniqueModuleNames'));
+    }
+    // ++++++++++++++++++++++++++ update() +++++++++++++++++++++++++
+    public function update(Request $request ,$id)
+    {
+        try
+        {
+            $data = $request->except('_token');
+            $job=JobType::where('id', $id)->first();
+            $role=Role::where('name',$job->title)->first();
+            $role->update([
             'name' => $request->title,
           ]);
           $job->update($data);
@@ -195,12 +186,8 @@ class JobTypeController extends Controller
       return redirect()->back()->with('status', $output);
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
+
+    // ++++++++++++++++++++++++ destroy ++++++++++++++++++++++++
     public function destroy($id): RedirectResponse
     {
         try {
@@ -223,7 +210,7 @@ class JobTypeController extends Controller
 
         return redirect()->back()->with('status', $output);
     }
-
+    // ++++++++++++++++++++++++ forceDelete ++++++++++++++++++++++++
     public function forceDelete($id): RedirectResponse
     {
         try {

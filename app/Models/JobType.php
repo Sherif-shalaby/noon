@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class JobType extends Model
@@ -36,5 +37,4 @@ class JobType extends Model
     {
         return $this->belongsTo(User::class,'deleted_by');
     }
-
 }

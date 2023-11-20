@@ -204,7 +204,8 @@ class EmployeeController extends Controller
             $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
             $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
             $employee->branch_id  = $request->branch_id ?? null;
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('photo'))
+            {
                 $employee->photo = store_file($request->file('photo'), 'employees');
             }
             $employee->save();
@@ -333,16 +334,10 @@ class EmployeeController extends Controller
           'branches'
       ));
 
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
-  public function update($id ,Request $request)
-  {
+    }
+    // +++++++++++++++++++++++++++++++++++ update() +++++++++++++++++++++++++++++++++
+    public function update($id ,Request $request)
+    {
         $validated = $request->validate([
             'email' => 'required|email|max:255',
             'name' => 'required|max:255'
@@ -453,7 +448,16 @@ class EmployeeController extends Controller
             return redirect()->back()->with('status', $output);
         }
     }
+    // +++++++++++++++++++++++++++++++++++ getJobTypePermissions() +++++++++++++++++++++++++++++++++
+    public function getJobTypePermissions($id)
+    {
+        // Get the JobType model for the specified ID
+        $jobType = JobType::findOrFail($id);
+        // Retrieve permissions associated with the job type
+        $permissions = $jobType->permissions()->pluck('name')->toArray();
+        return response()->json($permissions);
 
+    }
     /* ============================= destroy() ============================= */
     public function destroy($id)
     {

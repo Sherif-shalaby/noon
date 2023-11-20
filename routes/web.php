@@ -117,6 +117,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     // employees subcategory
     Route::get('employees/get-subcategories/{id}', [EmployeeController::class, 'getSubcategories']);
+     // ++++++++++++++++ get "job_type" permissions ++++++++++++++++
+     Route::get('/get-job-type-permissions/{id}', [EmployeeController::class, 'getJobTypePermissions']);
+
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
     Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');

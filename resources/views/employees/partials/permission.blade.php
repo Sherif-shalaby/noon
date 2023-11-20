@@ -61,34 +61,44 @@
                             unset($sub_module_permission_array['color']);
                             unset($sub_module_permission_array['grade']);
                         @endphp
+                            @if ($key_module == 'product_module')
+                                @php
+                                    unset($sub_module_permission_array['category']);
+                                    unset($sub_module_permission_array['sub_category']);
+                                    unset($sub_module_permission_array['brand']);
+                                    unset($sub_module_permission_array['color']);
+                                    unset($sub_module_permission_array['grade']);
+                                @endphp
+                            @endif
+                        @foreach ($sub_module_permission_array as $key_sub_module => $sub_module)
+                            <tr class="sub_module_permission_{{ $key_module }}">
+                                <td class=""></td>
+                                <td>{{ $sub_module }}</td>
+                                <td class="">
+                                    {!! Form::checkbox('checked_all', 1, false, ['class' => 'checked_all', 'title' => __('lang.select_all')]) !!}
+                                </td>
+                                @php
+                                    $view_permission = $key_module . '.' . $key_sub_module . '.view';
+                                    $create_permission = $key_module . '.' . $key_sub_module . '.create';
+                                    $edit_permission = $key_module . '.' . $key_sub_module . '.edit';
+                                    $delete_permission = $key_module . '.' . $key_sub_module . '.delete';
+                                @endphp
+                                    <td class="">
+                                        {!! Form::checkbox('permissions[' . $view_permission . ']', 1, !empty($job) && !empty($job->hasPermissionTo($view_permission)) ? true : false, ['class' => 'check_box check_box_view', 'title' => __('lang.view'), 'checked' => !empty($job) && !empty($job->hasPermissionTo($view_permission))]) !!}
+                                        {{-- {!! Form::checkbox('permissions[' . $view_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($view_permission)) ? true : false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!} --}}
+                                    </td>
+                                    <td class="">
+                                        {!! Form::checkbox('permissions[' . $create_permission . ']', 1, !empty($job) && !empty($job->hasPermissionTo($create_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.create'), 'checked' => !empty($job) && !empty($job->hasPermissionTo($create_permission))]) !!}
+                                    </td>
+                                    <td class="">
+                                        {!! Form::checkbox('permissions[' . $edit_permission . ']', 1, !empty($job) && !empty($job->hasPermissionTo($edit_permission)) ? true : false, ['class' => 'check_box check_box_edit', 'title' => __('lang.edit'), 'checked' => !empty($job) && !empty($job->hasPermissionTo($edit_permission))]) !!}
+                                    </td>
+                                    <td class="">
+                                            {!! Form::checkbox('permissions[' . $delete_permission . ']', 1, !empty($job) && !empty($job->hasPermissionTo($delete_permission)) ? true : false, ['class' => 'check_box check_box_delete', 'title' => __('lang.delete'), 'checked' => !empty($job) && !empty($job->hasPermissionTo($delete_permission))]) !!}
+                                    </td>
+                            </tr>
+                        @endforeach
                     @endif
-                @foreach ($sub_module_permission_array as $key_sub_module => $sub_module)
-                    <tr class="sub_module_permission_{{ $key_module }}">
-                        <td class=""></td>
-                        <td>{{ $sub_module }}</td>
-                        <td class="">
-                            {!! Form::checkbox('checked_all', 1, false, ['class' => 'checked_all', 'title' => __('lang.select_all')]) !!}
-                        </td>
-                        @php
-                            $view_permission = $key_module . '.' . $key_sub_module . '.view';
-                            $create_permission = $key_module . '.' . $key_sub_module . '.create';
-                            $edit_permission = $key_module . '.' . $key_sub_module . '.edit';
-                            $delete_permission = $key_module . '.' . $key_sub_module . '.delete';
-                        @endphp
-                            <td class="">
-                                {!! Form::checkbox('permissions[' . $view_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($view_permission)) ? true : false, ['class' => 'check_box check_box_view', 'title' => __('lang.view')]) !!}
-                            </td>
-                            <td class="">
-                                {!! Form::checkbox('permissions[' . $create_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($create_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.create')]) !!}
-                            </td>
-                            <td class="">
-                                {!! Form::checkbox('permissions[' . $edit_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($edit_permission)) ? true : false, ['class' => 'check_box check_box_create', 'title' => __('lang.edit')]) !!}
-                            </td>
-                            <td class="">
-                                    {!! Form::checkbox('permissions[' . $delete_permission . ']', 1, !empty($user) && !empty($user->hasPermissionTo($delete_permission)) ? true : false, ['class' => 'check_box check_box_delete', 'title' => __('lang.delete')]) !!}
-                            </td>
-                    </tr>
-                @endforeach
             @endif
         </div>
     @endforeach
