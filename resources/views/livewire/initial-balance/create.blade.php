@@ -430,18 +430,6 @@
                             ])
 
 
-                            {{--                            <div class="col-md-3"> --}}
-                            {{--                                {!! Form::label('status', __('lang.status') . ':*', []) !!} --}}
-                            {{--                                {!! Form::select('status', --}}
-                            {{--                                 ['received' =>  __('lang.received'), 'partially_received' => __('lang.partially_received')] --}}
-                            {{--                                 , null, ['class' => 'form-control select2','data-name'=>'status', 'required', --}}
-                            {{--                                 'placeholder' => __('lang.please_select'),'wire:model' => 'item.0.status']) !!} --}}
-                            {{--                                @error('item.0.status') --}}
-                            {{--                                <span class="error text-danger">{{ $message }}</span> --}}
-                            {{--                                @enderror --}}
-                            {{--                            </div> --}}
-
-
                             {{-- size accordion --}}
                             <div class="col-md-12 my-3 p-0 animate__animated animate__lightSpeedInLeft"
                                 style="animation-delay: 1.65s">
@@ -549,60 +537,15 @@
 
                                 </div>
                             </div>
+
+
                             {{-- add prices --}}
-                            {{-- <div class="row">
-                                    <div class="col-md-12 pt-5">
-                                        <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
-                                    </div>
-                                    <div class="col-md-12 ">
-                                        <table class="table table-bordered" id="consumption_table_price">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width: 3%;">#</th>
-                                                    <th style="width: 10%;">@lang('lang.type')</th>
-                                                    <th style="width: 10%;">@lang('lang.price_category')</th>
-                                                    <th style="width: 10%;">@lang('lang.price')</th>
-                                                    <th style="width: 10%;">@lang('lang.quantity')</th>
-                                                    <th style="width: 11%;">@lang('lang.b_qty')</th>
-                                                    <th style="width: 20%;">@lang('lang.customer_type')
-                                                        <i class="dripicons-question" data-toggle="tooltip"
-                                                            title="@lang('lang.discount_customer_info')"></i>
-                                                    </th>
-                                                    <th style="width: 5%;">
-                                                        <button class="btn btn-xs btn-primary" wire:click="addPriceRaw()"
-                                                            type="button">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($priceRow as $index => $row)
-                                                    @include('products.product_raw_price', [
-                                                        'index' => $index,
-                                                    ])
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <input type="hidden" name="raw_price_index" id="raw_price_index"
-                                            value="1">
-                                    </div>
-                        </div>
-                        <br><br>
-                        <div class="row text-right">
-                            <div class="col">
-                                <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
-                                    <i class="fa fa-plus"></i> @lang('lang.add')
-                                </button>
-                            </div>
-                        </div>
-                        <br>
-                        {{-- add prices --}}
                             <div class="row text-right my-1animate__animated animate__bounceInRight "
                                 style="animation-delay: 1.7s">
                                 <div class="col">
                                     <button class="btn btn btn-primary" wire:click="addRaw()" type="button">
                                         <i class="fa fa-plus"></i> @lang('lang.add')
+
                                     </button>
                                 </div>
                             </div>
@@ -708,6 +651,7 @@
                 window.print();
             });
         });
+
         $(document).on('change', 'select', function(e) {
 
             var name = $(this).data('name');
@@ -760,5 +704,35 @@
             row_id = $(this).closest("tr").data("row_id");
             $(this).closest("tr").remove();
         });
+
+
+        document.addEventListener('componentRefreshed', function() {
+            // Execute your JavaScript code here after Livewire component refreshes
+            const value = localStorage.getItem("showHideDollar");
+
+            var dollarCells = document.getElementsByClassName('dollar-cell');
+
+            for (var i = 0; i < dollarCells.length; i++) {
+                if (value === "hide") {
+                    dollarCells[i].classList.add('showHideDollarCells')
+                }
+            }
+        });
     </script>
+    {{-- <script>
+        const addRawButton = document.getElementById('add-raw-button')
+
+        addRawButton.addEventListener('click', function() {
+            const value = localStorage.getItem("showHideDollar");
+            console.log(value);
+
+            var dollarCells = document.getElementsByClassName('dollar-cell');
+
+            for (var i = 0; i < dollarCells.length; i++) {
+                if (value === "hide") {
+                    dollarCells[i].classList.add('showHideDollarCells')
+                }
+            }
+        })
+    </script> --}}
 @endpush
