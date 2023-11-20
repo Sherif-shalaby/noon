@@ -53,7 +53,7 @@ class StockTransaction extends Model
 
     public function transaction_payments()
     {
-        return $this->hasMany(StockTransactionPayment::class);
+        return $this->hasMany(StockTransactionPayment::class,'stock_transaction_id');
     }
 
     public function add_stock_parent()
