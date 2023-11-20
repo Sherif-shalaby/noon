@@ -50,14 +50,24 @@
                                 <div class="container-fluid">
                                     <form action="{{route('dues')}}" method="get">
                                         <div class="row">
-                                            <div class="col-2">
+                                            <div class="col-3">
                                                 <div class="form-group">
                                                     {{-- <label for="date">@lang('lang.date')</label> --}}
                                                     <input type="date" class="form-control" name="date"
                                                         id="date" placeholder="@lang('lang.date')">
                                                 </div>
+                                                
                                             </div>
-                                            <div class="col-1">
+                                            {{-- <div class="col-3">
+                                                <div class="form-group">
+                                                    {!! Form::select(
+                                                        'city_id',
+                                                        $cities,null,
+                                                        ['class' => 'form-control select2','placeholder'=>__('lang.cities')]
+                                                    ) !!}
+                                                </div>
+                                            </div> --}}
+                                            <div class="col-3">
                                                 <div class="form-group">
                                                     <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
                                                         <i class="fa fa-eye"></i> {{ __('Search') }}</button>

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Models\City;
 use App\Models\Country;
 use App\Models\Customer;
 use App\Models\CustomerImportantDate;
 use App\Models\CustomerType;
+use App\Models\PaymentTransactionSellLine;
 use App\Models\System;
 use App\Models\TransactionSellLine;
 use Illuminate\Contracts\Foundation\Application;
@@ -264,7 +266,24 @@ class CustomerController extends Controller
     
         return view('customers.due', compact('dues'));
     }
-    
+    public function customer_dues($id,Request $request){
+        $cities = City::pluck('name', 'id');
+        $dues = TransactionSellLine::where('customer_id', $id)
+            ->where('payment_status', '!=', 'paid')
+            ->where('status', 'final');
+        
+        if ($request->date) {
+            $dues->whereHas('transaction_payments', function ($query) use ($request) {
+                $query->where('due_date', '=', $request->date);
+            });
+        }
+        
+        // Add the get() method to execute the query and retrieve the results
+        $dues = $dues->get();
+        
+        // Now you can use $dues to access the results        
+        return view('customers.due', compact('dues','cities'));
+    }
     public function pay_due_view($id){
         // if(!$request->date){
         $due = TransactionSellLine::where('id',$id)->first();
@@ -272,60 +291,75 @@ class CustomerController extends Controller
         $totalDollarPayments = $due->transaction_payments->sum('dollar_amount');
         $dueAmount = $due->final_total - $totalPayments;
         $dueDollarAmount = $due->dollar_final_total - $totalDollarPayments;
-
-        return view('customers.due_modal')->with(compact('dueAmount', 'dueDollarAmount','due'));
+        $dollarExchange = System::getProperty('dollar_exchange');
+        
+        return view('customers.due_modal')->with(compact('dueAmount', 'dueDollarAmount','due','dollarExchange'));
     }
+
+    
 
     public function pay_due(Request $request, $id){
         $due = TransactionSellLine::where('id',$id)->first();
-        // $dueRecords = TransactionSellLine::where('payment_status', '!=', 'paid')
-        //     ->where('status', 'final')
-        //     ->whereHas('customer', function($query) use ($id) {
-        //         $query->where('id', $id);
-        //     })->whereHas('transaction_payments', function($query) use ($request) {
-        //         $query->where('due_date', '=',  $request->date);
-        //     })
-        //     ->get();
-        // if((($request->due && $request->due == $request->totalDueAmount) || ( $request->due_dollar &&   $request->due_dollar == $request->totalDueDollarAmount))&& $request->rest == null){
-        //     foreach ($dueRecords as $due) {
-        //         if($due->final_total > 0  && $due->dollar_final_total == 0 && $request->due > 0 && $request->due >= $due->final_total){
-        //             $due->transaction_payments->update([
-        //                 'amount'=>$due->final_total 
-        //             ]);
-        //         }else if($due->dollar_final_total > 0  && $due->final_total == 0 && $request->due_dollar > 0 && $request->due_dollar >= $due->dollar_final_total){
-        //             $due->transaction_payments->update([
-        //                 'dollar_amount'=>$due->dollar_final_total
-        //             ]);
-        //         }else if( $due->final_total > 0 && $due->dollar_final_total > 0 && $request->due_dollar > 0 &&  $request->due > 0 && $request->due_dollar >= $due->dollar_final_total && $request->due >= $due->final_total){
-        //             $due->transaction_payments->update([
-        //                 'amount'=>$due->final_total ,
-        //                 'dollar_amount'=>$due->dollar_final_total
-        //             ]);
-        //         }
-                
-                
-        //     }
-        // }else if (($request->due && $request->due < $request->totalDueAmount) || ( $request->due_dollar &&   $request->due_dollar < $request->totalDueDollarAmount)&& $request->rest == null){
-        //     foreach ($dueRecords as $due) {
-        //         if($due->final_total > 0  && $due->dollar_final_total == 0 && $request->due > 0 && $request->due < $due->final_total){
-        //             $due->transaction_payments->update([
-        //                 'amount'=>$request->due
-        //             ]);
-        //         }else if($due->dollar_final_total > 0  && $due->final_total == 0 && $request->due_dollar > 0 && $request->due_dollar < $due->dollar_final_total){
-        //             $due->transaction_payments->update([
-        //                 'dollar_amount'=>$request->due_dollar
-        //             ]);
-        //         }else if( $due->final_total > 0 && $due->dollar_final_total > 0 && $request->due_dollar > 0 &&  $request->due > 0 && $request->due_dollar < $due->dollar_final_total && $request->due < $due->final_total){
-        //             $due->transaction_payments->update([
-        //                 'amount'=>$request->due,
-        //                 'dollar_amount'=>$request->due_dollar
-        //             ]);
-        //         }
-                
-                
-        //     }
-        // }
+        $customer = Customer::where('id',$due->customer_id)->first();
        
+            if($request->dueAmount >= $request->due && $request->dueDollarAmount >= $request->due_dollar){
+                if($request->add_to_customer_balance_dinar < 0){
+                    $customer->balance_in_dinar = $customer->balance_in_dinar + abs($request->add_to_customer_balance_dinar);
+                }
+                if($request->add_to_customer_balance_dollar < 0){
+                    $customer->balance_in_dinar = $customer->balance_in_dollar + abs($request->add_to_customer_balance_dollar); 
+                }
+                $payment_data = [
+                    'transaction_id' => $due->id,
+                    'amount' => $request->due,
+                    'dollar_amount' => $request->due_dollar,
+                    'method' => 'cash',
+                    'paid_on' => Carbon::now(),
+                    'exchange_rate' => System::getProperty('dollar_exchange'),
+                    'due_date' =>  null,
+                ];
+              
+                if($request->amount_change_dinar && !$request->add_to_customer_balance_dinar){
+                    $payment_data['amount_change_dinar']  = abs($request->amount_change_dollar);
+                }
+                if($request->amount_change_dollar && !$request->add_to_customer_balance_dinar){
+                    $payment_data['amount_change_dollar'] = abs($request->amount_change_dollar) ;
+                }
+                $payment_data['created_by'] = Auth::user()->id;
+                $payment_data['payment_for'] =  $due->customer_id;
+                $transaction_payment = PaymentTransactionSellLine::create($payment_data);
+                $due->dollar_remaining = $due->dollar_remaining - $request->due_dollar;
+                $due->dinar_remaining = $due->dinar_remaining - $request->due;
+                $due->payment_status = 'paid';
+                
+            }else if($request->dueAmount > $request->due || $request->dueDollarAmount > $request->due_dollar){
+                $payment_data = [
+                    'transaction_id' => $due->id,
+                    'amount' => $request->due,
+                    'dollar_amount' => $request->due_dollar,
+                    'method' => 'cash',
+                    'paid_on' => Carbon::now(),
+                    'exchange_rate' => System::getProperty('dollar_exchange'),
+                    'due_date' => $request->due_date ,
+                ];
+                $payment_data['created_by'] = Auth::user()->id;
+                $payment_data['payment_for'] =  $due->customer_id;
+                $transaction_payment = PaymentTransactionSellLine::create($payment_data);
+                if($request->amount_change_dollar > 0 ){
+                    $due->dollar_remaining = $request->amount_change_dollar;
+                }
+                if($request->amount_change_dinar){
+                    $due->dinar_remaining = $request->amount_change_dinar;
+                }
+                $due->payment_status = 'partial';
+            }
+        $due->save();
+        $customer->save();
+        $output = [
+            'success' => true,
+            'msg' => __('lang.success')
+        ];
+        return $output;
     }
 }
 
