@@ -148,6 +148,7 @@ class Create extends Component
     {
         $this->rows[$index]['show_prices'] =
             !$this->rows[$index]['show_prices'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeSize()
     {
