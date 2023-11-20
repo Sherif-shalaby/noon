@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('payment_transaction_sell_lines', function (Blueprint $table) {
+        Schema::table('transaction_sell_lines', function (Blueprint $table) {
             $table->date('due_date')->nullable();
         });
     }
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('payment_transaction_sell_lines', function (Blueprint $table) {
+        Schema::table('transaction_sell_lines', function (Blueprint $table) {
             //
         });
     }

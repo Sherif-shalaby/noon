@@ -17,13 +17,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">@lang('lang.due')</label>
-                            <input type="text" class="form-control dueAmount" name="dueAmount" value="{{@num_uf($dueAmount)}}" disabled>
+                            <input type="text" class="form-control dueAmount" name="dueAmount" value="{{@num_uf($dueAmount)}}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="job_title">@lang('lang.due')</label>
-                            <input type="text" class="form-control dueDollarAmount"  name="dueDollarAmount" value="{{@num_uf($dueDollarAmount)}}" disabled>
+                            <input type="text" class="form-control dueDollarAmount"  name="dueDollarAmount" value="{{@num_uf($dueDollarAmount)}}" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">

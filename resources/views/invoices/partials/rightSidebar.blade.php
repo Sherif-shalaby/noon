@@ -209,21 +209,22 @@
             <div class="row hide-print mt-3">
    
                         {{-- ++++++++++++++++++++++ زرار الدفع لاحقا++++++++++++++++++++ --}}
-                        <div class="col-md-5">
+                        {{-- <div class="col-md-5">
                             <button style="width: 100%; background: #5b808f" type="button" class="btn btn-primary payment-btn"
                                     data-toggle="modal" onclick="openDueDateModal()">
                                 <i class="fa fa-hourglass-start"></i> @lang('lang.pay_later')
-                            </button>
-            @if (!$this->checkRepresentativeUser())
-                <div class="row hide-print mt-3">
-                    <div class="col-md-5">
-                        <button style="width: 100%; background: #5b808f" type="button"
-                            class="btn btn-primary payment-btn" wire:click="pendingStatus" id="pay-later-btn"><i
-                                class="fa fa-hourglass-start"></i>
-                            @lang('lang.pay_later')</button>
+                            </button> --}}
+                @if (!$this->checkRepresentativeUser())
+                    <div class="row hide-print mt-3">
+                        <div class="col-md-5">
+                            <button style="width: 100%; background: #5b808f" type="button"
+                                class="btn btn-primary payment-btn" onclick="openDueDateModal()" id="pay-later-btn"><i
+                                    class="fa fa-hourglass-start"></i>
+                                @lang('lang.pay_later')</button>
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
+            </div>
 
         </div>
     </div>
