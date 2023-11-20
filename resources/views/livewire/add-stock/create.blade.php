@@ -32,7 +32,7 @@
                             </div>
                         </div>
                     </div>
-                    {!! Form::open([ 'id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}
+{{--                    {!! Form::open([ 'id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!}--}}
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
@@ -140,6 +140,7 @@
                         <br>
                         <br>
                         <div class="row">
+                            {{-- ++++++ "البحث "برمز المنتج ++++++ --}}
                             <div class="col-md-3 m-t-15">
                                 <div class="search-box input-group">
                                     <input type="search" name="search_by_product_symbol" id="search_by_product_symbol" wire:model.debounce.200ms="search_by_product_symbol"
@@ -164,9 +165,9 @@
                                             @endforeach
                                         </ul>
                                     @endif
-{{--                                    {{$search_result->links()}}--}}
                                 </div>
                             </div>
+                            {{-- ++++++ "البحث "باسم المنتج" و "الباركود ++++++ --}}
                             <div class="col-md-7 m-t-15">
                                 <div class="search-box input-group">
                                     <button type="button" class="btn btn-secondary" id="search_button"><i
@@ -175,10 +176,7 @@
                                     <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
                                            placeholder="@lang('lang.enter_product_name_to_print_labels')"
                                            class="form-control" autocomplete="off">
-{{--                                    <button type="button" class="btn btn-success  btn-modal"--}}
-{{--                                            data-href="{{ route('products.create') }}?quick_add=1"--}}
-{{--                                            data-container=".view_modal"><i class="fa fa-plus"></i>--}}
-{{--                                    </button>--}}
+
                                     @if(!empty($search_result) && !empty($searchProduct))
                                         <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;">
                                             @foreach($search_result as $product)
@@ -197,7 +195,6 @@
                                             @endforeach
                                         </ul>
                                     @endif
-{{--                                    {{$search_result->links()}}--}}
                                 </div>
                             </div>
                         </div>
@@ -224,13 +221,6 @@
                                 <div class="p-2">
                                     @foreach ($products as $product)
                                         <div class="order-btn" wire:click='add_product({{ $product->id }})' style="cursor: pointer">
-{{--                                            @if ($product->image)--}}
-{{--                                                <img src="{{ asset('uploads/products/' . $product->image) }}"--}}
-{{--                                                     alt="{{ $product->name }}" class="img-thumbnail" width="80px" height="80px" >--}}
-{{--                                            @else--}}
-{{--                                                <img src="{{ asset('uploads/'.$settings['logo']) }}" alt="{{ $product->name }}"--}}
-{{--                                                     class="img-thumbnail" width="100px">--}}
-{{--                                            @endif--}}
                                             <span>{{ $product->name }}</span>
                                             <span>{{ $product->sku }} </span>
                                         </div>
@@ -248,8 +238,8 @@
                                         <th style="width: 10%" >@lang('lang.sku')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.unit')</th>
-                                        <th style="width: 10%">@lang('lang.fill')</th>
-                                        <th style="width: 10%">@lang('lang.basic_unit')</th>
+{{--                                        <th style="width: 10%">@lang('lang.fill')</th>--}}
+{{--                                        <th style="width: 10%">@lang('lang.basic_unit')</th>--}}
                                         <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
 {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
 {{--                                        @if ($showColumn)--}}
@@ -315,9 +305,17 @@
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{!empty($items)? count($items) : 0}}</span>
-                                <br> @lang('lang.items_quantity'): <span
-                                    class="items_quantity_span" style="margin-right: 15px;">{{ $this->total_quantity() }}</span>
+                                <span class="items_count_span" style="margin-right: 15px;">{{ $this->countItems() }}</span><br>
+{{--                                @lang('lang.units_count'):--}}
+{{--                                <span class="items_quantity_span" style="margin-right: 15px;">{{ $this->countUnitsItems() }}</span><br>--}}
+                                {{ $this->count_total_by_variations() }}
+                            @if(!empty($variationSums))
+                                @foreach($variationSums as $unit_name => $variant)
+                                    {{ $unit_name }}:
+                                    <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }} </span><br>
+                                @endforeach
+                            @endif
+
                             </h4>
                         </div>
                         <br>
@@ -429,14 +427,6 @@
                                         {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}
                                     </div>
                                 </div>
-
-    {{--                                <div class="col-md-3 due_fields ">--}}
-    {{--                                    <div class="form-group">--}}
-    {{--                                        {!! Form::label('notify_before_days', __('lang.notify_before_days') . ':', []) !!}--}}
-    {{--                                        <br>--}}
-    {{--                                        {!! Form::text('notify_before_days', !empty($transaction_payment)&&!empty($transaction_payment->notify_before_days)?$transaction_payment->notify_before_days:(!empty($payment) ? $payment->notify_before_days : null), ['class' => 'form-control', 'placeholder' => __('lang.notify_before_days'), 'wire:model' => 'notify_before_days']) !!}--}}
-    {{--                                    </div>--}}
-{{--                                </div>--}}
                             @endif
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -452,23 +442,13 @@
                                 class="btn btn-primary pull-right btn-flat submit" wire:click.prevent = "store()">@lang( 'lang.save' )</button>
 
                     </div>
-                    {!! Form::close() !!}
+{{--                    {!! Form::close() !!}--}}
                 </div>
             </div>
         </div>
     </div>
 </section>
 <div class="view_modal no-print"></div>
-<div class="row">
-    <div class="col">
-        @php
-            $letter_header = App\Models\System::getProperty('letter_header');
-        @endphp
-        {{asset('uploads/'.$letter_header)}}
-        <img src="@if(!empty($letter_header)){{asset('uploads/'.$letter_header)}}@else{{asset('/uploads/'.session('logo'))}}@endif" alt="header" id="header_invoice_img" style="width: auto; margin: auto;  max-height: 150px;">
-
-    </div>
-    </div>
 {{--<!-- This will be printed -->--}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @include('suppliers.quick_add',['quick_add'=>1])

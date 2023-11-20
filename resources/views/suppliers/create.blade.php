@@ -32,7 +32,7 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title">@lang('lang.suppliers')</h5>
+                        <h5 class="card-title">@lang('lang.add_supplier')</h5>
                     </div>
                     <div class="card-body">
                         <p class="italic"><small>@lang('lang.required_fields_info')</small></p>
@@ -44,13 +44,13 @@
                                     {{-- ++++++++++++++++++++++ name ++++++++++++++++++++++++ --}}
                                     <div class="col-md-4 ">
                                         <div class="form-group ">
-                                            <label for="name">@lang('lang.name')</label>
+                                            <label for="name"> <span class="text-danger">*</span> @lang('lang.name')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
                                                 <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.name')"
                                                        name="name"
-                                                       value="{{ old('name') }}" >
+                                                       value="{{ old('name') }}" required >
                                                 @error('name')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -60,35 +60,56 @@
                                     {{-- ++++++++++++++++++++++ company_name ++++++++++++++++++++++++ --}}
                                     <div class="col-md-4 ">
                                         <div class="form-group ">
-                                            <label for="name">@lang('lang.company_name')</label>
+                                            <label for="name"> <span class="text-danger">*</span> @lang('lang.company_name')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
                                                 <input type="text"
                                                        class="form-control"
                                                        placeholder="@lang('lang.company_name')"
                                                        name="company_name"
-                                                       value="{{ old('company_name') }}" >
+                                                       value="{{ old('company_name') }}" required >
                                                 @error('company_name')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- +++++++++++++++++++++++++++++++ email ++++++++++++++++++++++++ --}}
-                                    {{-- <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="email">@lang('lang.email')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.email')"
-                                                       name="email[]"
-                                                       value="{{ old('email') }}" >
-                                                @error('email')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
+                                    {{-- +++++++++++++++++++++++++++++++ mobile_number array ++++++++++++++++++++++++ --}}
+                                    <div class="col-md-4"  style="width: 100%;">
+                                        <table class="bordered">
+                                            <thead class="phone_thead">
+                                            <tr>
+                                                <th class="text-left" style="font-weight: normal;">
+                                                    <label class="mb-2">
+                                                        <span class="text-danger">*</span>@lang('lang.phone_number')
+                                                    </label>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="phone_tbody">
+                                            <tr>
+                                                <td class="col-md-12 p-0">
+                                                    <div class="select_body d-flex justify-content-between align-items-center" >
+                                                        <input type="text"
+                                                               class="form-control"
+                                                               placeholder="@lang('lang.phone_number')"
+                                                               name="mobile_number[]"
+                                                               value="{{ old('mobile_number') }}" required >
+                                                        @error('mobile_number')
+                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </td>
+                                                <td  class="col-md-6">
+                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                    <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow" type="button">
+                                                        <i class="fa fa-plus"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
                                     {{-- +++++++++++++++++++++++++++++++ exchange_rate ++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
@@ -106,6 +127,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- +++++++++++++++++++++++++++++++ start_date +++++++++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label for="start_date">@lang('lang.start_date')</label>
@@ -115,14 +137,14 @@
                                                        placeholder="@lang('lang.start_date')"
                                                        name="start_date"
                                                        style="border-color:#aaa"
-                                                       value="{{ date('Y-m-d') }}" >
+                                                       value="{{ date('Y-m-d') }}"  >
                                                 @error('start_date')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
-                                    {{----}}
+                                    {{-- +++++++++++++++++++++++++++++++ end_date +++++++++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <label for="end_date">@lang('lang.end_date')</label>
@@ -139,76 +161,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="postal_code">@lang('lang.postal_code')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.postal_code')"
-                                                       name="postal_code"
-                                                       value="{{ old('postal_code') }}" >
-                                                @error('postal_code')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- +++++++++++++++++++++++++++++++ address ++++++++++++++++++++++++ --}}
-                                    {{-- <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="address">@lang('lang.address')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <textarea class="form-control" placeholder="@lang('lang.address')" name="address"value="{{ old('address') }}" ></textarea>
-                                                @error('address')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    {{-- +++++++++++++++++++++++++++++++ city ++++++++++++++++++++++++ --}}
-                                    {{-- <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="city">@lang('lang.city')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.city')"
-                                                       name="city"
-                                                       value="{{ old('city') }}" >
-                                                @error('city')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    {{-- ========================== country ==================== --}}
-                                    {{-- <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="country">@lang('lang.country')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.country')"
-                                                       name="country"
-                                                       value="{{ old('country') }}" >
-                                                @error('country')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                     {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
-                                     <div class="col-md-4">
-                                        <label for="owner_debt_in_dinar">@lang('lang.owner_debt_in_dinar')</label>
-                                        <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dinar" id="owner_debt_in_dinar" />
-                                    </div>
-                                    {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
-                                    <div class="col-md-4">
-                                        <label for="owner_debt_in_dollar">@lang('lang.owner_debt_in_dollar')</label>
-                                        <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dollar" id="owner_debt_in_dollar" />
-                                    </div>
+
                                     {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <label for="country-dd">@lang('lang.country')</label>
@@ -241,6 +194,16 @@
                                             <select id="city-dd" name="city_id" class="form-control"></select>
                                         </div>
                                     </div>
+                                    {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <label for="owner_debt_in_dinar">@lang('lang.owner_debt_in_dinar')</label>
+                                        <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dinar" id="owner_debt_in_dinar" />
+                                    </div>
+                                    {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <label for="owner_debt_in_dollar">@lang('lang.owner_debt_in_dollar')</label>
+                                        <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dollar" id="owner_debt_in_dollar" />
+                                    </div>
                                     {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
@@ -249,7 +212,7 @@
                                                     <tr>
                                                         <th class="text-left" style="font-weight: normal;">
                                                             <label class="mb-2">
-                                                                <span class="text-danger">*</span>@lang('lang.email')
+                                                                @lang('lang.email')
                                                             </label>
                                                         </th>
                                                     </tr>
@@ -279,42 +242,7 @@
                                             </table>
                                         </div>
                                     </div>
-                                    {{-- +++++++++++++++++++++++++++++++ mobile_number array ++++++++++++++++++++++++ --}}
-                                    <div class="col-md-4"  style="width: 100%;">
-                                        <table class="bordered">
-                                            <thead class="phone_thead">
-                                                <tr>
-                                                    <th class="text-left" style="font-weight: normal;">
-                                                        <label class="mb-2">
-                                                            <span class="text-danger">*</span>@lang('lang.phone_number')
-                                                        </label>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="phone_tbody">
-                                                <tr>
-                                                    <td class="col-md-12 p-0">
-                                                        <div class="select_body d-flex justify-content-between align-items-center" >
-                                                            <input type="text"
-                                                                   class="form-control"
-                                                                   placeholder="@lang('lang.phone_number')"
-                                                                   name="mobile_number[]"
-                                                                   value="{{ old('mobile_number') }}" required >
-                                                            @error('mobile_number')
-                                                             <div class="alert alert-danger">{{ $message }}</div>
-                                                            @enderror
-                                                        </div>
-                                                    </td>
-                                                    <td  class="col-md-6">
-                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                        <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow" type="button">
-                                                            <i class="fa fa-plus"></i>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+
                                     {{-- ++++++++++++ images ++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -376,7 +304,6 @@
 {{-- +++++++++++++++++++++++++++++++ Add New Row in mobile_number ++++++++++++++++++++++++ --}}
 <script>
     $('.phone_tbody').on('click','.addRow', function(){
-        console.log('new mobile_number inputField was added');
         var tr = `<tr>
                     <td>
                         <input  type="text" class="form-control" placeholder="@lang('lang.phone_number')" name="mobile_number[]"
@@ -399,11 +326,10 @@
     // ============================== Email Repeater ==============================
     // +++++++++++++ Add New Row in email +++++++++++++
     $('.email_tbody').on('click','.addRow_email', function(){
-        console.log('new Email inputField was added');
         var tr =`<tr>
                     <td>
                         <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
+                                value="{{ old('email') }}" >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

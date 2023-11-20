@@ -188,7 +188,7 @@
         <!-- Start Rightbar -->
         <div class="rightbar">
             <!-- Start Topbar Mobile -->
-            <div class="topbar-mobile">
+            <div class="topbar-mobile no-print">
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="mobile-logobar">
@@ -266,7 +266,8 @@
                     }
                 });
         });
-        
+
+
     </script>
 {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
@@ -281,7 +282,7 @@
         // if(data.product_id){
         // }
         if (data) {
-           
+
             let badge_count = parseInt($('.online-balance-badge').text()) + 1;
             alert(badge_count)
             $('.online-balance-badge').text(badge_count);
@@ -290,6 +291,32 @@
         }
     });
 </script> --}}
+    @push('javascripts')
+        <script>
+            document.addEventListener('livewire:load', function () {
+                Livewire.on('printInvoice', function (htmlContent) {
+                    // Set the generated HTML content
+                    $("#receipt_section").html(htmlContent);
+                    // Trigger the print action
+                    window.print("#receipt_section");
+                });
+            });
+            $(document).on("click", ".print-invoice", function () {
+                // $(".modal").modal("hide");
+                $.ajax({
+                    method: "get",
+                    url: $(this).data("href"),
+                    data: {},
+                    success: function (result) {
+                        if (result.success) {
+                            Livewire.emit('printInvoice', result.html_content);
+                        }
+                    },
+                });
+            });
+        </script>
+    @endpush
+
 
 </body>
 

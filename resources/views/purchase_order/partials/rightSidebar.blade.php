@@ -8,6 +8,7 @@
             <button wire:click='getClient'
                     class="btn btn-sm btn-primary">{{ __('Search') }}</button>
         </div>
+
         {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
         {{-- <div class="mb-1 body-card-app pt-2" wire:ignore>
             <label for="" class="text-primary">العملاء</label>

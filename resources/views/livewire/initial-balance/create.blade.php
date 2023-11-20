@@ -325,8 +325,16 @@
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
                                 <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                                <br> @lang('lang.items_quantity'): <span class="items_quantity_span"
-                                    style="margin-right: 15px;">{{ $totalQuantity }}</span>
+                                <br>
+                                {{ $this->count_total_by_variations() }}
+                                @if(!empty($variationSums))
+                                    @foreach($variationSums as $unit_name => $variant)
+                                        {{ $unit_name }}:
+                                        <span class="items_quantity_span" style="margin-right: 15px;"> {{ $variant }} </span><br>
+                                    @endforeach
+                                @endif
+{{--                                @lang('lang.items_quantity'): <span class="items_quantity_span"--}}
+{{--                                    style="margin-right: 15px;">{{ $totalQuantity }}</span>--}}
                             </h4>
                         </div>
                          {{-- sizes --}}

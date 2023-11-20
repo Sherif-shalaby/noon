@@ -21,6 +21,7 @@ use App\Models\Variation;
 use App\Models\GeneralTax;
 use App\Utils\ProductUtil;
 use App\Models\AddStockLine;
+use App\Models\Brand;
 use App\Models\CashRegister;
 use App\Models\ProductStore;
 use Livewire\WithPagination;
@@ -50,7 +51,8 @@ class Create extends Component
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $po_no ,$exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
-        $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ;
+        $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
+        $allproducts = [] , $brand_id = 1, $brands = [] , $search_by_product_symbol , $product_id;
 
     protected $rules =
     [
@@ -65,6 +67,132 @@ class Create extends Component
         'amount' => 'required',
         'transaction_currency' => 'required'
     ];
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order'];
+
+    public function listenerReferenceHere($data)
+    {
+        // ++++++++++++ department filter ++++++++++++
+        if (isset($data['var1']) && $data['var1'] == "department_id") {
+            $this->updatedDepartmentId($data['var2'], 'department_id');
+        }
+        // ++++++++++++ brand filter ++++++++++++
+        if (isset($data['var1']) && $data['var1'] == "brand_id") {
+            $this->updatedDepartmentId($data['var2'], 'brand_id');
+        }
+        // ++++++++++++ supplier filter ++++++++++++
+        if (isset($data['var1']) && $data['var1'] == "supplier_id") {
+            $this->updatedDepartmentId($data['var2'], 'supplier_id');
+        }
+    }
+    // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
+    // public function updatedDepartmentId($value, $name)
+    // {
+    //     // Handle department and brand filters
+    //     $query = Product::query();
+    //     // "department" filter
+    //     if ($name == 'department_id')
+    //     {
+    //         $query->where(function ($query) use ($value)
+    //         {
+    //             $query->where('category_id', $value)
+    //                 ->orWhere('subcategory_id1', $value)
+    //                 ->orWhere('subcategory_id2', $value)
+    //                 ->orWhere('subcategory_id3', $value);
+    //         });
+    //     }
+    //     // "brand" filter
+    //     if ($name == 'brand_id')
+    //     {
+    //         $query->where('brand_id', $value);
+    //     }
+    //     // "supplier" filter
+    //     if ($name == 'supplier_id')
+    //     {
+    //         // Get the stock transaction IDs associated with the supplier ID
+    //         $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
+    //         // Get all product IDs associated with the stock transaction IDs
+    //         $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
+    //         // Apply the filter to the products based on the retrieved product IDs
+    //         $query->whereIn('id', $productIds);
+    //     }
+    //     // Get the filtered products
+    //     $this->allproducts = $query->get();
+    // }
+    public function updatedDepartmentId($value, $name)
+    {
+        // Handle department and brand filters
+        $query = Product::query();
+        // Initialize flag variables for filters
+        $hasSupplierFilter = false;
+        $valueSupplierFilter='';
+        $hasBrandFilter = false;
+        $valueBrandFilter='';
+        $hasDepartmentFilter = false;
+        $valueDepartmentFilter='';
+        // Apply filters based on the given name
+        if ($name == 'department_id') {
+            $query->where(function ($query) use ($value)
+            {
+                $query->where('category_id', $value)
+                    ->orWhere('subcategory_id1', $value)
+                    ->orWhere('subcategory_id2', $value)
+                    ->orWhere('subcategory_id3', $value);
+            });
+            $hasDepartmentFilter = true;
+            $hasBrandFilter = false;
+            $hasSupplierFilter = false;
+            $valueDepartmentFilter = $value;
+        }
+        elseif ($name == 'brand_id'){
+            $query->where('brand_id', $value);
+            $hasBrandFilter = true;
+            $hasDepartmentFilter = false;
+            $hasSupplierFilter = false;
+            $valueBrandFilter=$value;
+        }
+        elseif ($name == 'supplier_id')
+        {
+            // Get the stock transaction IDs associated with the supplier ID
+            $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
+            // Get all product IDs associated with the stock transaction IDs
+            $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
+            // Apply the filter to the products based on the retrieved product IDs
+            $query->whereIn('id', $productIds);
+            $hasSupplierFilter = true;
+            $hasDepartmentFilter = false;
+            $hasBrandFilter = false;
+            $valueSupplierFilter=$value;
+        }
+        // If supplier, brand, and department filters are present, combine them with AND condition
+        elseif ($hasDepartmentFilter && $hasBrandFilter)
+        {
+            $query->where(function ($query) use ($valueDepartmentFilter, $valueBrandFilter) {
+                $query->where('category_id', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id1', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id2', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id3', $valueDepartmentFilter)
+                    ->where('brand_id', $valueBrandFilter);
+            });
+        }
+        elseif ($hasDepartmentFilter && $hasBrandFilter && $hasSupplierFilter)
+        {
+            // dd($hasDepartmentFilter);
+            $query->where(function ($query) use ($valueDepartmentFilter, $valueBrandFilter) {
+                $query->where('category_id', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id1', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id2', $valueDepartmentFilter)
+                    ->orWhere('subcategory_id3', $valueDepartmentFilter)
+                    ->where('brand_id', $valueBrandFilter);
+            });
+        }
+        // Get the filtered products
+        $this->allproducts = $query->get();
+        // dd($this->allproducts);
+    }
+
+
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     // Get "suppliers" and "stores" and "product number"
     public function mount()
@@ -73,8 +201,17 @@ class Create extends Component
         $this->loadSuppliers();
         // +++++++++ get "all stores" +++++++++
         $this->loadStores();
+
         // +++++++++ get "product number" +++++++++
         $this->loadPoNo();
+        if (!empty($this->store_id)) {
+            $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
+            $this->allproducts = Product::whereIn('id', $products_store)->get();
+        } else {
+            $this->allproducts = Product::get();
+        }
+        $this->department_id = null;
+
     }
     // +++++++++ Get "suppliers" +++++++++
     public function loadSuppliers()
@@ -109,12 +246,17 @@ class Create extends Component
     // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
+        // Fetch and set the initial value of $current_stock
+        $this->updateCurrentStock();
+
+        $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
+
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
         $payment_types = $payment_type_array;
         $product_id = request()->get('product_id');
-        $suppliers  = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
+        $suppliers  = Supplier::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
         $stock_lines = AddStockLine::get();
 
@@ -128,33 +270,68 @@ class Create extends Component
         $stores = Store::getDropdown();
         $departments = Category::get();
         $search_result = '';
-        if(!empty($this->searchProduct))
-        {
-            $search_result = Product::when($this->searchProduct,function ($query)
-            {
-                // return $query->where('name','like','%'.$this->searchProduct.'%');
-                return $query->where('name', 'like', '%' . $this->searchProduct . '%')
-                             ->orWhere('sku', 'like', '%' . $this->searchProduct . '%');
+        $products = '';
+        // $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
+        $brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
+        $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
+        // dd($suppliers);
+        // ++++++++++++++++++++++++++++++ start : search_by_product_symbol ++++++++++++++++++++++++++++++
+        $search_result = '';
+        if (!empty($this->search_by_product_symbol)){
+            $search_result = Product::when($this->search_by_product_symbol,function ($query){
+                return $query->where('product_symbol','like','%'.$this->search_by_product_symbol.'%');
             });
             $search_result = $search_result->paginate();
+            if(count($search_result) === 1){
+                $this->add_product($search_result->first()->id);
+                $search_result = '';
+                $this->search_by_product_symbol = '';
+            }
+
+        }
+        // ++++++++++++++++++++++++++++++ end : search_by_product_symbol ++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++ start : search_by_product_name ++++++++++++++++++++++++++++++
+        if(!empty($this->searchProduct))
+        {
+            $search_result = Product::when($this->searchProduct,function ($query){
+                return $query->where('name','like','%'.$this->searchProduct.'%')
+                             ->orWhere('sku','like','%'.$this->searchProduct.'%');
+            });
+            $search_result = $search_result->paginate();
+            if(count($search_result) == 0){
+                $variation = Variation::when($this->searchProduct,function ($query){
+                    return $query->where('sku','like','%'.$this->searchProduct.'%');
+                })->pluck('product_id');
+                $search_result = Product::whereIn('id',$variation);
+                $search_result = $search_result->paginate();
+            }
+
             if(count($search_result) === 1){
                 $this->add_product($search_result->first()->id);
                 $search_result = '';
                 $this->searchProduct = '';
             }
         }
-
-        if ($this->source_type == 'pos') {
+        // ++++++++++++++++++++++++++++++ end : search_by_product_name ++++++++++++++++++++++++++++++
+        if ($this->source_type == 'pos')
+        {
             $users = StorePos::pluck('name', 'id');
-        } elseif ($this->source_type == 'store') {
+        }
+        elseif ($this->source_type == 'store')
+        {
             $users = Store::pluck('name', 'id');
-        } elseif ($this->source_type == 'safe') {
+        }
+        elseif ($this->source_type == 'safe')
+        {
             $users = MoneySafe::pluck('name', 'id');
-        } else {
+        }
+        else
+        {
             $users = User::Notview()->pluck('name', 'id');
         }
         if(!empty($this->department_id)){
-            $products = Product::where('category_id' , $this->department_id)->get();
+            // return($this->department_id);
+            $products = Product::where('category_id' ,1)->get();
         }
         else{
             $products = Product::paginate();
@@ -181,7 +358,10 @@ class Create extends Component
             'products',
             'departments',
             'search_result',
-            'users'));
+            'users',
+            'brands',
+            'suppliers'
+        ));
     }
 
     public function updated($propertyName)
@@ -276,6 +456,7 @@ class Create extends Component
 
     public function add_product($id, $add_via = null)
     {
+        $this->product_id = $id;
         if(!empty($this->searchProduct)){
             $this->searchProduct = '';
 
@@ -323,8 +504,15 @@ class Create extends Component
         $dinar_purchase = AddStockLine::select('purchase_price')->where('product_id', $product['id'])->latest()->first();
         // Task_9_10_2023 : quantity
         $quantity = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        $this->product_id = $product['id'];
         // The "Total quantity" of "each product"
-        $current_stock = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // $current_stock = AddStockLine::where('product_id', $product['id'])->sum('quantity');
+        // $current_stock = ProductStore::where('product_id', $product['id'])->pluck('quantity_available');
+        $current_stock_all = ProductStore::select('quantity_available')
+                            ->where('product_id', $product['id'])
+                            ->orderBy('created_at', 'desc')
+                            ->first();
+        $current_stock = $current_stock_all->quantity_available;
         // dd($current_stock);
         $new_item = [
             'show_product_data' => $show_product_data,
@@ -354,6 +542,33 @@ class Create extends Component
             'total_stock' => 0 + 1,
         ];
         array_push($this->items, $new_item);
+    }
+    // +++++++++++++++++++++++++ updateCurrentStock() +++++++++++++++++++
+    //  When change "store" Then Change "current_stock" column according to "selected Store"
+    public function updateCurrentStock()
+    {
+        if (!empty($this->store_id))
+        {
+            $store_id = (int)$this->store_id;
+            foreach( $this->items as $key => $item )
+            {
+                $current_stock_all = ProductStore::select('quantity_available')
+                    ->where('product_id', $item['product']['id'])
+                    ->where('store_id', $store_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
+                $this->items[$key]['current_stock'] = $current_stock;
+            }
+        } else {
+            // Handle the case where store_id is empty, set $current_stock to null or a default value
+            $this->current_stock = null;
+        }
+    }
+    public function func()
+    {
+        // Update $current_stock when store_id changes
+        $this->updateCurrentStock();
     }
 
     public function getVariationData($index){
@@ -670,5 +885,6 @@ class Create extends Component
         $num = str_replace($decimal_separator, '.', $num);
         return (float)$num;
     }
+
 
 }

@@ -108,7 +108,7 @@
             <td></td>
             <td>
                 {!! Form::label('price' ,__('lang.quantity')) !!}
-                <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.quantity')}}" >
+                <input type="text" class="form-control discount_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.discount_quantity" wire:change="changePrice({{ $index }}, {{ $key }}, 'quantity')" placeholder = "{{__('lang.quantity')}}" >
                 @error('rows.'.$index.'.prices.'.$key.'.discount_quantity')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -120,7 +120,7 @@
             </td>
             <td >
                 {!! Form::label('b_qty',__('lang.b_qty')) !!}
-                <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.b_qty')}}" >
+                <input type="text" class="form-control bonus_quantity" wire:model="rows.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }}, 'quantity')" placeholder = "{{__('lang.b_qty')}}" >
                 @error('rows.'.$index.'.prices.'.$key.'.bonus_quantity')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
@@ -137,15 +137,15 @@
                         'style'=>'width:120px;font-size:15px;height:38px;'
                     ]) !!}
                     <select class="custom-select " style="width:68px;font-size:10px;height:38px; {{$rows[$index]['prices'][$key]['price_type']!=='fixed'?'display:none;':''}}" wire:model="rows.{{ $index }}.prices.{{$key}}.price_currency">
-                        <option selected value="dollar">Dollar</option>
                         <option  value="dinar">Dinar</option>
+                        <option selected value="dollar">Dollar</option>
                     </select>
                 </div>
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem"
+                    <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem"
                         @if( isset($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
                     wire:change="changePrice({{ $index }}, {{ $key }})">
-                    <label class="custom-control-label" for="discount_from_original_price{{$key}}">@lang('lang.discount_from_original_price')</label>
+                    <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
                 </div>
                 @error('rows.'.$index.'.prices.'.$key.'.price_type')
                 <br>
@@ -154,7 +154,8 @@
             </td>
             <td>
                 {!! Form::label('price' ,isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
-                <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.percent')}}" >
+                <input type="text" name="price" class="form-control price" wire:model="rows.{{$index}}.prices.{{$key}}.dinar_price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')}}"
+                @if(empty($rows[$index]['prices'][$key]['price_type'])) readonly @endif >
                 <p>
                     {{isset($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount').' $': __('lang.percent').' $'}}:{{$this->rows[$index]['prices'][$key]['price']??''}}
                 </p>

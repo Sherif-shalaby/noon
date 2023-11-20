@@ -305,6 +305,13 @@
                                                         <li>
                                                             <a href="{{route('customer_dues', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.dues')</a>
                                                         </li>
+                                                        <li class="divider"></li>
+                                                        <li>
+                                                            <a href="{{route('customers.show', $customer->id)}}" class="btn">
+                                                                <i class="fa fa-eye"></i>@lang('lang.view')
+                                                            </a>
+                                                        </li>
+                                                        <li class="divider"></li>
                                                         <li>
                                                             <a href="{{route('customers.edit', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
                                                         </li>

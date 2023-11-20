@@ -48,7 +48,7 @@ class EmployeeController extends Controller
    */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::orderBY('created_at','desc')->get();
 
         return view('employees.index')
             ->with(compact('employees'));
@@ -98,7 +98,7 @@ class EmployeeController extends Controller
     public function create(Request $request)
     {
         $stores = Store::pluck('name', 'id')->toArray();
-        $branches = Branch::pluck('name', 'id')->toArray();
+        $branches = Branch::where('type','branch')->pluck('name', 'id')->toArray();
         $jobs = JobType::pluck('title', 'id')->toArray();
         $leave_types = LeaveType::all();
         $week_days =  Employee::getWeekDays();
@@ -175,12 +175,10 @@ class EmployeeController extends Controller
             $employee = new Employee();
             $employee->employee_name = $data['name'];
             $employee->user_id = $user->id;
-            // $employee->pass_string = Crypt::encrypt($data['password']);
             $employee->pass_string = !empty($data['password']) ? Crypt::encrypt($data['password']) : null;
             $employee->date_of_start_working = $data['date_of_start_working'];
             $employee->date_of_birth = $data['date_of_birth'];
             $employee->job_type_id = $data['job_type_id'];
-            // $employee->mobile = $data['mobile'];
             // Set the mobile attribute based on user input (if provided)
             $employee->mobile = !empty($data['mobile']) ? $data['mobile'] : null;
             $employee->annual_leave_per_year = !empty($data['annual_leave_per_year']) ?  $data['annual_leave_per_year'] : 0;
@@ -223,7 +221,9 @@ class EmployeeController extends Controller
                     }
                 }
             }
-            $employee->stores()->sync($data['store_id']);
+            if(!empty($data['store_id'])){
+                $employee->stores()->sync($data['store_id']);
+            }
             //add of update number of leaves
             $this->createOrUpdateNumberofLeaves($request, $employee->id);
             //assign permissions to employee
@@ -413,8 +413,12 @@ class EmployeeController extends Controller
                     $employee->addMedia($file)->toMediaCollection('employee_files');
                 }
             }
-
-            $employee->stores()->sync($data['store_id']);
+            if(!empty($data['store_id'])){
+                $employee->stores()->sync($data['store_id']);
+            }
+            else {
+                $employee->stores()->detach();
+            }
 
             //add of update number of leaves
             $this->createOrUpdateNumberofLeaves($request, $id);

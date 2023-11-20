@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('sell_cars', function (Blueprint $table) {
             $table->id();
-            $table->string('driver_name')->nullable();
+            $table->integer('driver_id')->unsigned()->nullable();
+            $table->foreign('driver_id')->references('id')->on('employees')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
             $table->string('car_name')->nullable();
             $table->string('car_no')->nullable();
-
             $table->integer('representative_id')->unsigned()->nullable();
             $table->foreign('representative_id')->references('id')->on('employees')
                 ->onDelete('cascade')

@@ -1,26 +1,32 @@
 @extends('layouts.app')
-@section('title', __('lang.delivery'))
+@section('title', __('lang.plans'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="row align-items-center">
             <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.delivery')</h4>
+                <h4 class="page-title">@lang('lang.plans')</h4>
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        {{--                        <li class="breadcrumb-item active"><a href="#">@lang('lang.employees')</a></li>--}}
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.delivery')</li>
+                        @if((request()->segment(2).'/'.request()->segment(3)) == "representative/plan")
+                            <li class="breadcrumb-item active"><a href="{{ route('representatives.index') }}">@lang('lang.representatives')</a></li>
+                        @else
+                        <li class="breadcrumb-item active"><a href="#">@lang('lang.delivery')</a></li>
+                        @endif
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.plans')</li>
                     </ol>
                 </div>
             </div>
-            {{-- <div class="col-md-4 col-lg-4">
+             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a  class="btn btn-primary" href="{{route('employees.create')}}">@lang('lang.add_employee')</a>
-                    {{--                    <a style="color: white" href="{{ action('EmployeeController@create') }}" class="btn btn-info"><i--}}
-                    {{--                            class="dripicons-plus"></i>--}}
-                    {{--                        @lang('lang.add_new_employee')</a>--}}
-                {{-- </div>
-            </div> --}} 
+                    @if((request()->segment(2).'/'.request()->segment(3)) == "representative/plan")
+                        <a class="btn btn-primary" href="{{ route('representatives.plansList') }}">@lang('lang.show_plans')</a>
+                    @else
+
+                        <a class="btn btn-primary" href="{{route('delivery_plan.plansList')}}">@lang('lang.show_plans')</a>
+                    @endif
+                 </div>
+            </div>
         </div>
     </div>
 @endsection

@@ -1,190 +1,214 @@
-<div class="contentbar">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card m-b-30">
-                <div class="card-header">
-                    <h5 class="card-title">{{ __('site.Invoices') }}</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="form-group">
-                                <div dir="ltr" class="d-flex align-items-center justify-content-end  ">
-                                    <button id="button-addon2" type="button"
-                                        class="btn btn-success rounded-0 input-group-addon">
-                                        {{ __('site.search') }}
-                                    </button>
-                                    <input dir="rtl" type="text" class="form-control h-100"
-                                        placeholder="{{ __('site.Search_by_invoice_number') }}"
-                                        wire:model='searchinvoiveno'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                <div dir="ltr" class="d-flex align-items-center justify-content-end  ">
-                                    <button id="button-addon2" type="button" class="btn btn-success input-group-addon">
-                                        {{ __('site.search') }}
-                                    </button>
-                                    <input dir="rtl" type="text" class="form-control"
-                                        placeholder="{{ __('site.Search_by_customer_name') }}"
-                                        wire:model='searchemployee'>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <select name="" id="" wire:model='searchemployee'
-                                        class=" form-control">
-                                        <option value="">{{ __('site.Search_by_customer_name') }}</option>
-                                        @foreach (\App\Models\User::get() as $user)
-                                            <option value="{{ $user->name }}"> {{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+
+    <!-- Start Contentbar -->
+    <div class="contentbar no-print">
+        <!-- Start row -->
+        <div class="row">
+            <!-- Start col -->
+            <div class="col-lg-12">
+                <div class="card m-b-30">
+                    <div class="card-header">
+                        <h5 class="card-title">@lang('lang.sells')</h5>
                     </div>
-                    <div class="row">
-                        <div class="col-md-1">
-                            <div class="d-flex align-items-end justify-content-between flex-wrap  mb-3">
-                                <button class="btn btn-primary btn-sm mb-2 "
-                                    wire:click="$set('filter_status','')">{{ __('site.all') }}
-                                    {{ App\Models\Invoice::count() }}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
-                                <button class="btn btn-success btn-sm mb-2 "
-                                    wire:click="$set('filter_status','paid')">{{ __('site.paid') }}
-                                    {{ App\Models\Invoice::where('status', 'paid')->count() }}</button>
-                            </div>
-                        </div>
-                        <div class="col-md-1">
-                            <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-3">
-                                <button class="btn btn-danger btn-sm mb-2 "
-                                    wire:click="$set('filter_status','unpaid')">{{ __('site.spoon') }}
-                                    {{ App\Models\Invoice::where('status', 'unpaid')->count() }}</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-3">
-                            <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
-                                <div class=" w-100">
-                                    <label for="" class="small-label">{{ __('site.From') }}</label>
-                                    <input type="date" class="form-control w-100" wire:model="from">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="container-fluid">
+                                    {{-- @include('customers.filters') --}}
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
-                                <div class="w-100">
-                                    <label for="" class="small-label">{{ __('site.To') }}</label>
-                                    <input type="date" class="form-control w-100" wire:model="to">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @if (@isset($invoices) && !@empty($invoices) && count($invoices) > 0)
+                        {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
+                            <table id="datatable-buttons" class="table table-striped table-bordered">
                                 <thead>
-                                    <tr>
-                                        <th>{{ __('site.invoice_number') }}</th>
-                                        <th>{{ __('site.The_Employee') }}</th>
-                                        <th>{{ __('site.Client') }}</th>
-                                        <th>{{ __('site.Amount') }}</th>
-                                        <th>{{ __('site.Tax') }}</th>
-                                        <th>{{ __('site.Total') }}</th>
-                                        <th>{{ __('site.Discount') }}</th>
-                                        <th>{{ __('site.Cash') }}</th>
-                                        <th>{{ __('site.rest') }}</th>
-                                        <th>{{ __('site.Status') }}</th>
-                                        <th>@lang('added_by')</th>
-                                        <th>@lang('updated_by')</th>
-                                        <th>{{ __('site.Control') }}</th>
-                                    </tr>
+                                <tr>
+                                    <th>@lang('lang.date_and_time')</th>
+                                    <th>@lang('lang.reference')</th>
+                                    <th>@lang('lang.store')</th>
+                                    <th>@lang('lang.customer')</th>
+                                    <th>@lang('lang.phone')</th>
+                                    <th>@lang('lang.sale_status')</th>
+                                    <th>@lang('lang.payment_status')</th>
+                                    <th>@lang('lang.payment_type')</th>
+                                    <th>@lang('lang.ref_number')</th>
+                                    <th class="currencies">@lang('lang.received_currency')</th>
+                                    <th class="sum">@lang('lang.grand_total')</th>
+                                    <th class="sum">@lang('lang.paid')</th>
+                                    <th class="sum">@lang('lang.due_sale_list')</th>
+                                    <th>@lang('lang.payment_date')</th>
+                                    <th>@lang('lang.cashier_man')</th>
+                                    <th>@lang('lang.commission')</th>
+                                    <th>@lang('lang.products')</th>
+                                    <th>@lang('lang.sale_note')</th>
+                                    <th>@lang('lang.receipts')</th>
+                                    <th class="notexport">@lang('lang.action')</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($invoices as $index => $invoice)
-                                        <tr>
-                                            <td>{{ $invoice->id }}</td>
-                                            <td>{{ $invoice->user?->name }}</td>
-                                            <td>{{ $invoice->customer ? $invoice->customer?->name : 'عميل نقدي' }}</td>
-                                            <td>{{ $invoice->price }}</td>
-                                            <td>{{ $invoice->tax }}</td>
-                                            <td>{{ $invoice->total }}</td>
-                                            <td>{{ $invoice->discount }}</td>
-                                            <td>{{ $invoice->cash }}</td>
-                                            <td>{{ $invoice->rest }}</td>
-                                            <td>{{ __($invoice->status) }}</td>
-                                            <td>
-                                                @if ($invoice->user_id > 0 and $invoice->user_id != null)
-                                                    {{ $invoice->created_at->diffForHumans() }} <br>
-                                                    {{ $invoice->created_at->format('Y-m-d') }}
-                                                    ({{ $invoice->created_at->format('h:i') }})
-                                                    {{ $invoice->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $invoice->createBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if ($invoice->last_update > 0 and $invoice->last_update != null)
-                                                    {{ $invoice->updated_at->diffForHumans() }} <br>
-                                                    {{ $invoice->updated_at->format('Y-m-d') }}
-                                                    ({{ $invoice->updated_at->format('h:i') }})
-                                                    {{ $invoice->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $invoice->updateBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @include('invoices.action')
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                @php
+                                @endphp
+                                @foreach($sell_lines as $index => $line)
                                     <tr>
-                                        <td>{{ __('site.The_Total') }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>{{ $total }}</td>
-                                        <td></td>
-                                        <td>{{ $totalcash }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>
+                                            {{$line->transaction_date ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{$line->invoice_no ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{$line->store->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{$line->customer->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{$line->customer->phone ?? '' }}
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-success">{{$line->status ?? '' }}</span>
+                                        </td>
+                                        <td>{{$line->payment_status}}</td>
+                                        <td>
+                                            @foreach($line->transaction_payments as $payment)
+                                                {{__('lang.'.$payment->method)}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach($line->transaction_payments as $payment)
+                                                {{$payment->ref_no ?? ''}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach($line->transaction_payments as $payment)
+                                                {{$payment->received_currency_relation->symbol ?? ''}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{number_format($line->final_total,2)}}
+                                        </td>
+                                        <td>
+                                            {{$line->transaction_payments->sum('amount')}}
+                                        </td>
+                                        <td>
+                                            {{$line->final_total - $line->transaction_payments->sum('amount')}}
+                                        </td>
+                                        <td>
+                                            {{$line->transaction_payments->last()->paid_on ?? ''}}
+                                        </td>
+                                        <td>
+                                            {{$line->created_by_user->name}}
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            @foreach($line->transaction_sell_lines as $sell_line)
+                                                @if(!empty($sell_line->product))
+                                                    {{$sell_line->product->name ?? ' ' }} -
+                                                    {{ $sell_line->product->sku ?? ' ' }}<br>
+                                                @endif
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @foreach($line->transaction_payments as $payment)
+                                                {{$payment->received_currency_relation->payment_note ?? ''}}<br>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            @if(count($line->receipts) > 0)
+                                                <a data-href=" {{route('show_receipt', $line->id)}}"
+                                                   data-container=".view_modal"
+                                                   class="btn btn-default btn-modal"> {{__('lang.view')}}
+                                                </a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                @lang('lang.action')
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                                <li>
+                                                    <a data-href="{{route('print_invoice', $line->id)}}"
+                                                       class="btn print-invoice"><i class="dripicons-print"></i>
+                                                        {{ __('lang.generate_invoice') }}</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href=" {{route('pos.show', $line->id)}}" data-container=".view_modal"
+                                                       class="btn btn-modal"><i class="fa fa-eye"></i>{{ __('lang.view') }}
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{ route('show_payment', $line->id) }}"
+                                                       data-container=".view_modal" class="btn btn-modal"><i class="fa fa-money"></i>
+                                                        {{ __('lang.view_payments') }}
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="{{ route('invoices.edit', $line->id) }}" class="btn"><i
+                                                            class="dripicons-document-edit"></i> {{ __('lang.edit') }}</a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href=" {{route('upload_receipt', $line->id)}}" data-container=".view_modal" data-dismiss="modal"
+                                                       class="btn btn-modal"><i class="fa fa-plus"></i>{{ __('lang.upload_receipt') }}
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{ route('pos.destroy', $line->id) }}"
+{{--                                                       data-check_password="{{ action('UserController@checkPassword', Auth::user()->id) }} "--}}
+                                                       class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                        {{ __('lang.delete') }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
                                     </tr>
+                                @endforeach
                                 </tbody>
                             </table>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="12">
-                                        <div class="float-right">
-                                            {!! $invoices->appends(request()->all())->links() !!}
-                                        </div>
-                                    </th>
-                                </tr>
-                            </tfoot>
                         </div>
-                    @else
-                        <div class="alert alert-danger">
-                            {{ __('data_no_found') }}
-                        </div>
-                    @endif
+                    </div>
                 </div>
             </div>
+            <!-- End col -->
         </div>
+        <!-- End row -->
     </div>
-</div>
+    <!-- End Contentbar -->
+    <div class="view_modal no-print" ></div>
+    <section class="invoice print_section print-only" id="receipt_section"> </section>
 
+@push('javascripts')
+    <script>
+        document.addEventListener('livewire:load', function () {
+            Livewire.on('printInvoice', function (htmlContent) {
+                // Set the generated HTML content
+                $("#receipt_section").html(htmlContent);
+                // Trigger the print action
+                window.print("#receipt_section");
+            });
+        });
+        $(document).on("click", ".print-invoice", function () {
+            // $(".modal").modal("hide");
+            $.ajax({
+                method: "get",
+                url: $(this).data("href"),
+                data: {},
+                success: function (result) {
+                    if (result.success) {
+                        Livewire.emit('printInvoice', result.html_content);
+                    }
+                },
+            });
+        });
+    </script>
+@endpush
