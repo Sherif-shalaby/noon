@@ -1,21 +1,33 @@
 @extends('layouts.app')
 @section('title', __('lang.customer'))
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.customers')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('customers.index') }}">@lang('lang.customers')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.customer') {{ $customer->name }}</li>
-                    </ol>
+    <div class="animate-in-page">
+        <div class="breadcrumbbar m-0 px-3 py-0 mb-2">
+            <div
+                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.customers')</h4>
+                    <div class="breadcrumb-list">
+                        <ul style=" list-style: none;"
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif "><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a></li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ route('customers.index') }}">/
+                                    @lang('lang.customers')</a>
+                            </li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif  active"
+                                aria-current="page">@lang('lang.customer') {{ $customer->name }}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
+                <div class="col-md-4">
+                    <div class="widgetbar">
 
+                    </div>
                 </div>
             </div>
         </div>
@@ -26,22 +38,32 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
-                    <div class="card-header d-flex align-items-center">
+                    <div
+                        class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                         <h4>@lang('lang.employee') </h4>
                         {{--                        <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}" --}}
                         {{--                            class="btn btn-primary btn-xs" style="margin-left: 10px;"><i class="fa fa-paper-plane"></i> @lang('lang.send_credentials')</a> --}}
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label for="fname">@lang('lang.customer_type') : </label>
-                                        {{ $customer->customer_type->name ?? '' }}
+                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-10">
+                                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="fname">@lang('lang.customer_type')
+                                        </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->customer_type->name ?? '' }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="name">@lang('lang.name') : </label> {{ $customer->name }}
-
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="name">@lang('lang.name')</label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->name }}
+                                        </span>
                                     </div>
                                     @php
                                         $emailArray = explode(',', $customer->email);
@@ -55,64 +77,112 @@
                                             $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
                                         }
                                     @endphp
-                                    <div class="col-sm-6">
-                                        <label for="email">@lang('lang.email') : </label>
-                                        @foreach ($emailArray as $email)
-                                            {{ $email }}<br>
-                                        @endforeach
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="email">@lang('lang.email') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            @foreach ($emailArray as $email)
+                                                {{ $email }}<br>
+                                            @endforeach
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="email">@lang('lang.phone') : </label>
-                                        @foreach ($phoneArray as $phone)
-                                            {{ $phone }}<br>
-                                        @endforeach
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="email">@lang('lang.phone') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            @foreach ($phoneArray as $phone)
+                                                {{ $phone }}<br>
+                                            @endforeach
+                                        </span>
                                     </div>
 
-                                    <div class="col-sm-6">
-                                        <label for="date_of_start_working">@lang('lang.min_amount_in_dollar') : </label>
-                                        {{ $customer->min_amount_in_dollar }}
+                                    <div
+                                        class="col-sm-6 dollar-cell d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="date_of_start_working">@lang('lang.min_amount_in_dollar') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->min_amount_in_dollar }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="date_of_birth">@lang('lang.max_amount_in_dollar') : </label>
-                                        {{ $customer->max_amount_in_dollar }}
+                                    <div
+                                        class="col-sm-6 dollar-cell d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="date_of_birth">@lang('lang.max_amount_in_dollar') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->max_amount_in_dollar }}
+                                        </span>
                                     </div>
 
 
-                                    <div class="col-sm-6">
-                                        <label for="job_type">@lang('lang.min_amount_in_dinar') : </label>
-                                        {{ $customer->min_amount_in_dinar }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="job_type">@lang('lang.min_amount_in_dinar') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->min_amount_in_dinar }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.max_amount_in_dinar') : </label>
-                                        {{ $customer->max_amount_in_dinar }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.max_amount_in_dinar') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->max_amount_in_dinar }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.balance_in_dollar') : </label>
-                                        {{ $customer->balance_in_dollar }}
+                                    <div
+                                        class="col-sm-6 dollar-cell d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.balance_in_dollar') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->balance_in_dollar }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.balance_in_dinar') : </label>
-                                        {{ $customer->balance_in_dinar }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.balance_in_dinar') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->balance_in_dinar }}
+                                        </span>
                                     </div>
                                     @php
                                         $state = \App\Models\State::find($customer->state_id);
                                         $city = \App\Models\City::find($customer->city_id);
                                     @endphp
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.state') : </label>
-                                        {{ $state ? $state->name : '' }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.state') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $state ? $state->name : '' }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.city') : </label>
-                                        {{ $city ? $city->name : '' }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.city') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $city ? $city->name : '' }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.address') : </label>
-                                        {{ $customer->address }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.address') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->address }}
+                                        </span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label for="mobile">@lang('lang.notes') : </label>
-                                        {{ $customer->notes }}
+                                    <div
+                                        class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        <label style="font-size: 16px;font-weight: 500" class="mx-2 mb-0"
+                                            for="mobile">@lang('lang.notes') </label> :
+                                        <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                            {{ $customer->notes }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -123,21 +193,29 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-5">
-                                <label for="mobile"> @lang('lang.important_dates') </label>
+                        <div class="row  ">
+                            <div
+                                class="col-md-12 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label for="mobile" style="font-size: 16px;font-weight: 500" class="mx-2 mb-0">
+                                    @lang('lang.important_dates') </label>
                                 @if ($customer->customer_important_dates)
                                     @foreach ($customer->customer_important_dates as $date)
-                                        <br>
-                                        <div class="col-sm-6">
-                                            <label for="important_date">@lang('lang.important_date') : </label>
-                                            {{ $date->details }}
+                                        <div
+                                            class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <label style="font-size: 16px;font-weight: 500" class="mb-0 mx-2"
+                                                for="important_date">@lang('lang.important_date') </label> :
+                                            <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                                {{ $date->details }}
+                                            </span>
                                         </div>
-                                        <div class="col-sm-6">
-                                            <label for="date">@lang('lang.date') : </label>
-                                            {{ $date->date }}
+                                        <div
+                                            class="col-sm-6 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <label style="font-size: 16px;font-weight: 500" class="mb-0 mx-2"
+                                                for="date">@lang('lang.date') </label> :
+                                            <span style="font-size: 16px;font-weight: 500" class="mb-0 mx-2">
+                                                {{ $date->date }}
+                                            </span>
                                         </div>
-                                        <br>
                                     @endforeach
                                 @endif
 
