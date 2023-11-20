@@ -135,10 +135,12 @@ class Create extends Component
     public function showHideTax()
     {
         $this->item[0]['show_tax'] = !$this->item[0]['show_tax'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showHideSize()
     {
         $this->item[0]['show_size'] = !$this->item[0]['show_size'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showPrices($index)
     {
