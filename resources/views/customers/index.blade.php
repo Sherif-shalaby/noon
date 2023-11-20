@@ -303,6 +303,10 @@
                                                     </button>
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                         <li>
+                                                            <a href="{{route('customer_dues', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.dues')</a>
+                                                        </li>
+                                                        <li class="divider"></li>
+                                                        <li>
                                                             <a href="{{route('customers.show', $customer->id)}}" class="btn">
                                                                 <i class="fa fa-eye"></i>@lang('lang.view')
                                                             </a>

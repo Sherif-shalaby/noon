@@ -137,6 +137,15 @@
                         ]) !!}
                     </div>
                 </div>
+                @if($dinar_remaining != 0 || $dollar_remaining  != 0) 
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            {!! Form::label('due_date', ' تاريخ الاستحقاق', ['class' => 'text-primary']) !!}
+                            {!! Form::date('due_date', null ,['class'=>'form-control' ,'wire:model' => 'due_date']) !!}
+                        </div>
+                    </div>
+                @endif
+
                 @if (!$reprsenative_sell_car)
                 <div class="col-md-6">
                     <div class="form-group">
@@ -197,17 +206,64 @@
                 {{--                    </div> --}}
                 {{--                </div> --}}
             </div>
-            @if (!$this->checkRepresentativeUser())
-                <div class="row hide-print mt-3">
-                    <div class="col-md-5">
-                        <button style="width: 100%; background: #5b808f" type="button"
-                            class="btn btn-primary payment-btn" wire:click="pendingStatus" id="pay-later-btn"><i
-                                class="fa fa-hourglass-start"></i>
-                            @lang('lang.pay_later')</button>
+            <div class="row hide-print mt-3">
+   
+                        {{-- ++++++++++++++++++++++ زرار الدفع لاحقا++++++++++++++++++++ --}}
+                        {{-- <div class="col-md-5">
+                            <button style="width: 100%; background: #5b808f" type="button" class="btn btn-primary payment-btn"
+                                    data-toggle="modal" onclick="openDueDateModal()">
+                                <i class="fa fa-hourglass-start"></i> @lang('lang.pay_later')
+                            </button> --}}
+                @if (!$this->checkRepresentativeUser())
+                    <div class="row hide-print mt-3">
+                        <div class="col-md-5">
+                            <button style="width: 100%; background: #5b808f" type="button"
+                                class="btn btn-primary payment-btn" onclick="openDueDateModal()" id="pay-later-btn"><i
+                                    class="fa fa-hourglass-start"></i>
+                                @lang('lang.pay_later')</button>
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
+            </div>
 
         </div>
     </div>
 </div>
+<!-- Add a modal to your HTML with an input field for due date -->
+<div class="modal" tabindex="-1" role="dialog" id="dueDateModal" wire:ignore >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <label for="dueDate">Due Date:</label>
+                <input type="date" wire:model="due_date" class="form-control" id="dueDate">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submitDueDateBtn" wire:click="pendingStatus">Submit</button>
+                <button type="button" class="btn btn-secondary" id="closeDueDateBtn" wire:click="pendingStatus" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+  <script>
+     //Function to open the due date modal
+     function openDueDateModal() {
+        $('#dueDateModal').css('display', 'block');
+    }
+    
+    // Wait for the document to be ready
+    // $(document).ready(function() {
+        // Handle the "Submit" button click event
+        $('#dueDateModal').on('click', '#submitDueDateBtn', function() {
+            // Get the selected due date from the input
+            
+            // Close the modal after handling the due date
+            $('#dueDateModal').css('display', 'none');
+        });
+
+        // Handle the "Close" button click event
+        $('#dueDateModal').on('click', '#closeDueDateBtn', function() {
+            // Close the modal without performing any action
+            $('#dueDateModal').css('display', 'none');
+        });
+    // });
+  </script>

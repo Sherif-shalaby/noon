@@ -50,7 +50,7 @@ class Create extends Component
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $dollar_highest_price, $dollar_lowest_price;
+        $dollar_highest_price, $dollar_lowest_price,$due_date;
 
     protected $rules = [
         'items' => 'array|min:1',
@@ -243,6 +243,7 @@ class Create extends Component
                 //            'total_item_tax' => $this->commonUtil->num_uf($request->total_item_tax),
                 //            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
                 'created_by' => Auth::user()->id,
+                'due_date' => $this->due_date ?? null,
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
@@ -298,32 +299,31 @@ class Create extends Component
 
             // Add Payment Method
             if ($transaction->status != 'draft') {
-
-                if ($this->payment_status != 'pending') {
-                    $this->updateTransactionPaymentStatus($transaction->id);
-                } else {
-//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
-
-                    $total_paid = 0;
-                    $dollar_total_paid = 0;
-
-                    $transaction = TransactionSellLine::find($transaction->id);
-
-                    //  final_amount : 'النهائي بالدينار'
-                    $final_amount = $transaction->final_total;
-                    //  dollar_final_amount : 'النهائي بالدولار'
-                    $dollar_final_amount = $transaction->dollar_final_total;
-                    // dinar_remaining : الباقي دينار
-                    $transaction->dinar_remaining =  $final_amount;
-                    //  dollar_remaining : 'الباقي بالدولار'
-                    $transaction->dollar_remaining =  $dollar_final_amount;
-//                    $transaction_payment->amount = $total_paid;
-//                    $transaction_payment->dollar_amount = $dollar_total_paid;
-                    $this->amount = $total_paid;
-                    $this->dollar_amount = $dollar_total_paid;
-//                    $transaction_payment->save();
-                    $transaction->save();
+                if($this->payment_status == 'pending'){
+                        //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+                        
+                                            $total_paid = 0;
+                                            $dollar_total_paid = 0;
+                        
+                                            $transaction = TransactionSellLine::find($transaction->id);
+                        
+                                            //  final_amount : 'النهائي بالدينار'
+                                            $final_amount = $transaction->final_total;
+                                            //  dollar_final_amount : 'النهائي بالدولار'
+                                            $dollar_final_amount = $transaction->dollar_final_total;
+                                            // dinar_remaining : الباقي دينار
+                                            $transaction->dinar_remaining =  $final_amount;
+                                            //  dollar_remaining : 'الباقي بالدولار'
+                                            $transaction->dollar_remaining =  $dollar_final_amount;
+                        //                    $transaction_payment->amount = $total_paid;
+                        //                    $transaction_payment->dollar_amount = $dollar_total_paid;
+                                            $this->amount = $total_paid;
+                                            $this->dollar_amount = $dollar_total_paid;
+                        //                    $transaction_payment->save();
+                                            $transaction->save();
+                                      
                 }
+           
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
 
                     $payment_data = [
@@ -350,8 +350,9 @@ class Create extends Component
 
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
-
-                // update customer balance
+               
+                $this->updateTransactionPaymentStatus($transaction->id);
+               
                 $customer = Customer::find($transaction->customer_id);
                 $customer->dollar_balance += $this->dollar_amount - $this->total_dollar;
                 $customer->balance += $this->amount - $this->total;
@@ -994,7 +995,8 @@ class Create extends Component
         $payment_status = 'pending';
         if ($final_amount <= $total_paid && $dollar_final_amount <= $dollar_total_paid) {
             $payment_status = 'paid';
-        } elseif ($total_paid > 0 && $final_amount > $total_paid && $dollar_final_amount > $dollar_total_paid) {
+        }
+        elseif (($total_paid > 0 && $final_amount > $total_paid) ||( $dollar_total_paid> 0 && $dollar_final_amount > $dollar_total_paid) ) {
             $payment_status = 'partial';
         }
         $transaction->payment_status = $payment_status;

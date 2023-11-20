@@ -332,7 +332,12 @@
 
                     @endif
                 {{-- @endcan --}}
-
+                <li>
+                    <a href="{{route('dues')}}">
+                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                        <span>{{__('lang.dues')}}</span>
+                    </a>
+                </li>
 
 
               </ul>
