@@ -56,8 +56,10 @@ class WageController extends Controller
     {
         $employees = Employee::with('user')->get()->pluck('user.name', 'id');
         $payment_types = Wage::getPaymentTypes();
+        $payment_cycle = Wage::paymentCycle();
         $users = User::Notview()->pluck('name', 'id');
-        return view('employees.wages.create',compact('employees','payment_types','users'));
+        return view('employees.wages.create',
+                    compact('employees','payment_types','payment_cycle','users'));
     }
     // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
     public function getSourceByTypeDropdown($type = null)
@@ -88,9 +90,20 @@ class WageController extends Controller
             $data['date_of_creation'] = Carbon::now();
             $data['created_by'] = Auth::user()->id;
             $data['status'] = $request->submit == 'Paid' ? 'paid' : 'pending';
-            $data['payment_date'] = !empty($data['payment_date']) ? $this->Util->uf_date($data['payment_date']) : null;
-            $data['acount_period_start_date'] = !empty($data['acount_period_start_date']) ? $this->Util->uf_date($data['acount_period_start_date']) : null;
-            $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
+            // ++++++++++++++++++++ Old Code +++++++++++++++++++
+            // $data['payment_date'] = !empty($data['payment_date']) ? $this->Util->uf_date($data['payment_date']) : null;
+            // $data['acount_period_start_date'] = !empty($data['acount_period_start_date']) ? $this->Util->uf_date($data['acount_period_start_date']) : null;
+            // $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
+            // ++++++++++++++++++++ New Code +++++++++++++++++++
+            $formattedDate = Carbon::createFromFormat('m/d/Y', $data['payment_date'])->format('Y-m-d');
+            $data['payment_date'] = !empty($formattedDate) ? $formattedDate : null;
+
+            $formattedDate = Carbon::createFromFormat('m/d/Y', $data['acount_period_start_date'])->format('Y-m-d');
+            $data['acount_period_start_date'] = !empty($formattedDate) ? $formattedDate : null;
+
+            $formattedDate = Carbon::createFromFormat('m/d/Y', $data['acount_period_end_date'])->format('Y-m-d');
+            $data['acount_period_end_date'] = !empty($formattedDate) ? $formattedDate : null;
+
             $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
             $data['amount'] = !empty($data['amount']) ? (float)($data['amount']) : 0;
             $wage=Wage::create($data);
@@ -180,7 +193,17 @@ class WageController extends Controller
     {
         //
     }
-
+    // ++++++++++++++++ getEmployeePaymentCycle ++++++++++++++++
+    public function getEmployeePaymentCycle($id)
+    {
+        $employee = Employee::find($id);
+        $payment_cycles = Wage::paymentCycle();
+        if (!$employee) {
+            return response()->json(['error' => 'Employee not found'], 404);
+        }
+        // return $employee;
+        return response()->json(['payment_cycle' => $employee->payment_cycle,'payment_cycles' => $payment_cycles ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *
