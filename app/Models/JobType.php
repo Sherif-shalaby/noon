@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class JobType extends Model
 {
-
+    use HasRoles;
+    protected $guard_name = 'web'; // Specify the guard here
     protected $table = 'job_types';
     public $timestamps = true;
 

@@ -24,7 +24,7 @@
                         <h5>@lang('lang.permissions')</h5>
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     @foreach ($modulePermissionArray as $key_module => $moudle)
                     <div class="col-md-3">
                         {{$moudle}}
@@ -32,6 +32,15 @@
 
                     </div>
                     @endforeach
+                </div> --}}
+                {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        {{-- <h3>@lang('lang.user_rights')</h3>  --}}
+                    </div>
+                    <div class="col-md-12">
+                        @include('jobs.partials.permission')
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

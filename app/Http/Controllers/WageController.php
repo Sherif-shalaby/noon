@@ -93,11 +93,6 @@ class WageController extends Controller
             $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
             $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
             $data['amount'] = !empty($data['amount']) ? (float)($data['amount']) : 0;
-            $data['deductibles'] = !empty($data['deductibles']) ? $this->Util->num_uf($data['deductibles']) : 0;
-            $data['increases'] = !empty($data['increases']) ? $this->Util->num_uf($data['increases']) : 0;
-            $data['reasons_of_deductibles'] = !empty($data['reasons_of_deductibles']) ?$data['reasons_of_deductibles'] : 0;
-            $data['reasons_of_increases'] = !empty($data['reasons_of_increases']) ? $data['reasons_of_increases'] : 0;
-
             $wage=Wage::create($data);
             // +++++++++++++ upload_files validation +++++++++++++++++++++
             $validatedData = $request->validate([
@@ -216,9 +211,6 @@ class WageController extends Controller
             $data['net_amount'] = $data['net_amount'];
             $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
             $data['deductibles'] = !empty($data['deductibles']) ? $this->Util->num_uf($data['deductibles']) : 0;
-            $data['increases'] = !empty($data['increases']) ? $this->Util->num_uf($data['increases']) : 0;
-            $data['reasons_of_deductibles'] = !empty($data['reasons_of_deductibles']) ? $data['reasons_of_deductibles'] : 0;
-            $data['reasons_of_increases'] = !empty($data['reasons_of_increases']) ? $data['reasons_of_increases'] : 0;
             $data['payment_date'] = !empty($data['payment_date']) ? $this->Util->uf_date($data['payment_date']) : null;
             $data['source_id'] = !empty($data['source_id']) ? $data['source_id'] : null;
             $data['source_type'] = !empty($data['source_type']) ? $data['source_type'] : null;

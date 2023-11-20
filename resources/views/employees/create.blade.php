@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.jobs'))
+@section('title', __('lang.employee_module'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         {{-- ///////// left side //////////// --}}
@@ -131,13 +131,14 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ date_of_start_working , date_of_birth ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
-
+                                        {{-- ============= date_of_start_working ============= --}}
                                         <div class="col-sm-6">
                                             <label for="date_of_start_working">@lang('lang.date_of_start_working')</label>
                                             <input type="date" class="form-control"
                                                    name="date_of_start_working" id="date_of_start_working"
                                                    placeholder="@lang('lang.date_of_start_working')">
                                         </div>
+                                        {{-- ============= date_of_birth ============= --}}
                                         <div class="col-sm-6">
                                             <label for="date_of_birth">@lang('lang.date_of_birth')</label>
                                             <input type="date" class="form-control" name="date_of_birth"
@@ -162,11 +163,12 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ upload_files , profile_photo ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
-
+                                        {{-- ============= upload_files ============= --}}
                                         <div class="col-sm-6">
                                             <label for="upload_files">@lang('lang.upload_files')</label>
                                             {!! Form::file('upload_files[]', ['class' => 'form-control', 'multiple']) !!}
                                         </div>
+                                        {{-- ============= profile_photo ============= --}}
                                         <div class="col-md-6">
                                             <label for="photo">@lang('lang.profile_photo')</label>
                                             <input type="file" name="photo" id="photo" class="form-control" />
@@ -329,6 +331,7 @@
                     }
                 })
             })
+            // +++++++++++++++++++++++++++++++++ Permissions Table +++++++++++++++++++++++++++++++++
             $('.all_module_check_all').change(function() {
                 var all_module_check_all = $(this).prop('checked');
                 $('#permission_table > tbody > tr').each((i, tr) => {
@@ -356,6 +359,7 @@
 
                 })
             })
+            // when check "first checkbox" then check "all checkboxes" in the same column
             $('.module_check_all').change(function() {
                 let moudle_id = $(this).closest('tr').data('moudle');
                 if ($(this).prop('checked')) {
@@ -366,6 +370,7 @@
                     $('.sub_module_permission_' + moudle_id).find('.check_box').prop('checked', false);
                 }
             })
+            // "details checkboxes" column : when check "details checkbox" Then check "all checkboxes" of "details" column
             $(document).on('change', '.view_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_view').prop('checked', true);
@@ -373,6 +378,7 @@
                     $('.check_box_view').prop('checked', false);
                 }
             });
+            // "انشاء" column : when check "انشاء checkbox" Then check "all checkboxes" of in the "same row"
             $(document).on('change', '.create_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_create').prop('checked', true);
@@ -380,6 +386,15 @@
                     $('.check_box_create').prop('checked', false);
                 }
             });
+            // "edit" column : when check "تعديل checkbox" Then check "all checkboxes" of in the "same row"
+            $(document).on('change', '.edit_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_edit').prop('checked', true);
+                } else {
+                    $('.check_box_edit').prop('checked', false);
+                }
+            });
+            // "حذف" column : when check "حذف checkbox" Then check "all checkboxes" of in the "same row"
             $(document).on('change', '.delete_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_delete').prop('checked', true);
@@ -387,6 +402,7 @@
                     $('.check_box_delete').prop('checked', false);
                 }
             });
+            // Check All checkboxes in the same column
             $(document).on('focusout', '.check_in', function() {
                 $('.check_in').val($(this).val())
             })
@@ -441,59 +457,6 @@
                 // Initially update labels visibility based on the checked state of checkboxes
                 updateLabelsVisibility();
             });
-            // // ======================================== Employee Products Table ========================================
-            // // +++++++++++++++ updateSubcategories() +++++++++++++++
-            // // Function to update subcategories based on the selected category ID
-            // function updateSubcategories()
-            // {
-            //     console.log( $('body').find('.category option:selected').val() );
-            //     $.ajax({
-            //         method : "get",
-            //         url: "/employees/create/",
-            //         // get "all inputFields of form that have name and value"
-            //         // data: $('#filter_form').serialize(),
-            //         data : {
-            //             category_id : $('body').find('.category option:selected').val(),
-            //             subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
-            //             subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
-            //             subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
-            //             brand_id : $('body').find('.brand option:selected').val(),
-            //         },
-            //         success: function (response) {
-            //             console.log("The Response Data : ");
-            //             console.log(response)
-            //             // Clear existing table content
-            //             $('#productTable tbody').empty();
-            //             // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
-            //             // Assuming response.products is the array of products received from the server response
-            //             $.each(response, function(index, product) {
-            //                 console.log(product);
-            //                 var row = '<tr>' +
-            //                     '<td>' + (index + 1) + '</td>' +
-            //                     '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
-            //                     '<td>' + product.name + '</td>' +
-            //                     '<td>' + product.sku + '</td>' +
-            //                     '<td>' + (product.category ? product.category.name : '') + '</td>' +
-            //                     '<td>' +
-            //                     (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
-            //                     (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
-            //                     (product.subCategory3 ? product.subCategory3.name : '') +
-            //                     '</td>' +
-            //                     '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
-            //                     '</tr>';
-            //                 $('#productTable tbody').append(row);
-            //             });
-
-            //         },
-            //         error: function (error) {
-            //             console.error("Error fetching filtered products:", error);
-            //         }
-            //     });
-            // }
-            // // when clicking on "filter button" , call "updateSubcategories()" method
-            // $('#filter_btn').click(function(){
-            //     updateSubcategories();
-            // });
             // ======================================== Checkboxes of "products" table ========================================
             // when click on "all checkboxs" , it will checked "all checkboxes"
             $('#select_all_ids').click(function() {

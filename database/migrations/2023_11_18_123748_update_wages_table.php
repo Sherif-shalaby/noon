@@ -6,18 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /* +++++++++++++++++++ up() ++++++++++++++++++++  */
+    /* ++++++++++++++++ up() ++++++++++++++++ */
     public function up()
     {
-        Schema::table('wages', function (Blueprint $table) {
-            // $table->addColumn('decimal', 'increases');
-            // $table->addColumn('text', 'reasons_of_increases');
+        Schema::table('wages', function (Blueprint $table)
+        {
             $table->decimal('increases')->nullable()->default(0);
             $table->text('reasons_of_increases')->nullable();
         });
     }
-
-    /* +++++++++++++++++ down() +++++++++++++++++ */
+    /* ++++++++++++++++ down() ++++++++++++++++ */
     public function down()
     {
         Schema::table('wages', function (Blueprint $table) {

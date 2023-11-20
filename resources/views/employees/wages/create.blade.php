@@ -77,7 +77,7 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ فترة الحساب ++++++++++++++++++ --}}
+                        {{-- +++++++++++++++++ account_period +++++++++++++++++ --}}
                         <div class="col-md-4 account_period">
                             <div class="form-group">
                                 <label for="account_period">@lang('lang.account_period')</label>
@@ -88,7 +88,7 @@
                                 ]) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ تاريخ بدء فترة الحساب ++++++++++++++++++ --}}
+                        {{-- +++++++++++++++++ acount_period_start_date +++++++++++++++++ --}}
                         <div class="col-md-4 account_period">
                             <div class="form-group">
                                 <label for="acount_period_start_date">@lang('lang.acount_period_start_date')</label>
@@ -99,7 +99,7 @@
                                 ]) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ تاريخ انتهاء فترة الحساب ++++++++++++++++++ --}}
+                        {{-- +++++++++++++++++ acount_period_end_date +++++++++++++++++ --}}
                         <div class="col-md-4 account_period">
                             <div class="form-group">
                                 <label for="acount_period_end_date">@lang('lang.acount_period_end_date')</label>
@@ -110,52 +110,50 @@
                                 ]) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ خصومات ++++++++++++++++++ --}}
+                        {{-- ============= deductibles :  الخصومات ============= --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="deductibles">@lang('lang.deductibles')</label>
                                 {!! Form::text('deductibles', null, ['class' => 'form-control', 'placeholder' => __('lang.deductibles'), 'id' => 'deductibles']) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ أسباب الخصومات ++++++++++++++++++ --}}
+                        {{-- ============= reasons_of_deductibles : أسباب الخصومات ============= --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="reasons_of_deductibles">@lang('lang.reasons_of_deductibles')</label>
                                 {!! Form::text('reasons_of_deductibles', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => __('lang.reasons_of_deductibles')]) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ الزيادات ++++++++++++++++++ --}}
+                        {{-- ============= increases :  الزيادات ============= --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="increases">@lang('lang.increases')</label>
                                 {!! Form::text('increases', null, ['class' => 'form-control', 'placeholder' => __('lang.increases'), 'id' => 'increases']) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ أسباب الزيادات ++++++++++++++++++ --}}
+                        {{-- ============= reasons_of_increases : أسباب الزيادات ============= --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="reasons_of_increases">@lang('lang.reasons_of_increases')</label>
                                 {!! Form::text('reasons_of_increases', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => __('lang.reasons_of_increases')]) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ الصافي ++++++++++++++++++ --}}
+                        {{-- ============= net_amount : الصافي ============= --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="net_amount">@lang('lang.net_amount')</label>
-                                {!! Form::text('net_amount', null,
-                                ['class' => 'form-control', 'placeholder' => __('lang.net_amount'), 'id' => 'net_amount'])
-                                !!}
+                                {!! Form::text('net_amount', null, ['class' => 'form-control', 'placeholder' => __('lang.net_amount'), 'id' => 'net_amount']) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++ تاريخ السداد ++++++++++++++++++ --}}
                         <input type="hidden" name="amount" id="amount">
+                        {{-- ============= payment_date : تاريخ السداد ============= --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="payment_date">@lang('lang.payment_date')</label>
                                 {!! Form::text('payment_date', @format_date(date('Y-m-d')), ['class' => 'form-control datepicker', 'placeholder' => __('lang.payment_date')]) !!}
                             </div>
                         </div>
-                        {{-- ++++++++++++++++++++ مصدر الاموال +++++++++++++++++  --}}
+                        {{-- ++++++++++++++++++++ source_type +++++++++++++++++  --}}
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('source_type', __('lang.wage_source_type'), []) !!} <br>
@@ -218,6 +216,7 @@
             $('#payment_type').on('change', function()
             {
                 updateOtherPayment();
+
             });
             // ++++++++++ updateOtherPayment() +++++++++++++
             function updateOtherPayment()
@@ -243,33 +242,65 @@
                 });
             }
             // +++++++++++++++++ Calculate "net_value" : When Change "الخصومات" +++++++++++++++++
-            $('#deductibles').on('change', function() {
+            // $('#deductibles').on('keyup', function()
+            // {
+            //     // console.log("keyup keyup keyup keyup");
+            //     let deductibles = parseFloat($('#deductibles').val());
+            //     let other_payment = parseFloat($('#other_payment').val());
+            //     let net_val = 0.00 ;
+            //     if ( $('#deductibles').val() != '' && $('#deductibles').val() != undefined )
+            //     {
+            //         net_val = other_payment - deductibles;
+            //         $('#net_amount').val(net_val);
+            //     }
+            //     else
+            //     {
+            //         $('#net_amount').val(other_payment);
+            //     }
+            // })
+            // +++++++++++++++++ Calculate "salary" : When Change "الراتب" +++++++++++++++++
+            $('#other_payment').on('change', function()
+            {
                 net_salary();
-            });
-            // +++++++++++++++++ Calculate "net_value" : When Change "الزيادات" +++++++++++++++++
-            $('#increases').on('change', function() {
+            })
+            // +++++++++++++++++ Calculate "increases" : When Change "الزيادات" +++++++++++++++++
+            $('#increases').on('change', function()
+            {
                 net_salary();
-            });
-            // +++++++++++++++++ Calculate "net_value" : When Change "الراتب" +++++++++++++++++
-            $('#other_payment').on('change', function() {
+            })
+            // +++++++++++++++++ Calculate "deductibles" : When Change "الخصومات" +++++++++++++++++
+            $('#deductibles').on('change', function()
+            {
                 net_salary();
-            });
-            // +++++++++++++++++ Calculate "net_value" : When Change "الخصومات" Or "الراتب" +++++++++++++++++
+            })
+            // ++++++++++++++++++++++++ net_salary ++++++++++++++++++++++++++++
             function net_salary()
             {
                 let deductibles = parseFloat($('#deductibles').val());
                 let increases = parseFloat($('#increases').val());
                 let other_payment = parseFloat($('#other_payment').val());
 
-                if (!isNaN(deductibles) && !isNaN(other_payment) && !isNaN(increases) )
+                if ( !isNaN(deductibles) && !isNaN(other_payment) && !isNaN(increases) )
                 {
                     let netAmount = (other_payment + increases) - deductibles;
                     $('#net_amount').val(netAmount);
                     console.log(netAmount);
                 }
-                if (!isNaN(deductibles) && !isNaN(other_payment) && isNaN(increases))
+                else if (!isNaN(deductibles) && !isNaN(other_payment) && isNaN(increases))
                 {
                     let netAmount = other_payment - deductibles;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                }
+                else if (deductibles !== '' && deductibles !== undefined && isNaN(other_payment) && isNaN(increases) )
+                {
+                    netAmount = -deductibles;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                }
+                else
+                {
+                    netAmount = other_payment;
                     $('#net_amount').val(netAmount);
                     console.log(netAmount);
                 }

@@ -49,9 +49,9 @@
                                 </td>
                                 <td>{{$stock->created_by_relationship->first()->name}}</td>
                                 @if($stock->transaction_currency == 2)
-                                    <td>{{ @num_format($stock->dollar_final_total) }}</td>
+                                    <td>{{number_format($stock->dollar_final_total,2)}}</td>
                                 @else
-                                    <td>{{ @num_format($stock->final_total) }}</td>
+                                    <td>{{number_format($stock->final_total,2)}}</td>
                                 @endif
                                 <td>{{$this->calculatePaidAmount($stock->id)}}</td>
                                 <td>{{$this->calculatePendingAmount($stock->id)}}</td>
