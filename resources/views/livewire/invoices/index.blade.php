@@ -35,6 +35,7 @@
                                     <th class="sum">@lang('lang.grand_total')</th>
                                     <th class="sum">@lang('lang.paid')</th>
                                     <th class="sum">@lang('lang.due_sale_list')</th>
+                                    <th>@lang('lang.due_date')</th>
                                     <th>@lang('lang.payment_date')</th>
                                     <th>@lang('lang.cashier_man')</th>
                                     <th>@lang('lang.commission')</th>
@@ -91,6 +92,9 @@
                                         </td>
                                         <td>
                                             {{$line->final_total - $line->transaction_payments->sum('amount')}}
+                                        </td>
+                                        <td>
+                                            {{$line->transaction_payments->last()->due_date ?? ''}}
                                         </td>
                                         <td>
                                             {{$line->transaction_payments->last()->paid_on ?? ''}}

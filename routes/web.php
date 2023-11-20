@@ -154,6 +154,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
+    Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
+    
+    Route::post('customer/pay_due/{id}', [CustomerController::class,'pay_due'])->name('customers.pay_due');
+    Route::get('pay_due_view/{id}', [CustomerController::class,'pay_due_view'])->name('customers.pay_due_view');
+    
     Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
 
 
