@@ -55,7 +55,7 @@
                 <label for="created_by"></label>
                 {!! Form::select(
                     'created_by',
-                    $users, $created_by,
+                    $users, $created_by ?? __('lang.created_by') ,
                     ['class' => 'form-control select2',' data-name' => 'created_by','placeholder'=>__('lang.created_by'),'wire:model' => 'created_by']
                 ) !!}
             </div>

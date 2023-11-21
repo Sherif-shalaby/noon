@@ -638,5 +638,9 @@ return array(
     'view_plan' => 'تفاصيل الخطه',
     'upload_receipt' => 'رفع وصل استلام',
     'receipts' => 'وصولات الاستلام',
+    'supplier_returns' => 'مرتجعات الموردين',
+    'invoices' => 'الفواتير',
+    'return_invoice' => 'ارجاع الفاتوره',
+
 );
 

@@ -985,12 +985,19 @@ class Create extends Component
             }
             $price = !empty($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) : $this->num_uf($sell_price);
             $dollar_price = !empty($this->rows[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($dollar_sell_price);
+            if($this->discount_from_original_price == '0'){
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf( $total_quantity ) : 1),3) ;
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf( $total_quantity ) : 1),3) ;
+            }
+            else{
                 $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
                 $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
-                $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3);
-                $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
             }
+            $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3);
+            $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
+        }
     }
+
     public function num_uf($input_number, $currency_details = null){
         $thousand_separator  = ',';
         $decimal_separator  = '.';
