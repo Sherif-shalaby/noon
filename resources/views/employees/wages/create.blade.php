@@ -62,6 +62,7 @@
                                         'class' => 'form-control selectpicker',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
+                                        'id' => 'employee_id', // Add an id to the employee select for easier identification in JavaScript
                                     ]) !!}
                                 </div>
                                 @error('employee_id')
@@ -78,9 +79,10 @@
                                 ]) !!}
                                 <div class="input-wrapper">
                                     {!! Form::select('payment_type', $payment_types, null, [
-                                        'class' => 'form-control selectpicker',
+                                        'class' => 'select2 form-control',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
+                                        'id' => 'payment_type',
                                     ]) !!}
                                 </div>
                                 @error('payment_type')
@@ -109,16 +111,16 @@
                             </div>
 
                             <div
-                                class="col-md-3 mb-2 d-flex align-items-center account_period
+                                class="col-md-3 mb-2 d-flex align-items-center payment_cycle
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="account_period">@lang('lang.account_period')</label>
+                                    style='font-size: 12px;font-weight: 500;' for="payment_cycle">@lang('lang.select_payment_cycle')</label>
                                 <div class="input-wrapper">
-                                    {!! Form::month('account_period', null, [
-                                        'class' => 'form-control initial-balance-input m-auto width-full',
-                                        'placeholder' => __('lang.account_period'),
-                                        'id' => 'account_period',
+                                    {!! Form::select('payment_cycle', [], null, [
+                                        'class' => 'form-control select2',
+                                        'placeholder' => __('lang.please_select'),
+                                        'id' => 'payment_cycle',
                                     ]) !!}
                                 </div>
                             </div>
@@ -132,7 +134,7 @@
                                     for="acount_period_start_date">@lang('lang.acount_period_start_date')</label>
                                 <div class="input-wrapper">
                                     {!! Form::text('acount_period_start_date', null, [
-                                        'class' => 'form-control initial-balance-input m-auto width-full datepicker calculate_salary',
+                                        'class' => 'form-control initial-balance-input m-auto width-full datepicker ',
                                         'placeholder' => __('lang.acount_period_start_date'),
                                         'id' => 'acount_period_start_date',
                                     ]) !!}
@@ -147,7 +149,7 @@
                                     for="acount_period_end_date">@lang('lang.acount_period_end_date')</label>
                                 <div class="input-wrapper">
                                     {!! Form::text('acount_period_end_date', null, [
-                                        'class' => 'form-control initial-balance-input m-auto width-full datepicker calculate_salary',
+                                        'class' => 'form-control initial-balance-input m-auto width-full datepicker ',
                                         'placeholder' => __('lang.acount_period_end_date'),
                                         'id' => 'acount_period_end_date',
                                     ]) !!}
@@ -186,6 +188,40 @@
                                     ]) !!}
                                 </div>
                             </div>
+                            {{-- ============= increases :  الزيادات ============= --}}
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;' for="increases">@lang('lang.increases')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('increases', null, [
+                                        'class' => 'form-control initial-balance-input m-auto width-full',
+                                        'placeholder' => __('lang.increases'),
+                                        'id' => 'increases',
+                                    ]) !!}
+                                </div>
+                            </div>
+                            {{-- ============= reasons_of_increases : أسباب الزيادات ============= --}}
+                            <div
+                                class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="reasons_of_increases">@lang('lang.reasons_of_increases')</label>
+                                <div class="input-wrapper">
+
+                                    {!! Form::text('reasons_of_increases', null, [
+                                        'class' => 'form-control initial-balance-input m-auto width-full',
+                                        'rows' => 3,
+                                        'placeholder' => __('lang.reasons_of_increases'),
+                                    ]) !!}
+                                </div>
+                            </div>
+                            {{-- ============= net_amount : الصافي ============= --}}
                             <div
                                 class="col-md-3 mb-2 d-flex align-items-center
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -299,15 +335,50 @@
 @endsection
 @push('js')
     <script src="{{ asset('js/product/wage.js') }}"></script>
-    {{-- ++++++++++++++++ Ajax Request ++++++++++++++++ --}}
-    {{-- get "other_payment" according to "employee_id" , "payment_type" --}}
     <script>
         $(document).ready(function() {
+            // ++++++++++++++++ get "other_payment" according to "employee_id" , "payment_type" ++++++++++++++++ --}}
             // Event handler for employee_id dropdown change
             $('#employee_id').on('change', function() {
-                updateOtherPayment();
+                var employeeId = $('#employee_id').val();
+                var paymentType = $('#payment_type').val();
+                // 1- Make an AJAX request to get the payment cycle for the selected employee
+                $.ajax({
+                    url: '/get-employee-payment-cycle/' + employeeId,
+                    type: 'GET',
+                    success: function(data) {
+                        // Clear existing options
+                        $('#payment_cycle').empty();
+                        // Add new options from the payment_cycles array
+                        $('#payment_cycle').append(
+                            '<option value="" disabled selected>{{ __('lang.please_select') }}</option>'
+                            );
+                        $.each(data.payment_cycles, function(index, cycle) {
+                            var selectedAttribute = (cycle == data.payment_cycle) ?
+                                'selected' : '';
+                            $('#payment_cycle').append('<option value="' + cycle +
+                                '" ' + selectedAttribute + '>' + cycle + '</option>'
+                                );
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+                // 2- Make an AJAX request to get the payment cycle for the selected employee
+                $.ajax({
+                    url: '/get-employee-payment-cycle/' + employeeId,
+                    type: 'GET',
+                    success: function(data) {
+                        // Update the payment_cycle select box
+                        $('#payment_cycle').val(data.payment_cycle);
+                        console.log(data.payment_cycle);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             });
-
             // Event handler for payment_type dropdown change
             $('#payment_type').on('change', function() {
                 updateOtherPayment();
@@ -316,7 +387,7 @@
             function updateOtherPayment() {
                 var employeeId = $('#employee_id').val();
                 var paymentType = $('#payment_type').val();
-                // Make an AJAX request to fetch other_payment based on employee_id and payment_type
+                // 1- Make an AJAX request to fetch other_payment(salary) based on employee_id and payment_type
                 $.ajax({
                     url: '{{ route('update_other_payment') }}', // Using the named route
                     type: 'POST',
@@ -335,18 +406,58 @@
                 });
             }
             // +++++++++++++++++ Calculate "net_value" : When Change "الخصومات" +++++++++++++++++
-            $('#deductibles').on('keyup', function() {
-                // console.log("keyup keyup keyup keyup");
-                let deductibles = parseFloat($('#deductibles').val());
-                let other_payment = parseFloat($('#other_payment').val());
-                let net_val = 0.00;
-                if ($('#deductibles').val() != '' && $('#deductibles').val() != undefined) {
-                    net_val = other_payment - deductibles;
-                    $('#net_amount').val(net_val);
-                } else {
-                    $('#net_amount').val(other_payment);
-                }
+            // $('#deductibles').on('keyup', function()
+            // {
+            //     // console.log("keyup keyup keyup keyup");
+            //     let deductibles = parseFloat($('#deductibles').val());
+            //     let other_payment = parseFloat($('#other_payment').val());
+            //     let net_val = 0.00 ;
+            //     if ( $('#deductibles').val() != '' && $('#deductibles').val() != undefined )
+            //     {
+            //         net_val = other_payment - deductibles;
+            //         $('#net_amount').val(net_val);
+            //     }
+            //     else
+            //     {
+            //         $('#net_amount').val(other_payment);
+            //     }
+            // })
+            // +++++++++++++++++ Calculate "salary" : When Change "الراتب" +++++++++++++++++
+            $('#other_payment').on('change', function() {
+                net_salary();
             })
+            // +++++++++++++++++ Calculate "increases" : When Change "الزيادات" +++++++++++++++++
+            $('#increases').on('change', function() {
+                net_salary();
+            })
+            // +++++++++++++++++ Calculate "deductibles" : When Change "الخصومات" +++++++++++++++++
+            $('#deductibles').on('change', function() {
+                net_salary();
+            })
+            // ++++++++++++++++++++++++ net_salary ++++++++++++++++++++++++++++
+            function net_salary() {
+                let deductibles = parseFloat($('#deductibles').val());
+                let increases = parseFloat($('#increases').val());
+                let other_payment = parseFloat($('#other_payment').val());
+                if (!isNaN(deductibles) && !isNaN(other_payment) && !isNaN(increases)) {
+                    let netAmount = (other_payment + increases) - deductibles;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                } else if (!isNaN(deductibles) && !isNaN(other_payment) && isNaN(increases)) {
+                    let netAmount = other_payment - deductibles;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                } else if (deductibles !== '' && deductibles !== undefined && isNaN(other_payment) && isNaN(
+                        increases)) {
+                    netAmount = -deductibles;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                } else {
+                    netAmount = other_payment;
+                    $('#net_amount').val(netAmount);
+                    console.log(netAmount);
+                }
+            }
             // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
             $('#source_type').change(function() {
                 if ($(this).val() !== '') {

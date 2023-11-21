@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.jobs'))
+@section('title', __('lang.employee_module'))
 @section('breadcrumbbar')
     <style>
         .accordion-item {
@@ -238,6 +238,7 @@
                                                         'class' => 'selectpicker p-0 width-full',
                                                         'placeholder' => __('lang.select_job_type'),
                                                         'data-live-search' => 'true',
+                                                        'id' => 'job_type_id',
                                                     ]) !!}
                                                 </div>
                                             </div>
@@ -588,6 +589,14 @@
                     $('.check_box_create').prop('checked', false);
                 }
             });
+            // "edit" column : when check "تعديل checkbox" Then check "all checkboxes" of in the "same row"
+            $(document).on('change', '.edit_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_edit').prop('checked', true);
+                } else {
+                    $('.check_box_edit').prop('checked', false);
+                }
+            });
             $(document).on('change', '.delete_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_delete').prop('checked', true);
@@ -645,89 +654,39 @@
                 // Initially update labels visibility based on the checked state of checkboxes
                 updateLabelsVisibility();
             });
-            // // ======================================== Employee Products Table ========================================
-            // // +++++++++++++++ updateSubcategories() +++++++++++++++
-            // // Function to update subcategories based on the selected category ID
-            // function updateSubcategories()
-            // {
-            //     console.log( $('body').find('.category option:selected').val() );
-            //     $.ajax({
-            //         method : "get",
-            //         url: "/employees/create/",
-            //         // get "all inputFields of form that have name and value"
-            //         // data: $('#filter_form').serialize(),
-            //         data : {
-            //             category_id : $('body').find('.category option:selected').val(),
-            //             subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
-            //             subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
-            //             subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
-            //             brand_id : $('body').find('.brand option:selected').val(),
-            //         },
-            //         success: function (response) {
-            //             console.log("The Response Data : ");
-            //             console.log(response)
-            //             // Clear existing table content
-            //             $('#productTable tbody').empty();
-            //             // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
-            //             // Assuming response.products is the array of products received from the server response
-            //             $.each(response, function(index, product) {
-            //                 console.log(product);
-            //                 var row = '<tr>' +
-            //                     '<td>' + (index + 1) + '</td>' +
-            //                     '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
-            //                     '<td>' + product.name + '</td>' +
-            //                     '<td>' + product.sku + '</td>' +
-            //                     '<td>' + (product.category ? product.category.name : '') + '</td>' +
-            //                     '<td>' +
-            //                     (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
-            //                     (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
-            //                     (product.subCategory3 ? product.subCategory3.name : '') +
-            //                     '</td>' +
-            //                     '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
-            //                     '</tr>';
-            //                 $('#productTable tbody').append(row);
-            //             });
 
-            //         },
-            //         error: function (error) {
-            //             console.error("Error fetching filtered products:", error);
-            //         }
-            //     });
-            // }
-            // // when clicking on "filter button" , call "updateSubcategories()" method
-            // $('#filter_btn').click(function(){
-            //     updateSubcategories();
-            // });
             // ======================================== Checkboxes of "products" table ========================================
             // when click on "all checkboxs" , it will checked "all checkboxes"
             $('#select_all_ids').click(function() {
                 $('.checkbox_ids').prop('checked', $(this).prop('checked'));
             });
-            // ++++++++++++++++++++++++++++ submit button +++++++++++++++++++++++++
-            // $('#submit-btn').click(function(event) {
-
-            //     // Prevent the default form submission behavior
-            //     event.preventDefault();
-            //     // Serialize the form data from the form with ID 'productForm'
-            //     var formData = $('#productForm').serialize();
-
-            //     // Make the AJAX request
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/products',
-            //         data: formData,
-            //         dataType: 'json',
-            //         success: function(response) {
-            //             console.log(response.message); // Output success message
-            //             // Handle success, for example, show a success message to the user
-            //         },
-            //         error: function(error) {
-            //             console.error('Error:', error);
-            //             // Handle errors, for example, show an error message to the user
-            //         }
-            //     });
-            // });
-
+            // ++++++++++++++++++++ Get "job_type" Permissions +++++++++++++++++++++++++
+            // when select "job_type" , it will get "all permissions" of "selected job type"
+            $('#job_type_id').change(function() {
+                var jobTypeId = $(this).val();
+                console.log("The Selected 'job_type' = " + jobTypeId);
+                // Make an AJAX request to fetch permissions based on the selected job type
+                $.ajax({
+                    url: '/get-job-type-permissions/' + jobTypeId, // Replace with your actual route
+                    type: 'GET',
+                    success: function(data) {
+                        updatePermissionCheckboxes(data);
+                        console.log(data);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching job type permissions:', error);
+                    }
+                });
+            });
+            // ------- updatePermissionCheckboxes() -------------
+            function updatePermissionCheckboxes(permissions) {
+                // Uncheck all checkboxes first
+                $('.check_box').prop('checked', false);
+                // Check checkboxes based on permissions array
+                permissions.forEach(function(permission) {
+                    $('input[name="permissions[' + permission + ']"]').prop('checked', true);
+                });
+            }
         });
     </script>
     <script>

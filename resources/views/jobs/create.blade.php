@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    @foreach ($modulePermissionArray as $key_module => $moudle)
+                    {{-- @foreach ($modulePermissionArray as $key_module => $moudle)
                         <div
                             class="col-md-3 d-flex @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                             {{ $moudle }}
@@ -38,7 +38,13 @@
                             ]) !!}
 
                         </div>
-                    @endforeach
+                    @endforeach --}}
+                    <div class="col-md-12 text-center">
+                        {{-- <h3>@lang('lang.user_rights')</h3>  --}}
+                    </div>
+                    <div class="col-md-12">
+                        @include('jobs.partials.permission')
+                    </div>
                 </div>
             </div>
 
@@ -50,27 +56,122 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        var modelEl = $('.modal-jobs');
-
-        modelEl.addClass(modelEl.attr('data-animate-in'));
-
-        modelEl.on('hide.bs.modal', function(event) {
-                if (!$(this).attr('is-from-animation-end')) {
-                    event.preventDefault();
-                    $(this).addClass($(this).attr('data-animate-out'))
-                    $(this).removeClass($(this).attr('data-animate-in'))
-                }
-                $(this).removeAttr('is-from-animation-end')
+@push('javascripts')
+    <script>
+        $(document).ready(function() {
+            // +++++++++++++++++++++++++++++++++ Permissions Table +++++++++++++++++++++++++++++++++
+            // when checked the "first checkbox" of "sub_module" then check "all checkboxes" in the "same row"
+            $('.checked_all').change(function() {
+                tr = $(this).closest('tr');
+                var checked_all = $(this).prop('checked');
+                tr.find('.check_box').each(function(item) {
+                    if (checked_all === true) {
+                        $(this).prop('checked', true)
+                    } else {
+                        $(this).prop('checked', false)
+                    }
+                })
             })
-            .on('animationend', function() {
-                if ($(this).hasClass($(this).attr('data-animate-out'))) {
-                    $(this).attr('is-from-animation-end', true);
-                    $(this).modal('hide')
-                    $(this).removeClass($(this).attr('data-animate-out'))
-                    $(this).addClass($(this).attr('data-animate-in'))
+            $('.all_module_check_all').change(function() {
+                var all_module_check_all = $(this).prop('checked');
+                $('#permission_table > tbody > tr').each((i, tr) => {
+                    $(tr).find('.check_box').each(function(item) {
+                        if (all_module_check_all === true) {
+                            $(this).prop('checked', true)
+                        } else {
+                            $(this).prop('checked', false)
+                        }
+                    })
+                    $(tr).find('.module_check_all').each(function(item) {
+                        if (all_module_check_all === true) {
+                            $(this).prop('checked', true)
+                        } else {
+                            $(this).prop('checked', false)
+                        }
+                    })
+                    $(tr).find('.checked_all').each(function(item) {
+                        if (all_module_check_all === true) {
+                            $(this).prop('checked', true)
+                        } else {
+                            $(this).prop('checked', false)
+                        }
+                    })
+                })
+            })
+            // when check "first checkbox" then check "all checkboxes" in the same column
+            $('.module_check_all').change(function() {
+                let moudle_id = $(this).closest('tr').data('moudle');
+                if ($(this).prop('checked')) {
+                    $('.sub_module_permission_' + moudle_id).find('.checked_all').prop('checked', true);
+                    $('.sub_module_permission_' + moudle_id).find('.check_box').prop('checked', true);
+                } else {
+                    $('.sub_module_permission_' + moudle_id).find('.checked_all').prop('checked', false);
+                    $('.sub_module_permission_' + moudle_id).find('.check_box').prop('checked', false);
                 }
             })
-    })
-</script>
+            // "details checkboxes" column : when check "details checkbox" Then check "all checkboxes" of "details" column
+            $(document).on('change', '.view_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_view').prop('checked', true);
+                } else {
+                    $('.check_box_view').prop('checked', false);
+                }
+            });
+            // "create" column : when check "انشاء checkbox" Then check "all checkboxes" of in the "same row"
+            $(document).on('change', '.create_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_create').prop('checked', true);
+                } else {
+                    $('.check_box_create').prop('checked', false);
+                }
+            });
+            // "edit" column : when check "تعديل checkbox" Then check "all checkboxes" of in the "same row"
+            $(document).on('change', '.edit_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_edit').prop('checked', true);
+                } else {
+                    $('.check_box_edit').prop('checked', false);
+                }
+            });
+            // "حذف" column : when check "حذف checkbox" Then check "all checkboxes" of in the "same row"
+            $(document).on('change', '.delete_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_delete').prop('checked', true);
+                } else {
+                    $('.check_box_delete').prop('checked', false);
+                }
+            });
+            // Check All checkboxes in the same column
+            $(document).on('focusout', '.check_in', function() {
+                $('.check_in').val($(this).val())
+            })
+            $(document).on('focusout', '.check_out', function() {
+                $('.check_out').val($(this).val())
+            })
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var modelEl = $('.modal-jobs');
+
+            modelEl.addClass(modelEl.attr('data-animate-in'));
+
+            modelEl.on('hide.bs.modal', function(event) {
+                    if (!$(this).attr('is-from-animation-end')) {
+                        event.preventDefault();
+                        $(this).addClass($(this).attr('data-animate-out'))
+                        $(this).removeClass($(this).attr('data-animate-in'))
+                    }
+                    $(this).removeAttr('is-from-animation-end')
+                })
+                .on('animationend', function() {
+                    if ($(this).hasClass($(this).attr('data-animate-out'))) {
+                        $(this).attr('is-from-animation-end', true);
+                        $(this).modal('hide')
+                        $(this).removeClass($(this).attr('data-animate-out'))
+                        $(this).addClass($(this).attr('data-animate-in'))
+                    }
+                })
+        })
+    </script>
+@endpush

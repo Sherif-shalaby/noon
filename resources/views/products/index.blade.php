@@ -227,9 +227,7 @@
                                                                 @endphp
                                                             @endforeach
 
-
-
-                                                            @forelse($product->variations as  $variation)
+                                                            @foreach ($product->variations as $variation)
                                                                 @if (isset($unit->unit_id) && $unit->unit_id == $variation->unit_id)
                                                                     <span
                                                                         class="product_unit custom-tooltip d-flex justify-content-center align-items-center"
@@ -238,43 +236,18 @@
                                                                         data-variation_id="{{ $variation->id }}"
                                                                         data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
                                                                         <span
-                                                                            class="unit_value d-flex justify-content-center align-items-center"
-                                                                            style="font-size: 12px;font-weight: 600">{{ $product->product_stores->sum('quantity_available') }}
-                                                                        </span>
-                                                                    </span>
+                                                                            class="unit_value">{{ $product->product_stores->sum('quantity_available') }}</span></span>
+                                                                    <br>
                                                                 @else
                                                                     <span
                                                                         class="product_unit custom-tooltip d-flex justify-content-center align-items-center"
                                                                         style="font-size: 12px;font-weight: 600"
                                                                         data-tooltip="@lang('lang.stock')"
                                                                         data-variation_id="{{ $variation->id }}"
-                                                                        data-product_id="{{ $product->id }}">
-                                                                        {{ $variation->unit->name ?? '' }}
-                                                                        <span
-                                                                            class="unit_value  d-flex justify-content-center align-items-center"
-                                                                            style="font-size: 12px;font-weight: 600">
-                                                                            {{ $product->product_stores->sum('quantity_available') ?? 0 }}
-                                                                        </span>
-                                                                    </span>
+                                                                        data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
+                                                                        <span class="unit_value">0</span></span> <br>
                                                                 @endif
-                                                            @empty
-                                                                <span
-                                                                    class="product_unit custom-tooltip d-flex justify-content-center align-items-center"
-                                                                    style="font-size: 12px;font-weight: 600"
-                                                                    data-tooltip="@lang('lang.stock')"
-                                                                    data-variation_id="{{ $variation->id }}"
-                                                                    data-product_id="{{ $product->id }}">
-                                                                    {{ $variation->unit->name ?? '' }}
-                                                                    <span
-                                                                        class="unit_value  d-flex justify-content-center align-items-center"
-                                                                        style="font-size: 12px;font-weight: 600">
-                                                                        {{ $product->product_stores->sum('quantity_available') ?? 0 }}
-                                                                    </span>
-                                                                </span>
-                                                            @endforelse
-
-
-
+                                                            @endforeach
                                                         </td>
                                                         <td>
                                                             <span

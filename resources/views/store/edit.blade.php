@@ -62,6 +62,19 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    {!! Form::label('branch_id', __('lang.branch'), [
+                        'class' => 'modal-label-width',
+                    ]) !!}
+                    <div class="input-wrapper" style="width: 60%;margin-right: 14%;">
+                        {!! Form::select('branch_id', $branches, null, [
+                            'class' => 'form-control select width-full m-auto',
+                            'placeholder' => __('lang.branch'),
+                        ]) !!}
+                    </div>
+                </div>
+
+                <div
+                    class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {!! Form::label('details', __('lang.details'), ['class' => 'modal-label-width']) !!}
                     {!! Form::textarea('details', $store->details, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',

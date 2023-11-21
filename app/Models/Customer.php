@@ -59,5 +59,10 @@ class Customer extends Model
 
         return $customer_array;
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(TransactionSellLine::class,'customer_id','id');
+    }
 }
 

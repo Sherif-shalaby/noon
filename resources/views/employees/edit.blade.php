@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.employee'))
+@section('title', __('lang.edit_employee'))
 
 @section('breadcrumbbar')
     <div class="animate-in-page">
@@ -16,8 +16,12 @@
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
                                     style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
                                     @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.employees')</li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ route('employees.index') }}">/
+                                    @lang('lang.employees')</a></li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"><a
+                                    style="text-decoration: none;color: #596fd7"
+                                    href="{{ route('employees.edit', $employee->id) }}">@lang('lang.edit_employee')</a></li>
                         </ul>
                     </div>
                 </div>
@@ -291,9 +295,7 @@
                                                         {!! Form::text(
                                                             'check_out[' . $key . ']',
                                                             !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null,
-                                                            [
-                                                                'class' => 'form-control input-md check_out width-quarter time_picker m-auto',
-                                                            ],
+                                                            ['class' => 'form-control input-md check_out time_picker'],
                                                         ) !!}
                                                     </td>
                                                 </tr>

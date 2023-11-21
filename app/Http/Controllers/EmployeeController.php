@@ -150,10 +150,10 @@ class EmployeeController extends Controller
 
     }
 
-  /* =========================== store() =========================== */
-  public function store(Request $request)
-  {
-    //   return response($request);
+    /* =========================== store() =========================== */
+    public function store(Request $request)
+    {
+        //   return response($request);
         $request->validate([
             'email' => 'required|email|unique:users|max:255',
             'name' => 'required|max:255',
@@ -204,7 +204,9 @@ class EmployeeController extends Controller
             $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
             $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
             $employee->branch_id  = $request->branch_id ?? null;
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('photo'))
+
+            {
                 $employee->photo = store_file($request->file('photo'), 'employees');
             }
             $employee->save();
@@ -289,60 +291,48 @@ class EmployeeController extends Controller
         $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
         return response()->json($data);
     }
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return Application|Factory|View
-   */
-  public function edit($id)
-  {
-      $jobs = JobType::pluck('title', 'id')->toArray();
-      $customer_types = CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-      $cashiers = Employee::getDropdownByJobType('Cashier');
-      $week_days = Employee::getWeekDays();
-      $payment_cycle = Employee::paymentCycle();
-      $commission_type = Employee::commissionType();
-      $commission_calculation_period = Employee::commissionCalculationPeriod();
-      $modulePermissionArray = User::modulePermissionArray();
-//      dd()
-      $subModulePermissionArray = User::subModulePermissionArray();
-      $employee = Employee::find($id);
-      $user = User::find($employee->user_id);
-      $stores = Store::pluck('name', 'id')->toArray();
-      $branches = Branch::pluck('name', 'id')->toArray();
-      $selected_stores = $employee->stores->pluck('id');
-      $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
+  /* =========================== edit() =========================== */
+    public function edit($id)
+    {
+        $jobs = JobType::pluck('title', 'id')->toArray();
+        $customer_types = CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $cashiers = Employee::getDropdownByJobType('Cashier');
+        $week_days = Employee::getWeekDays();
+        $payment_cycle = Employee::paymentCycle();
+        $commission_type = Employee::commissionType();
+        $commission_calculation_period = Employee::commissionCalculationPeriod();
+        $modulePermissionArray = User::modulePermissionArray();
+        $subModulePermissionArray = User::subModulePermissionArray();
+        $employee = Employee::find($id);
+        $user = User::find($employee->user_id);
+        $stores = Store::pluck('name', 'id')->toArray();
+        $branches = Branch::pluck('name', 'id')->toArray();
+        $selected_stores = $employee->stores->pluck('id');
+        $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
 
-      return view('employees.edit')->with(compact(
-          'jobs',
-          'employee',
-          'stores',
-          'stores',
-          'customer_types',
-          'cashiers',
-          'week_days',
-          'payment_cycle',
-          'commission_type',
-          'products',
-          'commission_calculation_period',
-          'modulePermissionArray',
-          'subModulePermissionArray',
-          'user',
-          'selected_stores',
-          'branches'
+        return view('employees.edit')->with(compact(
+            'jobs',
+            'employee',
+            'stores',
+            'stores',
+            'customer_types',
+            'cashiers',
+            'week_days',
+            'payment_cycle',
+            'commission_type',
+            'products',
+            'commission_calculation_period',
+            'modulePermissionArray',
+            'subModulePermissionArray',
+            'user',
+            'selected_stores',
+            'branches'
       ));
 
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
-  public function update($id ,Request $request)
-  {
+    }
+    // +++++++++++++++++++++++++++++++++++ update() +++++++++++++++++++++++++++++++++
+    public function update($id ,Request $request)
+    {
         $validated = $request->validate([
             'email' => 'required|email|max:255',
             'name' => 'required|max:255'
@@ -423,7 +413,8 @@ class EmployeeController extends Controller
             //add of update number of leaves
             $this->createOrUpdateNumberofLeaves($request, $id);
 
-            if (!empty($data['permissions'])) {
+            if (!empty($data['permissions']))
+            {
                 foreach ($data['permissions'] as $key => $value) {
                     $permissions[] = $key;
                 }
@@ -453,7 +444,16 @@ class EmployeeController extends Controller
             return redirect()->back()->with('status', $output);
         }
     }
+    // +++++++++++++++++++++++++++++++++++ getJobTypePermissions() +++++++++++++++++++++++++++++++++
+    public function getJobTypePermissions($id)
+    {
+        // Get the JobType model for the specified ID
+        $jobType = JobType::findOrFail($id);
+        // Retrieve permissions associated with the job type
+        $permissions = $jobType->permissions()->pluck('name')->toArray();
+        return response()->json($permissions);
 
+    }
     /* ============================= destroy() ============================= */
     public function destroy($id)
     {

@@ -63,7 +63,7 @@
 
                 {{--  --}}
 
-                {{-- <div
+                <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {!! Form::label('branch_id', __('lang.branch'), [
                         'class' => 'modal-label-width',
@@ -74,7 +74,7 @@
                             'placeholder' => __('lang.branch'),
                         ]) !!}
                     </div>
-                </div> --}}
+                </div>
 
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

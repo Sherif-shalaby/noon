@@ -335,7 +335,21 @@
             },
         });
     });
-
+    //open edit modal for modules
+    // $(document).on('click', '.btn-modal', function(e) {
+    //     e.preventDefault();
+    //     var container = $(this).data('container');
+    //     $.ajax({
+    //         url: $(this).data('href'),
+    //         dataType: 'html',
+    //         success: function(result) {
+    //             $(container).html(result);
+    //             $('#dueModal').modal('show');
+    //             // $('.select2').select2();
+    //             // $('.datepicker').datepicker();
+    //         },
+    //     });
+    // });
     //make translation open if there is translation when edit
     $(document).ready(function() {
         $('table.editTogle')

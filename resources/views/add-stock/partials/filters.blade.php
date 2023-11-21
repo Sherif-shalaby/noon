@@ -38,7 +38,7 @@
         </div>
         <div class="col-2">
             <div class="form-group">
-                {!! Form::select('brand_id', $brands, $brand_id, [
+                {!! Form::select('supplier_id', $brands, $brand_id, [
                     'class' => 'form-control select2',
                     'placeholder' => __('lang.brand'),
                     'data-name' => 'brand_id',
@@ -59,7 +59,7 @@
         <div class="col-2">
             <div class="form-group">
                 <label for="created_by"></label>
-                {!! Form::select('created_by', $users, $created_by, [
+                {!! Form::select('created_by', $users, $created_by ?? __('lang.created_by'), [
                     'class' => 'form-control select2',
                     ' data-name' => 'created_by',
                     'placeholder' => __('lang.created_by'),

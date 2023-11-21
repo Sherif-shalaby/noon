@@ -102,7 +102,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        {{ $line->product->sku ?? '' }}
+                                                        {{ $line->product->sku }}
                                                     </td>
                                                     <td>
                                                         @if (isset($line->quantity))

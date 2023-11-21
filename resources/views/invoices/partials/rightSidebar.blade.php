@@ -158,7 +158,21 @@
                         ]) !!}
                     </div>
                 </div>
-
+                @if ($dinar_remaining != 0 || $dollar_remaining != 0)
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            {!! Form::label('due_date', ' تاريخ الاستحقاق', [
+                                'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                            ]) !!}
+                            {!! Form::date('due_date', null, [
+                                'class' => 'form-control py-1',
+                                'style' => 'height:30px',
+                                'wire:model' => 'due_date',
+                            ]) !!}
+                        </div>
+                    </div>
+                @endif
 
             </div>
 
@@ -273,3 +287,42 @@
         </div>
     </div>
 </div>
+<!-- Add a modal to your HTML with an input field for due date -->
+<div class="modal" tabindex="-1" role="dialog" id="dueDateModal" wire:ignore>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <label for="dueDate">Due Date:</label>
+                <input type="date" wire:model="due_date" class="form-control" id="dueDate">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="submitDueDateBtn"
+                    wire:click="pendingStatus">Submit</button>
+                <button type="button" class="btn btn-secondary" id="closeDueDateBtn" wire:click="pendingStatus"
+                    data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //Function to open the due date modal
+    function openDueDateModal() {
+        $('#dueDateModal').css('display', 'block');
+    }
+
+    // Wait for the document to be ready
+    // $(document).ready(function() {
+    // Handle the "Submit" button click event
+    $('#dueDateModal').on('click', '#submitDueDateBtn', function() {
+        // Get the selected due date from the input
+
+        // Close the modal after handling the due date
+        $('#dueDateModal').css('display', 'none');
+    });
+    // Handle the "Close" button click event
+    $('#dueDateModal').on('click', '#closeDueDateBtn', function() {
+        // Close the modal without performing any action
+        $('#dueDateModal').css('display', 'none');
+    });
+    // });
+</script>

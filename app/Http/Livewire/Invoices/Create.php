@@ -50,7 +50,7 @@ class Create extends Component
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $dollar_highest_price, $dollar_lowest_price;
+        $dollar_highest_price, $dollar_lowest_price,$due_date;
 
     protected $rules = [
         'items' => 'array|min:1',
@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice','changePrices'];
 
     public function listenerReferenceHere($data)
     {
@@ -83,7 +83,6 @@ class Create extends Component
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function mount(Util $commonUtil)
     {
@@ -197,10 +196,8 @@ class Create extends Component
 
     public function changeAllProducts()
     {
-        $this->check_items_store();
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
@@ -245,6 +242,7 @@ class Create extends Component
                 //            'total_item_tax' => $this->commonUtil->num_uf($request->total_item_tax),
                 //            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
                 'created_by' => Auth::user()->id,
+                'due_date' => $this->due_date ?? null,
             ];
             DB::beginTransaction();
             $transaction = TransactionSellLine::create($transaction_data);
@@ -300,32 +298,31 @@ class Create extends Component
 
             // Add Payment Method
             if ($transaction->status != 'draft') {
-
-                if ($this->payment_status != 'pending') {
-                    $this->updateTransactionPaymentStatus($transaction->id);
-                } else {
-                    //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
-
-                    $total_paid = 0;
-                    $dollar_total_paid = 0;
-
-                    $transaction = TransactionSellLine::find($transaction->id);
-
-                    //  final_amount : 'النهائي بالدينار'
-                    $final_amount = $transaction->final_total;
-                    //  dollar_final_amount : 'النهائي بالدولار'
-                    $dollar_final_amount = $transaction->dollar_final_total;
-                    // dinar_remaining : الباقي دينار
-                    $transaction->dinar_remaining =  $final_amount;
-                    //  dollar_remaining : 'الباقي بالدولار'
-                    $transaction->dollar_remaining =  $dollar_final_amount;
-                    //                    $transaction_payment->amount = $total_paid;
-                    //                    $transaction_payment->dollar_amount = $dollar_total_paid;
-                    $this->amount = $total_paid;
-                    $this->dollar_amount = $dollar_total_paid;
-                    //                    $transaction_payment->save();
-                    $transaction->save();
+                if($this->payment_status == 'pending'){
+                        //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+                        
+                                            $total_paid = 0;
+                                            $dollar_total_paid = 0;
+                        
+                                            $transaction = TransactionSellLine::find($transaction->id);
+                        
+                                            //  final_amount : 'النهائي بالدينار'
+                                            $final_amount = $transaction->final_total;
+                                            //  dollar_final_amount : 'النهائي بالدولار'
+                                            $dollar_final_amount = $transaction->dollar_final_total;
+                                            // dinar_remaining : الباقي دينار
+                                            $transaction->dinar_remaining =  $final_amount;
+                                            //  dollar_remaining : 'الباقي بالدولار'
+                                            $transaction->dollar_remaining =  $dollar_final_amount;
+                        //                    $transaction_payment->amount = $total_paid;
+                        //                    $transaction_payment->dollar_amount = $dollar_total_paid;
+                                            $this->amount = $total_paid;
+                                            $this->dollar_amount = $dollar_total_paid;
+                        //                    $transaction_payment->save();
+                                            $transaction->save();
+                                      
                 }
+           
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
 
                     $payment_data = [
@@ -352,8 +349,9 @@ class Create extends Component
 
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
-
-                // update customer balance
+               
+                $this->updateTransactionPaymentStatus($transaction->id);
+               
                 $customer = Customer::find($transaction->customer_id);
                 $customer->dollar_balance += $this->dollar_amount - $this->total_dollar;
                 $customer->balance += $this->amount - $this->total;
@@ -460,14 +458,11 @@ class Create extends Component
             ->get();
     }
 
-
-    // Livewire method to redirect to customer details
     public function redirectToCustomerDetails($clientId)
     {
-        $route = route('customers.show', $clientId);
-        $this->emit('openNewTab', ['route' => $route]);
-        $this->dispatchBrowserEvent('componentRefreshed');
+        return redirect()->route('customers.show', $clientId);
     }
+
     public function addCustomer()
     {
         $this->add_customer['created_by'] = Auth::user()->id;
@@ -554,14 +549,12 @@ class Create extends Component
                     'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
                     'stores' => $product_stores,
                     'unit_id' => ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->variation_id ?? '',
-                    'store_id' => $this->store_id,
                 ];
                 array_unshift($this->items, $new_item);
             }
         }
         $this->computeForAll();
         //        $this->sumSubTotal();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function cancel()
@@ -645,7 +638,6 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
         }
         $this->computeForAll();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function decrement($key)
@@ -655,7 +647,6 @@ class Create extends Component
             $this->subtotal($key);
         }
         $this->computeForAll();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function delete_item($key)
@@ -1000,7 +991,8 @@ class Create extends Component
         $payment_status = 'pending';
         if ($final_amount <= $total_paid && $dollar_final_amount <= $dollar_total_paid) {
             $payment_status = 'paid';
-        } elseif ($total_paid > 0 && $final_amount > $total_paid && $dollar_final_amount > $dollar_total_paid) {
+        }
+        elseif (($total_paid > 0 && $final_amount > $total_paid) ||( $dollar_total_paid> 0 && $dollar_final_amount > $dollar_total_paid) ) {
             $payment_status = 'partial';
         }
         $transaction->payment_status = $payment_status;
@@ -1511,16 +1503,6 @@ class Create extends Component
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
-        }
-    }
-    public function check_items_store()
-    {
-        if (!empty($this->items)) {
-            foreach ($this->items  as $key => $item) {
-                if ($item['store_id'] != $this->store_id) {
-                    unset($this->items[$key]);
-                }
-            }
         }
     }
 }

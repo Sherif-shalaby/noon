@@ -410,6 +410,71 @@
                     </li>
                 @endif
                 {{-- @endcan  --}}
+                {{-- ###################### Supplier Returns :  المرتجعات للموردين ###################### --}}
+                @if (!empty($module_settings['return_module']))
+                    <li class="scroll mx-2 mb-0 p-0 dropdown">
+                        <a href="javaScript:void();"
+                            class="d-flex align-items-center text-decoration-none @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif dropdown-toggle"
+                            data-toggle="dropdown">
+                            <div style="width: 25px">
+                                <svg version="1.1" id="Layer_1" style="width: 100%"
+                                    xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 64 64"
+                                    style="enable-background:new 0 0 64 64" xml:space="preserve">
+                                    <style>
+                                        .st1 {
+                                            fill: #81d4fa;
+                                            stroke: #0277bd;
+                                            stroke-linecap: round;
+                                            stroke-linejoin: round;
+                                            stroke-miterlimit: 10
+                                        }
+                                    </style>
+                                    <g id="Easy_Returns">
+                                        <path class="st1"
+                                            d="M32 61.5C17.4 61.5 5.5 49.6 5.5 35c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5C8.5 48 19 58.5 32 58.5S55.5 48 55.5 35 45 11.5 32 11.5c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5c14.6 0 26.5 11.9 26.5 26.5S46.6 61.5 32 61.5z" />
+                                        <path class="st1"
+                                            d="M35 17.5c-.4 0-.8-.1-1.1-.4l-6-6c-.6-.6-.6-1.5 0-2.1l6-6c.6-.6 1.5-.6 2.1 0 .6.6.6 1.5 0 2.1L31.1 10l4.9 4.9c.6.6.6 1.5 0 2.1-.2.4-.6.5-1 .5z" />
+                                        <path d="M46 48.5H18c-.6 0-1-.4-1-1v-17h30v17c0 .6-.4 1-1 1z"
+                                            style="fill:#ffa726;stroke:#0277bd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
+                                        <path d="M19 46.5h26"
+                                            style="fill:none;stroke:#f57c00;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
+                                        <path d="M19 32.5h26"
+                                            style="fill:none;stroke:#ffcc80;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
+                                        <path
+                                            style="fill:#eee;stroke:#0277bd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10"
+                                            d="M20 40.5h6v4h-6z" />
+                                        <path
+                                            d="M16 22.5v7c0 .6.4 1 1 1h30c.6 0 1-.4 1-1v-7c0-.6-.4-1-1-1H17c-.6 0-1 .4-1 1z"
+                                            style="fill:#ec407a;stroke:#0277bd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
+                                        <path d="M18 23.5h28"
+                                            style="fill:none;stroke:#f48fb1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
+                                        <path d="M18 28.5h28"
+                                            style="fill:none;stroke:#d81b60;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <span class="mx-2" style="font-weight: 600">{{ __('lang.supplier_returns') }}</span>
+                        </a>
+                        <ul
+                            class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            <li>
+                                <a class="product-return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    href="{{ route('suppliers.returns.products') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
+                                        class="mdi mdi-circle"></i>
+                                    @lang('lang.products')
+                                </a>
+                            </li>
+                            <li>
+                                <a class="supplier-return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    href="{{ route('suppliers.returns.invoices') }}"
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;">
+                                    <i class="mdi mdi-circle"></i>
+                                    @lang('lang.invoices')</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 {{-- ###################### Employees : الموظفين ###################### --}}
                 {{-- @can('employee_module')  --}}
                 @if (!empty($module_settings['employee_module']))
@@ -1600,9 +1665,17 @@
                     </li>
                 @endif
                 {{-- @endcan --}}
+                <li>
+                    <a class="due-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                        style="cursor: pointer;font-weight: 600;text-decoration: none" href="{{ route('dues') }}">
+                        {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid" alt="components"> --}}
+                        <span>{{ __('lang.dues') }}</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
+
 </nav>
 <!-- End Horizontal Nav -->
 {{-- </div>
@@ -1667,6 +1740,18 @@
     $('.return-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('sell_return.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.product-return-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('suppliers.returns.products') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.supplier-return-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('suppliers.returns.invoices') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
@@ -1878,6 +1963,12 @@
     $('.representative_salary_report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('representative_salary_report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.due-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('dues') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
