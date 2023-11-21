@@ -221,6 +221,7 @@
                         // Clear existing options
                         $('#payment_cycle').empty();
                         // Add new options from the payment_cycles array
+                        $('#payment_cycle').append('<option value="" disabled selected>{{ __('lang.please_select') }}</option>');
                         $.each(data.payment_cycles, function(index, cycle)
                         {
                             var selectedAttribute = (cycle == data.payment_cycle) ? 'selected' : '';
