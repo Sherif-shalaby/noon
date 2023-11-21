@@ -251,6 +251,10 @@ Route::group(['middleware' => ['auth']], function () {
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
 
+    // supplier Returns
+    Route::view('suppliers/return/products','suppliers.returns.product')->name('suppliers.returns.products');
+    Route::view('suppliers/return/invoices','suppliers.returns.invoice')->name('suppliers.returns.invoices');
+
     // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');
     //suppliers

@@ -597,6 +597,10 @@ return [
     'view_plan' => 'View Plan',
     'upload_receipt' => 'Upload Receipt',
     'receipts' => 'Receipts',
+    'supplier_returns' => 'Supplier Returns',
+    'invoices' => 'Invoices',
+    'return_invoice' => 'Return Invoice'
+
 ];
 
 
