@@ -90,20 +90,9 @@ class WageController extends Controller
             $data['date_of_creation'] = Carbon::now();
             $data['created_by'] = Auth::user()->id;
             $data['status'] = $request->submit == 'Paid' ? 'paid' : 'pending';
-            // ++++++++++++++++++++ Old Code +++++++++++++++++++
-            // $data['payment_date'] = !empty($data['payment_date']) ? $this->Util->uf_date($data['payment_date']) : null;
-            // $data['acount_period_start_date'] = !empty($data['acount_period_start_date']) ? $this->Util->uf_date($data['acount_period_start_date']) : null;
-            // $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
-            // ++++++++++++++++++++ New Code +++++++++++++++++++
-            $formattedDate = Carbon::createFromFormat('m/d/Y', $data['payment_date'])->format('Y-m-d');
-            $data['payment_date'] = !empty($formattedDate) ? $formattedDate : null;
-
-            $formattedDate = Carbon::createFromFormat('m/d/Y', $data['acount_period_start_date'])->format('Y-m-d');
-            $data['acount_period_start_date'] = !empty($formattedDate) ? $formattedDate : null;
-
-            $formattedDate = Carbon::createFromFormat('m/d/Y', $data['acount_period_end_date'])->format('Y-m-d');
-            $data['acount_period_end_date'] = !empty($formattedDate) ? $formattedDate : null;
-
+            $data['payment_date'] = !empty($data['payment_date']) ? $this->Util->uf_date($data['payment_date']) : null;
+            $data['acount_period_start_date'] = !empty($data['acount_period_start_date']) ? $this->Util->uf_date($data['acount_period_start_date']) : null;
+            $data['acount_period_end_date'] = !empty($data['acount_period_end_date']) ? $this->Util->uf_date($data['acount_period_end_date']) : null;
             $data['other_payment'] = !empty($data['other_payment']) ? $data['other_payment'] : 0;
             $data['amount'] = !empty($data['amount']) ? (float)($data['amount']) : 0;
             $wage=Wage::create($data);
