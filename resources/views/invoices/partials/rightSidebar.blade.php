@@ -86,7 +86,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('dollar_grand_total', $total_dollar, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'data-live-search' => 'true',
                             'readonly',
@@ -104,7 +104,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('dollar_discount', null, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'wire:model' => 'discount_dollar',
                             'wire:change' => 'changeDollarTotal',
@@ -120,7 +120,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('dollar_final_total', $dollar_final_total, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'readonly',
                         ]) !!}
@@ -135,7 +135,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('dollar_amount', null, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'wire:model' => 'dollar_amount',
                             'wire:change' => 'changeReceivedDollar',
@@ -151,7 +151,7 @@
                             'style' => 'width:100%;font-weight: 700;font-size: 10px',
                         ]) !!}
                         {!! Form::number('dollar_remaining', $dollar_remaining, [
-                            'class' => 'form-control py-1',
+                            'class' => 'form-control p-1',
                             'style' => 'height:30px',
                             'readonly',
                             'wire:model' => 'dollar_remaining',
@@ -166,7 +166,7 @@
                                 'style' => 'width:100%;font-weight: 700;font-size: 10px',
                             ]) !!}
                             {!! Form::date('due_date', null, [
-                                'class' => 'form-control py-1',
+                                'class' => 'form-control p-1',
                                 'style' => 'height:30px',
                                 'wire:model' => 'due_date',
                             ]) !!}
@@ -178,22 +178,22 @@
 
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
-                @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car)
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            {!! Form::label('delivery_cost', __('lang.delivery_cost'), [
-                                'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
-                                'style' => 'width:100%;font-weight: 700;font-size: 10px',
-                            ]) !!}
-                            {!! Form::number('delivery_cost', null, [
-                                'class' => 'form-control py-1',
-                                'style' => 'height:30px',
-                                'wire:model' => 'delivery_cost',
-                                'placeholder' => __('lang.delivery_cost'),
-                            ]) !!}
-                        </div>
+                {{-- @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car) --}}
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        {!! Form::label('delivery_cost', __('lang.delivery_cost'), [
+                            'class' => app()->isLocale('ar') ? 'text-end text-primary' : 'text-start text-primary',
+                            'style' => 'width:100%;font-weight: 700;font-size: 10px',
+                        ]) !!}
+                        {!! Form::number('delivery_cost', null, [
+                            'class' => 'form-control py-1',
+                            'style' => 'height:30px',
+                            'wire:model' => 'delivery_cost',
+                            'placeholder' => __('lang.delivery_cost'),
+                        ]) !!}
                     </div>
-                @endif
+                </div>
+                {{-- @endif --}}
                 {{-- +++++++++++ الاجمالي بالدينار +++++++++++ --}}
                 <div class="col-sm-2">
                     <div class="form-group">
@@ -222,7 +222,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-                        
+
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}

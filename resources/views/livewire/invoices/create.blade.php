@@ -389,7 +389,7 @@
                                                         <input class="form-control dinarPrice"
                                                             data-key="{{ $key }}" type="text"
                                                             wire:model="items.{{ $key }}.price"
-                                                            style="width: 65px" />
+                                                            style="font-weight: 700;font-size: 10px;width: 65px" />
                                                         {{-- {{ $item['price'] ?? '' }} --}}
                                                     </div>
                                                 </td>
@@ -401,7 +401,7 @@
                                                         <input class="form-control dollarPrice"
                                                             data-key="{{ $key }}" type="text"
                                                             wire:model="items.{{ $key }}.dollar_price"
-                                                            style="width: 65px" />
+                                                            style="font-weight: 700;font-size: 10px;width: 65px" />
                                                         {{-- {{ number_format($item['dollar_price'] ?? 0, 2) }} --}}
                                                     </div>
                                                 </td>
