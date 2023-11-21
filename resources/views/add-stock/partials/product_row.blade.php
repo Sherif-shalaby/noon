@@ -4,13 +4,13 @@
     </td>
     <td title="{{__('lang.products')}}">
 {{--        @if($product['show_product_data'])--}}
-            {{ $product['product']['name'] ?? '' }}
+            {{ $product['product']['name'] }}
 {{--        @endif--}}
     </td>
     <td title="{{__('lang.sku')}}">
 {{--        @if($product['show_product_data'])--}}
 
-            {{ $product['product']['sku'] ?? '' }}
+            {{ $product['product']['sku'] }}
 {{--        @endif--}}
     </td>
     <td title="{{__('lang.quantity')}}">
@@ -21,8 +21,7 @@
         @enderror
     </td>
     <td title="{{__('lang.unit')}}">
-{{--        @dd($product['variations'])--}}
-        @if(!empty($product['variations']) && count($product['variations']) > 0)
+        @if(count($product['variations']) > 0)
             <div class="d-flex justify-content-center">
                 <select name="items.{{$index}}.variation_id" class="form-control select unit_name" style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
                     <option value="" selected>{{__('lang.please_select')}}</option>
@@ -187,11 +186,9 @@
         </div>
     </td>
     <td>
-        @if(!empty($product['product']['id']))
-            <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},'unit',{{$index}},1)" type="button">
-                <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
-            </button>
-        @endif
+        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},'unit',{{$index}},1)" type="button">
+            <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
+        </button>
     </td>
 </tr>
 

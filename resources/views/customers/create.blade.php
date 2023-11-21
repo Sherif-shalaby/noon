@@ -374,7 +374,7 @@
                 {
                     $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
                 });
-            }
+        }
         })
     });
 </script>

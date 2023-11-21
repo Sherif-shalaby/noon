@@ -21,6 +21,7 @@
                                 {!! Form::text('fixed_wage_value', !empty($employee->fixed_wage_value) ? $employee->fixed_wage_value : null, ['class' => 'form-control salary_fields', 'placeholder' => __('lang.enter_the_fixed_wage')]) !!}
                             </div>
                         </div>
+                        {{-- +++++++++++++++++ دورة الدفع +++++++++++++++++ --}}
                         {!! Form::select('payment_cycle', $payment_cycle, !empty($employee->payment_cycle) ? $employee->payment_cycle : null, ['class' => 'form-control salary_select select2',  'placeholder' => __('lang.select_payment_cycle')]) !!}
                     </div>
                     <div class="col-md-6">
