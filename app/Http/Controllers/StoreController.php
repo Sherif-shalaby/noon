@@ -129,6 +129,7 @@ class StoreController extends Controller
       try {
           $data = $request->except('_token', '_method');
           $data['updated_by'] = Auth::user()->id;
+          $data['branch_id'] = (int) $request->branch_id;
           $store = Store::find($id);
           $store->update($data);
 
