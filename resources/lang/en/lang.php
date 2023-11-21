@@ -90,6 +90,7 @@ return [
     'enter_the_fixed_wage' => 'Enter the Fixed Wage',
     'enter_the_commission_%' => 'Enter the Commission %',
     'select_payment_cycle' => 'Select Payment Cycle',
+    'payment_cycle' => 'Payment Cycle' ,
     'select_commission_type' => 'Select Commission Type',
     'select_commission_calculation_period' => 'Select Commission Calculation Period',
     'cashiers' => 'Cashiers',
@@ -173,6 +174,7 @@ return [
     'payment_type'=>'Payment Type',
     'other_payment'=>'Salary',
     'account_period'=>'Account Period',
+    'account_method'=>'Account Method',
     'acount_period_start_date'=>'Acount Period Start Date',
     'acount_period_end_date'=>'Acount Period End Date',
     'deductibles'=>'Deductibles',
@@ -597,6 +599,10 @@ return [
     'view_plan' => 'View Plan',
     'upload_receipt' => 'Upload Receipt',
     'receipts' => 'Receipts',
+    'supplier_returns' => 'Supplier Returns',
+    'invoices' => 'Invoices',
+    'return_invoice' => 'Return Invoice'
+
 ];
 
 

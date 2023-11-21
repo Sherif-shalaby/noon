@@ -176,48 +176,6 @@ class Create extends Component
             // $this->changeExchangeRateBasedPrices();
         }
     }
-    public function mount()
-    {
-        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
-        if ($this->clear_all_input_stock_form == 0) {
-            $recent_stock = [];
-        } else {
-            $recent_stock = StockTransaction::where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
-            if (!empty($recent_stock)) {
-                $this->item[0]['store_id'] = $recent_stock->store_id;
-                $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
-                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
-                $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
-                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
-                if (!empty($this->item[0]['category_id'])) {
-                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
-                if (!empty($this->item[0]['subcategory_id1'])) {
-                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                if(count($this->subcategories2) > 0 ){
-                    $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
-                }
-                if (!empty($this->item[0]['subcategory_id2'])) {
-                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                if(count($this->subcategories3) > 0 ){
-                    $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
-                }
-                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
-                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
-                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
-                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->weight ?? null;
-                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
-                $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request ?? null;
-
-
-            }
-        }
-        $this->exchange_rate = $this->changeExchangeRate();
-        $this->dispatchBrowserEvent('initialize-select2');
-    }
     public function render()
     {
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
@@ -248,7 +206,44 @@ class Create extends Component
             )
         );
     }
+    public function mount()
+    {
+        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
+        if ($this->clear_all_input_stock_form == 0) {
+            $recent_stock = [];
+        } else {
+            $recent_stock = StockTransaction::where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
+            if (!empty($recent_stock)) {
+                $this->item[0]['store_id'] = $recent_stock->store_id;
+                $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
+                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
+                $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
+                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
+                if (!empty($this->item[0]['category_id'])) {
+                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
+                if (!empty($this->item[0]['subcategory_id1'])) {
+                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
+                if (!empty($this->item[0]['subcategory_id2'])) {
+                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
+                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
+                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
+                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->weight ?? null;
+                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
+                $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request ?? null;
 
+
+            }
+        }
+        $this->exchange_rate = $this->changeExchangeRate();
+        $this->dispatchBrowserEvent('initialize-select2');
+    }
 
     public function setSubCategoryValue($value)
     {
@@ -325,7 +320,7 @@ class Create extends Component
         }
         if ($unit_index !== '') {
             $this->rows[$index]['equal'] = 1;
-//            $this->rows[$index]['quantity'] = 0;
+            $this->rows[$index]['quantity'] = 0;
             $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
             if ((float)$this->rows[$unit_index]['equal'] != 0) {
                 $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price']) / (float)$this->rows[$unit_index]['equal']);
@@ -369,7 +364,7 @@ class Create extends Component
         }
         if ($unit_index !== '') {
             // $this->rows[$index]['equal'] = 1;
-//            $this->rows[$index]['quantity'] = 0;
+            $this->rows[$index]['quantity'] = 0;
             $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
             if ((float)$this->rows[$unit_index]['equal'] != 0) {
                 $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price'])) * (float)$this->rows[$index]['equal'];
@@ -387,7 +382,7 @@ class Create extends Component
             }
         }else{
             if ($basic_unit_index !== '') {
-//                $this->rows[$index]['quantity'] = 0;
+                $this->rows[$index]['quantity'] = 0;
                 $this->rows[$index]['fill_type'] = $this->rows[$basic_unit_index]['fill_type'];
                 if ((float)$this->rows[$basic_unit_index]['equal'] != 0) {
                     $this->rows[$index]['dollar_purchase_price'] = number_format(($this->num_uf($this->rows[$basic_unit_index]['dollar_purchase_price']) / (float)$this->rows[$basic_unit_index]['equal']) * (float)$this->rows[$index]['equal'],3);
@@ -1000,8 +995,9 @@ class Create extends Component
             }
             $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3);
             $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
-            }
+        }
     }
+
     public function num_uf($input_number, $currency_details = null){
         $thousand_separator  = ',';
         $decimal_separator  = '.';

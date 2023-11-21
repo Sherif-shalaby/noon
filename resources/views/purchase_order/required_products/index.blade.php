@@ -72,7 +72,9 @@
                                                         {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
                                                         <td>
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][product_id]" value="{{ $requiredProduct->product_id }}">
-                                                            {{ !empty($requiredProduct->product_id) ? $requiredProduct->product->name : '' }}
+                                                            {{-- {{ !empty($requiredProduct->product_id) ? $requiredProduct->product->name : '' }} --}}
+                                                            {{ !empty($requiredProduct->product_id) && !is_null($requiredProduct->product) ? $requiredProduct->product->name : '' }}
+
                                                         </td>
                                                         {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
                                                         <td>

@@ -40,16 +40,10 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('employee_id', __('lang.employee') . ':*') !!}
-                                {{-- {!! Form::select('employee_id', $employees, null, [
-                                    'class' => 'form-control select2',
-                                    'required',
-                                    'placeholder' => __('lang.please_select'),
-                                ]) !!} --}}
                                 {!! Form::select('employee_id', $employees, null, [
                                     'class' => 'form-control select2',
                                     'required',
                                     'placeholder' => __('lang.please_select'),
-                                    'id' => 'employee_id', // Add an id to the employee select for easier identification in JavaScript
                                 ]) !!}
                                 @error('employee_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -60,7 +54,11 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {!! Form::label('payment_type', __('lang.wage_payment_type') . ':*') !!}
-                                {!! Form::select('payment_type', $payment_types, null, ['class' => 'select2 form-control','required','placeholder' => __('lang.please_select'),'id' => 'payment_type']) !!}
+                                {!! Form::select('payment_type', $payment_types, null, [
+                                    'class' => 'form-control select2',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                ]) !!}
                                 @error('payment_type')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
@@ -79,14 +77,14 @@
                                 @enderror
                             </div>
                         </div>
-                        {{-- +++++++++++++++++ Payment_Cycle +++++++++++++++++ --}}
-                        <div class="col-md-4 payment_cycle">
+                        {{-- +++++++++++++++++ account_period +++++++++++++++++ --}}
+                        <div class="col-md-4 account_period">
                             <div class="form-group">
-                                <label for="payment_cycle">@lang('lang.select_payment_cycle')</label>
-                                {!! Form::select('payment_cycle', [], null, [
-                                    'class' => 'form-control select2',
-                                    'placeholder' => __('lang.please_select'),
-                                    'id' => 'payment_cycle',
+                                <label for="account_period">@lang('lang.account_period')</label>
+                                {!! Form::month('account_period', null, [
+                                    'class' => 'form-control',
+                                    'placeholder' => __('lang.account_period'),
+                                    'id' => 'account_period',
                                 ]) !!}
                             </div>
                         </div>
@@ -95,7 +93,7 @@
                             <div class="form-group">
                                 <label for="acount_period_start_date">@lang('lang.acount_period_start_date')</label>
                                 {!! Form::text('acount_period_start_date', null, [
-                                    'class' => 'form-control datepicker',
+                                    'class' => 'form-control  datepicker calculate_salary',
                                     'placeholder' => __('lang.acount_period_start_date'),
                                     'id' => 'acount_period_start_date',
                                 ]) !!}
@@ -106,7 +104,7 @@
                             <div class="form-group">
                                 <label for="acount_period_end_date">@lang('lang.acount_period_end_date')</label>
                                 {!! Form::text('acount_period_end_date', null, [
-                                    'class' => 'form-control datepicker',
+                                    'class' => 'form-control datepicker calculate_salary',
                                     'placeholder' => __('lang.acount_period_end_date'),
                                     'id' => 'acount_period_end_date',
                                 ]) !!}
@@ -203,61 +201,29 @@
 @endsection
 @push('js')
     <script src="{{ asset('js/product/wage.js') }}"></script>
+    {{-- ++++++++++++++++ Ajax Request ++++++++++++++++ --}}
+    {{-- get "other_payment" according to "employee_id" , "payment_type" --}}
     <script>
         $(document).ready(function()
         {
-            // ++++++++++++++++ get "other_payment" according to "employee_id" , "payment_type" ++++++++++++++++ --}}
             // Event handler for employee_id dropdown change
             $('#employee_id').on('change', function()
             {
-                var employeeId = $('#employee_id').val();
-                var paymentType = $('#payment_type').val();
-                // 1- Make an AJAX request to get the payment cycle for the selected employee
-                $.ajax({
-                    url: '/get-employee-payment-cycle/' + employeeId,
-                    type: 'GET',
-                    success: function(data)
-                    {
-                        // Clear existing options
-                        $('#payment_cycle').empty();
-                        // Add new options from the payment_cycles array
-                        $('#payment_cycle').append('<option value="" disabled selected>{{ __('lang.please_select') }}</option>');
-                        $.each(data.payment_cycles, function(index, cycle)
-                        {
-                            var selectedAttribute = (cycle == data.payment_cycle) ? 'selected' : '';
-                            $('#payment_cycle').append('<option value="'+cycle+'" ' + selectedAttribute + '>'+cycle+'</option>');
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
-                // 2- Make an AJAX request to get the payment cycle for the selected employee
-                $.ajax({
-                    url: '/get-employee-payment-cycle/' + employeeId,
-                    type: 'GET',
-                    success: function(data) {
-                        // Update the payment_cycle select box
-                        $('#payment_cycle').val(data.payment_cycle);
-                        console.log(data.payment_cycle);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+                updateOtherPayment();
             });
 
             // Event handler for payment_type dropdown change
             $('#payment_type').on('change', function()
             {
                 updateOtherPayment();
+
             });
             // ++++++++++ updateOtherPayment() +++++++++++++
             function updateOtherPayment()
             {
                 var employeeId = $('#employee_id').val();
                 var paymentType = $('#payment_type').val();
-                // 1- Make an AJAX request to fetch other_payment(salary) based on employee_id and payment_type
+                // Make an AJAX request to fetch other_payment based on employee_id and payment_type
                 $.ajax({
                     url: '{{ route('update_other_payment') }}', // Using the named route
                     type: 'POST',
