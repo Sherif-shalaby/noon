@@ -57,7 +57,7 @@ class ProductController extends Controller
   {
     $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
     $products=Product::
-        when(\request()->dont_show_zero_stocks == "on" , function ($query) {
+        when(\request()->dont_show_zero_stocks =="on", function ($query) {
             $query->whereHas('product_stores', function ($query) {
                 $query->where('quantity_available', '>', 0);
             });
@@ -162,7 +162,7 @@ class ProductController extends Controller
         // $product->product_taxes()->attach($request->product_tax_id) ;
     }
 
-    // if(!empty($request->subcategory_id)){f
+    // if(!empty($request->subcategory_id)){
     //     $product->subcategories()->attach($request->subcategory_id);
     // }
     if(!empty($request->store_id)){

@@ -68,7 +68,7 @@ class Create extends Component
 
 
     public function mount(){
-
+        
         if(isset($_GET['product_id'])){
             $productId = $_GET['product_id'];
             $this->add_product($productId);
@@ -321,7 +321,7 @@ class Create extends Component
                     'stock_transaction_id' => $transaction->id ,
                     'quantity' => $this->num_uf($item['quantity']),
                     'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
-                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : 0,
+                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
                     'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
                     'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
                     'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
@@ -501,7 +501,7 @@ class Create extends Component
             $this->search_by_product_symbol = '';
 
         }
-
+    
         $product = Product::find($id);
         $stock = $product->stock_lines->last();
         $variations = $product->variations;
@@ -548,12 +548,12 @@ class Create extends Component
             'product' => $product,
             'purchase_price' =>  null,
             'dollar_purchase_price' =>  null,
-            'purchase_price_span' => !empty($stock) ? number_format($stock->purchase_price,3) : null,
-            'dollar_purchase_price_span' => !empty($stock) ? number_format($stock->dollar_purchase_price,3) : null,
+            'purchase_price_span' => !empty($stock) ? $stock->purchase_price : null,
+            'dollar_purchase_price_span' => !empty($stock) ? $stock->dollar_purchase_price : null,
             'dollar_selling_price' =>  null,
             'selling_price' =>  null,
-            'selling_price_span' => !empty($stock) ? number_format($stock->sell_price,3) : null,
-            'dollar_selling_price_span' => !empty($stock) ? number_format($stock->dollar_sell_price ,3): null,
+            'selling_price_span' => !empty($stock) ? $stock->sell_price : null,
+            'dollar_selling_price_span' => !empty($stock) ? $stock->dollar_sell_price : null,
             'quantity' => 1,
             'unit' => !empty($variant) ? $variant->unit->name : '',
             'base_unit_multiplier' => !empty($variant) ? $variant->equal : 0,
@@ -570,7 +570,7 @@ class Create extends Component
             'total_cost' => 0,
             'current_stock' => $current_stock,
             'total_stock' => $current_stock + 1,
-            'fill_quantity' => !empty($stock) ? number_format($stock->fill_quantity,3) : null,
+            'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
             'prices' => [
                 [
                     'price_type' => null,
@@ -606,62 +606,51 @@ class Create extends Component
         $this->store_id = $transaction_purchase_order->store_id;
         $this->supplier = $transaction_purchase_order->supplier_id;
         $orderLines = $transaction_purchase_order->transaction_purchase_order_lines;
-        foreach ($orderLines as $orderLine) {
+        foreach ($orderLines as $orderLine){
             $product = $orderLine->product;
-            if (!empty($product->stock_lines)) {
-                $stock = $product->stock_lines->last();
-            } else {
-                $stock = null;
-            }
-            if (!empty($product)) {
-                $variations = Variation::where('product_id', $product->id)->get();
-                $new_item = [
-                    'show_product_data' => 'false',
-                    'variations' => $variations,
-                    'variation_id' => !empty($variations) ? $variations->first()->id : null,
-                    'product' => $product,
-                    'purchase_price' => $orderLine->purchase_price ?? null,
-                    'dollar_purchase_price' => null,
-                    'dollar_purchase_price_span' => !empty($stock) ? number_format($stock->dollar_purchase_price, 3) : null,
-                    'purchase_price_span' => !empty($stock) ? number_format($stock->purchase_price, 3) : null,
-                    'dollar_selling_price_span' => !empty($stock) ? number_format($stock->sell_price, 3) : null,
-                    'selling_price_span' => !empty($stock) ? number_format($stock->dollar_sell_price, 3) : null,
-                    'quantity' => number_format($orderLine->quantity, 3),
-                    'unit' => null,
-                    'base_unit_multiplier' => null,
-                    'fill_type' => 'fixed',
-                    'sub_total' => $orderLine->purchase_price ? number_format($orderLine->sub_total, 3) : 0,
-                    'dollar_sub_total' => $orderLine->purchase_price_dollar ? number_format($orderLine->sub_total, 3) : 0,
-                    'size' => !empty($product->size) ? $product->size : 0,
-                    'total_size' => !empty($product->size) ? $product->size * 1 : 0,
-                    'weight' => !empty($product->weight) ? $product->weight : 0,
-                    'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
-                    'dollar_cost' => 0,
-                    'cost' => 0,
-                    'dollar_total_cost' => 0,
-                    'total_cost' => 0,
-                    'current_stock' => 0,
-                    'total_stock' => 0 + number_format($orderLine->quantity, 3),
-                    'prices' => [
-                        [
-                            'price_type' => null,
-                            'price_category' => null,
-                            'price' => null,
-                            'dinar_price' => null,
-                            'discount_quantity' => null,
-                            'bonus_quantity' => null,
-                            'price_customer_types' => null,
-                            'price_after_desc' => null,
-                            'dinar_price_after_desc' => null,
-                            'total_price' => null,
-                            'dinar_total_price' => null,
-                            'piece_price' => null,
-                            'dinar_piece_price' => null,
-                        ],
-                    ],
-                ];
-                array_unshift($this->items, $new_item);
-            }
+            $variations = Variation::where('product_id',$product->id)->get();
+            $new_item = [
+            'show_product_data' => 'false',
+            'variations' => $variations,
+            'variation_id' => $variations->first()->id ?? null,
+            'product' => $product,
+            'purchase_price' => $orderLine->purchase_price ?? null,
+            'dollar_purchase_price' => $orderLine->purchase_price_dollar ?? null ,
+            'quantity' => number_format($orderLine->quantity,2),
+            'unit' => null,
+            'base_unit_multiplier' => null,
+            'fill_type' => 'fixed',
+            'sub_total' => $orderLine->purchase_price ? number_format($orderLine->sub_total,2) : 0,
+            'dollar_sub_total' => $orderLine->purchase_price_dollar ? number_format($orderLine->sub_total,2) : 0,
+            'size' => !empty($product->size) ? $product->size : 0,
+            'total_size' => !empty($product->size) ? $product->size * 1 : 0,
+            'weight' => !empty($product->weight) ? $product->weight : 0,
+            'total_weight' => !empty($product->weight) ? $product->weight * 1 : 0,
+            'dollar_cost' => 0,
+            'cost' => 0,
+            'dollar_total_cost' => 0,
+            'total_cost' => 0,
+            'current_stock' =>0,
+            'total_stock' => 0 + number_format($orderLine->quantity,2),
+            'prices' => [
+                [
+                    'price_type' => null,
+                    'price_category' => null,
+                    'price' => null,
+                    'dinar_price' => null,
+                    'discount_quantity' => null,
+                    'bonus_quantity' => null,
+                    'price_customer_types' => null,
+                    'price_after_desc' => null,
+                    'dinar_price_after_desc' => null,
+                    'total_price' => null,
+                    'dinar_total_price' =>null,
+                    'piece_price' => null,
+                    'dinar_piece_price' => null,
+                ],
+            ],
+        ];
+        array_unshift($this->items, $new_item);
         }
     }
     public function addPriceRow($index){
@@ -709,7 +698,7 @@ class Create extends Component
             }
             $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
             if(empty($this->discount_from_original_price)){
-                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $total_quantity : 1),3) ;
+                $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
                 $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price'])/(!empty($total_quantity) ? $total_quantity : 1),3) ;
             }
             else{
@@ -947,9 +936,9 @@ class Create extends Component
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-        $this->changeAmount(number_format($totalDollarCost,3));
+        $this->changeAmount(number_format($totalDollarCost,2));
 //        dd($totalDollarCost);
-        return number_format($this->num_uf($totalDollarCost),3);
+        return number_format($this->num_uf($totalDollarCost),2);
     }
 
     public function changeAmount($value){

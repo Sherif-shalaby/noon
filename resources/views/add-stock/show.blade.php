@@ -102,7 +102,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    {{$line->product->sku ??  ''}}
+                                                    {{$line->product->sku}}
                                                 </td>
                                                 <td>
                                                     @if(isset($line->quantity)){{number_format($line->quantity,App\Models\System::getProperty('numbers_length_after_dot'))}}@else{{1}}@endif

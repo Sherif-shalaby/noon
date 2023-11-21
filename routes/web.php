@@ -99,7 +99,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     // Get "مصدر الاموال" depending on "طريقة الدفع"
     Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
-
+    // +++++++++++ Get "طريقة الحساب " depending on "الموظف" +++++++++++
+    Route::get('/get-employee-payment-cycle/{id}',[WageController::class,'getEmployeePaymentCycle']);
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
     // // general_setting : fetch "state" of selected "country" selectbox
@@ -117,6 +118,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     // employees subcategory
     Route::get('employees/get-subcategories/{id}', [EmployeeController::class, 'getSubcategories']);
+     // ++++++++++++++++ get "job_type" permissions ++++++++++++++++
+     Route::get('/get-job-type-permissions/{id}', [EmployeeController::class, 'getJobTypePermissions']);
+
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
     Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');
@@ -150,6 +154,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
+    Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
+    
+    Route::post('customer/pay_due/{id}', [CustomerController::class,'pay_due'])->name('customers.pay_due');
+    Route::get('pay_due_view/{id}', [CustomerController::class,'pay_due_view'])->name('customers.pay_due_view');
+    
     Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
 
 
