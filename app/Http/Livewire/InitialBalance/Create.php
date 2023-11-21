@@ -321,6 +321,7 @@ class Create extends Component
         ];
         array_unshift($this->rows, $newRow);
         // $this->dispatchBrowserEvent('initialize-select2');
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeUnit($index)
     {

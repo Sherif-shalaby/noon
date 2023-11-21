@@ -14,54 +14,11 @@
             background-color: #596fd7 !important;
             text-transform: uppercase;
         }
+
+        .table-top-head {
+            top: 170px !important;
+        }
     </style>
-    {{-- <style>
-        h1 {
-            font-size: 30px;
-            color: #000;
-            text-transform: uppercase;
-            font-weight: 300;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-
-        table {
-            width: 100%;
-            table-layout: fixed;
-        }
-
-        .tbl-header {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .tbl-content {
-            height: 300px;
-            overflow-x: auto;
-            margin-top: 0px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-
-
-        td {
-            padding: 15px;
-            text-align: left;
-            vertical-align: middle;
-            font-weight: 300;
-            font-size: 12px;
-            color: #000;
-            border-bottom: solid 1px rgba(0, 0, 0, 0.4);
-        }
-
-        tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.1)
-        }
-
-        tr:hover {
-            background-color: rgba(0, 0, 0, 0.2)
-        }
-    </style> --}}
-
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -127,6 +84,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="my-2">
+                                <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
+                                    data-check_password="{{ url('user/check-password') }}"
+                                    class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                                    @lang('lang.delete_all')</a>
+                            </div>
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div1"></div>
@@ -135,15 +98,9 @@
                                 <div class="div2">
                                     <!-- content goes here -->
                                     <div style="width: 1800px;height: 90vh;">
-                                        <div class="my-2">
-                                            <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
-                                                data-check_password="{{ url('user/check-password') }}"
-                                                class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
-                                                @lang('lang.delete_all')</a>
-                                        </div>
                                         <div id="status"></div>
                                         <table id="datatable-buttons"
-                                            class="table table-striped table-bordered table-hover table-button-wrapper">
+                                            class="table table-striped table-bordered table-hover">
                                             <thead>
                                                 <tr
                                                     style="position: sticky;
