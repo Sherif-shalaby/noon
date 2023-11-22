@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\DB;
 use App\Utils\StockTransactionUtil;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\AddStockLine;
 use App\Models\PurchaseOrderTransaction;
+use App\Models\StockTransaction;
 
 class PurchaseOrderLineController extends Controller
 {
@@ -57,36 +59,67 @@ class PurchaseOrderLineController extends Controller
 
         if ($request->ajax())
         {
+            // category_id
             $purchaseOrders = $purchaseOrders->when($request->category_id, function ($query) use ($request) {
                 $products = Product::where('category_id', $request->category_id)->get();
                 $productIds = $products->pluck('id');
                 $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
                 $query->whereIn('id', $purchaseOrderLines);
             })
+            // subcategory_id1
             ->when($request->subcategory_id1, function ($query) use ($request) {
                 $products = Product::where('subcategory_id1', $request->subcategory_id1)->get();
                 $productIds = $products->pluck('id');
                 $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
                 $query->whereIn('id', $purchaseOrderLines);
             })
+            // subcategory_id2
             ->when($request->subcategory_id2, function ($query) use ($request) {
                 $products = Product::where('subcategory_id2', $request->subcategory_id2)->get();
                 $productIds = $products->pluck('id');
                 $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
                 $query->whereIn('id', $purchaseOrderLines);
             })
+            // subcategory_id3
             ->when($request->subcategory_id3, function ($query) use ($request) {
                 $products = Product::where('subcategory_id3', $request->subcategory_id3)->get();
                 $productIds = $products->pluck('id');
                 $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
                 $query->whereIn('id', $purchaseOrderLines);
             })
+            // product_id
             ->when( $request->product_id != null, function ($query) use ( $request ) {
                 $products = Product::where('id', $request->product_id)->get();
                 $productIds = $products->pluck('id');
                 $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
                 $query->whereIn('id', $purchaseOrderLines);
             })
+            // +++++++++ purchase_type +++++++++
+            ->when($request->purchase_type_id != null, function ($query) use ($request) {
+                // Get "All Stock_Transactions" that have "purchase_type" filter value
+                $stock_transactions = StockTransaction::where('purchase_type', $request->purchase_type_id)->get();
+                // Assuming $stock_transactions is a collection, so we need to loop through it
+                foreach ($stock_transactions as $stock_transaction)
+                {
+                    // Get "All products_id of Stock_lines" of "stock_transaction"
+                    $products = AddStockLine::where('stock_transaction_id', $stock_transaction->id)->pluck('product_id');
+                    $productIds = $products->toArray(); // Convert to array
+                    // Check if $productIds is not empty before proceeding
+                    if (!empty($productIds)) {
+                        $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
+                        $query->whereIn('id', $purchaseOrderLines);
+                        return  $purchaseOrderLines ;
+                    }
+                }
+            })
+            ->when($request->purchase_type_id != null, function ($query) use ($request) {
+                $query->whereHas('add_stock_lines', function ($subquery) use ($request) {
+                    $subquery->whereHas('product', function ($productSubquery) use ($request) {
+                        $productSubquery->where('purchase_type', $request->purchase_type_id);
+                    });
+                });
+            })
+
             ->orderBy("created_at", "asc")->get();
 
             return $purchaseOrders;

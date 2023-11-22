@@ -87,7 +87,7 @@
                     console.log("The Response Data : ");
                     console.log(response)
                     // Clear existing table content
-                    $('#productTable tbody').empty();
+                    $('#datatable-buttons tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
                     $.each(response, function(index, product) {
@@ -105,7 +105,7 @@
                             '</td>' +
                             '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
                             '</tr>';
-                        $('#productTable tbody').append(row);
+                        $('#datatable-buttons tbody').append(row);
                     });
 
                 },
