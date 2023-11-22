@@ -40,7 +40,7 @@
                     <div class="card-body py-0">
                         {{-- <div class="col-md-12"> --}}
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                            <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                 style="animation-delay: 1.15s">
                                 {!! Form::label('store_id', __('lang.store') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
@@ -86,7 +86,7 @@
                             </div>
                             @include('store.create', ['quick_add' => 1])
 
-                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.2s">
                                 {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -120,7 +120,7 @@
                             </div>
                             @include('suppliers.quick_add', ['quick_add' => 1])
 
-                            <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.25s">
                                 {!! Form::label('name', __('lang.product_name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -148,7 +148,7 @@
                                 ]) !!}
                             </div> --}}
                             <div class="col-md-3 d-flex p-0">
-                                <div class="col-md-6 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                <div class="col-md-6 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                     style="animation-delay: 1.3s">
                                     {!! Form::label('product_symbol', __('lang.product_symbol'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -163,7 +163,7 @@
                                             class="text-danger error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
-                                <div class="col-md-6 animate__animated animate__flipInX
+                                <div class="col-md-6 animate__animated animate__bounceInLeft
                                 d-flex mb-2 align-items-center p-0
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.3s">
@@ -179,7 +179,7 @@
                             </div>
 
 
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.35s">
                                 {!! Form::label('category', __('lang.category'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -215,7 +215,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.4s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -247,7 +247,7 @@
                                         class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.45s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -282,7 +282,7 @@
                                         class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.5s">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
@@ -318,8 +318,38 @@
                                         class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1.55s;">
+                                <label class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
+                                    style="width: 25%;font-size: 12px;font-weight: 500;"
+                                    for="invoice_currency">@lang('lang.currency') *</label>
+                                <div class="d-flex justify-content-center align-items-center"
+                                    style="background-color: #dedede; border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 60%;
+
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                    {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency, [
+                                        'class' => 'form-control select2',
+                                        'placeholder' => __('lang.please_select'),
+                                        'data-live-search' => 'true',
+                                        'required',
+                                        'data-name' => 'transaction_currency',
+                                        'wire:model' => 'transaction_currency',
+                                    ]) !!}
+                                </div>
+                                @error('transaction_currency')
+                                    <span style="font-size: 10px;font-weight: 700;"
+                                        class="error text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             {{-- +++++++++++++++++++++++ "balance return request +++++++++++++++++++++++ --}}
-                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.55s;">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',

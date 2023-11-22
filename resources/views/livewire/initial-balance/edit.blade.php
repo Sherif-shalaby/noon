@@ -275,6 +275,36 @@
                                         class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+
+                            <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="animation-delay: 1.55s;">
+                                <label class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
+                                    style="width: 25%;font-size: 12px;font-weight: 500;"
+                                    for="invoice_currency">@lang('lang.currency') *</label>
+                                <div class="d-flex justify-content-center align-items-center"
+                                    style="background-color: #dedede; border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 60%;
+
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                    {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency, [
+                                        'class' => 'form-control select2',
+                                        'placeholder' => __('lang.please_select'),
+                                        'data-live-search' => 'true',
+                                        'required',
+                                        'data-name' => 'transaction_currency',
+                                        'wire:model' => 'transaction_currency',
+                                    ]) !!}
+                                </div>
+                                @error('transaction_currency')
+                                    <span style="font-size: 10px;font-weight: 700;"
+                                        class="error text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                             <div class="col-md-3 d-flex mb-2 align-items-center animate__animated animate__flipInX  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="animation-delay: 1.55s;">

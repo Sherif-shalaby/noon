@@ -1,31 +1,20 @@
 @extends('layouts.app')
 @section('title', __('lang.employee'))
 @section('breadcrumbbar')
-    <div class="animate-in-page">
-        <div class="breadcrumbbar m-0 px-3 py-0">
-            <div
-                class="d-flex align-items-center justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div>
-                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        @lang('lang.employees')</h4>
-                    <div class="breadcrumb-list">
-                        <ul
-                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
-                                    @lang('lang.dashboard')</a></li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"><a
-                                    style="text-decoration: none;color: #596fd7" href="{{ route('employees.index') }}">/
-                                    @lang('lang.employees')</a>
-                            </li>
-                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
-                                aria-current="page">@lang('lang.employee')
-                                {{ $employee->employee_name }}</li>
-                        </ul>
-                    </div>
+    <div class="breadcrumbbar">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-8">
+                <h4 class="page-title">@lang('lang.employees')</h4>
+                <div class="breadcrumb-list">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('employees.index') }}">@lang('lang.employees')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.employee')
+                            {{ $employee->employee_name }}</li>
+                    </ol>
                 </div>
             </div>
-            <div class="col-md-4 ">
+            <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
 
                 </div>
@@ -43,8 +32,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card mt-3">
-                    <div
-                        class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                    <div class="card-header d-flex align-items-center">
                         <h4>@lang('lang.employee') </h4>
                         {{--                        <a href="{{action('EmployeeController@sendLoginDetails', $employee->id)}}" --}}
                         {{--                            class="btn btn-primary btn-xs" style="margin-left: 10px;"><i class="fa fa-paper-plane"></i> @lang('lang.send_credentials')</a> --}}
@@ -81,14 +69,14 @@
                                             {{ @format_date($employee->date_of_birth) }}
                                         @endif
                                     </div>
-
-
+                                    {{--  --}}
+                                    {{--
                                     <div class="col-sm-6">
                                         <label for="job_type">@lang('lang.job_type'): </label>
                                         @if (!empty($employee->job_type_id))
                                             {{ $employee->job_type->title }}
                                         @endif
-                                    </div>
+                                    </div> --}}
                                     <div class="col-sm-6">
                                         <label for="mobile">@lang('lang.phone_number'): </label> {{ $employee->mobile }}
                                     </div>
@@ -197,7 +185,7 @@
                                                         !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null,
                                                         [
                                                             'class' => 'form-control input-md
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ',
+                                                                                                                                                                                                            ',
                                                             'readonly',
                                                         ],
                                                     ) !!}

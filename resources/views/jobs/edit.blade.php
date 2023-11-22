@@ -4,15 +4,14 @@
     aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
-            <div
-                class="modal-header d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            <div class="modal-header d-flex justify-content-between py-2 flex-row ">
                 <h5 class="modal-title" id="edit">@lang('lang.edit')</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             {!! Form::open(['url' => route('jobs.update', $job->id), 'method' => 'put']) !!}
-            <div class="modal-body">
+            <div class="modal-body p-0" style="height: 80vh;overflow: scroll;">
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 

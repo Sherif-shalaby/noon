@@ -4,15 +4,20 @@ namespace App\Http\Livewire\Returns\Suppliers;
 
 use App\Models\AddStockLine;
 use App\Models\Brand;
+use App\Models\ProductStore;
 use App\Models\StockTransaction;
 use App\Models\Supplier;
 use App\Models\User;
+use App\Models\Variation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Invoice extends Component
 {
-    public $stocks, $brand_id, $supplier_id, $po_no, $product_name, $product_sku, $product_symbol, $created_by, $from, $to;
+    public $stocks, $brand_id, $supplier_id, $po_no, $product_name, $product_sku, $product_symbol, $created_by, $from, $to, $due_date,
+           $notify_before_days;
 
     protected $listeners = ['listenerReferenceHere'];
 
@@ -95,9 +100,124 @@ class Invoice extends Component
         $this->stocks =  StockTransaction::orderBy('created_at', 'desc')->get();
     }
 
-    public function submit($via = 'invoice', $id){
+    public function submit( $via = 'invoice', $id){
         if($via == 'all_invoice'){
-            dd($id);
+            DB::beginTransaction();
+            $stock_transcation = StockTransaction::find($id);
+            if(!empty($stock_transcation)){
+                $transaction_data = [
+                    'store_id' => $stock_transcation->store_id,
+                    'supplier_id' => $stock_transcation->supplier_id,
+                    'type' => 'return_stock',
+                    'final_total' => $this->num_uf($stock_transcation->final_total),
+                    'grand_total' => $this->num_uf($stock_transcation->grand_total),
+                    'dollar_final_total' => $this->num_uf($stock_transcation->dollar_final_total),
+                    'dollar_grand_total' => $this->num_uf($stock_transcation->dollar_grand_total),
+                    'transaction_date' => Carbon::now(),
+                    'invoice_no' => $this->getNumberByType(),
+                    'payment_status' => 'pending',
+                    'status' => 'received',
+                    'is_return' => 1,
+                    'due_date' => $this->due_date,
+                    'notify_me' => !empty($this->notify_before_days) ? 1 : 0,
+                    'notify_before_days' => !empty($this->notify_before_days) ? $this->notify_before_days : 0,
+                    'return_parent_id' => $stock_transcation->id,
+                    'created_by' => Auth::user()->id,
+                ];
+                $transaction = StockTransaction::create($transaction_data);
+                $stocks = $stock_transcation->add_stock_lines;
+                foreach ($stocks as $stock){
+                    $stock->quantity_returned = $stock->quantity;
+                    $stock->save();
+                    $this->decreaseProductQuantity($stock->product_id , $stock->variation_id, $transaction->store_id, $stock->quantity_returned);
+                }
+            }
+
         }
+    }
+
+    public function decreaseProductQuantity($product_id, $variation_id = null, $store_id, $new_quantity)
+    {
+        $product_store = ProductStore::where('product_id', $product_id)
+            ->where('store_id', $store_id)
+            ->first();
+        $product_variations = Variation::where('product_id', $product_id)->get();
+        $unit = Variation::where('id', $variation_id)->first();
+        $qty_difference = 0;
+        $qtyByUnit = 1;
+        if (!empty($product_store) && !empty($product_store->variation_id)) {
+            $store_variation = Variation::find($product_store->variation_id);
+            if ($store_variation->unit_id == $unit->unit_id) {
+                $qty_difference = $new_quantity;
+            } elseif ($store_variation->basic_unit_id == $unit->unit_id) {
+                $qtyByUnit = 1 / $store_variation->equal;
+                $qty_difference = $qtyByUnit * $new_quantity;
+            } else {
+                foreach ($product_variations as $key => $product_variation) {
+                    if (!empty($product_variations[$key + 1])) {
+                        if ($store_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                            if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
+                                $qtyByUnit = $store_variation->equal * $product_variations[$key + 1]->equal;
+                                $qty_difference = $new_quantity / $qtyByUnit;
+                                break;
+                            } else {
+                                $qtyByUnit = $product_variation->equal;
+                            }
+                        } else {
+                            if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                                $qtyByUnit *= $product_variation->equal;
+                            }
+                            if ($product_variation->basic_unit_id == $variation_id || $product_variation->unit_id == $variation_id) {
+                                $qty_difference = $new_quantity / $qtyByUnit;
+                                break;
+                            }
+                        }
+                    } else {
+                        if ($product_variation->basic_unit_id == $variation_id) {
+                            $qtyByUnit *= $product_variation->equal;
+                            $qty_difference = $new_quantity / $qtyByUnit;
+                            break;
+                        }
+                    }
+                }
+            }
+        } else {
+            $qty_difference = $new_quantity;
+        }
+        if ($qty_difference != 0) {
+            if (empty($product_store)) {
+                $product_store = new ProductStore();
+                $product_store->product_id = $product_id;
+                $product_store->store_id = $store_id;
+                $product_store->quantity_available = 0;
+            }
+            if (empty($product_store->variation_id) && !empty($variation_id)) {
+                $product_store->variation_id = $variation_id;
+            }
+            $product_store->decrement('quantity_available', $qty_difference);
+        }
+
+        return true;
+    }
+    public function num_uf($input_number, $currency_details = null)
+    {
+        $thousand_separator  = ',';
+        $decimal_separator  = '.';
+
+        $num = str_replace($thousand_separator, '', $input_number);
+        $num = str_replace($decimal_separator, '.', $num);
+
+        return (float)$num;
+    }
+    public function getNumberByType( $i = 1)
+    {
+        $month = Carbon::now()->month;
+        $year = Carbon::now()->year;
+
+        $count = StockTransaction::where('type', 'return_stock')->whereMonth('transaction_date', $month)->count() + $i;
+
+        $number = 'RetS' . $year . $month . $count;
+
+        return $number;
     }
 }

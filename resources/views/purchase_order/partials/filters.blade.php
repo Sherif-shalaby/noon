@@ -1,57 +1,66 @@
 <div class="card-body">
-    <form  method="get" id="filter_form">
+    <form method="get" id="filter_form">
         <div class="row">
-            {{-- +++++++++++++++ store filter +++++++++++++++ --}}
+            {{-- ++++++++++++++++++ "main_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('store_id', __('lang.store'), []) !!}
-                    {!! Form::select('store_id', $stores,null, ['class' => 'form-control select2 stores','placeholder'=>__('lang.please_select'),'id' => 'store_id']
-                    ) !!}
+                    {!! Form::select('category_id', $categories, null, [
+                        'class' => 'form-control select2 category',
+                        'placeholder' => __('lang.category'),
+                        'id' => 'categoryId',
+                    ]) !!}
                 </div>
             </div>
-            {{-- +++++++++++++++ supplier filter +++++++++++++++ --}}
+            {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('supplier_id', __('lang.supplier'), []) !!}
-                    {!! Form::select('supplier_id', $suppliers,null, ['class' => 'form-control select2 suppliers','placeholder'=>__('lang.please_select'),'id' => 'supplier_id']
-                    ) !!}
+                    {!! Form::select('subcategory_id1', [], null, [
+                        'class' => 'form-control select2 subcategory1',
+                        'placeholder' => __('lang.subcategory') . ' 1',
+                        'id' => 'subcategory_id1',
+                    ]) !!}
+                </div>
+            </div>
+            {{--  --}}
+            {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select('subcategory_id2', [], null, [
+                        'class' => 'form-control select2 subcategory2',
+                        'placeholder' => __('lang.subcategory') . ' 2',
+                        'id' => 'subcategory_id2',
+                    ]) !!}
+                </div>
+            </div>
+            {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select('subcategory_id3', [], null, [
+                        'class' => 'form-control select2 subcategory3',
+                        'placeholder' => __('lang.subcategory') . ' 3',
+                        'id' => 'subcategory_id3',
+                    ]) !!}
                 </div>
             </div>
             {{-- +++++++++++++++ products filter +++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('product_id', __('lang.products'), []) !!}
-                    {!! Form::select('product_id', $products,null, ['class' => 'form-control select2 products','placeholder'=>__('lang.please_select'),'id' => 'product_id']
-                    ) !!}
-                </div>
-            </div>
-            {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
-            <div class="col-2">
-                <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
-                    <div class=" w-100">
-                        {!! Form::label('from', __('site.From'), []) !!}
-                        {!! Form::date('from', null, ['class' => 'form-control start_date w-100']) !!}
-                    </div>
-                </div>
-            </div>
-            {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
-            <div class="col-2">
-                <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
-                    <div class="w-100">
-                        {!! Form::label('to', __('site.To'), []) !!}
-                        {!! Form::date('to', null, ['class' => 'form-control end_date w-100']) !!}
-                    </div>
+                    {!! Form::select('product_id', $products, null, [
+                        'class' => 'form-control select2 products',
+                        'placeholder' => __('lang.select_products'),
+                        'id' => 'product_id',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
             <div class="col-2">
-                <div class="d-flex align-items-center gap-2 mt-4">
-                        {{-- ======= "filter" button ======= --}}
-                        <button type="button" id="filter_btn" class="btn btn-primary mt-2" title="search">
-                            <i class="fa fa-eye"></i> {{ __('lang.filter') }}
-                        </button>
-                        {{-- ======= clear "filters" button ======= --}}
-                        {{-- <button class="btn btn-danger mt-0 clear_filters">@lang('lang.clear_filters')</button> --}}
+                <div class="form-group">
+                    {{-- ======= "filter" button ======= --}}
+                    <button type="button" id="filter_btn" class="btn btn-primary" title="search">
+                        <i class="fa fa-eye"></i> {{ __('lang.filter') }}
+                    </button>
+                    {{-- ======= clear "filters" button ======= --}}
+                    {{-- <button class="btn btn-danger mt-0 clear_filters">@lang('lang.clear_filters')</button> --}}
                 </div>
             </div>
 
@@ -60,101 +69,70 @@
 </div>
 <script>
     $(document).ready(function() {
-        // +++++++++++++++++++++++++++++++++ clear filters +++++++++++++++++++++++++++++++++
-        // $('.clear_filters').on('click', function() {
-        //     // Reset the values of the select boxes
-        //     $('#categoryId').val('').trigger('change'); // Reset main_category select box
-        //     $('#subcategory_id1').val('').trigger('change'); // Reset sub1_category select box
-        //     $('#subcategory_id2').val('').trigger('change'); // Reset sub2_category select box
-        //     $('#subcategory_id3').val('').trigger('change'); // Reset sub3_category select box
-        //     $('#brand_id').val('').trigger('change'); // Reset brand select box
-        // });
         // ======================================== Employee Products Table ========================================
         // +++++++++++++++ updateSubcategories() +++++++++++++++
         // Function to update subcategories based on the selected category ID
-        function updateSubcategories()
-        {
-            console.log( $('body').find('.end_date').val() );
+        function updateSubcategories() {
             $.ajax({
-                method : "get",
-                url: "{{ route('required-products.index') }}",
-                // get "all inputFields of form that have name and value"
-                data : {
-                    store_id : $('body').find('.store_id option:selected').val(),
-                    supplier_id : $('body').find('.suppliers option:selected').val(),
-                    product_id : $('body').find('.products option:selected').val(),
-                    start_date : $('body').find('.start_date').val(),
-                    end_date : $('body').find('.end_date').val(),
+                method: "get",
+                url: "/purchase_order/",
+                data: {
+                    category_id: $('body').find('.category option:selected').val(),
+                    subcategory_id1: $('body').find('.subcategory1 option:selected').val(),
+                    subcategory_id2: $('body').find('.subcategory2 option:selected').val(),
+                    subcategory_id3: $('body').find('.subcategory3 option:selected').val(),
+                    product_id: $('body').find('.products option:selected').val(),
+
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log("The Response Data : ");
                     console.log(response)
                     // Clear existing table content
-                    $('#productTable tbody').empty();
+                    $('#datatable-buttons tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
-                    $.each(response, function(index, product) {
-                        console.log(product);
+                    $.each(response, function(index, purchase_order) {
+                        console.log(purchase_order);
                         var row = '<tr>' +
-                            '<td>' + (index + 1) + '</td>' +
-                            '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
+                            '<td>' + purchase_order.po_no + '</td>' +
+                            '<td>' + purchase_order.transaction_date + '</td>' +
+                            '<td>' + purchase_order.created_by + '</td>' +
+                            '<td>' + (purchase_order.supplier ? purchase_order.supplier
+                                .name : '') + '</td>' +
+                            '<td>' + (purchase_order.final_total) + '</td>' +
+                            '<td>' + purchase_order.status + '</td>' +
                             '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][employee_id]" value="' + product.employee_id + '">' +
-                                (product.employee_id ? product.employee.employee_name : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][order_date]" value="' + product.order_date + '">' +
-                                (product.order_date ? product.order_date : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][product_id]" value="' + product.product_id + '">' +
-                                (product.product_id ? product.product.name : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][store_id]" value="' + product.store_id + '">' +
-                                (product.store_id ? product.stores.name : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][status]" value="' + product.status + '">' +
-                                (product.status ? product.status : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][supplier_id]" value="' + product.supplier_id + '">' +
-                                (product.supplier_id ? product.supplier.name : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][branch_id]" value="' + product.branch_id + '">' +
-                                (product.branch_id ? product.branch.name : '') +
-                            '</td>' +
-                            '<td>' +
-                                // dinar_purchase_price
-                                '<input type="hidden" class="form-control" name="products[' + index + '][purchase_price]" id="purchase_price" value="' + product.purchase_price + '">' +
-                                (product.purchase_price ? product.purchase_price : '') + ' Dinar<br/>' +
-                                // dollar_purchase_price
-                                '<input type="hidden" class="form-control" name="products[' + index + '][dollar_purchase_price]" id="dollar_purchase_price" value="' + product.dollar_purchase_price + '">' +
-                                (product.dollar_purchase_price ? product.dollar_purchase_price : '') + ' $' +
-                            '</td>' +
-                            '<td>' +
-                                '<input type="hidden" class="form-control" name="products[' + index + '][required_quantity]" value="' + product.required_quantity + '">' +
-                                (product.required_quantity ? product.required_quantity : '') +
-                            '</td>' +
-                            '<td>' +
-                                '<a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">' +
-                                    '<i class="fa fa-trash"></i>' +
-                                '</a>' +
-                            '</td>' +
-                        '</tr>';
-                        $('#productTable tbody').append(row);
-                    });
+                            '<div class="btn-group">' +
+                            '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"' +
+                            'aria-haspopup="true" aria-expanded="false">' +
+                            '@lang('lang.action')' +
+                            '<span class="caret"></span>' +
+                            '</button>' +
+                            '<ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">' +
+                            '<li>' +
 
+                            '<li class="divider"></li>' +
+                            '<li>' +
+                            '<a data-href="#" data-check_password="#" class="btn text-red delete_item" style="color:#000;">' +
+                            '<i class="fa fa-trash"></i>' +
+                            '@lang('lang.delete')' +
+                            '</a>' +
+                            '</li>' +
+                            '</ul>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>';
+
+                        $('#datatable-buttons tbody').append(row);
+                    });
                 },
-                error: function (error) {
+                error: function(error) {
                     console.error("Error fetching filtered products:", error);
                 }
             });
         }
         // when clicking on "filter button" , call "updateSubcategories()" method
-        $('#filter_btn').click(function(){
+        $('#filter_btn').click(function() {
             updateSubcategories();
         });
         // +++++++++++++++++++++++++++++++++ subcategory1 filter +++++++++++++++++++++++++++++++++
@@ -162,61 +140,70 @@
             var idSubcategory1 = this.value;
             // alert(idSubcategory1);
             $('#subcategory_id1').html('');
-                $.ajax({
-                    url: "/api/fetch-sub_categories1",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {subcategories1_id: idSubcategory1,_token:"{{ csrf_token() }}"},
-                    success:function(response)
-                    {
-                        $('#subcategory_id1').html('<option value="10">{{ __("lang.subcategory") }}</option>');
+            $.ajax({
+                url: "/api/fetch-sub_categories1",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    subcategories1_id: idSubcategory1,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $('#subcategory_id1').html(
+                        '<option value="10">{{ __('lang.subcategory') }}</option>');
 
-                        $.each(response.subcategory_id1,function(index, val)
-                        {
-                            // console.log(val);
-                            $('#subcategory_id1').append('<option value="'+val.id+'">'+val.name+'</option>')
-                        });
-                    }
-                })
-            });
+                    $.each(response.subcategory_id1, function(index, val) {
+                        // console.log(val);
+                        $('#subcategory_id1').append('<option value="' + val.id +
+                            '">' + val.name + '</option>')
+                    });
+                }
+            })
+        });
         // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
         $('#subcategory_id1').change(function(event) {
-                var idSubcategory2 = this.value;
-                // alert(idSubcategory2);
-                $('#subcategory_id2').html('');
-                $.ajax({
+            var idSubcategory2 = this.value;
+            // alert(idSubcategory2);
+            $('#subcategory_id2').html('');
+            $.ajax({
                 url: "/api/fetch-sub_categories2",
                 type: 'POST',
                 dataType: 'json',
-                data: {subcategories2_id: idSubcategory2,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#subcategory_id2').html('<option value="10">{{ __("lang.subcategory").'2' }}</option>');
-                    $.each(response.subcategory_id2,function(index, val)
-                    {
+                data: {
+                    subcategories2_id: idSubcategory2,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $('#subcategory_id2').html(
+                        '<option value="10">{{ __('lang.subcategory') . '2' }}</option>');
+                    $.each(response.subcategory_id2, function(index, val) {
                         console.log(val);
-                        $('#subcategory_id2').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        $('#subcategory_id2').append('<option value="' + val.id +
+                            '">' + val.name + '</option>')
                     });
                 }
             })
         });
         // +++++++++++++++++++++++++++++++++ subcategory3 filter +++++++++++++++++++++++++++++++++
         $('#subcategory_id2').change(function(event) {
-                var idSubcategory3 = this.value;
-                // alert(idSubcategory3);
-                $('#subcategory_id3').html('');
-                $.ajax({
+            var idSubcategory3 = this.value;
+            // alert(idSubcategory3);
+            $('#subcategory_id3').html('');
+            $.ajax({
                 url: "/api/fetch-sub_categories3",
                 type: 'POST',
                 dataType: 'json',
-                data: {subcategories3_id: idSubcategory3,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#subcategory_id3').html('<option value="10">{{ __("lang.subcategory").'3' }}</option>');
-                    $.each(response.subcategory_id3,function(index, val)
-                    {
+                data: {
+                    subcategories3_id: idSubcategory3,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $('#subcategory_id3').html(
+                        '<option value="10">{{ __('lang.subcategory') . '3' }}</option>');
+                    $.each(response.subcategory_id3, function(index, val) {
                         // console.log(val);
-                        $('#subcategory_id3').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        $('#subcategory_id3').append('<option value="' + val.id +
+                            '">' + val.name + '</option>')
                     });
                 }
             })
@@ -224,4 +211,3 @@
 
     });
 </script>
-

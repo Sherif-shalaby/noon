@@ -20,12 +20,12 @@ class JobTypeController extends Controller
     // +++++++++++++++++++ index() +++++++++++++++++++
     public function index(): View|Factory|Application
     {
-            $jobs = JobType::all();
-            // "main_modules" in "permissions table"
-            $modulePermissionArray = User::modulePermissionArray();
-            // "sub_modules of main_modules" in "permissions table"
-            $subModulePermissionArray = User::subModulePermissionArray();
-            return view('jobs.index')->with(compact('jobs','modulePermissionArray','subModulePermissionArray'));
+        $jobs = JobType::all();
+        // "main_modules" in "permissions table"
+        $modulePermissionArray = User::modulePermissionArray();
+        // "sub_modules of main_modules" in "permissions table"
+        $subModulePermissionArray = User::subModulePermissionArray();
+        return view('jobs.index')->with(compact('jobs','modulePermissionArray','subModulePermissionArray'));
     }
     // +++++++++++++++++++ create() +++++++++++++++++++
     public function create()
@@ -56,29 +56,7 @@ class JobTypeController extends Controller
                 // Use the existing role
                 $role = $existingRole;
             }
-            //   $role = Role::create(['name' => $job->title]);
             $subModulePermissionArray = User::subModulePermissionArray();
-            // Check if $request->permissions is not null before looping through it
-            // if (!is_null($request->permissions))
-            // {
-            //     // dd("True");
-            //     foreach($request->permissions as $key=>$permission)
-            //     {
-            //         if (!empty($subModulePermissionArray[$key]))
-            //         {
-            //             foreach ($subModulePermissionArray[$key] as $key_sub_module =>  $sub_module) {
-            //                 $permission=Permission::where('name', $key . '.' . $key_sub_module . '.view')->first();
-            //                 if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-            //                 $permission=Permission::where('name', $key . '.' . $key_sub_module . '.edit')->first();
-            //                 if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-            //                 $permission=Permission::where('name', $key . '.' . $key_sub_module . '.create')->first();
-            //                 if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-            //                 $permission=Permission::where('name', $key . '.' . $key_sub_module . '.delete')->first();
-            //                 if (!empty($permission)) {$role->givePermissionTo($permission->id);}
-            //             }
-            //         }
-            //     }
-            // }
             $data = $request->except('_token');
             // ++++++++++++++++ Assign permissions to "new job" ++++++++++++++++++++++
             // Check if permissions data is present in the request
@@ -124,8 +102,8 @@ class JobTypeController extends Controller
         $modulePermissionArray = User::modulePermissionArray();
         $subModulePermissionArray = User::subModulePermissionArray();
         $role = Role::where('name',$job->title)->first();
+        // ====== Edit Permissions ======
         $permissions = $role->permissions;
-
         $uniqueModuleNames = [];
         foreach ($permissions as $permission)
         {

@@ -81,7 +81,8 @@
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
-                                        <div class="accordion mb-1">
+                                        <div class="accordion mb-1 animate__animated animate__bounceInLeft"
+                                            style="animation-delay:1.1s">
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end"
                                                     id="employee-products">
@@ -153,8 +154,8 @@
                                         {{-- +++++++++++++++++ employee [ name , store , email ] +++++++++++++++++ --}}
                                         <div
                                             class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.2s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="fname">@lang('lang.name')*</label>
@@ -165,8 +166,8 @@
                                                         placeholder="Name">
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.25s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="email">@lang('lang.email')*
@@ -177,8 +178,8 @@
                                                         placeholder="Email">
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.3s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="password">@lang('lang.password')*</label>
@@ -188,8 +189,8 @@
                                                         placeholder="Create New Password">
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.35s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="pass">@lang('lang.confirm_password'):*</label>
@@ -199,8 +200,19 @@
                                                         name="password_confirmation" placeholder="Conform Password">
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.4s">
+                                                <label style="font-size: 12px;font-weight: 500;"
+                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
+                                                    for="mobile">@lang('lang.phone_number')*</label>
+                                                <div class="input-wrapper">
+                                                    <input type="mobile"
+                                                        class="form-control initial-balance-input width-full"
+                                                        name="mobile" id="mobile" placeholder="@lang('lang.mobile')">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.45s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="branch_id">@lang('lang.branch')</label>
@@ -213,8 +225,8 @@
                                                     ]) !!}
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.5s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="store_id">@lang('lang.stores')</label>
@@ -228,8 +240,8 @@
                                                 </div>
                                             </div>
 
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                                style="animation-delay: 1.55s">
                                                 <label style="font-size: 12px;font-weight: 500;"
                                                     class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                                     for="job_type">@lang('lang.jobs')</label>
@@ -242,23 +254,14 @@
                                                     ]) !!}
                                                 </div>
                                             </div>
-                                            <div
-                                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                <label style="font-size: 12px;font-weight: 500;"
-                                                    class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
-                                                    for="mobile">@lang('lang.phone_number')*</label>
-                                                <div class="input-wrapper">
-                                                    <input type="mobile"
-                                                        class="form-control initial-balance-input width-full"
-                                                        name="mobile" id="mobile" placeholder="@lang('lang.mobile')">
-                                                </div>
-                                            </div>
+
 
                                         </div>
 
 
 
-                                        <div class="accordion mb-1">
+                                        <div class="accordion mb-1 animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.6s">
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end">
                                                     <div class="accordion-button"
@@ -326,7 +329,8 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.65s">
                                             @foreach ($leave_types as $leave_type)
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
@@ -348,7 +352,8 @@
                                         </div>
 
 
-                                        <div class="row justify-content-end mr-0 mb-1">
+                                        <div class="row justify-content-end mr-0 mb-1 animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.7s">
                                             <!-- Button salary modal -->
                                             <button type="button"
                                                 style=" padding: 6px;
@@ -368,7 +373,8 @@
                                         </div>
 
                                         {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
-                                        <div class="accordion mb-1">
+                                        <div class="accordion mb-1 animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.75s">
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end">
                                                     <div class="accordion-button"
@@ -471,7 +477,8 @@
                                         </div>
 
                                         {{-- +++++++++++++++++++ permission +++++++++++++++++++ --}}
-                                        <div class="accordion mb-1">
+                                        <div class="accordion mb-1 animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.8s">
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end">
                                                     <div class="accordion-button"
@@ -491,7 +498,8 @@
                                         </div>
                                         {{-- . --}}
                                         {{-- +++++++++++++ save Button +++++++++++ --}}
-                                        <div class="row mt-4">
+                                        <div class="row mt-4 animate__animated animate__bounceInLeft"
+                                            style="animation-delay: 1.85s">
                                             <div class="col-sm-12">
                                                 <div class="text-right">
                                                     <input type="submit" id="submit-btn" class="btn btn-primary"
