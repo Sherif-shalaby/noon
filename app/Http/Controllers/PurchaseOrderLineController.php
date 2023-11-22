@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Utils\Util;
+use App\Models\Brand;
+use App\Models\Store;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Employee;
+use App\Models\Supplier;
 use App\Utils\ProductUtil;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrderLine;
-use App\Http\Controllers\Controller;
-use App\Models\Brand;
-use App\Models\Employee;
-use App\Models\Product;
-use App\Models\PurchaseOrderTransaction;
-use App\Models\Store;
-use App\Models\Supplier;
-use App\Utils\StockTransactionUtil;
-use App\Utils\Util;
 use Illuminate\Support\Facades\DB;
+use App\Utils\StockTransactionUtil;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Models\PurchaseOrderTransaction;
 
 class PurchaseOrderLineController extends Controller
 {
@@ -43,12 +44,61 @@ class PurchaseOrderLineController extends Controller
     }
 
     /* +++++++++++++++ index() +++++++++++++++ */
-    public function index()
+    public function index(Request $request)
     {
-        // $purchase_orders = PurchaseOrderLine::with('transaction.supplier')->orderBy('created_at','desc')->get();
-        $purchase_orders = PurchaseOrderTransaction::orderBy('created_at','desc')->get();
-        return view('purchase_order.index',compact('purchase_orders'));
+        // ---------- filters ------------------
+        $stores = Store::pluck('name', 'id')->toArray();
+        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $products = Product::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+
+        // ++++++++++++++++++++++++++++ start: for "employee's products" Filters +++++++++++++++++++++++++++++
+        $purchaseOrders = PurchaseOrderTransaction::query();
+
+        if ($request->ajax())
+        {
+            $purchaseOrders = $purchaseOrders->when($request->category_id, function ($query) use ($request) {
+                $products = Product::where('category_id', $request->category_id)->get();
+                $productIds = $products->pluck('id');
+                $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
+                $query->whereIn('id', $purchaseOrderLines);
+            })
+            ->when($request->subcategory_id1, function ($query) use ($request) {
+                $products = Product::where('subcategory_id1', $request->subcategory_id1)->get();
+                $productIds = $products->pluck('id');
+                $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
+                $query->whereIn('id', $purchaseOrderLines);
+            })
+            ->when($request->subcategory_id2, function ($query) use ($request) {
+                $products = Product::where('subcategory_id2', $request->subcategory_id2)->get();
+                $productIds = $products->pluck('id');
+                $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
+                $query->whereIn('id', $purchaseOrderLines);
+            })
+            ->when($request->subcategory_id3, function ($query) use ($request) {
+                $products = Product::where('subcategory_id3', $request->subcategory_id3)->get();
+                $productIds = $products->pluck('id');
+                $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
+                $query->whereIn('id', $purchaseOrderLines);
+            })
+            ->when( $request->product_id != null, function ($query) use ( $request ) {
+                $products = Product::where('id', $request->product_id)->get();
+                $productIds = $products->pluck('id');
+                $purchaseOrderLines = PurchaseOrderLine::whereIn('product_id', $productIds)->pluck('purchase_order_transaction_id');
+                $query->whereIn('id', $purchaseOrderLines);
+            })
+            ->orderBy("created_at", "asc")->get();
+
+            return $purchaseOrders;
+        }
+        else
+        {
+            $purchaseOrders = $purchaseOrders->orderBy("created_at", "asc")->get();
+        }
+
+        return view('purchase_order.index', compact('purchaseOrders', 'stores', 'categories', 'subcategories', 'products'));
     }
+
     /* +++++++++++++++ create() +++++++++++++++ */
     public function create()
     {
