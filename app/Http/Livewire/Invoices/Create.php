@@ -600,24 +600,24 @@ class Create extends Component
         $this->total_dollar = 0;
         foreach ($this->items as $item) {
             // dinar_sub_total
-            $this->total += round_250($item['sub_total']);
+            $this->total += round_250($this->num_uf($item['sub_total']));
             // dollar_sub_total
-            $this->total_dollar += $item['dollar_sub_total'];
-            $this->discount += $item['discount_price'];
-            $this->discount_dollar += $item['discount_price'] * $item['exchange_rate'];
+            $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
+            $this->discount += $this->num_uf($item['discount_price']);
+            $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
         }
 //        $this->dollar_amount = $this->total_dollar;
 //        $this->amount = round_250($this->total);
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
-        $this->final_total = round_250($this->total);
+        $this->final_total = round_250($this->num_uf($this->total));
         // النهائي دولار
-        $this->dollar_final_total = $this->total_dollar;
+        $this->dollar_final_total = $this->num_uf($this->total_dollar);
         // task : الباقي دينار
-        $this->dinar_remaining = round_250($this->amount - $this->final_total);
+        $this->dinar_remaining = round_250($this->num_uf($this->amount) - $this->num_uf($this->final_total));
         // task : الباقي دولار
-        $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
+        $this->dollar_remaining = ($this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_final_total));
     }
 
     public function increment($key)
@@ -652,13 +652,13 @@ class Create extends Component
     public function changePrice($key)
     {
         if (!empty($this->items[$key]['price'])) {
-            $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), 2);
-            $this->items[$key]['dollar_sub_total'] = number_format($this->num_uf($this->items[$key]['sub_total']) / $this->items[$key]['exchange_rate'], 2);
+            $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), 3);
+            $this->items[$key]['dollar_sub_total'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity']), 3);
             $this->items[$key]['sub_total'] = 0;
             $this->items[$key]['price'] = 0;
         } else {
-            $this->items[$key]['price'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->items[$key]['exchange_rate'], 2);
-            $this->items[$key]['sub_total'] = $this->num_uf($this->items[$key]['dollar_sub_total'] * $this->items[$key]['exchange_rate']);
+            $this->items[$key]['price'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']), 3);
+            $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->num_uf($this->items[$key]['quantity']), 3);
             $this->items[$key]['dollar_sub_total'] = 0;
             $this->items[$key]['dollar_price'] = 0;
         }
@@ -733,32 +733,32 @@ class Create extends Component
             if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
-                $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - ($this->num_uf($this->dollar_amount) + ($this->num_uf($this->amount) / System::getProperty('dollar_exchange')));
             } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
-                $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+                $this->dinar_remaining = $this->num_uf($this->final_total) - ($this->num_uf($this->amount) + ($this->num_uf($this->dollar_amount) * System::getProperty('dollar_exchange')));
             } elseif ($this->dinar_remaining > 0 && $this->dollar_final_total !== null && $this->dollar_final_total !== 0 && $this->dollar_amount > $this->dollar_final_total) {
-                $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
-                $this->dinar_remaining = round_250($this->dinar_remaining - ($diff_dollar * System::getProperty('dollar_exchange')));
+                $diff_dollar = $this->num_uf($this->dollar_amount) -  $this->num_uf($this->dollar_final_total);
+                $this->dinar_remaining = round_250($this->num_uf($this->dinar_remaining) - ($this->num_uf($diff_dollar) * System::getProperty('dollar_exchange')));
                 $this->dollar_remaining = 0;
             } else {
                 // Check if total is in dinar and both dollar and dinar amounts are 0
-                if ($this->final_total != 0 && $this->dollar_final_total == 0 && $this->amount == 0) {
+                if ($this->final_total != 0 && $this->dollar_final_total == 0 && $this->num_uf($this->amount) == 0) {
                     // Round to the nearest 250 value
-                    $rounded_final_total = round_250($this->final_total);
+                    $rounded_final_total = round_250($this->num_uf($this->final_total));
                     // Convert remaining dollar to dinar
-                    $this->dinar_remaining = round_250($rounded_final_total - ($this->dollar_amount * System::getProperty('dollar_exchange')));
+                    $this->dinar_remaining = round_250($this->num_uf($rounded_final_total) - ($this->num_uf($this->dollar_amount) * System::getProperty('dollar_exchange')));
                 }
                 // Handle the case where total is in dollar and both dollar and dinar amounts are 0
                 elseif ($this->dollar_final_total != 0) {
                     // Calculate remaining dollar amount directly
-                    $this->dollar_remaining = $this->dollar_final_total - $this->dollar_amount;
+                    $this->dollar_remaining = $this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_amount);
                     if ($this->final_total != 0) {
-                        $this->dinar_remaining = round_250($this->final_total - $this->amount);
+                        $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
                         if ($this->dinar_remaining < 0 &&  $this->dollar_remaining > 0) {
-                            $diff_dinar = $this->amount -  $this->final_total;
-                            $this->dollar_remaining = $this->dollar_remaining - ($diff_dinar / System::getProperty('dollar_exchange'));
+                            $diff_dinar = $this->num_uf($this->amount) -  $this->num_uf($this->final_total);
+                            $this->dollar_remaining = $this->num_uf($this->dollar_remaining) - ($this->num_uf($diff_dinar) / System::getProperty('dollar_exchange'));
                             $this->dinar_remaining = 0;
                         }
                     }
@@ -771,30 +771,30 @@ class Create extends Component
     {
         if ($this->amount !== null && $this->amount !== 0) {
             if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
-                $this->dollar_remaining = $this->dollar_final_total - ($this->dollar_amount + ($this->amount / System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - ($this->num_uf($this->dollar_amount) + ($this->num_uf($this->amount) / System::getProperty('dollar_exchange')));
             } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
 
-                $this->dinar_remaining = $this->final_total - ($this->amount + ($this->dollar_amount * System::getProperty('dollar_exchange')));
+                $this->dinar_remaining = $this->num_uf($this->final_total) - ($this->num_uf($this->amount) + ($this->num_uf($this->dollar_amount) * System::getProperty('dollar_exchange')));
             } elseif ($this->dollar_remaining > 0 && $this->final_total !== null && $this->final_total !== 0 && $this->amount > $this->final_total) {
-                $diff_dinar = $this->amount -  $this->final_total;
-                $this->dollar_remaining = $this->dollar_remaining - ($diff_dinar / System::getProperty('dollar_exchange'));
+                $diff_dinar = $this->num_uf($this->amount) -  $this->num_uf($this->final_total);
+                $this->dollar_remaining = $this->num_uf($this->dollar_remaining) - ($this->num_uf($diff_dinar) / System::getProperty('dollar_exchange'));
                 $this->dinar_remaining = 0;
             } else {
                 // Check if total is in dollars and both dollar and dinar amounts are 0
                 if ($this->dollar_final_total != 0 && $this->final_total == 0 && $this->dollar_amount == 0) {
                     // Calculate remaining dollar amount directly
-                    $this->dollar_remaining = $this->dollar_final_total - ($this->amount / System::getProperty('dollar_exchange'));
+                    $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - ($this->num_uf($this->amount) / System::getProperty('dollar_exchange'));
                 }
                 // Check if total is in dinars and both dollar and dinar amounts are 0
                 elseif ($this->final_total != 0) {
                     // Calculate remaining dinar amount
-                    $this->dinar_remaining = round_250($this->final_total) - $this->amount;
+                    $this->dinar_remaining = round_250($this->num_uf($this->final_total)) - $this->num_uf($this->amount);
 
                     if ($this->dollar_final_total != 0) {
-                        $this->dollar_remaining = $this->dollar_final_total - $this->dollar_amount;
+                        $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
                         if ($this->dollar_remaining < 0 &&  $this->dinar_remaining > 0) {
-                            $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
-                            $this->dinar_remaining = round_250($this->dinar_remaining - ($diff_dollar * System::getProperty('dollar_exchange')));
+                            $diff_dollar = $this->num_uf($this->dollar_amount) -  $this->num_uf($this->dollar_final_total);
+                            $this->dinar_remaining = round_250($this->num_uf($this->dinar_remaining) - ($this->num_uf($diff_dollar) * System::getProperty('dollar_exchange')));
                             $this->dollar_remaining = 0;
                         }
                     }
