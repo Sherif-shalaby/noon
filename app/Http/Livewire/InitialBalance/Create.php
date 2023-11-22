@@ -5,6 +5,7 @@ namespace App\Http\Livewire\InitialBalance;
 use App\Models\AddStockLine;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Currency;
 use App\Models\CustomerType;
 use App\Models\Product;
 use App\Models\ProductDimension;
@@ -56,7 +57,7 @@ class Create extends Component
     public $quantity = [], $purchase_price = [], $selling_price = [],
         $base_unit = [], $divide_costs, $total_size = [], $total_weight = [],
         $sub_total = [], $change_price_stock = [], $store_id, $status,
-        $supplier, $exchange_rate, $exchangeRate, $transaction_date,
+        $supplier, $exchange_rate, $exchangeRate, $transaction_date,$transaction_currency,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [] , $discount_from_original_price,$basic_unit_variations=[],$unit_variations=[],$branches=[];
@@ -103,6 +104,7 @@ class Create extends Component
     public function updatedInputs()
     {
         $this->validate([
+        'transaction_currency' => 'required',
         'item.*.name' => 'required',
         'item.*.store_id' => 'required',
         'item.*.supplier_id' => 'required',
@@ -170,15 +172,59 @@ class Create extends Component
                 if ($data['var1'] == 'subcategory_id3') {
                     $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
                 }
+                if($data['var1'] == 'transaction_currency'){
+//                    dd($data['var2']);
+                    $this->transaction_currency = (int)$data['var2'];
+                }
             }
             $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
             $this->exchange_rate = $this->changeExchangeRate();
             // $this->changeExchangeRateBasedPrices();
         }
     }
+    public function mount()
+    {
+        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
+        if ($this->clear_all_input_stock_form == 0) {
+            $recent_stock = [];
+        } else {
+            $recent_stock = StockTransaction::where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
+            if (!empty($recent_stock)) {
+                $this->item[0]['store_id'] = $recent_stock->store_id;
+                $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
+                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
+                $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
+                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
+                if (!empty($this->item[0]['category_id'])) {
+                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
+                }
+                if (!empty($this->item[0]['subcategory_id1'] && count($this->subcategories1) > 0)) {
+                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
+                }
+                if (!empty($this->item[0]['subcategory_id2']) && count($this->subcategories2) > 0) {
+                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+                }
+                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
+                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
+                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
+                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->weight ?? null;
+                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
+                $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request ?? null;
+                $this->transaction_currency = $recent_stock->transaction_currency  ?? null;
+
+            }
+        }
+        $this->exchange_rate = $this->changeExchangeRate();
+        $this->dispatchBrowserEvent('initialize-select2');
+    }
     public function render()
     {
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+        $currenciesId = [System::getProperty('currency'), 2];
+        $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $categories = Category::orderBy('name', 'asc')->where('parent_id', null)->pluck('name', 'id')->toArray();
@@ -202,48 +248,12 @@ class Create extends Component
                 'basic_units',
                 'categories',
                 'customer_types',
-                'branches'
+                'branches',
+                'selected_currencies'
             )
         );
     }
-    public function mount()
-    {
-        $this->clear_all_input_stock_form = System::getProperty('clear_all_input_stock_form');
-        if ($this->clear_all_input_stock_form == 0) {
-            $recent_stock = [];
-        } else {
-            $recent_stock = StockTransaction::where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
-            if (!empty($recent_stock)) {
-                $this->item[0]['store_id'] = $recent_stock->store_id;
-                $this->item[0]['supplier_id'] = $recent_stock->supplier_id;
-                $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
-                $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
-                $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
-                if (!empty($this->item[0]['category_id'])) {
-                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
-                if (!empty($this->item[0]['subcategory_id1'])) {
-                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
-                if (!empty($this->item[0]['subcategory_id2'])) {
-                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
-                }
-                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
-                $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
-                $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
-                $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
-                $this->item[0]['weight'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->weight ?? null;
-                $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
-                $this->item[0]['balance_return_request'] = $recent_stock->add_stock_lines->first()->product->balance_return_request ?? null;
 
-
-            }
-        }
-        $this->exchange_rate = $this->changeExchangeRate();
-        $this->dispatchBrowserEvent('initialize-select2');
-    }
 
     public function setSubCategoryValue($value)
     {
@@ -452,6 +462,7 @@ class Create extends Component
             $transaction->purchase_type = 'local';
             $transaction->type = 'initial_balance';
             $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
+            $transaction->transaction_currency = $this->transaction_currency;
             $transaction->created_by = Auth::user()->id;
             $transaction->save();
             //Add Product
@@ -514,17 +525,17 @@ class Create extends Component
                     'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : 0,
                     'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
                     'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
-                    'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
-                    // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+                    'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
+                    'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['selling_price'])  : null,
                     'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-                    'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->num_uf($this->rows[$index]['selling_price'])  : null,
-                    'dollar_purchase_price' => !empty($this->rows[$index]['dollar_purchase_price']) ? $this->num_uf($this->rows[$index]['dollar_purchase_price'])  : null,
-                    // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                    'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['dollar_purchase_price'])  : null,
+                    'dollar_sell_price' =>  ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['dollar_selling_price'])  : null,
                     'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? $this->num_uf((float)$this->dollar_sub_total($index))  : null,
-                    'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->num_uf($this->rows[$index]['dollar_selling_price'])  : null,
+                    'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
+                    // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
                     // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
                     // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-                    'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
+                    // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
                 ];
                 $stockLine = AddStockLine::create($add_stock_data);
 

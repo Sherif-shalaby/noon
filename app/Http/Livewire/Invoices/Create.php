@@ -299,32 +299,26 @@ class Create extends Component
             // Add Payment Method
             if ($transaction->status != 'draft') {
                 if($this->payment_status == 'pending'){
-                        //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
-                        
-                                            $total_paid = 0;
-                                            $dollar_total_paid = 0;
-                        
-                                            $transaction = TransactionSellLine::find($transaction->id);
-                        
-                                            //  final_amount : 'النهائي بالدينار'
-                                            $final_amount = $transaction->final_total;
-                                            //  dollar_final_amount : 'النهائي بالدولار'
-                                            $dollar_final_amount = $transaction->dollar_final_total;
-                                            // dinar_remaining : الباقي دينار
-                                            $transaction->dinar_remaining =  $final_amount;
-                                            //  dollar_remaining : 'الباقي بالدولار'
-                                            $transaction->dollar_remaining =  $dollar_final_amount;
-                        //                    $transaction_payment->amount = $total_paid;
-                        //                    $transaction_payment->dollar_amount = $dollar_total_paid;
-                                            $this->amount = $total_paid;
-                                            $this->dollar_amount = $dollar_total_paid;
-                        //                    $transaction_payment->save();
-                                            $transaction->save();
-                                      
+//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+                    $total_paid = 0;
+                    $dollar_total_paid = 0;
+                    $transaction = TransactionSellLine::find($transaction->id);
+                    //  final_amount : 'النهائي بالدينار'
+                    $final_amount = $transaction->final_total;
+                    //  dollar_final_amount : 'النهائي بالدولار'
+                    $dollar_final_amount = $transaction->dollar_final_total;
+                    // dinar_remaining : الباقي دينار
+                    $transaction->dinar_remaining =  $final_amount;
+                    //  dollar_remaining : 'الباقي بالدولار'
+                    $transaction->dollar_remaining =  $dollar_final_amount;
+//                    $transaction_payment->amount = $total_paid;
+//                    $transaction_payment->dollar_amount = $dollar_total_paid;
+                    $this->amount = $total_paid;
+                    $this->dollar_amount = $dollar_total_paid;
+//                    $transaction_payment->save();
+                    $transaction->save();
                 }
-           
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
-
                     $payment_data = [
                         'transaction_id' => $transaction->id,
                         'amount' => $this->amount,
@@ -349,9 +343,9 @@ class Create extends Component
 
                     $this->addPayments($transaction, $payment_data, 'credit', null, $transaction_payment->id);
                 }
-               
+
                 $this->updateTransactionPaymentStatus($transaction->id);
-               
+
                 $customer = Customer::find($transaction->customer_id);
                 $customer->dollar_balance += $this->dollar_amount - $this->total_dollar;
                 $customer->balance += $this->amount - $this->total;
@@ -606,14 +600,14 @@ class Create extends Component
         $this->total_dollar = 0;
         foreach ($this->items as $item) {
             // dinar_sub_total
-            $this->total += $item['sub_total'];
+            $this->total += round_250($item['sub_total']);
             // dollar_sub_total
             $this->total_dollar += $item['dollar_sub_total'];
             $this->discount += $item['discount_price'];
             $this->discount_dollar += $item['discount_price'] * $item['exchange_rate'];
         }
-        $this->dollar_amount = $this->total_dollar;
-        $this->amount = round_250($this->total);
+//        $this->dollar_amount = $this->total_dollar;
+//        $this->amount = round_250($this->total);
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
