@@ -50,7 +50,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                    <div class="col-md-4 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                    <div class="col-md-4 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                         style="animation-delay: 1.15s">
                                         {!! Form::label('supplier_name', __('lang.supplier_name'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
@@ -62,7 +62,7 @@
                                             @endif
                                         </b>
                                     </div>
-                                    <div class="col-md-4 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                    <div class="col-md-4 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                         style="animation-delay: 1.2s">
                                         {!! Form::label('email', __('lang.email'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
@@ -73,7 +73,7 @@
                                             @endif
                                         </b>
                                     </div>
-                                    <div class="col-md-4 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                    <div class="col-md-4 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                         style="animation-delay: 1.25s">
                                         {!! Form::label('mobile_number', __('lang.mobile_number'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',
@@ -85,7 +85,7 @@
                                             @endif
                                         </b>
                                     </div>
-                                    <div class="col-md-4 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                    <div class="col-md-4 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                         style="animation-delay: 1.3s">
                                         {!! Form::label('address', __('lang.address'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',

@@ -178,6 +178,7 @@
                                                         placeholder="Email">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                                 style="animation-delay: 1.3s">
                                                 <label style="font-size: 12px;font-weight: 500;"
@@ -211,6 +212,7 @@
                                                         name="mobile" id="mobile" placeholder="@lang('lang.mobile')">
                                                 </div>
                                             </div>
+
                                             <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                                 style="animation-delay: 1.45s">
                                                 <label style="font-size: 12px;font-weight: 500;"

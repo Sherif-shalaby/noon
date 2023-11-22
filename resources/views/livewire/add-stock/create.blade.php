@@ -38,7 +38,7 @@
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.15s">
                                     {!! Form::label('store_id', __('lang.store') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -61,7 +61,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.2s">
                                     {!! Form::label('supplier_id', __('lang.supplier') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -89,7 +89,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.25s">
                                     <label
                                         class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
@@ -112,7 +112,7 @@
                                 </div>
 
                                 <div
-                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"style="animation-delay: 1.3s">
+                                    class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"style="animation-delay: 1.3s">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -133,7 +133,7 @@
                                             class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.35s">
                                     {!! Form::label('purchase_type', __('lang.po_no'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -153,7 +153,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.4s">
                                     {!! Form::label('divide_costs', __('lang.divide_costs'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -180,7 +180,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.45s">
                                     {!! Form::label('transaction_date', __('lang.date_and_time'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -191,7 +191,7 @@
                                         value="{{ date('Y-m-d\TH:i') }}" class="form-control initial-balance-input m-0">
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.5s">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -203,7 +203,7 @@
                                 </div>
 
                                 @if (!empty($change_exchange_rate_to_supplier))
-                                    <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style="animation-delay: 1.55s">
                                         {!! Form::label('exchange_rate', __('lang.end_date'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -214,7 +214,7 @@
                                     </div>
                                 @endif
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.6s">
                                     {!! Form::label('other_expenses', __('lang.other_expenses'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -232,7 +232,7 @@
                                         ]) !!}
                                     </div>
                                 </div>
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.65s">
                                     {!! Form::label('other_payments', __('lang.other_payments'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -469,7 +469,7 @@
 
                             <div
                                 class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div class=" col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class=" col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.85s">
                                     {!! Form::label('files', __('lang.files'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -488,7 +488,7 @@
 
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.9s">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -504,7 +504,7 @@
                                     </div>
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.95s">
                                     {!! Form::label('discount_amount', __('lang.discount'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -523,7 +523,7 @@
                                 </div>
 
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2s">
                                     {!! Form::label('source_type', __('lang.source_type') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -544,7 +544,7 @@
                                     <span style="font-size: 10px;font-weight: 700;"
                                         class="error text-danger">{{ $message }}</span>
                                 @enderror
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2.1s">
                                     {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -568,7 +568,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2.15">
                                     {!! Form::label('payment_status', __('lang.payment_status') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -596,7 +596,7 @@
                                     @if (!empty($amount))
 
                                         <div
-                                            class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
+                                            class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
                                             <label
                                                 class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
                                                 for="due_amount"
@@ -613,7 +613,7 @@
 
                                     @endif
                                     <div
-                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
+                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
 
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif"
@@ -626,7 +626,7 @@
                                     </div>
 
                                     <div
-                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
+                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
                                         {!! Form::label('due_date', __('lang.due_date'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                             'style' => 'font-size: 12px;font-weight: 500;',
@@ -647,7 +647,7 @@
                                     </div>
 
                                     <div
-                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
+                                        class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
                                         {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                             'style' => 'font-size: 12px;font-weight: 500;',
@@ -669,7 +669,7 @@
 
 
                                 @endif
-                                <div class="col-md-12 d-flex flex-column justify-content-start mt-2  animate__animated animate__flipInX"
+                                <div class="col-md-12 d-flex flex-column justify-content-start mt-2  animate__animated animate__bounceInLeft"
                                     style="animation-delay: 2.2s">
                                     {!! Form::label('notes', __('lang.notes'), [
                                         'class' => app()->isLocale('ar')

@@ -50,9 +50,9 @@
                     <div class="container-fluid">
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.1s">
                                 {!! Form::label('employee_id', __('lang.employee') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -70,9 +70,9 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++ طريقة الدفع +++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.15s">
                                 {!! Form::label('payment_type', __('lang.wage_payment_type') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -90,9 +90,9 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++ مدفوعات اخري (المبلغ) +++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.2s">
                                 {!! Form::label('other_payment', __('lang.other_payment'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -110,9 +110,9 @@
                                 @enderror
                             </div>
 
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center payment_cycle
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                            <div class="col-md-3 mb-2 d-flex align-items-center payment_cycle
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.25s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="payment_cycle">@lang('lang.select_payment_cycle')</label>
@@ -125,9 +125,9 @@
                                 </div>
                             </div>
 
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center account_period
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                            <div class="col-md-3 mb-2 d-flex align-items-center account_period
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.3s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -140,9 +140,9 @@
                                     ]) !!}
                                 </div>
                             </div>
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center account_period
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                            <div class="col-md-3 mb-2 d-flex align-items-center account_period
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.35s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -157,9 +157,9 @@
                             </div>
 
 
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.4s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="deductibles">@lang('lang.deductibles')</label>
@@ -172,9 +172,9 @@
                                     ]) !!}
                                 </div>
                             </div>
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.45s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -189,9 +189,9 @@
                                 </div>
                             </div>
                             {{-- ============= increases :  الزيادات ============= --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.5s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="increases">@lang('lang.increases')</label>
@@ -205,9 +205,9 @@
                                 </div>
                             </div>
                             {{-- ============= reasons_of_increases : أسباب الزيادات ============= --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.55s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -222,9 +222,9 @@
                                 </div>
                             </div>
                             {{-- ============= net_amount : الصافي ============= --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.6s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="net_amount">@lang('lang.net_amount')</label>
@@ -238,9 +238,9 @@
                                 </div>
                             </div>
                             <input type="hidden" name="amount" id="amount">
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.65s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="payment_date">@lang('lang.payment_date')</label>
@@ -253,9 +253,9 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++++ source_type +++++++++++++++++  --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.7s">
                                 {!! Form::label('source_type', __('lang.wage_source_type'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -271,9 +271,9 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ اسم الموظف ++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.75s">
                                 {!! Form::label('source_of_payment', __('lang.wage_source_of_payment'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -289,12 +289,13 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ upload_files ++++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.8s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
-                                    style='font-size: 12px;font-weight: 500;' for="upload_files">@lang('lang.upload_files')</label>
+                                    style='font-size: 12px;font-weight: 500;'
+                                    for="upload_files">@lang('lang.upload_files')</label>
                                 <div class="input-wrapper">
                                     {!! Form::file('upload_files[]', [
                                         'class' => 'form-control  initial-balance-input m-auto width-full',
@@ -303,17 +304,17 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ notes ++++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-12 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.85s">
                                 {!! Form::label('notes', __('lang.notes'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                                     'style' => 'font-size: 12px;font-weight: 500;',
                                 ]) !!}
                                 <div class="input-wrapper width-full" style="height: 100px;border-radius: 9px">
                                     {!! Form::textarea('notes', null, [
                                         'class' => 'form-control',
-                                        'style' => ' width: 300px;height:100%;background-color:transparent',
+                                        'style' => ' width: 100%;height:100%;background-color:transparent',
                                     ]) !!}
                                 </div>
                                 @error('notes')
@@ -321,7 +322,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row pb-5">
+                        <div class="row pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.9s">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                             </div>
@@ -352,13 +353,13 @@
                         // Add new options from the payment_cycles array
                         $('#payment_cycle').append(
                             '<option value="" disabled selected>{{ __('lang.please_select') }}</option>'
-                            );
+                        );
                         $.each(data.payment_cycles, function(index, cycle) {
                             var selectedAttribute = (cycle == data.payment_cycle) ?
                                 'selected' : '';
                             $('#payment_cycle').append('<option value="' + cycle +
                                 '" ' + selectedAttribute + '>' + cycle + '</option>'
-                                );
+                            );
                         });
                     },
                     error: function(xhr, status, error) {

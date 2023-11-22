@@ -1,4 +1,4 @@
-<div class="col-lg-5 mb-2 row">
+<div class="col-lg-5 mb-2 row animate__animated animate__bounceInLeft" style="animation-delay: 1.2s">
 
     <div class="col-md-4">
         <div class="search-box input-group">

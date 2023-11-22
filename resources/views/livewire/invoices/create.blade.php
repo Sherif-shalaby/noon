@@ -5,8 +5,8 @@
             <div
                 class="row justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
-                <div
-                    class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                <div class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                    style="animation-delay: 1.1s">
                     {!! Form::label('store_id', __('lang.store') . '*', [
                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-0 width-fit' : ' mb-0 h5 width-fit',
                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -28,8 +28,8 @@
                     @enderror
                 </div>
                 {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
-                <div
-                    class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                <div class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                    style="animation-delay: 1.15s">
                     {!! Form::label('store_pos_id', __('lang.pos') . '*', [
                         'class' => app()->isLocale('ar') ? 'd-block text-end h5   mb-0 width-fit' : '  mb-0 h5 width-fit',
                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -59,8 +59,8 @@
                 {{--                        </div> --}}
                 {{--                    </div> --}}
                 {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-                <div
-                    class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                    style="animation-delay: 1.2s">
                     <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
                         style="font-size: 12px;font-weight: 500;">العملاء</label>
                     <div class="input-wrapper mx-2">
@@ -86,8 +86,8 @@
             </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div
-                    class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                <div class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                    style="animation-delay: 1.25s">
                     {!! Form::label('brand_id', __('lang.brand') . '*', [
                         'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-0 width-fit' : '  mb-0 h5 width-fit',
                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -109,7 +109,7 @@
                     @enderror
                 </div>
                 <div class="col-md-2"></div>
-                <div class="col-md-2">
+                <div class="col-md-2 animate__animated animate__bounceInLeft" style="animation-delay: 1.3s">
 
                     <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                         class=" d-flex mb-3 justify-content-between rounded p-2">
@@ -135,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-2 animate__animated animate__bounceInLeft" style="animation-delay: 1.35s">
                     <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                         class=" d-flex mb-3 justify-content-between rounded  p-2">
                         <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
@@ -184,7 +184,7 @@
                             </div>
                         </div>
                     </div> --}}
-                <div class="col-md-3">
+                <div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.4s">
 
                     <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
                         class=" d-flex mb-3 justify-content-between rounded p-2">
@@ -215,7 +215,8 @@
 
             <div
                 class="row justify-content-between mb-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div class="row col-md-10 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="row col-md-10 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                    style="animation-delay: 1.45s">
                     <div class="col-md-2 p-0 d-flex flex-column justify-content-center align-items-center dollar-cell px-2"
                         style="border-left: 1px solid #ccc;width: 120px">
                         <span class="d-flex justify-content-center align-items-center"
@@ -260,7 +261,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-1 mx-1 p-0 ">
+                <div class="col-md-1 mx-1 p-0  animate__animated animate__bounceInLeft" style="animation-delay: 1.5s">
                     <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
                         wire:click="redirectToCustomerDetails({{ $client_id }})"
                         class="btn btn-primary payment-btn">
@@ -277,7 +278,8 @@
         </div>
         <div class="row cards hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             @include('invoices.partials.products')
-            <div class="col-xl-9 special-medal-col">
+            <div class="col-xl-9 special-medal-col animate__animated animate__bounceInLeft"
+                style="animation-delay: 1.6s">
                 <div class="card-app ">
                     <div class="body-card-app content py-2 ">
                         <div class="tab-content" id="v-pills-tabContent">
@@ -505,6 +507,8 @@
                 </div>
             </div>
         </div>
+        @include('invoices.partials.draft_transaction')
+
         {!! Form::close() !!}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>

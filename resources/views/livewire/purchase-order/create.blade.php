@@ -34,7 +34,7 @@
                                     <div
                                         class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         {{-- ////////////////// stores filter ////////////////// --}}
-                                        <div class="col-md-3 d-flex mb-2  animate__animated animate__flipInX  align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                        <div class="col-md-3 d-flex mb-2  animate__animated animate__bounceInLeft  align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                             style="animation-delay: 1.15s">
                                             <label for="store_id"
                                                 class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
@@ -57,7 +57,7 @@
                                             @enderror
                                         </div>
                                         {{-- ////////////////// suppliers filter ////////////////// --}}
-                                        <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                        <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                             style="animation-delay: 1.2s">
                                             <label for="customer_id"
                                                 class=" @if (app()->isLocale('ar')) d-block text-end @endif mb-0"
@@ -81,7 +81,7 @@
                                             @enderror
                                         </div>
                                         {{-- ////////////////// product_number inputField : رقم طلب الشراء  ////////////////// --}}
-                                        <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                        <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                             style="animation-delay: 1.25s">
                                             {!! Form::label('po_no', __('lang.po_no') . '*', [
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-fit' : ' mx-2 mb-0 h5 width-fit',
@@ -94,7 +94,7 @@
                                                 'placeholder' => __('lang.po_no'),
                                             ]) !!}
                                         </div>
-                                        <div class="col-md-3 animate__animated animate__flipInX d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
+                                        <div class="col-md-3 animate__animated animate__bounceInLeft d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif "
                                             style="animation-delay: 1.3s">
                                             <div class="search-box input-group">
                                                 {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
@@ -282,7 +282,7 @@
                                 </div>
 
                                 {{-- ++++++++++++++++++++++++ details textarea ++++++++++++++++++++++++ --}}
-                                <div class="row justify-content-between animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                <div class="row justify-content-between animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.5s;">
                                     {!! Form::label('details', __('lang.details'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-3 width-fit' : ' mb-3 h5 width-fit',

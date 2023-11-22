@@ -1,4 +1,5 @@
-<div class="col-xl-3 p-0 special-col" style="height: 600px;overflow: scroll">
+<div class="col-xl-3 p-0 special-col animate__animated animate__bounceInLeft"
+    style="animation-delay: 1.55s;height: 600px;overflow: scroll">
     <div class="card-app">
         <div class="title-card-app">
             الاقسام

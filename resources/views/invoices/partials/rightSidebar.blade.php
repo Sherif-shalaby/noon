@@ -33,7 +33,7 @@
                         class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
                         {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
                         @lang('lang.view_draft')</button>
-                    @include('invoices.partials.draft_transaction')
+                    {{-- @include('invoices.partials.draft_transaction') --}}
 
                 </div>
                 <div class=" col-md-4">
@@ -222,7 +222,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-
+                        
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}

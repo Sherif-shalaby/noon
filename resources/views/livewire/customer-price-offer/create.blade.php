@@ -30,8 +30,8 @@
                                 <div
                                     class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- ++++++++++++++++++++++ stores filter ++++++++++++++++++++++ --}}
-                                    <div
-                                        class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        style="animation-delay: 1.1s">
                                         <label
                                             class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif"
                                             for="store_id">
@@ -55,8 +55,8 @@
                                         @enderror
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
-                                    <div
-                                        class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        style="animation-delay: 1.15s">
                                         <label for="customer_id"
                                             class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">
                                             @lang('lang.customers')<span style="color:#dc3545;">*</span>
@@ -80,7 +80,8 @@
                                     </div>
                                     {{-- ++++++++++++++++++++++ search inputField ++++++++++++++++++++++ --}}
 
-                                    <div class="col-md-6 mb-2">
+                                    <div class="col-md-6 mb-2 animate__animated animate__bounceInLeft"
+                                        style="animation-delay: 1.2s">
                                         <div class="search-box input-group">
                                             {{-- ++++++++++++++++++++++ search_button ++++++++++++++++++++++ --}}
                                             <button type="button" class="btn btn-secondary" id="search_button"><i
@@ -114,7 +115,8 @@
 
                             {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                <div class="col-md-2 border border-1 p-0" style="height: 90vh;overflow: scroll">
+                                <div class="col-md-2 border border-1 p-0 animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.25s;height: 90vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ الأقسام الرئيسيه ++++++++++++++++++++++ --}}
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                         الأقسام الرئيسيه
@@ -142,8 +144,8 @@
                                         @endforeach
                                     </div>
                                 </div>
-                                <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-10 border border-1"
-                                    style="height: 90vh;overflow: scroll">
+                                <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif col-md-10 border border-1 animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.3s;height: 90vh;overflow: scroll">
                                     {{-- +++++++++++++++++++++ جدول المنتجات +++++++++++++++++++++ --}}
                                     <table class="table">
                                         <thead>
@@ -201,7 +203,8 @@
                                 </div>
                             </div>
                             {{-- ++++++++ total_quantity ++++++++++  --}}
-                            <div class="col-md-12 text-center mt-1 ">
+                            <div class="col-md-12 text-center mt-1  animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.35s">
                                 <h4>@lang('lang.items_count'):
                                     <span class="items_count_span"
                                         style="margin-right: 15px;">{{ !empty($items) ? count($items) : 0 }}</span>
@@ -211,7 +214,8 @@
                             </div>
 
                             {{-- ++++++++ total ++++++++++  --}}
-                            <div class="col-md-12">
+                            <div class="col-md-12 animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.4s">
                                 <div class="col-md-3 offset-md-8 text-right">
                                     <h3> @lang('lang.total') :
                                         @if ($paying_currency == 2)
@@ -223,13 +227,13 @@
                                     </h3>
                                 </div>
                             </div>
-                            <br>
+
 
                             <div
                                 class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 {{-- ========= block_qty ========= --}}
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.5s">
                                     <div class="form-group">
                                         <div class="i-checks">
                                             <input type="checkbox" id="block_qty" name="block_qty"
@@ -240,8 +244,8 @@
                                     </div>
                                 </div>
                                 {{-- ========= block_for_days ========= --}}
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.55s">
                                     {!! Form::label(
                                         'block_for_days',
                                         __('lang.block_for_days') . '<span style="color:#dc3545;">*</span>',
@@ -266,8 +270,8 @@
                                     @enderror
                                 </div>
                                 {{-- ========= validity_days ========= --}}
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.6s">
                                     {!! Form::label(
                                         'validity_days',
                                         __('lang.validity_days') . ':<span style="color:#dc3545;">*</span>',
@@ -291,8 +295,8 @@
                                     @enderror
                                 </div>
                                 {{-- ========= tax ========= --}}
-                                <div
-                                    class="col-md-3  mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-3  mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.65s">
                                     <label
                                         class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
                                         for="tax_method">@lang('lang.tax')</label>
@@ -309,8 +313,8 @@
                                     </div>
                                 </div>
                                 {{-- ========= discount_type ========= --}}
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.7s">
                                     {!! Form::label('discount_type', __('lang.discount_type'), [
                                         'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
                                     ]) !!}
@@ -326,8 +330,8 @@
                                     </div>
                                 </div>
                                 {{-- ========= discount_value ========= --}}
-                                <div
-                                    class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.75s">
                                     {!! Form::label('discount_value', __('lang.discount_value'), [
                                         'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter',
                                     ]) !!}
@@ -344,7 +348,7 @@
                             </div>
                         </div>
                         {{-- ++++++++++++++++++++ submit ++++++++++++++++++++ --}}
-                        <div class="col-sm-12">
+                        <div class="col-sm-12 animate__animated animate__bounceInLeft" style="animation-delay: 1.8s">
                             <button type="submit" name="submit" id="submit-save" style="margin: 10px"
                                 value="save" class="btn btn-primary pull-right btn-flat submit"
                                 wire:click.prevent = "store()">@lang('lang.save')</button>

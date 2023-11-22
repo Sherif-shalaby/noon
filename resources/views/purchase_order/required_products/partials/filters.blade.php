@@ -3,7 +3,7 @@
         <div class="row align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {{-- +++++++++++++++ store filter +++++++++++++++ --}}
             <div
-                class="col-2 mb-2 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="col-2 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {!! Form::label('store_id', __('lang.store'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -18,7 +18,7 @@
             </div>
             {{-- +++++++++++++++ supplier filter +++++++++++++++ --}}
             <div
-                class="col-2 mb-2 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="col-2 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {!! Form::label('supplier_id', __('lang.supplier'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -33,7 +33,7 @@
             </div>
             {{-- +++++++++++++++ products filter +++++++++++++++ --}}
             <div
-                class="col-2 mb-2 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="col-2 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {!! Form::label('product_id', __('lang.products'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -49,7 +49,7 @@
             </div>
             {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
             <div
-                class="col-2 mb-2 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="col-2 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {!! Form::label('from', __('site.From'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-fit' : 'mx-2 mb-0 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -60,7 +60,7 @@
             </div>
             {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
             <div
-                class="col-2 mb-2 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="col-2 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {!! Form::label('to', __('site.To'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-fit' : 'mx-2 mb-0 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -72,7 +72,7 @@
             </div>
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
             <div
-                class="col-2 mb-2 d-flex align-items-center animate__animated animate__flipInX @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                class="col-2 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 {{-- ======= "filter" button ======= --}}
                 <button type="button" id="filter_btn" class="btn btn-primary" title="search">
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}

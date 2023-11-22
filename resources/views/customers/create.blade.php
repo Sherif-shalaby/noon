@@ -54,8 +54,8 @@
                     <div class="container-fluid">
                         <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.1s">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -77,8 +77,8 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++++++++++ name  ++++++++++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.15s">
                                 {!! Form::label('name', __('lang.name'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -94,9 +94,9 @@
                             </div>
 
                             {{-- +++++++++++++++++++++++ min_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center dollar-cell
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.2s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -109,9 +109,9 @@
                             </div>
 
                             {{-- +++++++++++++++++++++++ max_amount_in_dollar +++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center dollar-cell
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                            <div class="col-md-3 mb-2 d-flex align-items-center dollar-cell
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.25s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -122,9 +122,9 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.3s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -136,9 +136,9 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ max_amount_in_dinar +++++++++++++++++++++++ --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center
-                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.35s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -150,8 +150,8 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dollar +++++++++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center dollar-cell @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center dollar-cell @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.4s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -163,8 +163,8 @@
                                 </div>
                             </div>
                             {{-- +++++++++++++++++++++++ balance_in_dinar +++++++++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.45s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
@@ -175,8 +175,8 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.5s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
@@ -189,8 +189,8 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.55s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
@@ -208,8 +208,8 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                            <div
-                                class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.6s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.city')</label>
@@ -217,8 +217,8 @@
                                     <select id="city-dd" name="city_id" class="form-control selectpicker"></select>
                                 </div>
                             </div>
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.65s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="regions_id">@lang('lang.regions')</label>
@@ -250,8 +250,8 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div> --}}
-                            <div
-                                class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.7s">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
@@ -268,8 +268,8 @@
                             <div class="col-md-12 d-flex">
 
                                 {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
-                                <div
-                                    class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.75s">
                                     <table class="bordered m-0" style="width: 100%">
                                         <thead class="email_thead">
                                             <tr>
@@ -307,8 +307,8 @@
                                 </div>
 
                                 {{-- +++++++++++++++++++++++++++++++ phone ++++++++++++++++++++++++ --}}
-                                <div
-                                    class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                <div class="col-md-6 mb-2 px-5 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                    style="animation-delay: 1.8s">
                                     <div class="m-0 " style="width: 100%">
                                         <table class="bordered m-0" style="width: 100%">
                                             <thead class="phone_thead">
@@ -352,8 +352,8 @@
                             </div>
 
                             {{-- +++++++++++++++++++++++ address +++++++++++++++++++++++ --}}
-                            <div
-                                class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.85s">
                                 {!! Form::label('address', __('lang.address'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -369,8 +369,8 @@
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ Notes +++++++++++++++++++++++ --}}
-                            <div
-                                class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.9s">
                                 {!! Form::label('notes', __('lang.notes'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -385,11 +385,8 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-
-
-
                         </div>
-                        <div class="row pt-4 pb-5">
+                        <div class="row pt-4 pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 1.95s">
                             <div class="col-md-12">
                                 <h3 class=" @if (app()->isLocale('ar')) text-end @endif">@lang('lang.important_dates')</h3>
                             </div>
@@ -416,7 +413,7 @@
                             </div>
                             <input type="hidden" name="important_date_index" id="important_date_index" value="0">
                         </div>
-                        <div class="row pb-5">
+                        <div class="row pb-5 animate__animated animate__bounceInLeft" style="animation-delay: 2s">
                             <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                             </div>
