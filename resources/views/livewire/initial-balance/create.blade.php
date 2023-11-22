@@ -208,7 +208,15 @@
                                     @include('product-tax.create', ['quick_add' => 1])
                                 </div>
                             </div>
-
+                            <div class="col-md-3">
+                                <label for="invoice_currency" class="h5 pt-3">@lang('lang.currency') :*</label>
+                                {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
+                                    ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
+                                     'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
+                                @error('transaction_currency')
+                                <span class="error text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                             <div class="col-md-3">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
@@ -217,6 +225,7 @@
                                     'class' => 'form-control',
                                 ]) !!}
                             </div>
+
                         </div>
 
 
