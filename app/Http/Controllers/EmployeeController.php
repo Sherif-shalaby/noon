@@ -475,7 +475,6 @@ class EmployeeController extends Controller
             ];
         }
         return redirect()->back()->with('status', $output);
-
     }
     /* ============================= addPoints() ============================= */
     public function  addPoints()

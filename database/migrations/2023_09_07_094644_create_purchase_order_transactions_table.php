@@ -45,7 +45,6 @@ return new class extends Migration
             // foreign key : deleted_by
             $table->unsignedBigInteger('deleted_by')->nullable();
             $table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade');
-
             // created_at , updated_at column
             $table->timestamps();
         });
