@@ -185,14 +185,26 @@ class Edit extends Component
         }
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at','desc')->get();
         $this->dispatchBrowserEvent('initialize-select2');
+        $sell_lines = TransactionSellLine::query();
 
+        // Check if the user is a superadmin or admin
+        if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
+            // If the user is a superadmin or admin, get all sell lines
+            $sell_lines = $sell_lines->orderBy('created_at', 'desc');
+        } else {
+            // If the user is not a superadmin or admin, get sell lines created by the current user
+            $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
+        }
+
+        $sell_lines = $sell_lines->paginate(10);
         return view('livewire.invoices.edit', compact(
             'departments',
             'languages',
             'selected_currencies',
             'customer_types',
             'search_result',
-            'deliverymen'
+            'deliverymen',
+            'sell_lines',
         ));
     }
 
