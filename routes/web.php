@@ -45,6 +45,7 @@ use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
+use App\Http\Controllers\ReturnStockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -268,8 +269,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
 
     // supplier Returns
-    Route::view('suppliers/return/products','suppliers.returns.product')->name('suppliers.returns.products');
-    Route::view('suppliers/return/invoices','suppliers.returns.invoice')->name('suppliers.returns.invoices');
+    Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
+    Route::get('stock/return/invoices',[ReturnStockController::class,'index'])->name('suppliers.returns.invoices');
 
     // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');

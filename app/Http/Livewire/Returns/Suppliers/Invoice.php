@@ -17,7 +17,7 @@ use Livewire\Component;
 class Invoice extends Component
 {
     public $stocks, $brand_id, $supplier_id, $po_no, $product_name, $product_sku, $product_symbol, $created_by, $from, $to, $due_date,
-           $notify_before_days;
+           $notify_before_days, $payment_status;
 
     protected $listeners = ['listenerReferenceHere'];
 
@@ -43,6 +43,7 @@ class Invoice extends Component
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::pluck('name','id');
+        $payment_status_array = $this->getPaymentStatusArray();
 
         $this->stocks =  StockTransaction::
             when($this->po_no, function ($query) {
@@ -84,7 +85,7 @@ class Invoice extends Component
 
         $this->dispatchBrowserEvent('initialize-select2');
 
-        return view('livewire.returns.suppliers.invoice',compact('suppliers','users', 'brands'));
+        return view('livewire.returns.suppliers.invoice',compact('suppliers','users', 'brands','payment_status_array'));
     }
 
     public function clear_filters(){
@@ -220,4 +221,82 @@ class Invoice extends Component
 
         return $number;
     }
+    public function calculatePendingAmount($transaction_id): string
+    {
+        $transaction = StockTransaction::find($transaction_id);
+        $final_total = 0;
+        $pending = 0;
+        $amount = 0;
+        $payments = $transaction->transaction_payments;
+        if($transaction->transaction_currency == 2){
+            $final_total = $transaction->dollar_final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $amount += $payment->amount;
+                    $pending = $final_total - $amount;
+                }
+                else{
+                    $amount += $payment->amount / $payment->exchange_rate;
+                    $pending = $final_total - $amount;
+                }
+            }
+        }
+        else {
+            $final_total = $transaction->final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $amount += $payment->amount * $payment->exchange_rate;
+                    $pending = $final_total - $amount;
+                }
+                else{
+                    $amount += $payment->amount;
+                    $pending = $final_total - $amount;;
+                }
+            }
+        }
+
+        return number_format($pending,2);
+    }
+
+    public function calculatePaidAmount($transaction_id): string
+    {
+        $transaction = StockTransaction::find($transaction_id);
+        $final_total = 0;
+        $paid = 0;
+        $payments = $transaction->transaction_payments;
+        if($transaction->transaction_currency == 2){
+            $final_total = $transaction->dollar_final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $paid += $payment->amount;
+                }
+                else{
+                    $paid += $payment->amount / $payment->exchange_rate;
+                }
+            }
+        }
+        else {
+            $final_total = $transaction->final_total;
+            foreach ($payments as $payment){
+                if($payment->paying_currency == 2){
+                    $paid += $payment->amount * $payment->exchange_rate;
+                }
+                else{
+                    $paid += $payment->amount;
+                }
+            }
+        }
+
+        return number_format($paid,2);
+    }
+
+    public function getPaymentStatusArray()
+    {
+        return [
+            'partial' => __('lang.partially_paid'),
+            'paid' => __('lang.paid'),
+            'pending' => __('lang.pay_later'),
+        ];
+    }
+
 }
