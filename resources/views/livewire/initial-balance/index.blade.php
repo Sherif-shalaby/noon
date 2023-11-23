@@ -100,7 +100,6 @@
 
         $(document).ready(function() {
             $('select').on('change', function(e) {
-
                 var name = $(this).data('name');
                 var index = $(this).data('index');
                 var select2 = $(this); // Save a reference to $(this)

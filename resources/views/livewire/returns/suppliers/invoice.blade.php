@@ -50,7 +50,7 @@
                                     </td>
                                     <td>{{$stock->created_by_relationship->first()->name}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-default btn-sm" wire:click="submit('all_invoice', {{ $stock->id }})">
+                                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#paymentModal">
                                             @lang('lang.return_invoice')
                                         </button>
                                     </td>
@@ -82,5 +82,6 @@
         <!-- End col -->
     </div>
     <!-- End row -->
+    @include('suppliers.returns.partials.payment')
 </div>
 <!-- End Contentbar -->

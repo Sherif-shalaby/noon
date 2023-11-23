@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div class="col-md-2 payment_fields hide">
+        <div class="col-md-3 payment_fields hide">
             <div class="form-group">
                 {!! Form::label('method', __('lang.payment_type'), []) !!}
                 {!! Form::select('method', $payment_type_array, $method,
