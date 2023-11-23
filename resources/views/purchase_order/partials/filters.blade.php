@@ -39,6 +39,13 @@
                     ) !!}
                 </div>
             </div>
+            {{-- +++++++++++++++ purchase_type filter +++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')] ,null, ['class' => 'form-control select2 purchase_type','placeholder'=>__('lang.purchase_type'),'id' => 'purchase_type_id']
+                    ) !!}
+                </div>
+            </div>
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
@@ -46,8 +53,6 @@
                     <button type="button" id="filter_btn" class="btn btn-primary" title="search">
                         <i class="fa fa-eye"></i> {{ __('lang.filter') }}
                     </button>
-                    {{-- ======= clear "filters" button ======= --}}
-                    {{-- <button class="btn btn-danger mt-0 clear_filters">@lang('lang.clear_filters')</button> --}}
                 </div>
             </div>
 
@@ -71,6 +76,7 @@
                     subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
                     subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
                     product_id      : $('body').find('.products option:selected').val(),
+                    purchase_type   : $('body').find('.purchase_type option:selected').val(),
 
                 },
                 success: function (response) {

@@ -48,7 +48,7 @@
                                     {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
                                     <div class="row mt-4 m-auto">
                                         {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
-                                        <table id="productTable" class="table table-striped table-bordered m-auto">
+                                        <table id="datatable-buttons" class="table table-striped table-bordered m-auto">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -70,15 +70,15 @@
                                                             {{-- get "all checked products" --}}
                                                             <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
                                                         </td>
-                                                        <td>{{$product->name}}</td>
-                                                        <td>{{$product->sku}}</td>
-                                                        <td>{{$product->category->name??''}}</td>
-                                                        <td>
+                                                        <td title="@lang('lang.product_name')">{{$product->name}}</td>
+                                                        <td title="@lang('lang.sku')">{{$product->sku}}</td>
+                                                        <td title="@lang('lang.category')">{{$product->category->name??''}}</td>
+                                                        <td title="@lang('lang.subcategories_name')">
                                                             {{$product->subCategory1->name??''}} <br>
                                                             {{$product->subCategory2->name??''}} <br>
                                                             {{$product->subCategory3->name??''}}
                                                         </td>
-                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                        <td title="@lang('lang.brand')">{{!empty($product->brand)?$product->brand->name:''}}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

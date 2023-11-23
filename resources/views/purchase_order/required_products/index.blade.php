@@ -33,7 +33,8 @@
                                     @csrf
                                     <div class="row mt-4 m-auto">
                                         {{-- ++++++++++++++ required products Table ++++++++++ --}}
-                                        <table id="productTable" class="table table-striped table-bordered m-auto">
+                                        {{-- <table id="productTable" class="table table-striped table-bordered m-auto"> --}}
+                                        <table id="datatable-buttons" class="table table-striped table-bordered m-auto">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -59,45 +60,44 @@
                                                             <input type="checkbox" name="products[{{$index}}][checkbox]" class="checkbox_ids" value="1" />
                                                         </td>
                                                         {{-- +++++++++++++++++ employee_id +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.employee_name')">
                                                             <input  type="hidden" class="form-control" name="products[{{$index}}][employee_id]"
                                                                     value="{{ $requiredProduct->employee_id }}">
                                                             {{ !empty($requiredProduct->employee_id) ? $requiredProduct->employee->employee_name : '' }}
                                                         </td>
                                                         {{-- +++++++++++++++++ order_date +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.date')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][order_date]" value="{{ $requiredProduct->order_date }}">
                                                             {{ !empty($requiredProduct->order_date) ? $requiredProduct->order_date : '' }}
                                                         </td>
                                                         {{-- +++++++++++++++++ product_id +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.product_name')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][product_id]" value="{{ $requiredProduct->product_id }}">
                                                             {{-- {{ !empty($requiredProduct->product_id) ? $requiredProduct->product->name : '' }} --}}
                                                             {{ !empty($requiredProduct->product_id) && !is_null($requiredProduct->product) ? $requiredProduct->product->name : '' }}
-
                                                         </td>
                                                         {{-- +++++++++++++++++ store_id +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.store')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][store_id]" id="store_id" value="{{ $requiredProduct->store_id }}">
                                                             {{!empty($requiredProduct->store_id)?$requiredProduct->stores->name:''}}
                                                         </td>
                                                         {{-- +++++++++++++++++ status +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.status')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][status]" id="status" value="final">
                                                             {{!empty($requiredProduct->status)?$requiredProduct->status:''}}
                                                         </td>
                                                         {{-- +++++++++++++++++ supplier_id +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.supplier_name')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][supplier_id]" id="supplier_id" value="{{ $requiredProduct->supplier_id }}">
                                                             {{!empty($requiredProduct->supplier_id)?$requiredProduct->supplier->name:''}}
                                                         </td>
                                                         {{-- +++++++++++++++++ branch_id +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.branch_name')">
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][branch_id]" id="branch_id" value="{{ $requiredProduct->branch_id }}">
                                                             {{!empty($requiredProduct->branch_id)?$requiredProduct->branch->name:''}}
                                                         </td>
                                                         {{-- +++++++++++++++++ purchase_price , dollar_purchase_price +++++++++++++++++ --}}
-                                                        <td>
+                                                        <td title="@lang('lang.purchase_price')">
                                                             {{-- dinar_purchase_price --}}
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][purchase_price]" id="purchase_price" value="{{ $requiredProduct->purchase_price }}">
                                                             {{!empty($requiredProduct->purchase_price)?$requiredProduct->purchase_price:''}} <br/>
@@ -105,7 +105,7 @@
                                                             <input type="hidden" class="form-control" name="products[{{$index}}][dollar_purchase_price]" id="dollar_purchase_price" value="{{ $requiredProduct->dollar_purchase_price }}">
                                                             {{!empty($requiredProduct->dollar_purchase_price)?$requiredProduct->dollar_purchase_price:''}} $
                                                         </td>
-                                                        <td>
+                                                        <td title="@lang('lang.required_quantity')">
                                                             <input type="text" class="form-control" name="products[{{$index}}][required_quantity]" id="required_quantity"
                                                                     placeholder="@lang('lang.required_quantity')">
                                                         </td>

@@ -56,22 +56,22 @@
                             <tbody>
                                 @foreach ($purchaseOrders as $purchase_order)
                                     <tr>
-                                        <td>{{$purchase_order->po_no}}</td>
-                                        <td> {{@format_date($purchase_order->transaction_date)}}</td>
+                                        <td title="@lang('lang.po_ref_no')">{{$purchase_order->po_no}}</td>
+                                        <td title="@lang('lang.date')"> {{@format_date($purchase_order->transaction_date)}}</td>
 
-                                        <td>{{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}</td>
+                                        <td title="@lang('lang.created_by')">{{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}</td>
 
-                                        <td>
+                                        <td title="@lang('lang.supplier')">
                                             @if(!empty($purchase_order->supplier)){{$purchase_order->supplier->name}}@endif
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.value')">
                                             {{@num_format($purchase_order->final_total)}}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.status')">
                                             {{ $purchase_order->status }}
                                         </td>
                                         {{-- =========================== Actions =========================== --}}
-                                        <td>
+                                        <td title="@lang('lang.action')">
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                                         aria-haspopup="true" aria-expanded="false">
