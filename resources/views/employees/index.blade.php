@@ -59,36 +59,36 @@
 
                                 @foreach($employees as $key => $employee)
                                     <tr>
-                                        <td>
+                                        <td title="@lang('lang.profile_photo')">
                                             @if (!empty($employee->photo))
                                                 <img src="{{"/uploads/". $employee->photo}}" alt="photo" width="50" height="50">
                                             @else
                                                 <img src="{{"/uploads/". session('logo')}}" alt="photo" width="50" height="50">
                                             @endif
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.employee_name')">
                                             {{!empty($employee->user) ? $employee->user->name : ''}}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.email')">
                                             {{!empty($employee->user) ? $employee->user->email : ''}}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.phone_number')">
                                             {{$employee->mobile}}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.job_title')">
                                             {{!empty($employee->job_type) ? $employee->job_type->title : '' }}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.wage')">
                                             {{$employee->fixed_wage_value}}
                                         </td>
 {{--                                        <td></td>--}}
-                                        <td>
+                                        <td title="@lang('lang.age')">
                                             {{\Carbon\Carbon::parse($employee->date_of_birth)->diff(\Carbon\Carbon::now())->format('%y')}}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.date_of_start_working')">
                                             {{$employee->date_of_start_working}}
                                         </td>
-                                        <td>
+                                        <td title="@lang('lang.stores')">
                                             @foreach($employee->stores()->get() as $store)
                                                 {{$store->name}}
                                             @endforeach
@@ -97,7 +97,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>
+                                        <td title="@lang('lang.action')">
                                              <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
                                                      aria-haspopup="true" aria-expanded="false">
                                                  @lang('lang.action')
