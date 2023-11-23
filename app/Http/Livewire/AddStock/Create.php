@@ -261,7 +261,7 @@ class Create extends Component
             // Add stock transaction
             $transaction = new StockTransaction();
             $transaction->store_id = $this->store_id;
-            $transaction->status = 'f';
+            $transaction->status = 'received';
             $transaction->order_date = !empty($ref_transaction_po) ? $ref_transaction_po->transaction_date : Carbon::now();
             $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
             $transaction->purchase_type = $this->purchase_type;
