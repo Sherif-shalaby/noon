@@ -100,7 +100,7 @@
                                                         <div class="row mt-4 m-auto"
                                                             style="max-height: 70vh;overflow: scroll">
                                                             {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
-                                                            <table id="productTable"
+                                                            <table id="datatable-buttons"
                                                                 class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
                                                                 <thead>
                                                                     <tr>

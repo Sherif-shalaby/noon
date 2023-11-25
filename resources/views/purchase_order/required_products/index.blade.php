@@ -54,7 +54,7 @@
                                         @csrf
                                         <div class="row mt-4 m-auto" style="max-height: 90vh;overflow: scroll">
                                             {{-- ++++++++++++++ required products Table ++++++++++ --}}
-                                            <table id="productTable"
+                                            <table id="datatable-buttons"
                                                 class="table table-striped table-bordered table-hover m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
                                                 <thead>
                                                     <tr>

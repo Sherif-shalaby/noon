@@ -82,6 +82,7 @@ return [
     'settings_module' => 'Settings',
     'reports_module' => 'Reports',
     'stores' => 'Stores',
+    'export' => 'Export',
     // ++++++++++++++++++ customer_price_offer ++++++++++++++++
     'customer_price_offer' => 'customer Price Offer',
     'add_store' => 'Add Store',

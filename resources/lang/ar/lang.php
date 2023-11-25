@@ -110,6 +110,7 @@ return array(
     'enter_the_commission_%' => 'أدخل العمولة٪',
     'select_payment_cycle' => 'حدد دورة الدفع',
     'payment_cycle' => 'دورة الدفع',
+    'export' => 'تصدير',
     'select_commission_type' => 'حدد نوع العمولة',
     'select_commission_calculation_period' => 'حدد فترة حساب العمولة',
     'cashiers' => 'الصرافين',

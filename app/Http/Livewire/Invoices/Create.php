@@ -50,7 +50,7 @@ class Create extends Component
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $dollar_highest_price, $dollar_lowest_price, $due_date;
+        $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id;
 
     protected $rules = [
         'items' => 'array|min:1',
@@ -185,16 +185,58 @@ class Create extends Component
         }
         $this->draft_transactions = TransactionSellLine::where('status', 'draft')->orderBy('created_at', 'desc')->get();
         $this->dispatchBrowserEvent('initialize-select2');
+        // $customers_rt = Customer::orderBy('created_at', 'desc')->pluck('name','id');
+        $sell_lines = TransactionSellLine::query();
+
+        // Check if the user is a superadmin or admin
+        if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
+            // If the user is a superadmin or admin, get all sell lines
+            $sell_lines = $sell_lines->orderBy('created_at', 'desc');
+        } else {
+            // If the user is not a superadmin or admin, get sell lines created by the current user
+            $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
+        }
+
+        // // Filter by the selected created_by value if it is set
+        // if ($this->customer_id) {
+        //     $sell_lines = $sell_lines->where('customer_id', $this->customer_id);
+        // }
+
+        $sell_lines = $sell_lines->paginate(10);
         return view('livewire.invoices.create', compact(
             'departments',
             'languages',
             'selected_currencies',
             'customer_types',
             'search_result',
-            'deliverymen'
+            'deliverymen',
+            // 'customers_rt',
+            'sell_lines',
         ));
     }
 
+    // public function sell_trans()
+    // {
+    //     $customers_rt = Customer::orderBy('created_at', 'desc')->pluck('name','id');
+    //     $sell_lines = TransactionSellLine::query();
+
+    //     // Check if the user is a superadmin or admin
+    //     if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
+    //         // If the user is a superadmin or admin, get all sell lines
+    //         $sell_lines = $sell_lines->orderBy('created_at', 'desc');
+    //     } else {
+    //         // If the user is not a superadmin or admin, get sell lines created by the current user
+    //         $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
+    //     }
+
+    //     // Filter by the selected created_by value if it is set
+    //     if ($this->customer_id) {
+    //         $sell_lines = $sell_lines->where('customer_id', $this->customer_id);
+    //     }
+
+    //     $sell_lines = $sell_lines->paginate(10);
+    //     return view('invoices.partials.recent_transactions',compact('branch','stores'));
+    // }
     public function changeAllProducts()
     {
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');

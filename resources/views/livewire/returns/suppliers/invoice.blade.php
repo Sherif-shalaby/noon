@@ -108,13 +108,14 @@
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-success btn-sm"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    wire:click="submit('all_invoice', {{ $stock->id }})">
+                                                    style="font-size: 12px;font-weight: 600" data-toggle="modal"
+                                                    data-target="#paymentModal>
                                                     @lang('lang.return_invoice')
                                                 </button>
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                                <button type="button"
+                                                    class="btn btn-default btn-sm dropdown-toggle"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     @lang('lang.action')
                                                     <span class="caret"></span>
@@ -142,6 +143,7 @@
             <!-- End col -->
         </div>
         <!-- End row -->
+        @include('suppliers.returns.partials.payment')
     </div>
 </div>
 <!-- End Contentbar -->
