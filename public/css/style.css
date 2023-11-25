@@ -251,9 +251,16 @@ code {
     filter: invert(0.62) sepia(1) saturate(4.5) hue-rotate(199deg);
 }
 
+nav {
+    position: relative;
+    z-index: 88;
+}
+
 .rightbar {
-    overflow: hidden;
+    /* overflow: hidden; */
     min-height: 500px;
+    position: relative;
+    z-index: 9999;
     transition: all 0.3s ease;
     /* margin-top: 100px; */
     margin-left: 50px

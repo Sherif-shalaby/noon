@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="mb-2 col-md-3 animate__animated animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="animation-delay: 1.2s">
+                            style="animation-delay: 1.2s;position: relative;z-index: 999;">
                             {!! Form::label('store', __('lang.store'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',

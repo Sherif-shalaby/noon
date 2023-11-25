@@ -707,12 +707,23 @@ thead tr {
 }
 
 .bootstrap-select {
-    height: 100%;
+    background-color: #dedede !important;
+    padding: 0 4px !important;
+    border-radius: 16px !important;
+    border: 2px solid #cececf !important;
+    height: 30px !important;
 }
 
 .btn-light {
     height: 100%;
     padding: 0;
+    background-color: transparent !important;
+    border: none;
+}
+
+.btn-light:hover {
+    border: none !important;
+    outline: none !important;
 }
 
 .select2-results__option[aria-selected="true"]::before {
