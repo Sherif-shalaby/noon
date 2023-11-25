@@ -64,8 +64,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div
-                            class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                        <div class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif"
+                            style="margin-bottom: 25px">
                             <h4>@lang('lang.add_employee')</h4>
                         </div>
                         <div class="card-body">
@@ -86,7 +86,10 @@
                                             <div class="accordion-item" style="border: none">
                                                 <h2 class="accordion-header d-flex justify-content-end"
                                                     id="employee-products">
-                                                    <div class="accordion-button"
+                                                    <div class="accordion-button" id="product-accordion-button"
+                                                        style="
+    margin-top: -30px;
+"
                                                         onclick="toggleAccordion(`collapseOneEmployeesProducts`)">
                                                         <span class="collapseOneEmployeesProducts mx-2">
                                                             <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
@@ -97,8 +100,8 @@
                                                 <div id="collapseOneEmployeesProducts" class="accordion-content">
                                                     <div class="accordion-body p-0">
 
-                                                        <div class="row mt-4 m-auto"
-                                                            style="max-height: 70vh;overflow: scroll">
+                                                        <div class="row"
+                                                            style="max-height: 70vh;overflow: scroll;margin-top: 50px;">
                                                             {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
                                                             <table id="datatable-buttons"
                                                                 class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
@@ -371,8 +374,8 @@
                                                 data-target="#salary_details">
                                                 @lang('lang.salary_details')
                                             </button>
-                                            @include('employees.partials.salary_details')
                                         </div>
+                                        @include('employees.partials.salary_details')
 
                                         {{-- +++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++ --}}
                                         <div class="accordion mb-1 animate__animated animate__bounceInLeft"
@@ -704,7 +707,10 @@
             const section = document.getElementById(sectionId);
             let arrow = document.querySelector(`.${sectionId}`);
 
+
+
             if (section.style.display === "block") {
+
                 section.style.display = "none";
 
                 // Check if the element exists
@@ -723,6 +729,7 @@
                     arrow.appendChild(newIElement);
                 }
             } else {
+
                 section.style.display = "block";
 
                 // Check if the element exists

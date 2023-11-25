@@ -253,14 +253,14 @@ code {
 
 nav {
     position: relative;
-    z-index: 88;
+    z-index: 1;
 }
 
 .rightbar {
     /* overflow: hidden; */
     min-height: 500px;
     position: relative;
-    z-index: 9999;
+    /* z-index: 999; */
     transition: all 0.3s ease;
     /* margin-top: 100px; */
     margin-left: 50px

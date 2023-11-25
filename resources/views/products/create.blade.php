@@ -90,7 +90,7 @@
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
                         <div class=" col-md-3 mb-2 animate__animated animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="animation-delay: 1.15s">
+                            style="animation-delay: 1.15s;">
                             {!! Form::label('brand', __('lang.brand'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0 width-quarter' : ' mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -114,7 +114,7 @@
                         </div>
 
                         <div class="mb-2 col-md-3 animate__animated animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            style="animation-delay: 1.2s;position: relative;z-index: 999;">
+                            style="animation-delay: 1.2s;position: relative;z-index: 2;">
                             {!! Form::label('store', __('lang.store'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -218,10 +218,11 @@
                         </div>
 
                         <div class="col-md-12">
-                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="">
 
                                 <div class="mb-2 col-md-3 animate__animated  animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    style="animation-delay: 1.35s">
+                                    style="animation-delay: 1.35s;">
                                     {!! Form::label('category', __('lang.category'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  ml-0 mb-0 width-quarter' : ' ml-0 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -294,7 +295,7 @@
                                 </div>
 
                                 <div class="mb-2 col-md-3 animate__animated  animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    style="animation-delay: 1.45s">
+                                    style="animation-delay: 1.45s;">
                                     {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -329,7 +330,7 @@
                                 </div>
 
                                 <div class="mb-2 col-md-3 animate__animated  animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    style="animation-delay: 1.5s">
+                                    style="animation-delay: 1.5s;">
                                     {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -366,7 +367,7 @@
 
                                 {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                                 <div class="mb-2 col-md-3 animate__animated  animate__bounceInLeft d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                    style="animation-delay: 1.55s">
+                                    style="animation-delay: 1.55s;">
                                     {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0 width-quarter' : ' mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
@@ -411,7 +412,7 @@
                                                     width: 25%;
                                                     height: 30px;
                                                     flex-wrap: nowrap;">
-                                            <select name="method" id="method" class='form-control select2'
+                                            <select name="method" id="method" class='form-control select'
                                                 data-live-search='true' placeholder="{{ __('lang.please_select') }}">
                                                 <option value="">{{ __('lang.please_select') }}</option>
                                                 <option @if (isset($recent_product->method) && $recent_product->method == 'inclusive') selected @endif
@@ -437,7 +438,7 @@
                                                         width: 25%;
                                                         height: 30px;
                                                         flex-wrap: nowrap;">
-                                            <select name="product_tax_id" id="product_tax" class="form-control select2"
+                                            <select name="product_tax_id" id="product_tax" class="form-control select"
                                                 placeholder="{{ __('lang.please_select') }}">
                                                 <option value="">{{ __('lang.please_select') }}</option>
                                                 @foreach ($product_tax as $tax)
@@ -481,7 +482,7 @@
                                         <div class="input-wrapper">
 
                                             {!! Form::select('variation_id', [], null, [
-                                                'class' => 'form-control select2',
+                                                'class' => 'form-control select',
                                                 'placeholder' => __('lang.please_select'),
                                                 'id' => 'variation_id',
                                             ]) !!}

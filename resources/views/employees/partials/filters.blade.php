@@ -1,5 +1,5 @@
 <div class="card-body">
-    <form method="get" id="filter_form">
+    <form method="get" id="filter_form" style="margin-bottom: 30px">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {{-- ++++++++++++++++++ "main_category" filter ++++++++++++++++++ --}}
             <div
@@ -120,9 +120,9 @@
                             '</td>' +
                             '<td>' +
                             (product.subCategory1 ? product.subCategory1.name + '<br>' :
-                            '') +
+                                '') +
                             (product.subCategory2 ? product.subCategory2.name + '<br>' :
-                            '') +
+                                '') +
                             (product.subCategory3 ? product.subCategory3.name : '') +
                             '</td>' +
                             '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
