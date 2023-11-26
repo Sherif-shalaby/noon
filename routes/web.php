@@ -46,6 +46,7 @@ use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -299,6 +300,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('representatives', RepresentativeController::class);
     Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
+
+                                // Reports
+    // Product Report
+    Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
+    Route::get('reports/{product}/sell_price_less_purchase_price',[ReportController::class,'sell_price_less_purchase_price'])->name('reports.sell_price_less_purchase_price');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
