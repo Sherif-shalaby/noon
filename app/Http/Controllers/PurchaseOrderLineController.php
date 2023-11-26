@@ -10,15 +10,16 @@ use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Supplier;
 use App\Utils\ProductUtil;
+use App\Models\AddStockLine;
 use Illuminate\Http\Request;
+use App\Models\StockTransaction;
 use App\Models\PurchaseOrderLine;
 use Illuminate\Support\Facades\DB;
 use App\Utils\StockTransactionUtil;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\AddStockLine;
+use Illuminate\Support\Facades\Auth;
 use App\Models\PurchaseOrderTransaction;
-use App\Models\StockTransaction;
 
 class PurchaseOrderLineController extends Controller
 {
@@ -252,8 +253,64 @@ class PurchaseOrderLineController extends Controller
      * @param  \App\Models\PurchaseOrderLine  $purchaseOrderLine
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseOrderLine $purchaseOrderLine)
+    /* ============================= destroy() ============================= */
+    public function destroy($id)
     {
-        //
+        try
+        {
+            $purchase_order = PurchaseOrderTransaction::find($id);
+            // Set the 'deleted_by' column to the name of the user who is deleting the record
+            $purchase_order->deleted_by = Auth::user()->id;
+            $purchase_order->save();
+            // Soft delete the record
+            $purchase_order->delete();
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.job_deleted')
+            ];
+        }
+
+        catch (\Exception $e)
+        {
+            // Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            // $output = [
+            //     'success' => false,
+            //     'msg' => __('messages.something_went_wrong')
+            // ];
+        }
+        return redirect()->back()->with('status', $output);
+    }
+    // ============================= show softDeletedRecords ========================
+    public function softDeletedRecords()
+    {
+        $softDeletedRecords = PurchaseOrderTransaction::onlyTrashed()->get();
+        // dd($softDeletedRecords);
+        return view('purchase_order.soft_deleted_records', compact('softDeletedRecords'));
+    }
+    // ============================= restore softDeletedRecords ========================
+    public function restore($id)
+    {
+        // dd($id);
+        try
+        {
+            $record = PurchaseOrderTransaction::withTrashed()->findOrFail($id);
+            // Restore the soft-deleted record
+            $record->restore();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.restored_success'),
+            ];
+            return redirect()->back()->with('status', $output);
+        }
+        catch (\Exception $e)
+        {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
     }
 }

@@ -248,12 +248,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ########### softDelete For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/delete/{id}', [PurchaseOrderLineController::class, 'destroy'])->name('purchase_order.destroy');
+    // ########### show recycle_bin For PurchaseOrderTransaction ###########
+    Route::get('/soft-deleted-records', [PurchaseOrderLineController::class, 'softDeletedRecords'])->name('purchase_order.show_soft_deleted_records');
+    // ########### restore softDeleteRecords For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/restore/{id}', [PurchaseOrderLineController::class, 'restore'])->name('purchase_order.restore');
     // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
     // ---- required_products ----
     Route::resource('required-products', RequiredProductController::class);
-    Route::get('purchase-order/edit/{id}', function ($id) {
-        return view('purchase-order.edit', compact('id'));
-    })->name('purchase-order.edit');
+    // Route::get('purchase-order/edit/{id}', function ($id) {
+    //     return view('purchase-order.edit', compact('id'));
+    // })->name('purchase-order.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));
