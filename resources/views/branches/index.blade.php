@@ -62,23 +62,50 @@
                                     @foreach ($branches as $branch)
                                         <tr>
                                             <td>
-                                                {{ $branch->name }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.branch_name')">
+                                                    {{ $branch->name }}
+                                                </span>
                                             </td>
                                             <td>
-                                                @foreach ($branch->stores as $store)
-                                                    - {{ $store->name }}
-                                                @endforeach
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.stores')">
+                                                    @foreach ($branch->stores as $store)
+                                                        - {{ $store->name }}
+                                                    @endforeach
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ @format_date($branch->created_at) }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.date_of_creation')">
+                                                    {{ @format_date($branch->created_at) }}
+                                                </span>
                                             </td>
                                             <td>
-                                                {{ $branch->created_by_user->name }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.created_by')">
+
+                                                    {{ $branch->created_by_user->name }}
+                                                </span>
                                             </td>
                                             <td>
-                                                @if (isset($job->updated_by))
-                                                    {{ $job->updated_by_user->name }}
-                                                @endif
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.updated_by')">
+
+                                                    @if (isset($job->updated_by))
+                                                        {{ $job->updated_by_user->name }}
+                                                    @endif
+                                                </span>
                                             </td>
                                             <td>
                                                 <a data-href="{{ route('branches.edit', $branch->id) }}"

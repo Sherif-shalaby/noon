@@ -1400,7 +1400,7 @@
                             </div>
                             <span class="mx-2">{{ __('lang.settings') }}</span>
                         </a>
-                        <div class="mega-menu dropdown-menu settings-menu">
+                        <div class="mega-menu dropdown-menu settings-menu" style="z-index: 8;">
                             <ul class="mega-menu-row d-flex flex-wrap p-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 style="list-style: none" role="menu">
                                 {{-- ================= Column 1 ============== --}}
@@ -1587,81 +1587,97 @@
                             </div>
                             <span class="mx-2">{{ __('lang.reports') }}</span>
                         </a>
-                        <ul
-                            class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            {{-- +++++++++++ purchases report +++++++++++ --}}
-                            <li>
-                                <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    href="{{ route('purchases-report.index') }}"
-                                    style="cursor: pointer;font-weight: 600;text-decoration: none;">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.purchases_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ sales report +++++++++++ --}}
-                            <li>
-                                <a class="sales-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    href="{{ route('sales-report.index') }}"
-                                    style="cursor: pointer;font-weight: 600;text-decoration: none">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.sales_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ receivable report +++++++++++ --}}
-                            <li>
-                                <a class="receivable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    href="{{ route('receivable-report.index') }}"
-                                    style="cursor: pointer;font-weight: 600;text-decoration: none">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.receivable_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ payable report +++++++++++ --}}
-                            <li>
-                                <a class="payable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    href="{{ route('payable-report.index') }}"
-                                    style="cursor: pointer;font-weight: 600;text-decoration: none;">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.payable_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ customers report +++++++++++ --}}
-                            <li>
-                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                    href="{{ route('customers-report.index') }}"
-                                    class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif customers-report-button">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.customers_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
-                            <li>
-                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                    href="{{ route('daily-report-summary.index') }}"
-                                    class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily-report-summary-button">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.daily_report_summary') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ Get Due Report +++++++++++ --}}
-                            <li>
-                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                    href="{{ route('get-due-report.index') }}"
-                                    class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-due-report-button">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.get_due_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ Supplier Report +++++++++++ --}}
-                            <li>
-                                <a style="cursor: pointer;font-weight: 600;text-decoration: none"
-                                    href="{{ route('get-supplier-report.index') }}"
-                                    class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-supplier-report-button">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
-                                </a>
-                            </li>
-                            {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
-                            <li>
-                                <a class="representative_salary_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                    href="{{ route('representative_salary_report.index') }}"
-                                    style="cursor: pointer;font-weight: 600;text-decoration: none">
-                                    <i class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="mega-menu dropdown-menu settings-menu" style="width: 750px !important;">
+                            <ul class="mega-menu-row d-flex flex-wrap p-0
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                style="list-style: none" role="menu">
+                                <li class="mega-menu-col col-md-4 p-0">
+                                    <ul class="sub-menu p-0" style="list-style: none">
+                                        {{-- +++++++++++ purchases report +++++++++++ --}}
+                                        <li>
+                                            <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('purchases-report.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none;">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.purchases_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ sales report +++++++++++ --}}
+                                        <li>
+                                            <a class="sales-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('sales-report.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.sales_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ receivable report +++++++++++ --}}
+                                        <li>
+                                            <a class="receivable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('receivable-report.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.receivable_report') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-4 p-0">
+                                    <ul class="sub-menu p-0" style="list-style: none">
+                                        {{-- +++++++++++ payable report +++++++++++ --}}
+                                        <li>
+                                            <a class="payable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('payable-report.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none;">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.payable_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ customers report +++++++++++ --}}
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('customers-report.index') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif customers-report-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.customers_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('daily-report-summary.index') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily-report-summary-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.daily_report_summary') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-4 p-0">
+                                    <ul class="sub-menu p-0" style="list-style: none">
+                                        {{-- +++++++++++ Get Due Report +++++++++++ --}}
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('get-due-report.index') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-due-report-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.get_due_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ Supplier Report +++++++++++ --}}
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('get-supplier-report.index') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-supplier-report-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
+                                        <li>
+                                            <a class="representative_salary_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('representative_salary_report.index') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i
+                                                    class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                 @endif
                 {{-- @endcan --}}

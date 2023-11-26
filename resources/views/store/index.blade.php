@@ -62,12 +62,60 @@
                                 <tbody>
                                     @foreach ($stores as $store)
                                         <tr>
-                                            <td>{{ $store->name }}</td>
-                                            <td>{{ !empty($store->branch) ? $store->branch->name : '' }}</td>
-                                            <td>{{ $store->phone_number }}</td>
-                                            <td>{{ $store->email }}</td>
-                                            <td>{{ $store->manager_name }}</td>
-                                            <td>{{ $store->manager_mobile_number }}</td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.name')">
+
+                                                    {{ $store->name }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.branch')">
+
+                                                    {{ !empty($store->branch) ? $store->branch->name : '' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.phone_number')">
+
+                                                    {{ $store->phone_number }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.email')">
+
+                                                    {{ $store->email }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.manager_name')">
+
+                                                    {{ $store->manager_name }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.manager_mobile_number')">
+
+                                                    {{ $store->manager_mobile_number }}
+                                                </span>
+                                            </td>
                                             <td class="no-print">
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle"

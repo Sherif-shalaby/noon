@@ -37,7 +37,8 @@
             <div class="col-lg-12">
                 <div class="card m-b-30">
                     <div class="card-header">
-                        <h5 class="card-title">@lang('units.units')</h5>
+                        <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                            @lang('units.units')</h5>
                     </div>
                     <div class="card-body">
                         @if (@isset($units) && !@empty($units) && count($units) > 0)
@@ -56,30 +57,50 @@
                                         @foreach ($units as $index => $unit)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $unit->name }}</td>
                                                 <td>
-                                                    @if ($unit->user_id > 0 and $unit->user_id != null)
-                                                        {{ $unit->created_at->diffForHumans() }} <br>
-                                                        {{ $unit->created_at->format('Y-m-d') }}
-                                                        ({{ $unit->created_at->format('h:i') }})
-                                                        {{ $unit->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $unit->createBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('units.unitname')">
+
+                                                        {{ $unit->name }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    @if ($unit->last_update > 0 and $unit->last_update != null)
-                                                        {{ $unit->updated_at->diffForHumans() }} <br>
-                                                        {{ $unit->updated_at->format('Y-m-d') }}
-                                                        ({{ $unit->updated_at->format('h:i') }})
-                                                        {{ $unit->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $unit->updateBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('added_by')">
+
+                                                        @if ($unit->user_id > 0 and $unit->user_id != null)
+                                                            {{ $unit->created_at->diffForHumans() }} <br>
+                                                            {{ $unit->created_at->format('Y-m-d') }}
+                                                            ({{ $unit->created_at->format('h:i') }})
+                                                            {{ $unit->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $unit->createBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('updated_by')">
+
+                                                        @if ($unit->last_update > 0 and $unit->last_update != null)
+                                                            {{ $unit->updated_at->diffForHumans() }} <br>
+                                                            {{ $unit->updated_at->format('Y-m-d') }}
+                                                            ({{ $unit->updated_at->format('h:i') }})
+                                                            {{ $unit->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $unit->updateBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     @include('units.action')

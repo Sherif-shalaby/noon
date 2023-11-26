@@ -73,13 +73,41 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 {{-- <td>{{ $store_pos->store->name ?? '' }}</td> --}}
-                                                <td>{{ $store_pos->name }}</td>
-                                                <td>{{ $store_pos->user->name }}</td>
-                                                <td>{{ $store_pos->user->email }}</td>
-                                                <td>{{ @format_datetime($store_pos->created_at) }}</td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.name')">
+                                                        {{ $store_pos->name }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.user')">
+                                                        {{ $store_pos->user->name }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.email')">
+                                                        {{ $store_pos->user->email }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.date_and_time')">
+                                                        {{ @format_datetime($store_pos->created_at) }}
+                                                    </span>
+                                                </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <button type="button"
+                                                        <button type="button" style="font-size: 12px;font-weight: 600"
                                                             class="btn btn-default btn-sm dropdown-toggle"
                                                             data-toggle="dropdown" aria-haspopup="true"
                                                             aria-expanded="false">@lang('lang.action')

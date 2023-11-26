@@ -65,21 +65,66 @@
                                 <tbody>
                                     @foreach ($general_taxes as $general_tax)
                                         <tr>
-                                            <td>{{ $general_tax->id }}</td>
-                                            <td>{{ $general_tax->name ?? '' }}</td>
-                                            <td>{{ $general_tax->rate }}</td>
-                                            <td>{{ $general_tax->method }}</td>
-                                            <td>{{ $general_tax->details }}</td>
-                                            <td>{{ $general_tax->status }}</td>
                                             <td>
-                                                @foreach ($general_tax->stores as $store_tax)
-                                                    {{ $store_tax->name }}
-                                                @endforeach
+
+                                                {{ $general_tax->id }}
+
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.tax_name')">
+                                                    {{ $general_tax->name ?? '' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.tax_rate')">
+                                                    {{ $general_tax->rate }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.tax_method')">
+                                                    {{ $general_tax->method }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.tax_details')">
+                                                    {{ $general_tax->details }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.tax_status')">
+                                                    {{ $general_tax->status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.stores')">
+                                                    @foreach ($general_tax->stores as $store_tax)
+                                                        {{ $store_tax->name }}
+                                                    @endforeach
+                                                </span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
+                                                        style="font-size: 12px;font-weight: 600"
                                                         aria-expanded="false">@lang('lang.action')
                                                         <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>

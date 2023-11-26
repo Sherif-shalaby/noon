@@ -70,40 +70,87 @@
                                         @foreach ($categories as $index => $categorie)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td><img src="{{ $categorie->imagepath }}"
-                                                        style="width: 50px; height: 50px;" alt="{{ $categorie->name }}">
-                                                </td>
-                                                <td>{{ $categorie->name }}</td>
-                                                <td>{{ $categorie->parentName() }}</td>
                                                 <td>
-                                                    <a href="{{ route('sub-categories', $categorie->id) }}"
-                                                        class="btn btn-sm btn-primary">
-                                                        {{ $categorie->subCategories->count() }}</a>
-                                                </td>
-                                                <td>{{ __($categorie->status()) }}</td>
-                                                <td>
-                                                    @if ($categorie->user_id > 0 and $categorie->user_id != null)
-                                                        {{ $categorie->created_at->diffForHumans() }} <br>
-                                                        {{ $categorie->created_at->format('Y-m-d') }}
-                                                        ({{ $categorie->created_at->format('h:i') }})
-                                                        {{ $categorie->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $categorie->createBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('categories.cover')">
+
+                                                        <img src="{{ $categorie->imagepath }}"
+                                                            style="width: 50px; height: 50px;" alt="{{ $categorie->name }}">
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    @if ($categorie->last_update > 0 and $categorie->last_update != null)
-                                                        {{ $categorie->updated_at->diffForHumans() }} <br>
-                                                        {{ $categorie->updated_at->format('Y-m-d') }}
-                                                        ({{ $categorie->updated_at->format('h:i') }})
-                                                        {{ $categorie->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $categorie->updateBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('categories.categorie_name')">
+
+                                                        {{ $categorie->name }}
+                                                </td>
+                                                </span>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('categories.parent')">
+
+                                                        {{ $categorie->parentName() }}
+                                                </td>
+                                                </span>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('categories.sub_categories')">
+                                                        <a href="{{ route('sub-categories', $categorie->id) }}"
+                                                            class="btn btn-sm btn-primary">
+                                                            {{ $categorie->subCategories->count() }}</a>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('categories.status')">
+                                                        {{ __($categorie->status()) }}
+                                                </td>
+                                                </span>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('added_by')">
+
+                                                        @if ($categorie->user_id > 0 and $categorie->user_id != null)
+                                                            {{ $categorie->created_at->diffForHumans() }} <br>
+                                                            {{ $categorie->created_at->format('Y-m-d') }}
+                                                            ({{ $categorie->created_at->format('h:i') }})
+                                                            {{ $categorie->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $categorie->createBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('updated_by')">
+
+                                                        @if ($categorie->last_update > 0 and $categorie->last_update != null)
+                                                            {{ $categorie->updated_at->diffForHumans() }} <br>
+                                                            {{ $categorie->updated_at->format('Y-m-d') }}
+                                                            ({{ $categorie->updated_at->format('h:i') }})
+                                                            {{ $categorie->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $categorie->updateBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     @include('categories.action')

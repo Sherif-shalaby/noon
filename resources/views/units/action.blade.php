@@ -1,5 +1,5 @@
 <div class="bn-group">
-    <button type="button" class="btn btn-info btn-sm text-white mx-1" data-toggle="modal"
+    <button type="button" class="btn btn-primary btn-sm text-white mx-1" data-toggle="modal"
         data-target="#edit{{ $unit->id }}" title="{{ __('Edit') }}">
         <i class="fa fa-edit"></i>
     </button>

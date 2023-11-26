@@ -64,30 +64,49 @@
                                         @foreach ($colors as $index => $color)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $color->name }}</td>
                                                 <td>
-                                                    @if ($color->user_id > 0 and $color->user_id != null)
-                                                        {{ $color->created_at->diffForHumans() }} <br>
-                                                        {{ $color->created_at->format('Y-m-d') }}
-                                                        ({{ $color->created_at->format('h:i') }})
-                                                        {{ $color->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $color->createBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('colors.colorname')">
+                                                        {{ $color->name }}
+                                                    </span>
                                                 </td>
                                                 <td>
-                                                    @if ($color->last_update > 0 and $color->last_update != null)
-                                                        {{ $color->updated_at->diffForHumans() }} <br>
-                                                        {{ $color->updated_at->format('Y-m-d') }}
-                                                        ({{ $color->updated_at->format('h:i') }})
-                                                        {{ $color->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                        <br>
-                                                        {{ $color->updateBy?->name }}
-                                                    @else
-                                                        {{ __('no_update') }}
-                                                    @endif
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('added_by')">
+
+                                                        @if ($color->user_id > 0 and $color->user_id != null)
+                                                            {{ $color->created_at->diffForHumans() }} <br>
+                                                            {{ $color->created_at->format('Y-m-d') }}
+                                                            ({{ $color->created_at->format('h:i') }})
+                                                            {{ $color->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $color->createBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('updated_by')">
+
+                                                        @if ($color->last_update > 0 and $color->last_update != null)
+                                                            {{ $color->updated_at->diffForHumans() }} <br>
+                                                            {{ $color->updated_at->format('Y-m-d') }}
+                                                            ({{ $color->updated_at->format('h:i') }})
+                                                            {{ $color->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                            <br>
+                                                            {{ $color->updateBy?->name }}
+                                                        @else
+                                                            {{ __('no_update') }}
+                                                        @endif
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     @include('colors.action')

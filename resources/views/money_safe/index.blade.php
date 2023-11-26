@@ -64,40 +64,82 @@
                                     @foreach ($moneysafe as $index => $m_safe)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $m_safe->name }}</td>
-                                            <td>@lang('lang.' . $m_safe->type . '')</td>
-                                            <td>{{ $m_safe->currency->currency }}</td>
                                             <td>
-                                                {{ $m_safe->currency->symbol }} {{ @num_format($m_safe->latest_balance) }}
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.name')">
+                                                    {{ $m_safe->name }}
+                                                </span>
                                             </td>
                                             <td>
-                                                @if ($m_safe->created_by > 0 and $m_safe->created_by != null)
-                                                    {{ $m_safe->created_at->diffForHumans() }} <br>
-                                                    {{ $m_safe->created_at->format('Y-m-d') }}
-                                                    ({{ $m_safe->created_at->format('h:i') }})
-                                                    {{ $m_safe->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $m_safe->createBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.type')">
+
+                                                    @lang('lang.' . $m_safe->type . '')
+                                                </span>
                                             </td>
                                             <td>
-                                                @if ($m_safe->edited_by > 0 and $m_safe->edited_by != null)
-                                                    {{ $m_safe->updated_at->diffForHumans() }} <br>
-                                                    {{ $m_safe->updated_at->format('Y-m-d') }}
-                                                    ({{ $m_safe->updated_at->format('h:i') }})
-                                                    {{ $m_safe->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
-                                                    <br>
-                                                    {{ $m_safe->updateBy?->name }}
-                                                @else
-                                                    {{ __('no_update') }}
-                                                @endif
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.currency')">
+
+                                                    {{ $m_safe->currency->currency }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('lang.balance')">
+                                                    {{ $m_safe->currency->symbol }}
+                                                    {{ @num_format($m_safe->latest_balance) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('added_by')">
+
+                                                    @if ($m_safe->created_by > 0 and $m_safe->created_by != null)
+                                                        {{ $m_safe->created_at->diffForHumans() }} <br>
+                                                        {{ $m_safe->created_at->format('Y-m-d') }}
+                                                        ({{ $m_safe->created_at->format('h:i') }})
+                                                        {{ $m_safe->created_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                        <br>
+                                                        {{ $m_safe->createBy?->name }}
+                                                    @else
+                                                        {{ __('no_update') }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600"
+                                                    data-tooltip="@lang('updated_by')">
+
+                                                    @if ($m_safe->edited_by > 0 and $m_safe->edited_by != null)
+                                                        {{ $m_safe->updated_at->diffForHumans() }} <br>
+                                                        {{ $m_safe->updated_at->format('Y-m-d') }}
+                                                        ({{ $m_safe->updated_at->format('h:i') }})
+                                                        {{ $m_safe->updated_at->format('A') == 'AM' ? __('am') : __('pm') }}
+                                                        <br>
+                                                        {{ $m_safe->updateBy?->name }}
+                                                    @else
+                                                        {{ __('no_update') }}
+                                                    @endif
+                                                </span>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
+                                                        style="font-size: 12px;font-weight: 600"
                                                         aria-expanded="false">خيارات
                                                         <span class="caret"></span>
                                                         <span class="sr-only">Toggle Dropdown</span>

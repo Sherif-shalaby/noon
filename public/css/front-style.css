@@ -611,7 +611,7 @@ body {
 @media (min-width:992px) {
     .settings-menu {
         width: 1000px !important;
-        right: -6px !important;
+        right: -350px !important;
     }
 }
 
@@ -667,7 +667,7 @@ body {
     padding: 5px;
     border-radius: 3px;
     top: 120%;
-    left: 0%;
+    left: 20%;
     font-size: 10px;
     font-weight: 700;
     z-index: 999;
