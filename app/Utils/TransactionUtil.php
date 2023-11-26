@@ -2,7 +2,7 @@
 
 namespace App\Utils;
 
-
+use App\Models\Employee;
 use App\Models\System;
 
 class TransactionUtil extends Util
@@ -61,5 +61,26 @@ class TransactionUtil extends Util
         }
 
         return $html_content;
+    }
+    public function getFilterOptionValues($request)
+    {
+
+        $data['store_id'] = null;
+        $data['pos_id'] = null;
+        if (!empty($request->store_id)) {
+            $data['store_id'] = $request->store_id;
+        }
+        if (!empty($request->pos_id)) {
+            $data['pos_id'] = $request->pos_id;
+        }
+        // if (!session('user.is_superadmin')) {
+        //     $employee = Employee::where('user_id', auth()->user()->id)->first();
+        //     if(in_array($data['store_id'],(array) $employee->store_id)){
+        //         $data['store_id'] =$data['store_id'];
+        //     }
+            // $data['pos_id'] = session('user.pos_id');
+        // }
+
+        return $data;
     }
 }

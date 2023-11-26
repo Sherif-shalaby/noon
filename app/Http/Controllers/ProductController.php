@@ -31,22 +31,24 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
 use App\Utils\Util;
+use App\Utils\TransactionUtil;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-
 class ProductController extends Controller
 {
     protected $Util;
-
+    protected $transactionUtil;
     /**
      * Constructor
      *
      * @param Utils $product
+     * @param transactionUtil $transactionUtil
      * @return void
      */
-    public function __construct(Util $Util)
+    public function __construct(Util $Util, TransactionUtil $transactionUtil)
     {
         $this->Util = $Util;
+        $this->transactionUtil = $transactionUtil;
     }
   /**
    * Display a listing of the resource.
@@ -599,33 +601,83 @@ class ProductController extends Controller
         return view('product_expiry_damage.index')
             ->with(compact( 'product_damages', 'status' ,'id' ));
     }
+    public function deleteExpiryRow($id){
+        try {
+            $product_expiry=ProductExpiryDamage::find($id);
+            $product_expiry->delete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+          } catch (\Exception $e) {
+              Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+              $output = [
+                  'success' => false,
+                  'msg' => __('lang.something_went_wrong')
+              ];
+          }
+          return $output;
+    }
+  
     public function getDamageProduct(Request $request,$id){
-            $addStockLines = AddStockLine::
-            where("add_stock_lines.product_id",$id)
-                ->where("add_stock_lines.quantity",">",0 )
-                ->leftjoin('variations', function ($join) {
-                    $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
-                });
-            $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
-            $store_query = '';
-            if (!empty($store_id)) {
-                // $products->where('product_stores.store_id', $store_id);
-                $store_query = 'AND store_id=' . $store_id;
-            }
-            $addStockLines = $addStockLines->select(
-                'add_stock_lines.*',
-                'add_stock_lines.expiry_date as exp_date',
-                'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
-                'add_stock_lines.purchase_price as add_stock_line_purchase_price',
-                'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
-                'variations.sub_sku',
-                'variations.name as variation_name',
-                DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
-                DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
-                DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
-            )->groupBy('add_stock_lines.id');
-
-        return view("product_expiry_damage.add");
+            // $addStockLines = AddStockLine::
+            // where("add_stock_lines.product_id",$id)
+            //     ->where("add_stock_lines.quantity",">",0 )
+            //     ->leftjoin('variations', function ($join) {
+            //         $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+            //     });
+            // $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+            // $store_query = '';
+            // if (!empty($store_id)) {
+            //     // $products->where('product_stores.store_id', $store_id);
+            //     $store_query = 'AND store_id=' . $store_id;
+            // }
+            // $addStockLines = $addStockLines->select(
+            //     'add_stock_lines.*',
+            //     'add_stock_lines.expiry_date as exp_date',
+            //     'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
+            //     'add_stock_lines.purchase_price as add_stock_line_purchase_price',
+            //     'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
+            //     'variations.sku',
+            //     DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
+            //     DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
+            //     DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
+            // )->get();
+                // return $addStockLines;
+        return view("product_expiry_damage.add",compact('id'));
+    }
+    public function get_remove_expiry(Request $request,$id){
+        $product_damages = ProductExpiryDamage::where("product_id",$id)->where("status","expiry")->get();
+        $status = "expiry";
+        return view('product_expiry_damage.index')
+            ->with(compact( 'product_damages', 'status' ,'id' ));
+    }
+    public function addConvolution(Request $request,$id){
+        // $addStockLines = AddStockLine::
+        // where("add_stock_lines.product_id",$id)
+        //     ->where("add_stock_lines.quantity",">",0 )
+        //     ->leftjoin('variations', function ($join) {
+        //         $join->on('add_stock_lines.variation_id', 'variations.id')->whereNull('variations.deleted_at');
+        //     });
+        // $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+        // $store_query = '';
+        // if (!empty($store_id)) {
+        //     // $products->where('product_stores.store_id', $store_id);
+        //     $store_query = 'AND store_id=' . $store_id;
+        // }
+        // $addStockLines = $addStockLines->select(
+        //     'add_stock_lines.*',
+        //     'add_stock_lines.expiry_date as exp_date',
+        //     'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
+        //     'add_stock_lines.purchase_price as add_stock_line_purchase_price',
+        //     'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
+        //     'variations.sku',
+        //     DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
+        //     DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
+        //     DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
+        // )->get();
+            // return $addStockLines;
+    return view("product_expiry_damage.create",compact('id'));
     }
 }
 

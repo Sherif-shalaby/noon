@@ -589,6 +589,7 @@ return [
     'add_new_stock'=>'Add New Stock',
     'remove_expiry'=>'Remove Expiry',
     'generate_invoice' => 'Print Invoice',
+    'expired_stock'=>'Expired Stock',
 ];
 
 

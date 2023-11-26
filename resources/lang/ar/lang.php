@@ -623,5 +623,6 @@ return array(
     'add_new_stock'=>'اضافة مخزون جديد',
     'remove_expiry'=>'ازالة منهى الصلاحية',
     'generate_invoice' => 'طباعة فاتورة',
+    'expired_stock'=>'مخزون منتهى الصلاحية',
 );
 
