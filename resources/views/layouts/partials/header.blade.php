@@ -1593,6 +1593,13 @@
                                 style="list-style: none" role="menu">
                                 <li class="mega-menu-col col-md-4 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
+                                        <li>
+                                            <a class="product-report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('reports.products') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none;">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.product_report') }}
+                                            </a>
+                                        </li>
                                         {{-- +++++++++++ purchases report +++++++++++ --}}
                                         <li>
                                             <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -1609,6 +1616,11 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.sales_report') }}
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-4 p-0">
+                                    <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ receivable report +++++++++++ --}}
                                         <li>
                                             <a class="receivable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -1617,10 +1629,6 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.receivable_report') }}
                                             </a>
                                         </li>
-                                    </ul>
-                                </li>
-                                <li class="mega-menu-col col-md-4 p-0">
-                                    <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ payable report +++++++++++ --}}
                                         <li>
                                             <a class="payable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -1637,6 +1645,11 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.customers_report') }}
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-4 p-0">
+                                    <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
                                         <li>
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
@@ -1645,10 +1658,6 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.daily_report_summary') }}
                                             </a>
                                         </li>
-                                    </ul>
-                                </li>
-                                <li class="mega-menu-col col-md-4 p-0">
-                                    <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ Get Due Report +++++++++++ --}}
                                         <li>
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
@@ -1665,6 +1674,11 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
                                             </a>
                                         </li>
+
+                                    </ul>
+                                </li>
+                                <li class="mega-menu-col col-md-4 p-0">
+                                    <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
                                         <li>
                                             <a class="representative_salary_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -1676,20 +1690,23 @@
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
-                        </div>
+
+
                     </li>
-                @endif
-                {{-- @endcan --}}
-                <li>
-                    <a class="due-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                        style="cursor: pointer;font-weight: 600;text-decoration: none" href="{{ route('dues') }}">
-                        {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid" alt="components"> --}}
-                        <span>{{ __('lang.dues') }}</span>
-                    </a>
-                </li>
             </ul>
         </div>
+        </li>
+        @endif
+        {{-- @endcan --}}
+        <li>
+            <a class="due-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                style="cursor: pointer;font-weight: 600;text-decoration: none" href="{{ route('dues') }}">
+                {{-- <img src="{{ asset('images/topbar/warehouse.png') }}" class="img-fluid" alt="components"> --}}
+                <span>{{ __('lang.dues') }}</span>
+            </a>
+        </li>
+        </ul>
+    </div>
     </div>
 
 </nav>
@@ -1925,6 +1942,12 @@
     $('.product_tax-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('product-tax.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.product-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('reports.products') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

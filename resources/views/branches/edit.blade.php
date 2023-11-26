@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
-     style="display: none;" aria-hidden="true">
+    style="display: none;" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,28 +9,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {!! Form::open(['url' => route('branches.update',$branch->id), 'method' => 'put']) !!}
+            {!! Form::open(['url' => route('branches.update', $branch->id), 'method' => 'put']) !!}
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="job_title">@lang('lang.branch_name')</label>
-                            <input type="text" class="form-control" value="{{$branch->name}}" name="name" id="name" required>
+                            <label style='font-size: 12px;font-weight: 500;' for="job_title">@lang('lang.branch_name')</label>
+                            <input type="text" class="form-control" value="{{ $branch->name }}" name="name"
+                                id="name" required>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            {!! Form::label('store', __('lang.stores'), ['class' => 'pt-3']) !!}
-                            {!! Form::select(
-                                'stores[]',
-                                $stores,$branch->stores,
-                                [
-                                    'class' => 'form-control select2',
-                                    'multiple' => 'multiple',
-//                                    'placeholder' => __('lang.please_select'),
-                                    'id' => 'store_id',
-                                ],
-                            ) !!}
+                            {!! Form::label('store', __('lang.stores'), ['class' => 'pt-3', 'style' => 'font-size: 12px;font-weight: 500;']) !!}
+                            {!! Form::select('stores[]', $stores, $branch->stores, [
+                                'class' => 'form-control select',
+                                'multiple' => 'multiple',
+                                //                                    'placeholder' => __('lang.please_select'),
+                                'id' => 'store_id',
+                            ]) !!}
                         </div>
                     </div>
                 </div>
@@ -44,5 +41,5 @@
     </div>
 </div>
 @push('javascripts')
-    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>--}}
+    {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script> --}}
 @endpush

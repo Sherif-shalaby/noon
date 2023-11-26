@@ -21,7 +21,10 @@
             <div class="modal-body p-0">
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('store_id', __('lang.store') . '*', ['class' => 'width-quarter mr-4']) !!}
+                    {!! Form::label('store_id', __('lang.store') . '*', [
+                        'class' => 'width-quarter mr-4',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     <div class="input-wrapper">
                         {!! Form::select('store_id', $stores, $store_pos->store_id, [
                             'class' =>
@@ -36,7 +39,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('name', __('lang.name') . '*', ['class' => 'width-quarter mr-4']) !!}
+                    {!! Form::label('name', __('lang.name') . '*', [
+                        'class' => 'width-quarter mr-4',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('name', $store_pos->name, [
                         'class' => 'form-control initial-balance-input mx-0 my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.name'),
@@ -45,7 +51,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('user_id', __('lang.user') . '*', ['class' => 'width-quarter mr-4']) !!}
+                    {!! Form::label('user_id', __('lang.user') . '*', [
+                        'class' => 'width-quarter mr-4',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     <div class="input-wrapper">
                         {!! Form::select('user_id', $users, $store_pos->user_id, [
                             'class' =>

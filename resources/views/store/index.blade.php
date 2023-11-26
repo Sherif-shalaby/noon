@@ -120,6 +120,7 @@
                                                 <div class="btn-group">
                                                     <button type="button" class="btn btn-default btn-sm dropdown-toggle"
                                                         data-toggle="dropdown" aria-haspopup="true"
+                                                        style="font-size: 12px;font-weight: 600"
                                                         aria-expanded="false">خيارات
                                                         <span class="caret"></span></button>
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"

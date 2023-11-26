@@ -314,7 +314,7 @@ class ProductController extends Controller
    * Show the form for editing the specified resource.
    *
    * @param  int  $id
-   * @return Response
+   * @return Application|Factory|View
    */
   public function edit($id)
   {
@@ -330,8 +330,9 @@ class ProductController extends Controller
       $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
       $variation_units=Variation::where('product_id',$id)->pluck('unit_id');
       $basic_units=Unit::whereIn('id',$variation_units)->pluck('name','id');
+      $branches = Branch::where('type','branch')->pluck('name','id');
       return view('products.edit',compact('unitArray','categories','brands'
-      ,'units','stores','quick_add','product','customer_types','product_tax','product_tax_id','basic_units'));
+      ,'units','stores','quick_add','product','customer_types','product_tax','product_tax_id','basic_units','branches'));
   }
 
   /**

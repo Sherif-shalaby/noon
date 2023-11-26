@@ -38,9 +38,10 @@
                     </div>
                     <div class="card-body">
                         {!! Form::open(['url' => route('updateModule'), 'method' => 'post', 'enctype' => 'multipart/form-data']) !!}
-                        <div class="row">
+                        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             @foreach ($modules as $key => $name)
-                                <div class="col-md-4 @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                <div class="col-md-4 animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) text-end @else text-start @endif"
+                                    style="animation-delay: {{ $loop->index * 0.2 }}s">
                                     <div class="i-checks">
                                         <label for="{{ $loop->index }}"><strong>{{ __('lang.' . $key) }}</strong></label>
                                         <input id="{{ $loop->index }}" name="module_settings[{{ $key }}]"

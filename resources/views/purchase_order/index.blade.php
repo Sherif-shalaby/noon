@@ -36,6 +36,11 @@
                 <div
                     class="col-md-4  d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                     <div class="widgetbar">
+                        {{-- ++++++++++++++++++++ show Recycle_Bin ++++++++++++ --}}
+                        <a href="{{ route('purchase_order.show_soft_deleted_records') }}" class="btn btn-success">
+                            @lang('lang.show_recycle_bin')
+                        </a>
+                        {{-- ++++++++++++++++++++ create purchase_order ++++++++++++ --}}
                         <a href="{{ route('purchase_order.create') }}" class="btn btn-primary">
                             @lang('lang.create_purchase_order')
                         </a>
@@ -165,15 +170,11 @@
                                                                 @lang('lang.edit') </a>
                                                         </li>
 
-                                                        {{-- @endcan
-                                @can('purchase_order.purchase_order.delete') --}}
+
                                                         <li>
-                                                            {{--    data-href="{{action('PurchaseOrderController@destroy', $purchase_order->id)}}"
-                                            data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
-                                    --}}
                                                             <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                                                data-href="#" data-check_password="#"
-                                                                class="btn text-red delete_item"><i class="fa fa-trash"></i>
+                                                                href="{{ route('purchase_order.destroy', $purchase_order->id) }}"><i
+                                                                    class="fa fa-trash"></i>
                                                                 @lang('lang.delete')</a>
                                                         </li>
                                                         {{-- @endcan --}}

@@ -19,7 +19,10 @@
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
                     <input type="hidden" value="{{ $money_safe_id }}" name="money_safe_id" />
-                    {!! Form::label('source_type', __('lang.source_type') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('source_type', __('lang.source_type') . '*', [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select(
@@ -37,7 +40,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
-                    {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', ['class' => 'modal-label-width']) !!} <br>
+                    {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!} <br>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select('source_id', $users, null, [
@@ -51,7 +57,8 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="store_id">@lang('lang.store') *</label>
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="store_id">@lang('lang.store') *</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select('store_id', $stores, null, [
@@ -67,7 +74,7 @@
                 </div>
 
                 {{-- <div class="form-group">
-                            <label for="currency_id">@lang('lang.currency') .*</label>
+                            <label style="font-size: 12px;font-weight: 500;" for="currency_id">@lang('lang.currency') .*</label>
                             {!! Form::select(
                                 'currency_id',
                                 !empty($settings['currency']) ? $selected_currencies:$selected_currencies,null,
@@ -79,7 +86,8 @@
                         </div> --}}
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="amount">@lang('lang.amount') *
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="amount">@lang('lang.amount') *
                         .{{ $currency_symbol }}</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -93,7 +101,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
-                    {!! Form::label('job', __('lang.job') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('job', __('lang.job') . '*', [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select('job_type_id', $jobs, null, [
@@ -109,7 +120,8 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="transaction_date">@lang('lang.date') *</label>
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="transaction_date">@lang('lang.date') *</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::text('transaction_date', @format_date(date('Y-m-d')), [
@@ -123,7 +135,8 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="details">@lang('lang.details') *</label>
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="details">@lang('lang.details') *</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <input type="text" class="form-control initial-balance-input m-0" style="width: 100%"

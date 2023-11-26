@@ -14,7 +14,8 @@
             <div class="modal-body p-0">
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="name">@lang('lang.name') *</label>
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="name">@lang('lang.name') *</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <input type="text" required style="width: 100%"
@@ -28,7 +29,8 @@
 
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="store_id">@lang('lang.store') *</label>
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="store_id">@lang('lang.store') *</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select('store_id', $stores, null, [
@@ -45,7 +47,8 @@
 
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse mr-3 @else ml-3 @endif">
-                    <label class="modal-label-width" for="currency_id">@lang('lang.currency') *</label>
+                    <label style="font-size: 12px;font-weight: 500;" class="modal-label-width"
+                        for="currency_id">@lang('lang.currency') *</label>
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select(
@@ -67,7 +70,10 @@
 
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse mr-3 @else ml-3 @endif">
-                    {!! Form::label('type', __('lang.type_of_safe') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('type', __('lang.type_of_safe') . '*', [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     <div
                         class="select_body input-wrapper d-flex justify-content-between align-items-center mb-2 form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         {!! Form::select(

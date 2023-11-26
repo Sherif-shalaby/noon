@@ -46,6 +46,7 @@ use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -248,12 +249,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ########### softDelete For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/delete/{id}', [PurchaseOrderLineController::class, 'destroy'])->name('purchase_order.destroy');
+    // ########### show recycle_bin For PurchaseOrderTransaction ###########
+    Route::get('/soft-deleted-records', [PurchaseOrderLineController::class, 'softDeletedRecords'])->name('purchase_order.show_soft_deleted_records');
+    // ########### restore softDeleteRecords For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/restore/{id}', [PurchaseOrderLineController::class, 'restore'])->name('purchase_order.restore');
     // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
     // ---- required_products ----
     Route::resource('required-products', RequiredProductController::class);
-    Route::get('purchase-order/edit/{id}', function ($id) {
-        return view('purchase-order.edit', compact('id'));
-    })->name('purchase-order.edit');
+    // Route::get('purchase-order/edit/{id}', function ($id) {
+    //     return view('purchase-order.edit', compact('id'));
+    // })->name('purchase-order.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));
@@ -299,6 +306,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('representatives', RepresentativeController::class);
     Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
+
+                                // Reports
+    // Product Report
+    Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
+    Route::get('reports/{product}/sell_price_less_purchase_price',[ReportController::class,'sell_price_less_purchase_price'])->name('reports.sell_price_less_purchase_price');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

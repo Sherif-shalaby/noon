@@ -21,7 +21,10 @@
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <input type="hidden" name="quick_add"
                         value="{{ isset($quick_add) && $quick_add ? $quick_add : '' }}">
-                    {!! Form::label('name', __('lang.name') . '*', ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('name', __('lang.name') . '*', [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('name', $store->name, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.name'),
@@ -30,7 +33,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('phone_number', __('lang.phone_number'), ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('phone_number', __('lang.phone_number'), [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('phone_number', $store->phone_number, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.phone_number'),
@@ -38,7 +44,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('email', __('lang.name'), ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('email', __('lang.name'), [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('email', $store->email, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.email'),
@@ -46,7 +55,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('manager_name', __('lang.manager_name'), ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('manager_name', __('lang.manager_name'), [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('manager_name', $store->manager_name, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.manager_name'),
@@ -54,7 +66,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('manager_mobile_number', __('lang.manager_mobile_number'), ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('manager_mobile_number', __('lang.manager_mobile_number'), [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('manager_mobile_number', $store->manager_mobile_number, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.manager_mobile_number'),
@@ -64,6 +79,7 @@
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     {!! Form::label('branch_id', __('lang.branch'), [
                         'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
                     ]) !!}
                     <div class="input-wrapper" style="width: 60%;margin-right: 14%;">
                         {!! Form::select('branch_id', $branches, null, [
@@ -75,7 +91,10 @@
 
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('details', __('lang.details'), ['class' => 'modal-label-width']) !!}
+                    {!! Form::label('details', __('lang.details'), [
+                        'class' => 'modal-label-width',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::textarea('details', $store->details, [
                         'class' => 'form-control initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.details'),

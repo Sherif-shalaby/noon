@@ -22,7 +22,10 @@
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <input type="hidden" name="quick_add"
                         value="{{ isset($quick_add) && $quick_add ? $quick_add : '' }}">
-                    {!! Form::label('name', __('lang.brand_name') . '*', ['class' => 'col-md-4 m-0 p-0']) !!}
+                    {!! Form::label('name', __('lang.brand_name') . '*', [
+                        'class' => 'col-md-4 m-0 p-0',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('name', null, [
                         'class' => 'initial-balance-input my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.brand_name'),

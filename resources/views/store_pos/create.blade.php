@@ -31,7 +31,10 @@
                 </div> --}}
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('name', __('lang.name') . '*', ['class' => 'width-quarter mr-4']) !!}
+                    {!! Form::label('name', __('lang.name') . '*', [
+                        'class' => 'width-quarter mr-4',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     {!! Form::text('name', null, [
                         'class' => 'form-control initial-balance-input mx-0 my-0 app()->isLocale("ar")? text-end : text-start',
                         'placeholder' => __('lang.name'),
@@ -40,7 +43,10 @@
                 </div>
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    {!! Form::label('user_id', __('lang.user') . '*', ['class' => 'width-quarter mr-4']) !!}
+                    {!! Form::label('user_id', __('lang.user') . '*', [
+                        'class' => 'width-quarter mr-4',
+                        'style' => 'font-size: 12px;font-weight: 500;',
+                    ]) !!}
                     <div class="input-wrapper">
                         {!! Form::select('user_id', $users, null, [
                             'class' =>

@@ -1,9 +1,10 @@
 <!-- Modal -->
-<div class="modal add-unit modal-supplier animate__animated add-supplier" data-animate-in="animate__rollIn"
+<div class="modal add-unit modal-unit animate__animated add-supplier" data-animate-in="animate__rollIn"
     data-animate-out="animate__rollOut" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content @if (app()->isLocale('ar')) text-end @else text-start @endif">
-            <div class="modal-header mb-4 d-flex justify-content-between py-0 ">
+            <div
+                class="modal-header mb-4 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif justify-content-between py-0 ">
                 <h5 class="modal-title" id="exampleModalLabel">{{ __('Add') }}</h5>
                 <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -17,7 +18,8 @@
                         class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <input type="hidden" name="quick_add"
                             value="{{ isset($quick_add) && $quick_add ? $quick_add : '' }}">
-                        <label class="col-md-3" for="name">@lang('units.unitname')</label>
+                        <label style="font-size: 12px;font-weight: 500;" class="col-md-3"
+                            for="name">@lang('units.unitname')</label>
                         <div class="col-md-9 d-flex justify-content-between p-0 align-items-center select_body position-relative @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="background-color: #dedede; border: none;
                                         border-radius: 16px;

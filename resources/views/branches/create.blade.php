@@ -14,14 +14,14 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label for="job_title">@lang('lang.branch_name')</label>
+                            <label style='font-size: 12px;font-weight: 500;' for="job_title">@lang('lang.branch_name')</label>
                             <input type="text" class="form-control" value="" name="name" id="name"
                                 required>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
-                            {!! Form::label('store', __('lang.stores'), ['class' => 'pt-3']) !!}
+                            {!! Form::label('store', __('lang.stores'), ['class' => 'pt-3', 'style' => 'font-size: 12px;font-weight: 500;']) !!}
                             {!! Form::select('stores[]', $stores, null, [
                                 'class' => 'form-control select',
                                 'multiple' => 'multiple',
