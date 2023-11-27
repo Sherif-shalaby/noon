@@ -53,7 +53,6 @@
                                 <th style="width: 25%" class="col-sm-8">@lang('lang.image')</th>
                                 <th style="width: 25%" class="col-sm-8">@lang('lang.products')</th>
                                 <th style="width: 25%" class="col-sm-4">@lang('lang.sku')</th>
-                                <th style="width: 25%" class="col-sm-4">@lang('lang.batch_number')</th>
                                 <th style="width: 25%" class="col-sm-4">@lang('lang.quantity')</th>
                                 <th style="width: 12%" class="col-sm-4">@lang('lang.sell_price')</th>
                                 <th style="width: 12%" class="col-sm-4">@lang('lang.discount')</th>
@@ -82,16 +81,13 @@
                                     <td>
                                         @if (!empty($line->variation))
                                             @if ($line->variation->name != 'Default')
-                                                {{ $line->variation->sub_sku }}
+                                                {{ $line->variation->sku }}
                                             @else
                                                 {{ $line->product->sku ?? '' }}
                                             @endif
                                         @else
                                             {{ $line->product->sku ?? '' }}
                                         @endif
-                                    </td>
-                                    <td>
-                                        {{ $line->product->batch_number ?? '' }}
                                     </td>
                                     <td>
                                         @if (isset($line->quantity))
@@ -120,7 +116,6 @@
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>

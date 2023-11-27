@@ -26,7 +26,7 @@
                    value="{{$product->item_tax}}">
         </td>
         <td style="width: 20%" title="{{__('lang.sku')}}">
-{{--            {{$product->variation->sub_sku}}--}}
+           {{$product->variation->sku}}
         </td>
         <td>@if(isset($product->quantity)){{ preg_match('/\.\d*[1-9]+/', (string)$product->quantity) ? $product->quantity : @num_format($product->quantity)}}@else{{1}}@endif</td>
         <td style="width: 15%">

@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-4 col-lg-4">
                 <div class="widgetbar">
-                    <a type="button" class="btn btn-primary" href="{{route('getDamageProduct',["id"=> $id ])}}">@lang('lang.remove_damage')</a>
+                    <a type="button" class="btn btn-primary" href="{{$status=="damage"?route('getDamageProduct',["id"=> $id ]):route('addConvolution',["id"=> $id ])}}">{{$status=="damage"?__('lang.remove_damage'):__('lang.remove_expiry')}}</a>
                 </div>
             </div>
         </div>
@@ -54,25 +54,18 @@
                                     @foreach ($product_damages as $product_expiry)
                                         <tr>
                                             <td>
-                                                @if(!empty($product_expiry->product->getFirstMediaUrl('product')))
-                                                    <img src="{{ $product_expiry->product->getFirstMediaUrl('product') }}" height="50px" width="50px">
+                                                @if(!empty($product_expiry->product->image))
+                                                    <img src="{{ $product_expiry->product->image }}" height="50px" width="50px">
                                                 @else
                                                     <img src="{{ asset('/uploads/' . session('logo')) }}" height="50px" width="50px">
                                                 @endif
                                             </td>
-                                            <td>
-                                                @if ($product_expiry->variation->name != "Default")
-                                                    {{$product_expiry->variation->name}}
-                                                @else
-                                                    {{$product_expiry->product->name}}
-                                                @endif
-                                            </td>
-                                            <td>{{$product_expiry->variation->sub_sku}}</td>
-
+                                            <td>{{$product_expiry->product->name??''}}</td>
+                                            <td>{{$product_expiry->variation->sku??''}}</td>
                                             <td>{{ $product_expiry->quantity_of_expired_stock_removed }}</td>
                                             <td>{{ $product_expiry->value_of_removed_stocks }}</td>
                                             <td>{{ $product_expiry->created_at }}</td>
-                                            <td> {{ $product_expiry->date_of_purchase_of_expired_stock_removed }} </td>
+                                            <td>{{ $product_expiry->date_of_purchase_of_expired_stock_removed }} </td>
                                             <td>{{$product_expiry->addedBy->name}}</td>
                                             <td>
                                                 <div class="btn-group">
@@ -82,14 +75,13 @@
                                                         <span class="sr-only">Toggle Dropdown</span>
                                                     </button>
                                                     <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
-                                                        @can('adjustment.customer_balance_adjustment.delete')
+                                                        {{-- @can('adjustment.customer_balance_adjustment.delete') --}}
                                                             <li>
-                                                                <a data-href="{{action('ProductController@deleteExpiryRow', $product_expiry->id)}}"
-                                                                   data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}"
+                                                                <a data-href="{{route('deleteExpiryRow', $product_expiry->id)}}"
                                                                    class="btn text-red delete_item"><i class="fa fa-trash"></i>
                                                                     @lang('lang.delete')</a>
                                                             </li>
-                                                        @endcan
+                                                        {{-- @endcan --}}
                                                     </ul>
                                                 </div>
                                             </td>
