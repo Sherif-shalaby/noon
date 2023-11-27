@@ -78,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    {{----}}
+                    {{-- +++++++++++++++++ start_date +++++++++++++++++ --}}
                     <div class="col-md-4">
                         <div class="form-group ">
                             <label for="start_date">@lang('lang.start_date')</label>
@@ -95,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                        {{----}}
+                    {{-- +++++++++++++++++ end_date +++++++++++++++++ --}}
                     <div class="col-md-4">
                         <div class="form-group ">
                             <label for="end_date">@lang('lang.end_date')</label>

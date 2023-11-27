@@ -164,6 +164,7 @@ class Index extends Component
             'cash' => __('lang.cash'),
         ];
     }
+    
     public function clear_filters(){
         $this->product_symbol = null;
         $this->product_name = null;

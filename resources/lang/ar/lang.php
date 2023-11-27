@@ -16,6 +16,7 @@ return array(
     'save' => 'حفظ',
     'close' => 'الغاء',
     'delete' => 'حذف',
+    'forceDelete' => 'حذف نهائي',
     'deleted_at' => 'تاريخ الحذف',
     'delete_msg' => 'تم الحذف بنجاح',
     'restore' => 'استرجاع' ,

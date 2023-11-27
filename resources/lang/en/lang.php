@@ -22,6 +22,7 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'forceDelete' => 'Force deletion' ,
     'deleted_at' => 'deleted at',
     'edit_purchase_order' => 'Edit purchase order',
     'delete_msg' => 'Deleted Successfully',

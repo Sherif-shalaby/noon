@@ -126,11 +126,8 @@ class Edit extends Component
     public function render()
     {
         $store_pos = StorePos::find($this->store_pos_id);
-//        if(empty($store_pos)){
-//            $this->dispatchBrowserEvent('NoUserPos');
-//        }
-        if(!empty($store_pos)){
-//            $this->dispatchBrowserEvent('NoUserPos');
+        if(!empty($store_pos))
+        {
             $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id') : [];
             $branch = $store_pos->user->employee->branch;
         }
@@ -227,7 +224,6 @@ class Edit extends Component
                 'store_pos_id' => $this->store_pos_id,
                 'exchange_rate' => System::getProperty('dollar_exchange') ?? 0,
                 'type' => 'sell',
-//                'transaction_currency' => $this->transaction_currency,
                 'final_total' => $this->num_uf($this->final_total),
                 'grand_total' => $this->num_uf($this->total),
                 'dollar_final_total' => $this->num_uf($this->dollar_final_total),
@@ -242,16 +238,6 @@ class Edit extends Component
                 'sale_note' => $this->sale_note,
                 'staff_note' => $this->staff_note,
                 'discount_value' => $this->num_uf($this->discount),
-//            'discount_amount' => $this->commonUtil->num_uf($request->discount_amount),
-//            'current_deposit_balance' => $this->commonUtil->num_uf($request->current_deposit_balance),
-//            'used_deposit_balance' => $this->commonUtil->num_uf($request->used_deposit_balance),
-//            'remaining_deposit_balance' => $this->commonUtil->num_uf($request->remaining_deposit_balance),
-//            'add_to_deposit' => $this->commonUtil->num_uf($request->add_to_deposit),
-//            'tax_id' => !empty($request->tax_id_hidden) ? $request->tax_id_hidden : null,
-//            'tax_method' => $request->tax_method ?? null,
-//            'total_tax' => $this->commonUtil->num_uf($request->total_tax),
-//            'total_item_tax' => $this->commonUtil->num_uf($request->total_item_tax),
-//            'terms_and_condition_id' => !empty($request->terms_and_condition_id) ? $request->terms_and_condition_id : null,
             ];
             DB::beginTransaction();
 
@@ -330,10 +316,6 @@ class Edit extends Component
                     $sell_line->exchange_rate = $item['exchange_rate'];
                     $sell_line->sub_total = $this->num_uf($item['sub_total']);
                     $sell_line->dollar_sub_total = $this->num_uf($item['dollar_sub_total']);
-//                $sell_line->tax_id = !empty($item['tax_id']) ? $item['tax_id'] : null;
-//                $sell_line->tax_method = !empty($item['tax_method']) ? $item['tax_method'] : null;
-//                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;
-//                $sell_line->item_tax = !empty($item['item_tax']) ? $this->num_uf($item['item_tax']) : 0;
                     $sell_line->save();
                     $keep_sell_lines[] = $sell_line->id;
                 }
@@ -642,11 +624,9 @@ class Edit extends Component
             'total_quantity' => !empty($product->unit) ?  number_format($line->quantity,3) * $product->unit->base_unit_multiplier : number_format($line->quantity,3),
             'stores' => $product_stores,
             'sell_line_id' => $line->id,
-//                    'store' => $product_stores->first()->store->name,
         ];
 
         $this->computeForAll();
-//        $this->sumSubTotal();
     }
 
     public function cancel()

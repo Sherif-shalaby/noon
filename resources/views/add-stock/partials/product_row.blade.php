@@ -62,7 +62,7 @@
         <td title="{{__('lang.purchase_price')}} $">
             <input type="text" class="form-control" style="width: 61px;" required
                    wire:model="items.{{ $index }}.dollar_purchase_price" wire:change="changeFilling({{$index}})">
-            <span>{{ $product['dollar_purchase_price_span'] }}</span>
+            {{-- <span>{{ $product['dollar_purchase_price_span'] }}</span> --}}
             @error('items.'. $index.'.dollar_purchase_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -70,7 +70,7 @@
         <td title="{{__('lang.selling_price')}} $">
             <input type="text" class="form-control"  style="width: 61px;" required
                    wire:model="items.{{ $index }}.dollar_selling_price">
-            <span>{{ $product['dollar_selling_price_span'] }}</span>
+            {{-- <span>{{ $product['dollar_selling_price_span'] }}</span> --}}
             @error('items.'.$index.'.dollar_selling_price')
             <span class="error text-danger">{{ $message }}</span>
             @enderror
@@ -85,7 +85,7 @@
 {{--    @endif--}}
     <td title="{{__('lang.purchase_price')}}">
         <input type="text" class="form-control" wire:model="items.{{ $index }}.purchase_price" wire:change="changeFilling({{$index}})" style="width: 61px;"  required>
-        <span>{{ $product['purchase_price_span'] }}</span>
+        {{-- <span>{{ $product['purchase_price_span'] }}</span> --}}
 
         @error('items.'.$index.'.purchase_price')
         <span class="error text-danger">{{ $message }}</span>
@@ -93,7 +93,7 @@
     </td>
     <td title="{{__('lang.selling_price')}}">
         <input type="text" class="form-control " wire:model="items.{{ $index }}.selling_price" style="width: 61px;" required>
-        <span>{{ $product['selling_price_span'] }}</span>
+        {{-- <span>{{ $product['selling_price_span'] }}</span> --}}
         @error('items.'.$index.'.selling_price')
         <span class="error text-danger">{{ $message }}</span>
         @enderror
