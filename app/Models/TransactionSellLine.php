@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class TransactionSellLine extends Model
 {
@@ -15,6 +16,7 @@ class TransactionSellLine extends Model
 
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
+
     public function delivery()
     {
         return $this->belongsTo(Employee::class,'deliveryman_id');

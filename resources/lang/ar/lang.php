@@ -418,7 +418,7 @@ return array(
     'expected_payable_report' => 'تقرير الدفع المتوقع',
     'summary_report' => 'تقرير ملخص',
     'best_seller_report' => 'تقرير الأفضل مبيعاً',
-    'product_report' => 'تقرير المنتج',
+    'product_report' => 'تقرير المنتجات الشمولي',
     'daily_sale_report' => 'تقرير البيع اليومي',
     'monthly_sale_report' => 'تقرير البيع الشهري',
     'monthly_purchase_report' => 'تقرير الشراء الشهري',
@@ -655,5 +655,12 @@ return array(
     'add_payments'=>'دفع',
     'add_to_customer_balance'=>'اضافة الى رصيد العميل',
     'sale_return'=>'ارجاع',
+    'best_selling' => 'الأكثر مبيعا',
+    'least_selling' => 'الأقل مبيعا',
+    'most_stock' => 'الأكثر مخزونا',
+    'lowest_stock' => 'الأقل مخزونا',
+    'zero_stocks' => 'لا يوجد مخزون',
+    'sell_price_less_purchase_price' => 'سعر البيع اقل من سعر الشراء',
+    'expired' => 'منتهي الصلاحيه',
 );
 

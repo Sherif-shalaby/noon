@@ -70,13 +70,13 @@
                                 <tbody>
                                     @foreach ( $transaction_sell_lines as $key => $transaction_sell_line )
                                         <tr>
-                                            <td>{{ $transaction_sell_line->created_at->format('Y-m-d') }}</td>
-                                            <td>{{ $transaction_sell_line->invoice_no }}</td>
-                                            <td>{{ $transaction_sell_line->customer->name }}</td>
-                                            <td>{{ $transaction_sell_line->status }}</td>
-                                            <td>{{ $transaction_sell_line->payment_status }}</td>
-                                            <td>{{ $transaction_sell_line->transaction_currency_relationship->symbol }}</td>
-                                            <td>{{ $transaction_sell_line->final_total }}</td>
+                                            <td>{{ $transaction_sell_line->created_at->format('Y-m-d') ?? ''}} </td>
+                                            <td>{{ $transaction_sell_line->invoice_no ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->customer->name ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->status ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->payment_status ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->transaction_currency_relationship->symbol ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->final_total ?? ''}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

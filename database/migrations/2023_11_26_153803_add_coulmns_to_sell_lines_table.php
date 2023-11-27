@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('purchase_order_transactions', function (Blueprint $table) {
-            $table->softDeletes();
-            // $table->string('deleted_by')->nullable();
+        Schema::table('sell_lines', function (Blueprint $table) {
+            $table->decimal('stock_sell_price', 15, 4)->nullable();
+            $table->decimal('stock_dollar_sell_price', 15, 4)->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('purchase_order_transactions', function (Blueprint $table) {
+        Schema::table('sell_lines', function (Blueprint $table) {
             //
         });
     }
