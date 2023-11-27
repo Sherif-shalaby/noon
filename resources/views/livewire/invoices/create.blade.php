@@ -1,8 +1,3 @@
-<style>
-    body {
-        overflow-y: scroll;
-    }
-</style>
 <section class="app my-3 no-print" style="margin-top: 35px!important;">
     <div class="">
         {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
@@ -517,52 +512,44 @@
         {!! Form::close() !!}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
     </div>
+    <!-- recent transaction modal -->
+    <div id="recentTransaction" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        class="modal text-left">
+        <div class="modal-dialog modal-xl" role="document" style="max-width: 65%;">
+            <div class="modal-content @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                <div
+                    class="modal-header d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <h4 class="modal-title">@lang('lang.recent_transactions')</h4>
+                    <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close"
+                        id="closeRecentTransactionModal"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12 modal-filter">
+                        <div class="row">
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        @include('invoices.partials.recent_transactions')
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="closeRecentTransactionModal"
+                        data-dismiss="modal">@lang('lang.close')</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
 </section>
 @include('customers.quick_add', ['quick_add' => 1])
 
 
-<!-- recent transaction modal -->
-<div id="recentTransaction" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    class="modal text-left">
-    <div class="modal-dialog modal-xl" role="document" style="max-width: 65%;">
-        <div class="modal-content @if (app()->isLocale('ar')) text-end @else text-start @endif">
-            <div
-                class="modal-header d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <h4 class="modal-title">@lang('lang.recent_transactions')</h4>
-                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close"
-                    id="closeRecentTransactionModal"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12 modal-filter">
-                    <div class="row">
-
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    @include('invoices.partials.recent_transactions')
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="closeRecentTransactionModal"
-                    data-dismiss="modal">@lang('lang.close')</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-
 {{-- <!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @push('javascripts')
-    <script>
-        $(document).on("click", "#recent-transaction-btn", function() {
-            $("#recentTransaction").modal("show");
-        });
-        $(document).on("click", "#closeRecentTransactionModal", function() {
-            $("#recentTransaction").modal("hide");
-        });
-    </script>
+
     @if (empty($store_pos) || empty($stores))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -572,6 +559,12 @@
         </script>
     @endif
     <script>
+        $(document).on("click", "#recent-transaction-btn", function() {
+            $("#recentTransaction").modal("show");
+        });
+        $(document).on("click", "#closeRecentTransactionModal", function() {
+            $("#recentTransaction").modal("hide");
+        });
         document.addEventListener('livewire:load', function() {
             $('.depart').select().on('change', function(e) {
                 @this.set('department_id', $(this).val());
@@ -687,19 +680,5 @@
             });
 
         });
-
-        document.addEventListener('componentRefreshed', function() {
-            // Execute your JavaScript code here after Livewire component refreshes
-            const value = localStorage.getItem("showHideDollar");
-
-            var dollarCells = document.getElementsByClassName('dollar-cell');
-
-            for (var i = 0; i < dollarCells.length; i++) {
-                if (value === "hide") {
-                    dollarCells[i].classList.add('showHideDollarCells')
-                }
-            }
-        });
     </script>
-
 @endpush

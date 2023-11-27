@@ -438,7 +438,7 @@ select.form-control {
 /* LOADING */
 
 body {
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
     height: 100vh;
 }
 
