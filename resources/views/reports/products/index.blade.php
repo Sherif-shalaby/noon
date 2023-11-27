@@ -123,11 +123,13 @@
                                                 {{ __('no_update') }}
                                             @endif
                                         </td>
-                                        <td>
-                                            <a type="button" class="btn btn-default btn-sm" href="{{ route('reports.sell_price_less_purchase_price',$product->id) }}">
-                                                @lang('lang.view_details')
-                                            </a>
-                                        </td>
+                                        @if(request()->sell_price_less_purchase_price == 'on')
+                                            <td>
+                                                <a type="button" class="btn btn-default btn-sm" href="{{ route('reports.sell_price_less_purchase_price',$product->id) }}">
+                                                    @lang('lang.view_details')
+                                                </a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                                 </tbody>
