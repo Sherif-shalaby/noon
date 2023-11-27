@@ -311,6 +311,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Product Report
     Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
     Route::get('reports/{product}/sell_price_less_purchase_price',[ReportController::class,'sell_price_less_purchase_price'])->name('reports.sell_price_less_purchase_price');
+    // Initial Balance
+    Route::get('reports/initial_balance',[ReportController::class,'initialBalanceReport'])->name('reports.initial_balance');
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

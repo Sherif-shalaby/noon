@@ -13,27 +13,10 @@
                     </ol>
                 </div>
             </div>
-            {{-- <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{route('products.create')}}" class="btn btn-primary">
-                        @lang('lang.add_products')
-                      </a>
-                </div>
-            </div> --}}
-   </div>
+        </div>
     </div>
 @endsection
 @section('content')
-    {{-- <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
-            <div class="card m-b-30 p-2">
-
-
-            </div>
-        </div>
-    </div> --}}
        <!-- Start Contentbar -->
        <div class="contentbar">
         <!-- Start row -->
@@ -93,27 +76,27 @@
                                         @foreach ( $customer_transactions_sell_lines as $key => $customer_transactions_sell_line )
                                             <tr>
                                                 <td>{{ $customer_transactions_sell_line->created_at->format('Y-m-d') }}</td>
-                                                <td>{{ $customer_transactions_sell_line->invoice_no }}</td>
-                                                <td>{{ $customer_transactions_sell_line->customer->name }}</td>
+                                                <td>{{ $customer_transactions_sell_line->invoice_no ?? ''}}</td>
+                                                <td>{{ $customer_transactions_sell_line->customer->name ?? ''}}</td>
                                                 {{-- Get All_sell_lines of transaction Then Get "product name" --}}
                                                 <td>
                                                     <ul>
                                                         @foreach ( $customer_transactions_sell_line->transaction_sell_lines as $transaction_sell_lines)
-                                                                <li>{{ $transaction_sell_lines->product->name }}</li>
+                                                                <li>{{ $transaction_sell_lines->product->name ?? ''}}</li>
                                                         @endforeach
                                                     </ul>
                                                 </td>
-                                                <td>{{ number_format($customer_transactions_sell_line->final_total , 2) }}</td>
+                                                <td>{{ @num_format($customer_transactions_sell_line->final_total ) ?? ''}}</td>
                                                 {{-- Get All_Payments of transaction Then Get "payment amount" --}}
-                                                <td>{{ number_format( $customer_transactions_sell_line->transaction_payments->sum('amount') ,2) }}</td>
+                                                <td>{{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount')) ?? ''}}</td>
                                                 {{-- متاخرات --}}
                                                 <td>
-                                                    {{ number_format( $customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total   ,2)  }}
+                                                    {{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total) ?? ''}}
                                                 </td>
                                                 {{-- sells status --}}
-                                                <td>{{ $customer_transactions_sell_line->status }}</td>
+                                                <td>{{ $customer_transactions_sell_line->status ?? ''}}</td>
                                                 {{-- payment status --}}
-                                                <td>{{ $customer_transactions_sell_line->payment_status }}</td>
+                                                <td>{{ $customer_transactions_sell_line->payment_status ?? ''}}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
