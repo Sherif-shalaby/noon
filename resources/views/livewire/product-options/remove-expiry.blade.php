@@ -31,12 +31,15 @@
                         </td>
                         <td>{{$stock_line->variation->sku??''}}</td>
                         <td>{{number_format($stock_line->avail_current_stock - $stock_line->expired_current_stock,3)  }}</td>
-                        <td> <input type="text" wire:model="rows.{{$i}}.quantity_to_remove" /></td>
+                        <td> <input type="text" wire:model="rows.{{$i}}.quantity_to_remove" wire:change="changeStockRemovedValue({{$i}})" /></td>
                         <td>{{$stock_line->expired_current_stock}}</td>
                         <td>{{$stock_line->exp_date}}</td>
                         <td>{{$stock_line->date_of_purchase_of_the_expired_stock_removed}}</td>
-                        <td>{{number_format($stock_line->avg_purchase_price)}}</td>
-                        <td>@if(isset($stock_line->quantity_of_expired_stock_removed)){{$stock_line->quantity_of_expired_stock_removed}} @else {{0}}@endif</td>
+                        <td>{{number_format($stock_line->avg_purchase_price)}}
+                         {{-- <input type="text" wire:model="rows.{{$i}}.avg_purchase_price" /> --}}
+                        
+                        </td>
+                        <td>@if(isset($stock_line->quantity_of_expired_stock_removed)){{$stock_line->quantity_of_expired_stock_removed}} @else {{$this->quantity_of_expired_stock_removed}}@endif</td>
                         {{-- <td>@if(isset($stock_line->value_of_removed_stocks)){{$stock_line->value_of_removed_stocks}} @else {{0}}@endif</td>
                         <td>{{number_format($stock_line->avg_purchase_price)}}</td>
                         <td>{{0}}</td> --}}
