@@ -475,6 +475,8 @@ class ProductController extends Controller
             'deleted_by'=>Auth::user()->id
         ]);
         $product->variations()->delete();
+        $product->sell_lines()->delete();
+        $product->stock_lines()->delete();
         $product->deleted_by = Auth::user()->id;
         $product->save();
         $product->delete();

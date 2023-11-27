@@ -70,7 +70,7 @@
                                     @foreach($all_products as $index=>$product)
                                         <tr>
                                             <td>{{ $index+1 }}</td>
-                                            <td>{{$product->name}}</td>
+                                            <td title="اسم المنتج">{{$product->name}}</td>
 
                                             @php
                                                 // ++++++++++++++++++++ sell_price_var ++++++++++++++++++++
@@ -100,12 +100,12 @@
                                                     }
                                                 }
                                              @endphp
-                                            {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                            <td> {{ number_format($sell_price_var,2) }}</td>
-                                            {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
-                                            <td> {{ $sell_quantity }} </td>
+                                            {{-- ++++++++++ مبلغ المبيعات ++++++++++ --}}
+                                            <td title="مبلغ المبيعات"> {{ number_format($sell_price_var,2) }}</td>
+                                            {{-- ++++++++++ الكمية المباعة +++++++++ --}}
+                                            <td title="الكمية المباعة"> {{ $sell_quantity }} </td>
                                             {{-- ++++++++++ في المخزن ++++++++++ --}}
-                                            <td>{{ $sell_store }}</td>
+                                            <td title="في المخزن">{{ $sell_store }}</td>
                                             {{-- @foreach ( $product->stock_lines as $stockLine )
                                                 {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
                                                 {{-- <td>

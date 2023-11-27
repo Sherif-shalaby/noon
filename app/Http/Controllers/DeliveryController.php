@@ -10,6 +10,9 @@ use App\Models\DeliveryLocation;
 use App\Models\Employee;
 use App\Models\State;
 use App\Models\System;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -98,7 +101,7 @@ class DeliveryController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function show($id)
     {
@@ -214,7 +217,9 @@ class DeliveryController extends Controller
 
     public function plansList(Request $request)
     {
-        $cities = City::pluck('name', 'id');
+//        $cities = City::pluck('name', 'id');
+        $country = Country::find(System::getProperty('country_id'));
+        $cities = $country->states->flatMap->cities->pluck('name', 'id');
         $delivery_men = Employee::whereHas('job_type', function ($query) {
             $query->where('title', 'Deliveryman');
         })->with('user')->get();
@@ -253,7 +258,8 @@ class DeliveryController extends Controller
     }
     public function plansListForRep(Request $request)
     {
-        $cities = City::pluck('name', 'id');
+        $country = Country::find(System::getProperty('country_id'));
+        $cities = $country->states->flatMap->cities->pluck('name', 'id');
         $delivery_men = Employee::whereHas('job_type', function ($query) {
             $query->where('title', 'Representative');
         })->with('user')->get();

@@ -5,6 +5,7 @@ namespace App\Http\Livewire\InitialBalance;
 use App\Models\AddStockLine;
 use App\Models\Branch;
 use App\Models\Category;
+use App\Models\Currency;
 use App\Models\CustomerType;
 use App\Models\Product;
 use App\Models\ProductDimension;
@@ -61,7 +62,7 @@ class Edit extends Component
     public $quantity = [], $purchase_price = [], $selling_price = [],
         $base_unit = [], $divide_costs, $total_size = [], $total_weight = [],
         $sub_total = [], $change_price_stock = [], $store_id, $status,
-        $supplier, $exchange_rate, $exchangeRate, $transaction_date,
+        $supplier, $exchange_rate, $exchangeRate, $transaction_date, $transaction_currency,
         $dollar_purchase_price = [], $dollar_selling_price = [], $dollar_sub_total = [], $dollar_cost = [], $dollar_total_cost = [],
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $product_tax, $subcategories = [],
         $deleted_items = [], $deleted_prices = [], $discount_from_original_price,$basic_unit_variations=[],$unit_variations=[],$branches=[];
@@ -76,6 +77,7 @@ class Edit extends Component
     public function updatedInputs()
     {
         $this->validate([
+        'transaction_currency' => 'required',
         'item.*.name' => 'required',
         'item.*.store_id' => 'required',
         'item.*.supplier_id' => 'required',
@@ -146,6 +148,8 @@ class Edit extends Component
     }
     public function render()
     {
+        $currenciesId = [System::getProperty('currency'), 2];
+        $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
@@ -169,7 +173,8 @@ class Edit extends Component
                 'units',
                 'basic_units',
                 'categories',
-                'customer_types'
+                'customer_types',
+                'selected_currencies'
             )
         );
     }
@@ -180,6 +185,7 @@ class Edit extends Component
         $this->stockId = $stockId;
         $recent_stock = StockTransaction::where('id', $stockId)->where('type', 'initial_balance')->orderBy('created_at', 'desc')->first();
         if (!empty($recent_stock)) {
+            $this->transaction_currency = $recent_stock->transaction_currency;
             $this->item[0]['stockId'] = $stockId;
             $this->item[0]['id'] = $recent_stock->add_stock_lines->first()->product->id;
             $this->item[0]['store_id'] = $recent_stock->store_id;
@@ -208,16 +214,17 @@ class Edit extends Component
             $this->item[0]['size'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->size ?? null;
             $this->item[0]['method'] = $recent_stock->add_stock_lines->first()->product->method ?? null;
             $this->item[0]['product_tax_id'] = ProductTax::where('product_id', $this->item[0]['id'])->first()->product_tax_id ?? null;
+            $this->exchange_rate = $this->num_uf($this->changeExchangeRate());
             foreach ($recent_stock->add_stock_lines as $stock) {
                 $newRow = [
                     'stock_line_id' => $stock->id,
                     'id' => $stock->variation->id, 'sku' => $stock->variation->sku, 'quantity' => $stock->quantity,
                     'fill_quantity' => $stock->fill_quantity,
                     'fill_type' => $stock->fill_type,
-                    'purchase_price' => $stock->purchase_price,
-                    'selling_price' => $stock->sell_price,
-                    'dollar_purchase_price' => $stock->dollar_purchase_price,
-                    'dollar_selling_price' => $stock->dollar_sell_price,
+                    'purchase_price' =>  ($this->transaction_currency == 2) ? $stock->dollar_purchase_price * $this->num_uf($this->exchangeRate) : $stock->purchase_price ,
+                    'selling_price' =>  ($this->transaction_currency == 2) ? $stock->dollar_sell_price * $this->num_uf($this->exchangeRate) : $stock->sell_price,
+                    'dollar_purchase_price' => ($this->transaction_currency == 2) ? $stock->dollar_purchase_price : $stock->purchase_price / $this->num_uf($this->exchangeRate),
+                    'dollar_selling_price' => ($this->transaction_currency == 2) ? $stock->dollar_sell_price  : $stock->sell_price / $this->num_uf($this->exchangeRate),
                     'unit_id' => $stock->variation->unit_id,
                     'basic_unit_id' => $stock->variation->basic_unit_id,
                     'change_price_stock' => '',
@@ -225,6 +232,7 @@ class Edit extends Component
                     'fill_currency'=>'dinar',
                     'prices' => [],
                 ];
+
                 $this->unit_variations[]=$stock->variation->unit_id;
 
                 // $new_price=[];
@@ -277,7 +285,6 @@ class Edit extends Component
 
         }
         $this->calculateTotalQuantity();
-        $this->exchange_rate = $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
     }
     // public function updated($propertyName)
@@ -460,7 +467,8 @@ class Edit extends Component
                 $transaction->purchase_type = 'local';
                 $transaction->type = 'initial_balance';
                 $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
-                $transaction->created_by = Auth::user()->id;
+                $transaction->transaction_currency = $this->transaction_currency;
+                $transaction->updated_by = Auth::user()->id;
                 $transaction->save();
                 //Edit Product
                 $product = Product::find($this->item[0]['id']);
@@ -512,17 +520,17 @@ class Edit extends Component
                         'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->rows[$index]['quantity'] : 0,
                         'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
                         'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->rows[$index]['fill_quantity'] : 0,
-                        'purchase_price' => !empty($this->rows[$index]['purchase_price']) ? $this->rows[$index]['purchase_price'] : null,
-                        // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
-                        'sub_total' => !empty($this->sub_total[$index]) ? (float)$this->sub_total[$index] : null,
-                        'sell_price' => !empty($this->rows[$index]['selling_price']) ? $this->rows[$index]['selling_price'] : null,
-                        'dollar_purchase_price' => !empty($this->rows[$index]['dollar_purchase_price']) ? $this->rows[$index]['dollar_purchase_price'] : null,
-                        // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                        'purchase_price' =>  ($this->transaction_currency != 2) ? $this->rows[$index]['purchase_price'] : null,
+                        'sell_price' =>  ($this->transaction_currency != 2) ? $this->rows[$index]['selling_price'] : null,
+                        'dollar_purchase_price' =>  ($this->transaction_currency == 2) ? $this->rows[$index]['dollar_purchase_price'] : null,
+                        'dollar_sell_price' =>  ($this->transaction_currency == 2) ? $this->rows[$index]['dollar_selling_price'] : null,
                         'dollar_sub_total' => !empty($this->dollar_sub_total($index)) ? (float)$this->dollar_sub_total($index) : null,
-                        'dollar_sell_price' => !empty($this->rows[$index]['dollar_selling_price']) ? $this->rows[$index]['dollar_selling_price'] : null,
+                        'exchange_rate' => !empty($this->exchange_rate) ? $this->exchange_rate : null,
                         // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
                         // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-                        'exchange_rate' => !empty($this->exchange_rate) ? $this->exchange_rate : null,
+                        // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                        // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+                        'sub_total' => !empty($this->sub_total[$index]) ? (float)$this->sub_total[$index] : null,
                     ];
                     if (!empty($this->rows[$index]['stock_line_id'])) {
                         $stock_line = AddStockLine::find($this->rows[$index]['stock_line_id']);
@@ -900,7 +908,7 @@ class Edit extends Component
         }
         unset($this->rows[$index]['prices'][$key]);
     }
-    public function changePrice($index, $key, $via ='price')
+    public function changePrice($index, $key, $via = 'price')
     {
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         if (!empty($this->rows[$index]['selling_price']) || !empty($this->rows[$index]['dollar_selling_price'])) {
@@ -943,12 +951,19 @@ class Edit extends Component
             }
             $price = !empty($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_price_after_desc']) : $this->num_uf($sell_price);
             $dollar_price = !empty($this->rows[$index]['prices'][$key]['price_after_desc']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['price_after_desc']) : $this->num_uf($dollar_sell_price);
-            $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
-            $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+            if($this->discount_from_original_price == '0'){
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf( $total_quantity ) : 1),3) ;
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf( $total_quantity ) : 1),3) ;
+            }
+            else{
+                $this->rows[$index]['prices'][$key]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+                $this->rows[$index]['prices'][$key]['dinar_total_price'] = number_format($this->num_uf($price )* (!empty($this->rows[$index]['prices'][$key]['discount_quantity']) ? $this->num_uf((float)$this->rows[$index]['prices'][$key]['discount_quantity']) : 1),3) ;
+            }
             $this->rows[$index]['prices'][$key]['piece_price'] = number_format( (float)$this->num_uf($this->rows[$index]['prices'][$key]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3);
             $this->rows[$index]['prices'][$key]['dinar_piece_price'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1),3) ;
         }
     }
+
     public function num_uf($input_number, $currency_details = null){
         $thousand_separator  = ',';
         $decimal_separator  = '.';

@@ -114,7 +114,8 @@ class StoreController extends Controller
   public function edit($id)
   {
       $store = Store::find($id);
-      return view('store.edit')->with(compact('store'));
+      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+      return view('store.edit')->with(compact('store','branches'));
   }
 
   /**
@@ -128,6 +129,7 @@ class StoreController extends Controller
       try {
           $data = $request->except('_token', '_method');
           $data['updated_by'] = Auth::user()->id;
+          $data['branch_id'] = (int) $request->branch_id;
           $store = Store::find($id);
           $store->update($data);
 

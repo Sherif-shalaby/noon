@@ -69,7 +69,7 @@
         //     $('#subcategory_id3').val('').trigger('change'); // Reset sub3_category select box
         //     $('#brand_id').val('').trigger('change'); // Reset brand select box
         // });
-        // ======================================== Employee Products Table ========================================
+        // ================================== Employee Products Table ==================================
         // +++++++++++++++ updateSubcategories() +++++++++++++++
         // Function to update subcategories based on the selected category ID
         function updateSubcategories()
@@ -89,7 +89,7 @@
                     console.log("The Response Data : ");
                     console.log(response)
                     // Clear existing table content
-                    $('#productTable .tbody').empty();
+                    $('#datatable-buttons .tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
                     $.each(response, function(index, product) {
@@ -142,7 +142,7 @@
                                 '</a>' +
                             '</td>' +
                         '</tr>';
-                        $('#productTable .tbody').append(row);
+                        $('#datatable-buttons .tbody').append(row);
                     });
 
                 },

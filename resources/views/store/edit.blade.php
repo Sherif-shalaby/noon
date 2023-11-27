@@ -12,6 +12,10 @@
 
             <div class="modal-body">
                 <div class="form-group">
+                    {!! Form::label('branch_id', __('lang.branch'))  !!}
+                    {!! Form::select('branch_id',$branches,$store->branch_id, ['class' => 'form-control select2' , 'placeholder' => __('lang.branch') ]);  !!}
+                </div>
+                <div class="form-group">
                     <input type="hidden" name="quick_add" value="{{ isset($quick_add)&&$quick_add?$quick_add:'' }}">
                     {!! Form::label('name', __('lang.name')) .'*' !!}
                     {!! Form::text('name', $store->name, ['class' => 'form-control' , 'placeholder' => __('lang.name') , 'required']);  !!}

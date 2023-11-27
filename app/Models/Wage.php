@@ -44,5 +44,13 @@ class Wage extends Model
     {
         return $this->belongsTo(User::class, 'edited_by');
     }
-
+    // ++++++++++++++++++++++++ paymentCycle() ++++++++++++++++++++++++
+    public static function paymentCycle()
+    {
+        return [
+            '1' => 'daily',
+            '2' => 'weekly',
+            '3' => 'monthly'
+        ];
+    }
 }

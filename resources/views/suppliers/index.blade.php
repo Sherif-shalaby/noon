@@ -204,13 +204,13 @@
                                     <td class="col3">
                                         {{-- Iterate over the email array elements --}}
                                         @foreach ($emailArray as $email)
-                                            {{ $email }}<br>
+                                            {{ $email == 'null' ? '' : $email }}<br>
                                         @endforeach
                                     </td>
                                     <td class="col4">
                                         {{-- Iterate over the phone array elements --}}
                                         @foreach ($phoneArray as $phone)
-                                            {{ $phone }}<br>
+                                            {{ $phone == 'null' ? '' : $phone }}<br>
                                         @endforeach
                                     </td>
                                     @php

@@ -45,6 +45,8 @@ use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
+use App\Http\Controllers\ReturnStockController;
+use App\Http\Controllers\TransactionPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +101,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('settings/modules', [SettingController::class, 'updateModuleSettings'])->name('updateModule');
     // Get "مصدر الاموال" depending on "طريقة الدفع"
     Route::get('/wage/get-source-by-type-dropdown/{type}', [WageController::class,'getSourceByTypeDropdown']);
-
+    // +++++++++++ Get "طريقة الحساب " depending on "الموظف" +++++++++++
+    Route::get('/get-employee-payment-cycle/{id}',[WageController::class,'getEmployeePaymentCycle']);
     // +++++++++++++++++++++++++++ general-settings ++++++++++++++++++++
     Route::post('settings/update-general-settings', [SettingController::class, 'updateGeneralSetting'])->name('settings.updateGeneralSettings');
     // // general_setting : fetch "state" of selected "country" selectbox
@@ -117,6 +120,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('category/get-subcategories/{id}', [CategoryController::class, 'getSubcategories']);
     // employees subcategory
     Route::get('employees/get-subcategories/{id}', [EmployeeController::class, 'getSubcategories']);
+     // ++++++++++++++++ get "job_type" permissions ++++++++++++++++
+     Route::get('/get-job-type-permissions/{id}', [EmployeeController::class, 'getJobTypePermissions']);
+
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::get('categories/{category?}/sub-categories', [CategoryController::class, 'subCategories'])->name('sub-categories');
     Route::get('categories/sub_category_modal', [CategoryController::class, 'getSubCategoryModal'])->name('categories.sub_category_modal');
@@ -154,6 +160,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers', CustomerController::class);
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
+    Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
+
+    Route::post('customer/pay_due/{id}', [CustomerController::class,'pay_due'])->name('customers.pay_due');
+    Route::get('pay_due_view/{id}', [CustomerController::class,'pay_due_view'])->name('customers.pay_due_view');
+
+    Route::get('customer/show-invoices/{customer_id}/{delivery_id}', [CustomerController::class,'show_customer_invoices'])->name('show_customer_invoices');
 
 
     // stocks
@@ -225,7 +238,13 @@ Route::group(['middleware' => ['auth']], function () {
         return view('invoices.edit', compact('id'));
     })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
+    Route::resource('pos-pay',TransactionPaymentController::class);
+    Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
+    Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
+    Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
+    Route::get('show/receipt/{id}',[SellPosController::class, 'show_receipt'])->name('show_receipt');
+    Route::post('add/receipt',[SellPosController::class, 'store_upload_receipt'])->name('store_upload_receipt');
     // ################################# Task : customer_price_offer #################################
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
@@ -236,12 +255,18 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
     // ########### Purchase Order ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
+    // ########### softDelete For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/delete/{id}', [PurchaseOrderLineController::class, 'destroy'])->name('purchase_order.destroy');
+    // ########### show recycle_bin For PurchaseOrderTransaction ###########
+    Route::get('/soft-deleted-records', [PurchaseOrderLineController::class, 'softDeletedRecords'])->name('purchase_order.show_soft_deleted_records');
+    // ########### restore softDeleteRecords For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/restore/{id}', [PurchaseOrderLineController::class, 'restore'])->name('purchase_order.restore');
     // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
     // ---- required_products ----
     Route::resource('required-products', RequiredProductController::class);
-    Route::get('purchase-order/edit/{id}', function ($id) {
-        return view('purchase-order.edit', compact('id'));
-    })->name('invoices.edit');
+    // Route::get('purchase-order/edit/{id}', function ($id) {
+    //     return view('purchase-order.edit', compact('id'));
+    // })->name('purchase-order.edit');
     // Sell Return
     Route::get('sale-return/add/{id}', function ($id) {
         return view('returns.sell.create', compact('id'));
@@ -249,6 +274,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Returns
     Route::get('sell-return', [SellReturnController::class,'index'])->name('sell_return.index');
+
+    // supplier Returns
+    Route::get('stock/return/product',[ReturnStockController::class,'show'])->name('suppliers.returns.products');
+    Route::get('stock/return/invoices',[ReturnStockController::class,'index'])->name('suppliers.returns.invoices');
 
     // user check password
     Route::post('user/check-password', [HomeController::class, 'checkPassword'])->name('check_password');
