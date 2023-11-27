@@ -607,7 +607,13 @@ return [
     'receipts' => 'Receipts',
     'supplier_returns' => 'Supplier Returns',
     'invoices' => 'Invoices',
-    'return_invoice' => 'Return Invoice'
+    'return_invoice' => 'Return Invoice',
+    'most_stock' => 'Most Stock',
+    'lowest_stock' => 'Lowest Stock',
+    'zero_stocks' => 'Zero Stocks',
+    'sell_price_less_purchase_price' => 'Sell price Less Than purchase Price',
+    'expired'  => 'Expired',
+
 
 ];
 

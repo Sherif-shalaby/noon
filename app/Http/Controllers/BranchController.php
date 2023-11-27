@@ -29,7 +29,7 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = Branch::all();
+        $branches = Branch::where('type','branch')->get();
         return view('branches.index',compact('branches'));
     }
 

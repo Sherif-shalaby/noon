@@ -284,6 +284,16 @@
                                 <span>{{__('lang.reports')}}</span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{route('reports.products')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.product_report')}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('reports.initial_balance')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.initial_balance')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ purchases report +++++++++++ --}}
                                 <li>
                                     <a href="{{route('purchases-report.index')}}">
