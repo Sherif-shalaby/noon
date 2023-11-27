@@ -15,8 +15,6 @@ return new class extends Migration
     {
         Schema::table('purchase_order_transactions', function (Blueprint $table) {
             $table->softDeletes();
-            $table->string('deleted_by')->nullable();
-
         });
     }
 
