@@ -9,9 +9,9 @@
                         font-weight: 500;">
                 الاجماليات
             </div>
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center flex-wrap col-md-10">
                 @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <button data-method="cash" style="width: 100%" type="button" class="btn btn-success payment-btn"
                             wire:click="submit" id="cash-btn"><i class="fa-solid fa-money-bill"></i>
                             @lang('lang.pay')</button>
@@ -19,7 +19,7 @@
                     </div>
                 @endif
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-4 ">
+                    <div class=" col-md-2 ">
                         <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                             class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
                                 class="fa-solid fa-money-bill"></i>
@@ -28,7 +28,7 @@
                     </div>
                 @endif
 
-                <div class=" col-md-4 ">
+                <div class=" col-md-2 ">
                     <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
                         {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
@@ -36,7 +36,7 @@
                     {{-- @include('invoices.partials.draft_transaction') --}}
 
                 </div>
-                <div class=" col-md-4">
+                <div class=" col-md-2">
                     <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
                             class="fa-solid fa-flag"></i>
@@ -44,7 +44,7 @@
                 </div>
 
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-4">
+                    <div class=" col-md-2">
                         <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
                             class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
                                 class="fa fa-hourglass-start"></i>
@@ -52,9 +52,10 @@
                     </div>
                 @endif
 
-                <div class="col-md-4">
-                    <button style="background-color: #ffc107;" type="button" class="btn btn-custom"
-                        id="recent-transaction-btn"><i class="dripicons-clock"></i>
+                <div class="col-md-3 ">
+                    <button style="width: 100%;font-size: 10px;font-weight: 600;background-color: #ffc107;"
+                        type="button" class="btn btn-custom" id="recent-transaction-btn"><i
+                            class="dripicons-clock"></i>
                         @lang('lang.recent_transactions')</button>
                 </div>
             </div>
@@ -228,7 +229,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-                        
+
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}
@@ -310,70 +311,10 @@
         </div>
     </div>
 </div>
-<!-- recent transaction modal -->
-<div id="recentTransaction" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-    class="modal text-left">
-    <div class="modal-dialog modal-xl" role="document" style="max-width: 65%;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">@lang('lang.recent_transactions')</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                    id="closeRecentTransactionModal"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="col-md-12 modal-filter">
-                    <div class="row">
-                        {{-- <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('start_date', __('lang.start_date'), []) !!}
-                            {!! Form::text('start_date', null, ['class' => 'form-control filter_transactions', 'id' => 'rt_start_date']) !!}
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('end_date', __('lang.end_date'), []) !!}
-                            {!! Form::text('end_date', null, ['class' => 'form-control filter_transactions', 'id' => 'rt_end_date']) !!}
-                        </div>
-                    </div> --}}
-                        {{-- <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('rt_customer_id', __('lang.customer'), []) !!}
-                            {!! Form::select('customer_id', $customers_rt, false, ['class' => 'form-control filter_transactions selectpicker', 'id' => 'rt_customer_id', 'data-live-search' => 'true', 'placeholder' => __('lang.all'),'wire:model' => 'customer_id','wire:change' => 'refreshComponent',]) !!}
-                        </div>
-                    </div> --}}
-                        {{-- <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('rt_method', __('lang.payment_type'), []) !!}
-                            {!! Form::select('rt_method', $payment_types, request()->method, ['class' => 'form-control filter_transactions', 'placeholder' => __('lang.all'), 'data-live-search' => 'true', 'id' => 'rt_method']) !!}
-                        </div>
-                    </div> --}}
-                        {{-- <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('rt_created_by', __('lang.cashier'), []) !!}
-                            {!! Form::select('rt_created_by', $cashiers, false, ['class' => 'form-control selectpicker filter_transactions', 'id' => 'rt_created_by', 'data-live-search' => 'true', 'placeholder' => __('lang.all'),'wire:model' => 'created_by','wire:change' => 'refreshComponent',]) !!}
-                        </div>
-                    </div> --}}
-                        {{-- <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('rt_deliveryman_id', __('lang.deliveryman'), []) !!}
-                            {!! Form::select('rt_deliveryman_id', $delivery_men, null, ['class' => 'form-control sale_filter filter_transactions', 'placeholder' => __('lang.all'), 'data-live-search' => 'true', 'id' => 'rt_deliveryman_id']) !!}
-                        </div>
-                    </div> --}}
-                    </div>
-                </div>
 
-                <div class="col-md-12">
-                    @include('invoices.partials.recent_transactions')
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" id="closeRecentTransactionModal"
-                    data-dismiss="modal">@lang('lang.close')</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
+
+
 <script>
     //Function to open the due date modal
     function openDueDateModal() {
@@ -394,11 +335,6 @@
         // Close the modal without performing any action
         $('#dueDateModal').css('display', 'none');
     });
-    $(document).on("click", "#recent-transaction-btn", function() {
-        $("#recentTransaction").modal("show");
-    });
-    $(document).on("click", "#closeRecentTransactionModal", function() {
-        $("#recentTransaction").modal("hide");
-    });
+
     // });
 </script>
