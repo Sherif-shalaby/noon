@@ -1610,7 +1610,7 @@
                                         {{-- +++++++++++ purchases report +++++++++++ --}}
                                         <li>
                                             <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
-                                                href="{{ route('purchases-report.index') }}"
+                                                href="{{ route('reports.add_stock') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none;">
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.purchases_report') }}
                                             </a>
@@ -1958,7 +1958,7 @@
     })
     $('.purchases_report-button').on('click', function(e) {
         e.preventDefault();
-        let url = "{{ route('purchases-report.index') }}"
+        let url = "{{ route('reports.add_stock') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

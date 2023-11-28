@@ -667,4 +667,12 @@ return array(
     'zero_stocks' => 'لا يوجد مخزون',
     'sell_price_less_purchase_price' => 'سعر البيع اقل من سعر الشراء',
     'expired' => 'منتهي الصلاحيه',
+    'all' => 'الكل',
+    'start_time' => 'وقت البدء',
+    'end_time' => 'وقت النهاية',
+    'print_invoice' => 'طباعة فاتورة',
+    'add_payments' => 'دفع',
+    'add_to_customer_balance' => 'اضافة الى رصيد العميل',
+    'sale_return' => 'ارجاع',
+    'expired_stock' => 'مخزون منتهى الصلاحية',
 );

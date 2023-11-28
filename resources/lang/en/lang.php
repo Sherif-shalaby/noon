@@ -626,4 +626,12 @@ return [
     'zero_stocks' => 'Zero Stocks',
     'sell_price_less_purchase_price' => 'Sell price Less Than purchase Price',
     'expired'  => 'Expired',
+    'all' => 'All',
+    'start_time' => 'Start Time',
+    'end_time' => 'End Time',
+    'print_invoice' => 'Print Invoice',
+    'add_payments' => 'Add Payments',
+    'add_to_customer_balance' => 'Add To Customer Balance',
+    'sale_return' => 'Sale Return',
+    'expired_stock' => 'Expired Stock',
 ];

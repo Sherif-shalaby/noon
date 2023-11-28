@@ -50,7 +50,7 @@ class Create extends Component
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id;
+        $dollar_highest_price, $dollar_lowest_price,$due_date, $created_by,$customer_id;
 
     protected $rules = [
         'items' => 'array|min:1',
@@ -62,7 +62,7 @@ class Create extends Component
     ];
 
 
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice', 'changePrices'];
+    protected $listeners = ['listenerReferenceHere', 'create_purchase_order', 'changeDinarPrice', 'changeDollarPrice','changePrices'];
 
     public function listenerReferenceHere($data)
     {
@@ -83,7 +83,6 @@ class Create extends Component
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function mount(Util $commonUtil)
     {
@@ -241,7 +240,6 @@ class Create extends Component
     {
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
@@ -344,8 +342,8 @@ class Create extends Component
 
             // Add Payment Method
             if ($transaction->status != 'draft') {
-                if ($this->payment_status == 'pending') {
-                    //                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
+                if($this->payment_status == 'pending'){
+//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
                     $total_paid = 0;
                     $dollar_total_paid = 0;
                     $transaction = TransactionSellLine::find($transaction->id);
@@ -357,11 +355,11 @@ class Create extends Component
                     $transaction->dinar_remaining =  $final_amount;
                     //  dollar_remaining : 'الباقي بالدولار'
                     $transaction->dollar_remaining =  $dollar_final_amount;
-                    //                    $transaction_payment->amount = $total_paid;
-                    //                    $transaction_payment->dollar_amount = $dollar_total_paid;
+//                    $transaction_payment->amount = $total_paid;
+//                    $transaction_payment->dollar_amount = $dollar_total_paid;
                     $this->amount = $total_paid;
                     $this->dollar_amount = $dollar_total_paid;
-                    //                    $transaction_payment->save();
+//                    $transaction_payment->save();
                     $transaction->save();
                 }
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
@@ -500,7 +498,6 @@ class Create extends Component
 
     public function redirectToCustomerDetails($clientId)
     {
-        $this->dispatchBrowserEvent('componentRefreshed');
         return redirect()->route('customers.show', $clientId);
     }
 
@@ -653,8 +650,8 @@ class Create extends Component
             $this->discount += $this->num_uf($item['discount_price']);
             $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
         }
-        //        $this->dollar_amount = $this->total_dollar;
-        //        $this->amount = round_250($this->total);
+//        $this->dollar_amount = $this->total_dollar;
+//        $this->amount = round_250($this->total);
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
@@ -679,7 +676,6 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
         }
         $this->computeForAll();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function decrement($key)
@@ -689,7 +685,6 @@ class Create extends Component
             $this->subtotal($key);
         }
         $this->computeForAll();
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function delete_item($key)
@@ -1034,7 +1029,8 @@ class Create extends Component
         $payment_status = 'pending';
         if ($final_amount <= $total_paid && $dollar_final_amount <= $dollar_total_paid) {
             $payment_status = 'paid';
-        } elseif (($total_paid > 0 && $final_amount > $total_paid) || ($dollar_total_paid > 0 && $dollar_final_amount > $dollar_total_paid)) {
+        }
+        elseif (($total_paid > 0 && $final_amount > $total_paid) ||( $dollar_total_paid> 0 && $dollar_final_amount > $dollar_total_paid) ) {
             $payment_status = 'partial';
         }
         $transaction->payment_status = $payment_status;

@@ -160,6 +160,7 @@
 
     <div class="view_modal no-print"></div>
     @push('javascripts')
+        <script src="{{ asset('js/product/product.js') }}"></script>
         <script>
             window.addEventListener('openAddPaymentModal', event => {
                 $("#addPayment").modal('show');

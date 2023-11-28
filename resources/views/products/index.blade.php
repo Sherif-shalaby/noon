@@ -374,7 +374,7 @@
 
                                                                     <li>
                                                                         <a target="_blank"
-                                                                            href="{{ route('get_remove_damage', $product->id) }}"
+                                                                            href="{{ route('remove_expiry', $product->id) }}"
                                                                             class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                                 class="fa fa-hourglass-half"></i>
                                                                             @lang('lang.remove_expiry')

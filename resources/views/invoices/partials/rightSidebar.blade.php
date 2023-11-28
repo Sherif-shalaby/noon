@@ -229,7 +229,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-
+                        
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}
@@ -286,10 +286,6 @@
                 {{--  --}}
 
             </div>
-
-
-
-
 
         </div>
     </div>

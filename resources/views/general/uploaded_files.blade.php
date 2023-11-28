@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade show_invoice_modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editBrandModalLabel"
-     style="display: none;" aria-hidden="true">
+    style="display: none;" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -15,27 +15,27 @@
                     <div class="col-md-12">
                         <table class="table table-bordered">
                             <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>@lang('lang.files')</th>
-                            </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>@lang('lang.files')</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @forelse ($uploaded_files as $key => $file)
-                                @if (!empty($file))
+                                @forelse ($uploaded_files as $key => $file)
+                                    @if (!empty($file))
+                                        <tr>
+                                            <td> {{ $key + 1 }} </td>
+                                            <td>
+                                                <img src="{{ '/uploads/' . $file->path }}" alt="photo"
+                                                    style="width: 250px; border: 2px solid #fff; padding: 4px;">
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @empty
                                     <tr>
-                                        <td> {{ $key+1 }} </td>
-                                        <td>
-                                            <img src="{{"/uploads/". $file->path}}" alt="photo"  style="width: 250px; border: 2px solid #fff; padding: 4px;">
-                                        </td>
+                                        <td colspan="2" class="text-center">@lang('lang.no_file_uploaded')</td>
                                     </tr>
-
-                                @endif
-                            @empty
-                                <tr>
-                                    <td colspan="2" class="text-center">@lang('lang.no_file_uploaded')</td>
-                                </tr>
-                            @endforelse
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

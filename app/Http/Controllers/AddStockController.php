@@ -285,7 +285,7 @@ class AddStockController extends Controller
                     $pending = $final_total - $amount;
                 }
                 else{
-                    $amount += $payment->amount / $payment->exchange_rate;
+                    $amount += $payment->amount / $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                     $pending = $final_total - $amount;
                 }
             }
@@ -294,7 +294,7 @@ class AddStockController extends Controller
             $final_total = $transaction->final_total;
             foreach ($payments as $payment){
                 if($payment->paying_currency == 2){
-                    $amount += $payment->amount * $payment->exchange_rate;
+                    $amount += $payment->amount * $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                     $pending = $final_total - $amount;
                 }
                 else{
@@ -304,7 +304,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($pending,2);
+        return number_format($pending,3);
     }
 
     public function calculatePaidAmount($transaction_id): string
@@ -320,7 +320,7 @@ class AddStockController extends Controller
                     $paid = $payment->amount;
                 }
                 else{
-                    $paid = $payment->amount / $payment->exchange_rate;
+                    $paid = $payment->amount / $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                 }
             }
         }
@@ -328,7 +328,7 @@ class AddStockController extends Controller
             $final_total = $transaction->final_total;
             foreach ($payments as $payment){
                 if($payment->paying_currency == 2){
-                    $paid = $payment->amount * $payment->exchange_rate;
+                    $paid = $payment->amount * $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                 }
                 else{
                     $paid = $payment->amount;
@@ -336,7 +336,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($paid,2);
+        return number_format($paid,3);
     }
 
 

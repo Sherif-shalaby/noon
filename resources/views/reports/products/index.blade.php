@@ -55,7 +55,7 @@
                                 style="height: 90vh;overflow: scroll">
                                 <div id="status"></div>
                                 <table id="datatable-buttons"
-                                    class="table dataTable table-hover table-striped table-bordered">
+                                    class="table dataTable table-striped  table-button-wrapper table-hover  table-bordered">
                                     <thead>
                                         <tr>
                                             <th>#</th>
@@ -224,13 +224,15 @@
                                                         @endif
                                                     </span>
                                                 </td>
-                                                <td>
-                                                    <a type="button" class="btn btn-default btn-sm"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        href="{{ route('reports.sell_price_less_purchase_price', $product->id) }}">
-                                                        @lang('lang.view_details')
-                                                    </a>
-                                                </td>
+                                                @if (request()->sell_price_less_purchase_price == 'on')
+                                                    <td>
+                                                        <a type="button" class="btn btn-default btn-sm"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            href="{{ route('reports.sell_price_less_purchase_price', $product->id) }}">
+                                                            @lang('lang.view_details')
+                                                        </a>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>

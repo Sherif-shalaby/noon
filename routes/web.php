@@ -46,6 +46,7 @@ use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
+use App\Http\Controllers\TransactionPaymentController;
 use App\Http\Controllers\ReportController;
 
 /*
@@ -149,7 +150,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-raw-unit', [ProductController::class,'getRawUnit']);
     Route::post('product/multiDeleteRow', [ProductController::class,'multiDeleteRow']);
     Route::get('product/remove_damage/{id}', [ProductController::class,'get_remove_damage'])->name('get_remove_damage');
-    Route::get('product/create/{id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
+    Route::delete('product/convolutions/deleteExpiryRow/{id}', [ProductController::class,'deleteExpiryRow'])->name("deleteExpiryRow");
+    Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
+    Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
+    Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
@@ -234,6 +239,8 @@ Route::group(['middleware' => ['auth']], function () {
         return view('invoices.edit', compact('id'));
     })->name('invoices.edit');
     Route::resource('pos',SellPosController::class);
+    Route::resource('pos-pay',TransactionPaymentController::class);
+    Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
     Route::get('print/invoice/{id}',[SellPosController::class, 'print'])->name('print_invoice');
     Route::get('show/payment/{id}',[SellPosController::class, 'show_payment'])->name('show_payment');
     Route::get('add/receipt/{trans_id}',[SellPosController::class, 'upload_receipt'])->name('upload_receipt');
@@ -313,6 +320,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/{product}/sell_price_less_purchase_price',[ReportController::class,'sell_price_less_purchase_price'])->name('reports.sell_price_less_purchase_price');
     // Initial Balance
     Route::get('reports/initial_balance',[ReportController::class,'initialBalanceReport'])->name('reports.initial_balance');
+    // Add Stock
+    Route::get('reports/add_stock',[ReportController::class,'addStock'])->name('reports.add_stock');
+
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');
