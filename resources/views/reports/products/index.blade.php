@@ -50,6 +50,10 @@
                                     <th>@lang('lang.sku')</th>
                                     <th>@lang('lang.stock')</th>
                                     <th>@lang('lang.balance_return_request')</th>
+                                    <th>@lang('lang.purchase_price')</th>
+                                    <th>@lang('lang.sell_price')</th>
+                                    <th>@lang('lang.purchase_price') $</th>
+                                    <th>@lang('lang.sell_price') $</th>
                                     <th>@lang('lang.amount_of_purchases')</th>
                                     <th>@lang('lang.amount_of_sells')</th>
 {{--                                    <th>@lang('lang.profits')</th>--}}
@@ -93,6 +97,18 @@
                                             @endforelse
                                         </td>
                                         <td> {{ $product->balance_return_request }}</td>
+                                        @if ($product->stock_lines->isNotEmpty())
+                                            <td> {{ @num_format($product->stock_lines->last()->purchase_price) }} </td>
+                                            <td> {{ @num_format($product->stock_lines->last()->sell_price) }} </td>
+                                            <td> {{ @num_format($product->stock_lines->last()->dollar_purchase_price) }} </td>
+                                            <td> {{ @num_format($product->stock_lines->last()->dollar_sell_price) }} </td>
+                                        @else
+                                            <td> {{ @num_format(0) }} </td>
+                                            <td> {{ @num_format(0) }} </td>
+                                            <td> {{ @num_format(0) }} </td>
+                                            <td> {{ @num_format(0) }} </td>
+                                        @endif
+
                                         <td>
                                             {{ @num_format($product->total_purchase_amount) }}
                                         </td>

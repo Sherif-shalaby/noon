@@ -626,6 +626,7 @@ return [
     'amount_of_purchases' => 'Amount Of Purchases',
 
 
+
 ];
 
 

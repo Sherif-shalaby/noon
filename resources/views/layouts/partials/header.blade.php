@@ -300,6 +300,11 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{route('reports.best_seller')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.best_seller_report')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ sales report +++++++++++ --}}
                                 <li>
                                     <a href="{{route('sales-report.index')}}">
