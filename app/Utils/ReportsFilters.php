@@ -5,6 +5,7 @@ namespace App\Utils;
 use App\Models\Product;
 use App\Models\StockTransaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReportsFilters extends Util
 {
@@ -116,6 +117,30 @@ class ReportsFilters extends Util
                     });
                 });
             })
+            ->withCount([
+                'stock_lines as total_purchase_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(purchase_price * quantity)'))
+                        ->groupBy('product_id');
+                },
+            ])
+            ->withCount([
+                'sell_lines as total_sells_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(sell_price * (quantity - quantity_returned))'))
+                        ->groupBy('product_id');
+                },
+            ])
+            ->withCount([
+                'stock_lines as total_dollar_purchase_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(dollar_purchase_price * quantity)'))
+                        ->groupBy('product_id');
+                },
+            ])
+            ->withCount([
+                'sell_lines as total_dollar_sells_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(dollar_sell_price * (quantity - quantity_returned))'))
+                        ->groupBy('product_id');
+                },
+            ])
             ->get();
         return $products;
     }

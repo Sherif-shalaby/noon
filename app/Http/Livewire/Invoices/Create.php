@@ -329,7 +329,7 @@ class Create extends Component
                 //                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;
                 //                $sell_line->item_tax = !empty($item['item_tax']) ? $this->num_uf($item['item_tax']) : 0;
                 $sell_line->save();
-                $keep_sell_lines[] = $sell_line->id;
+//                $keep_sell_lines[] = $sell_line->id;
 
                 $stock_id = $item['current_stock']['id'];
 

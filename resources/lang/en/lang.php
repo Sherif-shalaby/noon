@@ -621,6 +621,9 @@ return [
     'zero_stocks' => 'Zero Stocks',
     'sell_price_less_purchase_price' => 'Sell price Less Than purchase Price',
     'expired'  => 'Expired',
+    'profits' => 'Profits',
+    'amount_of_sells' => 'Amount Of Sells',
+    'amount_of_purchases' => 'Amount Of Purchases',
 
 
 ];

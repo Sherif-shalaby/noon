@@ -662,5 +662,8 @@ return array(
     'zero_stocks' => 'لا يوجد مخزون',
     'sell_price_less_purchase_price' => 'سعر البيع اقل من سعر الشراء',
     'expired' => 'منتهي الصلاحيه',
+    'profits' => 'الأرباح',
+    'amount_of_sells' => 'مبلغ المبيعات',
+    'amount_of_purchases' => 'مبلغ المشتريات',
 );
 

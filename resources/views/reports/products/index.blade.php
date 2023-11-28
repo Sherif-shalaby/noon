@@ -50,6 +50,12 @@
                                     <th>@lang('lang.sku')</th>
                                     <th>@lang('lang.stock')</th>
                                     <th>@lang('lang.balance_return_request')</th>
+                                    <th>@lang('lang.amount_of_purchases')</th>
+                                    <th>@lang('lang.amount_of_sells')</th>
+{{--                                    <th>@lang('lang.profits')</th>--}}
+                                    <th>@lang('lang.amount_of_purchases') $</th>
+                                    <th>@lang('lang.amount_of_sells') $</th>
+{{--                                    <th>@lang('lang.profits') $</th>--}}
                                     <th>@lang('lang.category')</th>
                                     <th>@lang('lang.subcategories_name')</th>
                                     <th>@lang('lang.stores')</th>
@@ -87,11 +93,30 @@
                                             @endforelse
                                         </td>
                                         <td> {{ $product->balance_return_request }}</td>
+                                        <td>
+                                            {{ @num_format($product->total_purchase_amount) }}
+                                        </td>
+                                        <td>
+                                            {{ @num_format($product->total_sells_amount) }}
+                                        </td>
+{{--                                        <td>--}}
+{{--                                            {{ @num_format( !empty($product->total_sells_amount) ?--}}
+{{--                                                $product->total_sells_amount - $product->total_purchase_amount : 0--}}
+{{--                                                )}}--}}
+{{--                                        </td>--}}
+
+                                        <td>
+                                            {{ @num_format($product->total_dollar_purchase_amount) }}
+                                        </td>
+                                        <td>
+                                            {{ @num_format($product->total_dollar_sells_amount) }}
+                                        </td>
+{{--                                        <td></td>--}}
                                         <td>{{$product->category->name??''}}</td>
                                         <td>
-                                            {{$product->subCategory1->name??''}} <br>
-                                            {{$product->subCategory2->name??''}} <br>
-                                            {{$product->subCategory3->name??''}}
+                                            {{  ($product->subCategory1 ? '- ' .$product->subCategory1->name : '') }} <br>
+                                            {{  ($product->subCategory2 ? '- ' .$product->subCategory2->name : '') }} <br>
+                                            {{  ($product->subCategory3 ? '- ' .$product->subCategory3->name : '') }}
                                         </td>
                                         <td>
                                             @foreach($product->stores as $store)
