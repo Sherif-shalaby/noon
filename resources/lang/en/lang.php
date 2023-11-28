@@ -634,4 +634,7 @@ return [
     'add_to_customer_balance' => 'Add To Customer Balance',
     'sale_return' => 'Sale Return',
     'expired_stock' => 'Expired Stock',
+    'profits' => 'Profits',
+    'amount_of_sells' => 'Amount Of Sells',
+    'amount_of_purchases' => 'Amount Of Purchases',
 ];

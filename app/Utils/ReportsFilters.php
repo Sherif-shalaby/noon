@@ -5,6 +5,7 @@ namespace App\Utils;
 use App\Models\Product;
 use App\Models\StockTransaction;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReportsFilters extends Util
 {
@@ -79,11 +80,11 @@ class ReportsFilters extends Util
                     });
                 }])->orderBy('expiry_date', 'asc');
             })
-//            ->when(request()->balance_return_request == "on", function ($query) {
-//                $query->whereHas('product_stores')
-//                    ->withSum('product_stores', 'quantity_available')
-//                    ->orderByRaw('(product_stores_sum_quantity_available - products.balance_return_request) DESC');
-//            })
+            ->when(request()->balance_return_request == "on", function ($query) {
+                $query->whereHas('product_stores')
+                    ->withSum('product_stores', 'quantity_available')
+                    ->orderByRaw('(product_stores_sum_quantity_available < products.balance_return_request) DESC');
+            })
             ->when(request()->zero_stocks == "on", function ($query) {
                 $query->whereHas('product_stores', function ($subQuery) {
                     $subQuery->selectRaw('product_id, COALESCE(SUM(quantity_available), 0) as quantity_available_sum')
@@ -116,6 +117,30 @@ class ReportsFilters extends Util
                     });
                 });
             })
+            ->withCount([
+                'stock_lines as total_purchase_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(purchase_price * quantity)'))
+                        ->groupBy('product_id');
+                },
+            ])
+            ->withCount([
+                'sell_lines as total_sells_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(sell_price * (quantity - quantity_returned))'))
+                        ->groupBy('product_id');
+                },
+            ])
+            ->withCount([
+                'stock_lines as total_dollar_purchase_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(dollar_purchase_price * quantity)'))
+                        ->groupBy('product_id');
+                },
+            ])
+            ->withCount([
+                'sell_lines as total_dollar_sells_amount' => function ($query) {
+                    $query->select(DB::raw('SUM(dollar_sell_price * (quantity - quantity_returned))'))
+                        ->groupBy('product_id');
+                },
+            ])
             ->get();
         return $products;
     }

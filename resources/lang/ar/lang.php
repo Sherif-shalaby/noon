@@ -675,4 +675,7 @@ return array(
     'add_to_customer_balance' => 'اضافة الى رصيد العميل',
     'sale_return' => 'ارجاع',
     'expired_stock' => 'مخزون منتهى الصلاحية',
+    'profits' => 'الأرباح',
+    'amount_of_sells' => 'مبلغ المبيعات',
+    'amount_of_purchases' => 'مبلغ المشتريات',
 );

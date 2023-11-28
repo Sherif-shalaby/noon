@@ -64,6 +64,12 @@
                                             <th>@lang('lang.sku')</th>
                                             <th>@lang('lang.stock')</th>
                                             <th>@lang('lang.balance_return_request')</th>
+                                            <th>@lang('lang.amount_of_purchases')</th>
+                                            <th>@lang('lang.amount_of_sells')</th>
+                                            {{--                                    <th>@lang('lang.profits')</th> --}}
+                                            <th class="dollar-cell">@lang('lang.amount_of_purchases') $</th>
+                                            <th class="dollar-cell">@lang('lang.amount_of_sells') $</th>
+                                            {{--                                    <th>@lang('lang.profits') $</th> --}}
                                             <th>@lang('lang.category')</th>
                                             <th>@lang('lang.subcategories_name')</th>
                                             <th>@lang('lang.stores')</th>
@@ -122,8 +128,7 @@
                                                                 <span class="product_unit"
                                                                     data-variation_id="{{ $variation->id }}"
                                                                     data-product_id="{{ $product->id }}">{{ $variation->unit->name ?? '' }}
-                                                                    <span
-                                                                        class="unit_value">{{ $product->product_stores->sum('quantity_available') }}</span></span>
+                                                                    <span class="unit_value">0</span></span>
                                                                 <br>
                                                             @else
                                                                 <span class="product_unit"
@@ -151,6 +156,45 @@
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.amount_of_purchases')">
+                                                        {{ @num_format($product->total_purchase_amount) }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.amount_of_sells')">
+                                                        {{ @num_format($product->total_sells_amount) }}
+                                                    </span>
+                                                </td>
+                                                {{--                                        <td> --}}
+                                                {{--                                            {{ @num_format( !empty($product->total_sells_amount) ? --}}
+                                                {{--                                                $product->total_sells_amount - $product->total_purchase_amount : 0 --}}
+                                                {{--                                                )}} --}}
+                                                {{--                                        </td> --}}
+
+                                                <td class="dollar-cell">
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.amount_of_purchases')">
+                                                        {{ @num_format($product->total_dollar_purchase_amount) }}
+                                                    </span>
+                                                </td>
+                                                <td class="dollar-cell">
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.amount_of_sells')">
+                                                        {{ @num_format($product->total_dollar_sells_amount) }}
+                                                    </span>
+                                                </td>
+                                                {{--                                        <td></td> --}}
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.category')">
                                                         {{ $product->category->name ?? '' }}
                                                     </span>
@@ -161,9 +205,11 @@
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.subcategories_name')">
 
-                                                        {{ $product->subCategory1->name ?? '' }} <br>
-                                                        {{ $product->subCategory2->name ?? '' }} <br>
-                                                        {{ $product->subCategory3->name ?? '' }}
+                                                        {{ $product->subCategory1 ? '- ' . $product->subCategory1->name : '' }}
+                                                        <br>
+                                                        {{ $product->subCategory2 ? '- ' . $product->subCategory2->name : '' }}
+                                                        <br>
+                                                        {{ $product->subCategory3 ? '- ' . $product->subCategory3->name : '' }}
                                                     </span>
                                                 </td>
                                                 <td>
