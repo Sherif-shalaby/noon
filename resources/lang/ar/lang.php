@@ -665,5 +665,6 @@ return array(
     'profits' => 'الأرباح',
     'amount_of_sells' => 'مبلغ المبيعات',
     'amount_of_purchases' => 'مبلغ المشتريات',
+
 );
 

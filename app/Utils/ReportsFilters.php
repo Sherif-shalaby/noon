@@ -4,6 +4,7 @@ namespace App\Utils;
 
 use App\Models\Product;
 use App\Models\StockTransaction;
+use App\Models\TransactionSellLine;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -279,5 +280,51 @@ class ReportsFilters extends Util
 
             ->orderBy('created_at', 'desc')->get();
         return $stocks;
+    }
+
+    public function bestSellerFilter(){
+        $best_selling = TransactionSellLine::with('transaction_sell_lines')
+            ->when(\request()->category_id != null, function ($query) {
+                $query->whereHas('transaction_sell_lines.product', function ($subquery) {
+                    $subquery->where('category_id',\request()->category_id);
+                });
+            })
+            ->when(\request()->subcategory_id1 != null, function ($query) {
+                $query->whereHas('transaction_sell_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id1',\request()->subcategory_id1);
+                });
+            })
+            ->when(\request()->subcategory_id2 != null, function ($query) {
+                $query->whereHas('transaction_sell_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id2',\request()->subcategory_id2);
+                });
+            })
+            ->when(\request()->subcategory_id3 != null, function ($query) {
+                $query->whereHas('transaction_sell_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id3',\request()->subcategory_id3);
+                });
+            })
+            ->when(\request()->branch_id != null, function ($query) {
+                $branchId = \request()->branch_id;
+                $query->whereHas('transaction_sell_lines.product.product_stores.store.branch', function ($storeQuery) use ($branchId) {
+                    $storeQuery->where('id', $branchId);
+                });
+            })
+            ->when(\request()->store_id != null, function ($query) {
+                $query->whereHas('transaction_sell_lines.product.product_stores', function ($query) {
+                    $query->where('store_id',\request()->store_id);
+                });
+            })
+//            ->when(request()->supplier_id != null, function ($query) {
+//                $query->whereHas('transaction_sell_lines.product.stock_lines.transaction', function ($subquery) {
+//                    $subquery->where('supplier_id', \request()->supplier_id);
+//                });
+//            })
+            ->select(DB::raw('sell_lines.product_id, sum(sell_lines.quantity) as sold_qty'))
+            ->join('sell_lines', 'sell_lines.transaction_id', '=', 'transaction_sell_lines.id')
+            ->groupBy('sell_lines.product_id')
+            ->orderBy('sold_qty', 'desc')
+            ->first();
+        return $best_selling;
     }
 }
