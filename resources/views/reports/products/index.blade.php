@@ -50,6 +50,12 @@
                                     <th>@lang('lang.sku')</th>
                                     <th>@lang('lang.stock')</th>
                                     <th>@lang('lang.balance_return_request')</th>
+                                    <th>@lang('lang.amount_of_purchases')</th>
+                                    <th>@lang('lang.amount_of_sells')</th>
+{{--                                    <th>@lang('lang.profits')</th>--}}
+                                    <th>@lang('lang.amount_of_purchases') $</th>
+                                    <th>@lang('lang.amount_of_sells') $</th>
+{{--                                    <th>@lang('lang.profits') $</th>--}}
                                     <th>@lang('lang.category')</th>
                                     <th>@lang('lang.subcategories_name')</th>
                                     <th>@lang('lang.stores')</th>
@@ -80,18 +86,37 @@
                                                 @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
                                                     <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
                                                 @else
-                                                    <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
+                                                    <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
                                                 @endif
                                             @empty
                                                 <span>{{$product->product_stores->sum('quantity_available')}} </span>
                                             @endforelse
                                         </td>
                                         <td> {{ $product->balance_return_request }}</td>
+                                        <td>
+                                            {{ @num_format($product->total_purchase_amount) }}
+                                        </td>
+                                        <td>
+                                            {{ @num_format($product->total_sells_amount) }}
+                                        </td>
+{{--                                        <td>--}}
+{{--                                            {{ @num_format( !empty($product->total_sells_amount) ?--}}
+{{--                                                $product->total_sells_amount - $product->total_purchase_amount : 0--}}
+{{--                                                )}}--}}
+{{--                                        </td>--}}
+
+                                        <td>
+                                            {{ @num_format($product->total_dollar_purchase_amount) }}
+                                        </td>
+                                        <td>
+                                            {{ @num_format($product->total_dollar_sells_amount) }}
+                                        </td>
+{{--                                        <td></td>--}}
                                         <td>{{$product->category->name??''}}</td>
                                         <td>
-                                            {{$product->subCategory1->name??''}} <br>
-                                            {{$product->subCategory2->name??''}} <br>
-                                            {{$product->subCategory3->name??''}}
+                                            {{  ($product->subCategory1 ? '- ' .$product->subCategory1->name : '') }} <br>
+                                            {{  ($product->subCategory2 ? '- ' .$product->subCategory2->name : '') }} <br>
+                                            {{  ($product->subCategory3 ? '- ' .$product->subCategory3->name : '') }}
                                         </td>
                                         <td>
                                             @foreach($product->stores as $store)
@@ -100,7 +125,7 @@
                                         </td>
                                         <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
                                         {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
-                                        <td>
+                                            <td>
                                             @if ($product->created_by  > 0 and $product->created_by != null)
                                                 {{ $product->created_at->diffForHumans() }} <br>
                                                 {{ $product->created_at->format('Y-m-d') }}
