@@ -2,37 +2,54 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card m-b-30 mt-4">
-                <div class="card-header d-flex align-items-center">
+                <div
+                    class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                     <h4>@lang('lang.return_sell')</h4>
                 </div>
                 <div class="card-body">
                     {!! Form::open(['method' => 'post', 'files' => true, 'class' => 'pos-form', 'id' => 'sell_return_form']) !!}
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('store_id', __('lang.store'), []) !!}
-                            {!! Form::select('store_id', $stores, $store, [
-                                'class' => 'form-control',
-                                'placeholder' => __('lang.all'),
-                                'data-live-search' => 'true',
-                                'wire:model' => 'store',
+                    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div
+                            class="col-md-4 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            {!! Form::label('store_id', __('lang.store'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
-                        </div>
-                    </div>
+                            <div class="input-wrapper">
 
-                    <input type="hidden" name="default_customer_id" id="default_customer_id"
-                        value="@if (!empty($walk_in_customer)) {{ $walk_in_customer->id }} @endif">
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-4">
-                                @lang('lang.invoice_no'): {{ $sale->invoice_no }}
-                            </div>
-                            <div class="col-md-4">
-                                @lang('lang.customer'): {{ $sale->customer->name ?? '' }}
+                                {!! Form::select('store_id', $stores, $store, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.all'),
+                                    'data-live-search' => 'true',
+                                    'wire:model' => 'store',
+                                ]) !!}
                             </div>
                         </div>
+                        <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="font-size: 14px;font-weight: 500;">
+                            <span class="mx-1">
+                                @lang('lang.invoice_no')
+                            </span>
+                            :
+                            <span>
+                                {{ $sale->invoice_no }}
+                            </span>
+                        </div>
+                        <div class="col-md-4 flex-row-reverse d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="font-size: 14px;font-weight: 500;">
+                            <span class="mx-1">
+                                @lang('lang.customer')
+                            </span>
+                            :
+                            <span>
+                                {{ $sale->customer->name ?? '' }}
+                            </span>
+                        </div>
+
+                        <input type="hidden" name="default_customer_id" id="default_customer_id"
+                            value="@if (!empty($walk_in_customer)) {{ $walk_in_customer->id }} @endif">
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-12" style="margin-top: 20px ">
@@ -134,15 +151,22 @@
                             @endif
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>@lang('lang.notes')</label>
-                            <textarea rows="3" class="form-control" name="notes" id="notes" wire:model = 'notes'>{{ !empty($sell_return) ? $sell_return->notes : '' }}</textarea>
+                    <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div
+                            class="col-md-9 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse my-2 @else flex-row @endif">
+                            <label style="font-size: 12px;font-weight: 500;">@lang('lang.notes')</label>
+                            <textarea rows="3" class="form-control initial-balance-input width-full" name="notes" id="notes"
+                                wire:model = 'notes'>{{ !empty($sell_return) ? $sell_return->notes : '' }}</textarea>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('files', __('lang.files') . ':', []) !!} <br>
-                                <input type="file" name="files[]" id="files" multiple>
+                        <div
+                            class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            {!! Form::label('files', __('lang.files'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+                                <input class="initial-balance-input width-full" type="file" name="files[]"
+                                    id="files" multiple>
                             </div>
                         </div>
                     </div>

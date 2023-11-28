@@ -1,22 +1,33 @@
-<div class="row">
+<div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
     @if (!empty($payment))
         <input type="hidden" name="transaction_payment_id" value="{{ $payment->id }}">
     @endif
 
-    <div class="col-md-4">
-        <div class="form-group">
-            {!! Form::label('amount', __('lang.amount') . ':*', []) !!} <br>
+    <div
+        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+        {!! Form::label('amount', __('lang.amount') . '*', [
+            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+            'style' => 'font-size: 12px;font-weight: 500;',
+        ]) !!}
+        <div class="input-wrapper">
+
             {!! Form::text('amount', !empty($payment) ? @num_format($payment->amount) : null, [
-                'class' => 'form-control',
+                'class' => 'form-control initial-balance-input width-full',
                 'placeholder' => __('lang.amount'),
                 'wire:model' => 'amount',
             ]) !!}
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="form-group">
-            {!! Form::label('method', __('lang.payment_type') . ':*', []) !!}
+    <div
+        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        {!! Form::label('method', __('lang.payment_type') . '*', [
+            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+            'style' => 'font-size: 12px;font-weight: 500;',
+        ]) !!}
+        <div class="input-wrapper">
+
             {!! Form::select('method', $payment_type_array, $method, [
                 'class' => 'selectpicker form-control',
                 'data-live-search' => 'true',
@@ -27,24 +38,34 @@
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="form-group">
-            {!! Form::label('paid_on', __('lang.payment_date') . ':', []) !!} <br>
+    <div
+        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        {!! Form::label('paid_on', __('lang.payment_date'), [
+            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+            'style' => 'font-size: 12px;font-weight: 500;',
+        ]) !!}
+        <div class="input-wrapper">
+
             {!! Form::date('paid_on', !empty($payment) ? @format_date($payment->paid_on) : @format_date(date('Y-m-d')), [
-                'class' => 'form-control datepicker',
+                'class' => 'form-control datepicker initial-balance-input width-full',
                 'placeholder' => __('lang.payment_date'),
                 'wire:model' => 'paid_on',
             ]) !!}
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="form-group">
-            {!! Form::label('upload_documents', __('lang.upload_documents') . ':', []) !!} <br>
+    <div
+        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        {!! Form::label('upload_documents', __('lang.upload_documents'), [
+            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+            'style' => 'font-size: 12px;font-weight: 500;',
+        ]) !!}
+        <div class="input-wrapper">
+
             {!! Form::file('upload_documents[]', null, ['class' => '']) !!}
         </div>
     </div>
-    {{--    <div class="col-md-4 not_cash_fields hide"> --}}
+    {{--    <div class="col-md-3 not_cash_fields hide"> --}}
     {{--        <div class="form-group"> --}}
     {{--            {!! Form::label('ref_number', __('lang.ref_number'). ':', []) !!} <br> --}}
     {{--            {!! Form::text('ref_number', !empty($payment) ? $payment->ref_number : null, ['class' => 'form-control --}}

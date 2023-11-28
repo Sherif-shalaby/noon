@@ -27,6 +27,7 @@ class ReportController extends Controller
         $this->reportsFilters = $reportsFilters;
         $this->common_util = $util;
     }
+
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
         $units = Unit::orderBy('created_at', 'desc')->pluck('name','id');
@@ -42,6 +43,7 @@ class ReportController extends Controller
             'units','stores','users','subcategories','branches'));
 
     }
+
     public function sell_price_less_purchase_price($pid){
         $sell_lines = TransactionSellLine::whereHas('transaction_sell_lines', function ($query) use ($pid) {
             $query->where('product_id', $pid)
@@ -67,6 +69,7 @@ class ReportController extends Controller
         return view('reports.initial_balance.index',compact('suppliers','brands','users',
             'stocks','categories','subcategories'));
     }
+
     public function addStock(){
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
@@ -77,5 +80,27 @@ class ReportController extends Controller
         $stocks  = $this->reportsFilters->addStockFilter();
         return view('reports.add_stock.index',compact('suppliers','brands','users',
             'stocks','categories','subcategories','payment_status_array'));
+    }
+
+    public function bestSellerReport(){
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $best_selling = $this->reportsFilters->bestSellerFilter();
+
+        $product = [];
+        $sold_qty = [];
+        if (!empty($best_selling)) {
+            $product_data = Product::find($best_selling->product_id);
+            if (!empty($product_data)) {
+                $product[] = $product_data->name . ': ' . $product_data->sku;
+                $sold_qty[] = $best_selling->sold_qty;
+            }
+        }
+        return view('reports.best_seller.index',compact('product','sold_qty','subcategories','categories',
+            'suppliers','brands','branches','stores'));
     }
 }

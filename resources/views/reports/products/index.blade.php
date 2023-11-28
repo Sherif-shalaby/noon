@@ -64,6 +64,10 @@
                                             <th>@lang('lang.sku')</th>
                                             <th>@lang('lang.stock')</th>
                                             <th>@lang('lang.balance_return_request')</th>
+                                            <th>@lang('lang.purchase_price')</th>
+                                            <th>@lang('lang.sell_price')</th>
+                                            <th class="dollar-cell">@lang('lang.purchase_price') $</th>
+                                            <th class="dollar-cell">@lang('lang.sell_price') $</th>
                                             <th>@lang('lang.amount_of_purchases')</th>
                                             <th>@lang('lang.amount_of_sells')</th>
                                             {{--                                    <th>@lang('lang.profits')</th> --}}
@@ -152,6 +156,79 @@
                                                         {{ $product->balance_return_request }}
                                                     </span>
                                                 </td>
+                                                @if ($product->stock_lines->isNotEmpty())
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.purchase_price')">
+
+                                                            {{ @num_format($product->stock_lines->last()->purchase_price) }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.sell_price')">
+                                                            {{ @num_format($product->stock_lines->last()->sell_price) }}
+                                                        </span>
+                                                    </td>
+
+                                                    <td class="dollar-cell">
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.purchase_price')">
+                                                            {{ @num_format($product->stock_lines->last()->dollar_purchase_price) }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="dollar-cell">
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.sell_price')">
+                                                            {{ @num_format($product->stock_lines->last()->dollar_sell_price) }}
+                                                        </span>
+                                                    </td>
+                                                @else
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.purchase_price')">
+                                                            {{ @num_format(0) }}
+                                                        </span>
+
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.sell_price')">
+                                                            {{ @num_format(0) }}
+                                                        </span>
+
+                                                    </td>
+                                                    <td class="dollar-cell">
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.purchase_price')">
+                                                            {{ @num_format(0) }}
+                                                        </span>
+
+                                                    </td>
+                                                    <td class="dollar-cell">
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.sell_price')">
+                                                            {{ @num_format(0) }}
+                                                        </span>
+
+                                                    </td>
+                                                @endif
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"

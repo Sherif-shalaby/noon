@@ -1,6 +1,6 @@
 <div class="row text-center">
     <div class="col-md-12">
-        <h4>@lang('lang.payment_details')</h4>
+        <h5>@lang('lang.payment_details')</h5>
     </div>
 
 </div>
@@ -20,9 +20,9 @@
 
             @foreach ($payments as $payment)
                 <tr>
-                    <td>{{ $payment->amount }}</td>
-                    <td>{{ @format_date($payment->paid_on) }}</td>
-                    <td>{{ $payment_type_array[$payment->method] }}</td>
+                    <td style="font-size: 12px;font-weight: 600">{{ $payment->amount }}</td>
+                    <td style="font-size: 12px;font-weight: 600">{{ @format_date($payment->paid_on) }}</td>
+                    <td style="font-size: 12px;font-weight: 600">{{ $payment_type_array[$payment->method] }}</td>
 
                     {{--                    @if (!empty($show_action)) --}}
                     {{--                        <td> --}}

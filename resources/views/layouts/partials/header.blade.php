@@ -1688,7 +1688,13 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.get_due_report') }}
                                             </a>
                                         </li>
-
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('reports.best_seller') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif best-seller-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.best_seller_report') }}
+                                            </a>
+                                        </li>
 
                                     </ul>
                                 </li>
@@ -1995,6 +2001,12 @@
     $('.get-due-report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('get-due-report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.best-seller-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('reports.best_seller') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

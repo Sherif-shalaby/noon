@@ -154,7 +154,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
     Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
-    
+
     Route::resource('products', ProductController::class);
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
@@ -322,6 +322,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/initial_balance',[ReportController::class,'initialBalanceReport'])->name('reports.initial_balance');
     // Add Stock
     Route::get('reports/add_stock',[ReportController::class,'addStock'])->name('reports.add_stock');
+    // Best Seller
+    Route::get('reports/best_seller',[ReportController::class,'bestSellerReport'])->name('reports.best_seller');
+
 
 });
 
