@@ -296,7 +296,7 @@
                                 </li>
                                 {{-- +++++++++++ purchases report +++++++++++ --}}
                                 <li>
-                                    <a href="{{route('purchases-report.index')}}">
+                                    <a href="{{route('reports.add_stock')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}
                                     </a>
                                 </li>

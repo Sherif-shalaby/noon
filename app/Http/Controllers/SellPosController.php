@@ -10,7 +10,7 @@ use App\Models\ReceiptTransactionSellLinesFiles;
 use App\Models\SellLine;
 use App\Models\System;
 use App\Models\TransactionSellLine;
-
+use App\Models\User;
 use App\Utils\CashRegisterUtil;
 use App\Utils\NotificationUtil;
 use App\Utils\ProductUtil;
@@ -92,7 +92,6 @@ class SellPosController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-
         return $output;
     }
     public function show_payment($id){
@@ -267,5 +266,35 @@ class SellPosController extends Controller
     public function show_receipt($line_id){
         $uploaded_files = ReceiptTransactionSellLinesFiles::where('transaction_sell_line_id',$line_id)->get();
         return view('general.uploaded_files',compact('uploaded_files'));
+    }
+    public function addPayment($transaction_id)
+    {
+        $payment_type_array = $this->commonUtil->getPaymentTypeArray();
+        $transaction = TransactionSellLine::find($transaction_id);
+        $users = User::Notview()->pluck('name', 'id');
+        $balance = $this->transactionUtil->getCustomerBalanceExceptTransaction($transaction->customer_id,$transaction_id)['balance'];
+        $finalTotal = $transaction->final_total;
+        $transactionPaymentsSum = $transaction->transaction_payments->sum('amount');
+        if ($balance > 0 && $balance < $finalTotal - $transactionPaymentsSum) {
+            if (isset($transaction->return_parent)) {
+                $amount = $finalTotal - $transactionPaymentsSum - $transaction->return_parent->final_total - $balance;
+            } else {
+                $amount = $finalTotal - $transactionPaymentsSum - $balance;
+            }
+        } else {
+            if (isset($transaction->return_parent)) {
+                $amount = $finalTotal - $transactionPaymentsSum - $transaction->return_parent->final_total;
+            } else {
+                $amount = $finalTotal - $transactionPaymentsSum;
+            }
+        }
+        return view('invoices.partials.add_payment')->with(compact(
+            'payment_type_array',
+            'transaction_id',
+            'transaction',
+            'users',
+            'balance',
+            'amount'
+        ));
     }
 }

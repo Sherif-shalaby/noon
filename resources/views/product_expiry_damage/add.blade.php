@@ -36,8 +36,6 @@
                             <table id="datatable-buttons" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
-                                    <th></th>
-                                    <th></th>
                                     <th>@lang('lang.image')</th>
                                     <th style="">@lang('lang.name')</th>
                                     <th>@lang('lang.product_code')</th>
@@ -50,12 +48,35 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($addStockLines as $stock_line)
+                                    <tr>
+                                        <td><img src="{{$stock_line->product->image}}" height="50px" width="50px"></td>
+                                        <td>
+                                            {{-- @if ($stock_line->variation->name != "Default") --}}
+                                                {{ $stock_line->variation->unit->name}}
+                                            {{-- @else
+                                                Default
+                                            @endif --}}
+                                        </td>
+                                        <td>{{$stock_line->variation->sku??''}}</td>
+                                        <td>{{number_format($stock_line->avail_current_stock - $stock_line->expired_current_stock,3)  }}</td>
+                                        <td>{{$stock_line->expired_current_stock}}</td>
+                                        <td>{{$stock_line->exp_date}}</td>
+                                        <td>{{$stock_line->date_of_purchase_of_the_expired_stock_removed}}</td>
+                                        <td>{{number_format($stock_line->avg_purchase_price)}}</td>
+                                        <td>@if(isset($stock_line->quantity_of_expired_stock_removed)){{$stock_line->quantity_of_expired_stock_removed}} @else {{0}}@endif</td>
+                                        {{-- <td>@if(isset($stock_line->value_of_removed_stocks)){{$stock_line->value_of_removed_stocks}} @else {{0}}@endif</td>
+                                        <td>{{number_format($stock_line->avg_purchase_price)}}</td>
+                                        <td>{{0}}</td> --}}
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                             <div class="view_modal no-print" >
                             </div>
                         </div>
-                        <button style="margin-left: 25px" data-check_password="" class="btn btn-primary check_pass">Save</button>
+                        <input hidden value="" name="total_shortage_value" id="total_shortage_value">
+                        <button style="margin-left: 25px" class="btn btn-primary check_pass">Save</button>
                         <a style="margin-left: 25px" id="cancel_btn" class="btn btn-danger text-white ">Cancel</a>
                     </div>
                 </div>
@@ -66,4 +87,111 @@
     </div>
 
 @endsection
+
+@push('javascripts')
+<script>
+$(document).on('click', '.check_pass', function(e) {
+    e.preventDefault();
+    swal.fire({
+        title: 'Are you sure?',
+        text: "@lang('lang.adjustment_save')",
+        icon: 'warning',
+    }).then(willDelete => {
+        if (willDelete) {
+            // var check_password = $(this).data('check_password');
+            // var href = $(this).data('href');
+            var data = $(this).serialize();
+            swal.fire({
+                title: "{!! __('lang.please_enter_your_password') !!}",
+                input: 'password',
+                inputAttributes: {
+                    placeholder: "{!! __('lang.type_your_password') !!}",
+                    autocomplete: 'off',
+                    autofocus: true,
+                },
+            }).then((result) => {
+                if (result) {
+                    $.ajax({
+                        url: "{{ route('check_password') }}",
+                        method: 'POST',
+                        data: {
+                            value: result
+                        },
+                        dataType: 'json',
+                        success: (data) => {
+                            if (data.success == true) {
+                                 sendData();
+                            } else {
+                                swal(
+                                    'Failed!',
+                                    'Wrong Password!',
+                                    'error'
+                                )
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+function sendData() {
+            // Get the table instance
+            var table = $('#product_table').DataTable();
+            // Initialize an empty array to store the selected data
+            var selectedData = [];
+            var total_shortage_value = document.getElementById('total_shortage_value').value;
+            // Loop through each row in the table
+            table.rows().every(function() {
+                var rowData = this.row().data();
+                var quantity_to_be_removed = $('input[name="quantity_to_be_removed"]', this.node()).val();
+                var expired_current_stock = $('span[name="expired_current_stock"]', this.node()).text();
+                var date_of_purchase_of_the_expired_stock_removed = $('span[name="date_of_purchase_of_the_expired_stock_removed"]', this.node()).text();
+                var value_of_removed_stock = $('.value_of_removed_stock', this.node()).text();
+                var id = $('span[name="product_id"]', this.node()).text();
+                var variation_id = $('span[name="variation_id"]', this.node()).text();
+
+                // Check if actualStock has a value
+                if (quantity_to_be_removed !== '') {
+                    // Add the required data to the selectedData array
+                    var dataObj = {
+                        id: id,
+                        variation_id : variation_id,
+                        status : "expiry",
+                        expired_current_stock: expired_current_stock,
+                        quantity_to_be_removed: quantity_to_be_removed,
+                        value_of_removed_stocks: value_of_removed_stock,
+                        date_of_purchase_of_expired_stock_removed: date_of_purchase_of_the_expired_stock_removed,
+                    };
+                    selectedData.push(dataObj);
+                }
+            });
+            // Send the data to the server
+            $.ajax({
+                type: 'POST',
+                url: '/product/convolutions/storeStockRemoved',
+                data: {
+                    selected_data: selectedData,
+                    total_shortage_value: total_shortage_value
+                },
+                success: function(response) {
+                    swal(
+                        'Success',
+                        'Operation added successfully!',
+                        'success'
+                    );
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    swal(
+                        'Error',
+                        'Something went Error',
+                        'error'
+                    );
+                }
+            });
+        }
+</script>
+@endpush
+
 

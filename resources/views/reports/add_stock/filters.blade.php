@@ -1,5 +1,5 @@
 <div class="card-body">
-    <form action="{{route('reports.initial_balance')}}" method="get">
+    <form action="{{route('reports.add_stock')}}" method="get">
         <div class="row">
             <div class="col-2">
                 <div class="form-group">
@@ -98,6 +98,25 @@
                     ) !!}
                 </div>
             </div>
+            <div class="col-md-2">
+                {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
+                {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')],request()->purchase_type ,
+                ['class' => 'form-control select2', 'placeholder' => __('lang.please_select')]) !!}
+            </div>
+            <div class="col-md-2">
+                {!! Form::label('payment_status', __('lang.payment_status') . ':*', []) !!}
+                {!! Form::select('payment_status', $payment_status_array, request()->payment_status,
+                ['class' => 'form-control select2', 'data-live-search' => 'true',  'placeholder' => __('lang.please_select')]) !!}
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="due_date">{{__('lang.payment_date')}}</label>
+                    {!! Form::date(
+                        'due_date', null,
+                        ['class' => 'form-control','placeholder'=>__('lang.due_date')]
+                    ) !!}
+                </div>
+            </div>
             <div class="col-2">
                 <div class="form-group">
                     <label for="from">{{__('site.From')}}</label>
@@ -112,7 +131,7 @@
                     <label for="to">{{__('site.To')}}</label>
                     {!! Form::date(
                         'to', request()->to ?? date('Y-m-d'),
-                        ['class' => 'form-control','placeholder'=>__('lang.to'),'wire:model' => 'to']
+                        ['class' => 'form-control','placeholder'=>__('lang.to')]
                     ) !!}
                 </div>
             </div>

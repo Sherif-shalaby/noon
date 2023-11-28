@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('purchase_order_transactions', function (Blueprint $table) {
-            $table->softDeletes();
-            // $table->string('deleted_by')->nullable();
+        Schema::table('product_expiry_damages', function (Blueprint $table) {
+            $table->unsignedBigInteger('variation_id')->nullable();
+            $table->foreign('variation_id')->references('id')->on('variations')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 
@@ -26,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('purchase_order_transactions', function (Blueprint $table) {
-            //
-        });
+        //
     }
 };

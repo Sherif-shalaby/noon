@@ -119,4 +119,140 @@ class ReportsFilters extends Util
             ->get();
         return $products;
     }
+
+    public function initialBalanceFilters(){
+        $stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])
+            ->when(\request()->dont_show_zero_stocks =="on", function ($query) {
+                $query->whereHas('product_stores', function ($query) {
+                    $query->where('quantity_available', '>', 0);
+                });
+            })
+            ->when(\request()->category_id != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('category_id',\request()->category_id);
+                });
+            })
+            ->when(\request()->subcategory_id1 != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id1',\request()->subcategory_id1);
+                });
+            })
+            ->when(\request()->subcategory_id2 != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id2',\request()->subcategory_id2);
+                });
+            })
+            ->when(\request()->subcategory_id3 != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id3',\request()->subcategory_id3);
+                });
+            })
+            ->when(request()->supplier_id != null, function ($query) {
+                $query->where('supplier_id',request()->supplier_id);
+            })
+            ->when(request()->created_by != null, function ($query) {
+                $query->where('created_by',request()->created_by);
+            })
+            ->when(request()->product_name != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('name', 'like', '%' . request()->product_name . '%');
+                });
+            })
+            ->when(request()->product_sku != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('sku', 'like', '%' . request()->product_sku . '%');
+                });
+            })
+            ->when(request()->product_symbol != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('product_symbol', 'like', '%' . request()->product_symbol . '%');
+                });
+            })
+            ->when(request()->brand_id != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('brand_id', request()->brand_id);
+                });
+            })
+            ->when(request()->from != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') >= ?", [request()->from]);
+            })
+            ->when(request()->to != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') <= ?", [request()->to]);
+            })
+            ->orderBy('created_at', 'desc')->get();
+        return $stocks;
+    }
+
+    public function addStockFilter(){
+        $stocks =  StockTransaction::where('type','add_stock')
+            ->when(\request()->dont_show_zero_stocks =="on", function ($query) {
+                $query->whereHas('product_stores', function ($query) {
+                    $query->where('quantity_available', '>', 0);
+                });
+            })
+            ->when(\request()->category_id != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('category_id',\request()->category_id);
+                });
+            })
+            ->when(\request()->subcategory_id1 != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id1',\request()->subcategory_id1);
+                });
+            })
+            ->when(\request()->subcategory_id2 != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id2',\request()->subcategory_id2);
+                });
+            })
+            ->when(\request()->subcategory_id3 != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('subcategory_id3',\request()->subcategory_id3);
+                });
+            })
+            ->when(request()->supplier_id != null, function ($query) {
+                $query->where('supplier_id',request()->supplier_id);
+            })
+            ->when(request()->created_by != null, function ($query) {
+                $query->where('created_by',request()->created_by);
+            })
+            ->when(request()->product_name != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('name', 'like', '%' . request()->product_name . '%');
+                });
+            })
+            ->when(request()->product_sku != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('sku', 'like', '%' . request()->product_sku . '%');
+                });
+            })
+            ->when(request()->product_symbol != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('product_symbol', 'like', '%' . request()->product_symbol . '%');
+                });
+            })
+            ->when(request()->brand_id != null, function ($query) {
+                $query->whereHas('add_stock_lines.product', function ($subquery) {
+                    $subquery->where('brand_id', request()->brand_id);
+                });
+            })
+            ->when(request()->purchase_type != null, function ($query) {
+                $query->where('purchase_type', request()->purchase_type);
+            })
+            ->when(request()->payment_status != null, function ($query) {
+                $query->where('payment_status', request()->payment_status);
+            })
+            ->when(request()->due_date != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(due_date, '%Y-%m-%d') >= ?", [request()->due_date]);
+            })
+            ->when(request()->from != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') >= ?", [request()->from]);
+            })
+            ->when(request()->to != null, function ($query) {
+                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') <= ?", [request()->to]);
+            })
+
+            ->orderBy('created_at', 'desc')->get();
+        return $stocks;
+    }
 }

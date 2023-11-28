@@ -53,6 +53,9 @@ $(document).on("change",".category",function () {
         success: function (response) {
             console.log(response)
             $(".subcategory").empty().append(response).change();
+            $(".subcategory1").empty();
+            $(".subcategory2").empty();
+            $(".subcategory3").empty();
         }
     });
 });
@@ -64,6 +67,7 @@ $(document).on("change",".subcategory",function () {
         success: function (response) {
             console.log(response)
             $(".subcategory2").empty().append(response).change();
+            $(".subcategory3").empty();
         }
     });
 });
@@ -119,7 +123,7 @@ $(document).on("change", ".unit_select", function () {
             // selectBox1.val(brand_id).trigger();
         },
     });
-     
+
 });
 
 function getSelectBoxValues() {

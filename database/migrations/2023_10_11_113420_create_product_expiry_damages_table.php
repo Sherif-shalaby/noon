@@ -21,7 +21,7 @@ return new class extends Migration
             $table->float("quantity_of_expired_stock_removed");
             $table->float("value_of_removed_stocks");
             $table->timestamp("date_of_removal");
-            $table->float("date_of_purchase_of_expired_stock_removed");
+            $table->string("date_of_purchase_of_expired_stock_removed");
             $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->integer('added_by', )->default(null);

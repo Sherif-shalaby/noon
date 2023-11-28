@@ -20,13 +20,15 @@ use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
     protected $reportsFilters;
+    protected $common_util;
 
-    public function __construct(ReportsFilters $reportsFilters)
+    public function __construct(ReportsFilters $reportsFilters, Util $util)
     {
-        request()->reportsFilters = $reportsFilters;
+        $this->reportsFilters = $reportsFilters;
+        $this->common_util = $util;
     }
     public function getProductReport(){
-        $products = request()->reportsFilters->productFilters();
+        $products = $this->reportsFilters->productFilters();
         $units = Unit::orderBy('created_at', 'desc')->pluck('name','id');
         $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
@@ -59,45 +61,21 @@ class ReportController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
-        $stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])
-            ->when(\request()->dont_show_zero_stocks =="on", function ($query) {
-                $query->whereHas('product_stores', function ($query) {
-                    $query->where('quantity_available', '>', 0);
-                });
-            })
-            ->when(request()->supplier_id != null, function ($query) {
-                $query->where('supplier_id',request()->supplier_id);
-            })
-            ->when(request()->created_by != null, function ($query) {
-                $query->where('created_by',request()->created_by);
-            })
-            ->when(request()->product_name != null, function ($query) {
-                $query->whereHas('add_stock_lines.product', function ($subquery) {
-                    $subquery->where('name', 'like', '%' . request()->product_name . '%');
-                });
-            })
-            ->when(request()->product_sku != null, function ($query) {
-                $query->whereHas('add_stock_lines.product', function ($subquery) {
-                    $subquery->where('sku', 'like', '%' . request()->product_sku . '%');
-                });
-            })
-            ->when(request()->product_symbol != null, function ($query) {
-                $query->whereHas('add_stock_lines.product', function ($subquery) {
-                    $subquery->where('product_symbol', 'like', '%' . request()->product_symbol . '%');
-                });
-            })
-            ->when(request()->brand_id != null, function ($query) {
-                $query->whereHas('add_stock_lines.product', function ($subquery) {
-                    $subquery->where('brand_id', request()->brand_id);
-                });
-            })
-            ->when(request()->from != null, function ($query) {
-                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') >= ?", [request()->from]);
-            })
-            ->when(request()->to != null, function ($query) {
-                $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') <= ?", [request()->to]);
-            })
-            ->orderBy('created_at', 'desc')->get();
-        return view('reports.initial_balance.index',compact('suppliers','brands','users','stocks'));
+        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $stocks  = $this->reportsFilters->initialBalanceFilters();
+        return view('reports.initial_balance.index',compact('suppliers','brands','users',
+            'stocks','categories','subcategories'));
+    }
+    public function addStock(){
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        $users = User::orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $payment_status_array = $this->common_util->getPaymentStatusArray();
+        $stocks  = $this->reportsFilters->addStockFilter();
+        return view('reports.add_stock.index',compact('suppliers','brands','users',
+            'stocks','categories','subcategories','payment_status_array'));
     }
 }

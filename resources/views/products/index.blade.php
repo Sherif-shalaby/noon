@@ -170,7 +170,7 @@
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
-                                                    <a target="_blank" href="{{route('get_remove_damage',$product->id)}}"
+                                                    <a target="_blank" href="{{route('remove_expiry',$product->id)}}"
                                                        class="btn"><i class="fa fa-hourglass-half"></i>
                                                          @lang('lang.remove_expiry')
                                                     </a>
@@ -225,7 +225,8 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-<div class="view_modal no-print" >@endsection
+<div class="view_modal no-print" >
+    @endsection
 @push('javascripts')
 <script src="{{ asset('js/product/product.js') }}"></script>
 <script>
