@@ -658,4 +658,6 @@ return [
     'wins' => 'Wins',
     'previous' => 'Previous',
     'next' => 'Next',
+    'total_surplus' => 'Total Surplus',
+    'product_discount' =>  'Product Discount'
 ];

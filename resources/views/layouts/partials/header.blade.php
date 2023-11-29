@@ -1631,6 +1631,14 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.sales_per_employee') }}
                                             </a>
                                         </li>
+                                        {{--          Daily Purchase Report           --}}
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('reports.daily_purchase_report') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily_purchase_report-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.daily_purchase_report') }}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="mega-menu-col col-md-4 p-0">
@@ -1712,7 +1720,13 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.best_seller_report') }}
                                             </a>
                                         </li>
-
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('reports.daily_sales_report') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily_sale_report-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.daily_sale_report') }}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -2027,6 +2041,12 @@
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
+    $('.daily_sale_report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('reports.daily_sales_report') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
     $('.get-supplier-report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('get-supplier-report.index') }}"
@@ -2036,6 +2056,12 @@
     $('.sales_per_employee-report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('sales-per-employee.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.daily_purchase_report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('reports.daily_purchase_report') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

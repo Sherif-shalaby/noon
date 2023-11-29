@@ -697,6 +697,8 @@ return array(
     'December' => 'ديسمبر',
     'sales' => 'المبيعات',
     'wins' => 'الارباح',
-    'previous' => 'سابق',
+    'previous' => 'السابق',
     'next' => 'التالى',
+    'total_surplus' => 'إجمالي الفائض',
+    'product_discount' => 'خصم المنتج',
 );

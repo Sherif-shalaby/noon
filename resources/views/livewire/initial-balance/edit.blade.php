@@ -609,9 +609,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($rows as $index => $row)
-                                        {{-- @include('initial-balance.partial.raw_unit', [
-                                                'index' => $index,
-                                            ]) --}}
+                                        @include('initial-balance.partial.raw_unit', [
+                                            'index' => $index,
+                                        ])
                                     @endforeach
                                     <div class="fw-bold text-centeranimate__animated animate__flipInY "
                                         style="animation-delay: 3.7s">
