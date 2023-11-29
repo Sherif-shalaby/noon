@@ -35,9 +35,9 @@ class ReportController extends Controller
         $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
-        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
 
         return view('reports.products.index',compact('products','categories','suppliers','brands',
@@ -105,6 +105,8 @@ class ReportController extends Controller
             'suppliers','brands','branches','stores'));
     }
     public function  dailySalesReport(){
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         $year = request()->year;
         $month = request()->month;
 
@@ -123,7 +125,18 @@ class ReportController extends Controller
                 $date = $year . '-' . $month . '-' . $start;
             }
             $query = TransactionSellLine::where('type', 'sell')->whereIn('status', ['final', 'canceled'])
-                ->whereDate('transaction_date', $date);
+                ->whereDate('transaction_date', $date)
+                ->when(\request()->branch_id != null, function ($query) {
+                    $branchId = \request()->branch_id;
+                    $query->whereHas('transaction_sell_lines.product.product_stores.store.branch', function ($storeQuery) use ($branchId) {
+                        $storeQuery->where('id', $branchId);
+                    });
+                })
+                ->when(\request()->store_id != null, function ($query) {
+                    $query->whereHas('transaction_sell_lines.product.product_stores', function ($query) {
+                        $query->where('store_id',\request()->store_id);
+                    });
+                });
 
             $sale_data = $query->select(
                 DB::raw('SUM(discount_amount) AS total_discount'),
@@ -131,6 +144,7 @@ class ReportController extends Controller
                 DB::raw('SUM(total_tax) AS total_tax'),
                 DB::raw('SUM(delivery_cost) AS shipping_cost'),
                 DB::raw('SUM(final_total) AS grand_total'),
+                DB::raw('SUM(dollar_final_total) AS dollar_grand_total'),
                 DB::raw('SUM(total_product_surplus) AS total_surplus'),
             )->first();
             $total_discount[$start] = $sale_data->total_discount + $sale_data->total_product_discount;
@@ -140,6 +154,7 @@ class ReportController extends Controller
             $order_tax[$start] = $sale_data->order_tax;
             $shipping_cost[$start] = $sale_data->shipping_cost;
             $grand_total[$start] = $sale_data->grand_total;
+            $dollar_grand_total[$start] = $sale_data->dollar_grand_total;
             $start++;
         }
         $start_day = date('w', strtotime($year . '-' . $month . '-01')) + 1;
@@ -160,6 +175,7 @@ class ReportController extends Controller
             'order_tax',
             'shipping_cost',
             'grand_total',
+            'dollar_grand_total',
             'start_day',
             'year',
             'month',
@@ -171,6 +187,8 @@ class ReportController extends Controller
             'stores',
             'payment_types',
             'cashiers',
+            'stores',
+            'branches'
         ));
     }
 }

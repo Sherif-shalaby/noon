@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.daily_sales_report'))
+@section('title', __('lang.daily_sale_report'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         <div class="row align-items-center">
@@ -27,62 +27,30 @@
             <div class="card-header d-flex align-items-center">
                 <h4>@lang('lang.daily_sale_report')</h4>
             </div>
-            @if(session('user.is_superadmin'))
-                <form action="">
-                    <div class="col-md-12">
-                        <div class="row">
-{{--                            <div class="col-md-3">--}}
-{{--                                <div class="form-group">--}}
-{{--                                    {!! Form::label('store_id', __('lang.store'), []) !!}--}}
-{{--                                    {!! Form::select('store_id', $stores, request()->store_id, ['class' =>--}}
-{{--                                    'form-control', 'placeholder' => __('lang.all'),'data-live-search'=>"true"]) !!}--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-3">--}}
-{{--                                <div class="form-group">--}}
-{{--                                    {!! Form::label('method', __('lang.payment_type'), []) !!}--}}
-{{--                                    {!! Form::select('method', $payment_types, request()->method,--}}
-{{--                                    ['class' =>--}}
-{{--                                    'form-control', 'placeholder' => __('lang.all'),'data-live-search'=>"true"]) !!}--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-md-3">--}}
-{{--                                <div class="form-group">--}}
-{{--                                    {!! Form::label('created_by', __('lang.cashier'), []) !!}--}}
-{{--                                    {!! Form::select('created_by', $cashiers, false, ['class' =>--}}
-{{--                                    'form-control selectpicker', 'id' =>--}}
-{{--                                    'created_by', 'data-live-search' => 'true', 'placeholder' =>--}}
-{{--                                    __('lang.all')]) !!}--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-
-
-{{--                            <div class="col-md-3">--}}
-{{--                                <br>--}}
-{{--                                <button type="submit" class="btn btn-success mt-2">@lang('lang.filter')</button>--}}
-{{--                                <a href="{{action('ReportController@getDailySaleReport')}}"--}}
-{{--                                   class="btn btn-danger mt-2 ml-2">@lang('lang.clear_filter')</a>--}}
-{{--                            </div>--}}
-                        </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        @include('reports.daily_sell_report.filters')
                     </div>
-                </form>
-            @endif
+                </div>
+            </div>
             <div class="card-body">
                 <div class="col-md-12">
                     <table class="table table-bordered"
                            style="border-top: 1px solid #dee2e6; border-bottom: 1px solid #dee2e6;">
                         <thead>
                         <tr>
-                            <th><a
-{{--                                    href="{{url('report/get-daily-sale-report?year='.$prev_year.'&month='.$prev_month)}}"><i--}}
-                                        class="fa fa-arrow-left"></i> {{trans('lang.previous')}}</a></th>
+                            <th>
+                                <a style="color: #6e81dc" href="{{url('reports/daily_sales_report?year='.$prev_year.'&month='.$prev_month)}}">
+                                    <i class="fa fa-arrow-left"></i> @lang('lang.previous')
+                                </a>
+                            </th>
                             <th colspan="5" class="text-center">
                                 {{date("F", strtotime($year.'-'.$month.'-01')).' ' .$year}}
                             </th>
                             <th>
-                                <a
-{{--                                    href="{{url('report/get-daily-sale-report?year='.$next_year.'&month='.$next_month)}}">--}}
-                                    >{{trans('lang.next')}}
+                                <a style="color: #6e81dc" href="{{url('reports/daily_sales_report?year='.$next_year.'&month='.$next_month)}}">
+                                    @lang('lang.next')
                                     <i class="fa fa-arrow-right"></i>
                                 </a>
                             </th>
@@ -139,6 +107,9 @@
 
                                         @if(!empty($grand_total[$i]))
                                             <strong>@lang("lang.grand_total")</strong><br><span>{{@num_format($grand_total[$i])}}</span><br><br>
+                                        @endif
+                                        @if(!empty($dollar_grand_total[$i]))
+                                            <strong>@lang("lang.grand_total") $</strong><br><span>{{@num_format($dollar_grand_total[$i])}}</span><br><br>
                                         @endif
 
                                     </td>

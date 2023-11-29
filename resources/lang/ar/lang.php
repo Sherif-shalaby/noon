@@ -665,6 +665,9 @@ return array(
     'profits' => 'الأرباح',
     'amount_of_sells' => 'مبلغ المبيعات',
     'amount_of_purchases' => 'مبلغ المشتريات',
+    'total_surplus' => 'إجمالي الفائض',
+    'previous' => 'السابق',
+    'next' => 'التالي',
 
 );
 
