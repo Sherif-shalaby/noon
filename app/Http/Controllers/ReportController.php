@@ -78,7 +78,7 @@ class ReportController extends Controller
                 $total_addstock_query->where('store_id', $store_id);
             }
             $total_discount_addstock[] = $total_addstock_query->sum('discount_amount');
-        
+
             $total_tax_sell[] = $total_sell_query->sum('total_tax');
             ///
 
@@ -126,7 +126,7 @@ class ReportController extends Controller
         ));
     }
 
- 
+
 
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
@@ -292,6 +292,5 @@ class ReportController extends Controller
             'branches'
         ));
     }
-}
 
 }
