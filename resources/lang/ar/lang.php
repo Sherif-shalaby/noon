@@ -674,7 +674,7 @@ return array(
     'December' => 'ديسمبر',
     'sales'=>'المبيعات',
     'wins'=>'الارباح',
-    'previous'=>'سابق',
+    'previous'=>'السابق',
     'next'=>'التالى',
     'best_selling' => 'الأكثر مبيعا',
     'least_selling' => 'الأقل مبيعا',
@@ -687,7 +687,7 @@ return array(
     'amount_of_sells' => 'مبلغ المبيعات',
     'amount_of_purchases' => 'مبلغ المشتريات',
     'total_surplus' => 'إجمالي الفائض',
-    'previous' => 'السابق',
-    'next' => 'التالي',
+    'product_discount' => 'خصم المنتج',
+
 );
 

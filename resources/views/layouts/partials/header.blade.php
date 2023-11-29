@@ -300,6 +300,7 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}
                                     </a>
                                 </li>
+                                    {{--          Best Seller Report           --}}
                                 <li>
                                     <a href="{{route('reports.best_seller')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.best_seller_report')}}
@@ -311,9 +312,16 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.sales_report')}}
                                     </a>
                                 </li>
+                                {{--          Daily sells Report           --}}
                                 <li>
                                     <a href="{{route('reports.daily_sales_report')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.daily_sale_report')}}
+                                    </a>
+                                </li>
+                                {{--          Daily Purchase Report           --}}
+                                <li>
+                                    <a href="{{route('reports.daily_purchase_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.daily_purchase_report')}}
                                     </a>
                                 </li>
                                 {{-- +++++++++++ receivable report +++++++++++ --}}
