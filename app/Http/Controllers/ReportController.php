@@ -341,7 +341,7 @@ class ReportController extends Controller
         $stores = Store::getDropdown();
 
         return view('reports.daily_purchase_report.index', compact(
-            'total_discount', 'grand_total',
+            'total_discount', 'grand_total','dollar_grand_total',
             'start_day', 'year', 'month', 'number_of_day', 'prev_year', 'prev_month',
             'next_year', 'next_month', 'stores', 'branches', 'stores','suppliers'
         ));
