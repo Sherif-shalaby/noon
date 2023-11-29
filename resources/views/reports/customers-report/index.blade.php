@@ -13,29 +13,13 @@
                     </ol>
                 </div>
             </div>
-            {{-- <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{route('products.create')}}" class="btn btn-primary">
-                        @lang('lang.add_products')
-                      </a>
-                </div>
-            </div> --}}
         </div>
     </div>
 @endsection
 @section('content')
-    {{-- <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
-            <div class="card m-b-30 p-2">
 
-
-            </div>
-        </div>
-    </div> --}}
-    <!-- Start Contentbar -->
-    <div class="contentbar no-print">
+       <!-- Start Contentbar -->
+       <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
@@ -90,8 +74,8 @@
                                         @foreach ($customer_transactions_sell_lines as $key => $customer_transactions_sell_line)
                                             <tr>
                                                 <td>{{ $customer_transactions_sell_line->created_at->format('Y-m-d') }}</td>
-                                                <td>{{ $customer_transactions_sell_line->invoice_no }}</td>
-                                                <td>{{ $customer_transactions_sell_line->customer->name }}</td>
+                                                <td>{{ $customer_transactions_sell_line->invoice_no ?? ''}}</td>
+                                                <td>{{ $customer_transactions_sell_line->customer->name ?? ''}}</td>
                                                 {{-- Get All_sell_lines of transaction Then Get "product name" --}}
                                                 <td>
                                                     <ul>
@@ -106,11 +90,22 @@
                                                 <td>{{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), 2) }}
                                                 </td>
                                                 {{-- متاخرات --}}
+{{--                                                <td>--}}
+{{--                                                    {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total, 2) }}--}}
+{{--                                                        @foreach ( $customer_transactions_sell_line->transaction_sell_lines as $transaction_sell_lines)--}}
+{{--                                                                <li>{{ $transaction_sell_lines->product->name ?? ''}}</li>--}}
+{{--                                                        @endforeach--}}
+{{--                                                    </ul>--}}
+{{--                                                </td>--}}
+{{--                                                <td>{{ @num_format($customer_transactions_sell_line->final_total ) ?? ''}}</td>--}}
+                                                {{-- Get All_Payments of transaction Then Get "payment amount" --}}
+{{--                                                <td>{{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount')) ?? ''}}</td>--}}
+                                                {{-- متاخرات --}}
                                                 <td>
-                                                    {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total, 2) }}
+                                                    {{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total) ?? ''}}
                                                 </td>
                                                 {{-- sells status --}}
-                                                <td>{{ $customer_transactions_sell_line->status }}</td>
+                                                <td>{{ $customer_transactions_sell_line->status ?? ''}}</td>
                                                 {{-- payment status --}}
                                                 <td>{{ $customer_transactions_sell_line->payment_status }}</td>
                                                 <td>
@@ -130,7 +125,7 @@
                                                                     @lang('lang.view_payments')
                                                                 </a>
                                                             </li>
-                                                            @if ($customer_transactions_sell_line->status != 'draft' && $customer_transactions_sell_line->payment_status != 'paid' && $customer_transactions_sell_line->status != 'canceled') 
+                                                            @if ($customer_transactions_sell_line->status != 'draft' && $customer_transactions_sell_line->payment_status != 'paid' && $customer_transactions_sell_line->status != 'canceled')
                                                             <li class="divider"></li>
                                                             <li>
                                                                 <a data-href="{{route('add_payment', $customer_transactions_sell_line->id)}}" data-container=".view_modal" class="btn btn-modal">
@@ -171,6 +166,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
+{{--                                                <td>{{ $customer_transactions_sell_line->payment_status ?? ''}}</td>--}}
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -215,7 +211,7 @@
                             <div class="view_modal no-print" >
 
                             </div>
-                        {{-- </div> --}} 
+                        {{-- </div> --}}
                     </div>
                 </div>
             </div>
@@ -223,7 +219,7 @@
         </div>
         <!-- End row -->
     </div>
-    <section class="invoice print_section print-only" id="receipt_section"> </section> 
+    <section class="invoice print_section print-only" id="receipt_section"> </section>
 
     <!-- End Contentbar -->
 @endsection

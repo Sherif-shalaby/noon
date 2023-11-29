@@ -213,7 +213,7 @@ class Create extends Component
             'sell_lines',
         ));
     }
-    
+
     // public function sell_trans()
     // {
     //     $customers_rt = Customer::orderBy('created_at', 'desc')->pluck('name','id');
@@ -314,8 +314,10 @@ class Create extends Component
                 $sell_line->product_discount_category = !empty($item['discount']) ? $item['discount'] : 0;
                 $sell_line->quantity = $item['quantity'];
                 $sell_line->extra_quantity = (float) $item['extra_quantity'];
-                $sell_line->sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
-                $sell_line->dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
+                $sell_line->stock_sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
+                $sell_line->stock_dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
+                $sell_line->sell_price = !empty($item['price']) ? $item['price'] : null;
+                $sell_line->dollar_sell_price = !empty($item['dollar_price']) ? $item['dollar_price'] : null;
                 $sell_line->purchase_price = !empty($item['current_stock']['purchase_price']) ? $item['current_stock']['purchase_price'] : null;
                 $sell_line->dollar_purchase_price = !empty($item['current_stock']['dollar_purchase_price']) ? $item['current_stock']['dollar_purchase_price'] : null;
                 $sell_line->exchange_rate = $item['exchange_rate'];
@@ -327,7 +329,7 @@ class Create extends Component
                 //                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;
                 //                $sell_line->item_tax = !empty($item['item_tax']) ? $this->num_uf($item['item_tax']) : 0;
                 $sell_line->save();
-                $keep_sell_lines[] = $sell_line->id;
+//                $keep_sell_lines[] = $sell_line->id;
 
                 $stock_id = $item['current_stock']['id'];
 

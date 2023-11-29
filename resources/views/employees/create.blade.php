@@ -307,17 +307,7 @@
 
 @push('javascripts')
     <script>
-        $(document).on("change","#branch_id",function () {
-            $.ajax({
-                type: "get",
-                url: "/get_branch_stores/"+$(this).val(),
-                dataType: "html",
-                success: function (response) {
-                    console.log(response)
-                    $("#store_id").empty().append(response).change();
-                }
-            });
-        });
+
         $(document ).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');

@@ -53,7 +53,9 @@
                                 @else
                                     <td>{{number_format($stock->final_total,2)}}</td>
                                 @endif
-                                <td>{{$this->calculatePaidAmount($stock->id)}}</td>
+                                <td>
+                                    {{$this->calculatePaidAmount($stock->id)}}
+                                </td>
                                 <td>{{$this->calculatePendingAmount($stock->id)}}</td>
                                 <td>{{$stock->due_date ?? ''}}</td>
                                 <td>{{$stock->notes ?? ''}}</td>

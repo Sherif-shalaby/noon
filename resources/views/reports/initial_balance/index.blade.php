@@ -1,0 +1,143 @@
+@extends('layouts.app')
+@section('title', __('lang.initial_balance'))
+@section('breadcrumbbar')
+    <div class="breadcrumbbar">
+        <div class="row align-items-center">
+            <div class="col-md-8 col-lg-8">
+                <h4 class="page-title">@lang('lang.initial_balance')</h4>
+                <div class="breadcrumb-list">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
+                        <li class="breadcrumb-item"><a href="{{route('initial-balance.create')}}">@lang('lang.reports')</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.initial_balance')</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+{{--                <div class="widgetbar">--}}
+{{--                    <a type="button" class="btn btn-primary" href="{{route('initial-balance.create')}}">@lang('lang.add_initial_balance')</a>--}}
+{{--                </div>--}}
+            </div>
+        </div>
+    </div>
+@endsection
+@section('content')
+    <section class="">
+        <div class="col-md-22">
+            <div class="card mt-3">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="print-title">@lang('lang.initial_balance')</h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="container-fluid">
+                            @include('reports.initial_balance.filters')
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="datatable-buttons" class="table dataTable">
+                            <thead>
+                            <tr>
+                                <th>@lang('lang.date_and_time')</th>
+                                <th>@lang('lang.product')</th>
+                                <th>@lang('lang.supplier')</th>
+                                <th>@lang('lang.created_by')</th>
+                                <th class="notexport">@lang('lang.action')</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($stocks as $index => $stock)
+                                <tr>
+                                    <td>{{$stock->created_at }}</td>
+                                    <td>
+                                        {{$stock->add_stock_lines->first()->product->name ?? '' }}
+                                    </td>
+                                    <td>{{$stock->supplier->name ?? ''}}</td>
+                                    <td>{{$stock->created_by_relationship->name}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                            @lang('lang.action')
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                            <li>
+                                                <a href="{{route('initial-balance.show', $stock->id)}}"
+                                                   class="btn"><i
+                                                        class="fa fa-eye"></i>
+                                                    @lang('lang.view') </a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a href="{{route('initial-balance.edit', $stock->id)}}"
+                                                   class="btn"><i
+                                                        class="fa fa-edit"></i>
+                                                    @lang('lang.edit') </a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li>
+                                                <a data-href="{{route('initial-balance.destroy', $stock->id)}}"
+                                                   data-check_password="{{route('check_password', Auth::user()->id)}}"
+                                                   class="btn text-red delete_item" data-deletetype="1"><i class="fa fa-trash"></i>
+                                                    @lang('lang.delete')</a>
+                                            </li>
+                                            @if ( !empty($stock->payment_status) && $stock->payment_status != 'paid')
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a data-href="{{route('stocks.addPayment', $stock->id)}}" data-container=".view_modal"
+                                                       class="btn btn-modal">
+                                                        <i class="fa fa-money"></i>
+                                                        @lang('lang.pay')
+                                                    </a>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- add Payment Modal -->
+        {{--    @include('add-stock.partials.add-payment')--}}
+
+    </section>
+    <div class="view_modal no-print" ></div>
+    @push('javascripts')
+        <script src="{{ asset('js/product/product.js') }}"></script>
+        <script>
+            window.addEventListener('openAddPaymentModal', event => {
+                $("#addPayment").modal('show');
+            })
+
+            window.addEventListener('closeAddPaymentModal', event => {
+                $("#addPayment").modal('hide');
+            })
+
+            $(document).ready(function() {
+                $('select').on('change', function(e) {
+                    var name = $(this).data('name');
+                    var index = $(this).data('index');
+                    var select2 = $(this); // Save a reference to $(this)
+                    Livewire.emit('listenerReferenceHere',{
+                        var1 :name,
+                        var2 :select2.select2("val") ,
+                        var3:index
+                    });
+
+                });
+            });
+        </script>
+    @endpush
+
+@endsection
+
