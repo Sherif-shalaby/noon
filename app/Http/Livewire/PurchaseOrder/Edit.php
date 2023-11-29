@@ -4,6 +4,7 @@ namespace App\Http\Livewire\PurchaseOrder;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Brand;
 use App\Models\Store;
 use App\Models\System;
 use App\Models\JobType;
@@ -18,16 +19,14 @@ use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\MoneySafe;
 use App\Models\Variation;
-use App\Models\GeneralTax;
-use App\Utils\ProductUtil;
 use App\Models\AddStockLine;
-use App\Models\Brand;
 use App\Models\CashRegister;
+use App\Models\CustomerType;
+use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use Livewire\WithPagination;
 use App\Models\StockTransaction;
-use App\Models\CustomerOfferPrice;
-use App\Models\CustomerPriceOffer;
+use App\Models\PurchaseOrderLine;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionSellLine;
@@ -37,230 +36,102 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\CashRegisterTransaction;
-use App\Models\PurchaseOrderLine;
 use App\Models\StockTransactionPayment;
 use App\Models\PurchaseOrderTransaction;
-use App\Models\TransactionCustomerOfferPrice;
+use App\Models\PaymentTransactionSellLine;
 use Illuminate\Contracts\Foundation\Application;
 
-class Create extends Component
+class Edit extends Component
 {
     use WithPagination;
 
     public $divide_costs , $other_expenses = 0, $other_payments = 0 , $block_for_days , $tax_method , $validity_days , $store_id,$block_qty , $suppliers,$supplier_id ,$stores, $status, $order_date, $purchase_type,
-        $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $po_no ,$exchange_rate, $amount, $method,
-        $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
-        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
-        $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
-        $allproducts = [] , $brand_id = 1, $brands = [] , $search_by_product_symbol , $product_id;
+    $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier,$supplier_id2, $po_no ,$exchange_rate, $amount, $method,
+    $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
+    $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
+    $files, $upload_documents , $details , $dollar_total_cost ,$total_subtotal , $productUtil , $discount_type , $discount_value , $total_cost , $dollar_total_cost_var=[] , $total_cost_var=[] ,
+    $allproducts = [] ,$dollar_final_total, $discount = 0.00, $variations , $brand_id = 1, $brands = [] , $total , $search_by_product_symbol , $product_id , $purchase_transaction_id ,
+    $data = [], $payments = [], $invoice_lang, $store_pos_id,
+    $anotherPayment = false, $sale_note, $payment_note, $staff_note, $payment_types,
+    $total_dollar, $add_customer = [], $customers = [], $discount_dollar, $store_pos, $deliveryman_id = null, $delivery_cost,
+    // "الباقي دولار" , "الباقي دينار"
+    $dollar_remaining = 0, $dinar_remaining = 0,$purchase_transaction,$reprsenative_sell_car = false,
+    $final_total, $dollar_amount = 0, $redirectToHome = false,
+    $draft_transactions, $show_modal = false, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter, $dollar_highest_price, $dollar_lowest_price;
 
-    protected $rules =
-    [
-        'store_id' => 'required',
-        'supplier_id' => 'required',
-        'supplier' => 'required',
-        'status' => 'required',
-        'paying_currency' => 'required',
-        'purchase_type' => 'required',
-        'payment_status' => 'required',
-        'method' => 'required',
-        'amount' => 'required',
-        'transaction_currency' => 'required'
+    protected $rules = [
+//         'store_id' => 'required',
+//         'supplier' => 'required',
+// //    'status' => 'required',
+//         // 'paying_currency' => 'required',
+//         'purchase_type' => 'required',
+//         'payment_status' => 'required',
+//         'method' => 'required',
+//         // 'amount' => 'required',
+//         'transaction_currency' => 'required',
+//         'items.*.variation_id' => 'required',
+//         'source_type' => 'required',
+//         'source_id' => 'required'
     ];
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    protected $listeners = ['listenerReferenceHere', 'create_purchase_order'];
-
-    public function listenerReferenceHere($data)
-    {
-        // ++++++++++++ department filter ++++++++++++
-        if (isset($data['var1']) && $data['var1'] == "department_id") {
-            $this->updatedDepartmentId($data['var2'], 'department_id');
-        }
-        // ++++++++++++ brand filter ++++++++++++
-        if (isset($data['var1']) && $data['var1'] == "brand_id") {
-            $this->updatedDepartmentId($data['var2'], 'brand_id');
-        }
-        // ++++++++++++ supplier filter ++++++++++++
-        if (isset($data['var1']) && $data['var1'] == "supplier_id") {
-            $this->updatedDepartmentId($data['var2'], 'supplier_id');
-        }
-    }
-    // ++++++++++++++++++ when click on filters , execute updatedDepartmentId() ++++++++++++++++++
-    public function updatedDepartmentId($value, $name)
-    {
-        // Handle department and brand filters
-        $query = Product::query();
-        // Initialize flag variables for filters
-        $hasSupplierFilter = false;
-        $valueSupplierFilter='';
-        $hasBrandFilter = false;
-        $valueBrandFilter='';
-        $hasDepartmentFilter = false;
-        $valueDepartmentFilter='';
-        // Apply filters based on the given name
-        if ($name == 'department_id') {
-            $query->where(function ($query) use ($value)
-            {
-                $query->where('category_id', $value)
-                    ->orWhere('subcategory_id1', $value)
-                    ->orWhere('subcategory_id2', $value)
-                    ->orWhere('subcategory_id3', $value);
-            });
-            $hasDepartmentFilter = true;
-            $hasBrandFilter = false;
-            $hasSupplierFilter = false;
-            $valueDepartmentFilter = $value;
-        }
-        elseif ($name == 'brand_id'){
-            $query->where('brand_id', $value);
-            $hasBrandFilter = true;
-            $hasDepartmentFilter = false;
-            $hasSupplierFilter = false;
-            $valueBrandFilter=$value;
-        }
-        elseif ($name == 'supplier_id')
-        {
-            // Get the stock transaction IDs associated with the supplier ID
-            $stockTransactionIds = StockTransaction::where('supplier_id', $value)->pluck('id');
-            // Get all product IDs associated with the stock transaction IDs
-            $productIds = AddStockLine::whereIn('stock_transaction_id', $stockTransactionIds)->pluck('product_id');
-            // Apply the filter to the products based on the retrieved product IDs
-            $query->whereIn('id', $productIds);
-            $hasSupplierFilter = true;
-            $hasDepartmentFilter = false;
-            $hasBrandFilter = false;
-            $valueSupplierFilter=$value;
-        }
-        // If supplier, brand, and department filters are present, combine them with AND condition
-        elseif ($hasDepartmentFilter && $hasBrandFilter)
-        {
-            $query->where(function ($query) use ($valueDepartmentFilter, $valueBrandFilter) {
-                $query->where('category_id', $valueDepartmentFilter)
-                    ->orWhere('subcategory_id1', $valueDepartmentFilter)
-                    ->orWhere('subcategory_id2', $valueDepartmentFilter)
-                    ->orWhere('subcategory_id3', $valueDepartmentFilter)
-                    ->where('brand_id', $valueBrandFilter);
-            });
-        }
-        elseif ($hasDepartmentFilter && $hasBrandFilter && $hasSupplierFilter)
-        {
-            // dd($hasDepartmentFilter);
-            $query->where(function ($query) use ($valueDepartmentFilter, $valueBrandFilter) {
-                $query->where('category_id', $valueDepartmentFilter)
-                    ->orWhere('subcategory_id1', $valueDepartmentFilter)
-                    ->orWhere('subcategory_id2', $valueDepartmentFilter)
-                    ->orWhere('subcategory_id3', $valueDepartmentFilter)
-                    ->where('brand_id', $valueBrandFilter);
-            });
-        }
-        // Get the filtered products
-        $this->allproducts = $query->get();
-        // dd($this->allproducts);
-    }
 
     // Get "suppliers" and "stores" and "product number"
-    public function mount()
+    public function mount($id)
     {
-        // +++++++++ get "all suppliers" +++++++++
-        $this->loadSuppliers();
-        // +++++++++ get "all stores" +++++++++
-        $this->loadStores();
-
-        // +++++++++ get "product number" +++++++++
-        $this->loadPoNo();
-
-        if (!empty($this->store_id)) {
+        $recent_purchase_transaction = PurchaseOrderTransaction::with('transaction_purchase_order_lines')->find($id);
+        $this->purchase_transaction = $recent_purchase_transaction;
+        // dd($recent_purchase_transaction);
+        $this->purchase_transaction_id = $id;
+        $this->po_no = $recent_purchase_transaction->po_no;
+        $this->store_id = $recent_purchase_transaction->store_id ?? '';
+        $this->supplier = $recent_purchase_transaction->supplier_id ?? '';
+        $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
+        // عرض المنتجات اسفل الفلاتر
+        if (!empty($this->store_id))
+        {
             $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
             $this->allproducts = Product::whereIn('id', $products_store)->get();
         } else {
             $this->allproducts = Product::get();
         }
         $this->department_id = null;
-
-    }
-    // +++++++++ Get "suppliers" +++++++++
-    public function loadSuppliers()
-    {
-        $this->suppliers = Supplier::all();
-    }
-    // +++++++++ Get "stores" +++++++++
-    public function loadStores()
-    {
-        $this->stores = Store::all();
-    }
-    // +++++++++ Get "loadPoNo" +++++++++
-    public function loadPoNo()
-    {
-        $this->po_no = $this->getNumberByType('purchase_order');
-    }
-    /* ++++++++++++++++ getNumberByType() : get "product number" ++++++++++++++++ */
-    public function getNumberByType($type, $store_id = null, $i = 1)
-    {
-        $number = '';
-        $store_string = '';
-        if (!empty($store_id)) {
-            $store_string = $this->getStoreNameFirstLetters($store_id);
+        // dd($recent_purchase_transaction);
+        foreach ($recent_purchase_transaction->transaction_purchase_order_lines as  $line){
+            $this->addLineProduct($line);
         }
-        if ($type == 'purchase_order')
-        {
-            $po_count = PurchaseOrderTransaction::where('type', $type)->count() + $i;
-            $number = 'PO' . $store_string . $po_count;
-        }
-        return $number;
     }
-    // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
+    protected $listeners = ['listenerReferenceHere'];
+    // +++++++++++++++++++ listenerReferenceHere +++++++++++++++++++
+    public function listenerReferenceHere($data)
+    {
+        if(isset($data['var1'])) {
+            $this->{$data['var1']} = $data['var2'];
+        }
+        // +++++++++++++ 26-11-2023 المشكلة هنا +++++++++++++
+        if($data['var1'] == 'supplier_id'){
+            $this->exchange_rate = $this->changeExchangeRate();
+        }
+    }
+    // +++++++++++++++++++ render +++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
-        // Fetch and set the initial value of $current_stock
-        $this->updateCurrentStock();
+        // $status_array = $this->getPurchaseOrderStatusArray();
+        $this->stores = Store::getDropdown();
+        $this->suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
 
-        $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
-
-        $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
         $payment_types = $payment_type_array;
         $product_id = request()->get('product_id');
-        $suppliers  = Supplier::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-
-        $stock_lines = AddStockLine::get();
-
-        $customers   = Customer::get();
-        $stores   = Store::get();
-
-        $taxes      = GeneralTax::get();
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-        $stores = Store::getDropdown();
         $departments = Category::get();
+        $customer_types = CustomerType::latest()->get();
         $search_result = '';
-        $products = '';
-        // $branch_id = Employee::select('branch_id')->where('id', auth()->user()->id)->latest()->first();
-        $brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
-        $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
-        // dd($suppliers);
-        // ++++++++++++++++++++++++++++++ start : search_by_product_symbol ++++++++++++++++++++++++++++++
-        $search_result = '';
-        if (!empty($this->search_by_product_symbol)){
-            $search_result = Product::when($this->search_by_product_symbol,function ($query){
-                return $query->where('product_symbol','like','%'.$this->search_by_product_symbol.'%');
-            });
-            $search_result = $search_result->paginate();
-            if(count($search_result) === 1){
-                $this->add_product($search_result->first()->id);
-                $search_result = '';
-                $this->search_by_product_symbol = '';
-            }
-
-        }
-        // ++++++++++++ end : search_by_product_symbol ++++++++++++
-        // ++++++++++++ start : search_by_product_name ++++++++++++
-        if(!empty($this->searchProduct))
-        {
+        if(!empty($this->searchProduct)){
             $search_result = Product::when($this->searchProduct,function ($query){
                 return $query->where('name','like','%'.$this->searchProduct.'%')
-                             ->orWhere('sku','like','%'.$this->searchProduct.'%');
+                    ->orWhere('sku','like','%'.$this->searchProduct.'%');
             });
             $search_result = $search_result->paginate();
             if(count($search_result) == 0){
@@ -277,148 +148,262 @@ class Create extends Component
                 $this->searchProduct = '';
             }
         }
-        // ++++++++++++ end : search_by_product_name ++++++++++++
-        if ($this->source_type == 'pos')
-        {
+        if ($this->source_type == 'pos') {
             $users = StorePos::pluck('name', 'id');
-        }
-        elseif ($this->source_type == 'store')
-        {
+        } elseif ($this->source_type == 'store') {
             $users = Store::pluck('name', 'id');
-        }
-        elseif ($this->source_type == 'safe')
-        {
+        } elseif ($this->source_type == 'safe') {
             $users = MoneySafe::pluck('name', 'id');
-        }
-        else
-        {
+        } else {
             $users = User::Notview()->pluck('name', 'id');
         }
         if(!empty($this->department_id)){
-            // return($this->department_id);
-            $products = Product::where('category_id' ,1)->get();
+            $products = Product::where('category_id' , $this->department_id)->get();
         }
         else{
             $products = Product::paginate();
         }
-
+        // Get "exchange_rate" value
         $this->changeExchangeRate();
+
         $this->dispatchBrowserEvent('initialize-select2');
-
-
-        return view('livewire.purchase-order.create',
-            compact('status_array',
-            'payment_status_array',
-            'payment_type_array',
-            'stores',
-            'stock_lines' ,
-            'product_id',
-            'payment_types',
-            'payment_status_array',
-            'suppliers',
-            'customers',
-            'taxes',
-            'selected_currencies',
-            'preparers' ,
-            'products',
-            'departments',
-            'search_result',
-            'users',
-            'brands',
-            'suppliers'
-        ));
+        return view('livewire.purchase-order.edit',
+            compact(
+                // 'stores',
+                // 'suppliers',
+                // 'status_array',
+                'payment_status_array',
+                'payment_type_array',
+                'product_id',
+                // 'payment_types',
+                // 'payment_status_array',
+                'selected_currencies',
+                'preparers' ,
+                'products',
+                'customer_types',
+                'departments',
+                'search_result',
+                'users'));
     }
-
-    public function updated($propertyName)
+    // +++++++++++++++++++ addLineProduct : اللي عايز اعدله purchase_order_transaction بتاعت ال purchase_lines بتجيب ال  +++++++++++++++++++++++
+    public function addLineProduct($line)
     {
-        $this->validateOnly($propertyName);
-    }
-    // ++++++++++++++++++++++++++++++++++ store() method ++++++++++++++++++++++++++++++++++
-
-    public function store(): Redirector|Application|RedirectResponse
-    {
-        $this->validate([
-            'store_id' => 'required',
-            'supplier_id' => 'required',
-        ]);
-        try
+        // dd($line);
+        $product = Product::with('stock_lines')->where('id', $line->product_id)->first();
+        if( isset($product) )
         {
-            // ++++++++++++++++++++++++++++ TransactionCustomerOfferPrice table ++++++++++++++++++++++++++++
-            // Add stock transaction
-            $purchaseOrderTransaction = new PurchaseOrderTransaction();
-            $purchaseOrderTransaction->store_id = $this->store_id;
-            $purchaseOrderTransaction->supplier_id = $this->supplier_id;
-            $purchaseOrderTransaction->po_no = $this->po_no;
-            $purchaseOrderTransaction->details = $this->details;
-            $purchaseOrderTransaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
-            $purchaseOrderTransaction->created_by = auth()->user()->id;
-            // grand_total
-            $purchaseOrderTransaction->grand_total = $this->num_uf($this->sum_total_cost());
-            // final_total
-            $purchaseOrderTransaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
-            // deleted_by
-            // $purchaseOrderTransaction->deleted_by = null;
-            // created_at
-            $purchaseOrderTransaction->created_at = now();
-            // updated_at
-            $purchaseOrderTransaction->updated_at = null;
-            $purchaseOrderTransaction->order_date = now();
-            // Save the purchase order transaction to the database
-            $purchaseOrderTransaction->save();
+            $quantity_available = $this->quantityAvailable($product);
+            // dd($quantity_available);
+            $current_stock = $this->getCurrentStock($product);
+            $product_stores = $this->getProductStores($product);
+        }
+        $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
 
-            DB::beginTransaction();
-            $purchase_orders = [];
-            // ++++++++++++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++++++++++++
-            foreach ($this->items as $index => $item)
-            {
-                if (!empty($item['product']['id']) && !empty($item['quantity']))
-                {
-                    // dd($item);
-                    // Create a new array for each item
-                    $purchase_order = [];
 
-                    // Set values for the new array
-                    $purchase_order['purchase_order_transaction_id'] = $purchaseOrderTransaction->id;
-                    $purchase_order['product_id'] = $item['product']['id'];
-                    $purchase_order['quantity'] = $item['quantity'];
-                    // $purchase_order['current_stock'] = $item['current_stock'];
-                    $purchase_order['purchase_price'] = $item['purchasing_price'];
-                    $purchase_order['purchase_price_dollar'] = $item['dollar_purchasing_price'];
-                    // sub_total
-                    $purchase_order['sub_total'] = !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : 0 ;
-                    // created_by
-                    $purchase_order['created_by'] = Auth::user()->id;
-                    // updated_by
-                    $purchase_order['updated_by'] = null;
-                    // deleted_by
-                    $purchase_order['deleted_by'] = null;
-                    // created_at
-                    $purchase_order['created_at'] = now();
-                    // updated_at
-                    $purchase_order['updated_at'] = null;
-                    // deleted_at
-                    // $purchase_order['deleted_at'] = null;
+        $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price,2) : 0;
+        $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price,2) : 0;
+        $this->items[] = [
+            'purchase_order_line' => $line->id,
+            'product' => $product,
+            'quantity' => number_format($line->quantity,3),
+            'extra_quantity' => $line->extra_quantity,
+            'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,3)) : 0,
+            // 'category_id' => $product->category?->id,
+            'category_id' => isset($product->category) ? $product->category->id : null,
+            // 'department_name' => $product->category?->name,
+            'department_name' => isset($product->category) ? $product->category->name : null,
+            // 'client_id' => $product->customer?->id,
+            'client_id' => isset($product->customer) ? $product->category->id : null,
+            'exchange_rate' => $line->exchange_rate,
+            'quantity_available' => isset($quantity_available) ? $quantity_available : null,
+            'sub_total' => $line->sub_total,
+            'dollar_sub_total' => !empty($product->unit) ? $product->unit->base_unit_multiplier * $line->quantity  * $line->dollar_sell_price : $line->quantity * $this->num_uf($dollar_price),
+            'current_stock' => isset($current_stock) ? $current_stock : null,
+            'dollar_purchasing_price' => isset($line->purchase_price_dollar) ? $line->purchase_price_dollar : 0 ,
+            // get "purchasing_price" from "add_stock_line" table
+            'purchasing_price' => isset($line->purchase_price) ? $line->purchase_price : 0 ,
+            // 'discount_categories' =>  $current_stock->prices()->get(),
+            'discount' => $line->product_discount_category,
+            'discount_price' => number_format($line->product_discount_amount,3),
+            'discount_type' =>  $line->product_discount_type,
+            'discount_category' =>  null,
+            'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,2) : 0  ,
+            'unit_name' =>!empty($product->unit) ? $product->unit->name : '',
+            'base_unit_multiplier' =>!empty($product->unit) ? $product->unit->base_unit_multiplier : 1,
+            'total_quantity' => !empty($product->unit) ?  number_format($line->quantity,3) * $product->unit->base_unit_multiplier : number_format($line->quantity,3),
+            'stores' => isset($product_stores) ? $product_stores : null,
+            'sell_line_id' => $line->id,
+        ];
 
-                    // Add the purchase_order for this item to the array
-                    $purchase_orders[] = $purchase_order;
-                }
+        // $this->computeForAll();
+    }
+    // +++++++++++++++++++ quantityAvailable +++++++++++++++++++++++
+    // public function quantityAvailable($product)
+    // {
+    //     $quantity_available = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)
+    //         ->first()->quantity_available ?? 0;
+    //     return $quantity_available;
+    // }
+    public function quantityAvailable($product)
+    {
+        if(isset($product->id))
+        {
+            // Query the database to get the quantity_available for the specified product and store
+            $productStore = ProductStore::where('product_id', $product->id)
+                ->where('store_id', $this->store_id)
+                ->first();
+                // Check if a record was found
+            if ($productStore) {
+                // Access the quantity_available attribute
+                return $productStore->quantity_available ?? 0;
             }
 
-            // Create multiple PurchaseOrderLine records in the database
-            PurchaseOrderLine::insert($purchase_orders);
+            // No record found, return a default value (in this case, 0)
+            return 0;
+        }
 
+    }
+
+    // +++++++++++++++++++ getCurrentStock : بيجيب قيمة "المخزون الحالي" في جدول المنتجات +++++++++++++++++++++++
+    public function getCurrentStock($product)
+    {
+        if(isset( $product->stock_lines))
+        {
+            $product_stocklines = $product->stock_lines;
+            // dd($product_stocklines);
+            $quantity_available = 0;
+            foreach ($product_stocklines as $stockline)
+            {
+                $quantity_available +=  $stockline->quantity - $stockline->quantity_sold  + $stockline->quantity_returned;
+                // dd($quantity_available);
+            }
+            if ($quantity_available > 0)
+            {
+                // dd($stockline);
+                // return $stockline;
+                return $quantity_available;
+            }
+            return null;
+        }
+    }
+    // ++++++++++++++++++++++++++++++++++ getProductStores() ++++++++++++++++++++++++++++++++++
+    public function getProductStores($product)
+    {
+        // dd($product);
+        // if(isset($product->id))
+        // {
+            $stores = ProductStore::where('product_id', $product->id)->get();
+            return $stores;
+        // }
+    }
+    // ++++++++++++++++++++++++++++++++++ changeDollarTotal() method ++++++++++++++++++++++++++++++++++
+    // calculate dollar_final_total : "النهائي دولار"
+    public function changeDollarTotal()
+    {
+        //  "النهائي دولار"
+        $this->dollar_final_total = $this->total_dollar - $this->discount_dollar;
+        // Task : dollar_remaining : الباقي دولار
+        $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
+    }
+    public function updated($propertyName)
+    {
+        // $this->validateOnly($propertyName);
+    }
+    // ++++++++++++++++++++++++++++ submit() ++++++++++++++++++++++++++++
+    public function store() : Redirector|Application|RedirectResponse
+    {
+        // $this->validate();
+        try
+        {
+            // +++++++++++++++++++ purchaseOrderTransaction table +++++++++++++++++++
+            $purchaseOrderTransaction_data =
+            [
+                // store_id
+                'store_id' => $this->store_id,
+                // supplier_id
+                'supplier_id' => $this->supplier_id,
+                // po_no
+                'po_no' => $this->po_no,
+                // details
+                'details' => $this->details,
+                // transaction_date
+                'transaction_date' => !empty($this->transaction_date) ? $this->transaction_date : Carbon::now(),
+                // created_by
+                'created_by' => auth()->user()->id,
+                // updated_by
+                'updated_by' => auth()->user()->id,
+                // deleted_by
+                'deleted_by' => null,
+                // grand_total
+                'grand_total' => $this->num_uf($this->sum_total_cost()),
+                // final_total
+                'final_total' => isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost()),
+                // created_at
+                'created_at' => null,
+                // updated_at
+                'updated_at' => Carbon::now(),
+                // transaction_date
+                'transaction_date' => Carbon::now(),
+                // order_date
+                'order_date' => Carbon::now()
+            ];
+            DB::beginTransaction();
+            $purchaseOrderTransaction = $this->purchase_transaction;
+            // Save the purchase order transaction to the database
+            $purchaseOrderTransaction->update($purchaseOrderTransaction_data);
+            // +++++++++++++++++++ purchase_order table +++++++++++++++++++
+            foreach ($this->items as $index => $item)
+            {
+                // dd( $item );
+                $purchase_order_line_var = PurchaseOrderLine::where('purchase_order_transaction_id',$purchaseOrderTransaction->id)->pluck('id');
+                $purchase_order_line = PurchaseOrderLine::find($purchase_order_line_var);
+                $purchase_order_data =
+                [
+                    'product_id' => $item['product']['id'],
+                    'purchase_order_transaction_id' => $purchaseOrderTransaction->id,
+                    'quantity' => $item['quantity'],
+                    'current_stock' => $item['current_stock'],
+                    'purchase_price' => $item['purchasing_price'],
+                    'purchase_price_dollar' => $item['dollar_purchasing_price'],
+                    // sub_total
+                    'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : 0 ,
+                    // created_by
+                    'created_by' => Auth::user()->id ,
+                    // updated_by
+                    'updated_by' =>  Auth::user()->id ,
+                    // deleted_by
+                    'deleted_by' => null ,
+                    // created_at
+                    'created_at' => null ,
+                    // updated_at
+                    'updated_at' => now() ,
+                    // deleted_at
+                    'deleted_at' => null
+                ];
+
+                if(!empty($item['purchase_order_line']))
+                {
+                    $purchase_order_line = PurchaseOrderLine::find($item['purchase_order_line']);
+                    $purchase_order_line->update($purchase_order_data);
+                }
+                else
+                {
+                    $purchase_order_line = PurchaseOrderLine::create($purchase_order_data);
+                }
+            }
             DB::commit();
 
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'lang.success']);
         }
         catch (\Exception $e)
         {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs']);
             dd($e);
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs']);
         }
-        return redirect()->route('purchase_order.create');
+        return redirect()->route('purchase_order.index');
     }
 
+    // ++++++++++++++++++++++++++++++++++ add_product() method ++++++++++++++++++++++++++++++++++
     public function add_product($id, $add_via = null)
     {
         $this->product_id = $id;
@@ -459,10 +444,6 @@ class Create extends Component
     // +++++++++++++++++++++++ addNewProduct() +++++++++++++++++++++++
     public function addNewProduct($variations,$product,$show_product_data)
     {
-        // Task_9_10_2023 : dollar_purchasing_price
-        // $dollar_sell = AddStockLine::select('dollar_sell_price')->where('product_id', $product['id'])->latest()->first();
-        // Task_9_10_2023 : dinar_selling_price
-        // $dinar_sell = AddStockLine::select('sell_price')->where('product_id', $product['id'])->latest()->first();
         // Task_30_10_2023 : dollar_purchase_price
         $dollar_purchase = AddStockLine::select('dollar_purchase_price')->where('product_id', $product['id'])->latest()->first();
         // Task_30_10_2023 : dinar_purchase_price
@@ -524,6 +505,7 @@ class Create extends Component
                     ->first();
                 $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
                 $this->items[$key]['current_stock'] = $current_stock;
+
             }
         } else {
             // Handle the case where store_id is empty, set $current_stock to null or a default value
@@ -536,8 +518,7 @@ class Create extends Component
         $this->updateCurrentStock();
     }
 
-    public function getVariationData($index)
-    {
+    public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
        $this->items[$index]['unit'] = $variant->unit->name;
        $this->items[$index]['base_unit_multiplier'] = $variant->equal;
@@ -554,6 +535,7 @@ class Create extends Component
         }
         if(!empty($this->items[$index]['dollar_purchase_price'])){
             if($this->items[$index]['fill_type']=='fixed'){
+                // dd( $this->items[$index]['dollar_purchasing_price']);
                 $this->items[$index]['dollar_purchasing_price']=($this->items[$index]['dollar_purchase_price']+(float)$this->items[$index]['fill_quantity']);
             }
         else{
@@ -717,7 +699,7 @@ class Create extends Component
     {
         $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
     }
-
+    // +++++++++++++++++ total_quantity() +++++++++++++++++
     public function total_quantity(){
         $totalQuantity = 0;
         if(!empty($this->items)){
@@ -727,7 +709,7 @@ class Create extends Component
         }
        return $totalQuantity;
     }
-    // +++++++++++ final_total() : get the final total cost in dollars +++++++++++++++++
+    // +++++++++++++++++ final_total() : get the final total cost in dollars +++++++++++++++++
     public function final_total()
     {
         if(isset($this->discount_amount)){
@@ -795,13 +777,13 @@ class Create extends Component
                 'store_pos_id' => !empty($store_pos) ? $store_pos->id : null
             ]);
         }
-
         return $register;
     }
-
+    // +++++++++++++++++++++ changeExchangeRate() : Get "exchange_rate" value +++++++++++++++++++++
     public function changeExchangeRate()
     {
-        if (isset($this->supplier)){
+        if (isset($this->supplier))
+        {
             $supplier = Supplier::find($this->supplier);
             if(isset($supplier->exchange_rate)){
                 $this->exchange_rate =  str_replace(',' ,'',$supplier->exchange_rate);
@@ -814,33 +796,33 @@ class Create extends Component
         }
     }
 
-    public function ShowDollarCol()
-    {
-        $this->showColumn= !$this->showColumn;
-    }
+    // public function ShowDollarCol()
+    // {
+    //     $this->showColumn= !$this->showColumn;
+    // }
 
-    public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
-    {
-        $qty_difference = $new_quantity - $old_quantity;
+    // public function updateProductQuantityStore($product_id, $store_id, $new_quantity, $old_quantity = 0)
+    // {
+    //     $qty_difference = $new_quantity - $old_quantity;
 
-        if ($qty_difference != 0) {
-            $product_store = ProductStore::where('product_id', $product_id)
-                ->where('store_id', $store_id)
-                ->first();
+    //     if ($qty_difference != 0) {
+    //         $product_store = ProductStore::where('product_id', $product_id)
+    //             ->where('store_id', $store_id)
+    //             ->first();
 
-            if (empty($product_store)) {
-                $product_store = new ProductStore();
-                $product_store->product_id = $product_id;
-                $product_store->store_id = $store_id;
-                $product_store->quantity_available = 0;
-            }
+    //         if (empty($product_store)) {
+    //             $product_store = new ProductStore();
+    //             $product_store->product_id = $product_id;
+    //             $product_store->store_id = $store_id;
+    //             $product_store->quantity_available = 0;
+    //         }
 
-            $product_store->quantity_available += $qty_difference;
-            $product_store->save();
-        }
+    //         $product_store->quantity_available += $qty_difference;
+    //         $product_store->save();
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
     public function num_uf($input_number, $currency_details = null)
     {
         $thousand_separator  = ',';
@@ -849,6 +831,4 @@ class Create extends Component
         $num = str_replace($decimal_separator, '.', $num);
         return (float)$num;
     }
-
-
 }

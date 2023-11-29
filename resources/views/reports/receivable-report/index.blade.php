@@ -13,42 +13,22 @@
                     </ol>
                 </div>
             </div>
-            {{-- <div class="col-md-4 col-lg-4">
-                <div class="widgetbar">
-                    <a href="{{route('products.create')}}" class="btn btn-primary">
-                        @lang('lang.add_products')
-                      </a>
-                </div>
-            </div> --}}
-   </div>
+        </div>
     </div>
 @endsection
 @section('content')
-    {{-- <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
-            <div class="card m-b-30 p-2">
-
-
-            </div>
-        </div>
-    </div> --}}
-       <!-- Start Contentbar -->
-       <div class="contentbar">
+    <!-- Start Contentbar -->
+    <div class="contentbar">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
             <div class="col-lg-12">
                 <div class="card m-b-30">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('lang.products')</h5>
-                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    {{-- @include('products.filters')  --}}
+                                    @include('reports.receivable-report.filters')
                                 </div>
                             </div>
                         </div>
@@ -62,7 +42,7 @@
                                         <th>عميل</th>
                                         <th>حالة المبيعات</th>
                                         <th>حالة السداد</th>
-                                        <th>العملة المٌستلمة</th>
+                                        {{-- <th>العملة المٌستلمة</th> --}}
                                         <th>المبلغ الاجمالي</th>
                                         {{-- <th>@lang('lang.action')</th>  --}}
                                     </tr>
@@ -75,7 +55,7 @@
                                             <td>{{ $transaction_sell_line->customer->name ?? ''}}</td>
                                             <td>{{ $transaction_sell_line->status ?? ''}}</td>
                                             <td>{{ $transaction_sell_line->payment_status ?? ''}}</td>
-                                            <td>{{ $transaction_sell_line->transaction_currency_relationship->symbol ?? ''}}</td>
+                                            {{-- <td>{{ $transaction_sell_line->transaction_currency_relationship->symbol ?? ''}}</td> --}}
                                             <td>{{ $transaction_sell_line->final_total ?? ''}}</td>
                                         </tr>
                                     @endforeach

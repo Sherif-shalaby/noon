@@ -258,14 +258,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################
     Route::view('purchase_order/create', 'purchase_order.create')->name('purchase_order.create');
-    // ########### Purchase Order ###########
+
+    // ########### Purchase Order : index ###########
     Route::resource('purchase_order', PurchaseOrderLineController::class);
-    // ########### softDelete For PurchaseOrderTransaction ###########
+    // ########### Purchase Order : Livewire : edit ###########
+    Route::view('purchase_order/{id}/edit/', [PurchaseOrderLineController::class,'edit'])->name('purchase-order.edit');
+    // ########### Purchase Order : softDelete For PurchaseOrderTransaction ###########
     Route::get('/purchase_order/delete/{id}', [PurchaseOrderLineController::class, 'destroy'])->name('purchase_order.destroy');
-    // ########### show recycle_bin For PurchaseOrderTransaction ###########
+    // ###########  Purchase Order : show recycle_bin For PurchaseOrderTransaction ###########
     Route::get('/soft-deleted-records', [PurchaseOrderLineController::class, 'softDeletedRecords'])->name('purchase_order.show_soft_deleted_records');
-    // ########### restore softDeleteRecords For PurchaseOrderTransaction ###########
+    // ###########  Purchase Order : restore softDeleteRecords For PurchaseOrderTransaction ###########
     Route::get('/purchase_order/restore/{id}', [PurchaseOrderLineController::class, 'restore'])->name('purchase_order.restore');
+    // ###########  Purchase Order : force deleteRecords For PurchaseOrderTransaction ###########
+    Route::get('/purchase_order/forceDelete/{id}', [PurchaseOrderLineController::class, 'forceDelete'])->name('purchase_order.forceDelete');
     // Route::view('purchase-order/{id}/edit/', 'purchase-order.edit')->name('purchase-order.edit');
     // ---- required_products ----
     Route::resource('required-products', RequiredProductController::class);
@@ -328,6 +333,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/add_stock',[ReportController::class,'addStock'])->name('reports.add_stock');
     // Best Seller
     Route::get('reports/best_seller',[ReportController::class,'bestSellerReport'])->name('reports.best_seller');
+    // Daily Sales Report
+    Route::get('reports/daily_sales_report',[ReportController::class,'dailySalesReport'])->name('reports.daily_sales_report');
+    // Daily purchase Report
+    Route::get('reports/daily_purchase_report',[ReportController::class,'dailyPurchaseReport'])->name('reports.daily_purchase_report');
 
 
 });

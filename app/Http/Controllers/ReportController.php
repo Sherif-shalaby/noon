@@ -11,6 +11,7 @@ use App\Utils\TransactionUtil;
 use App\Models\Branch;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Employee;
 use App\Models\Product;
 use App\Models\ProductStore;
 use App\Models\Supplier;
@@ -79,7 +80,7 @@ class ReportController extends Controller
                 $total_addstock_query->where('store_id', $store_id);
             }
             $total_discount_addstock[] = $total_addstock_query->sum('discount_amount');
-        
+
             $total_tax_sell[] = $total_sell_query->sum('total_tax');
             ///
 
@@ -127,7 +128,7 @@ class ReportController extends Controller
         ));
     }
 
- 
+
 
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
@@ -135,9 +136,9 @@ class ReportController extends Controller
         $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
-        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
 
         return view('reports.products.index',compact('products','categories','suppliers','brands',
@@ -249,4 +250,146 @@ class ReportController extends Controller
             'stores',
         ));
     }
+
+    public function  dailySalesReport(){
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        $year = request()->year;
+        $month = request()->month;
+
+        if (empty($year)) {
+            $year = Carbon::now()->year;
+        }
+        if (empty($month)) {
+            $month = Carbon::now()->month;
+        }
+        $start = 1;
+        $number_of_day = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        while ($start <= $number_of_day) {
+            if ($start < 10) {
+                $date = $year . '-' . $month . '-0' . $start;
+            } else {
+                $date = $year . '-' . $month . '-' . $start;
+            }
+            $query = TransactionSellLine::where('type', 'sell')->whereIn('status', ['final', 'canceled'])
+                ->whereDate('transaction_date', $date)
+                ->when(\request()->branch_id != null, function ($query) {
+                    $branchId = \request()->branch_id;
+                    $query->whereHas('transaction_sell_lines.product.product_stores.store.branch', function ($storeQuery) use ($branchId) {
+                        $storeQuery->where('id', $branchId);
+                    });
+                })
+                ->when(\request()->store_id != null, function ($query) {
+                    $query->whereHas('transaction_sell_lines.product.product_stores', function ($query) {
+                        $query->where('store_id',\request()->store_id);
+                    });
+                });
+
+            $sale_data = $query->select(
+                DB::raw('SUM(discount_amount) AS total_discount'),
+                DB::raw('SUM(total_product_discount) AS total_product_discount'),
+                DB::raw('SUM(total_tax) AS total_tax'),
+                DB::raw('SUM(delivery_cost) AS shipping_cost'),
+                DB::raw('SUM(final_total) AS grand_total'),
+                DB::raw('SUM(dollar_final_total) AS dollar_grand_total'),
+                DB::raw('SUM(total_product_surplus) AS total_surplus'),
+            )->first();
+            $total_discount[$start] = $sale_data->total_discount + $sale_data->total_product_discount;
+            $total_surplus[$start] = $sale_data->total_surplus;
+            $order_discount[$start] = $sale_data->order_discount;
+            $total_tax[$start] = $sale_data->total_tax;
+            $order_tax[$start] = $sale_data->order_tax;
+            $shipping_cost[$start] = $sale_data->shipping_cost;
+            $grand_total[$start] = $sale_data->grand_total;
+            $dollar_grand_total[$start] = $sale_data->dollar_grand_total;
+            $start++;
+        }
+        $start_day = date('w', strtotime($year . '-' . $month . '-01')) + 1;
+        $prev_year = date('Y', strtotime('-1 month', strtotime($year . '-' . $month . '-01')));
+        $prev_month = date('m', strtotime('-1 month', strtotime($year . '-' . $month . '-01')));
+        $next_year = date('Y', strtotime('+1 month', strtotime($year . '-' . $month . '-01')));
+        $next_month = date('m', strtotime('+1 month', strtotime($year . '-' . $month . '-01')));
+
+        $stores = Store::getDropdown();
+        $payment_types = $this->common_util->getPaymentTypeArrayForPos();
+        $cashiers = Employee::getDropdownByJobType('Cashier', true, true);
+
+        return view('reports.daily_sell_report.index',compact(
+            'total_discount', 'total_surplus', 'order_discount', 'total_tax',
+            'order_tax', 'shipping_cost', 'grand_total', 'dollar_grand_total', 'start_day', 'year',
+            'month', 'number_of_day', 'prev_year', 'prev_month', 'next_year', 'next_month', 'stores',
+            'payment_types', 'cashiers', 'stores', 'branches'
+        ));
+    }
+
+    public function dailyPurchaseReport(){
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+
+
+        $year = request()->year;
+        $month = request()->month;
+
+        if (empty($year)) {
+            $year = Carbon::now()->year;
+        }
+        if (empty($month)) {
+            $month = Carbon::now()->month;
+        }
+        $start = 1;
+        $number_of_day = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        while ($start <= $number_of_day) {
+            if ($start < 10)
+                $date = $year . '-' . $month . '-0' . $start;
+            else
+                $date = $year . '-' . $month . '-' . $start;
+            $query1 = array(
+                'SUM(discount_amount) AS total_discount',
+//                'SUM(delivery_cost) AS shipping_cost',
+                'SUM(final_total) AS grand_total',
+                'SUM(dollar_final_total) AS dollar_grand_total'
+            );
+            $query = StockTransaction::where('type', 'add_stock')->where('status', 'received')->whereDate('transaction_date', $date)
+                ->when(\request()->branch_id != null, function ($query) {
+                    $branchId = \request()->branch_id;
+                    $query->whereHas('add_stock_lines.product.product_stores.store.branch', function ($storeQuery) use ($branchId) {
+                        $storeQuery->where('id', $branchId);
+                    });
+                })
+                ->when(\request()->store_id != null, function ($query) {
+                    $query->whereHas('add_stock_lines.product.product_stores', function ($query) {
+                        $query->where('store_id',\request()->store_id);
+                    });
+                })
+                ->when(request()->supplier_id != null, function ($query) {
+                    $query->where('supplier_id',request()->supplier_id);
+                });
+            $purchase_data = $query->select(
+                DB::raw('SUM(discount_amount) AS total_discount'),
+                DB::raw('SUM(final_total) AS grand_total'),
+                DB::raw('SUM(dollar_final_total) AS dollar_grand_total'),
+
+            )->first();
+
+            $total_discount[$start] = $purchase_data->total_discount;
+            $grand_total[$start] = $purchase_data->grand_total;
+            $dollar_grand_total[$start] = $purchase_data->dollar_grand_total;
+            $start++;
+        }
+        $start_day = date('w', strtotime($year . '-' . $month . '-01')) + 1;
+        $prev_year = date('Y', strtotime('-1 month', strtotime($year . '-' . $month . '-01')));
+        $prev_month = date('m', strtotime('-1 month', strtotime($year . '-' . $month . '-01')));
+        $next_year = date('Y', strtotime('+1 month', strtotime($year . '-' . $month . '-01')));
+        $next_month = date('m', strtotime('+1 month', strtotime($year . '-' . $month . '-01')));
+
+        $stores = Store::getDropdown();
+
+        return view('reports.daily_purchase_report.index', compact(
+            'total_discount', 'grand_total','dollar_grand_total',
+            'start_day', 'year', 'month', 'number_of_day', 'prev_year', 'prev_month',
+            'next_year', 'next_month', 'stores', 'branches', 'stores','suppliers'
+        ));
+    }
+
 }

@@ -29,7 +29,6 @@ class TransactionSellLine extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id')->withDefault(['name' => '']);
     }
-
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withDefault(['name' => '']);

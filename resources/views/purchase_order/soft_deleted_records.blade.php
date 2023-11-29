@@ -81,17 +81,33 @@
                                         <td title="@lang('lang.deleted_by')">
                                             {{ App\Models\User::where('id', $softDeletedRecord->deleted_by)->first()->name }}
                                         </td>
-                                        <!-- +++++++++++++ Restore Button +++++++++++++ -->
-                                        <td>
-                                            {{-- <form action="#" method="post" style="display:inline;">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn btn-link">Restore</button>
-                                            </form> --}}
-                                            <a href="{{route('purchase_order.restore', $softDeletedRecord->id)}}" title="@lang('lang.restore')"
-                                                class="btn text-red" style="color:green;">
-                                                <i class="fa fa-trash-restore fa-lg text-red"></i>
-                                            </a>
+                                        <!-- +++++++++++++ Restore , ForceDelete Button +++++++++++++ -->
+                                        <td title="@lang('lang.action')">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                    @lang('lang.action')
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu">
+                                                    <!-- +++++++++++++ Restore Button +++++++++++++ -->
+                                                    <li>
+                                                        <a href="{{route('purchase_order.restore', $softDeletedRecord->id)}}" title="@lang('lang.restore')"
+                                                            class="btn text-red" style="color:green;">
+                                                            <i class="fa fa-trash-restore fa-lg text-red"></i>
+                                                            @lang('lang.restore')
+                                                        </a>
+                                                    </li>
+                                                    <!-- +++++++++++++ ForceDelete Button +++++++++++++ -->
+                                                    <li>
+                                                        <a href="{{route('purchase_order.forceDelete', $softDeletedRecord->id)}}" title="@lang('lang.forceDelete')"
+                                                            class="btn text-red" style="color:red;">
+                                                            <i class="fa fa-trash-restore fa-lg text-red"></i>
+                                                            @lang('lang.forceDelete')
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </td>
                                     </tr>
 

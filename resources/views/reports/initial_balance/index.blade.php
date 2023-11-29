@@ -112,32 +112,32 @@
 
     </section>
     <div class="view_modal no-print" ></div>
-    @push('javascripts')
-        <script src="{{ asset('js/product/product.js') }}"></script>
-        <script>
-            window.addEventListener('openAddPaymentModal', event => {
-                $("#addPayment").modal('show');
-            })
-
-            window.addEventListener('closeAddPaymentModal', event => {
-                $("#addPayment").modal('hide');
-            })
-
-            $(document).ready(function() {
-                $('select').on('change', function(e) {
-                    var name = $(this).data('name');
-                    var index = $(this).data('index');
-                    var select2 = $(this); // Save a reference to $(this)
-                    Livewire.emit('listenerReferenceHere',{
-                        var1 :name,
-                        var2 :select2.select2("val") ,
-                        var3:index
-                    });
-
-                });
-            });
-        </script>
-    @endpush
-
 @endsection
+@push('javascripts')
+    <script src="{{ asset('js/product/product.js') }}"></script>
+    <script>
+        window.addEventListener('openAddPaymentModal', event => {
+            $("#addPayment").modal('show');
+        })
+
+        window.addEventListener('closeAddPaymentModal', event => {
+            $("#addPayment").modal('hide');
+        })
+
+        $(document).ready(function() {
+            $('select').on('change', function(e) {
+                var name = $(this).data('name');
+                var index = $(this).data('index');
+                var select2 = $(this); // Save a reference to $(this)
+                Livewire.emit('listenerReferenceHere',{
+                    var1 :name,
+                    var2 :select2.select2("val") ,
+                    var3:index
+                });
+
+            });
+        });
+    </script>
+@endpush
+
 

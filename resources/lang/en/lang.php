@@ -22,6 +22,7 @@ return [
     'action'=>'Action',
     'update'=>'Update',
     'delete'=>'Delete',
+    'forceDelete' => 'Force deletion' ,
     'deleted_at' => 'deleted at',
     'edit_purchase_order' => 'Edit purchase order',
     'delete_msg' => 'Deleted Successfully',
@@ -650,6 +651,8 @@ return [
     'stock_value_by_price'=>'Stock Value By Price',
     'stock_value_by_cost'=>'Stock Value By Cost',
     'items'=>'Items',
+    'total_surplus' => 'Total Surplus',
+    'product_discount' =>  'Product Discount',
 ];
 
 

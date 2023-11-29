@@ -155,7 +155,6 @@ class Edit extends Component
             $products = Product::paginate();
         }
 
-//        $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.add-stock.edit',
             compact('status_array',
