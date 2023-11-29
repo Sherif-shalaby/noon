@@ -10,9 +10,9 @@
                     <th>@lang('lang.product_code')</th>
                     <th class="sum">@lang('lang.current_stock')</th>
                     <th>@lang('lang.quantity_to_be_removed')</th>
-                    <th>@lang('lang.expired_stock')</th>
-                    <th>@lang('lang.date_of_expired_stock')</th>
-                    <th>@lang('lang.date_of_purchase_of_the_expired_stock')</th>
+                    <th>@lang('lang.damaged_stock')</th>
+                    <th>@lang('lang.date_of_damaged_stock')</th>
+                    <th>@lang('lang.date_of_purchase_of_the_damaged_stock')</th>
                     <th>@lang('lang.avg_purchase_price')</th>
                     <th>@lang('lang.value_of_removed_stock')</th>
                 </tr>
@@ -24,26 +24,17 @@
                         <td><img src="{{$stock_line->product->image}}" height="50px" width="50px"></td>
                         <td>
                             <input type="hidden" wire:model="rows.{{$i}}.stock_line_id" />
-                            {{-- @if ($stock_line->variation->name != "Default") --}}
-                                {{ $stock_line->variation->unit->name}}
-                            {{-- @else
-                                Default
-                            @endif --}}
+                            {{ $stock_line->variation->unit->name}}
                         </td>
                         <td>{{$stock_line->variation->sku??''}}</td>
-                        <td>{{ number_format($stock_line->avail_current_stock - $stock_line->expired_current_stock,3)  }}</td>
+                        <td>{{ number_format($stock_line->avail_current_stock - $stock_line->damaged_current_stock,3)  }}</td>
                         <td> <input type="text" wire:model="rows.{{$i}}.quantity_to_remove" wire:change="changeStockRemovedValue({{$i}})" /></td>
-                        <td>{{$stock_line->expired_current_stock}}</td>
+                        <td>{{$stock_line->damaged_current_stock}}</td>
                         <td>{{$stock_line->exp_date}}</td>
-                        <td>{{$stock_line->date_of_purchase_of_the_expired_stock_removed}}</td>
+                        <td>{{$stock_line->date_of_purchase_of_the_damaged_stock_removed}}</td>
                         <td>{{number_format($stock_line->avg_purchase_price)}}
-                         {{-- <input type="text" wire:model="rows.{{$i}}.avg_purchase_price" /> --}}
-                        
                         </td>
-                        <td>@if(isset($stock_line->quantity_of_expired_stock_removed)){{$stock_line->quantity_of_expired_stock_removed}} @else  {{$this->rows[$i]['quantity_of_damaged_stock_removed']}}@endif</td>
-                        {{-- <td>@if(isset($stock_line->value_of_removed_stocks)){{$stock_line->value_of_removed_stocks}} @else {{0}}@endif</td>
-                        <td>{{number_format($stock_line->avg_purchase_price)}}</td>
-                        <td>{{0}}</td> --}}
+                        <td>@if(isset($stock_line->quantity_of_damaged_stock_removed)){{$stock_line->quantity_of_damaged_stock_removed}} @else {{$this->rows[$i]['quantity_of_damaged_stock_removed']}}@endif</td>
                     </tr>
                     @endforeach
                     @endif
