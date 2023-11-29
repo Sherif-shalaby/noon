@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Store;
+use App\Models\StorePos;
 use App\Models\TransactionSellLine;
 use Illuminate\Http\Request;
 
@@ -11,8 +13,24 @@ class GetDueReportController extends Controller
     /* +++++++++++++++++++ index() +++++++++++++++++++ */
     public function index()
     {
-        $dues = TransactionSellLine::where('payment_status', '!=', 'paid')->where('status', 'final')->get();
-        return view('reports.get-due-report.index',compact('dues'));
+        $query= TransactionSellLine::where('payment_status', '!=', 'paid')->where('status', 'final');
+        if (!empty(request()->store_id)) {
+            $query->where('store_id', request()->store_id);
+        }
+        if (!empty(request()->pos_id)) {
+            $query->where('store_pos_id', request()->pos_id);
+        }
+        if (!empty(request()->start_date)) {
+            $query->whereDate('transaction_date', '>=', request()->start_date);
+        }
+        if (!empty(request()->end_date)) {
+            $query->whereDate('transaction_date', '<=', request()->end_date);
+        }
+        $dues=$query->latest()->get();
+        
+        $stores = Store::getDropdown();
+        $store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
+        return view('reports.get-due-report.index',compact('dues','stores','store_pos'));
     }
 
     /**
