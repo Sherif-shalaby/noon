@@ -528,6 +528,8 @@ return [
     'deleted_by' => 'Deleted By',
     'quantity_to_be_removed' => 'Quantity To Be Removed',
     'date_of_expired_stock' => 'Date Of Expired Stock',
+    'date_of_damaged_stock' => 'Date Of Damaged Stock',
+    'date_of_purchase_of_the_damaged_stock' => 'Date Of Purchase Of The Damaged Stock',
     'date_of_purchase_of_the_expired_stock' => 'Date Of Purchase Of The Expired Stock',
     'avg_purchase_price' => 'Avg Purchase Price',
     'value_of_removed_stock' => 'Removed Stock',
@@ -597,6 +599,7 @@ return [
     'remove_expiry'=>'Remove Expiry',
     'generate_invoice' => 'Print Invoice',
     'expired_stock'=>'Expired Stock',
+    'damaged_stock'=>'Damaged Stock',
     'order_discount' => 'Order Discount',
     'view_payments' => 'View Payments',
     'cities' => 'Cities',
@@ -616,6 +619,24 @@ return [
     'add_payments'=>'Add Payments',
     'add_to_customer_balance'=>'Add To Customer Balance',
     'sale_return'=>'Sale Return',
+    'sales_per_employee'=>'Sales Per Employee',
+    'monthly_sale_and_purchase_report'=>'Monthly Sale & Purchase Report',
+    'January' => 'January',
+    'February' => 'February',
+    'March' => 'March',
+    'April' => 'April',
+    'May' => 'May',
+    'June' => 'June',
+    'July' => 'July',
+    'August' => 'August',
+    'September' => 'September',
+    'October' => 'October',
+    'November' => 'November',
+    'December' => 'December',
+    'sales'=>'Sales',
+    'wins'=>'Wins',
+    'previous'=>'Previous',
+    'next'=>'Next',
     'most_stock' => 'Most Stock',
     'lowest_stock' => 'Lowest Stock',
     'zero_stocks' => 'Zero Stocks',
@@ -624,9 +645,6 @@ return [
     'profits' => 'Profits',
     'amount_of_sells' => 'Amount Of Sells',
     'amount_of_purchases' => 'Amount Of Purchases',
-
-
-
 ];
 
 
