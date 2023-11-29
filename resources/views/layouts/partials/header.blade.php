@@ -314,6 +314,18 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.customers_report')}}
                                     </a>
                                 </li>
+                                {{-- +++++++++++ employees sales report +++++++++++ --}}
+                                   <li>
+                                    <a href="{{route('sales-per-employee.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.sales_per_employee')}}
+                                    </a>
+                                </li>
+                                   {{-- +++++++++++ monthly sales & purchase report +++++++++++ --}}
+                                   <li>
+                                    <a href="{{route('report.monthly_sale_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.monthly_sale_and_purchase_report')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
                                 <li>
                                     <a href="{{route('daily-report-summary.index')}}">
