@@ -646,8 +646,13 @@ return [
     'profits' => 'Profits',
     'amount_of_sells' => 'Amount Of Sells',
     'amount_of_purchases' => 'Amount Of Purchases',
+    'store_stock_chart'=>'Store Stock Chart',
+    'estimate_profit'=>'Estimate Profit',
+    'stock_value_by_price'=>'Stock Value By Price',
+    'stock_value_by_cost'=>'Stock Value By Cost',
+    'items'=>'Items',
     'total_surplus' => 'Total Surplus',
-    'product_discount' =>  'Product Discount'
+    'product_discount' =>  'Product Discount',
 ];
 
 
