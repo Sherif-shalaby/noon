@@ -311,6 +311,11 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.sales_report')}}
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{route('reports.daily_sales_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.daily_sale_report')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ receivable report +++++++++++ --}}
                                 <li>
                                     <a href="{{route('receivable-report.index')}}">
