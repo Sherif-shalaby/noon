@@ -49,7 +49,6 @@ use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\TransactionPaymentController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
