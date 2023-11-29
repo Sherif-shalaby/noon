@@ -40,7 +40,7 @@ return new class extends Migration
             // details column
             $table->text('details')->nullable();
             // foreign key : created_by
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             // foreign key : deleted_by
             $table->unsignedBigInteger('deleted_by')->nullable();
