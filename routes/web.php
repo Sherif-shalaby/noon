@@ -329,6 +329,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/best_seller',[ReportController::class,'bestSellerReport'])->name('reports.best_seller');
     // Daily Sales Report
     Route::get('reports/daily_sales_report',[ReportController::class,'dailySalesReport'])->name('reports.daily_sales_report');
+    // Daily purchase Report
+    Route::get('reports/daily_purchase_report',[ReportController::class,'dailyPurchaseReport'])->name('reports.daily_purchase_report');
 
 
 });
