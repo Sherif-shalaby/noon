@@ -210,6 +210,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     Route::resource('product-tax', ProductTaxController::class);
     Route::get('report/get-monthly-sale-report', [ReportController::class,'getMonthlySaleReport'])->name('report.monthly_sale_report');
+    Route::get('report/get-store-stock-chart', [ReportController::class,'getStoreStockChart'])->name('report.store_stock_chart');
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
