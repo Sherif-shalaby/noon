@@ -158,7 +158,7 @@
                     </tr>
                     <tr>
                         <td></td>
-                        @foreach ($S as $key => $net_profit)
+                        @foreach ($total_net_profit as $key => $net_profit)
                             <td>
                                 <strong>{{ trans('lang.wins') }}</strong><br>
                                 <strong>{{ @num_format($net_profit) }}</strong>
