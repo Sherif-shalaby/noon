@@ -8,12 +8,25 @@ use App\Models\TransactionSellLine;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Utils\TransactionUtil;
+use App\Models\Branch;
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\Unit;
+use App\Models\User;
+use App\Utils\ReportsFilters;
+use App\Utils\Util;
+use Illuminate\Support\Facades\DB;
 class ReportController extends Controller
 {
      /**
      * All Utils instance.
      *
      */
+    protected $reportsFilters;
+    protected $common_util;
+
     protected $transactionUtil;
 
     /**
@@ -22,8 +35,10 @@ class ReportController extends Controller
      * @param ProductUtils $product
      * @return void
      */
-    public function __construct( TransactionUtil $transactionUtil)
+    public function __construct( TransactionUtil $transactionUtil,ReportsFilters $reportsFilters, Util $util)
     {
+        $this->reportsFilters = $reportsFilters;
+        $this->common_util = $util;
         $this->transactionUtil = $transactionUtil;
     }
     public function getMonthlySaleReport(Request $request)
@@ -108,31 +123,9 @@ class ReportController extends Controller
             'total_net_profit',
             // 'total_p'
         ));
-use App\Models\Branch;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\Supplier;
-use App\Models\TransactionSellLine;
-use App\Models\Unit;
-use App\Models\User;
-use App\Utils\ReportsFilters;
-use App\Utils\Util;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
-
-class ReportController extends Controller
-{
-    protected $reportsFilters;
-    protected $common_util;
-
-    public function __construct(ReportsFilters $reportsFilters, Util $util)
-    {
-        $this->reportsFilters = $reportsFilters;
-        $this->common_util = $util;
     }
+
+ 
 
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
