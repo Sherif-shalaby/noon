@@ -41,13 +41,14 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
 use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
+use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\TransactionPaymentController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -208,6 +209,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ########### Product Tax ###########
     Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     Route::resource('product-tax', ProductTaxController::class);
+    Route::get('report/get-monthly-sale-report', [ReportController::class,'getMonthlySaleReport'])->name('report.monthly_sale_report');
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -224,8 +226,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
+    // ########### Sales Per Employee Report ###########
 
-
+    Route::resource('sales-per-employee', SalesPerEmployeeReportController::class);
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search

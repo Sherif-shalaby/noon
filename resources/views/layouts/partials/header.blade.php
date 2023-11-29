@@ -1623,6 +1623,14 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
                                             </a>
                                         </li>
+                                        {{-- +++++++++++ employees sales report +++++++++++ --}}
+                                        <li>
+                                            <a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                                                href="{{ route('sales-per-employee.index') }}"
+                                                class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif sales_per_employee-report-button">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.sales_per_employee') }}
+                                            </a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="mega-menu-col col-md-4 p-0">
@@ -1658,6 +1666,15 @@
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i
                                                     class="mdi mdi-circle"></i>{{ __('lang.representative_salary_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ monthly sales & purchase report +++++++++++ --}}
+                                        <li>
+                                            <a class="monthly_sale_and_purchase_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('report.monthly_sale_report') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i
+                                                    class="mdi mdi-circle"></i>{{ __('lang.monthly_sale_and_purchase_report') }}
                                             </a>
                                         </li>
                                     </ul>
@@ -2016,9 +2033,21 @@
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
+    $('.sales_per_employee-report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('sales-per-employee.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
     $('.representative_salary_report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('representative_salary_report.index') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.monthly_sale_and_purchase_report-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('report.monthly_sale_report') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

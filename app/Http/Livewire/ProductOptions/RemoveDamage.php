@@ -7,14 +7,21 @@ use App\Models\Product;
 use App\Models\ProductExpiryDamage;
 use App\Models\ProductStore;
 use App\Models\Variation;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class RemoveExpiry extends Component
+class RemoveDamage extends Component
 {
-    public $productId = null, $rows = [], $addStockLines = [],$quantity_of_expired_stock_removed=0;
+    public $productId = null, $rows = [], $addStockLines = [],$quantity_of_damaged_stock_removed=0;
     public function render()
+    {
+    
+        return view('livewire.product-options.remove-damage');
+    }
+    public function changeStockRemovedValue($i){
+        $this->rows[$i]['quantity_of_damaged_stock_removed']=(float)$this->rows[$i]['quantity_to_remove']*(float)$this->rows[$i]['avg_purchase_price'];
+    }
+    public function mount($productId)
     {
         $this->addStockLines = AddStockLine::where("add_stock_lines.product_id", $this->productId)
         ->where("add_stock_lines.quantity", ">", 0)
@@ -25,27 +32,17 @@ class RemoveExpiry extends Component
         $this->addStockLines = $this->addStockLines->select(
             'add_stock_lines.*',
             'add_stock_lines.expiry_date as exp_date',
-            'add_stock_lines.created_at as date_of_purchase_of_the_expired_stock_removed',
+            'add_stock_lines.created_at as date_of_purchase_of_the_damaged_stock_removed',
             'add_stock_lines.purchase_price as add_stock_line_purchase_price',
             'add_stock_lines.purchase_price as add_stock_line_avg_purchase_price',
             'variations.sku',
             DB::raw('(SELECT SUM(add_stock_lines.quantity)  FROM add_stock_lines  JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . '  ) as avail_current_stock'),
             DB::raw('(SELECT AVG(add_stock_lines.purchase_price) FROM add_stock_lines JOIN variations as v ON add_stock_lines.variation_id=v.id WHERE v.id=variations.id ' . $store_query . ') as avg_purchase_price'),
-            DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as expired_current_stock'),
+            DB::raw('(add_stock_lines.quantity - add_stock_lines.quantity_sold) as damaged_current_stock'),
         )->get();
-        
-        return view('livewire.product-options.remove-expiry');
-    }
-    public function changeStockRemovedValue($i){
-        $this->rows[$i]['quantity_of_damaged_stock_removed']=(float)$this->rows[$i]['quantity_to_remove']*(float)$this->rows[$i]['avg_purchase_price'];
-    }
-    public function mount($productId)
-    {
+        // dd($this->addStockLines);
         $this->productId = $productId;
-      
-     
         $this->addRow($this->addStockLines);
-     
     }
     public function addRow($addStockLines)
     {
@@ -54,8 +51,8 @@ class RemoveExpiry extends Component
                 'variation_id' => $stockLine->variation_id,
                 'stock_line_id' => $stockLine->id,
                 'quantity_to_remove' => '',
-                'status' => 'expiry',
-                'avg_purchase_price'=>$stockLine->avg_purchase_price,
+                'status' => 'damage',
+                'avg_purchase_price'=>$stockLine->avg_purchase_price??0,
                 'quantity_of_damaged_stock_removed'=>0,
             ];
             $this->rows[] = $new_row;
@@ -70,7 +67,6 @@ class RemoveExpiry extends Component
                 $variation = Variation::find($data["variation_id"]);
                 $stockRow->decrement("quantity", (float)$data["quantity_to_remove"]);
                 $store = ProductStore::where("variation_id", $variation->id)->where("product_id", $variation->product_id)->first();
-                //    dd($store->store_id);
                 $this->decreaseProductQuantity($variation->product_id, $variation->id, $store->store_id ?? 0, $data["quantity_to_remove"]);
                 if ($data["quantity_to_remove"] > 0) {
                     $productExpiry = ProductExpiryDamage::query()->create([

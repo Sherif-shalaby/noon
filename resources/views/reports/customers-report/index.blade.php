@@ -142,18 +142,7 @@
                                                             {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), 2) }}
                                                         </span>
                                                     </td>
-                                                    {{-- متاخرات --}}
-                                                    {{--                                                <td> --}}
-                                                    {{--                                                    {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total, 2) }} --}}
-                                                    {{--                                                        @foreach ($customer_transactions_sell_line->transaction_sell_lines as $transaction_sell_lines) --}}
-                                                    {{--                                                                <li>{{ $transaction_sell_lines->product->name ?? ''}}</li> --}}
-                                                    {{--                                                        @endforeach --}}
-                                                    {{--                                                    </ul> --}}
-                                                    {{--                                                </td> --}}
-                                                    {{--                                                <td>{{ @num_format($customer_transactions_sell_line->final_total ) ?? ''}}</td> --}}
-                                                    {{-- Get All_Payments of transaction Then Get "payment amount" --}}
-                                                    {{--                                                <td>{{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount')) ?? ''}}</td> --}}
-                                                    {{-- متاخرات --}}
+
                                                     <td>
                                                         <span
                                                             class="custom-tooltip d-flex justify-content-center align-items-center"
