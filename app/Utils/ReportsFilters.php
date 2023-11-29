@@ -321,6 +321,11 @@ class ReportsFilters extends Util
             ->when(request()->to != null, function ($query) {
                 $query->whereRaw("STR_TO_DATE(transaction_date, '%Y-%m-%d') <= ?", [request()->to]);
             })
+            ->when(request()->brand_id != null, function ($query) {
+                $query->whereHas('transaction_sell_lines.product', function ($subquery) {
+                    $subquery->where('brand_id', request()->brand_id);
+                });
+            })
 //            ->when(request()->supplier_id != null, function ($query) {
 //                $query->whereHas('transaction_sell_lines.product.stock_lines.transaction', function ($subquery) {
 //                    $subquery->where('supplier_id', \request()->supplier_id);

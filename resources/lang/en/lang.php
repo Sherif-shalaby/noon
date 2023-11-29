@@ -645,6 +645,9 @@ return [
     'profits' => 'Profits',
     'amount_of_sells' => 'Amount Of Sells',
     'amount_of_purchases' => 'Amount Of Purchases',
+    'total_surplus' => 'Total Surplus',
+    'previous' => 'Previous',
+    'next' => 'Next',
 ];
 
 

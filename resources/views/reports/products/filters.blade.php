@@ -16,6 +16,11 @@
                     ) !!}
                 </div>
             </div>
+            @php
+                if(!empty(request()->branch_id)){
+                    $stores = \App\Models\Store::where('branch_id',request()->branch_id)->pluck('name', 'id');
+                }
+            @endphp
             <div class="col-2">
                 <div class="form-group">
                     {!! Form::label('store_id', __('lang.store'))  !!}
