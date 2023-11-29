@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('transaction_sell_lines', function (Blueprint $table) {
             // Update store_pos_id column
-            $table->unsignedBigInteger('store_pos_id')->after('employee_id')->nullable();
+            // $table->unsignedBigInteger('store_pos_id')->after('employee_id')->nullable();
             $table->foreign('store_pos_id')->references('id')->on('store_pos')->onDelete('cascade');
         });
     }

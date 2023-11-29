@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->unsignedBigInteger('employee_id')->nullable();
-            // $table->unsignedBigInteger('store_pos_id')->nullable();
+            $table->unsignedBigInteger('store_pos_id')->nullable();
             $table->string('type')->nullable();
             $table->enum('status', ['received', 'pending', 'ordered', 'final', 'draft', 'sent_admin', 'sent_supplier', 'partially_received', 'approved', 'rejected', 'expired', 'valid', 'declined', 'send_the_goods', 'compensated', 'canceled']);
             $table->string('transaction_date');
