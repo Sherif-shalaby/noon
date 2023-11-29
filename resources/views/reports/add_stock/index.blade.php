@@ -1,6 +1,15 @@
 @extends('layouts.app')
 @section('title', __('lang.stock'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 255px !important;
+        }
+
+        .table-button-wrapper {
+            margin-top: 25px !important;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -37,8 +46,9 @@
     <section class="">
         <div class="col-md-22">
             <div class="card mt-3">
-                <div class="card-header d-flex align-items-center">
-                    <h3 class="print-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                <div
+                    class="card-header d-flex align-items-center  @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
+                    <h3 class="print-title">
                         @lang('lang.stock')</h3>
                 </div>
                 <div class="row">
