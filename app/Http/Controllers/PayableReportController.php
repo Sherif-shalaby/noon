@@ -37,18 +37,21 @@ class PayableReportController extends Controller
             $transactions_stock_lines = $query->when($request->store_id != null, function ($query) use ( $request ) {
                 $query->where('store_id', $request->store_id);
             })
-            // ====== store Filter ======
-            ->when($request->store_pos_id != null, function ($query) use ( $request ) {
-                $query->where('store_pos_id', $request->store_pos_id);
-            })
+            // ====== store_pos Filter ======
+            // ->when($request->store_pos_id != null, function ($query) use ( $request ) {
+            //     $query->where('store_pos_id', $request->store_pos_id);
+            // })
             // ====== suppliers Filter ======
             ->when( $request->supplier_id != null,function ($query) use ( $request ) {
                 $query->where('supplier_id', $request->supplier_id);
             })
             // ====== products Filter ======
-            ->when( $request->product_id != null,function ($query) use ( $request ) {
-                $query->where('product_id', $request->product_id);
+            ->when($request->product_id != null, function ($query) use ($request) {
+                $query->whereHas('add_stock_products', function ($subquery) use ($request) {
+                    $subquery->where('products.id', $request->product_id);
+                });
             })
+
             // ====== date Filter ======
             ->when( $request->start_date != null && $request->end_date != null , function ($query) use ( $request ) {
                 $query->whereBetween('created_at', [$request->start_date, $request->end_date]);

@@ -48,13 +48,13 @@
                 </div>
             </div>
             {{-- ++++++++++++++++++++ stores_pos filter ++++++++++++++++++++ --}}
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_pos_id', __('lang.pos'), []) !!}
                     {!! Form::select('store_pos_id', $store_pos, request()->store_pos_id, ['class' =>
                     'form-control select2 stores_pos', 'placeholder' => __('lang.please_select'),'data-live-search'=>"true"]) !!}
                 </div>
-            </div>
+            </div> --}}
 
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
             <div class="col-2">
@@ -81,7 +81,7 @@
                     store_id        : $('body').find('.stores').val(),
                     product_id      : $('body').find('.products').val(),
                     supplier_id     : $('body').find('.suppliers').val(),
-                    store_pos_id    : $('body').find('.stores_pos').val(),
+                    // store_pos_id    : $('body').find('.stores_pos').val(),
                     start_date      : $('body').find('.start_date').val(),
                     end_date        : $('body').find('.end_date').val(),
                 },
