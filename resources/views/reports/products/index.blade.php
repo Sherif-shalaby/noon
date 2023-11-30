@@ -50,12 +50,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="table-responsive
-                            @if (app()->isLocale('ar')) dir-rtl @endif"
-                                style="height: 90vh;overflow: scroll">
+                            <div
+                                class="table-responsive
+                            @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div id="status"></div>
                                 <table id="datatable-buttons"
-                                    class="table dataTable table-striped  table-button-wrapper table-hover  table-bordered">
+                                    class="table dataTable table-striped  table-button-wrapper table-hover  table-bordered"
+                                    style="height: 90vh;overflow: scroll">
                                     <thead>
                                         <tr>
                                             <th>#</th>

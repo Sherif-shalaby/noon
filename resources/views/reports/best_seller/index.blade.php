@@ -30,40 +30,43 @@
     </div>
 @endsection
 @section('content')
-    <!-- Start Contentbar -->
-    <div class="contentbar">
-        <!-- Start row -->
-        <div class="row">
-            <!-- Start col -->
-            <div class="col-lg-12">
-                <div class="card m-b-30">
-                    <div class="card-header">
-                        <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            @lang('lang.best_seller_report')</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="container-fluid">
-                                    @include('reports.best_seller.filters')
+    <div class="animate-in-page">
+
+        <!-- Start Contentbar -->
+        <div class="contentbar">
+            <!-- Start row -->
+            <div class="row">
+                <!-- Start col -->
+                <div class="col-lg-12">
+                    <div class="card m-b-30">
+                        <div class="card-header">
+                            <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                                @lang('lang.best_seller_report')</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="container-fluid">
+                                        @include('reports.best_seller.filters')
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            @php
-                                $color = '#6e81dc';
-                                $color_rgba = 'rgba(110, 129, 220, 0.8)';
+                            <div>
+                                @php
+                                    $color = '#6e81dc';
+                                    $color_rgba = 'rgba(110, 129, 220, 0.8)';
 
-                            @endphp
-                            <canvas id="bestSeller" data-color="{{ $color }}" data-color_rgba="{{ $color_rgba }}"
-                                data-product = "{{ json_encode($product) }}"
-                                data-sold_qty="{{ json_encode($sold_qty) }}"></canvas>
+                                @endphp
+                                <canvas id="bestSeller" data-color="{{ $color }}"
+                                    data-color_rgba="{{ $color_rgba }}" data-product = "{{ json_encode($product) }}"
+                                    data-sold_qty="{{ json_encode($sold_qty) }}"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- End col -->
         </div>
-        <!-- End col -->
     </div>
     <!-- End row -->
 <div class="view_modal no-print">@endsection

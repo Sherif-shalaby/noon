@@ -31,6 +31,15 @@
         .purchase-row td:last-child {
             border-right: 2px solid rgb(84, 235, 177);
         }
+
+        nav {
+            z-index: 2;
+            position: relative;
+        }
+
+        .rightbar {
+            z-index: 1;
+        }
     </style>
     <div class="animate-in-page">
 
@@ -61,19 +70,25 @@
         <div class="card-body">
             <div class="col-md-12">
                 <form action="{{ route('report.monthly_sale_report') }}">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                {!! Form::label('store_id', __('lang.store'), []) !!}
+                    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.1s">
+                            {!! Form::label('store_id', __('lang.store'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            <div class="input-wrapper">
+
                                 {!! Form::select('store_id', $stores, request()->store_id, [
                                     'class' => 'form-control select2',
                                     'placeholder' => __('lang.all'),
                                 ]) !!}
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2 mb-2 d-flex align-items-end justify-content-center animate__animated animate__bounceInLeft flex-column"
+                            style="animation-delay: 1.15s">
 
-                            <button type="submit" class="btn btn-success mt-2">@lang('lang.filter')</button>
+                            <button type="submit" class="btn btn-primary">@lang('lang.filter')</button>
                         </div>
                     </div>
                 </form>
@@ -90,13 +105,14 @@
                         @endphp
                         <tr>
                             <th></th>
-                            <th><a href="{{ url('report/get-monthly-sale-report?year=' . $pre_year) }}"
-                                    class="text-primary"><i class="fa fa-arrow-left"></i> {{ trans('lang.previous') }}</a>
+                            <th><a style="color: white;text-decoration: none"
+                                    href="{{ url('report/get-monthly-sale-report?year=' . $pre_year) }}"><i
+                                        class="fa fa-arrow-right"></i> {{ trans('lang.previous') }}</a>
                             </th>
                             <th colspan="10" class="text-center">{{ $year }}</th>
-                            <th><a href="{{ url('report/get-monthly-sale-report?year=' . $next_year) }}"
-                                    class="text-primary">{{ trans('lang.next') }}
-                                    <i class="fa fa-arrow-right"></i></a></th>
+                            <th><a style="color: white;text-decoration: none"
+                                    href="{{ url('report/get-monthly-sale-report?year=' . $next_year) }}">{{ trans('lang.next') }}
+                                    <i class="fa fa-arrow-left"></i></a></th>
                         </tr>
                     </thead>
                     <tbody>

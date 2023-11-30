@@ -198,7 +198,7 @@
                     'placeholder' => __('lang.to'),
                 ]) !!}
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft"
+            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.85s">
                 <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>

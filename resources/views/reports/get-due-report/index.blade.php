@@ -44,41 +44,66 @@
                                 <div class="col-lg-12">
                                     <div class="container-fluid">
                                         <form action="{{ route('get-due-report.index') }}">
-                                            <div class="row pb-3">
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        {!! Form::label('start_date', __('lang.start_date'), []) !!}
-                                                        {!! Form::text('start_date', request()->start_date, ['class' => 'form-control']) !!}
-                                                    </div>
+                                            <div
+                                                class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                                    style="animation-delay: 1.1s">
+
+                                                    {!! Form::label('start_date', __('lang.start_date'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                                    ]) !!}
+                                                    {!! Form::text('start_date', request()->start_date, [
+                                                        'class' => 'form-control mt-0 initial-balance-input width-full',
+                                                    ]) !!}
+
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        {!! Form::label('end_date', __('lang.end_date'), []) !!}
-                                                        {!! Form::text('end_date', request()->end_date, ['class' => 'form-control']) !!}
-                                                    </div>
+                                                <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                                    style="animation-delay: 1.15s">
+
+                                                    {!! Form::label('end_date', __('lang.end_date'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                                    ]) !!}
+                                                    {!! Form::text('end_date', request()->end_date, [
+                                                        'class' => 'form-control mt-0 initial-balance-input width-full',
+                                                    ]) !!}
+
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        {!! Form::label('store_id', __('lang.store'), []) !!}
+                                                <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                                    style="animation-delay: 1.2s">
+
+                                                    {!! Form::label('store_id', __('lang.store'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                                    ]) !!}
+                                                    <div class="input-wrapper">
+
                                                         {!! Form::select('store_id', $stores, request()->store_id, [
                                                             'class' => 'form-control select2',
                                                             'placeholder' => __('lang.all'),
                                                         ]) !!}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2">
-                                                    <div class="form-group">
-                                                        {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                                                <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                                                    style="animation-delay: 1.25s">
+
+                                                    {!! Form::label('pos_id', __('lang.pos'), [
+                                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                                    ]) !!}
+                                                    <div class="input-wrapper">
+
                                                         {!! Form::select('pos_id', $store_pos, request()->pos_id, [
                                                             'class' => 'form-control select2',
                                                             'placeholder' => __('lang.all'),
                                                         ]) !!}
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <br>
+                                                <div class="col-md-3 mb-2 d-flex align-items-end justify-content-center animate__animated animate__bounceInLeft flex-column"
+                                                    style="animation-delay: 1.3s">
                                                     <button type="submit"
-                                                        class="btn btn-success mt-2">@lang('lang.filter')</button>
+                                                        class="btn btn-primary mt-2">@lang('lang.filter')</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -119,8 +144,8 @@
                                                         data-tooltip="@lang('lang.date')">
 
                                                         {{ @format_date($due->transaction_date) }}
+                                                    </span>
                                                 </td>
-                                                </span>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -128,8 +153,8 @@
                                                         data-tooltip="@lang('lang.reference')">
 
                                                         {{ $due->invoice_no }}
+                                                    </span>
                                                 </td>
-                                                </span>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -137,8 +162,8 @@
                                                         data-tooltip="@lang('lang.customer')">
 
                                                         {{ $due->customer->name ?? '' }}
+                                                    </span>
                                                 </td>
-                                                </span>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -146,8 +171,8 @@
                                                         data-tooltip="@lang('lang.amount')">
 
                                                         {{ @num_format($due->final_total > 0 ? $due->final_total : $due->dollar_final_total * $due->exchange_rate) }}
+                                                    </span>
                                                 </td>
-                                                </span>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
@@ -155,15 +180,15 @@
                                                         data-tooltip="@lang('lang.paid')">
 
                                                         {{ @num_format($due->transaction_payments->sum('amount')) }}
+                                                    </span>
                                                 </td>
-                                                </span>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.duePaid')">
 
-                                                        @num_format(($due->final_total > 0 ? $due->final_total : $due->dollar_final_total * $due->exchange_rate) - $due->transaction_payments->sum('amount'))
+                                                        {{ @num_format(($due->final_total > 0 ? $due->final_total : $due->dollar_final_total * $due->exchange_rate) - $due->transaction_payments->sum('amount')) }}
                                                     </span>
                                                 </td>
                                                 <td>

@@ -3,7 +3,11 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            margin-top: 60px !important;
+            margin-top: 200px !important;
+        }
+
+        .table-button-wrapper {
+            margin-top: 10px !important;
         }
     </style>
     <div class="animate-in-page">
@@ -71,7 +75,8 @@
                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                     aria-labelledby="nav-home-tab">
                                     <table id="datatable-buttons"
-                                        class="table table-striped  table-button-wrapper table-hover  table-bordered">
+                                        class="table table-striped  table-button-wrapper table-hover @if (app()->isLocale('ar')) dir-rtl @endif
+                                        table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>التاريخ</th>
