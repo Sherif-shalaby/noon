@@ -688,6 +688,12 @@ return array(
     'amount_of_purchases' => 'مبلغ المشتريات',
     'total_surplus' => 'إجمالي الفائض',
     'product_discount' => 'خصم المنتج',
+    'purchased_qty' => 'الكمية المشتراة',
+    'sold_qty' => 'الكمية المباعة',
+    'all_selling' => 'كل المبيعات',
+    'all_stock' => 'كل المخزون',
+
+
 
 );
 

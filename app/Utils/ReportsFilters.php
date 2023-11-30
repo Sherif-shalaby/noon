@@ -13,7 +13,7 @@ class ReportsFilters extends Util
     public function productFilters(){
         $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
         $products =  Product::
-            when(\request()->dont_show_zero_stocks =="on", function ($query) {
+            when(\request()->stocks =="no_zero", function ($query) {
                 $query->whereHas('product_stores', function ($query) {
                     $query->where('quantity_available', '>', 0);
                 });
@@ -74,32 +74,32 @@ class ReportsFilters extends Util
                 ->withSum('product_stores', 'quantity_available')
                     ->orderBy('product_stores_sum_quantity_available','asc');
             })
-            ->when( request()->nearest_expiry_filter == "on", function ($query) {
+            ->when( request()->expiry == "nearest", function ($query) {
                 $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
                     $subquery->where(function ($q) {
                         $q->whereDate('expiry_date', '>', Carbon::now());
                     });
                 }])->orderBy('expiry_date', 'asc');
             })
-            ->when(request()->balance_return_request == "on", function ($query) {
-                $query->whereHas('product_stores')
-                    ->withSum('product_stores', 'quantity_available')
-                    ->orderByRaw('(product_stores_sum_quantity_available < products.balance_return_request) DESC');
-            })
-            ->when(request()->zero_stocks == "on", function ($query) {
-                $query->whereHas('product_stores', function ($subQuery) {
-                    $subQuery->selectRaw('product_id, COALESCE(SUM(quantity_available), 0) as quantity_available_sum')
-                        ->groupBy('product_id')
-                        ->having('quantity_available_sum', '=', 0);
-                });
-            })
-            ->when(request()->expired == "on", function ($query) {
+            ->when(request()->expiry == "expired", function ($query) {
                 $query->withCount([
                     'stock_lines as expired_count' => function ($subquery) {
                         $subquery->whereDate('expiry_date', '<=', now());
                     }
                 ])->having('expired_count', '>', 0)
                     ->orderBy('expired_count', 'desc');
+            })
+            ->when(request()->balance_return_request == "on", function ($query) {
+                $query->whereHas('product_stores')
+                    ->withSum('product_stores', 'quantity_available')
+                    ->orderByRaw('(product_stores_sum_quantity_available < products.balance_return_request) DESC');
+            })
+            ->when(request()->stocks =="zero" , function ($query) {
+                $query->whereHas('product_stores', function ($subQuery) {
+                    $subQuery->selectRaw('product_id, COALESCE(SUM(quantity_available), 0) as quantity_available_sum')
+                        ->groupBy('product_id')
+                        ->having('quantity_available_sum', '=', 0);
+                });
             })
             ->when( request()->expired == "on", function ($query) {
                 $query->withCount(['stock_lines as expiry_date' => function ($subquery) {

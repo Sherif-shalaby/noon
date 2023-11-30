@@ -55,7 +55,9 @@
                                     <th>@lang('lang.purchase_price') $</th>
                                     <th>@lang('lang.sell_price') $</th>
                                     <th>@lang('lang.amount_of_purchases')</th>
+                                    <th>@lang('lang.purchased_qty')</th>
                                     <th>@lang('lang.amount_of_sells')</th>
+                                    <th>@lang('lang.sold_qty')</th>
 {{--                                    <th>@lang('lang.profits')</th>--}}
                                     <th>@lang('lang.amount_of_purchases') $</th>
                                     <th>@lang('lang.amount_of_sells') $</th>
@@ -67,8 +69,9 @@
                                     <th>@lang('added_by')</th>
                                     <th>@lang('updated_by')</th>
                                     @if(request()->sell_price_less_purchase_price == 'on')
-                                        <th>@lang('actions')</th>
+                                        <th>@lang('view_details')</th>
                                     @endif
+                                    <th>@lang('lang.action')</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -113,13 +116,16 @@
                                             {{ @num_format($product->total_purchase_amount) }}
                                         </td>
                                         <td>
+                                            @if ($product->stock_lines->isNotEmpty())
+                                                {{ @num_format($product->stock_lines->sum('quantity')) }}
+                                            @endif
+                                        </td>
+                                        <td>
                                             {{ @num_format($product->total_sells_amount) }}
                                         </td>
-{{--                                        <td>--}}
-{{--                                            {{ @num_format( !empty($product->total_sells_amount) ?--}}
-{{--                                                $product->total_sells_amount - $product->total_purchase_amount : 0--}}
-{{--                                                )}}--}}
-{{--                                        </td>--}}
+                                        <td>
+                                            {{ @num_format($product->stock_lines->sum('quantity_sold') ) }}
+                                        </td>
 
                                         <td>
                                             {{ @num_format($product->total_dollar_purchase_amount) }}
@@ -127,7 +133,6 @@
                                         <td>
                                             {{ @num_format($product->total_dollar_sells_amount) }}
                                         </td>
-{{--                                        <td></td>--}}
                                         <td>{{$product->category->name??''}}</td>
                                         <td>
                                             {{  ($product->subCategory1 ? '- ' .$product->subCategory1->name : '') }} <br>
@@ -171,6 +176,21 @@
                                                 </a>
                                             </td>
                                         @endif
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">خيارات                                            <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu" x-placement="bottom-end" style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <li>
+                                                        <a data-href="{{route('reports.product_details', $product->id)}}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal">
+                                                            <i class="fa fa-eye"></i> @lang('lang.view')
+                                                        </a>
+
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -180,6 +200,7 @@
 {{--                                <td id="sum"></td>--}}
 {{--                                <td colspan="7"></td>--}}
 {{--                                </tfoot>--}}
+{{--                                {{ $products->links() }}--}}
                             </table>
                         </div>
                     </div>
@@ -193,7 +214,6 @@
 @push('javascripts')
 <script src="{{ asset('js/product/product.js') }}"></script>
 <script>
-
     $(document).on('click', '.product_unit', function() {
         var $this=$(this);
         var variation_id=$(this).data('variation_id');

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddStockLine;
+use App\Models\ProductStore;
+use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\TransactionSellLine;
@@ -126,8 +129,6 @@ class ReportController extends Controller
         ));
     }
 
-
-
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
         $units = Unit::orderBy('created_at', 'desc')->pluck('name','id');
@@ -138,7 +139,6 @@ class ReportController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
-
         return view('reports.products.index',compact('products','categories','suppliers','brands',
             'units','stores','users','subcategories','branches'));
 
@@ -157,6 +157,21 @@ class ReportController extends Controller
                 });
         })->get();
         return view('reports.products.sell_prise_less_purchase_prise',compact('sell_lines'));
+    }
+
+    public function viewProductDetails($id){
+
+        $product = Product::find($id);
+        $stock_details = ProductStore::where('product_id', $id)->get();
+        $sales = SellLine::with('transaction')->where('product_id', $id)->get();
+        $add_stocks = AddStockLine::with('transaction')
+            ->where('product_id', $id)
+            ->whereHas('transaction', function ($query) {
+                $query->where('type', 'add_stock');
+            })->get();
+
+        return view('reports.products.partials.view_product_details',compact('product','stock_details',
+            'sales','add_stocks'));
     }
 
     public function initialBalanceReport(){

@@ -116,6 +116,12 @@
             </div>
             <div class="col-md-1">
                 <div class="form-check">
+                    {!! Form::radio('selling_filter', 'all', request()->selling_filter === 'all' || !request()->has('selling_filter'), ['class' => 'form-check-input', 'id' => 'all_sellers']) !!}
+                    {!! Form::label('all_sellers', __('lang.all_selling'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
                     {!! Form::radio('stock_filter', 'most', request()->stock_filter === 'most', ['class' => 'form-check-input']) !!}
                     {!! Form::label('most_stock', __('lang.most_stock'), ['class' => 'form-check-label']) !!}
                 </div>
@@ -126,40 +132,58 @@
                     {!! Form::label('lowest_stock', __('lang.lowest_stock'), ['class' => 'form-check-label']) !!}
                 </div>
             </div>
-            <div class="col-2">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1" {{!empty(request()->nearest_expiry_filter) ? 'checked' : ''}} name="nearest_expiry_filter">
-                    <label class="custom-control-label" for="customSwitch1">@lang('lang.nearest_expiry_filter')</label>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('stock_filter', 'all', request()->stock_filter === 'all' || !request()->has('stock_filter'), ['class' => 'form-check-input']) !!}
+                    {!! Form::label('all_stock', __('lang.all_stock'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('stocks', 'no_zero', request()->stocks === 'zero' , ['class' => 'form-check-input']) !!}
+                    {!! Form::label('no_zero', __('lang.dont_show_zero_stocks'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('stocks', 'zero', request()->stocks === 'zero' , ['class' => 'form-check-input']) !!}
+                    {!! Form::label('zero', __('lang.zero_stocks'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('stocks', 'all', request()->stocks === 'all' || !request()->stocks , ['class' => 'form-check-input']) !!}
+                    {!! Form::label('all', __('lang.all'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('expiry', 'nearest', request()->expiry === 'nearest' , ['class' => 'form-check-input']) !!}
+                    {!! Form::label('nearest', __('lang.nearest_expiry_filter'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('expiry', 'expired', request()->expiry === 'expired' , ['class' => 'form-check-input']) !!}
+                    {!! Form::label('expired', __('lang.expired'), ['class' => 'form-check-label']) !!}
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-check">
+                    {!! Form::radio('expiry', 'non', request()->expiry === 'non' || !request()->expiry, ['class' => 'form-check-input']) !!}
+                    {!! Form::label('non', __('lang.all'), ['class' => 'form-check-label']) !!}
                 </div>
             </div>
             <div class="col-2">
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="expired" {{!empty(request()->expired) ? 'checked' : ''}} name="expired">
-                    <label class="custom-control-label" for="expired">@lang('lang.expired')</label>
+                    <input type="checkbox" class="checkbox" id="balance_return_request" {{!empty(request()->balance_return_request) ? 'checked' : ''}} name="balance_return_request">
+                    <label class="checkbox" for="balance_return_request">@lang('lang.balance_return_request')</label>
                 </div>
             </div>
             <div class="col-2">
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="dont_show_zero_stocks" {{!empty(request()->dont_show_zero_stocks) ? 'checked' : ''}} name="dont_show_zero_stocks">
-                    <label class="custom-control-label" for="dont_show_zero_stocks">@lang('lang.dont_show_zero_stocks')</label>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="zero_stocks" {{!empty(request()->zero_stocks) ? 'checked' : ''}} name="zero_stocks">
-                    <label class="custom-control-label" for="zero_stocks">@lang('lang.zero_stocks')</label>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="balance_return_request" {{!empty(request()->balance_return_request) ? 'checked' : ''}} name="balance_return_request">
-                    <label class="custom-control-label" for="balance_return_request">@lang('lang.balance_return_request')</label>
-                </div>
-            </div>
-            <div class="col-2">
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="sell_price_less_purchase_price" {{!empty(request()->sell_price_less_purchase_price) ? 'checked' : ''}} name="sell_price_less_purchase_price">
-                    <label class="custom-control-label" for="sell_price_less_purchase_price">@lang('lang.sell_price_less_purchase_price')</label>
+                    <input type="checkbox" class="checkbox" id="sell_price_less_purchase_price" {{!empty(request()->sell_price_less_purchase_price) ? 'checked' : ''}} name="sell_price_less_purchase_price">
+                    <label class="checkbox" for="sell_price_less_purchase_price">@lang('lang.sell_price_less_purchase_price')</label>
                 </div>
             </div>
             <div class="col-2">

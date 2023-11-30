@@ -646,7 +646,9 @@ return [
     'amount_of_sells' => 'Amount Of Sells',
     'amount_of_purchases' => 'Amount Of Purchases',
     'total_surplus' => 'Total Surplus',
-    'product_discount' =>  'Product Discount'
+    'product_discount' =>  'Product Discount',
+    'all_selling' => 'All Selling',
+    'all_stock' => 'All Stock'
 ];
 
 
