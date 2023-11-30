@@ -43,7 +43,45 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="container-fluid">
-                                        {{-- @include('products.filters')  --}}
+                                        <form action="{{ route('get-due-report.index') }}">
+                                            <div class="row pb-3">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        {!! Form::label('start_date', __('lang.start_date'), []) !!}
+                                                        {!! Form::text('start_date', request()->start_date, ['class' => 'form-control']) !!}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        {!! Form::label('end_date', __('lang.end_date'), []) !!}
+                                                        {!! Form::text('end_date', request()->end_date, ['class' => 'form-control']) !!}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        {!! Form::label('store_id', __('lang.store'), []) !!}
+                                                        {!! Form::select('store_id', $stores, request()->store_id, [
+                                                            'class' => 'form-control select2',
+                                                            'placeholder' => __('lang.all'),
+                                                        ]) !!}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                                                        {!! Form::select('pos_id', $store_pos, request()->pos_id, [
+                                                            'class' => 'form-control select2',
+                                                            'placeholder' => __('lang.all'),
+                                                        ]) !!}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <br>
+                                                    <button type="submit"
+                                                        class="btn btn-success mt-2">@lang('lang.filter')</button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -62,6 +100,7 @@
                                             <th>@lang('lang.amount')</th>
                                             <th>@lang('lang.paid')</th>
                                             <th>@lang('lang.duePaid')</th>
+                                            <th class="notexport">@lang('lang.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -106,7 +145,7 @@
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.amount')">
 
-                                                        {{ @num_format($due->final_total) }}
+                                                        {{ @num_format($due->final_total > 0 ? $due->final_total : $due->dollar_final_total * $due->exchange_rate) }}
                                                 </td>
                                                 </span>
                                                 <td>
@@ -124,8 +163,90 @@
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.duePaid')">
 
-                                                        {{ @num_format($due->final_total - $due->transaction_payments->sum('amount')) }}
+                                                        @num_format(($due->final_total > 0 ? $due->final_total : $due->dollar_final_total * $due->exchange_rate) - $due->transaction_payments->sum('amount'))
                                                     </span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" style="font-size: 12px;font-weight: 600"
+                                                            class="btn btn-default btn-sm dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">@lang('lang.action')
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                            user="menu">
+                                                            {{-- @can('sale.pos.create_and_edit')
+                                                            <li>
+
+                                                                <a data-href="{{action('SellController@print', $due->id)}}"
+                                                        class="btn print-invoice"><i class="dripicons-print"></i>
+                                                        @lang('lang.generate_invoice')</a>
+                                                        </li>
+
+                                                        @endcan --}}
+                                                            {{-- @can('sale.pos.view') --}}
+                                                            <li>
+
+                                                                <a data-href="{{ route('pos.show', $due->id) }}"
+                                                                    data-container=".view_modal"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                        class="fa fa-eye"></i> @lang('lang.view')</a>
+                                                            </li>
+
+                                                            {{-- @endcan --}}
+                                                            {{-- @can('sale.pos.create_and_edit') --}}
+                                                            {{-- <li>
+
+                                                            <a href="{{action('SellController@edit', $due->id)}}"
+                                                                class="btn"><i class="dripicons-document-edit"></i>
+                                                                @lang('lang.edit')</a>
+                                                        </li> --}}
+                                                            {{--  --}}
+                                                            {{-- @endcan --}}
+                                                            {{-- @can('return.sell_return.create_and_edit') --}}
+                                                            <li>
+                                                                <a href="{{ route('sell.return', $due->id) }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                        class="fa fa-undo"></i>
+                                                                    @lang('lang.sale_return')</a>
+                                                            </li>
+
+                                                            {{-- @endcan --}}
+                                                            {{-- @can('sale.pay.create_and_edit') --}}
+                                                            @if ($due->payment_status != 'paid')
+                                                                <li>
+                                                                    <a data-href="{{ route('add_payment', ['id' => $due->id]) }}"
+                                                                        data-container=".view_modal"
+                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                            class="fa fa-plus"></i>
+                                                                        @lang('lang.add_payment')</a>
+                                                                </li>
+                                                            @endif
+                                                            {{-- @endcan --}}
+                                                            {{-- @can('sale.pay.view') --}}
+                                                            @if ($due->payment_status != 'pending')
+                                                                <li>
+                                                                    <a data-href="{{ route('show_payment', $due->id) }}"
+                                                                        data-container=".view_modal"
+                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                            class="fa fa-money"></i>
+                                                                        @lang('lang.view_payments')</a>
+                                                                </li>
+                                                            @endif
+                                                            {{-- @endcan --}}
+                                                            {{-- @can('sale.pos.delete') --}}
+                                                            <li>
+                                                                <a data-href="{{ route('customers-report.destroy', $due->id) }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item">
+                                                                    <i class="fa fa-trash"></i>
+                                                                    @lang('lang.delete')
+                                                                </a>
+                                                            </li>
+                                                            {{-- @endcan --}}
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             @php

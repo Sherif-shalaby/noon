@@ -13,9 +13,11 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Product;
+use App\Models\ProductStore;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Variation;
 use App\Utils\ReportsFilters;
 use App\Utils\Util;
 use Illuminate\Support\Facades\DB;
@@ -204,6 +206,49 @@ class ReportController extends Controller
         return view('reports.best_seller.index',compact('product','sold_qty','subcategories','categories',
             'suppliers','brands','branches','stores'));
 
+    }
+    public function getStoreStockChart(Request $request)
+    {
+        $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+
+        $item_query = ProductStore::where('quantity_available', '>', 0);
+        if (!empty($store_id)) {
+            $item_query->where('store_id', $store_id);
+        }
+        $total_item = $item_query->count();
+
+
+
+        $qty_query = ProductStore::where('quantity_available', '>', 0);
+        if (!empty($store_id)) {
+            $qty_query->where('store_id', $store_id);
+        }
+        $total_qty = $qty_query->sum('quantity_available');
+
+
+        $price_query = Variation::leftjoin('product_stores', 'variations.id', 'product_stores.variation_id');
+        if (!empty($store_id)) {
+            $price_query->where('store_id', $store_id);
+        }
+        $total_price =  $price_query->select(DB::raw('SUM(quantity_available * 1) as total_price'))->first()->total_price;
+
+
+
+        $cost_query = Variation::leftjoin('product_stores', 'variations.id', 'product_stores.variation_id');
+        if (!empty($store_id)) {
+            $cost_query->where('store_id', $store_id);
+        }
+        $total_cost =  $cost_query->select(DB::raw('SUM(quantity_available * 1) as total_cost'))->first()->total_cost;
+        $stores = Store::getDropdown();
+
+
+        return view('reports.sales-report.store_stock_chart', compact(
+            'total_item',
+            'total_qty',
+            'total_price',
+            'total_cost',
+            'stores',
+        ));
     }
 
     public function  dailySalesReport(){

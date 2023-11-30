@@ -16,6 +16,7 @@ return array(
     'save' => 'حفظ',
     'close' => 'الغاء',
     'delete' => 'حذف',
+    'forceDelete' => 'حذف نهائي',
     'deleted_at' => 'تاريخ الحذف',
     'delete_msg' => 'تم الحذف بنجاح',
     'restore' => 'استرجاع',
@@ -701,4 +702,9 @@ return array(
     'next' => 'التالى',
     'total_surplus' => 'إجمالي الفائض',
     'product_discount' => 'خصم المنتج',
+    'store_stock_chart' => 'مخطط مخزون المتجر',
+    'estimate_profit' => 'تقدير الربح',
+    'stock_value_by_cost' => 'قيمة المخزون بسعر التكلفة',
+    'stock_value_by_price' => 'قيمة المخزون بسعر البيع',
+    'items' => 'العناصر',
 );

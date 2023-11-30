@@ -1600,6 +1600,7 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.product_report') }}
                                             </a>
                                         </li>
+
                                         <li>
                                             <a class="initial_balance_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none;"
@@ -1607,6 +1608,7 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.initial_balance') }}
                                             </a>
                                         </li>
+
                                         {{-- +++++++++++ purchases report +++++++++++ --}}
                                         <li>
                                             <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
@@ -1615,6 +1617,7 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.purchases_report') }}
                                             </a>
                                         </li>
+
                                         {{-- +++++++++++ Supplier Report +++++++++++ --}}
                                         <li>
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
@@ -1623,6 +1626,7 @@
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.supplier_report') }}
                                             </a>
                                         </li>
+
                                         {{-- +++++++++++ employees sales report +++++++++++ --}}
                                         <li>
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
@@ -1683,6 +1687,14 @@
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
                                                 <i
                                                     class="mdi mdi-circle"></i>{{ __('lang.monthly_sale_and_purchase_report') }}
+                                            </a>
+                                        </li>
+                                        {{-- +++++++++++ Get Due Report +++++++++++ --}}
+                                        <li>
+                                            <a class="store_stock_chart-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
+                                                href="{{ route('report.store_stock_chart') }}"
+                                                style="cursor: pointer;font-weight: 600;text-decoration: none">
+                                                <i class="mdi mdi-circle"></i>{{ __('lang.store_stock_chart') }}
                                             </a>
                                         </li>
                                     </ul>
@@ -2074,6 +2086,12 @@
     $('.monthly_sale_and_purchase_report-button').on('click', function(e) {
         e.preventDefault();
         let url = "{{ route('report.monthly_sale_report') }}"
+        document.body.classList.add('animated-element');
+        window.location.href = url;
+    })
+    $('.store_stock_chart-button').on('click', function(e) {
+        e.preventDefault();
+        let url = "{{ route('report.store_stock_chart') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })

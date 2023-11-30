@@ -43,7 +43,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="container-fluid">
-                                        {{-- @include('products.filters')  --}}
+                                        @include('reports.receivable-report.filters')
                                     </div>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                                             <th>عميل</th>
                                             <th>حالة المبيعات</th>
                                             <th>حالة السداد</th>
-                                            <th>العملة المٌستلمة</th>
+                                            {{-- <th>العملة المٌستلمة</th> --}}
                                             <th>المبلغ الاجمالي</th>
                                             {{-- <th>@lang('lang.action')</th>  --}}
                                         </tr>
@@ -102,14 +102,14 @@
                                                         {{ $transaction_sell_line->payment_status ?? '' }}
                                                     </span>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="العملة المٌستلمة">
                                                         {{ $transaction_sell_line->transaction_currency_relationship->symbol ?? '' }}
                                                     </span>
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"

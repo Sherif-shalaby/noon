@@ -22,6 +22,7 @@ return [
     'action' => 'Action',
     'update' => 'Update',
     'delete' => 'Delete',
+    'forceDelete' => 'Force deletion',
     'deleted_at' => 'deleted at',
     'delete_msg' => 'Deleted Successfully',
     'show_hide_columns' => 'Show/Hide Columns',
@@ -659,5 +660,10 @@ return [
     'previous' => 'Previous',
     'next' => 'Next',
     'total_surplus' => 'Total Surplus',
-    'product_discount' =>  'Product Discount'
+    'product_discount' =>  'Product Discount',
+    'store_stock_chart' => 'Store Stock Chart',
+    'estimate_profit' => 'Estimate Profit',
+    'stock_value_by_price' => 'Stock Value By Price',
+    'stock_value_by_cost' => 'Stock Value By Cost',
+    'items' => 'Items',
 ];

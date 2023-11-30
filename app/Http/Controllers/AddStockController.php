@@ -147,7 +147,6 @@ class AddStockController extends Controller
                 'paid_on' => $this->commonUtil->uf_date($data['paid_on']) . ' ' . date('H:i:s'),
                 'exchange_rate' => $request->exchange_rate,
                 'created_by' => Auth::user()->id,
-//                'payment_for' => !empty($data['payment_for']) ? $data['payment_for'] : $transaction->customer_id,
                 'paying_currency' => $request->paying_currency,
             ];
             DB::beginTransaction();
@@ -159,12 +158,6 @@ class AddStockController extends Controller
             if(isset($request->change_exchange_rate_to_supplier)){
                 $transaction->supplier->update(['exchange_rate' => $request->exchange_rate]);
             }
-
-//            if ($request->upload_documents) {
-//                foreach ($request->file('upload_documents', []) as $key => $doc) {
-//                    $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
-//                }
-//            }
             // check user and add money to user.
             if ($data['method'] == 'cash') {
                 $user_id = null;

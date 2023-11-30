@@ -34,15 +34,15 @@
                 <!-- Start col -->
                 <div class="col-lg-12">
                     <div class="card m-b-30">
-                        <div class="card-header">
+                        {{-- <div class="card-header">
                             <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.products')</h5>
-                        </div>
+                        </div> --}}
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="container-fluid">
-                                        {{-- @include('products.filters')  --}}
+                                        @include('reports.payable-report.filters')
                                     </div>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                             <th>رقم الفاتورة</th>
                                             <th>التاريخ و الوقت</th>
                                             <th>المورد</th>
-                                            <th>العملة المدفوعة</th>
+                                            {{-- <th>العملة المدفوعة</th> --}}
                                             <th>المبلغ الاجمالي</th>
                                             <th>انشئ بواسطة</th>
                                             {{-- <th>@lang('lang.action')</th>  --}}
@@ -87,7 +87,7 @@
                                                         {{ $transactions_stock_line->supplier->name ?? '' }}
                                                     </span>
                                                 </td>
-                                                <td>
+                                                {{-- <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
@@ -95,7 +95,7 @@
                                                         {{ $transactions_stock_line->paying_currency_relationship->symbol ?? '' }}
                                                     </span>
 
-                                                </td>
+                                                </td> --}}
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
