@@ -24,14 +24,11 @@
             <!-- Start col -->
             <div class="col-lg-12">
                 <div class="card m-b-30">
-                    <div class="card-header">
-                        <h5 class="card-title">@lang('lang.products')</h5>
-                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="container-fluid">
-                                    {{-- @include('products.filters')  --}}
+                                    @include('reports.payable-report.filters')
                                 </div>
                             </div>
                         </div>
@@ -43,7 +40,7 @@
                                         <th>رقم الفاتورة</th>
                                         <th>التاريخ و الوقت</th>
                                         <th>المورد</th>
-                                        <th>العملة المدفوعة</th>
+                                        {{-- <th>العملة المدفوعة</th> --}}
                                         <th>المبلغ الاجمالي</th>
                                         <th>انشئ بواسطة</th>
                                         {{-- <th>@lang('lang.action')</th>  --}}
@@ -55,7 +52,7 @@
                                             <td>{{ $transactions_stock_line->invoice_no ?? ''}}</td>
                                             <td>{{ $transactions_stock_line->created_at ?? ''}}</td>
                                             <td>{{ $transactions_stock_line->supplier->name ?? ''}}</td>
-                                            <td>{{ $transactions_stock_line->paying_currency_relationship->symbol ?? ''}}</td>
+                                            {{-- <td>{{ $transactions_stock_line->paying_currency_relationship->symbol ?? ''}}</td> --}}
                                             <td>{{ $transactions_stock_line->final_total ?? ''}}</td>
                                             <td>{{ $transactions_stock_line->created_by_relationship->name ?? ''}}</td>
                                         </tr>

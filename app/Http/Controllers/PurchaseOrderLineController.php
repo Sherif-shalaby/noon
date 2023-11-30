@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PurchaseOrderTransaction;
+use Carbon\Carbon;
 
 class PurchaseOrderLineController extends Controller
 {
@@ -228,6 +229,7 @@ class PurchaseOrderLineController extends Controller
     public function edit($id)
     {
         $purchase_order = PurchaseOrderTransaction::find($id);
+        $products = Product::all();
         // dd($purchase_order->status);
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
         $stores = Store::getDropdown();
@@ -238,7 +240,9 @@ class PurchaseOrderLineController extends Controller
             'purchase_order',
             'status_array',
             'suppliers',
-            'stores'
+            'stores',
+            'id',
+            'products'
         ));
     }
     /* ++++++++++++++++++++++++++++++ edit() ++++++++++++++++++++++++++ */
@@ -300,6 +304,31 @@ class PurchaseOrderLineController extends Controller
             $output = [
                 'success' => true,
                 'msg' => __('lang.restored_success'),
+            ];
+            return redirect()->back()->with('status', $output);
+        }
+        catch (\Exception $e)
+        {
+            dd($e);
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+    }
+    // ============================= forceDelete softDeletedRecords ========================
+    public function forceDelete($id)
+    {
+        // dd($id);
+        try
+        {
+            $record = PurchaseOrderTransaction::withTrashed()->findOrFail($id);
+            // Restore the soft-deleted record
+            $record->forceDelete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.forceDelete'),
             ];
             return redirect()->back()->with('status', $output);
         }

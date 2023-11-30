@@ -366,6 +366,12 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.get_due_report')}}
                                     </a>
                                 </li>
+                                {{-- +++++++++++ Get Due Report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('report.store_stock_chart')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.store_stock_chart')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ Supplier Report +++++++++++ --}}
                                 <li>
                                     <a href="{{route('get-supplier-report.index')}}">
