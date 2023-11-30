@@ -653,6 +653,8 @@ return [
     'items'=>'Items',
     'total_surplus' => 'Total Surplus',
     'product_discount' =>  'Product Discount',
+    'all_selling' => 'All Selling',
+    'all_stock' => 'All Stock'
 ];
 
 
