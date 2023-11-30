@@ -72,7 +72,7 @@
 
             @if (count($product['variations']) > 0)
                 <div class="d-flex justify-content-center">
-                    <select name="items.{{ $index }}.variation_id" class="form-control select unit_name"
+                    <select name="items.{{ $index }}.variation_id" class="form-control select ."
                         style="width: 61px;height:30px;font-size:12px;"
                         wire:model="items.{{ $index }}.variation_id"
                         wire:change="getVariationData({{ $index }})">

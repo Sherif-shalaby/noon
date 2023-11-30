@@ -70,7 +70,9 @@
                                             <th class="dollar-cell">@lang('lang.purchase_price') $</th>
                                             <th class="dollar-cell">@lang('lang.sell_price') $</th>
                                             <th>@lang('lang.amount_of_purchases')</th>
+                                            <th>@lang('lang.purchased_qty')</th>
                                             <th>@lang('lang.amount_of_sells')</th>
+                                            <th>@lang('lang.sold_qty')</th>
                                             {{--                                    <th>@lang('lang.profits')</th> --}}
                                             <th class="dollar-cell">@lang('lang.amount_of_purchases') $</th>
                                             <th class="dollar-cell">@lang('lang.amount_of_sells') $</th>
@@ -82,8 +84,9 @@
                                             <th>@lang('added_by')</th>
                                             <th>@lang('updated_by')</th>
                                             @if (request()->sell_price_less_purchase_price == 'on')
-                                                <th>@lang('actions')</th>
+                                                <th>@lang('view_details')</th>
                                             @endif
+                                            <th>@lang('lang.action')</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -242,15 +245,28 @@
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.purchased_qty')">
+                                                        @if ($product->stock_lines->isNotEmpty())
+                                                            {{ @num_format($product->stock_lines->sum('quantity')) }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.amount_of_sells')">
                                                         {{ @num_format($product->total_sells_amount) }}
                                                     </span>
                                                 </td>
-                                                {{--                                        <td> --}}
-                                                {{--                                            {{ @num_format( !empty($product->total_sells_amount) ? --}}
-                                                {{--                                                $product->total_sells_amount - $product->total_purchase_amount : 0 --}}
-                                                {{--                                                )}} --}}
-                                                {{--                                        </td> --}}
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.sold_qty')">
+                                                        {{ @num_format($product->stock_lines->sum('quantity_sold')) }}
+                                                    </span>
+                                                </td>
 
                                                 <td class="dollar-cell">
                                                     <span
@@ -357,6 +373,30 @@
                                                         </a>
                                                     </td>
                                                 @endif
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button"
+                                                            class="btn btn-default btn-sm dropdown-toggle"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">خيارات <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                            user="menu" x-placement="bottom-end"
+                                                            style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                            <li>
+                                                                <a data-href="{{ route('reports.product_details', $product->id) }}"
+                                                                    data-container=".view_modal"
+                                                                    class="btn  drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"
+                                                                    data-toggle="modal">
+                                                                    <i class="fa fa-eye"></i> @lang('lang.view')
+                                                                </a>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

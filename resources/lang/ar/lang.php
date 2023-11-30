@@ -707,4 +707,8 @@ return array(
     'stock_value_by_cost' => 'قيمة المخزون بسعر التكلفة',
     'stock_value_by_price' => 'قيمة المخزون بسعر البيع',
     'items' => 'العناصر',
+    'purchased_qty' => 'الكمية المشتراة',
+    'sold_qty' => 'الكمية المباعة',
+    'all_selling' => 'كل المبيعات',
+    'all_stock' => 'كل المخزون',
 );

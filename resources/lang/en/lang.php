@@ -666,4 +666,7 @@ return [
     'stock_value_by_price' => 'Stock Value By Price',
     'stock_value_by_cost' => 'Stock Value By Cost',
     'items' => 'Items',
+    'product_discount' =>  'Product Discount',
+    'all_selling' => 'All Selling',
+    'all_stock' => 'All Stock'
 ];
