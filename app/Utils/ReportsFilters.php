@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\DB;
 class ReportsFilters extends Util
 {
     public function productFilters(){
-        $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
+        $supplierIds = isset(request()->supplier_id) && is_array(request()->supplier_id)  ? array_filter(request()->supplier_id, fn ($value) => !is_null($value)) :[];
+        $storeIds =  isset(request()->store_id) && is_array(request()->store_id)  ? array_filter(request()->store_id, fn ($value) => !is_null($value)) :[];
+        $brand_ids = isset(request()->brand_id) && is_array(request()->brand_id) ? array_filter(request()->brand_id, fn ($value) => !is_null($value)) :[];
+        $created_by_ids =  isset(request()->created_by) && is_array(request()->created_by) ? array_filter(request()->created_by, fn ($value) => !is_null($value)) :[];
+
         $products =  Product::
             when(\request()->stocks =="no_zero", function ($query) {
                 $query->whereHas('product_stores', function ($query) {
@@ -36,21 +40,19 @@ class ReportsFilters extends Util
                     $storeQuery->where('id', $branchId);
                 });
             })
-            ->when(\request()->store_id != null, function ($query) {
-                $query->whereHas('product_stores', function ($query) {
-                    $query->where('store_id',\request()->store_id);
-                });
+            ->when(\request()->store_id != null && !empty($storeIds), function ($query) use ($storeIds) {
+                $query->whereHas('product_stores', fn ($query) => $query->whereIn('store_id', $storeIds));
             })
-            ->when(\request()->supplier_id != null, function ($query) use ($stock_transaction_ids) {
-                $query->whereHas('stock_lines', function ($query) use ($stock_transaction_ids) {
-                    $query->whereIn('stock_transaction_id', $stock_transaction_ids);
-                });
+           ->when(request()->supplier_id != null && !empty($supplierIds), function ($query) use ($supplierIds) {
+               $query->whereHas('stock_lines.transaction', function ($query) use ($supplierIds) {
+                   $query->whereIn('supplier_id', $supplierIds);
+               });
+           })
+            ->when(\request()->brand_id != null && !empty($brand_ids), function ($query) {
+                $query->whereIn('brand_id',\request()->brand_id);
             })
-            ->when(\request()->brand_id != null, function ($query) {
-                $query->where('brand_id',\request()->brand_id);
-            })
-            ->when(\request()->created_by != null, function ($query) {
-                $query->where('created_by',\request()->created_by);
+            ->when(\request()->created_by != null && !empty($created_by_ids), function ($query) {
+                $query->whereIn('created_by',\request()->created_by);
             })
             ->when(request()->selling_filter != null && request()->selling_filter === 'best', function ($query) {
                 $query->whereHas('sell_lines', function ($query) {

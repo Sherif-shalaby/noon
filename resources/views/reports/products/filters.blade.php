@@ -25,9 +25,9 @@
                 <div class="form-group">
                     {!! Form::label('store_id', __('lang.store'))  !!}
                     {!! Form::select(
-                        'store_id',
+                        'store_id[]',
                         $stores, request()->store_id,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select'), 'id' => 'store_id']
+                        ['class' => 'form-control select2 elect2-search__field','multiple','placeholder'=>__('lang.please_select'), 'id' => 'store_id']
                     ) !!}
                 </div>
             </div>
@@ -35,9 +35,9 @@
                 <div class="form-group">
                     {!! Form::label('supplier_id', __('lang.supplier'))  !!}
                     {!! Form::select(
-                        'supplier_id',
+                        'supplier_id[]',
                         $suppliers,request()->supplier_id,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
+                        ['class' => 'form-control select2 select2-search__field','multiple','placeholder'=>__('lang.please_select')]
                     ) !!}
                 </div>
             </div>
@@ -86,9 +86,9 @@
                 <div class="form-group">
                     {!! Form::label('brand_id', __('lang.brand'))  !!}
                     {!! Form::select(
-                        'brand_id',
+                        'brand_id[]',
                         $brands,request()->brand_id,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
+                        ['class' => 'form-control select2 select2-search__field','multiple','placeholder'=>__('lang.please_select')]
                     ) !!}
                 </div>
             </div>
@@ -96,9 +96,9 @@
                 <div class="form-group">
                     {!! Form::label('created_by', __('lang.created_by'))  !!}
                     {!! Form::select(
-                        'created_by',
+                        'created_by[]',
                         $users,request()->created_by,
-                        ['class' => 'form-control select2','placeholder'=>__('lang.please_select')]
+                        ['class' => 'form-control select2 select2-search__field','multiple','placeholder'=>__('lang.please_select')]
                     ) !!}
                 </div>
             </div>
