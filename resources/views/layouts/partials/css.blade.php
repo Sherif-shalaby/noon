@@ -45,7 +45,7 @@
         color: red;
     }
 
-    input[type="text"],
+    /* input[type="text"], */
     input[type="month"],
     input[type="number"],
     textarea,
