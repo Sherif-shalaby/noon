@@ -1,4 +1,4 @@
-<nav class="navbar no-print navbar-expand-lg bg-white py-0">
+<nav class="navbar no-print navbar-expand-lg bg-white py-0" style="z-index: 5">
     <div class="container-fluid">
         <a style="width: 150px;" class="ml-2 d-lg-none" href="index.html">
             <img style="width: 100%" src="{{ asset('images/logo1.png') }}" class="img-fluid" alt="logo">

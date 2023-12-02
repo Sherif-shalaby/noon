@@ -293,7 +293,7 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++++ submit ++++++++++++++++++++ --}}
-                            <div class="col-sm-12 animate__animated animate__lightSpeedInLeft"
+                            <div class="col-sm-12 animate__animated animate__lightSpeedInLeft px-4"
                                 style="animation-delay: 1.55s">
                                 <button type="submit" name="submit" id="submit-save" style="margin: 10px"
                                     value="save" class="btn btn-primary pull-right btn-flat submit"
