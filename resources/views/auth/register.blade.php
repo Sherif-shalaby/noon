@@ -312,7 +312,7 @@
         @include('layouts.partials.footer')
     </div>
 </div>
-<div class="container">
+{{-- <div class="container">
     <div class="row justify-content-center">
         <div class="row justify-content-center">
             <div class="">
@@ -430,5 +430,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 {{-- @endsection --}}
