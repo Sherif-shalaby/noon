@@ -241,6 +241,11 @@ class Create extends Component
     {
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
         $this->allproducts = Product::whereIn('id', $products_store)->get();
+        foreach ($this->items as $key => $item) {
+            if (!(ProductStore::where('product_id', $this->items[$key]['product']['id'])->where('store_id', $this->store_id)->exists())) {
+                $this->delete_item($key);
+            }
+        }
         $this->dispatchBrowserEvent('componentRefreshed');
     }
 
@@ -331,7 +336,7 @@ class Create extends Component
                 //                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;
                 //                $sell_line->item_tax = !empty($item['item_tax']) ? $this->num_uf($item['item_tax']) : 0;
                 $sell_line->save();
-                // $keep_sell_lines[] = $sell_line->id;
+                //                $keep_sell_lines[] = $sell_line->id;
 
                 $stock_id = $item['current_stock']['id'];
 
@@ -405,9 +410,10 @@ class Create extends Component
             }
 
             DB::commit();
-            // $this->items = [];
+            $this->items = [];
+            $this->computeForAll();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
-            return $this->redirect('/invoices/create');
+            // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
@@ -579,7 +585,7 @@ class Create extends Component
                     'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
                     //                    'discount_categories' =>  $discounts,
-                    'discount_categories' => $current_stock->prices()->get(),
+                    'discount_categories' => !empty($current_stock) ? $current_stock->prices()->get() : null,
                     'discount' => null,
                     'discount_price' => 0,
                     'discount_type' =>  null,
@@ -1489,8 +1495,10 @@ class Create extends Component
                     }
                 }
             }
+            $this->items = [];
+            $this->computeForAll();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
-            return $this->redirect('/invoices/create');
+            // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);

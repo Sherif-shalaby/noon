@@ -37,7 +37,7 @@
 @section('content')
     <div class="animate-in-page">
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar no-print">
             <!-- Start row -->
             <div class="row">
                 <!-- Start col -->
