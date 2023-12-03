@@ -650,7 +650,17 @@ body {
 
 .div2 {
     overflow: auto;
+    /* width: fit-content; */
+}
+
+.table-scroll-wrapper {
     width: fit-content;
+}
+
+@media(min-width:1400px) {
+    .table-scroll-wrapper {
+        width: 100%;
+    }
 }
 
 .custom-tooltip {

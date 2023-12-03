@@ -18,6 +18,16 @@
         .table-top-head {
             top: 170px !important;
         }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
     </style>
     <div class="animate-in-page">
 
@@ -95,9 +105,9 @@
                                 <div class="div1"></div>
                             </div>
                             <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <div class="div2">
+                                <div class="div2 table-scroll-wrapper">
                                     <!-- content goes here -->
-                                    <div style="width: 1800px;height: 90vh;">
+                                    <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
                                         <div id="status"></div>
                                         <table id="datatable-buttons"
                                             class="table table-striped table-bordered table-hover">
