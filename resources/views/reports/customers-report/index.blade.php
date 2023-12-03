@@ -18,8 +18,8 @@
 @endsection
 @section('content')
 
-       <!-- Start Contentbar -->
-       <div class="contentbar">
+    <!-- Start Contentbar -->
+    <div class="contentbar no-print">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
@@ -74,13 +74,13 @@
                                         @foreach ($customer_transactions_sell_lines as $key => $customer_transactions_sell_line)
                                             <tr>
                                                 <td>{{ $customer_transactions_sell_line->created_at->format('Y-m-d') }}</td>
-                                                <td>{{ $customer_transactions_sell_line->invoice_no ?? ''}}</td>
-                                                <td>{{ $customer_transactions_sell_line->customer->name ?? ''}}</td>
+                                                <td>{{ $customer_transactions_sell_line->invoice_no ?? '' }}</td>
+                                                <td>{{ $customer_transactions_sell_line->customer->name ?? '' }}</td>
                                                 {{-- Get All_sell_lines of transaction Then Get "product name" --}}
                                                 <td>
                                                     <ul>
                                                         @foreach ($customer_transactions_sell_line->transaction_sell_lines as $transaction_sell_lines)
-                                                            <li>{{ $transaction_sell_lines->product->name??'' }}</li>
+                                                            <li>{{ $transaction_sell_lines->product->name ?? '' }}</li>
                                                         @endforeach
                                                     </ul>
                                                 </td>
@@ -90,22 +90,22 @@
                                                 <td>{{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount'), 2) }}
                                                 </td>
                                                 {{-- متاخرات --}}
-{{--                                                <td>--}}
-{{--                                                    {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total, 2) }}--}}
-{{--                                                        @foreach ( $customer_transactions_sell_line->transaction_sell_lines as $transaction_sell_lines)--}}
-{{--                                                                <li>{{ $transaction_sell_lines->product->name ?? ''}}</li>--}}
-{{--                                                        @endforeach--}}
-{{--                                                    </ul>--}}
-{{--                                                </td>--}}
-{{--                                                <td>{{ @num_format($customer_transactions_sell_line->final_total ) ?? ''}}</td>--}}
+                                                {{--                                                <td> --}}
+                                                {{--                                                    {{ number_format($customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total, 2) }} --}}
+                                                {{--                                                        @foreach ($customer_transactions_sell_line->transaction_sell_lines as $transaction_sell_lines) --}}
+                                                {{--                                                                <li>{{ $transaction_sell_lines->product->name ?? ''}}</li> --}}
+                                                {{--                                                        @endforeach --}}
+                                                {{--                                                    </ul> --}}
+                                                {{--                                                </td> --}}
+                                                {{--                                                <td>{{ @num_format($customer_transactions_sell_line->final_total ) ?? ''}}</td> --}}
                                                 {{-- Get All_Payments of transaction Then Get "payment amount" --}}
-{{--                                                <td>{{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount')) ?? ''}}</td>--}}
+                                                {{--                                                <td>{{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount')) ?? ''}}</td> --}}
                                                 {{-- متاخرات --}}
                                                 <td>
-                                                    {{ @num_format( $customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total) ?? ''}}
+                                                    {{ @num_format($customer_transactions_sell_line->transaction_payments->sum('amount') - $customer_transactions_sell_line->final_total) ?? '' }}
                                                 </td>
                                                 {{-- sells status --}}
-                                                <td>{{ $customer_transactions_sell_line->status ?? ''}}</td>
+                                                <td>{{ $customer_transactions_sell_line->status ?? '' }}</td>
                                                 {{-- payment status --}}
                                                 <td>{{ $customer_transactions_sell_line->payment_status }}</td>
                                                 <td>
@@ -120,23 +120,29 @@
                                                             user="menu" x-placement="bottom-end"
                                                             style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
                                                             <li>
-                                                                <a data-href="{{route('show_payment', $customer_transactions_sell_line->id)}}" data-container=".view_modal" class="btn btn-modal">
+                                                                <a data-href="{{ route('show_payment', $customer_transactions_sell_line->id) }}"
+                                                                    data-container=".view_modal" class="btn btn-modal">
                                                                     <i class="fa fa-money"></i>
                                                                     @lang('lang.view_payments')
                                                                 </a>
                                                             </li>
-                                                            @if ($customer_transactions_sell_line->status != 'draft' && $customer_transactions_sell_line->payment_status != 'paid' && $customer_transactions_sell_line->status != 'canceled')
-                                                            <li class="divider"></li>
-                                                            <li>
-                                                                <a data-href="{{route('add_payment', $customer_transactions_sell_line->id)}}" data-container=".view_modal" class="btn btn-modal">
-                                                                    <i class="fa fa-plus"></i>
-                                                                    @lang('lang.add_payments')
-                                                                </a>
-                                                            </li>
+                                                            @if (
+                                                                $customer_transactions_sell_line->status != 'draft' &&
+                                                                    $customer_transactions_sell_line->payment_status != 'paid' &&
+                                                                    $customer_transactions_sell_line->status != 'canceled')
+                                                                <li class="divider"></li>
+                                                                <li>
+                                                                    <a data-href="{{ route('add_payment', $customer_transactions_sell_line->id) }}"
+                                                                        data-container=".view_modal" class="btn btn-modal">
+                                                                        <i class="fa fa-plus"></i>
+                                                                        @lang('lang.add_payments')
+                                                                    </a>
+                                                                </li>
                                                             @endif
                                                             <li class="divider"></li>
                                                             <li>
-                                                                <a data-href="{{route('pos.show', $customer_transactions_sell_line->id)}}" data-container=".view_modal" class="btn btn-modal">
+                                                                <a data-href="{{ route('pos.show', $customer_transactions_sell_line->id) }}"
+                                                                    data-container=".view_modal" class="btn btn-modal">
                                                                     <i class="fa fa-eye"></i>
                                                                     @lang('lang.view')
                                                                 </a>
@@ -150,7 +156,8 @@
                                                             </li>
                                                             <li class="divider"></li>
                                                             <li>
-                                                                <a href="{{route('sell.return', $customer_transactions_sell_line->id)}}" class="btn" target="_blank">
+                                                                <a href="{{ route('sell.return', $customer_transactions_sell_line->id) }}"
+                                                                    class="btn" target="_blank">
                                                                     <i class="fa fa-undo"></i>
                                                                     @lang('lang.sale_return')
                                                                 </a>
@@ -166,7 +173,7 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-{{--                                                <td>{{ $customer_transactions_sell_line->payment_status ?? ''}}</td>--}}
+                                                {{--                                                <td>{{ $customer_transactions_sell_line->payment_status ?? ''}}</td> --}}
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -194,9 +201,11 @@
                                                 <td>{{ $transaction_payment->invoice_no }}</td>
                                                 <td>{{ $transaction_payment->method }}</td>
                                                 {{-- Get All_Payments of transaction Then Get sum of "payment amounts" --}}
-                                                <td>{{ number_format($transaction_payment->transaction_payments->sum('amount'), 2) }}</td>
+                                                <td>{{ number_format($transaction_payment->transaction_payments->sum('amount'), 2) }}
+                                                </td>
                                                 {{-- Created_by --}}
-                                                <td>{{ !empty($transaction_payment->transaction_payments->first())?$transaction_payment->transaction_payments->first()->created_by_user->name??'':'' }}</td>
+                                                <td>{{ !empty($transaction_payment->transaction_payments->first()) ? $transaction_payment->transaction_payments->first()->created_by_user->name ?? '' : '' }}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -208,9 +217,9 @@
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         {{-- {{-- <div class="table-responsive"> --}}
 
-                            <div class="view_modal no-print" >
+                        <div class="view_modal no-print">
 
-                            </div>
+                        </div>
                         {{-- </div> --}}
                     </div>
                 </div>
