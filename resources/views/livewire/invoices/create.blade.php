@@ -291,7 +291,7 @@
 
 
 {{--<!-- This will be printed -->--}}
-<section class="invoice print_section print-only" id="receipt_section"> </section>
+<section class="invoice print_section print-only" id="receipt_section">gggggggg </section>
 @push('javascripts')
     @if(empty($store_pos) || empty($stores))
         <script>

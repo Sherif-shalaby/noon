@@ -210,6 +210,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product-tax/get-dropdown', [ProductTaxController::class,'getDropdown']);
     Route::resource('product-tax', ProductTaxController::class);
     Route::get('report/get-monthly-sale-report', [ReportController::class,'getMonthlySaleReport'])->name('report.monthly_sale_report');
+    Route::get('report/get-store-stock-chart', [ReportController::class,'getStoreStockChart'])->name('report.store_stock_chart');
     // ########### Purchases Report ###########
     Route::resource('purchases-report', PurchasesReportController::class);
     // ########### Sales Report ###########
@@ -327,6 +328,7 @@ Route::group(['middleware' => ['auth']], function () {
                                 // Reports
     // Product Report
     Route::get('reports/product/',[ReportController::class,'getProductReport'])->name('reports.products');
+    Route::get('reports/product/{id}',[ReportController::class,'viewProductDetails'])->name('reports.product_details');
     Route::get('reports/{product}/sell_price_less_purchase_price',[ReportController::class,'sell_price_less_purchase_price'])->name('reports.sell_price_less_purchase_price');
     // Initial Balance
     Route::get('reports/initial_balance',[ReportController::class,'initialBalanceReport'])->name('reports.initial_balance');

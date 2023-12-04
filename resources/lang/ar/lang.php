@@ -690,8 +690,19 @@ return array(
     'profits' => 'الأرباح',
     'amount_of_sells' => 'مبلغ المبيعات',
     'amount_of_purchases' => 'مبلغ المشتريات',
+    'store_stock_chart'=>'مخطط مخزون المتجر',
+    'estimate_profit'=>'تقدير الربح',
+    'stock_value_by_cost'=>'قيمة المخزون بسعر التكلفة',
+    'stock_value_by_price'=>'قيمة المخزون بسعر البيع',
+    'items'=>'العناصر',
     'total_surplus' => 'إجمالي الفائض',
     'product_discount' => 'خصم المنتج',
+    'purchased_qty' => 'الكمية المشتراة',
+    'sold_qty' => 'الكمية المباعة',
+    'all_selling' => 'كل المبيعات',
+    'all_stock' => 'كل المخزون',
+
+
 
 );
 

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddStockLine;
+use App\Models\ProductStore;
+use App\Models\SellLine;
 use App\Models\StockTransaction;
 use App\Models\Store;
 use App\Models\TransactionSellLine;
@@ -13,9 +16,11 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\Product;
+use App\Models\ProductStore;
 use App\Models\Supplier;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Variation;
 use App\Utils\ReportsFilters;
 use App\Utils\Util;
 use Illuminate\Support\Facades\DB;
@@ -126,8 +131,6 @@ class ReportController extends Controller
         ));
     }
 
-
-
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
         $units = Unit::orderBy('created_at', 'desc')->pluck('name','id');
@@ -138,7 +141,6 @@ class ReportController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
-
         return view('reports.products.index',compact('products','categories','suppliers','brands',
             'units','stores','users','subcategories','branches'));
 
@@ -157,6 +159,21 @@ class ReportController extends Controller
                 });
         })->get();
         return view('reports.products.sell_prise_less_purchase_prise',compact('sell_lines'));
+    }
+
+    public function viewProductDetails($id){
+
+        $product = Product::find($id);
+        $stock_details = ProductStore::where('product_id', $id)->get();
+        $sales = SellLine::with('transaction')->where('product_id', $id)->get();
+        $add_stocks = AddStockLine::with('transaction')
+            ->where('product_id', $id)
+            ->whereHas('transaction', function ($query) {
+                $query->where('type', 'add_stock');
+            })->get();
+
+        return view('reports.products.partials.view_product_details',compact('product','stock_details',
+            'sales','add_stocks'));
     }
 
     public function initialBalanceReport(){
@@ -204,6 +221,49 @@ class ReportController extends Controller
         return view('reports.best_seller.index',compact('product','sold_qty','subcategories','categories',
             'suppliers','brands','branches','stores'));
 
+    }
+    public function getStoreStockChart(Request $request)
+    {
+        $store_id = $this->transactionUtil->getFilterOptionValues($request)['store_id'];
+
+        $item_query = ProductStore::where('quantity_available', '>', 0);
+        if (!empty($store_id)) {
+            $item_query->where('store_id', $store_id);
+        }
+        $total_item = $item_query->count();
+
+
+
+        $qty_query = ProductStore::where('quantity_available', '>', 0);
+        if (!empty($store_id)) {
+            $qty_query->where('store_id', $store_id);
+        }
+        $total_qty = $qty_query->sum('quantity_available');
+
+
+        $price_query = Variation::leftjoin('product_stores', 'variations.id', 'product_stores.variation_id');
+        if (!empty($store_id)) {
+            $price_query->where('store_id', $store_id);
+        }
+        $total_price =  $price_query->select(DB::raw('SUM(quantity_available * 1) as total_price'))->first()->total_price;
+
+
+
+        $cost_query = Variation::leftjoin('product_stores', 'variations.id', 'product_stores.variation_id');
+        if (!empty($store_id)) {
+            $cost_query->where('store_id', $store_id);
+        }
+        $total_cost =  $cost_query->select(DB::raw('SUM(quantity_available * 1) as total_cost'))->first()->total_cost;
+        $stores = Store::getDropdown();
+
+
+        return view('reports.sales-report.store_stock_chart', compact(
+            'total_item',
+            'total_qty',
+            'total_price',
+            'total_cost',
+            'stores',
+        ));
     }
 
     public function  dailySalesReport(){
