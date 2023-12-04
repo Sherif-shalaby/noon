@@ -81,7 +81,7 @@
                         'class' => 'modal-label-width',
                         'style' => 'font-size: 12px;font-weight: 500;',
                     ]) !!}
-                    <div class="input-wrapper" style="width: 60%;margin-right: 14%;">
+                    <div class="input-wrapper" style="width: 60%;margin: auto;">
                         {!! Form::select('branch_id', $branches, $store->branch_id, [
                             'class' => 'form-control select width-full m-auto',
                             'placeholder' => __('lang.branch'),

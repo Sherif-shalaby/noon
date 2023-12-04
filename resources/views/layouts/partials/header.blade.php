@@ -16,7 +16,7 @@
         {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
         <div class="collapse navbar-collapse" id="menu">
             <ul style="width: 100%"
-                class="horizontal-menu navbar-nav d-flex flex-wrap justify-content-start mt-5 mt-md-0 @if (app()->isLocale('ar')) flex-column flex-md-row-reverse @else flex-row @endif">
+                class="horizontal-menu navbar-nav d-flex flex-wrap justify-content-start mt-md-0 @if (app()->isLocale('ar')) flex-column flex-md-row-reverse @else flex-row @endif">
                 {{-- ###################### Dashboard : نظرة عامة ###################### --}}
                 {{-- @can('dashboard')  --}}
                 @if (!empty($module_settings['dashboard']))
