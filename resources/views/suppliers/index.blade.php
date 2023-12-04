@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.suppliers'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 40px;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -104,7 +109,7 @@
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="table-responsive ">
                                 {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                                <div class="col-md-3 col-lg-3 filter-wrapper">
+                                <div class="col-md-3 col-lg-3">
                                     {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                     <div class="multiselect col-md-12">
                                         <div class="selectBox" onclick="showCheckboxes()">
@@ -177,185 +182,197 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br /><br />
+
                                 {{-- +++++++++++++++++++++++++++ Table +++++++++++++++++++++++++++ --}}
-                                <table id="datatable-buttons"
-                                    class="table table-striped table-bordered table-hover @if (app()->isLocale('ar')) dir-rtl @endif">
-                                    <thead>
-                                        <tr>
-                                            <th class="col1">@lang('lang.name')</th>
-                                            <th class="col2">@lang('lang.company_name')</th>
-                                            <th class="col3">@lang('lang.email')</th>
-                                            <th class="col4">@lang('lang.mobile_number')</th>
-                                            <th class="col5">@lang('lang.state')</th>
-                                            <th class="col6">@lang('lang.city')</th>
-                                            <th class="col7">@lang('lang.exchange_rate')</th>
-                                            <th class="col8">@lang('lang.owner_debt_in_dinar')</th>
-                                            <th class="col9 dollar-cell">@lang('lang.owner_debt_in_dollar')</th>
-                                            <th class="col10">@lang('lang.created_by')</th>
-                                            <th class="col11">@lang('lang.updated_by')</th>
-                                            <th class="col12">@lang('lang.action')</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($suppliers as $supplier)
-                                            <tr>
-                                                <td class="col1">
-                                                    <span class="custom-t d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"oltip"
-                                                        data-tooltip="@lang('lang.name')">
-                                                        {{ $supplier->name }}
-                                                    </span>
-                                                </td>
-                                                <td class="col2">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.company_name')">
-                                                        {{ $supplier->company_name }}
-                                                    </span>
-                                                </td>
-                                                {{-- Convert the email and phone strings to arrays --}}
-                                                @php
-                                                    $emailArray = explode(',', $supplier->email);
-                                                    $phoneArray = explode(',', $supplier->mobile_number);
-                                                    // Remove square brackets from each element in the emailArray
-                                                    foreach ($emailArray as $key => $email) {
-                                                        $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
-                                                    }
-                                                    // Remove square brackets from each element in the emailArray
-                                                    foreach ($phoneArray as $key => $phone) {
-                                                        $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
-                                                    }
-                                                @endphp
-                                                <td class="col3">
-                                                    {{-- Iterate over the email array elements --}}
-                                                    @foreach ($emailArray as $email)
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.email')">
-                                                            {{ $email == 'null' ? '' : $email }}<br>
-                                                        </span>
+                                <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                    style="margin-top:40px ">
+                                    <div class="div1"></div>
+                                </div>
+                                <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                    <div class="div2 table-scroll-wrapper">
+                                        <!-- content goes here -->
+                                        <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                            <table id="datatable-buttons"
+                                                class="table table-striped table-bordered table-hover @if (app()->isLocale('ar')) dir-rtl @endif">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col1">@lang('lang.name')</th>
+                                                        <th class="col2">@lang('lang.company_name')</th>
+                                                        <th class="col3">@lang('lang.email')</th>
+                                                        <th class="col4">@lang('lang.mobile_number')</th>
+                                                        <th class="col5">@lang('lang.state')</th>
+                                                        <th class="col6">@lang('lang.city')</th>
+                                                        <th class="col7">@lang('lang.exchange_rate')</th>
+                                                        <th class="col8">@lang('lang.owner_debt_in_dinar')</th>
+                                                        <th class="col9 dollar-cell">@lang('lang.owner_debt_in_dollar')</th>
+                                                        <th class="col10">@lang('lang.created_by')</th>
+                                                        <th class="col11">@lang('lang.updated_by')</th>
+                                                        <th class="col12">@lang('lang.action')</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($suppliers as $supplier)
+                                                        <tr>
+                                                            <td class="col1">
+                                                                <span
+                                                                    class="custom-t d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"oltip"
+                                                                    data-tooltip="@lang('lang.name')">
+                                                                    {{ $supplier->name }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col2">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.company_name')">
+                                                                    {{ $supplier->company_name }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- Convert the email and phone strings to arrays --}}
+                                                            @php
+                                                                $emailArray = explode(',', $supplier->email);
+                                                                $phoneArray = explode(',', $supplier->mobile_number);
+                                                                // Remove square brackets from each element in the emailArray
+                                                                foreach ($emailArray as $key => $email) {
+                                                                    $emailArray[$key] = str_replace(['[', ']', '"'], '', $email);
+                                                                }
+                                                                // Remove square brackets from each element in the emailArray
+                                                                foreach ($phoneArray as $key => $phone) {
+                                                                    $phoneArray[$key] = str_replace(['[', ']', '"'], '', $phone);
+                                                                }
+                                                            @endphp
+                                                            <td class="col3">
+                                                                {{-- Iterate over the email array elements --}}
+                                                                @foreach ($emailArray as $email)
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.email')">
+                                                                        {{ $email == 'null' ? '' : $email }}<br>
+                                                                    </span>
+                                                                @endforeach
+                                                            </td>
+                                                            <td class="col4">
+                                                                {{-- Iterate over the phone array elements --}}
+                                                                @foreach ($phoneArray as $phone)
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.mobile_number')">
+                                                                        {{ $phone == 'null' ? '' : $phone }}<br>
+                                                                    </span>
+                                                                @endforeach
+                                                            </td>
+                                                            @php
+                                                                $state = \App\Models\State::find($supplier->state_id);
+                                                                $city = \App\Models\City::find($supplier->city_id);
+                                                            @endphp
+                                                            <td class="col5">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.state')">
+                                                                    {{ $state ? $state->name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col6">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.city')">
+                                                                    {{ $city ? $city->name : '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col7">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.exchange_rate')">
+                                                                    {{ $supplier->exchange_rate }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col8">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.owner_debt_in_dinar')">
+                                                                    {{ $supplier->owner_debt_in_dinar }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col9 dollar-cell">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.owner_debt_in_dollar')">
+                                                                    {{ $supplier->owner_debt_in_dollar }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col10">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.created_by')">
+                                                                    {{ $supplier->created_by_user->name }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col11">
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.updated_by')">
+                                                                    {{ $supplier->updated_by_user->name ?? '' }}
+                                                                </span>
+                                                            </td>
+                                                            <td class="col12">
+                                                                <div class="btn-group">
+                                                                    <button type="button"
+                                                                        class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                                        aria-expanded="false">خيارات <span
+                                                                            class="caret"></span>
+                                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                        user="menu" x-placement="bottom-end"
+                                                                        style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                        <li>
+
+                                                                            <a href="{{ route('suppliers.edit', $supplier->id) }}"
+                                                                                target="_blank"
+                                                                                class="btn edit_supplier drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                                <i
+                                                                                    class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a data-href="{{ route('suppliers.destroy', $supplier->id) }}"
+                                                                                {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
+                                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
+                                                                                    class="fa fa-trash"></i>
+                                                                                @lang('lang.delete')</a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
                                                     @endforeach
-                                                </td>
-                                                <td class="col4">
-                                                    {{-- Iterate over the phone array elements --}}
-                                                    @foreach ($phoneArray as $phone)
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.mobile_number')">
-                                                            {{ $phone == 'null' ? '' : $phone }}<br>
-                                                        </span>
-                                                    @endforeach
-                                                </td>
-                                                @php
-                                                    $state = \App\Models\State::find($supplier->state_id);
-                                                    $city = \App\Models\City::find($supplier->city_id);
-                                                @endphp
-                                                <td class="col5">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.state')">
-                                                        {{ $state ? $state->name : '' }}
-                                                    </span>
-                                                </td>
-                                                <td class="col6">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.city')">
-                                                        {{ $city ? $city->name : '' }}
-                                                    </span>
-                                                </td>
-                                                <td class="col7">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.exchange_rate')">
-                                                        {{ $supplier->exchange_rate }}
-                                                    </span>
-                                                </td>
-                                                <td class="col8">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.owner_debt_in_dinar')">
-                                                        {{ $supplier->owner_debt_in_dinar }}
-                                                    </span>
-                                                </td>
-                                                <td class="col9 dollar-cell">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.owner_debt_in_dollar')">
-                                                        {{ $supplier->owner_debt_in_dollar }}
-                                                    </span>
-                                                </td>
-                                                <td class="col10">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.created_by')">
-                                                        {{ $supplier->created_by_user->name }}
-                                                    </span>
-                                                </td>
-                                                <td class="col11">
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.updated_by')">
-                                                        {{ $supplier->updated_by_user->name ?? '' }}
-                                                    </span>
-                                                </td>
-                                                <td class="col12">
-                                                    <div class="btn-group">
-                                                        <button type="button"
-                                                            class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">خيارات <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                            user="menu" x-placement="bottom-end"
-                                                            style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                            <li>
-
-                                                                <a href="{{ route('suppliers.edit', $supplier->id) }}"
-                                                                    target="_blank"
-                                                                    class="btn edit_supplier drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                                    <i
-                                                                        class="fa fa-pencil-square-o"></i>@lang('lang.edit')</a>
-                                                            </li>
-
-                                                            <li>
-                                                                <a data-href="{{ route('suppliers.destroy', $supplier->id) }}"
-                                                                    {{-- data-check_password="{{action('UserController@checkPassword', Auth::user()->id)}}" --}}
-                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
-                                                                        class="fa fa-trash"></i>
-                                                                    @lang('lang.delete')</a>
-                                                            </li>
-
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!-- End col -->
                 </div>
-                <!-- End col -->
+                <!-- End row -->
             </div>
-            <!-- End row -->
         </div>
-    </div>
-    <!-- End Contentbar -->
+        <!-- End Contentbar -->
     </div>
     <!-- End Rightbar -->
     <!-- jQuery -->

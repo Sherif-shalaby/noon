@@ -1,7 +1,12 @@
 @extends('layouts.app')
 @section('title', __('lang.plans'))
 @section('breadcrumbbar')
-    <div class="animate-n-page">
+    <style>
+        .table-top-head {
+            top: 85px;
+        }
+    </style>
+    <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
                 class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -50,97 +55,106 @@
                         <h4 class="print-title">@lang('lang.delivery')</h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons" class="table dataTable table-button-wrapper">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('lang.profile_photo')</th>
-                                        <th>@lang('lang.employee_name')</th>
-                                        <th>@lang('lang.email')</th>
-                                        <th>@lang('lang.phone_number')</th>
-                                        <th>@lang('lang.stores')</th>
-                                        <th class="notexport">@lang('lang.action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                            <div class="div1"></div>
+                        </div>
+                        <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div2 table-scroll-wrapper">
+                                <!-- content goes here -->
+                                <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                    <table id="datatable-buttons" class="table dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('lang.profile_photo')</th>
+                                                <th>@lang('lang.employee_name')</th>
+                                                <th>@lang('lang.email')</th>
+                                                <th>@lang('lang.phone_number')</th>
+                                                <th>@lang('lang.stores')</th>
+                                                <th class="notexport">@lang('lang.action')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    @foreach ($delivery_men as $key => $employee)
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.profile_photo')">
+                                            @foreach ($delivery_men as $key => $employee)
+                                                <tr>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.profile_photo')">
 
-                                                    @if (!empty($employee->photo))
-                                                        <img src="{{ '/uploads/' . $employee->photo }}" alt="photo"
-                                                            width="50" height="50">
-                                                    @else
-                                                        <img src="{{ '/uploads/' . session('logo') }}" alt="photo"
-                                                            width="50" height="50">
-                                                    @endif
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.employee_name')">
-                                                    {{ !empty($employee->user) ? $employee->user->name : '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.email')">
-                                                    {{ !empty($employee->user) ? $employee->user->email : '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.phone_number')">
-                                                    {{ $employee->mobile }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.stores')">
+                                                            @if (!empty($employee->photo))
+                                                                <img src="{{ '/uploads/' . $employee->photo }}"
+                                                                    alt="photo" width="50" height="50">
+                                                            @else
+                                                                <img src="{{ '/uploads/' . session('logo') }}"
+                                                                    alt="photo" width="50" height="50">
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.employee_name')">
+                                                            {{ !empty($employee->user) ? $employee->user->name : '' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.email')">
+                                                            {{ !empty($employee->user) ? $employee->user->email : '' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.phone_number')">
+                                                            {{ $employee->mobile }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.stores')">
 
-                                                    @foreach ($employee->stores()->get() as $store)
-                                                        {{ $store->name }}
-                                                    @endforeach
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                    style="font-size: 12px;font-weight: 600">
-                                                    @lang('lang.action')
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">
-                                                    <li>
-                                                        <a href="{{ route('delivery.create', $employee->id) }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
-                                                                class="fa fa-pencil-square-o"></i>
-                                                            @lang('lang.add_plan') </a>
-                                                    </li>
+                                                            @foreach ($employee->stores()->get() as $store)
+                                                                {{ $store->name }}
+                                                            @endforeach
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button"
+                                                            class="btn btn-default btn-sm dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false" style="font-size: 12px;font-weight: 600">
+                                                            @lang('lang.action')
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                            user="menu">
+                                                            <li>
+                                                                <a href="{{ route('delivery.create', $employee->id) }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                        class="fa fa-pencil-square-o"></i>
+                                                                    @lang('lang.add_plan') </a>
+                                                            </li>
 
 
-                                                </ul>
-                                            </td>
+                                                        </ul>
+                                                    </td>
 
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
 
-                            </table>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

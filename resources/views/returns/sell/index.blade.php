@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.sells_return'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 85px;
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -51,102 +56,113 @@
                                 </div>
                             </div>
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <table id="datatable-buttons"
-                                    class="table table-button-wrapper table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th class="date">@lang('lang.date')</th>
-                                            <th>@lang('lang.reference')</th>
-                                            <th>@lang('lang.customer')</th>
-                                            <th>@lang('lang.payment_status')</th>
-                                            <th>@lang('lang.payment_type')</th>
-                                            <th class="currencies">@lang('lang.paying_currency')</th>
-                                            <th class="sum">@lang('lang.grand_total')</th>
-                                            <th class="sum">@lang('lang.paid')</th>
-                                            <th class="sum">@lang('lang.due')</th>
-                                            <th>@lang('lang.notes')</th>
-                                            <th>@lang('lang.files')</th>
-                                            <th class="notexport">@lang('lang.action')</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($sell_returns as $return)
-                                            <tr>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
-                                                        {{ $return->transaction_date }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.reference')">
-                                                        {{ $return->invoice_no }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.customer')">
-                                                        {{ $return->customer->name }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.payment_status')">
-                                                        {{ __('lang.' . $return->payment_status) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    @foreach ($return->transaction_payments as $payment)
-                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.payment_type')">
-                                                            {{ __('lang.' . $payment->method) }}<br>
-                                                        </span>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    @foreach ($return->transaction_payments as $payment)
-                                                        <span class="custom-tooltip" data-tooltip="@lang('lang.paying_currency')">
-                                                            {{ $payment->received_currency_relation->symbol ?? '' }}<br>
-                                                        </span>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.grand_total')">
-                                                        {{ number_format($return->final_total, 2) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.paid')">
-                                                        {{ $return->transaction_payments->sum('amount') }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip="@lang('lang.due')">
-                                                        {{ $return->transaction_payments->last()->paid_on ?? '' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span class="custom-tooltip" data-tooltip=">@lang('lang.notes')">
-                                                        {{ $return->notes }}
-                                                    </span>
-                                                </td>
-                                                <td></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        @lang('lang.action')
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    {{--                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu"> --}}
-                                                    {{--                                                <li> --}}
-                                                    {{--                                                    <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a> --}}
-                                                    {{--                                                </li> --}}
-                                                    {{--                                                <li class="divider"></li> --}}
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                        <table id="datatable-buttons" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="date">@lang('lang.date')</th>
+                                                    <th>@lang('lang.reference')</th>
+                                                    <th>@lang('lang.customer')</th>
+                                                    <th>@lang('lang.payment_status')</th>
+                                                    <th>@lang('lang.payment_type')</th>
+                                                    <th class="currencies">@lang('lang.paying_currency')</th>
+                                                    <th class="sum">@lang('lang.grand_total')</th>
+                                                    <th class="sum">@lang('lang.paid')</th>
+                                                    <th class="sum">@lang('lang.due')</th>
+                                                    <th>@lang('lang.notes')</th>
+                                                    <th>@lang('lang.files')</th>
+                                                    <th class="notexport">@lang('lang.action')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($sell_returns as $return)
+                                                    <tr>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.date')">
+                                                                {{ $return->transaction_date }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.reference')">
+                                                                {{ $return->invoice_no }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.customer')">
+                                                                {{ $return->customer->name }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.payment_status')">
+                                                                {{ __('lang.' . $return->payment_status) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            @foreach ($return->transaction_payments as $payment)
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.payment_type')">
+                                                                    {{ __('lang.' . $payment->method) }}<br>
+                                                                </span>
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            @foreach ($return->transaction_payments as $payment)
+                                                                <span class="custom-tooltip"
+                                                                    data-tooltip="@lang('lang.paying_currency')">
+                                                                    {{ $payment->received_currency_relation->symbol ?? '' }}<br>
+                                                                </span>
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.grand_total')">
+                                                                {{ number_format($return->final_total, 2) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.paid')">
+                                                                {{ $return->transaction_payments->sum('amount') }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip="@lang('lang.due')">
+                                                                {{ $return->transaction_payments->last()->paid_on ?? '' }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="custom-tooltip" data-tooltip=">@lang('lang.notes')">
+                                                                {{ $return->notes }}
+                                                            </span>
+                                                        </td>
+                                                        <td></td>
+                                                        <td>
+                                                            <button type="button"
+                                                                class="btn btn-default btn-sm dropdown-toggle"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                                @lang('lang.action')
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            {{--                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default" user="menu"> --}}
+                                                            {{--                                                <li> --}}
+                                                            {{--                                                    <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a> --}}
+                                                            {{--                                                </li> --}}
+                                                            {{--                                                <li class="divider"></li> --}}
 
-                                                    {{--                                            </ul> --}}
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="view_modal no-print">
+                                                            {{--                                            </ul> --}}
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <div class="view_modal no-print">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

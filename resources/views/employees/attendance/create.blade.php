@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.add_attendance_and_leave'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 85px;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -57,79 +62,89 @@
                                             </button>
                                         </div>
                                     </div>
+                                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif"
+                                        style="margin-top:25px ">
+                                        <div class="div1"></div>
+                                    </div>
+                                    <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div2 table-scroll-wrapper">
+                                            <!-- content goes here -->
+                                            <div style="min-width: 1350px;max-height: 90vh;overflow: hidden">
+                                                {{-- ++++++++++++++++++++ Table ++++++++++++++++++++ --}}
+                                                <table class="table " id="attendance_table">
+                                                    {{-- /////////// table_thead /////////// --}}
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@lang('lang.date')</th>
+                                                            <th>@lang('lang.employee')</th>
+                                                            <th>@lang('lang.check_in')</th>
+                                                            <th>@lang('lang.check_out')</th>
+                                                            <th>@lang('lang.status')</th>
+                                                            <th>@lang('lang.created_by')</th>
+                                                            <th>@lang('lang.action')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    {{-- /////////// table_tbody /////////// --}}
+                                                    <tbody class="table_tbody">
+                                                        <tr>
+                                                            <td>
+                                                                <input type="date" class="form-control date"
+                                                                    name="attendances[0][date]" required>
+                                                            </td>
+                                                            <td>
+                                                                {!! Form::select('attendances[0][employee_id]', $employees, null, [
+                                                                    'class' => 'form-control selectpicker',
+                                                                    'placeholder' => __('lang.please_select'),
+                                                                    'data-live-search' => 'true',
+                                                                    'required',
+                                                                ]) !!}
+                                                            </td>
+                                                            <td>
+                                                                <input type="time" class="form-control time"
+                                                                    name="attendances[0][check_in]" required>
+                                                            </td>
+                                                            <td>
+                                                                <input type="time" class="form-control time"
+                                                                    name="attendances[0][check_out]" required>
+                                                            </td>
+                                                            <td>
+                                                                {!! Form::select(
+                                                                    'attendances[0][status]',
+                                                                    ['present' => 'Present', 'late' => 'Late', 'on_leave' => 'On Leave'],
+                                                                    null,
+                                                                    [
+                                                                        'class' => 'form-control
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        selectpicker',
+                                                                        'data-live-search' => 'true',
+                                                                        'placeholder' => __('lang.please_select'),
+                                                                        'required',
+                                                                    ],
+                                                                ) !!}
+                                                            </td>
+                                                            <td>
+                                                                {{ ucfirst(Auth::user()->name) }}
+                                                            </td>
+                                                            {{-- ++++++++ delete row ++++++++ --}}
+                                                            <td>
+                                                                <a href="javascript:void(0)"
+                                                                    class="btn btn-xs btn-danger deleteRow">
+                                                                    <i class="fa fa-close"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
 
-                                    {{-- ++++++++++++++++++++ Table ++++++++++++++++++++ --}}
-                                    <table class="table @if (app()->isLocale('ar')) dir-rtl @endif"
-                                        id="attendance_table">
-                                        {{-- /////////// table_thead /////////// --}}
-                                        <thead>
-                                            <tr>
-                                                <th>@lang('lang.date')</th>
-                                                <th>@lang('lang.employee')</th>
-                                                <th>@lang('lang.check_in')</th>
-                                                <th>@lang('lang.check_out')</th>
-                                                <th>@lang('lang.status')</th>
-                                                <th>@lang('lang.created_by')</th>
-                                                <th>@lang('lang.action')</th>
-                                            </tr>
-                                        </thead>
-                                        {{-- /////////// table_tbody /////////// --}}
-                                        <tbody class="table_tbody">
-                                            <tr>
-                                                <td>
-                                                    <input type="date" class="form-control date"
-                                                        name="attendances[0][date]" required>
-                                                </td>
-                                                <td>
-                                                    {!! Form::select('attendances[0][employee_id]', $employees, null, [
-                                                        'class' => 'form-control selectpicker',
-                                                        'placeholder' => __('lang.please_select'),
-                                                        'data-live-search' => 'true',
-                                                        'required',
-                                                    ]) !!}
-                                                </td>
-                                                <td>
-                                                    <input type="time" class="form-control time"
-                                                        name="attendances[0][check_in]" required>
-                                                </td>
-                                                <td>
-                                                    <input type="time" class="form-control time"
-                                                        name="attendances[0][check_out]" required>
-                                                </td>
-                                                <td>
-                                                    {!! Form::select(
-                                                        'attendances[0][status]',
-                                                        ['present' => 'Present', 'late' => 'Late', 'on_leave' => 'On Leave'],
-                                                        null,
-                                                        [
-                                                            'class' => 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    selectpicker',
-                                                            'data-live-search' => 'true',
-                                                            'placeholder' => __('lang.please_select'),
-                                                            'required',
-                                                        ],
-                                                    ) !!}
-                                                </td>
-                                                <td>
-                                                    {{ ucfirst(Auth::user()->name) }}
-                                                </td>
-                                                {{-- ++++++++ delete row ++++++++ --}}
-                                                <td>
-                                                    <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">
-                                                        <i class="fa fa-close"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                    <div class="row mt-4">
-                                        <div class="col-sm-12">
-                                            <input type="submit" class="btn btn-primary" value="@lang('lang.save')"
-                                                name="submit">
+                                                    </tbody>
+                                                </table>
+                                                <div class="row mt-4">
+                                                    <div class="col-sm-12">
+                                                        <input type="submit" class="btn btn-primary"
+                                                            value="@lang('lang.save')" name="submit">
+                                                    </div>
+                                                </div>
+                                                {!! Form::close() !!}
+                                            </div>
                                         </div>
                                     </div>
-                                    {!! Form::close() !!}
                                 </div>
                             </div>
                         </div>

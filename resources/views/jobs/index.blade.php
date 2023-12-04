@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.jobs'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 85px;
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -50,75 +55,83 @@
                             @lang('lang.jobs')</h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons"
-                                class="table dataTable table-button-wrapper table-striped table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('lang.job_title')</th>
-                                        <th>@lang('lang.date_of_creation')</th>
-                                        <th>@lang('lang.created_by')</th>
-                                        <th>@lang('lang.updated_by')</th>
-                                        <th class="notexport">@lang('lang.action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($jobs as $job)
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.job_title')">
-                                                    {{ $job->title }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.date_of_creation')">
-                                                    {{ @format_date($job->date_of_creation) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.created_by')">
-                                                    {{ $job->created_by()->get()[0]->name }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                @if (isset($job->updated_by))
-                                                    <span
-                                                        class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.updated_by')">
-                                                        {{ $job->updated_by()->get()[0]->name }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                @if (!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative']))
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <a data-href="{{ route('jobs.edit', $job->id) }}"
-                                                            data-container=".view_modal"
-                                                            class="btn mx-1 btn-primary btn-modal text-white edit_job  d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600;width: fit-content;"><i
-                                                                class="fa fa-pencil-square-o"></i></a>
-                                                        <a data-href="{{ route('jobs.destroy', $job->id) }}"
-                                                            class="btn mx-1 btn-danger text-white delete_item"
-                                                            style="font-size: 12px;font-weight: 600;"><i
-                                                                class="fa fa-trash"></i></a>
-                                                    </div>
-                                                @endif
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                            <div class="div1"></div>
+                        </div>
+                        <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div2 table-scroll-wrapper">
+                                <!-- content goes here -->
+                                <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                    <table id="datatable-buttons"
+                                        class="table dataTable table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('lang.job_title')</th>
+                                                <th>@lang('lang.date_of_creation')</th>
+                                                <th>@lang('lang.created_by')</th>
+                                                <th>@lang('lang.updated_by')</th>
+                                                <th class="notexport">@lang('lang.action')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($jobs as $job)
+                                                <tr>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.job_title')">
+                                                            {{ $job->title }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.date_of_creation')">
+                                                            {{ @format_date($job->date_of_creation) }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.created_by')">
+                                                            {{ $job->created_by()->get()[0]->name }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if (isset($job->updated_by))
+                                                            <span
+                                                                class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.updated_by')">
+                                                                {{ $job->updated_by()->get()[0]->name }}
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (!in_array($job->title, ['Cashier', 'Deliveryman', 'Representative']))
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <a data-href="{{ route('jobs.edit', $job->id) }}"
+                                                                    data-container=".view_modal"
+                                                                    class="btn mx-1 btn-primary btn-modal text-white edit_job  d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600;width: fit-content;"><i
+                                                                        class="fa fa-pencil-square-o"></i></a>
+                                                                <a data-href="{{ route('jobs.destroy', $job->id) }}"
+                                                                    class="btn mx-1 btn-danger text-white delete_item"
+                                                                    style="font-size: 12px;font-weight: 600;"><i
+                                                                        class="fa fa-trash"></i></a>
+                                                            </div>
+                                                        @endif
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

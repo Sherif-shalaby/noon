@@ -219,6 +219,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // fetch "stores" of selected "branch" selectbox
+    Route::post('api/fetch_branch_stores',[PayableReportController::class,'fetch_branch_stores']);
     // ########### Get Due Report ###########
     Route::resource('get-due-report', GetDueReportController::class);
     // ########### Supplier Report ###########

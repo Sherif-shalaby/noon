@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.show_plans'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 120px;
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -100,111 +105,120 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                            <table id="datatable-buttons" class="table dataTable table-button-wrapper">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('lang.date')</th>
-                                        <th>@lang('lang.city')</th>
-                                        {{-- @can('') --}}
-                                        <th>@lang('lang.delivery')</th>
-                                        <th>@lang('lang.status')</th>
-                                        {{-- @endcan --}}
-                                        <th class="notexport">@lang('lang.action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
+                            <div class="div1"></div>
+                        </div>
+                        <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div2 table-scroll-wrapper">
+                                <!-- content goes here -->
+                                <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                    <table id="datatable-buttons" class="table dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('lang.date')</th>
+                                                <th>@lang('lang.city')</th>
+                                                {{-- @can('') --}}
+                                                <th>@lang('lang.delivery')</th>
+                                                <th>@lang('lang.status')</th>
+                                                {{-- @endcan --}}
+                                                <th class="notexport">@lang('lang.action')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 
-                                    @foreach ($plans as $key => $plan)
-                                        <tr>
+                                            @foreach ($plans as $key => $plan)
+                                                <tr>
 
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.date')">
-                                                    {{ $plan->date }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.city')">
-                                                    {{ $plan->city->name }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                {{--                                           @dd($plan->employee) --}}
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.delivery')">
-                                                    {{ !empty($plan->employee->user) ? $plan->employee->user->name : '' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                @php
-                                                    $delivery_plan = App\Models\DeliveryCustomerPlan::where('delivery_location_id', $plan->id)->get();
-                                                    $allPlansSignedAndSubmitted = true;
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.date')">
+                                                            {{ $plan->date }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.city')">
+                                                            {{ $plan->city->name }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        {{--                                           @dd($plan->employee) --}}
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.delivery')">
+                                                            {{ !empty($plan->employee->user) ? $plan->employee->user->name : '' }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @php
+                                                            $delivery_plan = App\Models\DeliveryCustomerPlan::where('delivery_location_id', $plan->id)->get();
+                                                            $allPlansSignedAndSubmitted = true;
 
-                                                    foreach ($delivery_plan as $plan_customer) {
-                                                        if ($plan_customer->signed_at === null || $plan_customer->submitted_at === null) {
-                                                            $allPlansSignedAndSubmitted = false;
-                                                            break;
-                                                        }
-                                                    }
-                                                @endphp
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.status')">
+                                                            foreach ($delivery_plan as $plan_customer) {
+                                                                if ($plan_customer->signed_at === null || $plan_customer->submitted_at === null) {
+                                                                    $allPlansSignedAndSubmitted = false;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        @endphp
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.status')">
 
-                                                    @if ($allPlansSignedAndSubmitted)
-                                                        {{ 'completed' }}
-                                                    @else
-                                                        {{ '-' }}
-                                                    @endif
-                                                </span>
+                                                            @if ($allPlansSignedAndSubmitted)
+                                                                {{ 'completed' }}
+                                                            @else
+                                                                {{ '-' }}
+                                                            @endif
+                                                        </span>
 
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                                                    style="font-size: 12px;font-weight: 600">
-                                                    @lang('lang.action')
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">
-                                                    <li>
-                                                        <a href="{{ route('delivery.show', $plan->id) }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
-                                                                class="fa fa-pencil-square-o"></i>
-                                                            @lang('lang.view_details') </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="{{ route('delivery.edit', $plan->id) }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red "><i
-                                                                class="fa fa-pencil-square-o"></i>
-                                                            @lang('lang.edit')</a>
-                                                    </li>
-                                                    <li>
-                                                        <a data-href="{{ route('delivery.destroy', $plan->id) }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
-                                                                class="fa fa-trash"></i>
-                                                            @lang('lang.delete')</a>
-                                                    </li>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button"
+                                                            class="btn btn-default btn-sm dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false" style="font-size: 12px;font-weight: 600">
+                                                            @lang('lang.action')
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                            user="menu">
+                                                            <li>
+                                                                <a href="{{ route('delivery.show', $plan->id) }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                        class="fa fa-pencil-square-o"></i>
+                                                                    @lang('lang.view_details') </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ route('delivery.edit', $plan->id) }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red "><i
+                                                                        class="fa fa-pencil-square-o"></i>
+                                                                    @lang('lang.edit')</a>
+                                                            </li>
+                                                            <li>
+                                                                <a data-href="{{ route('delivery.destroy', $plan->id) }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
+                                                                        class="fa fa-trash"></i>
+                                                                    @lang('lang.delete')</a>
+                                                            </li>
 
 
-                                                </ul>
-                                            </td>
+                                                        </ul>
+                                                    </td>
 
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
 
-                            </table>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

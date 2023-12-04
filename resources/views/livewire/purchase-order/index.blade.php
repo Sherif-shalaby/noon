@@ -66,124 +66,133 @@
                 {{-- ++++++++++++++++++++++++++++++ Table +++++++++++++++++++++++ --}}
                 <div class="card-body">
                     @if (@isset($customer_offer_prices) && !@empty($customer_offer_prices) && count($customer_offer_prices) > 0)
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('lang.date')</th>
-                                        {{-- <th>@lang('lang.reference')</th> --}}
-                                        <th>@lang('lang.created_by')</th>
-                                        <th>@lang('lang.customer')</th>
-                                        <th>@lang('lang.store')</th>
-                                        <th>@lang('lang.customer_offer_status')</th>
-                                        <th>@lang('lang.quotation_status')</th>
-                                        <th class="notexport">@lang('lang.action')</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($customer_offer_prices as $offer)
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.date')">
-                                                    {{ @format_date($offer->created_at) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.created_by')">
-                                                    {{ ucfirst($offer->created_by_user->name ?? '') }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                @if (!empty($offer->customer))
-                                                    <span
-                                                        class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.customer')">
-                                                        {{ $offer->customer->name }}
-                                                    </span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.store')">
-                                                    {{ ucfirst($offer->store->name ?? '') }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.customer_offer_status')">
-                                                    @if (!empty($offer->block_qty))
-                                                        @lang('lang.blocked')
-                                                    @else
-                                                        @lang('lang.not_blocked')
-                                                    @endif
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.quotation_status')">
-                                                    {{ ucfirst($offer->status) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button"
-                                                        class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">خيارات
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                        user="menu" x-placement="bottom-end"
-                                                        style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                        {{-- ++++++++++++++ edit button ++++++++++++++ --}}
-                                                        <li>
-                                                            <a href="{{ route('customer_price_offer.edit', $offer->id) }}"
-                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
-                                                                    class="dripicons-document-edit"></i>
-                                                                @lang('lang.edit')</a>
-                                                        </li>
-
-                                                        {{-- ++++++++++++++ delete button ++++++++++++++ --}}
-                                                        <form method="POST"
-                                                            action="{{ route('customer_price_offer.destroy', $offer->id) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red">
-                                                                @lang('lang.delete') <i class="fa fa-trash"></i>
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                            <div class="div1"></div>
+                        </div>
+                        <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div2 table-scroll-wrapper">
+                                <!-- content goes here -->
+                                <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('lang.date')</th>
+                                                {{-- <th>@lang('lang.reference')</th> --}}
+                                                <th>@lang('lang.created_by')</th>
+                                                <th>@lang('lang.customer')</th>
+                                                <th>@lang('lang.store')</th>
+                                                <th>@lang('lang.customer_offer_status')</th>
+                                                <th>@lang('lang.quotation_status')</th>
+                                                <th class="notexport">@lang('lang.action')</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($customer_offer_prices as $offer)
+                                                <tr>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.date')">
+                                                            {{ @format_date($offer->created_at) }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.created_by')">
+                                                            {{ ucfirst($offer->created_by_user->name ?? '') }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        @if (!empty($offer->customer))
+                                                            <span
+                                                                class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.customer')">
+                                                                {{ $offer->customer->name }}
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.store')">
+                                                            {{ ucfirst($offer->store->name ?? '') }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.customer_offer_status')">
+                                                            @if (!empty($offer->block_qty))
+                                                                @lang('lang.blocked')
+                                                            @else
+                                                                @lang('lang.not_blocked')
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.quotation_status')">
+                                                            {{ ucfirst($offer->status) }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button"
+                                                                class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">خيارات
+                                                                <span class="caret"></span>
+                                                                <span class="sr-only">Toggle Dropdown</span>
                                                             </button>
-                                                        </form>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="12">
-                                        <div class="float-right">
-                                            {!! $customer_offer_prices->appends(request()->all())->links() !!}
-                                        </div>
-                                    </th>
-                                </tr>
-                            </tfoot>
+                                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                user="menu" x-placement="bottom-end"
+                                                                style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                {{-- ++++++++++++++ edit button ++++++++++++++ --}}
+                                                                <li>
+                                                                    <a href="{{ route('customer_price_offer.edit', $offer->id) }}"
+                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
+                                                                            class="dripicons-document-edit"></i>
+                                                                        @lang('lang.edit')</a>
+                                                                </li>
+
+                                                                {{-- ++++++++++++++ delete button ++++++++++++++ --}}
+                                                                <form method="POST"
+                                                                    action="{{ route('customer_price_offer.destroy', $offer->id) }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red">
+                                                                        @lang('lang.delete') <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="12">
+                                                    <div class="float-right">
+                                                        {!! $customer_offer_prices->appends(request()->all())->links() !!}
+                                                    </div>
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     @else
                         <div class="alert alert-danger">

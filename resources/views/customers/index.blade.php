@@ -3,6 +3,16 @@
 @section('breadcrumbbar')
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
     <style>
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+
         .selectBox {
             position: relative;
         }
@@ -232,9 +242,9 @@
                                 <div class="div1"></div>
                             </div>
                             <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <div class="div2">
+                                <div class="div2 table-scroll-wrapper">
                                     <!-- content goes here -->
-                                    <div style="width: 2100px;height: 90vh;">
+                                    <div style="min-width: 2100px;max-height: 90vh;overflow: auto">
                                         <table id="datatable-buttons"
                                             class="table table-striped table-hover table-bordered hideShowTable">
                                             <thead>

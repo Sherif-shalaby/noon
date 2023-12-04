@@ -9,6 +9,10 @@
             position: sticky;
             top: 0;
         }
+
+        .table-top-head {
+            top: 85px;
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -62,142 +66,150 @@
                                 @include('purchase_order.partials.filters')
                             </div>
                         </div>
-                        <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
-                            style="height: 90vh;overflow: scroll">
-                            <table id="datatable-buttons"
-                                class="table dataTable table-hover table-striped table-bordered table-button-wrapper">
-                                <thead>
-                                    <tr>
-                                        <th>@lang('lang.po_ref_no')</th>
-                                        <th>@lang('lang.date')</th>
-                                        <th>@lang('lang.created_by')</th>
-                                        <th>@lang('lang.supplier')</th>
-                                        <th class="sum">@lang('lang.value')</th>
-                                        <th>@lang('lang.status')</th>
-                                        <th class="notexport">@lang('lang.action')</th>
-                                    </tr>
-                                </thead>
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:25px ">
+                            <div class="div1"></div>
+                        </div>
+                        <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                            <div class="div2 table-scroll-wrapper">
+                                <!-- content goes here -->
+                                <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                    <table id="datatable-buttons"
+                                        class="table dataTable table-hover table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>@lang('lang.po_ref_no')</th>
+                                                <th>@lang('lang.date')</th>
+                                                <th>@lang('lang.created_by')</th>
+                                                <th>@lang('lang.supplier')</th>
+                                                <th class="sum">@lang('lang.value')</th>
+                                                <th>@lang('lang.status')</th>
+                                                <th class="notexport">@lang('lang.action')</th>
+                                            </tr>
+                                        </thead>
 
-                                <tbody>
-                                    @foreach ($purchaseOrders as $purchase_order)
-                                        <tr>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.po_ref_no')">
-                                                    {{ $purchase_order->po_no }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.date')">
+                                        <tbody>
+                                            @foreach ($purchaseOrders as $purchase_order)
+                                                <tr>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.po_ref_no')">
+                                                            {{ $purchase_order->po_no }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.date')">
 
-                                                </span>
-                                                {{ @format_date($purchase_order->transaction_date) }}
-                                            </td>
+                                                        </span>
+                                                        {{ @format_date($purchase_order->transaction_date) }}
+                                                    </td>
 
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.created_by')">
-                                                    {{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}
-                                                </span>
-                                            </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.created_by')">
+                                                            {{ App\Models\User::where('id', $purchase_order->created_by)->first()->name }}
+                                                        </span>
+                                                    </td>
 
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.supplier')">
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.supplier')">
 
-                                                    @if (!empty($purchase_order->supplier))
-                                                        {{ $purchase_order->supplier->name }}
-                                                    @endif
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.value')">
-                                                    {{ @num_format($purchase_order->final_total) }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip  d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600"
-                                                    data-tooltip="@lang('lang.status')">
-                                                    {{ $purchase_order->status }}
-                                                </span>
-                                            </td>
-                                            {{-- =========================== Actions =========================== --}}
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button"
-                                                        class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false">
-                                                        @lang('lang.action')
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                        user="menu">
-                                                        {{-- +++++++++++++++++++ show button +++++++++++++++++++ --}}
-                                                        <li>
-                                                            <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                                                href="{{ route('purchase_order.show', $purchase_order->id) }}"
-                                                                target="_blank">
-                                                                <i class="fa fa-eye"></i>
-                                                                @lang('lang.view')
-                                                            </a>
-                                                        </li>
+                                                            @if (!empty($purchase_order->supplier))
+                                                                {{ $purchase_order->supplier->name }}
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.value')">
+                                                            {{ @num_format($purchase_order->final_total) }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip  d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="@lang('lang.status')">
+                                                            {{ $purchase_order->status }}
+                                                        </span>
+                                                    </td>
+                                                    {{-- =========================== Actions =========================== --}}
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <button type="button"
+                                                                class="btn btn-default btn-sm dropdown-toggle  d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
+                                                                @lang('lang.action')
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                user="menu">
+                                                                {{-- +++++++++++++++++++ show button +++++++++++++++++++ --}}
+                                                                <li>
+                                                                    <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                        href="{{ route('purchase_order.show', $purchase_order->id) }}"
+                                                                        target="_blank">
+                                                                        <i class="fa fa-eye"></i>
+                                                                        @lang('lang.view')
+                                                                    </a>
+                                                                </li>
 
-                                                        {{-- @endcan
-                                @can('purchase_order.purchase_order.create_and_edit') --}}
-                                                        <li>
-                                                            {{-- <a  href="{{route('purchase_order.edit', $purchase_order->id)}}">
-                                        <i class="dripicons-document-edit btn"></i>@lang('lang.edit')
-                                    </a> --}}
-                                                            <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                                                href="{{ route('purchase_order.edit', $purchase_order->id) }}"
-                                                                class="btn">
-                                                                <i class="fa fa-edit"></i>
-                                                                @lang('lang.edit') </a>
-                                                        </li>
+                                                                {{-- @endcan
+                                                            @can('purchase_order.purchase_order.create_and_edit') --}}
+                                                                <li>
+                                                                    {{-- <a  href="{{route('purchase_order.edit', $purchase_order->id)}}">
+                                                                    <i class="dripicons-document-edit btn"></i>@lang('lang.edit')
+                                                                </a> --}}
+                                                                    <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                        href="{{ route('purchase_order.edit', $purchase_order->id) }}"
+                                                                        class="btn">
+                                                                        <i class="fa fa-edit"></i>
+                                                                        @lang('lang.edit') </a>
+                                                                </li>
 
 
-                                                        <li>
-                                                            <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                                                href="{{ route('purchase_order.destroy', $purchase_order->id) }}"><i
-                                                                    class="fa fa-trash"></i>
-                                                                @lang('lang.delete')</a>
-                                                        </li>
-                                                        {{-- @endcan --}}
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                                                <li>
+                                                                    <a class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                        href="{{ route('purchase_order.destroy', $purchase_order->id) }}"><i
+                                                                            class="fa fa-trash"></i>
+                                                                        @lang('lang.delete')</a>
+                                                                </li>
+                                                                {{-- @endcan --}}
+                                                            </ul>
+                                                        </div>
+                                                    </td>
 
-                                        </tr>
-                                    @endforeach
-                                <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tfoot>
-                                </tbody>
-                                <tfoot>
+                                                </tr>
+                                            @endforeach
+                                        <tfoot>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                        </tbody>
+                                        <tfoot>
 
-                                </tfoot>
-                            </table>
+                                        </tfoot>
+                                    </table>
 
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
