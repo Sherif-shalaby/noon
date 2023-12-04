@@ -52,67 +52,129 @@
                                     class="table table-striped table-bordered table-button-wrapper table-hover ">
                                     <thead>
                                         <tr>
-                                            <th>رقم الفاتورة</th>
-                                            <th>التاريخ و الوقت</th>
-                                            <th>المورد</th>
-                                            {{-- <th>العملة المدفوعة</th> --}}
-                                            <th>المبلغ الاجمالي</th>
-                                            <th>انشئ بواسطة</th>
-                                            {{-- <th>@lang('lang.action')</th>  --}}
+                                            <th></th>
+                                            <th>@lang('lang.total_paid')</th>
+                                            <th>@lang('lang.action')</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transactions_stock_lines as $key => $transactions_stock_line)
-                                            <tr>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="رقم الفاتورة">
-                                                        {{ $transactions_stock_line->invoice_no ?? '' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="التاريخ و الوقت">
-                                                        {{ $transactions_stock_line->created_at ?? '' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="المورد">
-                                                        {{ $transactions_stock_line->supplier->name ?? '' }}
-                                                    </span>
-                                                </td>
-                                                {{-- <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="العملة المدفوعة">
-                                                        {{ $transactions_stock_line->paying_currency_relationship->symbol ?? '' }}
-                                                    </span>
 
-                                                </td> --}}
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="المبلغ الاجمالي">
-                                                        {{ $transactions_stock_line->final_total ?? '' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="انشئ بواسطة">
-                                                        {{ $transactions_stock_line->created_by_relationship->name ?? '' }}
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+
+
+                                        @php
+                                            // ///////////////////// الرواتب/////////////////////
+                                            $wage_transactions_final_total = !empty($wage_transactions->sum('final_total')) ? $wage_transactions->sum('final_total') : '';
+                                            // ///////////////////// المشتريات /////////////////////
+                                            $stock_transactions_final_total = !empty($stock_transactions->sum('final_total')) ? $stock_transactions->sum('final_total') : '';
+                                        @endphp
+
+                                        {{-- ++++++++++++++++++ Row 1 : الرواتب ++++++++++++++++++ --}}
+                                        <tr>
+                                            {{-- ====== column header ====== --}}
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600">
+                                                    <b>@lang('lang.wages')</b>
+                                                </span>
+                                            </td>
+                                            {{-- ====== wage_transactions_final_total ====== --}}
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600" data-tooltip="total_paid">
+
+                                                    @if (!empty($wage_transactions_final_total))
+                                                        {{ $wage_transactions_final_total }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            {{-- ====== Actions button ====== --}}
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                                    style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    @lang('lang.action')
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                    user="menu">
+                                                    <li>
+                                                        <a href="{{ route('wages.index') }}"
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                            target="_blank">
+                                                            <i class="fa fa-eye"></i>
+                                                            @lang('lang.view') </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        {{-- +++++++++ Row 2 : المشتريات +++++++++ --}}
+                                        <tr>
+                                            {{-- ====== column header ====== --}}
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600">
+                                                    <b>@lang('lang.stock')</b>
+                                                </span>
+                                            </td>
+                                            {{-- ====== stock_transactions_final_total ====== --}}
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600" data-tooltip="total_paid">
+                                                    @if (!empty($stock_transactions_final_total))
+                                                        {{ $stock_transactions_final_total }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            {{-- ====== Actions button ====== --}}
+                                            <td>
+                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    @lang('lang.action')
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                    user="menu">
+                                                    <li>
+                                                        <a href="{{ route('stocks.index') }}"
+                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                            target="_blank">
+                                                            <i class="fa fa-eye"></i>
+                                                            @lang('lang.view')
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        {{-- +++++++++ Row 3 : مجموع الرواتب و المشتريات  +++++++++ --}}
+                                        <tr>
+                                            {{-- ====== column header ====== --}}
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600">
+                                                    <b>@lang('lang.total')</b>
+                                                </span>
+                                            </td>
+                                            {{-- ====== sum of stock_transactions and wage_transactions final_total ====== --}}
+                                            <td>
+                                                <span
+                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                    style="font-size: 12px;font-weight: 600" data-tooltip="total_paid">
+                                                    @if (!empty($wage_transactions_final_total) && !empty($stock_transactions_final_total))
+                                                        {{ $wage_transactions_final_total + $stock_transactions_final_total }}
+                                                    @endif
+                                                </span>
+                                            </td>
+                                            {{-- ====== Actions button ====== --}}
+                                            <td>
+
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 <div class="view_modal no-print">

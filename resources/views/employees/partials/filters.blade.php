@@ -120,9 +120,9 @@
                             '</td>' +
                             '<td>' +
                             (product.subCategory1 ? product.subCategory1.name + '<br>' :
-                                '') +
+                            '') +
                             (product.subCategory2 ? product.subCategory2.name + '<br>' :
-                                '') +
+                            '') +
                             (product.subCategory3 ? product.subCategory3.name : '') +
                             '</td>' +
                             '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
@@ -180,8 +180,7 @@
                 },
                 success: function(response) {
                     $('#subcategory_id2').html(
-                        '<option value="10">{{ __('lang.subcategory') . '2' }}</option>'
-                    );
+                        '<option value="10">{{ __('lang.subcategory') . '2' }}</option>');
                     $.each(response.subcategory_id2, function(index, val) {
                         console.log(val);
                         $('#subcategory_id2').append('<option value="' + val.id +
@@ -205,8 +204,7 @@
                 },
                 success: function(response) {
                     $('#subcategory_id3').html(
-                        '<option value="10">{{ __('lang.subcategory') . '3' }}</option>'
-                    );
+                        '<option value="10">{{ __('lang.subcategory') . '3' }}</option>');
                     $.each(response.subcategory_id3, function(index, val) {
                         // console.log(val);
                         $('#subcategory_id3').append('<option value="' + val.id +

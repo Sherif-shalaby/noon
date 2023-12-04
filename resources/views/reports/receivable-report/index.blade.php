@@ -53,71 +53,50 @@
                                     class="table  table-button-wrapper table-hover table-striped table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>تاريخ</th>
-                                            <th>المرجعي</th>
-                                            <th>عميل</th>
-                                            <th>حالة المبيعات</th>
-                                            <th>حالة السداد</th>
-                                            {{-- <th>العملة المٌستلمة</th> --}}
-                                            <th>المبلغ الاجمالي</th>
-                                            {{-- <th>@lang('lang.action')</th>  --}}
+                                            <th>{{ __('lang.date') }}</th>
+                                            <th>{{ __('lang.reciever') }}</th>
+                                            <th>{{ __('lang.received_amount') }}</th>
+                                            <th>{{ __('lang.paid_by') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transaction_sell_lines as $key => $transaction_sell_line)
+                                        @foreach ($cash_register_transactions as $key => $cash_register_transaction)
                                             <tr>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="تاريخ">
-                                                        {{ $transaction_sell_line->created_at->format('Y-m-d') ?? '' }}
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="{{ __('lang.date') }}">
+                                                        {{ $cash_register_transaction->created_at->format('Y-m-d') ?? '' }}
                                                     </span>
                                                 </td>
+                                                <!-- Accessing the cash_register relationship to get the user's cash_register_id -->
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="المرجعي">
-                                                        {{ $transaction_sell_line->invoice_no ?? '' }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="عميل">
-                                                        {{ $transaction_sell_line->customer->name ?? '' }}
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="{{ __('lang.reciever') }}">
+                                                        {{ $cash_register_transaction->cash_register->cashier->name ?? '' }}
                                                     </span>
                                                 </td>
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="حالة المبيعات">
-                                                        {{ $transaction_sell_line->status ?? '' }}
+                                                        data-tooltip="{{ __('lang.received_amount') }}">
+                                                        {{ $cash_register_transaction->amount ?? '' }}
                                                     </span>
                                                 </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="حالة السداد">
-                                                        {{ $transaction_sell_line->payment_status ?? '' }}
-                                                    </span>
-                                                </td>
-                                                {{-- <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="العملة المٌستلمة">
-                                                        {{ $transaction_sell_line->transaction_currency_relationship->symbol ?? '' }}
-                                                    </span>
-                                                </td> --}}
+                                                <!-- Accessing the cash_register relationship to get the user_id -->
                                                 <td>
                                                     <span
                                                         class="custom-tooltip d-flex justify-content-center align-items-center"
                                                         style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="المبلغ الاجمالي">
-                                                        {{ $transaction_sell_line->final_total ?? '' }}
+                                                        data-tooltip="{{ __('lang.paid_by') }}">
+                                                        {{ $cash_register_transaction->cash_register->store_pos->name ?? '' }}
                                                     </span>
                                                 </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

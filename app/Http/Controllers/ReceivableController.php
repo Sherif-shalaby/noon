@@ -8,57 +8,55 @@ use App\Models\StorePos;
 use Illuminate\Http\Request;
 use App\Models\TransactionSellLine;
 use App\Http\Controllers\Controller;
+use App\Models\CashRegisterTransaction;
+use App\Models\User;
 
 class ReceivableController extends Controller
 {
     /* +++++++++++++++++++++++ index() +++++++++++++++++++++++ */
     public function index(Request $request)
     {
-        // $transaction_sell_lines = TransactionSellLine::with(['transaction_currency_relationship','customer'])->get();
-        // $query = TransactionSellLine::with(['transaction_currency_relationship','customer']);
-        // if (!empty(request()->customer_id))
-        // {
-        //     $query->where('customer_id', request()->customer_id);
-        // }
-        // $transaction_sell_lines = $query->get();
-        // ====== customers Filter ======
-        $customers = Customer::orderBy('name', 'asc')->pluck('name', 'id');
-        // ====== stores Filter ======
-        $stores = Store::getDropdown();
-        // ====== stores_pos Filter ======
-        $store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
-        // dd($store_pos);
+        // ====== paid_by Filter ======
+        $payers = StorePos::orderBy('created_at', 'asc')->pluck('name','id');
+        // ====== receiver Filter ======
+        $receivers = User::orderBy('created_at', 'asc')->pluck('name','id');
+        // dd($receivers);
 
-        $query=TransactionSellLine::query();
+        $query=CashRegisterTransaction::query();
         if( request()->ajax() )
         {
-            // ====== store Filter ======
-            $transaction_sell_lines = $query->when($request->store_id != null, function ($query) use ( $request ) {
-                $query->where('store_id', $request->store_id);
-            })
-            // ====== store Filter ======
-            ->when($request->store_pos_id != null, function ($query) use ( $request ) {
-                $query->where('store_pos_id', $request->store_pos_id);
-            })
-            // ====== customers Filter ======
-            ->when( $request->customer_id != null,function ($query) use ( $request ) {
-                $query->where('customer_id', $request->customer_id);
-            })
             // ====== date Filter ======
-            ->when( $request->start_date != null && $request->end_date != null , function ($query) use ( $request ) {
+            $cash_register_transactions = $query
+            ->when($request->start_date != null && $request->end_date != null , function ($query) use ( $request ) {
                 $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
             })
+            // receivers Filter
+            ->when($request->receiver_filter != null, function ($query) use ($request) {
+                // Assuming CashRegisterTransaction has a relationship with CashRegister,
+                // and CashRegister has a relationship with User
+                $query->whereHas('cash_register', function ($subquery) use ($request) {
+                    $subquery->where('user_id', $request->receiver_filter);
+                });
+            })
+            // payers Filter
+            ->when($request->payer_filter != null, function ($query) use ($request) {
+                // Assuming CashRegisterTransaction has a relationship with CashRegister,
+                // and CashRegister has a relationship with User
+                $query->whereHas('cash_register', function ($subquery) use ($request) {
+                    $subquery->where('store_pos_id', $request->payer_filter);
+                });
+            })
             // ->latest()->get();
-            ->orderBy("created_at","asc")->with(['transaction_currency_relationship','customer','store_pos'])->get();
-            return $transaction_sell_lines;
+            ->orderBy("created_at","asc")->with('cash_register.cashier','cash_register.store_pos')->get();
+            return $cash_register_transactions;
         }
         else
         {
-            $transaction_sell_lines = TransactionSellLine::with(['transaction_currency_relationship','customer','store_pos'])->orderBy("created_at","asc")->get();
+            $cash_register_transactions = CashRegisterTransaction::with('cash_register.cashier','cash_register.store_pos')->orderBy("created_at","asc")->get();
         }
+        // dd($cash_register_transactions);
         return view('reports.receivable-report.index',
-                    compact('transaction_sell_lines','customers',
-                                    'stores','store_pos'));
+                    compact('cash_register_transactions','receivers','payers'));
     }
 
     /**
