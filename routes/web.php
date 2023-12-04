@@ -49,6 +49,7 @@ use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\TransactionPaymentController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +66,12 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+    // ++++++++++++++++++++++++++++++++++++ Notifications +++++++++++++++++++++++++++++++++
+    // --------------- Mark All Posts As Read ---------------
+    Route::get('notifications/markAllAsRead', [NotificationController::class,"markAsRead"])->name('Notification.Read');
+    // --------------- delete notification  ---------------
+    Route::get('notifications/delete/{id}', [NotificationController::class,"destroy_notification"])->name('Notification.delete');
+
     // Home cards route
     Route::get('returns', function () {
         return view('returns.index');
