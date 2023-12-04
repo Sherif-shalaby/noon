@@ -78,12 +78,18 @@
                     @endphp
                     <tr>
                         <th></th>
-                        <th><a href="{{ url('report/get-monthly-sale-report?year=' . $pre_year) }}" class="text-primary"><i
-                                    class="fa fa-arrow-left"></i> {{ trans('lang.previous') }}</a></th>
+                        <th>
+                            <a href="{{ url('report/get-monthly-sale-report?year=' . $pre_year) }}" class="text-primary"><i
+                                    class="fa fa-arrow-left"></i> {{ trans('lang.previous') }}
+                            </a>
+                        </th>
                         <th colspan="10" class="text-center">{{ $year }}</th>
-                        <th><a href="{{ url('report/get-monthly-sale-report?year=' . $next_year) }}"
+                        <th>
+                            <a href="{{ url('report/get-monthly-sale-report?year=' . $next_year) }}"
                                 class="text-primary">{{ trans('lang.next') }}
-                                <i class="fa fa-arrow-right"></i></a></th>
+                                <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
