@@ -1,5 +1,5 @@
 <!-- Start Leftbar -->
-<div class="leftbar">
+<div class="leftbar" style="z-index: 9999">
     {{--    <div class="col-md-12 align-self-center"> --}}
     {{--        <div class="infobar"> --}}
     {{--            <ul class="list-inline mb-0"> --}}
@@ -43,12 +43,10 @@
                     width="45px" height="45px">
             </a>
         </div>
-        {{--                    <div class="notifybar"> --}}
-        {{--                        <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon"> --}}
-        {{--                            <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications"> --}}
-        {{--                            <span class="live-icon"></span> --}}
-        {{--                        </a> --}}
-        {{--                    </div> --}}
+
+
+        {{-- +++++++++++++++++ Notification +++++++++++++++++ --}}
+        @include('layouts.partials.notification_list')
         @php
             $flags = (object) [
                 'en' => 'us',
@@ -58,9 +56,10 @@
         @endphp
         <div class="languagebar">
             <div class="dropdown">
-                <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="dripicons-web"
-                        style="width: 26px;height: 26px;"></i>&nbsp;</a>
+                <a class="dropdown-toggle text-black text-decoration-none" href="#" role="button"
+                    id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                        class="dripicons-web"></i>
+                </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">
                     @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
                         <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}"
@@ -72,27 +71,7 @@
             </div>
         </div>
         <div class="languagebar">
-            {{-- <div class="dropdown">
-                <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="dripicons-web"
-                        style="width: 26px;height: 26px;"></i>&nbsp; <span
-                        class="online-balance-badge badge bg-danger {{ $notification_count > 0 ? 'show' : 'hide' }}">{{ $notification_count }}</span></a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">
-                    @foreach ($notifications as $index => $notification)
-                        <a class="notification_item" data-mark-read-action="" data-href="">
-                            <p style="margin:0px"><i class="fa fa-exclamation-triangle "
-                                    style="color: rgb(255, 187, 60)"></i>
-                                @lang('lang.alert_quantity')
-                                {{ $notification->product->name ?? '' }} ({{ $notification->variation->sku ?? '' }})</p>
-                            <br>
-                            <span class="text-muted">@lang('lang.alert_quantity'):
-                                {{ @num_format($notification->alert_quantity ?? 0) }}</span> <br>
-                            <span class="text-muted">@lang('lang.in_stock'):
-                                {{ @num_format($notification->qty_available ?? 0) }}</span>
-                        </a>
-                    @endforeach
-                </div>
-            </div> --}}
+
         </div>
     </div>
 
