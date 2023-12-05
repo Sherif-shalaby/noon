@@ -83,6 +83,9 @@ class Create extends Component
     // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
+        // ++++++++++ updateCurrentStock() : Fetch and set the initial value of $current_stock ++++++++++
+        $this->updateCurrentStock();
+
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
@@ -219,7 +222,7 @@ class Create extends Component
             DB::beginTransaction();
             // add  products to stock lines
             $customer_offer_prices = [];
-            // ++++++++++++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++++++++++++
+            // ++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++
             foreach ($this->items as $index => $item)
             {
                 if (!empty($item['product']['id']) && !empty($item['quantity']))
@@ -232,7 +235,7 @@ class Create extends Component
                     $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
                     $customer_offer_price['product_id'] = $item['product']['id'];
                     $customer_offer_price['quantity'] = $item['quantity'];
-                    $customer_offer_price['current_stock'] = $item['current_stock'];
+                    // $customer_offer_price['current_stock'] = $item['current_stock'];
                     $customer_offer_price['sell_price'] = $item['selling_price'];
                     $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
                     // created_by
@@ -250,6 +253,13 @@ class Create extends Component
 
                     // Add the customer offer price for this item to the array
                     $customer_offer_prices[] = $customer_offer_price;
+                    // +++++++++++++++++++++ ProductStore Table ++++++++++++++
+                    // Delete "blocked Quantity" From "available Quantity" of "product"
+                    $product_store = ProductStore::where('product_id',$item['product']['id'])
+                                                ->where('store_id',$this->store_id)->first();
+                    $product_store->block_quantity = $item['quantity'];
+                    $product_store->quantity_available -= $item['quantity'];
+                    $product_store->save();
                 }
             }
 
@@ -345,7 +355,35 @@ class Create extends Component
         ];
         array_push($this->items, $new_item);
     }
-
+    // +++++++++++++++++++ updateCurrentStock() +++++++++++++++++++
+    //  When change "store" Then Change "current_stock" column according to "selected Store"
+    public function updateCurrentStock()
+    {
+        if (!empty($this->store_id))
+        {
+            $store_id = (int)$this->store_id;
+            foreach( $this->items as $key => $item )
+            {
+                $current_stock_all = ProductStore::select('quantity_available')
+                    ->where('product_id', $item['product']['id'])
+                    ->where('store_id', $store_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
+                // Update "current_stock" for "All products"
+                $this->items[$key]['current_stock'] = $current_stock;
+            }
+        } else {
+            // Handle the case where store_id is empty, set $current_stock to null or a default value
+            $this->current_stock = null;
+        }
+    }
+    // +++++++++++++++++++++++++ Call func() ===> updateCurrentStock() +++++++++++++++++++
+    public function func()
+    {
+        // Update $current_stock when store_id changes
+        $this->updateCurrentStock();
+    }
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
        $this->items[$index]['unit'] = $variant->unit->name;
