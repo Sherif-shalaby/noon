@@ -25,7 +25,7 @@
             <a href="{{ route('logout') }}" class="profile-icon" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img src="{{ asset('images/svg-icon/logout.svg') }}" class="img-fluid" alt="logout">
             </a>
-            
+
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
@@ -46,6 +46,9 @@
         {{--                            <span class="live-icon"></span>--}}
         {{--                        </a>--}}
         {{--                    </div>--}}
+
+        {{-- +++++++++++++++++ Notification +++++++++++++++++ --}}
+        @include('layouts.partials.notification_list')
         @php
             $flags=(object)[
                 'en'=>'us',
