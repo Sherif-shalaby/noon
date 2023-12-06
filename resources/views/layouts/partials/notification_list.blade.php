@@ -11,11 +11,11 @@
     }
 
     ul.dropdown-menu {
-        height: 205px;
+        /* height: 205px; */
         overflow-y: auto;
-        min-width: 360px;
+        /* min-width: 360px; */
         overflow-x: hidden;
-        padding: 0 !important;
+        padding: 10px !;
         text-align: left !important;
     }
 
@@ -44,7 +44,7 @@
     // $earlier_notifications = App\Models\Notification::where('id', Auth::user()->id)->whereDate('created_at', '<', date('Y-m-d'))->orderBy('created_at', 'desc')->with(['created_by_user', 'product', 'transaction'])->limit(2)->get();
 @endphp
 {{-- +++++++++++++++++ New (Unread) Notification +++++++++++++++++ --}}
-<ul class="m-0 p-0 mt-1">
+<ul class="m-0 pr-2 pl-0 mt-1">
     <li class="nav-item dropdown">
         <a class="nav-link text-light  notification-list position-relative" href="#" id="navbarDropdown"
             role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

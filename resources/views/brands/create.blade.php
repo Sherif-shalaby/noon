@@ -23,7 +23,7 @@
                     <input type="hidden" name="quick_add"
                         value="{{ isset($quick_add) && $quick_add ? $quick_add : '' }}">
                     {!! Form::label('name', __('lang.brand_name') . '*', [
-                        'class' => 'col-md-4 m-0 p-0',
+                        'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
                         'style' => 'font-size: 12px;font-weight: 500;',
                     ]) !!}
                     {!! Form::text('name', null, [

@@ -1,6 +1,21 @@
 @extends('layouts.app')
 @section('title', __('lang.store_pos'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 85px;
+        }
+
+        .Wrapper1 {
+            margin-top: 70px
+        }
+
+        @media(max-width:768px) {
+            .Wrapper1 {
+                margin-top: 140px
+            }
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -54,90 +69,98 @@
                         </div>
                         <div class="card-body">
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <table id="datatable-buttons"
-                                    class="table table-striped table-button-wrapper table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            {{-- <th>@lang('lang.store')</th> --}}
-                                            <th>@lang('lang.name')</th>
-                                            <th>@lang('lang.user')</th>
-                                            <th>@lang('lang.email')</th>
-                                            <th>@lang('lang.date_and_time')</th>
-                                            <th class="notexport">@lang('lang.action')</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($store_poses as $key => $store_pos)
-                                            <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                {{-- <td>{{ $store_pos->store->name ?? '' }}</td> --}}
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.name')">
-                                                        {{ $store_pos->name }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.user')">
-                                                        {{ $store_pos->user->name }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.email')">
-                                                        {{ $store_pos->user->email }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.date_and_time')">
-                                                        {{ @format_datetime($store_pos->created_at) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        <button type="button" style="font-size: 12px;font-weight: 600"
-                                                            class="btn btn-default btn-sm dropdown-toggle"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">@lang('lang.action')
-                                                            <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                            user="menu">
-                                                            <li>
-                                                                <a data-href="{{ route('store-pos.edit', $store_pos->id) }}"
-                                                                    data-container=".view_modal"
-                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
-                                                                        class="dripicons-document-edit"></i>
-                                                                    @lang('lang.edit')</a>
-                                                            </li>
-                                                            <li>
-                                                                <a data-href="{{ route('store-pos.destroy', $store_pos->id) }}"
-                                                                    data-check_password=""
-                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
-                                                                        class="fa fa-trash"></i>
-                                                                    @lang('lang.delete')</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                        <table id="datatable-buttons" class="table table-striped table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    {{-- <th>@lang('lang.store')</th> --}}
+                                                    <th>@lang('lang.name')</th>
+                                                    <th>@lang('lang.user')</th>
+                                                    <th>@lang('lang.email')</th>
+                                                    <th>@lang('lang.date_and_time')</th>
+                                                    <th class="notexport">@lang('lang.action')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($store_poses as $key => $store_pos)
+                                                    <tr>
+                                                        <td>{{ $key + 1 }}</td>
+                                                        {{-- <td>{{ $store_pos->store->name ?? '' }}</td> --}}
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.name')">
+                                                                {{ $store_pos->name }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.user')">
+                                                                {{ $store_pos->user->name }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.email')">
+                                                                {{ $store_pos->user->email }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.date_and_time')">
+                                                                {{ @format_datetime($store_pos->created_at) }}
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <button type="button"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    class="btn btn-default btn-sm dropdown-toggle"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false">@lang('lang.action')
+                                                                    <span class="caret"></span>
+                                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                                </button>
+                                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                                    user="menu">
+                                                                    <li>
+                                                                        <a data-href="{{ route('store-pos.edit', $store_pos->id) }}"
+                                                                            data-container=".view_modal"
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif btn-modal"><i
+                                                                                class="dripicons-document-edit"></i>
+                                                                            @lang('lang.edit')</a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a data-href="{{ route('store-pos.destroy', $store_pos->id) }}"
+                                                                            data-check_password=""
+                                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif text-red delete_item"><i
+                                                                                class="fa fa-trash"></i>
+                                                                            @lang('lang.delete')</a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
 
-                                    </tbody>
-                                </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

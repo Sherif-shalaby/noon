@@ -43,7 +43,7 @@
                     ]) !!}
                     <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.1s">
                             {!! Form::label('site_title', __('lang.site_title'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -54,18 +54,18 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  hide d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  hide d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.15s">
                             {!! Form::label('developed_by', __('lang.developed_by'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('developed_by', !empty($settings['developed_by']) ? $settings['developed_by'] : null, [
-                                'class' => 'form-control required initial-balance-input my-0',
+                                'class' => 'form-control required initial-balance-input m-0',
                             ]) !!}
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.2s">
                             {!! Form::label('time_format', __('lang.time_format'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -81,7 +81,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.25s">
                             {!! Form::label('language', __('lang.language'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -94,7 +94,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.3s">
                             {!! Form::label('currency', __('lang.currency'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -109,18 +109,18 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.35s">
                             {!! Form::label('dollar_exchange', __('lang.dollar_exchange'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('dollar_exchange', !empty($settings['dollar_exchange']) ? $settings['dollar_exchange'] : null, [
-                                'class' => 'form-control required initial-balance-input my-0',
+                                'class' => 'form-control required initial-balance-input m-0',
                             ]) !!}
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.4s">
                             {!! Form::label('start_date', __('lang.start_date'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -130,7 +130,7 @@
                                 'class' => 'form-control required initial-balance-input m-0',
                             ]) !!}
                         </div>
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.45s">
                             {!! Form::label('end_date', __('lang.end_date'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -141,7 +141,7 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.5s">
                             {!! Form::label('default_payment_type', __('lang.default_payment_type'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -160,18 +160,18 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.55s">
                             {!! Form::label('tax', __('lang.tax'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
                                 'style' => 'font-size: 12px;font-weight: 500;',
                             ]) !!}
                             {!! Form::text('tax', !empty($settings['tax']) ? $settings['tax'] : null, [
-                                'class' => 'form-control required initial-balance-input my-0',
+                                'class' => 'form-control required initial-balance-input m-0',
                             ]) !!}
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.6s">
                             {!! Form::label('invoice_lang', __('lang.invoice_lang'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -188,7 +188,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.65s">
                             {!! Form::label('Watsapp Numbers', __('lang.watsapp_numbers'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -200,7 +200,7 @@
                         </div>
 
                         {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                        <div class="col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="animation-delay: 1.7s">
                             {!! Form::label('country_id', __('lang.country'), [
                                 'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
@@ -216,267 +216,228 @@
 
                         <div class="col-md-12 pt-5">
                             <div class="row">
-                                <div class="col-md-6 animate__animated animate__bounceInLeft "
+                                <div class="col-md-4 animate__animated animate__bounceInLeft "
                                     style="animation-delay: 1.75s">
-                                    <div class="form-group">
-
-                                        <div class="container mt-3">
-                                            <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
-                                                <div class="col-12">
-                                                    <label for="projectinput2" class="h5 p3 justify-content-center d-flex">
-                                                        {{ __('lang.letter_header') }}</label>
-                                                </div>
-                                                <div class="col-5">
-                                                    <div class="mt-3">
-                                                        <div class="row">
-                                                            <div class="col-10 offset-1">
-                                                                <div class="variants">
-                                                                    <div class='file file--upload w-100'>
-                                                                        <div class="file-input">
-                                                                            <input type="file" name="file-input"
-                                                                                id="file-input-header"
-                                                                                class="file-input__input" />
-                                                                            <label class="file-input__label"
-                                                                                for="file-input-header">
-                                                                                <i
-                                                                                    class="fas fa-cloud-upload-alt"></i>&nbsp;
-                                                                                <span>Upload file</span></label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
+                                    <div class="container mt-3">
+                                        <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12">
+                                                <label for="projectinput2" class="h5 p3 justify-content-center d-flex">
+                                                    {{ __('lang.letter_header') }}</label>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <div class="variants">
+                                                        <div class='file file--upload w-100'>
+                                                            <div class="file-input">
+                                                                <input type="file" name="file-input"
+                                                                    id="file-input-header" class="file-input__input" />
+                                                                <label class="file-input__label" for="file-input-header">
+                                                                    <i class="fas fa-cloud-upload-alt"></i>&nbsp;
+                                                                    <span>Upload file</span></label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-4 offset-1 ">
-                                                    <div class="preview-header-container">
-                                                        @if (!empty($settings['letter_header']))
-                                                            <div class="preview">
-                                                                <img src="{{ asset('uploads/' . $settings['letter_header']) }}"
-                                                                    id="img_header_footer" alt="">
-                                                                <button type="button"
-                                                                    class="btn btn-xs btn-danger delete-btn remove_image"
-                                                                    data-type="letter_header"><i style="font-size: 25px;"
-                                                                        class="fa fa-trash"></i></button>
-                                                                <span class="btn btn-xs btn-primary  crop-btn"
-                                                                    id="crop-header-btn" data-toggle="modal"
-                                                                    data-target="#headerModal"><i style="font-size: 25px;"
-                                                                        class="fas fa-crop"></i></span>
-                                                            </div>
-                                                        @endif
-                                                    </div>
+                                                <div class="preview-header-container"
+                                                    style="display: flex !important;justify-content:center">
+                                                    @if (!empty($settings['letter_header']))
+                                                        <div class="preview">
+                                                            <img src="{{ asset('uploads/' . $settings['letter_header']) }}"
+                                                                id="img_header_footer" alt="">
+                                                            <button type="button"
+                                                                class="btn btn-sm btn-danger delete-btn remove_image"
+                                                                data-type="letter_header"><i style="font-size: 16px;"
+                                                                    class="fa fa-trash"></i></button>
+                                                            <span class="btn btn-sm btn-primary  crop-btn"
+                                                                id="crop-header-btn" data-toggle="modal"
+                                                                data-target="#headerModal"><i style="font-size: 16px;"
+                                                                    class="fas fa-crop"></i></span>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-                                <div class="col-md-6 animate__animated animate__bounceInLeft "
+
+                                <div class="col-md-4 animate__animated animate__bounceInLeft "
                                     style="animation-delay: 1.8s">
-                                    <div class="form-group">
-                                        <div class="container mt-3">
-                                            <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
-                                                <div class="col-12 p3 justify-content-center d-flex">
-                                                    <label for="projectinput2" class='h5'>
-                                                        {{ __('lang.letter_footer') }}</label>
+                                    <div class="container mt-3">
+                                        <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12">
+                                                <label for="projectinput2" class='h5 p3 justify-content-center d-flex'>
+                                                    {{ __('lang.letter_footer') }}</label>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex justify-content-center align-items-center">
 
-                                                </div>
-                                                <div class="col-5">
-                                                    <div class="mt-3">
-                                                        <div class="row">
-                                                            <div class="col-10 offset-1">
-                                                                <div class="variants">
-                                                                    <div class='file file--upload w-100'>
-                                                                        <div class="file-input">
-                                                                            <input type="file" name="file-input"
-                                                                                id="file-input-footer"
-                                                                                class="file-input__input" />
-                                                                            <label class="file-input__label"
-                                                                                for="file-input-footer">
-                                                                                <i
-                                                                                    class="fas fa-cloud-upload-alt"></i>&nbsp;
-                                                                                <span>Upload file</span></label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                                    <div class="variants">
+                                                        <div class='file file--upload w-100'>
+                                                            <div class="file-input">
+                                                                <input type="file" name="file-input"
+                                                                    id="file-input-footer" class="file-input__input" />
+                                                                <label class="file-input__label" for="file-input-footer">
+                                                                    <i class="fas fa-cloud-upload-alt"></i>&nbsp;
+                                                                    <span>Upload file</span></label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-4 offset-1">
-                                                    <div class="preview-footer-container">
-                                                        @if (!empty($settings['letter_footer']))
-                                                            <div class="preview">
-                                                                <img src="{{ asset('uploads/' . $settings['letter_footer']) }}"
-                                                                    id="img_letter_footer" alt="">
-                                                                <button type="button"
-                                                                    class="btn btn-xs btn-danger delete-btn remove_image"
-                                                                    data-type="letter_footer"><i style="font-size: 25px;"
-                                                                        class="fa fa-trash"></i></button>
 
-                                                                <span class="btn btn-xs btn-primary  crop-btn"
-                                                                    id="crop-footer-btn" data-toggle="modal"
-                                                                    data-target="#footerModal"><i style="font-size: 25px;"
-                                                                        class="fas fa-crop"></i></span>
-                                                            </div>
-                                                        @endif
-                                                    </div>
+                                                </div>
+                                                <div class="preview-footer-container"
+                                                    style="display: flex !important;justify-content:center">
+                                                    @if (!empty($settings['letter_footer']))
+                                                        <div class="preview">
+                                                            <img src="{{ asset('uploads/' . $settings['letter_footer']) }}"
+                                                                id="img_letter_footer" alt="">
+                                                            <button type="button"
+                                                                class="btn btn-xs btn-danger delete-btn remove_image"
+                                                                data-type="letter_footer"><i style="font-size: 25px;"
+                                                                    class="fa fa-trash"></i></button>
+
+                                                            <span class="btn btn-xs btn-primary  crop-btn"
+                                                                id="crop-footer-btn" data-toggle="modal"
+                                                                data-target="#footerModal"><i style="font-size: 25px;"
+                                                                    class="fas fa-crop"></i></span>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 animate__animated animate__bounceInLeft  p-0"
+                                <div class="col-md-4 animate__animated animate__bounceInLeft"
                                     style="animation-delay: 1.85s">
-                                    <div class="form-group">
-                                        <div class="container mt-3">
-                                            <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
-                                                <div class="col-12 p3 justify-content-center d-flex">
-                                                    <label for="projectinput2" class='h5'>
-                                                        {{ __('lang.logo') }}</label>
-                                                </div>
-                                                <div class="col-5">
-                                                    <div class="mt-3">
-                                                        <div class="row">
-                                                            <div class="col-10 offset-1">
-                                                                <div class="variants">
-                                                                    <div class='file file--upload w-100'>
-                                                                        <div class="file-input">
-                                                                            <input type="file" name="file-input"
-                                                                                id="file-input-logo"
-                                                                                class="file-input__input" />
-                                                                            <label class="file-input__label"
-                                                                                for="file-input-logo">
-                                                                                <i
-                                                                                    class="fas fa-cloud-upload-alt"></i>&nbsp;
-                                                                                <span>Upload file</span></label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
+                                    <div class="container mt-3">
+                                        <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
+                                            <div class="col-12">
+                                                <label for="projectinput2" class='h5 p3 justify-content-center d-flex'>
+                                                    {{ __('lang.logo') }}</label>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex justify-content-center align-items-center">
+
+                                                    <div class="variants">
+                                                        <div class='file file--upload w-100'>
+                                                            <div class="file-input">
+                                                                <input type="file" name="file-input"
+                                                                    id="file-input-logo" class="file-input__input" />
+                                                                <label class="file-input__label" for="file-input-logo">
+                                                                    <i class="fas fa-cloud-upload-alt"></i>&nbsp;
+                                                                    <span>Upload file</span></label>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-4 offset-1">
-                                                    <div class="preview-logo-container">
-                                                        @if (!empty($settings['logo']))
-                                                            <div class="preview">
-                                                                <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                                    id="img_logo_footer" alt="">
-                                                                <button type="button"
-                                                                    class="btn btn-xs btn-danger delete-btn remove_image "
-                                                                    data-type="logo"><i style="font-size: 25px;"
-                                                                        class="fa fa-trash"></i></button>
-                                                                <span class="btn btn-xs btn-primary  crop-btn"
-                                                                    id="crop-logo-btn" data-toggle="modal"
-                                                                    data-target="#logoModal"><i style="font-size: 25px;"
-                                                                        class="fas fa-crop"></i></span>
-                                                            </div>
-                                                        @endif
 
-                                                    </div>
+                                                </div>
+                                                <div class="preview-logo-container"
+                                                    style="display: flex !important;justify-content:center">>
+                                                    @if (!empty($settings['logo']))
+                                                        <div class="preview">
+                                                            <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                                                id="img_logo_footer" alt="">
+                                                            <button type="button"
+                                                                class="btn btn-xs btn-danger delete-btn remove_image "
+                                                                data-type="logo"><i style="font-size: 25px;"
+                                                                    class="fa fa-trash"></i></button>
+                                                            <span class="btn btn-xs btn-primary  crop-btn"
+                                                                id="crop-logo-btn" data-toggle="modal"
+                                                                data-target="#logoModal"><i style="font-size: 25px;"
+                                                                    class="fas fa-crop"></i></span>
+                                                        </div>
+                                                    @endif
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row">
+                            {!! Form::label('help_page_content', __('lang.help_page_content'), ['class' => 'h5 text-end d-block']) !!}
+                            {!! Form::textarea(
+                                'help_page_content',
+                                !empty($settings['help_page_content']) ? $settings['help_page_content'] : null,
+                                ['class' => 'form-control', 'id' => 'help_page_content'],
+                            ) !!}
+
+                            <div id="cropped_logo_images"></div>
+                            <div id="cropped_header_images"></div>
+                            <div id="cropped_footer_images"></div>
                         </div>
                         <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-1"></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        {!! Form::label('help_page_content', __('lang.help_page_content'), ['class' => 'h5 pt-5']) !!}
-                                        {!! Form::textarea(
-                                            'help_page_content',
-                                            !empty($settings['help_page_content']) ? $settings['help_page_content'] : null,
-                                            ['class' => 'form-control', 'id' => 'help_page_content'],
-                                        ) !!}
-                                    </div>
-                                </div>
-                            </div>
+                            <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
                         </div>
-                        <br>
-                        <br>
-                        <br>
-                        <div id="cropped_logo_images"></div>
-                        <div id="cropped_header_images"></div>
-                        <div id="cropped_footer_images"></div>
+                        {!! Form::close() !!}
                     </div>
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-                    </div>
-                    {!! Form::close() !!}
+                    @include('general-settings.crop_modals')
                 </div>
-                @include('general-settings.crop_modals')
             </div>
         </div>
-    </div>
 
-@endsection
-@push('javascripts')
-    <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
-    <script src="{{ asset('css/crop/crop-setting.js') }}"></script>
+    @endsection
+    @push('javascripts')
+        <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+        <script src="{{ asset('css/crop/crop-setting.js') }}"></script>
 
 
-    <script>
-        // edit Case
-        @if (!empty($settings['letter_header']) && isset($settings['letter_header']))
-            document.getElementById("crop-header-btn").addEventListener('click', () => {
+        <script>
+            // edit Case
+            @if (!empty($settings['letter_header']) && isset($settings['letter_header']))
+                document.getElementById("crop-header-btn").addEventListener('click', () => {
 
-                console.log(("#headerModal"))
-                setTimeout(() => {
-                    launchHeaderCropTool(document.getElementById("img_header_footer"));
-                }, 500);
-            });
-            let deleteHeaderBtn = document.getElementById("deleteBtn");
-            if (deleteHeaderBtn) {
-                deleteHeaderBtn.addEventListener('click', () => {
-                    if (window.confirm('Are you sure you want to delete this image?')) {
-                        $("#preview").remove();
-                    }
+                    console.log(("#headerModal"))
+                    setTimeout(() => {
+                        launchHeaderCropTool(document.getElementById("img_header_footer"));
+                    }, 500);
                 });
-            }
-        @endif
-        // edit Case
-        @if (!empty($settings['letter_footer']) && isset($settings['letter_footer']))
-            document.getElementById("crop-footer-btn").addEventListener('click', () => {
+                let deleteHeaderBtn = document.getElementById("deleteBtn");
+                if (deleteHeaderBtn) {
+                    deleteHeaderBtn.addEventListener('click', () => {
+                        if (window.confirm('Are you sure you want to delete this image?')) {
+                            $("#preview").remove();
+                        }
+                    });
+                }
+            @endif
+            // edit Case
+            @if (!empty($settings['letter_footer']) && isset($settings['letter_footer']))
+                document.getElementById("crop-footer-btn").addEventListener('click', () => {
 
-                console.log(("#footerModal"))
-                setTimeout(() => {
-                    launchCropTool(document.getElementById("img_letter_footer"));
-                }, 500);
-            });
-            let deleteFooterBtn = document.getElementById("deleteBtn");
-            if (deleteFooterBtn) {
-                deleteFooterBtn.getElementById("deleteBtn").addEventListener('click', () => {
-                    if (window.confirm('Are you sure you want to delete this image?')) {
-                        $("#preview").remove();
-                    }
+                    console.log(("#footerModal"))
+                    setTimeout(() => {
+                        launchCropTool(document.getElementById("img_letter_footer"));
+                    }, 500);
                 });
-            }
-        @endif
+                let deleteFooterBtn = document.getElementById("deleteBtn");
+                if (deleteFooterBtn) {
+                    deleteFooterBtn.getElementById("deleteBtn").addEventListener('click', () => {
+                        if (window.confirm('Are you sure you want to delete this image?')) {
+                            $("#preview").remove();
+                        }
+                    });
+                }
+            @endif
 
-        // edit Case
-        @if (!empty($settings['logo']) && isset($settings['logo']))
-            document.getElementById("crop-logo-btn").addEventListener('click', () => {
+            // edit Case
+            @if (!empty($settings['logo']) && isset($settings['logo']))
+                document.getElementById("crop-logo-btn").addEventListener('click', () => {
 
-                console.log(("#logoModal"))
-                setTimeout(() => {
-                    launchLogoCropTool(document.getElementById("img_logo_footer"));
-                }, 500);
-            });
-            let deleteLogoBtn = document.getElementById("deleteBtn");
-            if (deleteLogoBtn) {
-                deleteLogoBtn.getElementById("deleteBtn").addEventListener('click', () => {
-                    if (window.confirm('Are you sure you want to delete this image?')) {
-                        $("#preview").remove();
-                    }
+                    console.log(("#logoModal"))
+                    setTimeout(() => {
+                        launchLogoCropTool(document.getElementById("img_logo_footer"));
+                    }, 500);
                 });
-            }
-        @endif
-    </script>
-@endpush
+                let deleteLogoBtn = document.getElementById("deleteBtn");
+                if (deleteLogoBtn) {
+                    deleteLogoBtn.getElementById("deleteBtn").addEventListener('click', () => {
+                        if (window.confirm('Are you sure you want to delete this image?')) {
+                            $("#preview").remove();
+                        }
+                    });
+                }
+            @endif
+        </script>
+    @endpush

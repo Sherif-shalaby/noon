@@ -6,12 +6,12 @@
             top: 85px;
         }
 
-        .Wrapper1 {
-            margin-top: 70px
+        .wrapper1 {
+            margin-top: 70px;
         }
 
         @media(max-width:768px) {
-            .Wrapper1 {
+            .wrapper1 {
                 margin-top: 140px
             }
         }
@@ -67,7 +67,7 @@
                         <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                             <div class="div2 table-scroll-wrapper">
                                 <!-- content goes here -->
-                                <div style="min-width: 1300px;max-height: 90vh;overflow: auto">
+                                <div style="min-width:1300px;max-height: 90vh;overflow: auto">
                                     <table id="datatable-buttons" class="table dataTable">
                                         <thead>
                                             <tr>
