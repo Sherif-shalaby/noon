@@ -41,6 +41,8 @@ use App\Http\Controllers\PurchasesReportController;
 use App\Http\Controllers\PurchaseOrderLineController;
 use App\Http\Controllers\CustomerOfferPriceController;
 use App\Http\Controllers\CustomerPriceOfferController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ProfitReportController;
 use App\Http\Controllers\RepresentativeController;
 use App\Http\Livewire\CustomerPriceOffer\CustomerPriceOffer;
 use App\Http\Controllers\RepresentativeSalaryReportController;
@@ -218,11 +220,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('customers-report', CustomersReportController::class);
     // ########### Daily Report Summary ###########
     Route::resource('daily-report-summary', DailyReportSummary::class);
-
+    // ########### profit Report ###########
+    Route::get('report/get-profit-loss', [ProfitReportController::class,'index'])->name('profit_report');
 
     // ########### representative salary report ###########
     Route::resource('representative_salary_report', RepresentativeSalaryReportController::class);
     // ajax request : get_product_search
+    Route::get('get-dashboard-data/{start_date}/{end_date}',  [ProfitReportController::class,'getDashboardData']);
 
     // selected_products : Add All Selected Product
     Route::get('/selected-product',[PurchaseOrderLineController::class,'deleteAll'])->name('product.delete');
@@ -299,6 +303,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('representatives', RepresentativeController::class);
     Route::get('representatives/print-representative-invoice/{transaction_id}', [RepresentativeController::class,'printRepresentativeInvoice'])->name('representatives.print_representative_invoice');
     Route::get('representatives/pay/{transaction_id}', [RepresentativeController::class,'pay'])->name('representatives.pay');
+    Route::resource('expense', ExpenseController::class);
 });
 
 Route::get('create-or-update-system-property/{key}/{value}', [SettingController::class,'createOrUpdateSystemProperty'])->middleware('timezone');

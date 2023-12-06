@@ -534,7 +534,7 @@ class Util
     {
         $currencies_obj = ExchangeRate::leftjoin('currencies', 'exchange_rates.received_currency_id', 'currencies.id')
             ->where(function ($q) {
-                $q->whereNull('expiry_date')->orWhereDate('expiry_date', '>=', date('Y-m-d'));
+                $q->whereNull('expiery_date')->orWhereDate('expiery_date', '>=', date('Y-m-d'));
             })
             ->select('received_currency_id as currency_id', 'currencies.symbol', 'conversion_rate')
             ->orderBy('exchange_rates.created_at', 'asc')
