@@ -1,18 +1,19 @@
     <div
-        class="row animate__animated  animate__bounceInRight unit-row[{{ $key }}]  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        class="d-flex animate__animated  animate__bounceInRight unit-row[{{ $key }}]  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
         <input type="hidden" name="product[{{ $key ?? 0 }}]variation_ids[{{ $index ?? 0 }}]"
             value="{{ $variation->id ?? null }}">
         @if (isset($index) && $index !== '')
             @if ($index == 1)
-                <div
-                    class="col-md-3 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                    {!! Form::label('sku', __('lang.product_code'), [
+                <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                    style="width: 75px">
+                    {{-- {!! Form::label('sku', __('lang.product_code'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
                         'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!}
+                    ]) !!} --}}
                     {!! Form::text('products[' . $key . '][variations][' . $index . '][sku]', $variation->sku ?? null, [
                         'class' => 'form-control initial-balance-input',
                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
+                        'placeholder' => __('lang.product_code'),
                     ]) !!}
 
                     @error('sku.' . $index)
@@ -20,11 +21,11 @@
                     @enderror
                 </div>
                 <div
-                    class="col-md-3 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                    {!! Form::label('unit', __('lang.large_filling'), [
+                    class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                    {{-- {!! Form::label('unit', __('lang.large_filling'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
                         'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!}
+                    ]) !!} --}}
                     <div class="d-flex justify-content-center align-items-center"
                         style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -37,7 +38,7 @@
                             data-name='unit_id' data-index="{{ $index }}" required
                             class="form-control unit_select select2 unit_id{{ $index }}" style="width: 100px;"
                             data-key="{{ $key }}">
-                            <option value="">{{ __('lang.please_select') }}</option>
+                            <option value="">{{ __('lang.large_filling') }}</option>
                             @foreach ($units as $unit)
                                 <option @if ($key == 0 && isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif value="{{ $unit->id }}">
                                     {{ $unit->name }}</option>
@@ -55,26 +56,28 @@
                     </button>
                 </div>
             @else
-                <div class="col-md-2">
-                    {!! Form::label('equal', __('lang.equal'), [
+                <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                    style="width: 75px">
+                    {{-- {!! Form::label('equal', __('lang.equal'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
                         'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!}
+                    ]) !!} --}}
                     {!! Form::text(
                         'products[' . $key . '][variations][' . $index . '][equal]',
                         isset($variation->equal) ? $variation->equal : null,
                         [
                             'class' => 'form-control initial-balance-input',
                             'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
+                            'placeholder' => __('lang.equal'),
                         ],
                     ) !!}
                 </div>
                 <div
-                    class="col-md-3 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                    {!! Form::label('unit', __('lang.small_filling'), [
+                    class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                    {{-- {!! Form::label('unit', __('lang.small_filling'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
                         'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!}
+                    ]) !!} --}}
                     <div class="d-flex justify-content-center align-items-center"
                         style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -87,7 +90,7 @@
                             data-name='unit_id' data-index="{{ $index }}" required
                             class="form-control unit_select select2 unit_id{{ $index }}" style="width: 100px;"
                             data-key="{{ $key }}">
-                            <option value="">{{ __('lang.please_select') }}</option>
+                            <option value="">{{ __('lang.small_filling') }}</option>
                             @foreach ($units as $unit)
                                 <option @if ($key == 0 && isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif value="{{ $unit->id }}">
                                     {{ $unit->name }}</option>
@@ -99,15 +102,16 @@
                             href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
-                <div
-                    class="col-md-3 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                    {!! Form::label('sku', __('lang.product_code'), [
+                <div class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                    style="width: 75px">
+                    {{-- {!! Form::label('sku', __('lang.product_code'), [
                         'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
                         'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!}
+                    ]) !!} --}}
                     {!! Form::text('products[' . $key . '][variations][' . $index . '][sku]', $variation->sku ?? null, [
                         'class' => 'form-control initial-balance-input',
                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
+                        'placeholder' => __('lang.product_code'),
                     ]) !!}
 
                     @error('sku.' . $index)
