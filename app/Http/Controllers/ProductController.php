@@ -177,7 +177,7 @@ class ProductController extends Controller
                 if(!empty($re_product['store_id'])){
                     $product->stores()->attach($re_product['store_id']);
                 }
-                if ($re_product['image'] && !is_null($re_product['image'])) {
+                if (isset($re_product['image']) && !is_null($re_product['image'])) {
                     $imageData = $this->getCroppedImage($re_product['image']);
                     $extention = explode(";", explode("/", $imageData)[1])[0];
                     $image = rand(1, 1500) . "_image." . $extention;
@@ -236,7 +236,7 @@ class ProductController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
-            dd($e);
+            // dd($e);
     }
 
     // +++++++++++++++ Start : Notification ++++++++++++++++++++++
