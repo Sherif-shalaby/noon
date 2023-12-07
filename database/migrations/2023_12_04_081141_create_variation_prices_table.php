@@ -27,7 +27,7 @@ return new class extends Migration
 
             $table->decimal('percent',10,4)->nullable();
             $table->decimal('quantity',10,3)->nullable();
-            $table->decimal('quantity',10,3)->nullable();
+//            $table->decimal('quantity',10,3)->nullable();
 
             $table->timestamps();
         });
