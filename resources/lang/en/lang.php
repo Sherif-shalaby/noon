@@ -654,7 +654,10 @@ return [
     'total_surplus' => 'Total Surplus',
     'product_discount' =>  'Product Discount',
     'all_selling' => 'All Selling',
-    'all_stock' => 'All Stock'
+    'all_stock' => 'All Stock',
+    'product_sku_start' => 'Product Sku Start Number',
+    'large_filling' => 'Large Filling',
+    'small_filling' => 'Small Filling'
 ];
 
 

@@ -698,6 +698,9 @@ return array(
     'sold_qty' => 'الكمية المباعة',
     'all_selling' => 'كل المبيعات',
     'all_stock' => 'كل المخزون',
+    'product_sku_start' => 'رمز الماده يبدأ ب',
+    'large_filling' => 'أكبر تعبئه',
+    'small_filling' => 'تعبئه اصغر',
 
 
 
