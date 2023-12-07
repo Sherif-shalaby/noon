@@ -46,6 +46,62 @@
             }
         }
     }
+
+    function toggleProductAccordion(sectionId) {
+        const section = document.getElementById(sectionId);
+        let arrow = document.querySelector(`.${sectionId}`);
+
+        if (section.style.display === "block") {
+            section.style.display = "none";
+
+            // Check if the element exists
+            if (arrow) {
+                // Remove all children from the "wrap" element
+                while (arrow.firstChild) {
+                    arrow.removeChild(arrow.firstChild);
+                }
+
+                // Create a new <i> element with the desired attributes
+                let newIElement = document.createElement('i');
+                newIElement.className = 'fas fa-arrow-left d-flex justify-content-center align-items-center';
+
+
+                newIElement.style.fontSize = '0.8rem';
+                newIElement.style.color = 'black';
+                newIElement.style.backgroundColor = 'white';
+                newIElement.style.width = '20px';
+                newIElement.style.height = '20px';
+                newIElement.style.borderRadius = '50%';
+
+                // Append the new <i> element to the "wrap" element
+                arrow.appendChild(newIElement);
+            }
+        } else {
+            section.style.display = "block";
+
+            // Check if the element exists
+            if (arrow) {
+                // Remove all children from the "wrap" element
+                while (arrow.firstChild) {
+                    arrow.removeChild(arrow.firstChild);
+                }
+
+                // Create a new <i> element with the desired attributes
+                let newIElement = document.createElement('i');
+                newIElement.className = 'fas fa-arrow-right d-flex justify-content-center align-items-center';
+                newIElement.style.fontSize = '0.8rem';
+                newIElement.style.color = 'black';
+                newIElement.style.backgroundColor = 'white';
+                newIElement.style.width = '20px';
+                newIElement.style.height = '20px';
+                newIElement.style.borderRadius = '50%';
+
+
+                // Append the new <i> element to the "wrap" element
+                arrow.appendChild(newIElement);
+            }
+        }
+    }
 </script>
 
 <script>

@@ -58,7 +58,7 @@
     border-radius: 16px;
     padding: 6px 6px;
     border: 2px solid #F9C751;
-    color: #F9C751;
+    color: #F9C751 !important;
 }
 
 .initial-balance-input {

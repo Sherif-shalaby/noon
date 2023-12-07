@@ -213,6 +213,19 @@
                                 ]) !!}
                             </div>
                         </div>
+                        {{--       product sku is start with              --}}
+                        <div class="col-sm-6 col-md-3  animate__animated animate__bounceInLeft  d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="animation-delay: 1.75s">
+                            {!! Form::label('product_sku_start', __('lang.product_sku_start'), [
+                                'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 width-quarter' : ' mx-2 mb-0 width-quarter',
+                                'style' => 'font-size: 12px;font-weight: 500;',
+                            ]) !!}
+                            {!! Form::text(
+                                'product_sku_start',
+                                !empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
+                                ['class' => 'form-control'],
+                            ) !!}
+                        </div>
 
                         <div class="col-md-12 pt-5">
                             <div class="row">
