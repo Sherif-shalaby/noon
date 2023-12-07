@@ -1,32 +1,32 @@
 <div class="card-body">
     <form action="{{route('products.index')}}" method="get">
         <div class="row">
-            {{-- +++++++++++++++ store filter +++++++++++++++ --}}
+            {{-- +++++++++++++++ payers filter +++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('store_id', __('lang.store'), []) !!}
-                    {!! Form::select('store_id', $stores,null, ['class' => 'form-control select2 stores','placeholder'=>__('lang.please_select'),'id' => 'store_id']
+                    {!! Form::label('payer_id', __('lang.payer'), []) !!}
+                    {!! Form::select('payer_id', $payers,null, ['class' => 'form-control select2 payers','placeholder'=>__('lang.please_select'),'id' => 'store_id']
                     ) !!}
                 </div>
             </div>
-            {{-- ++++++++++++++++++++ customer filter ++++++++++++++++++++ --}}
+            {{-- ++++++++++++++++++++ receivers filter ++++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('customer_id', __('lang.customer'), []) !!}
-                    {!! Form::select('customer_id', $customers, request()->customer_id,
-                                ['class'=>'form-control select2 customers',
+                    {!! Form::label('receiver_id', __('lang.receiver'), []) !!}
+                    {!! Form::select('receiver_id', $receivers, request()->receiver_id,
+                                ['class'=>'form-control select2 receivers',
                                 'placeholder' => __('lang.please_select'),'data-live-search'=>"true"])
                     !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++++ stores_pos filter ++++++++++++++++++++ --}}
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('store_pos_id', __('lang.pos'), []) !!}
                     {!! Form::select('store_pos_id', $store_pos, request()->store_pos_id, ['class' =>
                     'form-control select2 stores_pos', 'placeholder' => __('lang.please_select'),'data-live-search'=>"true"]) !!}
                 </div>
-            </div>
+            </div> --}}
             {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
             <div class="col-3">
                 <div class="d-flex align-items-center gap-2 flex-wrap flex-lg-nowrap">
@@ -67,11 +67,10 @@
                 url: "{{ route('receivable-report.index') }}",
                 // get "all inputFields of form that have name and value"
                 data : {
-                    store_id        : $('body').find('.stores').val(),
-                    customer_id     : $('body').find('.customers').val(),
-                    store_pos_id    : $('body').find('.stores_pos').val(),
-                    start_date      : $('body').find('.start_date').val(),
-                    end_date        : $('body').find('.end_date').val(),
+                    payer_filter     : $('body').find('.payers').val(),
+                    receiver_filter  : $('body').find('.receivers').val(),
+                    start_date       : $('body').find('.start_date').val(),
+                    end_date         : $('body').find('.end_date').val(),
                 },
                 success: function (response) {
                     console.log("The Response Data : ");
@@ -80,21 +79,21 @@
                     $('#datatable-buttons tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     // Assuming response.products is the array of products received from the server response
-                    $.each(response, function(index, transaction_sell_line)
-                    {
+                    $.each(response, function(index, cash_register_transaction) {
                         // "created_at" in this format "YYYY-MM-DD"
-                        var created_at = new Date(transaction_sell_line.created_at).toLocaleDateString('en-CA');
+                        var created_at = new Date(cash_register_transaction.created_at);
+                        var formattedDate = created_at.toLocaleDateString('en-CA');
+
                         var row = '<tr>' +
-                            '<td>' + (created_at ? created_at : '') + '</td>' +
-                            '<td>' + (transaction_sell_line.invoice_no ? transaction_sell_line.invoice_no : '') + '</td>' +
-                            '<td>' + (transaction_sell_line.customer ? transaction_sell_line.customer.name : '') + '</td>' +
-                            '<td>' + (transaction_sell_line.status ? transaction_sell_line.status : '') + '</td>' +
-                            '<td>' + (transaction_sell_line.payment_status ? transaction_sell_line.payment_status : '') + '</td>' +
-                            '<td>' + (transaction_sell_line.final_total ? transaction_sell_line.final_total : '') + '</td>' +
-                        '</tr>';
+                            '<td>' + (formattedDate ?? "") + '</td>' +
+                            // <!-- Accessing the cash_register relationship to get the user's cash_register_id -->
+                            '<td>' + (cash_register_transaction.cash_register.cashier.name ?? "") + '</td>' +
+                            '<td>' + (cash_register_transaction.amount ?? "") + '</td>' +
+                            // <!-- Accessing the cash_register relationship to get the user_id -->
+                            '<td>' + (cash_register_transaction.cash_register.store_pos.name ?? "") + '</td>' +
+                            '</tr>';
                         $('#datatable-buttons tbody').append(row);
                     });
-
                 },
                 error: function (error) {
                     console.error("Error fetching filtered products:", error);

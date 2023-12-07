@@ -2,33 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
 use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
 use App\Models\Brand;
-use App\Models\Leave;
 use App\Models\Store;
+use App\Models\Branch;
 use App\Models\JobType;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\LeaveType;
-use App\Models\Attendance;
 use App\Models\CustomerType;
-use App\Models\EmployeeProducts;
-use App\Utils\MoneySafeUtil;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
 use Illuminate\Support\Facades\DB;
-use App\Utils\StockTransactionUtil;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AddEmployeeNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class EmployeeController extends Controller
 {
@@ -210,6 +204,19 @@ class EmployeeController extends Controller
                 $employee->photo = store_file($request->file('photo'), 'employees');
             }
             $employee->save();
+            // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+            // Fetch the user
+            $users = User::where('id','!=',auth()->user()->id)->get();
+            $employee_name = $employee->employee_name;
+            // Get the name of the user creating the employee
+            $userCreateEmp = auth()->user()->name;
+            $type = "create_employee";
+            // Send notification to users
+            foreach ($users as $user)
+            {
+                Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
+            }
+            // +++++++++++++++ End : Notification ++++++++++++++++++++++
             // insert "employee_id" and "product_id" of employee's product into "employee_product" table
             if(isset($data['ids']))
             {

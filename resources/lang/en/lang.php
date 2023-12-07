@@ -658,7 +658,9 @@ return [
     'choose_big_unit'=>'Choose Big Unit',
     'choose_small_unit'=>'Choose Smaller Unit',
     'add_to_another_store'=>'Add To Another Store',
-
+    'product_sku_start' => 'Product Sku Start Number',
+    'large_filling' => 'Large Filling',
+    'small_filling' => 'Small Filling'
 ];
 
 

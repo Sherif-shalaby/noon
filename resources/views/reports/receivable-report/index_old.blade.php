@@ -37,28 +37,29 @@
                             <table id="datatable-buttons" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>{{ __('lang.date') }}</th>
-                                        <th>{{ __('lang.reciever') }}</th>
-                                        <th>{{ __('lang.received_amount') }}</th>
-                                        <th>{{ __('lang.paid_by') }}</th>
+                                        <th>تاريخ</th>
+                                        <th>المرجعي</th>
+                                        <th>عميل</th>
+                                        <th>حالة المبيعات</th>
+                                        <th>حالة السداد</th>
+                                        {{-- <th>العملة المٌستلمة</th> --}}
+                                        <th>المبلغ الاجمالي</th>
+                                        {{-- <th>@lang('lang.action')</th>  --}}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cash_register_transactions as $key => $cash_register_transaction)
+                                    @foreach ( $transaction_sell_lines as $key => $transaction_sell_line )
                                         <tr>
-                                            <td>{{ $cash_register_transaction->created_at->format('Y-m-d') ?? '' }}</td>
-
-                                            <!-- Accessing the cash_register relationship to get the user's cash_register_id -->
-                                            <td>{{ $cash_register_transaction->cash_register->cashier->name ?? '' }}</td>
-
-                                            <td>{{ $cash_register_transaction->amount ?? '' }}</td>
-
-                                            <!-- Accessing the cash_register relationship to get the user_id -->
-                                            <td>{{ $cash_register_transaction->cash_register->store_pos->name ?? '' }}</td>
+                                            <td>{{ $transaction_sell_line->created_at->format('Y-m-d') ?? ''}} </td>
+                                            <td>{{ $transaction_sell_line->invoice_no ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->customer->name ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->status ?? ''}}</td>
+                                            <td>{{ $transaction_sell_line->payment_status ?? ''}}</td>
+                                            {{-- <td>{{ $transaction_sell_line->transaction_currency_relationship->symbol ?? ''}}</td> --}}
+                                            <td>{{ $transaction_sell_line->final_total ?? ''}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-
                             </table>
                             <div class="view_modal no-print" >
 

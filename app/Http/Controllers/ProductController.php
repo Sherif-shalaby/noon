@@ -2,38 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use App\Models\AddStockLine;
-use App\Models\Branch;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Customer;
-use App\Models\CustomerType;
-use App\Models\Product;
-use App\Models\ProductDimension;
-use App\Models\ProductExpiryDamage;
-use App\Models\ProductPrice;
-use App\Models\ProductStore;use App\Models\ProductTax;
-use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\Supplier;
-use App\Models\System;
+use Carbon\Carbon;
 use App\Models\Tax;
+use App\Utils\Util;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Brand;
+use App\Models\Store;
+use App\Models\Branch;
+use App\Models\System;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Supplier;
 use App\Models\Variation;
-use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use App\Models\AddStockLine;
+use App\Models\CustomerType;
+use Illuminate\Support\Facades\Notification;
+use App\Models\ProductPrice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
-use App\Utils\Util;
 use App\Utils\TransactionUtil;
+use App\Models\ProductDimension;
+use App\Models\StockTransaction;
+use App\Models\ProductExpiryDamage;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\AddProductNotification;
+use Illuminate\Contracts\Foundation\Application;
+use App\Models\ProductStore;
+use App\Models\ProductTax;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 class ProductController extends Controller
 {
     protected $Util;
@@ -131,121 +137,94 @@ class ProductController extends Controller
         'clear_all_input_form','recent_product'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
-  public function store(ProductRequest $request)
+  public function store(Request $request)
   {
+
     try
     {
-      $product_data = [
-        'name' => $request->name,
-        'translations' => !empty($request->translations) ? $request->translations : [],
-        'category_id' => $request->category_id,
-        'subcategory_id1' => $request->subcategory_id1,
-        'subcategory_id2' => $request->subcategory_id2,
-        'subcategory_id3' => $request->subcategory_id3,
-        'brand_id' => $request->brand_id,
-        'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-        'details' => $request->details,
-        'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
-        'active' => !empty($request->active) ? 1 : 0,
-        'created_by' => Auth::user()->id,
-        'method' => !empty($request->method) ? $request->method :null,
-        'product_symbol'=>!empty($request->product_symbol) ? $request->product_symbol :null,
-        'balance_return_request' => !empty($request->balance_return_request) ?$request->balance_return_request:null,
-    ];
-    $product = Product::create($product_data);
+        DB::beginTransaction();
 
-    // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
-    if(!empty($request->product_tax_id))
-    {
-        ProductTax::create([
-            'product_tax_id' => $request->product_tax_id,
-            'product_id' => $product->id,
-        ]);
-        // $product->product_taxes()->attach($request->product_tax_id) ;
-    }
+        foreach ($request->products as $re_product){
+//            dd($re_product['name'] != null);
+            if($re_product['name'] != null){
+                $product_data = [
+                    'name' => $re_product['name'],
+                    'translations' => !empty($re_product['translations']) ? $re_product['translations'] : [],
+                    'category_id' => $re_product['category_id'],
+                    'subcategory_id1' => $re_product['subcategory_id1'] ?? null,
+                    'subcategory_id2' => $re_product['subcategory_id2'] ?? null,
+                    'subcategory_id3' => $re_product['subcategory_id3'] ?? null,
+                    'brand_id' => $re_product['brand_id'],
+                    'sku' => !empty($re_product['product_sku']) ? $re_product['product_sku'] : $this->generateSku(),
+                    'details' => !empty($re_product['details']) ? $re_product['details'] : null,
+                    'details_translations' => !empty($re_product['details_translations']) ? $re_product['details_translations'] : [],
+                    'active' => !empty($re_product['active']) ? 1 : 0,
+                    'created_by' => Auth::user()->id,
+                    'method' => !empty($re_product['method']) ? $re_product['method'] :null,
+                    'product_symbol'=>!empty($re_product['product_symbol']) ? $re_product['product_symbol'] :null,
+                    'balance_return_request' => !empty($re_product['balance_return_request']) ? $re_product['balance_return_request']:null,
+                ];
+                $product = Product::create($product_data);
+                // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
+                if(!empty($re_product['product_tax_id']))
+                {
+                    ProductTax::create([
+                        'product_tax_id' => $re_product['product_tax_id'],
+                        'product_id' => $product->id,
+                    ]);
+                    // $product->product_taxes()->attach($request->product_tax_id) ;
+                }
+                if(!empty($re_product['store_id'])){
+                    $product->stores()->attach($re_product['store_id']);
+                }
+                if ($re_product['image'] && !is_null($re_product['image'])) {
+                    $imageData = $this->getCroppedImage($re_product['image']);
+                    $extention = explode(";", explode("/", $imageData)[1])[0];
+                    $image = rand(1, 1500) . "_image." . $extention;
+                    $filePath = public_path('uploads/products/' . $image);
+                    $image = $image;
+                    $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
+                    $product->image=$image;
+                    $product->save();
+                }
+                if(!empty($re_product['variations'])){
+                    $variations = array_reverse($re_product['variations']);
+                    if(!empty($variations)){
+                        foreach ($variations as $key=> $variant){
+                            if(isset($variant['new_unit_id'])){
+//                        dd($variations);
+                                $var_data=[
+                                    'product_id' => $product->id,
+                                    'unit_id' => $variant['new_unit_id'],
+                                    'basic_unit_id' => !empty($variations[$key+1]) ? $variations[$key+1]['new_unit_id'] : null,
+                                    'equal' => !empty($variations[$key+1]) ? $variations[$key+1]['equal'] : null ,
+                                    'sku' => !empty($variant['sku']) ? $variant['sku'] : $this->generateSku(),
+                                    'created_by'=>Auth::user()->id
+                                ];
+                                Variation::create($var_data);
+                            }
+                        }
+                    }
+                }
+                if ($re_product['height'] ==(''||0) && $re_product['length'] ==(''||0) && $re_product['width'] ==(''||0)
+                    || $re_product['size'] ==(''||0) && $re_product['weight'] ==(''||0)) {
+                }else{
+                    $product_dimensions=[
+                        'product_id' =>$product->id??null,
+                        'variation_id' => Variation::where('product_id',$product->id)->where('unit_id',$re_product['variation_id'])->first()->id??null,
+                        'height' => $re_product['height'],
+                        'length' => $request['length'],
+                        'width' => $request['width'],
+                        'size' => $request['size'],
+                        'weight' => $request['weight']
+                    ];
+                    ProductDimension::create($product_dimensions);
 
-    // if(!empty($request->subcategory_id)){
-    //     $product->subcategories()->attach($request->subcategory_id);
-    // }
-    if(!empty($request->store_id)){
-        $product->stores()->attach($request->store_id);
-    }
+                }
+            }
 
-    if ($request->has('image') && !is_null('image')) {
-        $imageData = $this->getCroppedImage($request->image);
-        $extention = explode(";", explode("/", $imageData)[1])[0];
-        $image = rand(1, 1500) . "_image." . $extention;
-        $filePath = public_path('uploads/products/' . $image);
-        $image = $image;
-        $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
-        $product->image=$image;
-        $product->save();
-    }
-
-    $index_units=[];
-    if($request->has('new_unit_id')){
-        if(count($request->new_unit_id)>0){
-            $index_units=array_keys($request->new_unit_id);
         }
-    }
-    foreach ($index_units as $index){
-        if(isset($request->new_unit_id[$index])){
-            $var_data=[
-                'product_id'=>$product->id,
-                'unit_id'=>$request->new_unit_id[$index],
-                'basic_unit_id'=>$request->basic_unit_id[$index],
-                'equal'=>$request->equal[$index],
-                'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-                'created_by'=>Auth::user()->id
-            ];
-            Variation::create($var_data);
-        }
-    }
-
-
-    if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
-    || $request->size ==(''||0) && $request->weight ==(''||0)) {
-    }else{
-        $product_dimensions=[
-            'product_id'=>$product->id??null,
-            'variation_id'=>Variation::where('product_id',$product->id)->where('unit_id',$request->variation_id)->first()->id??null,
-            'height' => $request->height,
-            'length' => $request->length,
-            'width' => $request->width,
-            'size' => $request->size,
-            'weight' => $request->weight
-        ];
-        ProductDimension::create($product_dimensions);
-
-    }
-
-
-
-    $index_prices=[];
-    if($request->has('price_category')){
-        if(count($request->price_category)>0){
-            $index_prices=array_keys($request->price_category);
-        }
-    }
-    foreach ($index_prices as $index_price){
-    // $price_customers = $this->getPriceCustomerFromType($request->get('price_customer_types_'.$index_price));
-        $data_des=[
-            'product_id' => $product->id,
-            'price_type' => $request->price_type[$index_price],
-            'price' => $request->price[$index_price],
-            'quantity' => $request->quantity[$index_price],
-            'bonus_quantity' => $request->bonus_quantity[$index_price],
-            'price_category' => $request->price_category[$index_price],
-            'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-            'price_customer_types' => $request->get('price_customer_types'.$index_price),
-            'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
-            'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
-            'created_by' => Auth::user()->id,
-        ];
-        ProductPrice::create($data_des);
-    }
-
-
+        DB::commit();
 
     $output = [
         'success' => true,
@@ -257,10 +236,25 @@ class ProductController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
+            dd($e);
     }
+
+    // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+    // Fetch the user
+    $users = User::where('id','!=',auth()->user()->id)->get();
+    $product_name = $product->name;
+    // Get the name of the user creating the employee
+    $userCreateEmp = auth()->user()->name;
+    $type = "create_product";
+    // Send notification to All users Except "auth()->user()"
+    foreach ($users as $user)
+    {
+        Notification::send($user, new AddProductNotification($product->id ,$userCreateEmp,$product_name,$type));
+    }
+    // +++++++++++++++ End : Notification ++++++++++++++++++++++
     return redirect()->back()->with('status', $output);
   }
-  public function getPriceCustomerFromType($customer_types)
+    public function getPriceCustomerFromType($customer_types)
     {
 
         $discount_customers = [];
@@ -273,26 +267,30 @@ class ProductController extends Controller
 
         return $discount_customers;
     }
-  public function generateSku($name, $number = 1)
+  public function generateSku()
   {
-      $name_array = explode(" ", $name);
-      $sku = '';
-      foreach ($name_array as $w) {
-          if (!empty($w)) {
-              if (!preg_match('/[^A-Za-z0-9]/', $w)) {
-                  $sku .= $w[0];
-              }
-          }
-      }
-      // $sku = $sku . '-' . $number;
-      $sku = $sku . $number;
-      $sku_exist = Product::where('sku', $sku)->exists();
 
-      if ($sku_exist) {
-          return $this->generateSku($name, $number + 1);
-      } else {
-          return $sku;
-      }
+//      $name_array = explode(" ", $name);
+//      $sku = '';
+//      foreach ($name_array as $w) {
+//          if (!empty($w)) {
+//              if (!preg_match('/[^A-Za-z0-9]/', $w)) {
+//                  $sku .= $w[0];
+//              }
+//          }
+//      }
+//      // $sku = $sku . '-' . $number;
+//      $sku = $sku . $number;
+//      $sku_exist = Product::where('sku', $sku)->exists();
+
+//      if ($sku_exist) {
+//          return $this->generateSku($name, $number + 1);
+//      } else {
+//      }
+      $start = System::getProperty('product_sku_start');
+      $number = Product::count();
+      $sku = $start . $number;
+      return $sku;
   }
   /**
    * Display the specified resource.
@@ -553,11 +551,28 @@ class ProductController extends Controller
   public function getRawUnit()
     {
         $index = request()->row_id ?? 0;
+        $key = request()->key ?? 0;
         $units = Unit::orderBy('created_at','desc')->get();
 
         return view('products.product_unit_raw',compact(
             'index',
-            'units',
+            'units','key'
+        ));
+    }
+    public function addProductRow()
+    {
+        $key = request()->row_id ?? 0;
+        $units=Unit::orderBy('created_at', 'desc')->get();
+        $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
+        $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
+        $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+        // product_tax
+        $product_tax = Tax::where('status','active')->get();
+        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+        return view('products.partials.product_row',compact(
+            'key','units','categories','subcategories','branches','brands','stores','product_tax','unitArray'
         ));
     }
     public function multiDeleteRow(Request $request){
@@ -621,7 +636,7 @@ class ProductController extends Controller
           }
           return $output;
     }
-  
+
     public function getDamageProduct(Request $request,$id){
             // $addStockLines = AddStockLine::
             // where("add_stock_lines.product_id",$id)
