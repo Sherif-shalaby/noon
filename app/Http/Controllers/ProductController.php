@@ -2,38 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProductRequest;
-use App\Models\AddStockLine;
-use App\Models\Branch;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Customer;
-use App\Models\CustomerType;
-use App\Models\Product;
-use App\Models\ProductDimension;
-use App\Models\ProductExpiryDamage;
-use App\Models\ProductPrice;
-use App\Models\ProductStore;use App\Models\ProductTax;
-use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\Supplier;
-use App\Models\System;
+use Carbon\Carbon;
 use App\Models\Tax;
+use App\Utils\Util;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Brand;
+use App\Models\Store;
+use App\Models\Branch;
+use App\Models\System;
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Supplier;
 use App\Models\Variation;
-use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use App\Models\AddStockLine;
+use App\Models\CustomerType;
+use Illuminate\Support\Facades\Notification;
+use App\Models\ProductPrice;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;use Illuminate\Support\Facades\Http;use Illuminate\Support\Facades\Log;
 use PhpParser\Builder\Class_;
-use App\Utils\Util;
 use App\Utils\TransactionUtil;
+use App\Models\ProductDimension;
+use App\Models\StockTransaction;
+use App\Models\ProductExpiryDamage;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\ProductRequest;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\AddProductNotification;
+use Illuminate\Contracts\Foundation\Application;
+use App\Models\ProductStore;
+use App\Models\ProductTax;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 class ProductController extends Controller
 {
     protected $Util;
@@ -232,9 +238,23 @@ class ProductController extends Controller
             ];
             dd($e);
     }
+
+    // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+    // Fetch the user
+    $users = User::where('id','!=',auth()->user()->id)->get();
+    $product_name = $product->name;
+    // Get the name of the user creating the employee
+    $userCreateEmp = auth()->user()->name;
+    $type = "create_product";
+    // Send notification to All users Except "auth()->user()"
+    foreach ($users as $user)
+    {
+        Notification::send($user, new AddProductNotification($product->id ,$userCreateEmp,$product_name,$type));
+    }
+    // +++++++++++++++ End : Notification ++++++++++++++++++++++
     return redirect()->back()->with('status', $output);
   }
-  public function getPriceCustomerFromType($customer_types)
+    public function getPriceCustomerFromType($customer_types)
     {
 
         $discount_customers = [];

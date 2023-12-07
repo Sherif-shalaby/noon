@@ -29,6 +29,8 @@ return array(
     'modules' => 'إظهار/إخفاء أقسام البرنامج',
     'product_module' =>'المنتجات',
     'stock_module' =>'المخزون',
+    'reciever' => 'المٌستلم' ,
+    'payer' => 'الدافع',
     'cashier_module' =>'المشتريات',
     'customer_offer_status' => 'حالة المخزون' ,
     'quotation_status' => 'حالة عرض السعر' ,
@@ -618,6 +620,7 @@ return array(
     'has_store_pos' => 'لديها نقطه بيع',
     'add_transfer' => 'أضف تحويل',
     'receiver_store' => 'المتجر المستقبل',
+    'receiver' => 'المستلم',
     'sender_store' => 'المتجر المرسل',
     'show_initial_balance' => 'عرض رصيد أولي',
     'clear_filters' => 'مسح عوامل التصفية',
@@ -702,7 +705,23 @@ return array(
     'large_filling' => 'أكبر تعبئه',
     'small_filling' => 'تعبئه اصغر',
 
-
+    'piece_price'=>'سعر القطعة',    'evening_shift' => 'شيفت مسائي' ,
+    'employee_products' => 'المنتجات المسئول عنها الموظف',
+    'days_number_notify' => 'عدد الايام قبل التنبيه' ,
+    // +++++++++++++++ notifications +++++++++++++++++
+    'no_new_notification' => 'لا يوجد إشعار جديد',
+    'delete_notification' => 'تم حذف الاشعار بنجاح',
+    'create_new_employee' => 'إنشاء موظف جديد' ,
+    'create_new_product' => 'إنشاء منتج جديد',
+    'expiry_alert' => 'تنبيه انتهاء الصلاحية',
+    'will_be_exired_in' => 'ستنتهي في ',
+    'expired' => 'منتهي الصلاحية',
+    'days_ago' => 'أيام مضت',
+    'days' => 'أيام',
+    'in_stock' => 'في المخزن',
+    'alert_quantity' => 'كمية التنبيه',
+    'expired' => 'منتهي الصلاحية',
+    'expired_quantity' => 'الكمية منتهية الصلاحية',
 
 );
 

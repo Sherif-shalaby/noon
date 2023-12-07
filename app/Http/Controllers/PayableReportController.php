@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Store;
+use App\Models\Branch;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\StorePos;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Models\WageTransaction;
 use App\Models\StockTransaction;
 use App\Http\Controllers\Controller;
 
@@ -16,60 +18,68 @@ class PayableReportController extends Controller
     /* +++++++++++++++++++++++ index() +++++++++++++++++++++++ */
     public function index(Request $request)
     {
-        // $transactions_stock_lines = StockTransaction::with(['paying_currency_relationship','supplier','created_by_relationship'])->get();
-        // return $transactions_stock_lines;
+        // *********** WageTransaction ***********
+        $wage_transactions = WageTransaction::get();
+        // *********** StockTransaction ***********
+        $stock_transactions = StockTransaction::get();
+        // *********** branches filter ***********
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        // *********** stores filter ***********
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        // query1 => WageTransaction , query2 => StockTransaction
+        $query1=WageTransaction::query();
+        $query2=StockTransaction::query();
 
-        // ====== stores Filter ======
-        $stores = Store::getDropdown();
-        // ====== stores_pos Filter ======
-        $store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
-        // ====== products Filter ======
-        $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
-        // ====== suppliers Filter ======
-        $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id');
-
-
-        // dd($store_pos);
-        $query=StockTransaction::query();
         if( request()->ajax() )
         {
-            // ====== store Filter ======
-            $transactions_stock_lines = $query->when($request->store_id != null, function ($query) use ( $request ) {
-                $query->where('store_id', $request->store_id);
-            })
-            // ====== store_pos Filter ======
-            // ->when($request->store_pos_id != null, function ($query) use ( $request ) {
-            //     $query->where('store_pos_id', $request->store_pos_id);
-            // })
-            // ====== suppliers Filter ======
-            ->when( $request->supplier_id != null,function ($query) use ( $request ) {
-                $query->where('supplier_id', $request->supplier_id);
-            })
-            // ====== products Filter ======
-            ->when($request->product_id != null, function ($query) use ($request) {
-                $query->whereHas('add_stock_products', function ($subquery) use ($request) {
-                    $subquery->where('products.id', $request->product_id);
-                });
-            })
-
-            // ====== date Filter ======
+            // ====== start , end date Filter ======
+            // wages Transaction
+            $wage_transactions = $query1
+            // start , end date Filter
             ->when( $request->start_date != null && $request->end_date != null , function ($query) use ( $request ) {
                 $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
             })
-            // ->latest()->get();
-            ->orderBy("created_at","asc")->with(['add_stock_products','paying_currency_relationship','supplier','created_by_relationship'])->get();
-            return $transactions_stock_lines;
+            // store Filter
+            ->when( $request->store_filter != null , function ($query) use ( $request ) {
+                $query->where('store_id',$request->store_filter);
+            })
+            ->orderBy("created_at","asc")->get();
+            // stock Transaction
+            $stock_transactions = $query2
+            // start , end date Filter
+            ->when( $request->start_date != null && $request->end_date != null , function ($query) use ( $request ) {
+                $query->whereBetween('created_at', [$request->start_date, $request->end_date]);
+            })
+            // store Filter
+            ->when($request->store_filter != null , function ($query) use ( $request ) {
+                $query->where('store_id',$request->store_filter);
+            })
+            ->orderBy("created_at","asc")->get();
+            // Calculate totals outside the loop
+            $wage_transactions_final_total = !empty($wage_transactions->sum('final_total')) ? $wage_transactions->sum('final_total') : '';
+            $stock_transactions_final_total = !empty($stock_transactions->sum('final_total')) ? $stock_transactions->sum('final_total') : '';
+            // Return multiple values as an associative array
+            return response()->json([
+                'wage_transactions_final_total' => $wage_transactions_final_total,
+                'stock_transactions_final_total' => $stock_transactions_final_total,
+            ]);
         }
         else
         {
             $transactions_stock_lines = StockTransaction::with(['add_stock_products','paying_currency_relationship','supplier','created_by_relationship'])->orderBy("created_at","asc")->get();
         }
-        // return($transactions_stock_lines);
-        return view('reports.payable-report.index',
-                compact('transactions_stock_lines','stores',
-                            'suppliers','store_pos','products'));
-    }
 
+
+        return view('reports.payable-report.index',
+                    compact('wage_transactions','stock_transactions','branches'));
+    }
+    // =========== branch and store filter ===========
+    // ++++++ fetch_branch_stores() : Get stores According to "selected branch" selectbox ++++++
+    public function fetch_branch_stores(Request $request)
+    {
+        $data['store_id'] = Store::where('branch_id', $request->branch_id)->get(['id','name']);
+        return response()->json($data);
+    }
     /**
      * Show the form for creating a new resource.
      *
