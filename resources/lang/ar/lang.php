@@ -698,7 +698,9 @@ return array(
     'sold_qty' => 'الكمية المباعة',
     'all_selling' => 'كل المبيعات',
     'all_stock' => 'كل المخزون',
-
+    'choose_big_unit'=>'اختر اكبر تعبئة',
+    'choose_small_unit'=>'اختر تعبئة اصغر',
+    'add_to_another_store'=>'أضف الى مخزن اخر',
 
 
 );
