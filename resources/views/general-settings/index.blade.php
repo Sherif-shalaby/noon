@@ -119,6 +119,14 @@
                             ['class' => 'form-control select2'],
                         ) !!}
                     </div>
+                                {{--       product sku is start with              --}}
+                    <div class="col-md-3">
+                        {!! Form::label('product_sku_start', __('lang.product_sku_start'), ['class'=>'h5 pt-3']) !!}
+                        {!! Form::text(
+                            'product_sku_start',!empty($settings['product_sku_start']) ? $settings['product_sku_start'] : null,
+                            ['class' => 'form-control'],
+                        ) !!}
+                    </div>
                     <br>
                     <hr>
                     <div class="col-md-12 pt-5">

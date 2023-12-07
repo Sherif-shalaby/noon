@@ -99,7 +99,7 @@
                                     <td>{{ $stock_detail->product->sku ?? '' }}</td>
                                     <td>{{ $stock_detail->store->name ?? '' }}</td>
                                     <td>{{ @num_format($stock_detail->quantity_available) }}</td>
-                                    <td> {{ $stock_detail }}</td>
+                                    <td> {{ $stock_detail->variations->unit->name ?? '' }}</td>
 {{--                                    <td>{{ @num_format($stock_detial->price) }}</td>--}}
                                 </tr>
                             @endforeach

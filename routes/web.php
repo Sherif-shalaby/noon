@@ -162,6 +162,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
     Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
 
     Route::resource('products', ProductController::class);
     //customers
