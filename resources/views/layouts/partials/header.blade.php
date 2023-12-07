@@ -39,7 +39,7 @@
                     @endif
                   @if(!empty($module_settings['stock_module']))
                             <li>
-                                <a href="{{route('initial-balance.create')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
+                                <a href="{{route('new-initial-balance.create')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
                             </li>
                     @endif
                 {{-- @endcan --}}
