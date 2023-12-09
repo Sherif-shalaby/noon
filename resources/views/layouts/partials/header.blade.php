@@ -246,7 +246,7 @@
                 @if (!empty($module_settings['stock_module']))
                     <li class="scroll mx-2 mb-0 p-0">
                         <a class="initial-balance-button d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                            href="{{ route('initial-balance.create') }}"
+                            href="{{ route('new-initial-balance.create') }}"
                             style="cursor: pointer;text-decoration: none">
                             <span style="width: 25px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" style="width: 100%" viewBox="0 0 60 60">
@@ -1763,7 +1763,6 @@
     <!-- End container-fluid -->
 </div> --}}
 <!-- End Navigationbar -->
-{{-- href="{{ route('initial-balance.create') }}" --}}
 <script>
     const menuButton = document.getElementById('menu-button');
     const menu = document.getElementById('menu');
@@ -1778,7 +1777,7 @@
 
     $('.initial-balance-button').on('click', function(e) {
         e.preventDefault();
-        let url = "{{ route('initial-balance.create') }}"
+        let url = "{{ route('new-initial-balance.create') }}"
         document.body.classList.add('animated-element');
         window.location.href = url;
     })
