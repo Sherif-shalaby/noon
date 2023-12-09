@@ -619,7 +619,7 @@ class Create extends Component
         // } else {
         //     return $sku;
         // }
-        $start = System::getProperty('product_sku_start');
+        $start = System::getProperty('product_sku_start')??'';
         $number = Product::count();
         $sku = $start . $number;
         return $sku;
