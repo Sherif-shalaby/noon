@@ -263,6 +263,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::view('customer_price_offer/index', 'customer_price_offer.index')->name('customer_price_offer.index');
     Route::view('customer_price_offer/create', 'customer_price_offer.create')->name('customer_price_offer.create');
     Route::view('customer_price_offer/edit/{id}', 'customer_price_offer.edit')->name('customer_price_offer.edit');
+    // ========= "create_invoice" link =============
+    // Route::get('customer_price_offer/create_invoice/{id}', [CustomerOfferPriceController::class, 'create_invoice'])->name('customer_price_offer.create_invoice');
+    // Route::view('customer_price_offer/create_invoice/{id}', 'customer_price_offer.create_invoice')->name('customer_price_offer.create_invoice');
+    // Route::get('invoices/edit/{invoice}', function ($id) {
+    //     return view('invoices.edit', compact('id'));
+    // })->name('invoices.edit');
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################

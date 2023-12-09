@@ -17,6 +17,7 @@ use App\Models\GeneralTax;
 use App\Models\AddStockLine;
 use App\Models\CustomerType;
 use Illuminate\Http\Request;
+use App\Models\CustomerOfferPrice;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -72,6 +73,15 @@ class CustomerOfferPriceController extends Controller
     {
 
     }
+    /* +++++++++++++++++ create_invoice() +++++++++++++++++  */
+    // public function create_invoice($id)
+    // {
+    //     $customer_offer_price = CustomerOfferPrice::with('transaction')->where('id',$id)->get();
+    //     // dd($customer_offer_price);
+    //     $product_id = $customer_offer_price[0]->product_id;
+    //     // return view('livewire.invoices.create.add_product', compact('product_id'));
+    //     return view('livewire.invoices.edit', compact('product_id'));
+    // }
 
     /**
      * Update the specified resource in storage.

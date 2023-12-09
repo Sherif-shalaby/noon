@@ -377,7 +377,7 @@
 
             });
         });
-        
+
         $(document).on('change','.dinarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({
@@ -399,7 +399,7 @@
 
 
 
-        
+
         $(document).on('change','.dollarPrice', function(e) {
             var key=$(this).data('key');
             Swal.fire({

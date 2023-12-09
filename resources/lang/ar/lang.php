@@ -480,6 +480,7 @@ return array(
     'carton' => 'كارتون',
     'price_of_piece' => 'سعر القطعه الواحده',
     'invoice' => 'فاتوره',
+    'create_invoice' => 'انشاء فاتوره',
     'dear' => 'حضرة السيد',
     'respected' => 'المحترم',
     'total_after_discount' => 'المجموع بعد الخصم',

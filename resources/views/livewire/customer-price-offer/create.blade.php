@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- {!! Form::open([ 'id' => 'add_st ock_form']) !!} --}}
+                    {{-- {!! Form::open([ 'id' => 'add_stock_form']) !!} --}}
                     <form action="{{ route('pos.store') }}">
                         <div class="card-body">
                             <div class="col-md-12">
@@ -145,28 +145,28 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        @if(!empty($items))
-                                            @foreach($items  as $index => $product)
-                                                @include('customer_price_offer.partials.product_row')
-                                            @endforeach
-                                            <tr>
-                                                {{-- +++++++++ Task : "مجموع اجمالي التكاليف" +++++++++ --}}
-                                                <td colspan="5" style="text-align: right"> @lang('lang.total')</td>
-                                                <td> {{$this->sum_dollar_sub_total()}} </td>
-                                                {{-- <td></td>  --}}
-                                                {{-- <td></td>
-                                                <td> {{$this->sum_sub_total()}} </td>
-                                                <td></td> --}}
-                                                <td>
-                                                    {{$this->sum_dinar_sub_total() ?? 0}}
-                                                </td>
-                                                {{-- <td></td>
-                                                <td  style=";">
-                                                    {{$this->sum_total_cost() ?? 0}}
-                                                </td> --}}
+                                            @if(!empty($items))
+                                                @foreach($items  as $index => $product)
+                                                    @include('customer_price_offer.partials.product_row')
+                                                @endforeach
+                                                <tr>
+                                                    {{-- +++++++++ Task : "مجموع اجمالي التكاليف" +++++++++ --}}
+                                                    <td colspan="5" style="text-align: right"> @lang('lang.total')</td>
+                                                    <td> {{$this->sum_dollar_sub_total()}} </td>
+                                                    {{-- <td></td>  --}}
+                                                    {{-- <td></td>
+                                                    <td> {{$this->sum_sub_total()}} </td>
+                                                    <td></td> --}}
+                                                    <td>
+                                                        {{$this->sum_dinar_sub_total() ?? 0}}
+                                                    </td>
+                                                    {{-- <td></td>
+                                                    <td  style=";">
+                                                        {{$this->sum_total_cost() ?? 0}}
+                                                    </td> --}}
 
-                                            </tr>
-                                        @endif
+                                                </tr>
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

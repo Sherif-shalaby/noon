@@ -2,34 +2,35 @@
 
 namespace App\Http\Livewire\Invoices;
 
-use App\Models\AddStockLine;
+use Carbon\Carbon;
+use App\Utils\Util;
 use App\Models\Brand;
-use App\Models\CashRegister;
-use App\Models\CashRegisterTransaction;
+use App\Models\Store;
+use App\Models\System;
+use App\Models\JobType;
+use App\Models\Product;
+use Livewire\Component;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\CustomerType;
 use App\Models\Employee;
-use App\Models\JobType;
-use App\Models\PaymentTransactionSellLine;
-use App\Models\Product;
+use App\Models\SellLine;
+use App\Models\StorePos;
+use App\Models\Variation;
+use App\Models\AddStockLine;
+use App\Models\CashRegister;
+use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\RequiredProduct;
-use App\Models\SellLine;
 use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\StorePos;
-use App\Models\System;
-use App\Models\TransactionSellLine;
-use App\Models\Variation;
-use App\Utils\Util;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Models\CustomerOfferPrice;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionSellLine;
 use Illuminate\Support\Facades\Log;
-use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CashRegisterTransaction;
+use App\Models\PaymentTransactionSellLine;
 
 class Edit extends Component
 {
@@ -39,7 +40,7 @@ class Edit extends Component
         $showColumn = false, $anotherPayment = false, $sale_note, $payment_note, $staff_note, $payment_types,
         $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar, $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost,
         // "الباقي دولار" , "الباقي دينار"
-        $dollar_remaining = 0, $dinar_remaining = 0,
+        $dollar_remaining = 0, $dinar_remaining = 0,$transaction,
         $searchProduct, $stores, $reprsenative_sell_car = false,
         $final_total, $dollar_final_total, $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status,
         $draft_transactions, $show_modal = false,  $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter, $dollar_highest_price, $dollar_lowest_price;
@@ -77,8 +78,12 @@ class Edit extends Component
     }
     public function mount($id, Util $commonUtil)
     {
-        $this->transaction = TransactionSellLine::find($id);
-        $this->status = $this->transaction->status;
+        $customer_offer_price = CustomerOfferPrice::with('transaction')->where('id',$id)->get();
+    //     // dd($customer_offer_price);
+        $product_id = $customer_offer_price[0]->product_id;
+        $this->transaction = TransactionSellLine::find($product_id);
+        // dd($this->transaction);
+        // $this->status = $this->transaction->status;
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
 
         $this->customers   = Customer::get();

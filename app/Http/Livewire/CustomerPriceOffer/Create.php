@@ -166,14 +166,13 @@ class Create extends Component
         $this->validateOnly($propertyName);
     }
     // ++++++++++++++++++++++++++++++++++ store() method ++++++++++++++++++++++++++++++++++
-
     public function store(): Redirector|Application|RedirectResponse
     {
         $this->validate([
             'store_id' => 'required',
             'customer_id' => 'required',
-            'block_for_days' => 'required',
-            'validity_days' => 'required',
+            // 'block_for_days' => 'required',
+            // 'validity_days' => 'required',
         ]);
         try
         {
@@ -257,7 +256,11 @@ class Create extends Component
                     // Delete "blocked Quantity" From "available Quantity" of "product"
                     $product_store = ProductStore::where('product_id',$item['product']['id'])
                                                 ->where('store_id',$this->store_id)->first();
+                    // store "block_quantity" in "store_products" table
                     $product_store->block_quantity = $item['quantity'];
+                    // Update blocked_until field based on blockDays
+                    $product_store->blocked_until = now()->addDays($this->block_for_days);
+                    // Subtract "block_quantity" from "quantity" of "product" in "product_store"  table
                     $product_store->quantity_available -= $item['quantity'];
                     $product_store->save();
                 }
@@ -277,7 +280,7 @@ class Create extends Component
         }
         return redirect()->route('customer_price_offer.create');
     }
-
+    // ++++++++++++++++++++++++++++++++++ add_product() method ++++++++++++++++++++++++++++++++++
     public function add_product($id, $add_via = null)
     {
         if(!empty($this->searchProduct)){
@@ -497,7 +500,21 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        return number_format($this->num_uf($totalCost),2);
+        // Apply discount based on discount type
+        // 1- if discount_type == fixed
+        if ($this->discount_type === 'fixed') {
+            $totalCost -= $this->discount_value;
+        }
+        // 2- if discount_type == percentage
+        elseif ($this->discount_type === 'percentage') {
+            $discountAmount = ($this->discount_value / 100) * $totalCost;
+            $totalCost -= $discountAmount;
+        }
+
+        // Make sure the total cost is not negative
+        $totalCost = max($totalCost, 0);
+
+        return number_format($this->num_uf($totalCost), 2);
     }
     // +++++++++++++++ sum_dollar_total_cost() : sum all "dollar_sell_price" values ++++++++++++++++
     public function sum_dollar_total_cost()
@@ -506,11 +523,11 @@ class Create extends Component
         if(!empty($this->items)){
             foreach ($this->items as $item)
             {
-//                dd($item['dollar_total_cost']);
+                // dd($item['dollar_total_cost']);
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-//        dd($totalDollarCost);
+                // dd($totalDollarCost);
         return number_format($totalDollarCost,2);
     }
 
