@@ -318,6 +318,10 @@ select.form-control {
     direction: rtl;
 }
 
+.dir-ltr {
+    direction: ltr;
+}
+
 .btn-indigo {
     background-color: #596fd7;
 }

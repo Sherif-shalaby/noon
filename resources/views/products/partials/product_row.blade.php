@@ -76,11 +76,17 @@
       .crop-btn i {
           font-size: 10px !important;
       }
+
+      .table-scroll-wrapper {
+          width: fit-content;
+      }
   </style>
+
 
   <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
       style="overflow-x: auto">
       <input type="hidden" name="products[{{ $key ?? 0 }}]" value="{{ $product->id ?? null }}">
+
       <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
           {{-- ++++++++++++++++ product name ++++++++++++++++ --}}
           <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
@@ -139,6 +145,8 @@
                   <label class="text-danger error-msg">{{ $message }}</label>
               @enderror
           </div>
+
+
           {{-- ++++++++++++++++ product symbol ++++++++++++++++ --}}
           <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
               style="width: 75px">
@@ -202,40 +210,6 @@
           </div>
 
 
-          {{-- ++++++++++++++++ stores ++++++++++++++++
-          <div class="mb-2 col-md-2 animate__animated animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-0"
-              style="position: relative;z-index: 2;">
-              {!! Form::label('store', __('lang.store'), [
-                  'class' => app()->isLocale('ar') ? 'd-block text-end mx-2 mb-0 ' : 'mx-2 mb-0 ',
-                  'style' => 'font-size: 12px;font-weight: 500;',
-              ]) !!}
-              <div class="d-flex justify-content-center align-items-center"
-                  style="background-color: #dedede; border: none;
-                                        border-radius: 16px;
-                                        color: #373737;
-                                        box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
-                                        height: 30px;
-                                        flex-wrap: nowrap;">
-                  {!! Form::select(
-                      'products[' . $key . '][store_id[]]',
-                      $stores,
-                      $key == 0 && isset($recent_product->stores) ? $recent_product->stores : null,
-                      [
-                          'class' => 'form-control selectpicker',
-                          'multiple' => 'multiple',
-                          'placeholder' => __('lang.please_select'),
-                          'id' => 'store_id' . $key,
-                      ],
-                  ) !!}
-                  <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                      data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
-                          class="fas fa-plus"></i></button>
-              </div>
-              @error('store_id')
-                  <label class="text-danger error-msg">{{ $message }}</label>
-              @enderror
-          </div> --}}
       </div>
 
 
@@ -409,24 +383,94 @@
           </div>
       </div>
 
+      <div class="accordion animate__animated  animate__bounceInLeft px-1">
+          <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+              style="border: none">
+              <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
+                  <div class="accordion-button"
+                      onclick="toggleProductAccordion(`productFilling{{ $key }}`)">
+                      <span class="productFilling{{ $key }} mx-2">
+                          <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                              style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                      </span>
+                      {{ __('lang.fill') }}
+                  </div>
+              </h2>
+              <div id="productFilling{{ $key }}" class="accordion-content p-0">
+                  <div class="accordion-body d-flex p-0">
 
-      <div
-          class="d-flex mb-1 animate__animated  animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif align-items-center">
+                      <div class=" product_unit_raws[{{ $key }}] d-flex">
+                          <div
+                              class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
 
-          <button style="height: fit-content;"
-              class="btn btn btn-primary add_unit_row d-flex justify-content-between align-items-center mr-3"
-              type="button" data-key="{{ $key }}">
-              <i class="fa fa-plus"></i> @lang('lang.fill')
-          </button>
+                              <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                  style="width: 75px">
+                                  {{-- {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!} --}}
 
-          <div class=" product_unit_raws[{{ $key }}] d-flex">
-              @include('products.product_unit_raw')
-              <input type="hidden" id="raw_unit_index[{{ $key }}]" value="0" />
+                                  {!! Form::text('products[' . $key . '][variations][0][sku]', $variation->sku ?? null, [
+                                      'class' => 'form-control initial-balance-input',
+                                      'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
+                                      'placeholder' => __('lang.product_code'),
+                                  ]) !!}
+
+                                  @error('sku.0')
+                                      <label class="text-danger error-msg">{{ $message }}</label>
+                                  @enderror
+
+                              </div>
+
+
+
+
+                              <div
+                                  class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                  {{-- {!! Form::label('unit', __('lang.large_filling'), ['class' => 'h5 pt-3']) !!} --}}
+                                  <div class="d-flex justify-content-center align-items-center"
+                                      style="background-color: #dedede; border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 100%;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                      <select name="products[{{ $key }}][variations][0}][new_unit_id]"
+                                          data-name='unit_id' data-index="0}" required
+                                          class="form-control unit_select select2 unit_id0}" style="width: 100px;"
+                                          data-key="{{ $key }}">
+                                          <option value="">{{ __('lang.large_filling') }}</option>
+                                          @foreach ($units as $unit)
+                                              <option @if ($key == 0 && isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif
+                                                  value="{{ $unit->id }}">{{ $unit->name }}</option>
+                                          @endforeach
+                                      </select>
+                                      <button type="button"
+                                          class="add-button d-flex justify-content-center align-items-center add_unit_raw"
+                                          data-toggle="modal" data-index="0" data-target=".add-unit"
+                                          href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
+                                  </div>
+                              </div>
+
+
+                              <button
+                                  class="btn btn-sm btn-primary add_small_unit animate__animated  animate__bounceInRight"
+                                  type="button" data-key="{{ $key }}">
+                                  <i class="fa fa-equals"></i>
+                              </button>
+
+                              @include('products.product_unit_raw')
+                              <input type="hidden" id="raw_unit_index[{{ $key }}]" value="0" />
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>
       </div>
+
+
   </div>
 
-  <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+  <div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
       <div class="accordion animate__animated  animate__bounceInLeft">
           <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
