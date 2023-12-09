@@ -50,6 +50,7 @@ use App\Http\Controllers\RequiredProductController;
 use App\Http\Controllers\ReturnStockController;
 use App\Http\Controllers\SalesPerEmployeeReportController;
 use App\Http\Controllers\TransactionPaymentController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,12 @@ Route::group(['middleware' => ['auth']], function () {
         Auth::logout();
         return redirect('/login');
     });
+    // ++++++++++++++++++++++++++++++++++++ Notifications +++++++++++++++++++++++++++++++++
+    // --------------- Mark All Posts As Read ---------------
+    Route::get('notifications/markAllAsRead', [NotificationController::class,"markAsRead"])->name('Notification.Read');
+    // --------------- delete notification  ---------------
+    Route::get('notifications/delete/{id}', [NotificationController::class,"destroy_notification"])->name('Notification.delete');
+
     // Home cards route
     Route::get('returns', function () {
         return view('returns.index');
@@ -156,6 +163,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
     Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
 
     Route::resource('products', ProductController::class);
     //customers
@@ -221,6 +229,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('receivable-report', ReceivableController::class);
     // ########### Payable Report ###########
     Route::resource('payable-report', PayableReportController::class);
+    // fetch "stores" of selected "branch" selectbox
+    Route::post('api/fetch_branch_stores',[PayableReportController::class,'fetch_branch_stores']);
     // ########### Get Due Report ###########
     Route::resource('get-due-report', GetDueReportController::class);
     // ########### Supplier Report ###########
