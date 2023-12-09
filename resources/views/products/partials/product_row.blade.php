@@ -183,7 +183,7 @@
                 <div class="col-md-2">
                     {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
-                        <select name="products[{{ $key }}][variations][0}][new_unit_id]"  data-name='unit_id' data-index="0}" required class="form-control unit_select select2 unit_id0}" style="width: 100px;" data-key="{{ $key }}">
+                        <select name="products[{{ $key }}][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="{{ $key }}">
                             <option value="">{{__('lang.please_select')}}</option>
                             @foreach($units as $unit)
                                 <option @if($key == 0 &&  isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
@@ -212,7 +212,7 @@
                 <div class="col-md-2">
                     {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
                     {!! Form::text('products['.$key.'][height]', isset($recent_product->product_dimensions->height) ? $recent_product->product_dimensions->height : 0, [
-                        'class' => 'form-control height',
+                        'class' => 'form-control height', 'id' => 'height'.$key, 'data-key' => $key
                     ]) !!}
                     <br>
                     @error('height')
@@ -225,7 +225,7 @@
                 <div class="col-md-2">
                     {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
                     {!! Form::text('products['.$key.'][length]', isset($recent_product->product_dimensions->length) ? $recent_product->product_dimensions->length : 0, [
-                        'class' => 'form-control length',
+                        'class' => 'form-control length','id' => 'length'.$key, 'data-key' => $key,
                     ]) !!}
                     <br>
                     @error('length')
@@ -236,7 +236,7 @@
                 <div class="col-md-2">
                     {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
                     {!! Form::text('products['.$key.'][width]', isset($recent_product->product_dimensions->width) ? $recent_product->product_dimensions->width : 0, [
-                        'class' => 'form-control width',
+                        'class' => 'form-control width','id' => 'width'.$key,'data-key' => $key
                     ]) !!}
                     <br>
                     @error('width')
@@ -246,7 +246,7 @@
                 <div class="col-md-2">
                     {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
                     {!! Form::text('products['.$key.'][size]', isset($recent_product->product_dimensions->size) ? $recent_product->product_dimensions->size : 0, [
-                        'class' => 'form-control size',
+                        'class' => 'form-control size','id' => 'size'.$key ,'data-key' => $key
                     ]) !!}
                     <br>
                     @error('size')
@@ -256,7 +256,7 @@
                 <div class="col-md-2">
                     {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
                     {!! Form::text('products['.$key.'][weight]', isset($recent_product->product_dimensions->weight) ? $recent_product->product_dimensions->weight : 0, [
-                        'class' => 'form-control',
+                        'class' => 'form-control','data-key' => $key
                     ]) !!}
                     <br>
                     @error('weight')

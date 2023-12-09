@@ -17,11 +17,13 @@ $(() => {
     $("#product_details").summernote(usrCfg);
 });
 $(document).on('change','.width,.height,.length',function(){
-    let width=parseFloat($('.width').val());
-    let height=parseFloat($('.height').val());
-    let length=parseFloat($('.length').val());
+    var key = $(this).data('key');
+    let width= parseFloat($('#width' + key).val());
+    let height= parseFloat($('#height' + key).val());
+    let length= parseFloat($('#length' + key).val());
     let size=width*height*length;
-    $('.size').val(size);
+    console.log(size)
+    $('#size' + key).val(size);
 });
 $(document).on("click", ".add_price_row", function () {
     let row_id = parseInt($("#raw_price_index").val());
@@ -120,7 +122,7 @@ $(document).on("click", ".add_small_unit", function () {
         url: "/product/get-raw-unit",
         data: { row_id: row_id, key: key },
         success: function (result) {
-            $(".product_unit_raws\\[" + key + "\\]").prepend(result);
+            $(".product_unit_raws\\[" + key + "\\]").append(result);
             $('.select2').select2();
         },
     });
