@@ -222,7 +222,8 @@
                             $index = 0;
                         @endphp
 
-                        @if (!empty($product->variations))
+                        @if (count($product->variations) > 0)
+
                             @foreach ($product->variations as $index => $variation)
                                 <div class="row">
 
@@ -265,7 +266,39 @@
                                  </div>
                             @endforeach
                         @else
-                            @include('products.product_unit_raw', ['index' => 0])
+                            <div class="row">
+                                <div class="col-md-2 pl-5">
+                                    {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
+                                    {!! Form::text('products[0][variations][0][sku]',$variation->sku ?? null, [
+                                        'class' => 'form-control'
+                                    ]) !!}
+                                    <br>
+                                    @error('sku.0')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2">
+                                    {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
+                                    <div class="d-flex justify-content-center">
+                                        <select name="products[0][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="0">
+                                            <option value="">{{__('lang.please_select')}}</option>
+                                            @foreach($units as $unit)
+                                                <option @if( isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pt-4">
+                                    <button class="btn btn btn-warning add_small_unit" type="button" data-key="0">
+                                        <i class="fa fa-equals"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{$index ?? 0 }}][variation_id]" value="{{$variation->id ?? null}}">
+
+                            </div>
+
+                            {{--                            @include('products.product_unit_raw', ['index' => 0])--}}
                         @endif
                         @php
                             if (count($product->variations) > 0) {
@@ -277,7 +310,6 @@
                         <input type="hidden" id="raw_unit_index[0]" value="{{ $index }}" data-key="0" />
                     </div>
                     {{-- sizes --}}
-                    @dd($product->product_dimensions)
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12 pt-5 ">
@@ -342,7 +374,7 @@
                                 {!! Form::select('variation_id',$basic_units, isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0, [
                                     'class' => 'form-control select2',
                                     'placeholder' => __('lang.please_select'),
-                                    'id' => 'variation_id',
+                                    'id' => 'products[0][variation_id]',
                                 ]) !!}
                             </div>
                         </div>
