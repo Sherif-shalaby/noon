@@ -23,11 +23,9 @@ return new class extends Migration
             $table->integer('customer_type_id')->unsigned();
 
             $table->decimal('dinar_sell_price',10,3)->nullable()->default(0);
-            $table->decimal('dinar_purchase_price',10,3)->nullable()->default(0);
+            $table->decimal('dollar_sell_price',10,3)->nullable()->default(0);
 
             $table->decimal('percent',10,4)->nullable();
-            $table->decimal('quantity',10,3)->nullable();
-//            $table->decimal('quantity',10,3)->nullable();
 
             $table->timestamps();
         });
