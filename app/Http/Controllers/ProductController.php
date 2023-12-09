@@ -174,8 +174,8 @@ class ProductController extends Controller
                     ]);
                     // $product->product_taxes()->attach($request->product_tax_id) ;
                 }
-                if(!empty($re_product['store_id'])){
-                    $product->stores()->attach($re_product['store_id']);
+                if(!empty($request->store_id)){
+                    $product->stores()->attach($request->store_id);
                 }
                 if (isset($re_product['image']) && !is_null($re_product['image'])) {
                     $imageData = $this->getCroppedImage($re_product['image']);

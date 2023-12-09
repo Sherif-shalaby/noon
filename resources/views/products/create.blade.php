@@ -56,6 +56,29 @@
                     'enctype' => 'multipart/form-data',
                 ]) !!}
                 <div class="row">
+                    {{-- ++++++++++++++++ stores ++++++++++++++++ --}}
+                    <div class="col-md-3">
+                        {!! Form::label('store', __('lang.store'), ['class' => 'h5 pt-3']) !!}
+                        <div class="d-flex justify-content-center">
+                            {!! Form::select(
+                                'store_id[]',
+                                $stores,
+                                isset($recent_product->stores) ? $recent_product->stores : null,
+                                [
+                                    'class' => 'form-control selectpicker',
+                                    'multiple' => 'multiple',
+                                    'placeholder' => __('lang.please_select'),
+                                    'id' => 'store_id',
+                                ],
+                            ) !!}
+                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                                    data-target=".add-store" href="{{ route('store.create') }}"><i
+                                    class="fas fa-plus"></i></button>
+                        </div>
+                        @error('store_id')
+                        <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
                     <div class="col-md-12 product_raws">
                         @for ($i = 0; $i < 3; $i++)
                             @include('products.partials.product_row',['key' => $i])
