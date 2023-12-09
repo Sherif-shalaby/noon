@@ -95,40 +95,6 @@ class Create extends Component
         $current_stock, $totalQuantity = 0, $edit_product = [], $current_sub_category, $variationSums = [], $customer_types = [],
         $clear_all_input_stock_form, $product_tax, $subcategories = [], $discount_from_original_price, $basic_unit_variations = [], $unit_variations = [], $branches = [], $units = [],
         $show_dimensions = 0, $show_category1 = 0, $show_category2 = 0, $show_category3 = 0, $show_discount = 0, $show_store = 0, $variations = [];
-
-    // public $rows = [[
-    //     'id' => '', 'sku' => '', 'quantity' => '',
-    //     'fill_quantity' => '',
-    //     'fill_type' => 'fixed',
-    //     'fill_currency' => 'dinar',
-    //     'purchase_price' => '',
-    //     'selling_price' => '',
-    //     'dollar_purchase_price' => '',
-    //     'dollar_selling_price' => '',
-    //     'unit_id' => '',
-    //     'basic_unit_id' => '',
-    //     'change_price_stock' => '',
-    //     'equal' => '',
-    //     'method' => '',
-    //     'prices' => [
-    //         [
-    //             'price_type' => null,
-    //             'price_category' => null,
-    //             'price_currency' => 'dinar',
-    //             'price' => null,
-    //             'dinar_price' => null,
-    //             'discount_quantity' => null,
-    //             'bonus_quantity' => null,
-    //             'price_customer_types' => null,
-    //             'price_after_desc' => null,
-    //             'dinar_price_after_desc' => null,
-    //             'total_price' => null,
-    //             'dinar_total_price' => null,
-    //             'piece_price' => null,
-    //             'dinar_piece_price' => null,
-    //         ],
-    //     ]
-    // ]];
     public $rows = [];
     public function messages()
     {
@@ -426,175 +392,6 @@ class Create extends Component
             return $symbol;
         }
     }
-    // public function store()
-    // {
-    //     // dd($this->stores);
-    //     //for variation valid sku
-    //     // if ($this->item[0]['isExist'] == 1) {
-    //     //     $product = Product::find($this->item[0]['id']);
-    //     //     $product->variations()->forceDelete();
-    //     // }
-    //     //////////
-    //     // $this->validate();
-    //     $this->updatedInputs();
-    //     //  try {
-    //     if (empty($this->rows)) {
-    //         $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
-    //     } else {
-    //         // dd(77);
-    //         DB::beginTransaction();
-    //         // Add stock transaction
-    //         $transaction = new StockTransaction();
-    //         $transaction->store_id = $this->item[0]['store_id'];
-    //         $transaction->status = 'received';
-    //         $transaction->order_date = Carbon::now();
-    //         $transaction->transaction_date =  Carbon::now();
-    //         $transaction->purchase_type = 'local';
-    //         $transaction->type = 'initial_balance';
-    //         $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
-    //         $transaction->transaction_currency = $this->transaction_currency;
-    //         $transaction->created_by = Auth::user()->id;
-    //         $transaction->save();
-    //         //Add Product
-    //         $product = [];
-    //         if ($this->item[0]['isExist'] == 1) {
-    //             $product = Product::find($this->item[0]['id']);
-    //             $product->name = $this->item[0]['name'];
-    //             $product->sku = "Default";
-    //             $product->category_id = $this->item[0]['category_id'];
-    //             $product->subcategory_id1 = $this->item[0]['subcategory_id1'];
-    //             $product->subcategory_id2 = $this->item[0]['subcategory_id2'];
-    //             $product->subcategory_id3 = $this->item[0]['subcategory_id3'];
-    //             $product->method = $this->item[0]['method'];
-    //             $product->product_symbol = !empty($this->item[0]['product_symbol']) ? $this->item[0]['product_symbol'] : $this->generateSymbol();
-    //             $product->balance_return_request = $this->item[0]['balance_return_request'] ?? 0;
-    //             $product->save();
-    //             // $product->variations()->delete();
-    //         } else {
-    //             $product = new Product();
-    //             $product->name = $this->item[0]['name'];
-    //             $product->sku = "Default";
-    //             $product->category_id = $this->item[0]['category_id'];
-    //             $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ? $this->item[0]['subcategory_id1'] : null;
-    //             $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
-    //             $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
-    //             $product->method = !empty($this->item[0]['method']) ? $this->item[0]['method'] : null;
-    //             $product->product_symbol = $this->item[0]['product_symbol'];
-    //             $product->balance_return_request = !empty($this->item[0]['balance_return_request']) ? $this->num_uf($this->item[0]['balance_return_request']) : 0;
-    //             $product->save();
-    //             if (!empty($this->item[0]['product_tax_id'])) {
-    //                 ProductTax::create([
-    //                     'product_tax_id' => $this->item[0]['product_tax_id'],
-    //                     'product_id' => $product->id,
-    //                 ]);
-    //             }
-    //         }
-    //         // add  products to stock lines
-    //         foreach ($this->rows as $index => $row) {
-
-    //             // if($this->rows[$index]['skuExist']!==1){
-    //             $Variation = new Variation();
-    //             $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
-    //             $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
-    //             $Variation->product_id = $product->id;
-    //             $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
-    //             // $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
-    //             $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
-    //             $Variation->created_by = Auth::user()->id;
-    //             $Variation->save();
-
-    //             foreach ($this->rows[$index]['prices'] as $key => $price) {
-    //                 $Variation_price = new VariationPrice();
-    //                 $Variation_price->variation_id = $Variation->id;
-    //                 $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-    //                 $Variation_price->dinar_sell_price = $this->rows[$index]['prices'][$key]['dinar_sell_price'] ?? null;
-    //                 $Variation_price->dinar_purchase_price = $this->rows[$index]['prices'][$key]['dollar_sell_price'] ?? null;
-    //                 $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
-    //                 $Variation_price->quantity = $this->rows[$index]['prices'][$key]['quantity'] ?? null;
-    //                 $Variation_price->save();
-    //                 $add_stock_data = [
-    //                     'product_id' => $product->id,
-    //                     'variation_id' => $Variation->id,
-    //                     'stock_transaction_id' => $transaction->id,
-    //                     'quantity' => $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : 0,
-    //                     // 'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
-    //                     // 'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
-    //                     'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
-    //                     'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])  : null,
-    //                     // 'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-    //                     'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
-    //                     'dollar_sell_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price'])  : null,
-    //                     'dollar_sub_total' => !empty($this->dollar_sub_total($index, $key)) ? $this->num_uf((float)$this->dollar_sub_total($index, $key))  : null,
-    //                     'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
-    //                     // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
-    //                     // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
-    //                     // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-    //                     // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
-    //                 ];
-    //                 $stockLine = AddStockLine::create($add_stock_data);
-    //             }
-
-    //             ////////////////
-
-
-
-    //             $this->updateProductQuantityStore($product->id, $Variation->id, $transaction->store_id, $this->num_uf($this->rows[$index]['quantity']));
-    //             //////////////
-    //             if (!empty($prices)) {
-    //                 foreach ($prices as $price) {
-    //                     if (!empty($price['dinar_price']) || !empty($price['discount_quantity'])) {
-    //                         if ($price['fill_id'] == $Variation->unit_id) {
-    //                             $price_data = [
-    //                                 'variation_id' => $Variation->id,
-    //                                 'stock_line_id' => $stockLine->id,
-    //                                 'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
-    //                                 'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
-    //                                 'price' => !empty($price['price']) ? $this->num_uf($price['price'])  : null,
-    //                                 'dinar_price' => !empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null,
-    //                                 'price_customers' => !empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null,
-    //                                 'dinar_price_customers' => !empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc'])  : null,
-    //                                 'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
-    //                                 'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
-    //                                 'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
-    //                                 'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
-    //                                 'created_by' => Auth::user()->id,
-    //                                 'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['total_price'])  : null,
-    //                                 'total_price' => !empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null,
-    //                                 'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
-    //                                 'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
-    //                             ];
-    //                             ProductPrice::create($price_data);
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-
-    //         if (
-    //             $this->item[0]['height'] == ('' || 0) && $this->item[0]['length'] == ('' || 0) && $this->item[0]['width'] == ('' || 0)
-    //             || $this->item[0]['size'] == ('' || 0) && $this->item[0]['weight'] == ('' || 0)
-    //         ) {
-    //         } else {
-    //             ProductDimension::create([
-    //                 'product_id' => $product->id,
-    //                 'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
-    //                 'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
-    //                 'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
-    //                 'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
-    //                 'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
-    //                 'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
-    //             ]);
-    //         }
-    //         DB::commit();
-    //         $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-    //         return redirect()->back();
-    //     }
-    //     //          }
-    //     //          catch (\Exception $e){
-    //     //              $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-    //     // //             dd($e);
-    //     //          }
-    // }
     public function store()
     {
         // dd($this->stores);
@@ -606,7 +403,7 @@ class Create extends Component
         //////////
         // $this->validate();
         $this->updatedInputs();
-        //  try {
+         try {
         if (empty($this->rows)) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
         } else {
@@ -693,13 +490,13 @@ class Create extends Component
             $this->saveTransaction($product->id,);
             DB::commit();
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-            return redirect()->back();
+            return redirect('/new-initial-balance/create');
         }
-        //          }
-        //          catch (\Exception $e){
-        //              $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-        // //             dd($e);
-        //          }
+                 }
+                 catch (\Exception $e){
+                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
+        //             dd($e);
+                 }
     }
     public function saveTransaction($product_id, $variations = [])
     {
@@ -805,23 +602,27 @@ class Create extends Component
     }
     public function generateSku($name, $number = 1)
     {
-        $name_array = explode(" ", $name);
-        $sku = '';
-        foreach ($name_array as $w) {
-            if (!empty($w)) {
-                if (!preg_match('/[^A-Za-z0-9]/', $w)) {
-                    $sku .= $w[0];
-                }
-            }
-        }
-        $sku = $sku . $number;
-        $sku_exist = Variation::where('sku', $sku)->exists();
+        // $name_array = explode(" ", $name);
+        // $sku = '';
+        // foreach ($name_array as $w) {
+        //     if (!empty($w)) {
+        //         if (!preg_match('/[^A-Za-z0-9]/', $w)) {
+        //             $sku .= $w[0];
+        //         }
+        //     }
+        // }
+        // $sku = $sku . $number;
+        // $sku_exist = Variation::where('sku', $sku)->exists();
 
-        if ($sku_exist) {
-            return $this->generateSku($name, $number + 1);
-        } else {
-            return $sku;
-        }
+        // if ($sku_exist) {
+        //     return $this->generateSku($name, $number + 1);
+        // } else {
+        //     return $sku;
+        // }
+        $start = System::getProperty('product_sku_start');
+        $number = Product::count();
+        $sku = $start . $number;
+        return $sku;
     }
     public function confirmCreateProduct()
     {
