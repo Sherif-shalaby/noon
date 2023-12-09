@@ -114,18 +114,16 @@ $(document).on("click", ".add_small_unit", function () {
     let key = $(this).data('key');
     let row_id = parseInt($("#raw_unit_index\\[" + key + "\\]").val()) +1 ;
     console.log(row_id, key);
-    if(row_id > 1){
-        $("#raw_unit_index\\[" + key + "\\]").val(row_id);
-        $.ajax({
-            method: "get",
-            url: "/product/get-raw-unit",
-            data: { row_id: row_id, key: key },
-            success: function (result) {
-                $(".product_unit_raws\\[" + key + "\\]").prepend(result);
-                $('.select2').select2();
-            },
-        });
-    }
+    $("#raw_unit_index\\[" + key + "\\]").val(row_id);
+    $.ajax({
+        method: "get",
+        url: "/product/get-raw-unit",
+        data: { row_id: row_id, key: key },
+        success: function (result) {
+            $(".product_unit_raws\\[" + key + "\\]").prepend(result);
+            $('.select2').select2();
+        },
+    });
 });
 $(document).on("click", ".remove_row", function () {
     let key = $(this).data('key');

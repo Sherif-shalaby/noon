@@ -15,29 +15,6 @@
 
             </div>
         </div>
-        {{-- ++++++++++++++++ stores ++++++++++++++++ --}}
-        <div class="col-md-3">
-            {!! Form::label('store', __('lang.store'), ['class' => 'h5 pt-3']) !!}
-            <div class="d-flex justify-content-center">
-                {!! Form::select(
-                    'products['.$key.'][store_id[]]',
-                    $stores,
-                    $key == 0 && isset($recent_product->stores) ? $recent_product->stores : null,
-                    [
-                        'class' => 'form-control selectpicker',
-                        'multiple' => 'multiple',
-                        'placeholder' => __('lang.please_select'),
-                        'id' => 'store_id'.$key,
-                    ],
-                ) !!}
-                <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                        data-target=".add-store" href="{{ route('store.create') }}"><i
-                        class="fas fa-plus"></i></button>
-            </div>
-            @error('store_id')
-            <label class="text-danger error-msg">{{ $message }}</label>
-            @enderror
-        </div>
         {{-- ++++++++++++++++ product name ++++++++++++++++ --}}
         <div class="col-md-3">
             {!! Form::label('name', __('lang.product_name'), ['class' => 'h5 pt-3']) !!}
@@ -183,17 +160,47 @@
                 'class' => 'form-control',
             ]) !!}
         </div>
-        <div class="col-md-12 pt-5">
-            <div class="col-md-3">
-                <button class="btn btn btn-primary add_unit_row" type="button" data-key="{{ $key }}">
-                    <i class="fa fa-plus"></i> @lang('lang.add')
-                </button>
-            </div>
-        </div>
+{{--        <div class="col-md-12 pt-5">--}}
+{{--            <div class="col-md-3">--}}
+{{--                <button class="btn btn btn-primary add_unit_row" type="button" data-key="{{ $key }}">--}}
+{{--                    <i class="fa fa-plus"></i> @lang('lang.add')--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
         <div class="col-md-12 product_unit_raws[{{$key}}] ">
-            @include('products.product_unit_raw')
-            <input type="hidden" id="raw_unit_index[{{ $key }}]" value="0" />
+            <div class="row">
+                <div class="col-md-2 pl-5">
+                    {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
+                    {!! Form::text('products['.$key.'][variations][0][sku]',$variation->sku ?? null, [
+                        'class' => 'form-control'
+                    ]) !!}
+                    <br>
+                    @error('sku.0')
+                    <label class="text-danger error-msg">{{ $message }}</label>
+                    @enderror
+                </div>
+                <div class="col-md-2">
+                    {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
+                    <div class="d-flex justify-content-center">
+                        <select name="products[{{ $key }}][variations][0}][new_unit_id]"  data-name='unit_id' data-index="0}" required class="form-control unit_select select2 unit_id0}" style="width: 100px;" data-key="{{ $key }}">
+                            <option value="">{{__('lang.please_select')}}</option>
+                            @foreach($units as $unit)
+                                <option @if($key == 0 &&  isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-2 pt-4">
+                    <button class="btn btn btn-warning add_small_unit" type="button" data-key="{{ $key }}">
+                        <i class="fa fa-equals"></i>
+                    </button>
+                </div>
+                @include('products.product_unit_raw')
+                <input type="hidden" id="raw_unit_index[{{ $key }}]" value="0" />
+            </div>
+
         </div>
 
         {{-- sizes --}}
