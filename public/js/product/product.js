@@ -133,6 +133,7 @@ $(document).on("click", ".remove_row", function () {
 });
 $(document).on("change", ".unit_select", function () {
     let key = $(this).data('key');
+    console.log(key)
     var selectBox1 = $('#products\\[' + key + '\\]\\[variation_id\\]');
     selectBox1.empty();
     let selectBoxValues = {};

@@ -211,10 +211,10 @@ class ProductController extends Controller
                         'product_id' =>$product->id??null,
                         'variation_id' => Variation::where('product_id',$product->id)->where('unit_id',$re_product['variation_id'])->first()->id??null,
                         'height' => $re_product['height'],
-                        'length' => $request['length'],
-                        'width' => $request['width'],
-                        'size' => $request['size'],
-                        'weight' => $request['weight']
+                        'length' => $re_product['length'],
+                        'width' => $re_product['width'],
+                        'size' => $re_product['size'],
+                        'weight' => $re_product['weight']
                     ];
                     ProductDimension::create($product_dimensions);
 
@@ -346,6 +346,7 @@ class ProductController extends Controller
     //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
     //    ]);
     try{
+//        dd($request);
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
@@ -418,31 +419,6 @@ class ProductController extends Controller
             }
         }
     }
-//        $index_units=[];
-//
-//    if($request->has('new_unit_id')){
-//        if(count($request->new_unit_id)>0){
-//            $index_units=array_keys($request->new_unit_id);
-//        }
-//    }
-//    foreach ($index_units as $index){
-//        $var_data=[
-//            'product_id'=>$product->id,
-//            'unit_id'=>$request->new_unit_id[$index],
-//            'basic_unit_id'=>$request->basic_unit_id[$index],
-//            'equal'=>$request->equal[$index],
-//            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku(),
-//            'edited_by'=>Auth::user()->id
-//        ];
-//        if(!empty($request->variation_ids[$index])){
-//            $variation = Variation::find($request->variation_ids[$index]);
-//            $variation->update($var_data);
-//        }
-//        else{
-//        Variation::create($var_data);
-//        }
-//    }
-
 
     if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
     || $request->size ==(''||0) && $request->weight ==(''||0)) {
