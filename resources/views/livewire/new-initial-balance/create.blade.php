@@ -888,77 +888,83 @@
                                                 <span class="error text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        @foreach ($fill_stores[$i]['data'] as $x => $fill)
-                                            <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                style="width: 100px">
-                                                {{-- <label for="store_fill_id"
+                                        <div
+                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div
+                                                class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                @foreach ($fill_stores[$i]['data'] as $x => $fill)
+                                                    <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                        style="width: 100px">
+                                                        {{-- <label for="store_fill_id"
                                                 class="h5 ">{{ __('lang.fill') . ':*' }}</label> --}}
-                                                <div class="d-flex justify-content-center align-items-center"
-                                                    style="background-color: #dedede;
+                                                        <div class="d-flex justify-content-center align-items-center"
+                                                            style="background-color: #dedede;
                                                     border: none;
-                                        border-radius: 16px;
-                                        color: #373737;
-                                        box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
-                                        height: 30px;
-                                        flex-wrap: nowrap;">
-                                                    {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
-                                                        'id' => 'store_fill_id',
-                                                        'class' => ' form-control select2 store_fill_id',
-                                                        'data-name' => 'store_fill_id',
-                                                        'data-index' => $i,
-                                                        'data-key' => $x,
-                                                        'placeholder' => __('lang.fill'),
-                                                        'wire:model' => 'fill_stores.' . $i . '.data.' . $x . '.store_fill_id',
-                                                    ]) !!}
-                                                </div>
-                                            </div>
-                                            <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                style="width: 75px">
-                                                {{-- {!! Form::label('quantity', __('lang.quantity')) !!} --}}
-                                                <input type="text"
-                                                    class="form-control quantity initial-balance-input"
-                                                    wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
-                                                    style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                                                    placeholder = "{{ __('lang.quantity') }}">
-                                                @error('fill_stores.' . $i . 'data' . $x . '.quantity')
-                                                    <br>
-                                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                                @enderror
+                                                        border-radius: 16px;
+                                                        color: #373737;
+                                                        box-shadow: 0 8px 6px -5px #bbb;
+                                                        width: 100%;
+                                                        height: 30px;
+                                                        flex-wrap: nowrap;">
+                                                            {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
+                                                                'id' => 'store_fill_id',
+                                                                'class' => ' form-control select2 store_fill_id',
+                                                                'data-name' => 'store_fill_id',
+                                                                'data-index' => $i,
+                                                                'data-key' => $x,
+                                                                'placeholder' => __('lang.fill'),
+                                                                'wire:model' => 'fill_stores.' . $i . '.data.' . $x . '.store_fill_id',
+                                                            ]) !!}
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                                        style="width: 75px">
+                                                        {{-- {!! Form::label('quantity', __('lang.quantity')) !!} --}}
+                                                        <input type="text"
+                                                            class="form-control quantity initial-balance-input"
+                                                            wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
+                                                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                                                            placeholder = "{{ __('lang.quantity') }}">
+                                                        @error('fill_stores.' . $i . 'data' . $x . '.quantity')
+                                                            <br>
+                                                            <label
+                                                                class="text-danger error-msg">{{ $message }}</label>
+                                                        @enderror
 
-                                            </div>
-                                            <div class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mb-2 animate__animated animate__bounceInLeft d-flex px-1"
-                                                style="width: 75px">
-                                                <button type="button" class="btn btn-sm btn-primary"
-                                                    wire:click="addStoreDataRow({{ $i }})">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                                {{-- @if ($i > 0) --}}
-                                                <button class="btn btn-sm btn-danger"
-                                                    wire:click="delete_store_raw({{ $i }})">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                                {{-- @endif --}}
-                                            </div>
-                                    </div>
+                                                    </div>
+                                                    <div class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mb-2 animate__animated animate__bounceInLeft d-flex px-1"
+                                                        style="width: 75px">
+                                                        <button type="button" class="btn btn-sm btn-primary"
+                                                            wire:click="addStoreDataRow({{ $i }})">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                        {{-- @if ($i > 0) --}}
+                                                        <button class="btn btn-sm btn-danger"
+                                                            wire:click="delete_store_raw({{ $i }})">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                        {{-- @endif --}}
+                                                    </div>
+                                                @endforeach
                                 @endforeach
-                                @endforeach
-
                             </div>
+
                         </div>
                     </div>
-
-                </div>
-
-                {{-- {!! Form::close() !!} --}}
-                <div class="col-sm-12">
-                    <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
-                        class="btn btn-primary pull-right btn-flat submit"
-                        wire:click.prevent="store()">@lang('lang.save')</button>
-
                 </div>
             </div>
         </div>
+
+    </div>
+
+    {{-- {!! Form::close() !!} --}}
+    <div class="col-sm-12">
+        <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
+            class="btn btn-primary pull-right btn-flat submit" wire:click.prevent="store()">@lang('lang.save')</button>
+
+    </div>
+    </div>
+    </div>
     </div>
     </div>
 </section>

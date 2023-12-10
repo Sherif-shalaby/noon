@@ -433,9 +433,9 @@
                                         width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                      <select name="products[{{ $key }}][variations][0}][new_unit_id]"
-                                          data-name='unit_id' data-index="0}" required
-                                          class="form-control unit_select select2 unit_id0}" style="width: 100px;"
+                                      <select name="products[{{ $key }}][variations][0][new_unit_id]"
+                                          data-name='unit_id' data-index="0"
+                                          class="form-control unit_select select2 unit_id0" style="width: 100px;"
                                           data-key="{{ $key }}">
                                           <option value="">{{ __('lang.large_filling') }}</option>
                                           @foreach ($units as $unit)

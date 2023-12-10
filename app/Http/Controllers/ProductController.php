@@ -143,9 +143,7 @@ class ProductController extends Controller
     try
     {
         DB::beginTransaction();
-
         foreach ($request->products as $re_product){
-//            dd($re_product['name'] != null);
             if($re_product['name'] != null){
                 $product_data = [
                     'name' => $re_product['name'],
@@ -188,7 +186,7 @@ class ProductController extends Controller
                     $product->save();
                 }
                 if(!empty($re_product['variations'])){
-                    $variations = array_reverse($re_product['variations']);
+                    $variations = $re_product['variations'];
                     if(!empty($variations)){
                         foreach ($variations as $key=> $variant){
                             if(isset($variant['new_unit_id'])){
@@ -213,10 +211,10 @@ class ProductController extends Controller
                         'product_id' =>$product->id??null,
                         'variation_id' => Variation::where('product_id',$product->id)->where('unit_id',$re_product['variation_id'])->first()->id??null,
                         'height' => $re_product['height'],
-                        'length' => $request['length'],
-                        'width' => $request['width'],
-                        'size' => $request['size'],
-                        'weight' => $request['weight']
+                        'length' => $re_product['length'],
+                        'width' => $re_product['width'],
+                        'size' => $re_product['size'],
+                        'weight' => $re_product['weight']
                     ];
                     ProductDimension::create($product_dimensions);
 
@@ -236,7 +234,7 @@ class ProductController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
-            // dd($e);
+//             dd($e);
     }
 
     // +++++++++++++++ Start : Notification ++++++++++++++++++++++
@@ -348,6 +346,7 @@ class ProductController extends Controller
     //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
     //    ]);
     try{
+//        dd($request);
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
@@ -398,32 +397,28 @@ class ProductController extends Controller
         $product->save();
     }
 
-
-    $index_units=[];
-
-    if($request->has('new_unit_id')){
-        if(count($request->new_unit_id)>0){
-            $index_units=array_keys($request->new_unit_id);
+    $variations = $request->products[0]['variations'];
+    if (!empty($variations)){
+        foreach ($variations as $key => $variant){
+            if(!empty($variant['new_unit_id'])){
+                $var_data=[
+                    'product_id' => $product->id,
+                    'unit_id' => $variant['new_unit_id'],
+                    'basic_unit_id' => !empty($variations[ $key+1 ]) ? $variations[ $key+1 ]['new_unit_id'] : null,
+                    'equal' => !empty($variations[$key+1]) ? $variations[$key+1]['equal'] : null,
+                    'sku' => !empty($variant['sku']) ? $variant['sku'] : $this->generateSku(),
+                    'edited_by' => Auth::user()->id
+                ];
+                if(!empty($variant['variation_id'])){
+                    $variation = Variation::find($variant['variation_id']);
+                    $variation->update($var_data);
+                }
+                else{
+                    Variation::create($var_data);
+                }
+            }
         }
     }
-    foreach ($index_units as $index){
-        $var_data=[
-            'product_id'=>$product->id,
-            'unit_id'=>$request->new_unit_id[$index],
-            'basic_unit_id'=>$request->basic_unit_id[$index],
-            'equal'=>$request->equal[$index],
-            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-            'edited_by'=>Auth::user()->id
-        ];
-        if(!empty($request->variation_ids[$index])){
-            $variation = Variation::find($request->variation_ids[$index]);
-            $variation->update($var_data);
-        }
-        else{
-        Variation::create($var_data);
-        }
-    }
-
 
     if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
     || $request->size ==(''||0) && $request->weight ==(''||0)) {
@@ -447,13 +442,13 @@ class ProductController extends Controller
     ];
      } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            dd($e);
-            $output = [
+        $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
+        dd($e);
     }
-    return redirect()->back()->with('status', $output);
+      return redirect()->back()->with('status', $output);
   }
 
   /**

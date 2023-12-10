@@ -24,17 +24,17 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:products',
-            'product_sku' => 'nullable|max:255|unique:products,sku',
-            'height'=>'nullable|numeric|between:0,99999999999.99',
-            'length'=>'nullable|numeric|between:0,99999999999.99',
-            'width'=>'nullable|numeric|between:0,99999999999.99',
-            'size'=>'nullable|numeric|between:0,99999999999.99',
-            'weight'=>'nullable|numeric|between:0,99999999999.99',
+            'products.*.name' => 'required|max:255|unique:products',
+            'products.*.product_sku' => 'nullable|max:255|unique:products,sku',
+            'products.*.height'=>'nullable|numeric|between:0,99999999999.99',
+            'products.*.length'=>'nullable|numeric|between:0,99999999999.99',
+            'products.*.width'=>'nullable|numeric|between:0,99999999999.99',
+            'products.*.size'=>'nullable|numeric|between:0,99999999999.99',
+            'products.*.weight'=>'nullable|numeric|between:0,99999999999.99',
             'category_id'=>'required',
             'store_id'=>'required|array',
-            'sku.*' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-            'product_symbol' => 'nullable|unique:products,product_symbol',
+            'products.*.sku' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
+            'products.*.product_symbol' => 'nullable|unique:products,product_symbol',
 
         ];
     }

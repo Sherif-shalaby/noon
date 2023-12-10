@@ -1,6 +1,6 @@
     <div
         class="d-flex animate__animated  animate__bounceInRight unit-row[{{ $key }}]  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-        <input type="hidden" name="product[{{ $key ?? 0 }}]variation_ids[{{ $index ?? 0 }}]"
+        <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{ $index ?? 0 }}][variation_id]"
             value="{{ $variation->id ?? null }}">
         @if (isset($index) && $index !== '')
 
@@ -12,7 +12,7 @@
                     ]) !!} --}}
                 {!! Form::text(
                     'products[' . $key . '][variations][' . $index . '][equal]',
-                    isset($variation->equal) ? $variation->equal : null,
+                    isset($product->variations[$index - 1]->equal) ? $product->variations[$index - 1]->equal : null,
                     [
                         'class' => 'form-control initial-balance-input',
                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
@@ -36,7 +36,7 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                     <select name="products[{{ $key }}][variations][{{ $index }}][new_unit_id]"
-                        data-name='unit_id' data-index="{{ $index }}" required
+                        data-name='unit_id' data-index="{{ $index }}"
                         class="form-control unit_select select2 unit_id{{ $index }}" style="width: 100px;"
                         data-key="{{ $key }}">
                         <option value="">{{ __('lang.small_filling') }}</option>
