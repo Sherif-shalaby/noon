@@ -162,6 +162,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
     Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
+    // fetch "sub_categories1" of selected "main_category" selectbox
+    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_product_sub_categories1']);
+    // fetch "sub_categories2" of selected "sub_categories1" selectbox
+    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_product_sub_categories2']);
+    // fetch "sub_categories3" of selected "sub_categories2" selectbox
+    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_product_sub_categories3']);
 
     Route::resource('products', ProductController::class);
     //customers
