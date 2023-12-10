@@ -40,7 +40,7 @@
                     <div class="card-body py-0">
                         {{-- <div class="col-md-12"> --}}
                         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                            <div class="col-md-3 d-flex mb-2 align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                 style="animation-delay: 1.15s">
                                 {!! Form::label('store_id', __('lang.store') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : ' mx-2 mb-0 h5 width-quarter',

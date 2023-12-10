@@ -72,6 +72,7 @@ class Create extends Component
             'total_price' => null,
             'dinar_piece_price' => null,
             'piece_price' => null,
+
         ]
     ];
     public $fill_stores = [
@@ -194,12 +195,12 @@ class Create extends Component
                 $this->prices[$data['var3']]['fill_id'] = $data['var2'];
             } else if ($data['var1'] == "store_fill_id" && $data['var3'] !== '') {
                 $this->fill_stores[$data['var3']]['data'][$data['var4']]['store_fill_id'] = $data['var2'];
-            } 
+            }
             // else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
             //     // dd($data);
             //     $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
             // }
-             else {
+            else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
                     $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
@@ -973,7 +974,8 @@ class Create extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => ''
+            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '',
+            'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -990,6 +992,13 @@ class Create extends Component
             array_unshift($this->rows[$index]['prices'], $new_price);
         }
     }
+
+    public function stayShow($index)
+    {
+        $this->rows[$index]['show_prices'] =
+            !$this->rows[$index]['show_prices'];
+    }
+
     public function changePercent($index, $key)
     {
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
@@ -1054,11 +1063,11 @@ class Create extends Component
     public function changePrice($index, $via = 'price')
     {
 
-// dd($this->prices);
+        // dd($this->prices);
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
         // dd($row_index);
-        if ($row_index >=0) {
+        if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
             $this->discount_from_original_price = System::getProperty('discount_from_original_price');

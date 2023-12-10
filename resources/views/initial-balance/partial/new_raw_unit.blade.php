@@ -1,87 +1,152 @@
-<tr>
-    <td>
+{{-- <td>
         {{ $index + 1 }}
-    </td>
-    <td>
-        <input type="text" class="form-control sku" wire:model="rows.{{ $index }}.sku" style="width: 150px;"
-            required>
-        @error('rows.' . $index . '.sku')
-            <br>
-            <label class="text-danger error-msg">{{ $message }}</label>
-        @enderror
-    </td>
+    </td> --}}
+<div class="d-flex flex-column">
 
-    <td>
-        <div class="d-flex justify-content-center">
-            <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id' data-index="{{ $index }}"
-                required class="form-control select2 unit_id{{ $index }}" style="width: 100px;">
-                <option value="">{{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}</option>
-                @foreach ($units as $unit)
-                    <option value="{{ $unit->id }}" {{ $rows[$index]['unit_id'] == $unit->id ? 'selected' : '' }}>
-                        {{ $unit->name }}</option>
-                @endforeach
-            </select>
-            <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal"
-                data-index="{{ $index }}" data-target=".add-unit" href="{{ route('units.create') }}"><i
-                    class="fas fa-plus"></i></button>
-        </div>
-    </td>
-    <td>
-        <div style="width:200px">
-            {{-- {!! Form::label('purchase_price', __('lang.purchase_price')) !!} --}}
-            <div class="d-flex justify-content-center">
-                <input type="text" class="form-control fill {{ $index == 0 ?'d-none':''}}" style="width:90px !important;"
-                wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}" wire:change="changeFill({{$index}})">
-            
-                <input type="text" class="form-control purchase_price" style="width:120px !important; "
-                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}">
-                @error('rows.' . $index . '.purchase_price')
-                    <br>
+    <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            style="overflow-x: auto">
+            <div
+                class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                <input type="text" class="form-control initial-balance-input sku"
+                    wire:model="rows.{{ $index }}.sku"
+                    style="width:160px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                    placeholder="@lang('lang.sku')" required>
+                @error('rows.' . $index . '.sku')
                     <label class="text-danger error-msg">{{ $message }}</label>
                 @enderror
             </div>
-        </div>
-    </td>
-    <td>
-        <input type="text" class="form-control quantity" name="quantity"
-            wire:model="rows.{{ $index }}.quantity" maxlength="6"
-            placeholder="{{ __('lang.quantity') }}">
-    </td>
-    <td class="text-center">
-        <div style="width:100px">
-            <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_product({{ $index }})">
-                <i class="fa fa-trash"></i>
+
+            <div
+                class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                <div class="d-flex justify-content-center align-items-center"
+                    style="background-color: #dedede;
+                  border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 100%;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                    <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id'
+                        data-index="{{ $index }}" required
+                        class="form-control select2 unit_id{{ $index }}" style="width: 160px !important;">
+                        <option value="">
+                            {{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}
+                        </option>
+                        @foreach ($units as $unit)
+                            <option value="{{ $unit->id }}"
+                                {{ $rows[$index]['unit_id'] == $unit->id ? 'selected' : '' }}>
+                                {{ $unit->name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button"
+                        class="add-button d-flex justify-content-center align-items-center add_unit_raw"
+                        data-toggle="modal" data-index="{{ $index }}" data-target=".add-unit"
+                        href="{{ route('units.create') }}"><i class="fas fa-plus"></i>
+                    </button>
+                </div>
             </div>
+
+            <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                style="width: 100px">
+                <button class="btn btn-sm mx-1 d-flex justify-content-center align-items-center btn-primary"
+                    style="width: 100%" wire:click="addRaw()" type="button">
+                    <i class="fa fa-plus"></i> @lang('lang.add')
+                </button>
+            </div>
+
         </div>
-    </td>
-</tr>
-@foreach ($rows[$index]['prices'] as $key => $price)
-    <tr>
-        <td></td>
-        <td>
-            <input type="text" class="form-control percent" name="percent" wire:change="changePercent({{$index}},{{$key}})"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
-                placeholder="%">
-        </td>
-        <td>
-            <input type="text" class="form-control dinar_sell_price"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
-                placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
-            @error('rows.' . $index . '.dinar_sell_price')
-                <br>
-                <label class="text-danger error-msg">{{ $message }}</label>
-            @enderror
-        </td>
-        <td>
-            <input type="text" class="form-control dollar_sell_price"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.dollar_sell_price"
-                placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] .'$' }}">
-            @error('rows.' . $index . '.dollar_sell_price')
-                <br>
-                <label class="text-danger error-msg">{{ $message }}</label>
-            @enderror
-        </td>
-        
-        
-    </tr>
-@endforeach
+    </div>
+
+    <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+        <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            style="overflow-x: auto">
+            <div
+                class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                <input type="text" class="form-control initial-balance-input fill {{ $index == 0 ? 'd-none' : '' }}"
+                    style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                    wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}"
+                    wire:change="changeFill({{ $index }})">
+            </div>
+            <div
+                class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                <input type="text" class="form-control initial-balance-input purchase_price"
+                    style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                    wire:model="rows.{{ $index }}.purchase_price"
+                    placeholder = "{{ __('lang.purchase_price') }}">
+                @error('rows.' . $index . '.purchase_price')
+                    <label class="text-danger error-msg">{{ $message }}</label>
+                @enderror
+            </div>
+
+            <div
+                class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                <input type="text" class="form-control initial-balance-input quantity" name="quantity"
+                    wire:model="rows.{{ $index }}.quantity" maxlength="6"
+                    style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                    placeholder="{{ __('lang.quantity') }}">
+            </div>
+
+            <td class="text-center">
+                <div style="width:50px">
+                    <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_product({{ $index }})">
+                        <i class="fa fa-trash"></i>
+                    </div>
+                </div>
+                <div style="width:50px">
+                    <button class="btn btn-sm btn-primary py-0 px-1 "data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapse{{ $index }}" data-index="{{ $index }}"
+                        aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
+                        wire:click="stayShow({{ $index }})">
+                        @if ($rows[$index]['show_prices'])
+                            <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
+                        @else
+                            <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
+                        @endif
+                    </button>
+                </div>
+
+            </td>
+        </div>
+    </div>
+    <div id="panelsStayOpen-collapse{{ $index }}"
+        class="accordion-collapse flex-column collapse @if ($rows[$index]['show_prices']) show @endif">
+        @foreach ($rows[$index]['prices'] as $key => $price)
+            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="overflow-x: auto">
+                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                        style="width: 75px">
+
+                        <input type="text" class="form-control initial-balance-input percent" name="percent"
+                            wire:change="changePercent({{ $index }},{{ $key }})"
+                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            wire:model="rows.{{ $index }}.prices.{{ $key }}.percent" maxlength="6"
+                            placeholder="%">
+                    </div>
+                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                        style="width: 75px">
+                        <input type="text" class="form-control initial-balance-input dinar_sell_price"
+                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
+                            placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
+                        @error('rows.' . $index . '.dinar_sell_price')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
+                    <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                        style="width: 75px">
+                        <input type="text" class="form-control initial-balance-input dollar_sell_price"
+                            wire:model="rows.{{ $index }}.prices.{{ $key }}.dollar_sell_price"
+                            style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
+                            placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] . '$' }}">
+                        @error('rows.' . $index . '.dollar_sell_price')
+                            <label class="text-danger error-msg">{{ $message }}</label>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>

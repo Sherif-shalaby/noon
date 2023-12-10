@@ -466,11 +466,11 @@
           </div>
       </div>
 
-
   </div>
 
 
-  <div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+  <div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+      style="overflow-x: auto">
 
       <div class="accordion animate__animated  animate__bounceInLeft">
           <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
@@ -636,7 +636,7 @@
       </div>
 
       <div id="productTax{{ $key }}" class="accordion-content">
-          <div class="accordion-body d-flex p-0">
+          <div class="accordion-body d-flex flex-row p-0">
               {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
               <div
                   class=" animate__animated  animate__bounceInRight mb-1 d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
