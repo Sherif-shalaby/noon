@@ -4,475 +4,822 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
-    <div class="breadcrumbbar">
-        <div class="row align-items-center">
-            <div class="col-md-8 col-lg-8">
-                <h4 class="page-title">@lang('lang.edit_products')</h4>
-                <div class="breadcrumb-list">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ url('/') }}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">@lang('lang.products')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.edit_products')</li>
-                    </ol>
+    <style>
+        .accordion-item {
+            background-color: transparent
+        }
+
+        .accordion-button {
+            padding: 8px !important;
+            /* width: fit-content !important; */
+            background-color: #596fd7 !important;
+            color: white !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+            justify-content: space-between
+        }
+
+        .accordion-content {
+            display: none;
+            width: fit-content
+        }
+
+        .initial-balance-input {
+            width: 100%
+        }
+
+        .select2-container {
+            width: 100% !important
+        }
+
+        .select2-selection__rendered {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .preview {
+            position: relative !important;
+            width: 60px !important;
+            height: 60px !important;
+            padding: 2px !important;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2) !important;
+            margin: 0 10px !important;
+            border: 1px solid #ddd !important;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 39px !important;
+            right: 4px !important;
+            border: none;
+            cursor: pointer;
+            color: #dc3545;
+            background-color: white !important;
+            width: 15px;
+            height: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .delete-btn i {
+            font-size: 10px !important;
+        }
+
+        .crop-btn {
+            position: absolute;
+            top: 39px !important;
+            left: 4px !important;
+            border: none;
+            cursor: pointer;
+            color: #596fd7;
+            background-color: white !important;
+            width: 15px;
+            height: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .crop-btn i {
+            font-size: 10px !important;
+        }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+    </style>
+    <div class="animate-in-page">
+        <div class="breadcrumbbar m-0 px-3 py-0">
+            <div
+                class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div>
+                    <h4 class="page-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
+                        @lang('lang.edit_products')</h4>
+                    <div class="breadcrumb-list">
+                        <ul
+                            class="breadcrumb m-0 p-0  d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ url('/') }}">/
+                                    @lang('lang.dashboard')</a></li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif"><a
+                                    style="text-decoration: none;color: #596fd7" href="{{ route('products.index') }}">/
+                                    @lang('lang.products')</a></li>
+                            <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
+                                aria-current="page">@lang('lang.edit_products')</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 @section('content')
-    <!-- Start row -->
-    <div class="row d-flex justify-content-center">
-        <!-- Start col -->
-        <div class="col-lg-12">
+    <div class="animate-in-page">
+        <!-- Start row -->
+        <div class="row d-flex justify-content-center">
+            <!-- Start col -->
+
             <div class="card m-b-30 p-2">
                 {!! Form::open([
                     'route' => ['products.update', $product->id],
                     'method' => 'put',
                     'enctype' => 'multipart/form-data',
                 ]) !!}
-                <div class="row">
-                    <div class="col-md-3">
-                        {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::select('brand_id', $brands, $product->brand_id, [
-                                'class' => 'form-control select2',
-                                'placeholder' => __('lang.please_select'),
-                                'id' => 'brand_id',
+                <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="overflow-x: auto">
+                    <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
+                            style="width: 160px !important">
+                            {{-- {!! Form::label('brand', __('lang.brand'), ['class' => 'h5 pt-3']) !!} --}}
+                            <div class="d-flex justify-content-center align-items-center"
+                                style="background-color: #dedede;
+                                            border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 160px;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                {!! Form::select('brand_id', $brands, $product->brand_id, [
+                                    'class' => 'form-control select2',
+                                    'style' => 'width: 160px',
+                                    'placeholder' => __('lang.brand'),
+                                    'id' => 'brand_id',
+                                ]) !!}
+                                <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                                    data-toggle="modal" data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
+
+                            </div>
+                        </div>
+
+                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
+                            style="width: 160px">
+                            {{-- {!! Form::label('store', __('lang.store'), ['class' => 'h5 pt-3']) !!} --}}
+                            <div class="d-flex justify-content-center align-items-center"
+                                style="background-color: #dedede;
+                                            border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 160px;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                @php $selected_stores=$product->stores->pluck('id'); @endphp
+                                {!! Form::select('store_id[]', $stores, $selected_stores, [
+                                    'class' => 'form-control selectpicker ',
+                                    'multiple' => 'multiple',
+                                    'id' => 'store_id',
+                                    'placeholder' => __('lang.store'),
+                                ]) !!}
+                                <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                                    data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
+                                        class="fas fa-plus"></i></button>
+
+                            </div>
+                        </div>
+
+                        <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
+                            style="width: 200px">
+                            {{-- {!! Form::label('name', __('lang.product_name'), ['class' => 'h5 pt-3']) !!} --}}
+                            <div class="d-flex justify-content-center align-items-center"
+                                style="background-color: #dedede; border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 200px;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                {!! Form::text('name', $product->name, [
+                                    'class' => 'form-control  initial-balance-input required',
+                                    'placeholder' => __('lang.product_name'),
+                                ]) !!}
+                                <button class="add-button d-flex justify-content-center align-items-center" type="button"
+                                    data-toggle="collapse" data-target="#translation_table_product" aria-expanded="false"
+                                    aria-controls="collapseExample">
+                                    <i class="fas fa-globe"></i>
+                                </button>
+                            </div>
+                            @error('name')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
+                            @include('layouts.translation_inputs', [
+                                'attribute' => 'name',
+                                'translations' => $product->translations,
+                                'type' => 'product',
+                                'open_input' => true,
+                            ])
+                        </div>
+
+                        <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1"
+                            style="width: 75px">
+                            {{-- {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::text('product_symbol', isset($product->product_symbol) ? $product->product_symbol : null, [
+                                'class' => 'form-control  initial-balance-input',
+                                'style' => 'width:75px;margin:0 !important;border:2px solid #ccc',
+                                'placeholder' => __('lang.product_symbol'),
                             ]) !!}
-                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
 
+                            @error('product_symbol')
+                                <label class="text-danger error-msg">{{ $message }}</label>
+                            @enderror
                         </div>
-                    </div>
 
-                    <div class="col-md-3">
-                        {!! Form::label('store', __('lang.store'), ['class' => 'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            @php $selected_stores=$product->stores->pluck('id'); @endphp
-                            {!! Form::select('store_id[]', $stores, $selected_stores, [
-                                'class' => 'form-control selectpicker ',
-                                'multiple' => 'multiple',
-                                'id' => 'store_id',
+                        <div
+                            class="px-1 animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1">
+                            {{-- {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::text('product_sku', $product->sku, [
+                                'class' => 'form-control  initial-balance-input',
+                                'style' => 'width:75px;margin:0 !important;border:2px solid #ccc',
+                                'placeholder' => __('lang.product_code'),
                             ]) !!}
-                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                data-target=".add-store" href="{{ route('store.create') }}"><i
-                                    class="fas fa-plus"></i></button>
+                        </div>
 
+                        {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                        <div
+                            class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mx-1">
+                            {{-- {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!} --}}
+                            {!! Form::text(
+                                'balance_return_request',
+                                isset($product->balance_return_request) ? $product->balance_return_request : null,
+                                [
+                                    'class' => 'form-control  initial-balance-input',
+                                    'style' => 'width:75px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;',
+                                    'placeholder' => __('lang.balance_return_request'),
+                                ],
+                            ) !!}
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        {!! Form::label('name', __('lang.product_name'), ['class' => 'h5 pt-3']) !!}
-                        <div class="d-flex justify-content-center">
-                            {!! Form::text('name', $product->name, [
-                                'class' => 'form-control required',
-                            ]) !!}
-                            <button class="btn btn-primary btn-sm ml-2" type="button" data-toggle="collapse"
-                                data-target="#translation_table_product" aria-expanded="false"
-                                aria-controls="collapseExample">
-                                <i class="fas fa-globe"></i>
-                            </button>
-                        </div>
-                        @error('name')
-                            <label class="text-danger error-msg">{{ $message }}</label>
-                        @enderror
-                        @include('layouts.translation_inputs', [
-                            'attribute' => 'name',
-                            'translations' => $product->translations,
-                            'type' => 'product',
-                            'open_input' => true,
-                        ])
-                    </div>
-                    <div class="col-md-1">
-                        {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('product_symbol',  isset($product->product_symbol)?$product->product_symbol:null, [
-                            'class' => 'form-control'
-                        ]) !!}
-                        <br>
-                        @error('product_symbol')
-                            <label class="text-danger error-msg">{{ $message }}</label>
-                        @enderror
-                    </div>
-                    <div class="col-md-2">
-                        {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('product_sku', $product->sku, [
-                            'class' => 'form-control',
-                        ]) !!}
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('category_id', $categories, $product->category_id, [
-                                        'class' => 'form-control select2 category',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'categoryId',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="0"><i class="fas fa-plus"></i></a>
+                    <div class="accordion animate__animated  animate__bounceInLeft">
+                        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="border: none">
+                            <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
+                                <div class="accordion-button" onclick="toggleProductAccordion(`productCategories`)">
+                                    <span class="productCategories mx-2">
+                                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                    </span>
+                                    {{ __('lang.categories') }}
                                 </div>
-                                @error('category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $categories, $product->subcategory_id1, [
-                                        'class' => 'form-control select2 subcategory',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId1',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="1"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
+                            </h2>
+                            <div id="productCategories" class="accordion-content p-0">
+                                <div class="accordion-body d-flex p-0">
+                                    <div class="col-md-12 p-0">
+                                        <div
+                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                            <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {{-- {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!} --}}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;
+                                                            ">
+                                                    {!! Form::select('category_id', $categories, $product->category_id, [
+                                                        'class' => 'form-control select2 category',
+                                                        'placeholder' => __('lang.category'),
+                                                        'id' => 'categoryId',
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-container=".view_modal"
+                                                        class="openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                                        style="cursor: pointer" data-toggle="modal"
+                                                        data-select_category="0"><i class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('category_id')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
+                                            <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {{-- {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!} --}}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                                border-radius: 16px;
+                                                                color: #373737;
+                                                                box-shadow: 0 8px 6px -5px #bbb;
+                                                                width: 100%;
+                                                                height: 30px;
+                                                                flex-wrap: nowrap;">
+                                                    {!! Form::select('subcategory_id1', $categories, $product->subcategory_id1, [
+                                                        'class' => 'form-control select2 subcategory',
+                                                        'placeholder' => __('lang.subcategory'),
+                                                        'id' => 'subCategoryId1',
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-container=".view_modal"
+                                                        class=" openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                                        style="cursor: pointer" data-toggle="modal"
+                                                        data-select_category="1"><i class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('category_id')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
 
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id2', $categories, $product->subcategory_id2, [
-                                        'class' => 'form-control select2 subcategory2',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId2',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="2"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('subcategory_id2')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
+                                            <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {{-- {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!} --}}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;">
+                                                    {!! Form::select('subcategory_id2', $categories, $product->subcategory_id2, [
+                                                        'class' => 'form-control select2 subcategory2',
+                                                        'placeholder' => __('lang.subcategory'),
+                                                        'id' => 'subCategoryId2',
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-container=".view_modal"
+                                                        class=" openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                                        style="cursor: pointer" data-toggle="modal"
+                                                        data-select_category="2"><i class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('subcategory_id2')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
 
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id3', $categories, $product->subcategory_id3, [
-                                        'class' => 'form-control select2 subcategory3',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId3',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="3"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('subcategory_id3')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                    {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
-                        <select name="method" id="method" class='form-control select2' data-live-search='true'
-                            placeholder="{{ __('lang.please_select') }}">
-                            <option value="">{{ __('lang.please_select') }}</option>
-                            <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }}
-                                value="inclusive">{{ __('lang.inclusive') }}</option>
-                            <option {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }}
-                                value="exclusive">{{ __('lang.exclusive') }}</option>
-                        </select>
-                    </div>
-                    {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        <label for="product_tax_id" class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label>
-                        <div class="d-flex justify-content-center">
-                            <select name="product_tax_id" id="product_tax" class="form-control select2"
-                                placeholder="{{ __('lang.please_select') }}">
-                                <option value="">{{ __('lang.please_select') }}</option>
-                                @foreach ($product_tax as $tax)
-                                    <option
-                                     @if ($product_tax_id == $tax->id) selected @endif
-
-                                value="{{ $tax->id }}"> {{ $tax->name }}
-                                </option>
-                                @endforeach
-                            </select>
-                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                data-target="#add_product_tax_modal" data-select_category="2"><i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                    {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
-                    <div class="col-md-3">
-                        {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 pt-3']) !!}
-                        {!! Form::text('balance_return_request',  isset($product->balance_return_request)?$product->balance_return_request:null, [
-                            'class' => 'form-control',
-                        ]) !!}
-                    </div>
-
-{{--                    <div class="col-md-12 pt-5">--}}
-{{--                        <div class="col-md-3">--}}
-{{--                            <button class="btn btn btn-primary add_unit_row" type="button">--}}
-{{--                                <i class="fa fa-plus"></i> @lang('lang.add')--}}
-{{--                            </button>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                    <div class="col-md-12 product_unit_raws[0]">
-                        @php
-                            $index = 0;
-                        @endphp
-
-                        @if (count($product->variations) > 0)
-
-                            @foreach ($product->variations as $index => $variation)
-                                <div class="row">
-
-                                    @if($index == 0 )
-                                        <div class="col-md-2 pl-5">
-                                            {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-                                            {!! Form::text('products[0][variations][0][sku]',$variation->sku ?? null, [
-                                                'class' => 'form-control'
-                                            ]) !!}
-                                            <br>
-                                            @error('sku.0')
-                                            <label class="text-danger error-msg">{{ $message }}</label>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-2">
-                                            {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
-                                            <div class="d-flex justify-content-center">
-                                                <select name="products[0][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="0">
-                                                    <option value="">{{__('lang.please_select')}}</option>
-                                                    @foreach($units as $unit)
-                                                        <option @if( isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+                                            <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                style="min-width: 135px;height: fit-content;">
+                                                {{-- {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!} --}}
+                                                <div class="d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dedede; border: none;
+                                                                border-radius: 16px;
+                                                                color: #373737;
+                                                                box-shadow: 0 8px 6px -5px #bbb;
+                                                                width: 100%;
+                                                                height: 30px;
+                                                                flex-wrap: nowrap;">
+                                                    {!! Form::select('subcategory_id3', $categories, $product->subcategory_id3, [
+                                                        'class' => 'form-control select2 subcategory3',
+                                                        'placeholder' => __('lang.subcategory'),
+                                                        'id' => 'subCategoryId3',
+                                                    ]) !!}
+                                                    <a data-href="{{ route('categories.sub_category_modal') }}"
+                                                        data-container=".view_modal"
+                                                        class="openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                                        style="cursor: pointer" data-toggle="modal"
+                                                        data-select_category="3"><i class="fas fa-plus"></i></a>
+                                                </div>
+                                                @error('subcategory_id3')
+                                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-2 pt-4">
-                                            <button class="btn btn btn-warning add_small_unit" type="button" data-key="0">
-                                                <i class="fa fa-equals"></i>
-                                            </button>
-                                        </div>
-                                        <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{$index ?? 0 }}][variation_id]" value="{{$variation->id ?? null}}">
-                                    @else
-                                            @include('products.product_unit_raw', [
-                                                'index' => $index,
-                                                'variation' => $variation,
-                                                'key'=> 0,
-                                            ])
-                                    @endif
-                                 </div>
-                            @endforeach
-                        @else
-                            <div class="row">
-                                <div class="col-md-2 pl-5">
-                                    {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
-                                    {!! Form::text('products[0][variations][0][sku]',$variation->sku ?? null, [
-                                        'class' => 'form-control'
-                                    ]) !!}
-                                    <br>
-                                    @error('sku.0')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
-                                <div class="col-md-2">
-                                    {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
-                                    <div class="d-flex justify-content-center">
-                                        <select name="products[0][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="0">
-                                            <option value="">{{__('lang.please_select')}}</option>
-                                            @foreach($units as $unit)
-                                                <option @if( isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
                                     </div>
                                 </div>
-                                <div class="col-md-2 pt-4">
-                                    <button class="btn btn btn-warning add_small_unit" type="button" data-key="0">
-                                        <i class="fa fa-equals"></i>
-                                    </button>
-                                </div>
-                                <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{$index ?? 0 }}][variation_id]" value="{{$variation->id ?? null}}">
-
-                            </div>
-
-                            {{--                            @include('products.product_unit_raw', ['index' => 0])--}}
-                        @endif
-                        @php
-                            if (count($product->variations) > 0) {
-                                $index = count($product->variations) - 1;
-                            } else {
-                                $index = 0;
-                            }
-                        @endphp
-                        <input type="hidden" id="raw_unit_index[0]" value="{{ $index }}" data-key="0" />
-                    </div>
-                    {{-- sizes --}}
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12 pt-5 ">
-                                <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
-                            </div>
-                            <div class="col-md-2">
-                                {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('height', isset($product->product_dimensions->height) ? $product->product_dimensions->height : 0, [
-                                    'class' => 'form-control height','id' => 'height0', 'data-key' => '0'
-                                ]) !!}
-                                <br>
-                                @error('height')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2">
-                                {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('length', isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0, [
-                                    'class' => 'form-control length','id' => 'length0', 'data-key' => '0'
-                                ]) !!}
-                                <br>
-                                @error('length')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-2">
-                                {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('width', isset($product->product_dimensions->width) ? $product->product_dimensions->width : 0, [
-                                    'class' => 'form-control width','id' => 'width0', 'data-key' => '0'
-                                ]) !!}
-                                <br>
-                                @error('width')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-2">
-                                {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('size', isset($product->product_dimensions->size) ? $product->product_dimensions->size : 0, [
-                                    'class' => 'form-control size','id' => 'size0', 'data-key' => '0'
-                                ]) !!}
-                                <br>
-                                @error('size')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-2">
-                                {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::text('weight', isset($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0, [
-                                    'class' => 'form-control',
-                                ]) !!}
-                                <br>
-                                @error('weight')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-2">
-                                {!! Form::label('variation', __('lang.basic_unit_for_import_product'), ['class' => 'h5 pt-3']) !!}
-                                {!! Form::select('variation_id',$basic_units, isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0, [
-                                    'class' => 'form-control select2',
-                                    'placeholder' => __('lang.please_select'),
-                                    'id' => 'products[0][variation_id]',
-                                ]) !!}
                             </div>
                         </div>
-
                     </div>
-                    {{-- crop image --}}
-                    <div class="col-md-12 pt-5">
-                        <div class="row">
-                            <div class="col-md-12 pt-5">
-                                <div class="form-group">
-                                    <div class="container-fluid mt-3">
-                                        <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
-                                            <div class="col-12 p3 text-center">
-                                                <label for="projectinput2" class='h5'>
-                                                    {{ __('lang.product_image') }}</label>
-                                            </div>
-                                            <div class="col-5">
-                                                <div class="mt-3">
-                                                    <div class="row">
-                                                        <div class="col-10 offset-1">
-                                                            <div class="variants">
-                                                                <div class='file file--upload w-100'>
-                                                                    <div class="file-input">
-                                                                        <input type="file" name="file-input"
-                                                                            id="file-input-image"
-                                                                            class="file-input__input" />
-                                                                        <label class="file-input__label"
-                                                                            for="file-input-image">
-                                                                            <i class="fas fa-cloud-upload-alt"></i>&nbsp;
-                                                                            <span>{{ __('lang.upload_image') }}</span></label>
-                                                                    </div>
-                                                                </div>
+
+
+                    <div class="accordion animate__animated  animate__bounceInLeft px-1">
+                        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="border: none">
+                            <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
+                                <div class="accordion-button" onclick="toggleProductAccordion(`productFilling`)">
+                                    <span class="productFilling mx-2">
+                                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                    </span>
+                                    {{ __('lang.fill') }}
+                                </div>
+                            </h2>
+                            <div id="productFilling" class="accordion-content p-0">
+                                <div class="accordion-body d-flex p-0">
+                                    <div class="d-flex product_unit_raws[0]">
+                                        @php
+                                            $index = 0;
+                                        @endphp
+
+                                        @if (count($product->variations) > 0)
+
+                                            @foreach ($product->variations as $index => $variation)
+                                                <div
+                                                    class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
+
+                                                    @if ($index == 0)
+                                                        <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                                            style="width: 75px">
+                                                            {{-- {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!} --}}
+                                                            {!! Form::text('products[0][variations][0][sku]', $variation->sku ?? null, [
+                                                                'class' => 'form-control initial-balance-input',
+                                                                'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
+                                                                'placeholder' => __('lang.product_code'),
+                                                            ]) !!}
+
+                                                            @error('sku.0')
+                                                                <label
+                                                                    class="text-danger error-msg">{{ $message }}</label>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div
+                                                            class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                                            {{-- {!! Form::label('unit', __('lang.large_filling'), ['class' => 'h5 pt-3']) !!} --}}
+                                                            <div class="d-flex justify-content-center align-items-center"
+                                                                style="background-color: #dedede; border: none;
+                                                            border-radius: 16px;
+                                                            color: #373737;
+                                                            box-shadow: 0 8px 6px -5px #bbb;
+                                                            width: 100%;
+                                                            height: 30px;
+                                                            flex-wrap: nowrap;">
+                                                                <select name="products[0][variations][0][new_unit_id]"
+                                                                    data-name='unit_id' data-index="0"
+                                                                    class="form-control unit_select select2 unit_id0"
+                                                                    style="width: 100px;" data-key="0">
+                                                                    <option value="">
+                                                                        {{ __('lang.large_filling') }}</option>
+                                                                    @foreach ($units as $unit)
+                                                                        <option
+                                                                            @if (isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif
+                                                                            value="{{ $unit->id }}">
+                                                                            {{ $unit->name }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                                <button type="button"
+                                                                    class="add-button d-flex justify-content-center align-items-center add_unit_raw"
+                                                                    data-toggle="modal" data-index="0"
+                                                                    data-target=".add-unit"
+                                                                    href="{{ route('units.create') }}"><i
+                                                                        class="fas fa-plus"></i></button>
                                                             </div>
                                                         </div>
+
+                                                        <button
+                                                            class="btn btn-sm btn-primary animate__animated  animate__bounceInRight add_small_unit"
+                                                            type="button" data-key="0">
+                                                            <i class="fa fa-equals"></i>
+                                                        </button>
+
+                                                        <input type="hidden"
+                                                            name="products[{{ $key ?? 0 }}][variations][{{ $index ?? 0 }}][variation_id]"
+                                                            value="{{ $variation->id ?? null }}">
+                                                    @else
+                                                        @include('products.product_unit_raw', [
+                                                            'index' => $index,
+                                                            'variation' => $variation,
+                                                            'key' => 0,
+                                                        ])
+                                                    @endif
+
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <div class="row">
+
+                                                <div class="col-md-2 pl-5">
+                                                    {!! Form::label('sku', __('lang.product_code'), ['class' => 'h5 pt-3']) !!}
+                                                    {!! Form::text('products[0][variations][0][sku]', $variation->sku ?? null, [
+                                                        'class' => 'form-control',
+                                                    ]) !!}
+                                                    <br>
+                                                    @error('sku.0')
+                                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col-md-2">
+                                                    {!! Form::label('unit', __('lang.large_filling'), ['class' => 'h5 pt-3']) !!}
+                                                    <div class="d-flex justify-content-center">
+                                                        <select name="products[0][variations][0][new_unit_id]"
+                                                            data-name='unit_id' data-index="0"
+                                                            class="form-control unit_select select2 unit_id0"
+                                                            style="width: 100px;" data-key="0">
+                                                            <option value="">{{ __('lang.please_select') }}
+                                                            </option>
+                                                            @foreach ($units as $unit)
+                                                                <option @if (isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif
+                                                                    value="{{ $unit->id }}">{{ $unit->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <button type="button"
+                                                            class="btn btn-primary btn-sm ml-2 add_unit_raw"
+                                                            data-toggle="modal" data-index="0" data-target=".add-unit"
+                                                            href="{{ route('units.create') }}"><i
+                                                                class="fas fa-plus"></i></button>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-4 offset-1">
-                                                <div class="preview-image-container">
-                                                    @if (!empty($product->image))
-                                                        <div class="preview">
-                                                            <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                                id="image_footer" alt="">
-                                                            <button type="button"
-                                                                class="btn btn-xs btn-danger delete-btn remove_image "
-                                                                data-type="image"><i style="font-size: 25px;"
-                                                                    class="fa fa-trash"></i></button>
-                                                            <span class="btn btn-xs btn-primary  crop-btn"
-                                                                id="crop-image-btn" data-toggle="modal"
-                                                                data-target="#imageModal"><i style="font-size: 25px;"
-                                                                    class="fas fa-crop"></i></span>
-                                                        </div>
-                                                    @endif
+
+                                                <div class="col-md-2 pt-4">
+                                                    <button class="btn btn btn-warning add_small_unit" type="button"
+                                                        data-key="0">
+                                                        <i class="fa fa-equals"></i>
+                                                    </button>
                                                 </div>
+
+                                                <input type="hidden"
+                                                    name="products[{{ $key ?? 0 }}][variations][{{ $index ?? 0 }}][variation_id]"
+                                                    value="{{ $variation->id ?? null }}">
+
                                             </div>
-                                        </div>
+
+                                        @endif
+
+                                        @php
+                                            if (count($product->variations) > 0) {
+                                                $index = count($product->variations) - 1;
+                                            } else {
+                                                $index = 0;
+                                            }
+                                        @endphp
+
+                                        <input type="hidden" id="raw_unit_index[0]" value="{{ $index }}"
+                                            data-key="0" />
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                </div>
+
+
+                <div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="overflow-x: auto">
+
+                    <div class="accordion animate__animated  animate__bounceInLeft">
+                        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="border: none">
+                            <h2 class="accordion-header d-flex justify-content-end align-items-center">
+                                <div class="accordion-button" onclick="toggleProductAccordion(`productDimension`)">
+                                    <span class="productDimension mx-2">
+                                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                    </span>
+                                    {{ __('lang.product_dimensions') }}
+                                </div>
+                            </h2>
+                        </div>
+                    </div>
+                    <div id='productDimension' class="accordion-content ">
+                        <div class="accordion-body d-flex p-0">
+                            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
+                                <div
+                                    class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                                    {{-- {!! Form::label('variation', __('lang.basic_unit_for_import_product'), ['class' => 'h5 pt-3']) !!} --}}
+                                    <div class="input-wrapper" style="width: 100%">
+                                        {!! Form::select(
+                                            'variation_id',
+                                            $basic_units,
+                                            isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0,
+                                            [
+                                                'class' => 'form-control select2',
+                                                'placeholder' => __('lang.basic_unit_for_import_product'),
+                                                'id' => 'products[0][variation_id]',
+                                            ],
+                                        ) !!}
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                                    {{-- {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::text(
+                                        'length',
+                                        isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0,
+                                        [
+                                            'class' => 'form-control length  initial-balance-input m-0',
+                                            'style' => 'border:2px solid #ccc;width: 75px',
+                                            'placeholder' => __('lang.length'),
+                                            'id' => 'length0',
+                                            'data-key' => '0',
+                                        ],
+                                    ) !!}
+
+                                    @error('length')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+                                <div
+                                    class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                                    {{-- {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::text('width', isset($product->product_dimensions->width) ? $product->product_dimensions->width : 0, [
+                                        'class' => 'form-control width  initial-balance-input m-0',
+                                        'style' => 'border:2px solid #ccc;width: 75px',
+                                        'placeholder' => __('lang.width'),
+                                        'id' => 'width0',
+                                        'data-key' => '0',
+                                    ]) !!}
+
+                                    @error('width')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+                                <div
+                                    class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                                    {{-- {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::text(
+                                        'height',
+                                        isset($product->product_dimensions->height) ? $product->product_dimensions->height : 0,
+                                        [
+                                            'class' => 'form-control height  initial-balance-input m-0',
+                                            'style' => 'border:2px solid #ccc;width: 75px',
+                                            'placeholder' => __('lang.height'),
+                                            'id' => 'height0',
+                                            'data-key' => '0',
+                                        ],
+                                    ) !!}
+
+                                    @error('height')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+
+
+
+                                <div
+                                    class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                                    {{-- {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::text('size', isset($product->product_dimensions->size) ? $product->product_dimensions->size : 0, [
+                                        'class' => 'form-control size  initial-balance-input m-0',
+                                        'style' => 'border:2px solid #ccc;width: 75px',
+                                        'placeholder' => __('lang.size'),
+                                        'id' => 'size0',
+                                        'data-key' => '0',
+                                    ]) !!}
+
+                                    @error('size')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+                                <div
+                                    class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
+                                    {{-- {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::text(
+                                        'weight',
+                                        isset($product->product_dimensions->weight) ? $product->product_dimensions->weight : 0,
+                                        [
+                                            'class' => 'form-control  initial-balance-input m-0 weight',
+                                            'style' => 'border:2px solid #ccc;width: 75px',
+                                            'placeholer' => __('lang.weight'),
+                                        ],
+                                    ) !!}
+
+                                    @error('weight')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion animate__animated  animate__bounceInLeft px-1">
+                        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="border: none">
+                            <h2 class="accordion-header   d-flex justify-content-end align-items-center">
+                                <div class="accordion-button" onclick="toggleProductAccordion(`productTax`)">
+                                    <span class="productTax mx-2">
+                                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                    </span>
+                                    {{ __('lang.product_tax') }}
+                                </div>
+                            </h2>
+                        </div>
+                    </div>
+
+                    <div id="productTax" class="accordion-content">
+                        <div class="accordion-body d-flex flex-row p-0">
+                            {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
+                            <div
+                                class=" animate__animated  animate__bounceInRight mb-1 d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                {{-- <label for="mesthod" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label> --}}
+                                <div
+                                    style="background-color: #dedede; border: none;
+                                                    border-radius: 16px;
+                                                    color: #373737;
+                                                    box-shadow: 0 8px 6px -5px #bbb;
+                                                    width: 100%;
+                                                    height: 30px;
+                                                    flex-wrap: nowrap;">
+                                    <select name="method" id="method" class='form-control select2'
+                                        data-live-search='true' placeholder="{{ __('lang.tax_method') }}">
+                                        <option value="">{{ __('lang.tax_method') }}</option>
+                                        <option {{ old('method', $product['method']) == 'inclusive' ? 'selected' : '' }}
+                                            value="inclusive">{{ __('lang.inclusive') }}</option>
+                                        <option {{ old('method', $product['method']) == 'exclusive' ? 'selected' : '' }}
+                                            value="exclusive">{{ __('lang.exclusive') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
+                            <div
+                                class=" animate__animated  animate__bounceInRight mb-1 d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                {{-- <label for="product_tax_id"
+                                        class="h5 pt-3">{{ __('lang.product_tax') . ':*' }}</label> --}}
+                                <div class="d-flex justify-content-center align-items-center"
+                                    style="background-color: #dedede; border: none;
+                                                        border-radius: 16px;
+                                                        color: #373737;
+                                                        box-shadow: 0 8px 6px -5px #bbb;
+
+                                                        height: 30px;
+                                                        flex-wrap: nowrap;">
+                                    <select name="product_tax_id" id="product_tax" class="form-control select2"
+                                        placeholder="{{ __('lang.product_tax') }}">
+                                        <option value="">{{ __('lang.product_tax') }}</option>
+                                        @foreach ($product_tax as $tax)
+                                            <option @if ($product_tax_id == $tax->id) selected @endif
+                                                value="{{ $tax->id }}">
+                                                {{ $tax->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button"
+                                        class="add-button d-flex justify-content-center align-items-center"
+                                        data-toggle="modal" data-target="#add_product_tax_modal"
+                                        data-select_category="2"><i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="file" name="file-input" id="file-input-image" class="file-input__input" />
+                    <label class="file-input__label m-0" for="file-input-image" style="width: 35px;height: 35px;">
+                        <i class="fas fa-camera"></i></label>
+
+
+                    <div class="preview-image-container" tyle="display: flex !important;justify-content:center">
+                        @if (!empty($product->image))
+                            <div class="preview">
+                                <img src="{{ asset('uploads/products/' . $product->image) }}" id="image_footer"
+                                    alt="">
+                                <button type="button" class="btn btn-xs btn-danger delete-btn remove_image "
+                                    data-type="image"><i style="font-size: 25px;" class="fa fa-trash"></i></button>
+                                <span class="btn btn-xs btn-primary  crop-btn" id="crop-image-btn" data-toggle="modal"
+                                    data-target="#imageModal"><i style="font-size: 25px;" class="fas fa-crop"></i></span>
+                            </div>
+                        @endif
                     </div>
                     <div id="cropped_images"></div>
-                    {{-- crop image --}}
-
-                    {{-- product description --}}
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="container-fluid">
-                                    <div class="form-group">
-                                        <label for="details" class="h5 pt-5">{{ __('lang.product_details') }}&nbsp;
-                                            <button class="btn btn-primary btn-sm ml-2" type="button"
-                                                data-toggle="collapse" data-target="#translation_details_product"
-                                                aria-expanded="false" aria-controls="collapseExample">
-                                                <i class="fas fa-globe"></i>
-                                            </button></label>
-                                        {!! Form::textarea('details', $product->details, ['class' => 'form-control', 'id' => 'product_details']) !!}
-                                        @include('layouts.translation_textarea', [
-                                            'attribute' => 'details',
-                                            'translations' => $product->details_translations,
-                                            'type' => 'product',
-                                        ])
-                                    </div>
+                </div>
+                <div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="overflow-x: auto">
+                    <div class="accordion animate__animated  animate__bounceInLeft px-1">
+                        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            style="border: none">
+                            <h2 class="accordion-header   d-flex justify-content-end align-items-center">
+                                <div class="accordion-button" onclick="toggleProductAccordion(`productDetails`)">
+                                    <span class="productDetails mx-2">
+                                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                                    </span>
+                                    {{ __('lang.product_details') }}
                                 </div>
-                            </div>
+                            </h2>
                         </div>
                     </div>
+                    <div id="productDetails" class="accordion-content">
+                        <div class="accordion-body p-0">
+                            <button class="btn btn-primary btn-sm ml-2" type="button" data-toggle="collapse"
+                                data-target="#translation_details_product" aria-expanded="false"
+                                aria-controls="collapseExample">
+                                <i class="fas fa-globe"></i>
+                            </button></label>
+                            {!! Form::textarea('details', $product->details, ['class' => 'form-control', 'id' => 'product_details']) !!}
+                            @include('layouts.translation_textarea', [
+                                'attribute' => 'details',
+                                'translations' => $product->details_translations,
+                                'type' => 'product',
+                            ])
+                        </div>
+                    </div>
+
+
                 </div>
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
-                </div>
-                {!! Form::close() !!}
             </div>
-            @include('products.crop-image-modal')
+
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
+            </div>
+            {!! Form::close() !!}
         </div>
+        @include('products.crop-image-modal')
     </div>
-    </div>
-    </div>
+
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])

@@ -141,10 +141,16 @@
                     <label class="custom-control-label" for="customSwitch1">@lang('lang.dont_show_zero_stocks')</label>
                 </div>
             </div>
-            <div class="col-2">
-                <div class="form-group">
-                    <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
+            <div class="col-3">
+                <div class="form-group d-flex ">
+                    <button type="submit" name="submit" class="btn btn-primary width-100 mx-2" title="search">
                         <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
+
+                    <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
+                        data-check_password="{{ url('user/check-password') }}"
+                        class="btn btn-danger text-white delete_all mx-2"><i class="fa fa-trash"></i>
+                        @lang('lang.delete_all')</a>
+
                 </div>
             </div>
         </div>

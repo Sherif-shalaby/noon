@@ -28,6 +28,10 @@
                 width: 100%;
             }
         }
+
+        .wrapper1 {
+            margin-top: 50px;
+        }
     </style>
     <div class="animate-in-page">
 
@@ -94,12 +98,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="my-2">
-                                <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
-                                    data-check_password="{{ url('user/check-password') }}"
-                                    class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
-                                    @lang('lang.delete_all')</a>
-                            </div>
+
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div1"></div>

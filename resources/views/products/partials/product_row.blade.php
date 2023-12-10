@@ -419,9 +419,6 @@
 
                               </div>
 
-
-
-
                               <div
                                   class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                   {{-- {!! Form::label('unit', __('lang.large_filling'), ['class' => 'h5 pt-3']) !!} --}}
@@ -449,7 +446,6 @@
                                           href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
                                   </div>
                               </div>
-
 
                               <button
                                   class="btn btn-sm btn-primary add_small_unit animate__animated  animate__bounceInRight"
@@ -708,21 +704,6 @@
 
       <div id="cropped_images{{ $key }}"></div>
 
-
-
-
-
-
-
-
-
-
-
-
-      {{--                     crop image --}}
-      {{--        <div class="col-md-3"> --}}
-      {{--            <input type="file" name="products[{{ $key }}][image]" class="form-control"> --}}
-      {{--        </div> --}}
   </div>
 
 
