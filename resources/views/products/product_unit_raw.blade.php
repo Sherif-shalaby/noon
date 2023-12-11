@@ -37,8 +37,8 @@
                                         flex-wrap: nowrap;">
                     <select name="products[{{ $key }}][variations][{{ $index }}][new_unit_id]"
                         data-name='unit_id' data-index="{{ $index }}"
-                        class="form-control unit_select select2 unit_id{{ $index }}" style="width: 100px;"
-                        data-key="{{ $key }}">
+                        class="form-control unit_select select2 unit_id{{ $index }}{{ $key ?? '' }}"
+                        style="width: 100px;" data-key="{{ $key }}">
                         <option value="">{{ __('lang.small_filling') }}</option>
                         @foreach ($units as $unit)
                             <option @if ($key == 0 && isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif value="{{ $unit->id }}">
@@ -46,9 +46,9 @@
                         @endforeach
                     </select>
                     <button type="button"
-                        class="add-button d-flex justify-content-center align-items-center add_unit_raw"
-                        data-toggle="modal" data-index="{{ $index }}" data-target=".add-unit"
-                        href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
+                        class="add-button btn-add-modal d-flex justify-content-center align-items-center add_unit_raw"
+                        data-key="{{ $key }}" data-toggle="modal" data-index="{{ $index }}"
+                        data-target=".add-unit" href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
                 </div>
             </div>
 

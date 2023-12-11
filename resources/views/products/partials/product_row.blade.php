@@ -190,8 +190,10 @@
                           'id' => 'brand_id' . $key,
                       ],
                   ) !!}
-                  <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                      data-toggle="modal" data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
+                  <button type="button"
+                      class="add-button btn-add-modal d-flex justify-content-center align-items-center"
+                      data-toggle="modal" data-key="{{ $key }}" data-target="#createBrandModal"><i
+                          class="fas fa-plus"></i></button>
 
               </div>
           </div>
@@ -258,8 +260,8 @@
                                           ],
                                       ) !!}
                                       <a data-href="{{ route('categories.sub_category_modal') }}"
-                                          data-container=".view_modal"
-                                          class="openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                          data-key="{{ $key }}" data-container=".view_modal"
+                                          class="openCategoryModal btn-add-modal text-white add-button  d-flex justify-content-center align-items-center"
                                           style="cursor: pointer" data-toggle="modal" data-select_category="0"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
@@ -295,8 +297,8 @@
                                           ],
                                       ) !!}
                                       <a data-href="{{ route('categories.sub_category_modal') }}"
-                                          data-container=".view_modal"
-                                          class="openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                          data-key="{{ $key }}" data-container=".view_modal"
+                                          class="openCategoryModal text-white add-button btn-add-modal d-flex justify-content-center align-items-center"
                                           style="cursor: pointer" data-toggle="modal" data-select_category="1"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
@@ -331,8 +333,8 @@
                                           ],
                                       ) !!}
                                       <a data-href="{{ route('categories.sub_category_modal') }}"
-                                          data-container=".view_modal"
-                                          class="openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                          data-key="{{ $key }}" data-container=".view_modal"
+                                          class="openCategoryModal text-white add-button btn-add-modal d-flex justify-content-center align-items-center"
                                           style="cursor: pointer" data-toggle="modal" data-select_category="2"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
@@ -367,8 +369,8 @@
                                           ],
                                       ) !!}
                                       <a data-href="{{ route('categories.sub_category_modal') }}"
-                                          data-container=".view_modal"
-                                          class="  openCategoryModal text-white add-button  d-flex justify-content-center align-items-center"
+                                          data-key="{{ $key }}" data-container=".view_modal"
+                                          class="  openCategoryModal text-white add-button btn-add-modal d-flex justify-content-center align-items-center"
                                           style="cursor: pointer" data-toggle="modal" data-select_category="3"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
@@ -432,18 +434,21 @@
                                         flex-wrap: nowrap;">
                                       <select name="products[{{ $key }}][variations][0][new_unit_id]"
                                           data-name='unit_id' data-index="0"
-                                          class="form-control unit_select select2 unit_id0" style="width: 100px;"
-                                          data-key="{{ $key }}">
-                                          <option value="">{{ __('lang.large_filling') }}</option>
+                                          class="form-control unit_select select2 unit_id0{{ $key ?? '' }}"
+                                          style="width: 100px;" data-key="{{ $key }}"
+                                          id="{{ $key }}>
+                                          <option value="">{{ __('lang.large_filling') }}
+                                          </option>
                                           @foreach ($units as $unit)
                                               <option @if ($key == 0 && isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif
                                                   value="{{ $unit->id }}">{{ $unit->name }}</option>
                                           @endforeach
                                       </select>
                                       <button type="button"
-                                          class="add-button d-flex justify-content-center align-items-center add_unit_raw"
-                                          data-toggle="modal" data-index="0" data-target=".add-unit"
-                                          href="{{ route('units.create') }}"><i class="fas fa-plus"></i></button>
+                                          class="add-button btn-add-modal d-flex justify-content-center align-items-center add_unit_raw"
+                                          data-toggle="modal" data-key="{{ $key }}" data-index="0"
+                                          data-target=".add-unit" href="{{ route('units.create') }}"><i
+                                              class="fas fa-plus"></i></button>
                                   </div>
                               </div>
 
@@ -680,9 +685,10 @@
                               <option value="{{ $tax->id }}">{{ $tax->name }}</option>
                           @endforeach
                       </select>
-                      <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                          data-toggle="modal" data-target="#add_product_tax_modal" data-select_category="2"><i
-                              class="fas fa-plus"></i></button>
+                      <button type="button"
+                          class="add-button btn-add-modal d-flex justify-content-center align-items-center"
+                          data-toggle="modal" data-target="#add_product_tax_modal" data-key="{{ $key }}"
+                          data-select_category="2"><i class="fas fa-plus"></i></button>
                   </div>
               </div>
           </div>

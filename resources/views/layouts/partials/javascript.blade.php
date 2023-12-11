@@ -148,6 +148,7 @@
         }
     }
 </script>
+
 <script>
     const value1 = localStorage.getItem("showHideDollar");
     var myExRateCells = document.getElementsByClassName('my-ex-rate-cell');
@@ -158,7 +159,6 @@
         }
     }
 </script>
-
 
 
 <script src="{{ asset('js/jquery.min.js') }}"></script>

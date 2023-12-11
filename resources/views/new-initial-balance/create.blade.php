@@ -5,6 +5,11 @@
         .select2-selection__rendered {
             width: 100px;
         }
+
+        .form-select {
+            padding: 0 !important;
+            background-color: transparent;
+        }
     </style>
     <div class="animate-in-page relative">
         <div class="breadcrumbbar m-0 px-3 py-0">

@@ -258,14 +258,14 @@
                         Signup
                         now </a>
                 </p> --}}
-                <p>
+                {{-- <p>
                     <a href="{{ route('register') }}" class="fw-medium text-primary mt-2"
                         style="font-size: 13px;font-weight: 700;">
                         <span class="text-black">
                             Or
                         </span>
                         Signup now </a>
-                </p>
+                </p> --}}
             </form>
             <div class="social-login">
                 <label>

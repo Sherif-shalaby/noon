@@ -843,7 +843,7 @@
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
                                 <div class="accordion-button"
-                                    style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 140px;"
+                                    style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;"
                                     wire:click="showStore()">
                                     <span class="mx-2">
                                         <i class="fas {{ $show_store == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center"
@@ -901,10 +901,10 @@
                                                     <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                         style="width: 100px">
                                                         {{-- <label for="store_fill_id"
-                                                class="h5 ">{{ __('lang.fill') . ':*' }}</label> --}}
+                                                            class="h5 ">{{ __('lang.fill') . ':*' }}</label> --}}
                                                         <div class="d-flex justify-content-center align-items-center"
                                                             style="background-color: #dedede;
-                                                    border: none;
+                                                        border: none;
                                                         border-radius: 16px;
                                                         color: #373737;
                                                         box-shadow: 0 8px 6px -5px #bbb;
@@ -913,7 +913,7 @@
                                                         flex-wrap: nowrap;">
                                                             {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
                                                                 'id' => 'store_fill_id',
-                                                                'class' => ' form-control select2 store_fill_id',
+                                                                'class' => 'select2 form-select  store_fill_id',
                                                                 'data-name' => 'store_fill_id',
                                                                 'data-index' => $i,
                                                                 'data-key' => $x,

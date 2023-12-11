@@ -1,3 +1,8 @@
+var key;
+$(".btn-add-modal").click(function (e) {
+    key = $(this).data('key');
+    console.log(key);
+});
 //brand form
 $("#create-brand-btn").click(function (e) {
     e.preventDefault();
@@ -9,6 +14,7 @@ $("#create-brand-btn").click(function (e) {
 $(document).on("submit", "form#quick_add_brand_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
+    console.log(key);
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
@@ -16,15 +22,15 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
+                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
                     title: `${result.msg}`,
                     type: 'success',
                     icon: 'success',
                     showConfirmButton: false,
-                    // confirmButtonText:"حسنا",
-                    // confirmButtonColor: '#3085d6',
                     timer: 1000
                 });
+
                 $("#createBrandModal").modal("hide");
                 var brand_id = result.id;
                 $.ajax({
@@ -33,12 +39,24 @@ $(document).on("submit", "form#quick_add_brand_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $("#brand_id").empty().append(data_html);
-                        $("#brand_id").val(brand_id).trigger();
+                        if (typeof key !== 'undefined' && key !== null) {
+                            $("#brand_id" + key).empty().append(data_html);
+                            $("#brand_id" + key).val(brand_id).trigger();
+                        }
+                        else {
+                            $("#brand_id").empty().append(data_html);
+                            $("#brand_id").val(brand_id).trigger();
+                        }
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -61,6 +79,8 @@ $("#create-unit-btn").click(function (e) {
 $(document).on("submit", "form#quick_add_unit_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
+    console.log(raw_index, key);
+
     $.ajax({
         method: "post",
         url: $(this).attr("action"),
@@ -68,6 +88,7 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
+                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
                     title: `${result.msg}`,
                     type: 'success',
@@ -85,18 +106,29 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        if (type == "basic_unit") {
-                            $(".basic_unit_id" + raw_index).empty().append(data_html);
-                            $(".basic_unit_id" + raw_index).val(unit_id).change();
-                        } else {
-                            $(".unit_id" + raw_index).empty().append(data_html);
-                            $(".unit_id" + raw_index).val(unit_id).change();
+                        if (typeof key !== 'undefined' && key !== null) {
+                            if (type == "basic_unit") {
+                                $(".basic_unit_id" + raw_index + key).empty().append(data_html);
+                                $(".basic_unit_id" + raw_index + key).val(unit_id).change();
+                            } else {
+                                $(".unit_id" + raw_index + key).empty().append(data_html);
+                                $(".unit_id" + raw_index + key).val(unit_id).change();
+                            }
                         }
+                        else {
+                            if (type == "basic_unit") {
+                                $(".basic_unit_id" + raw_index).empty().append(data_html);
+                                $(".basic_unit_id" + raw_index).val(unit_id).change();
+                            } else {
+                                $(".unit_id" + raw_index).empty().append(data_html);
+                                $(".unit_id" + raw_index).val(unit_id).change();
+                            }
+                        }
+
 
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
                 Swal.fire({
                     title: "Error",
                     text: response.status,
@@ -128,6 +160,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
+                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
                     title: `${result.msg}`,
                     type: 'success',
@@ -150,7 +183,13 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -172,7 +211,6 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
                     title: `${result.msg}`,
                     type: 'success',
@@ -191,11 +229,17 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#supplier_id").empty().append(data_html);
-                        $("#supplier_id").val(supplier_id).trigger();
+                        $("#supplier_id").val(supplier_id).change();
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
@@ -224,14 +268,7 @@ $(".openCategoryModal").click(function (e) {
     if ((main_category_id !== '' && select_category != 0) || main_category_id === 0) {
         $(this).addClass('btn-modal');
     } else {
-        // Swal.fire("warning", LANG.no_parent_category, "warning");
-        Swal.fire({
-            title: "warning",
-            text: LANG.no_parent_category,
-            icon: "warning",
-            timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-            showConfirmButton: false // This will hide the "OK" button
-        });
+        Swal.fire("warning", LANG.no_parent_category, "warning");
     }
 });
 $("#create-category-btn").click(function (e) {
@@ -281,26 +318,51 @@ $(document).on("submit", "#create-category-form", function (e) {
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        if (select_category == "0") {
-                            $("#categoryId").empty().append(data_html);
-                            $("#categoryId").val(category_id).change();
-                        } else if (select_category == "2") {
-                            console.log(data_html);
+                        if (typeof key !== 'undefined' && key !== null) {
+                            if (select_category == "0") {
+                                $("#categoryId" + key).empty().append(data_html);
+                                $("#categoryId" + key).val(category_id).change();
+                            } else if (select_category == "2") {
+                                console.log(data_html);
 
-                            $("#subCategoryId2").empty().append(data_html);
-                            $("#subCategoryId2").val(category_id).change();
-                            // $("#subCategoryId2").val(category_id).trigger();
-                        } else if (select_category == "3") {
-                            $("#subCategoryId3").empty().append(data_html);
-                            $("#subCategoryId3").val(category_id).change();
-                            // $("#subCategoryId3").val(category_id).trigger();
-                        }
-                        else if (select_category == "1") {
-                            $("#subcategory_id1").empty().append(data_html);
-                            $("#subcategory_id1").val(category_id).change();
+                                $("#subCategoryId2" + key).empty().append(data_html);
+                                $("#subCategoryId2" + key).val(category_id).change();
+                                // $("#subCategoryId2").val(category_id).trigger();
+                            } else if (select_category == "3") {
+                                $("#subCategoryId3" + key).empty().append(data_html);
+                                $("#subCategoryId3" + key).val(category_id).change();
+                                // $("#subCategoryId3").val(category_id).trigger();
+                            }
+                            else if (select_category == "1") {
+                                $("#subcategory_id1" + key).empty().append(data_html);
+                                $("#subcategory_id1" + key).val(category_id).change();
 
-                            // $("#subcategory_id1").val(category_id).trigger();
+                                // $("#subcategory_id1").val(category_id).trigger();
+                            }
                         }
+                        else {
+                            if (select_category == "0") {
+                                $("#categoryId").empty().append(data_html);
+                                $("#categoryId").val(category_id).change();
+                            } else if (select_category == "2") {
+                                console.log(data_html);
+
+                                $("#subCategoryId2").empty().append(data_html);
+                                $("#subCategoryId2").val(category_id).change();
+                                // $("#subCategoryId2").val(category_id).trigger();
+                            } else if (select_category == "3") {
+                                $("#subCategoryId3").empty().append(data_html);
+                                $("#subCategoryId3").val(category_id).change();
+                                // $("#subCategoryId3").val(category_id).trigger();
+                            }
+                            else if (select_category == "1") {
+                                $("#subcategory_id1").empty().append(data_html);
+                                $("#subcategory_id1").val(category_id).change();
+
+                                // $("#subcategory_id1").val(category_id).trigger();
+                            }
+                        }
+
                     }
                 });
             } else {
@@ -326,6 +388,12 @@ $(document).ready(function () {
     });
 });
 
+// $("#create-product-tax-btn").click(function (e){
+//     e.preventDefault();
+//     setTimeout(()=>{
+//         $("#add_product_tax").submit();
+//     },500)
+// });
 $(document).on("submit", "#quick_add_product_tax_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -354,19 +422,30 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         console.log(data_html)
-                        $("#product_tax").empty().append(data_html);
-                        $("#product_tax").val(product_tax_id).change();
+                        if (typeof key !== 'undefined' && key !== null) {
+                            $("#product_tax" + key).empty().append(data_html);
+                            $("#product_tax" + key).val(product_tax_id).change();
+                        }
+                        else {
+                            $("#product_tax").empty().append(data_html);
+                            $("#product_tax").val(product_tax_id).change();
+                        }
+
                     },
                 });
             } else {
-                Swal.fire("Error", result.msg, "error");
+                // Swal.fire("Error", result.msg, "error");
+                Swal.fire({
+                    title: "Error",
+                    text: response.status,
+                    icon: "error",
+                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
+                    showConfirmButton: false // This will hide the "OK" button
+                });
             }
         },
     });
 });
-
-
-
 $(document).ready(function () {
     $("#create-customer-btn").click(function (e) {
         e.preventDefault();
@@ -386,15 +465,15 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
         data: data,
         success: function (result) {
             if (result.success) {
-                // Swal.fire("Success", result.msg, "success");
                 Swal.fire({
-                    title: "Success",
-                    text: response.status,
-                    icon: "success",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
                 });
-
                 $("#add_customer").modal("hide");
                 var customer_id = result.id;
                 $.ajax({
@@ -404,7 +483,8 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                     contactType: "html",
                     success: function (data_html) {
                         $("#client_id").empty().append(data_html[0]);
-                        $("#client_id").val(data_html[1]).trigger();
+
+                        $("#client_id").val(data_html[1]).change();
                     },
                 });
             } else {
@@ -416,7 +496,6 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                     timer: 1000, // Set the timer to 1000 milliseconds (1 second)
                     showConfirmButton: false // This will hide the "OK" button
                 });
-
             }
         },
     });
