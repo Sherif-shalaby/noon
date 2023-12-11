@@ -181,7 +181,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
-    Route::view('add-stock/index', 'add-stock.index')->name('stocks.index');
+    Route::get('add-stock/index', [AddStockController::class,'index'])->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
     Route::get('add-stock/show/{id}',[AddStockController::class , 'show'])->name('stocks.show');

@@ -25,7 +25,7 @@
                 'class' => 'form-control'
             ]) !!}
             <br>
-            @error('sku.'.$index)
+            @error('products.' . $key .'variations.' . $index .'.sku')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
