@@ -578,7 +578,7 @@ class Create extends Component
                     if (isset($this->rows[$index]['prices'][$key]['customer_type_id'])) {
                         // dd($this->rows[$index]['prices']);
                         if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
-                            $variation_price = VariationPrice::where('variation_id', $this->variations[$index])->where('customer_type_id', 3)->first();
+                            $variation_price = VariationPrice::where('variation_id', $this->variations[$index])->where('customer_type_id', $this->rows[$index]['prices'][$key]['customer_type_id'])->first();
                             $add_variation_stock_data = [
                                 'variation_price_id' => $variation_price->id,
                                 'stock_line_id' => $stockLine->id,
