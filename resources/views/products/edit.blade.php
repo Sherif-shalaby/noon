@@ -29,6 +29,7 @@
                     'route' => ['products.update', $product->id],
                     'method' => 'put',
                     'enctype' => 'multipart/form-data',
+                    'id' => 'edit_product_form'
                 ]) !!}
                 <div class="row">
                     <div class="col-md-3">
@@ -41,7 +42,6 @@
                             ]) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
                                 data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
-
                         </div>
                     </div>
 
@@ -57,7 +57,6 @@
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
                                 data-target=".add-store" href="{{ route('store.create') }}"><i
                                     class="fas fa-plus"></i></button>
-
                         </div>
                     </div>
 
@@ -209,14 +208,6 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div>
-
-{{--                    <div class="col-md-12 pt-5">--}}
-{{--                        <div class="col-md-3">--}}
-{{--                            <button class="btn btn btn-primary add_unit_row" type="button">--}}
-{{--                                <i class="fa fa-plus"></i> @lang('lang.add')--}}
-{{--                            </button>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                     <div class="col-md-12 product_unit_raws[0]">
                         @php
                             $index = 0;
@@ -325,9 +316,6 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-
-
-
                             <div class="col-md-2">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('length', isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0, [
@@ -472,7 +460,6 @@
         </div>
     </div>
     </div>
-    </div>
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
@@ -485,6 +472,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-image.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\UpdateProductRequest','#edit_product_form'); !!}
     <script>
         // edit Case
         @if (!empty($product->image) && isset($product->image))

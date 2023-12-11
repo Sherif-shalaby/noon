@@ -1,4 +1,4 @@
-
+{{--@dd($errors->all())--}}
     <div class="d-flex flex-wrap">
         <input type="hidden" name="products[{{$key ?? 0 }}]" value="{{$product->id ?? null}}">
         {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
@@ -28,9 +28,10 @@
                     <i class="fas fa-globe"></i>
                 </button>
             </div>
-            @error('name')
+            @error('products.' . $key . '.name')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
+
             @include('layouts.translation_inputs', [
                 'attribute' => 'name',
                 'translations' =>  $key == 0 && isset($recent_product->translations) ? $recent_product->translations : [],
@@ -44,7 +45,7 @@
                 'class' => 'form-control',
             ]) !!}
             <br>
-            @error('product_symbol')
+            @error('products.' . $key .'.product_symbol')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
@@ -55,7 +56,7 @@
                 'class' => 'form-control',
             ]) !!}
             <br>
-            @error('product_sku')
+            @error('products.' . $key .'.product_sku')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
@@ -74,7 +75,7 @@
                         <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="0"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('category_id')
+                    @error('products.' . $key .'.category_id')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -89,7 +90,7 @@
                         <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="1"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('category_id')
+                    @error('products.' . $key .'.category_id')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -105,7 +106,7 @@
                         <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="2"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('subcategory_id2')
+                    @error('products.' . $key .'.subcategory_id2')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -121,7 +122,7 @@
                         <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="3"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('subcategory_id3')
+                    @error('products.' . $key .'.subcategory_id3')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -176,7 +177,7 @@
                         'class' => 'form-control'
                     ]) !!}
                     <br>
-                    @error('sku.0')
+                    @error('products.' . $key . '.variations.0.sku')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
