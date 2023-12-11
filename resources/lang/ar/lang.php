@@ -215,7 +215,7 @@ return array(
     'partially_received' => 'تم الاستلام جزئيًا',
     'date_and_time' => 'التاريخ والوقت',
     'select_products' => 'حدد المنتجات',
-    'items_count' => 'عدد الأصناف',
+    'items_count' => 'عدد التعبئات',
     'items_quantity' => 'الكميه الاجماليه',
     'total' => 'مجموع',
     'files' => 'الملفات',

@@ -162,10 +162,10 @@ class Create extends Component
             } else if ($data['var1'] == "store_fill_id" && $data['var3'] !== '') {
                 $this->fill_stores[$data['var3']]['data'][$data['var4']]['store_fill_id'] = $data['var2'];
             }
-            // else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
-            //     // dd($data);
-            //     $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
-            // }
+            else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
+                // dd($data);
+                $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
+            }
             else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
@@ -979,6 +979,7 @@ class Create extends Component
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
+
     }
     public function addPrices()
     {
@@ -1060,6 +1061,10 @@ class Create extends Component
     public function delete_store_raw($key)
     {
         unset($this->fill_stores[$key]);
+    }
+    public function delete_store_data_raw($index, $key )
+    {
+        unset($this->fill_stores[$index]['data'][$key]);
     }
     public function changePrice($index, $via = 'price')
     {
