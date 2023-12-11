@@ -18,6 +18,7 @@
         width: fit-content
     }
 </style> --}}
+
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
@@ -94,7 +95,7 @@
                                 </div>
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                    style="animation-delay: 1.2s;width: 160px">
+                                    style="animation-delay: 1.2s;width: 200px">
                                     {{-- {!! Form::label('supplier_id ', __('lang.supplier') . ':*', []) !!} --}}
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="background-color: #dedede;
@@ -127,8 +128,8 @@
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 75px">
                                     {{-- {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!} --}}
-                                    <input type="text" class="form-control initial-balance-input" id="exchange_rate"
-                                        value="{{ $item[0]['exchange_rate'] }}"
+                                    <input type="text" class="form-control initial-balance-input p-1"
+                                        id="exchange_rate" value="{{ $item[0]['exchange_rate'] }}"
                                         style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                                         placeholder="سعر السوق({{ $exchange_rate }})" wire:model="exchange_rate"
                                         wire:change="changeExchangeRateBasedPrices()">
@@ -139,7 +140,7 @@
                                     {{-- {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5']) !!} --}}
                                     {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
                                         'wire:model' => 'item.0.balance_return_request',
-                                        'class' => 'form-control initial-balance-input',
+                                        'class' => 'form-control initial-balance-input p-1',
                                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;',
                                         'placeholder' => __('lang.balance_return_request'),
                                     ]) !!}
@@ -171,10 +172,11 @@
                                     </div>
                                 </div>
 
-                                <div class="accordion animate__animated  animate__bounceInLeft">
+                                <div class="accordion">
                                     <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style=" background-color: transparent;border:none">
-                                        <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
+                                        <h2 class="accordion-header animate__animated animate__bounceInLeft p-0 d-flex justify-content-end align-items-center"
+                                            style="animation-delay: 1.2s;">
                                             <div class="accordion-button"
                                                 style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;min-width: 140px;"
                                                 onclick="toggleProductAccordion(`balanceTax`)">
@@ -256,14 +258,14 @@
                                 </div>
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft d-flex  flex-row-reverse  px-1"
-                                    style="width:200px">
+                                    style="width:200px;animation-delay: 1.2s;">
 
                                     <div class="d-flex justify-content-center align-items-center  main_category"
                                         style="background-color: #dedede; border: none;
                                         border-radius: 16px;
                                         color: #373737;
                                         box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 80%;
+                                        width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;
                                         ">
@@ -407,7 +409,8 @@
                         </div>
                     </div>
 
-                    <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <div class="d-flex animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        style="animation-delay: 1.2s;">
                         <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="overflow-x: auto">
                             <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
@@ -502,7 +505,8 @@
                     </div>
                     {{-- sizes --}}
 
-                    <div class="accordion animate__animated  animate__bounceInLeft mb-2">
+                    <div class="accordion animate__animated  animate__bounceInLeft mb-2 "
+                        style="animation-delay: 1.2s;">
                         <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
@@ -602,7 +606,8 @@
                         </div>
                     </div>
 
-                    <div class="accordion animate__animated  animate__bounceInLeft mb-2">
+                    <div class="accordion animate__animated  animate__bounceInLeft mb-2"
+                        style="animation-delay: 1.2s;">
                         <div class="accordion-item d-flex flex-column"
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
@@ -833,7 +838,7 @@
                     </div>
 
 
-                    <div class="accordion animate__animated  animate__bounceInLeft">
+                    <div class="accordion animate__animated  animate__bounceInLeft" style="animation-delay: 1.2s;">
                         <div class="accordion-item d-flex flex-column"
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">

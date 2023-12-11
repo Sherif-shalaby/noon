@@ -218,7 +218,7 @@
                                 </div>
                             </div>
                             <div class="col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.65s">
+                                style="animation-delay: 1.65s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="regions_id">@lang('lang.regions')</label>

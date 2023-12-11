@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', __('lang.initial_balance'))
 @section('breadcrumbbar')
+    <style>
+        .select2-selection__rendered {
+            width: 100px;
+        }
+    </style>
     <div class="animate-in-page relative">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
