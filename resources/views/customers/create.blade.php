@@ -55,7 +55,7 @@
                         <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             {{-- +++++++++++++++++++++++++++++++ customer_type ++++++++++++++++++++++++ --}}
                             <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.1s">
+                                style="animation-delay: 1.1s;position: relative;z-index: 4;">
                                 {!! Form::label('customer_type_id', __('lang.customer_type') . '*', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -176,7 +176,7 @@
                             </div>
                             {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
                             <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.5s">
+                                style="animation-delay: 1.5s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
@@ -190,7 +190,7 @@
                             </div>
                             {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
                             <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.55s">
+                                style="animation-delay: 1.55s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
@@ -209,7 +209,7 @@
                             </div>
                             {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
                             <div class=" col-md-3 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.6s">
+                                style="animation-delay: 1.6s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.city')</label>
