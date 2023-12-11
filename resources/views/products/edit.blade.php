@@ -125,6 +125,7 @@
                     'route' => ['products.update', $product->id],
                     'method' => 'put',
                     'enctype' => 'multipart/form-data',
+                    'id' => 'edit_product_form',
                 ]) !!}
                 <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                     style="overflow-x: auto">
@@ -832,6 +833,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-image.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\UpdateProductRequest', '#edit_product_form') !!}
     <script>
         // edit Case
         @if (!empty($product->image) && isset($product->image))

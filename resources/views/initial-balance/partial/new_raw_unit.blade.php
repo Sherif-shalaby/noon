@@ -114,8 +114,8 @@
         class="accordion-collapse flex-column collapse @if ($rows[$index]['show_prices']) show @endif">
         @foreach ($rows[$index]['prices'] as $key => $price)
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                    style="overflow-x: auto">
+                <div
+                    class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                         style="width: 75px">
 

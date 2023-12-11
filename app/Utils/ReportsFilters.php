@@ -212,6 +212,8 @@ class ReportsFilters extends Util
     }
 
     public function addStockFilter(){
+        $storeIds =  isset(request()->store_id) && is_array(request()->store_id)  ? array_filter(request()->store_id, fn ($value) => !is_null($value)) :[];
+
         $stocks =  StockTransaction::where('type','add_stock')
             ->when(\request()->dont_show_zero_stocks =="on", function ($query) {
                 $query->whereHas('product_stores', function ($query) {
@@ -237,6 +239,15 @@ class ReportsFilters extends Util
                 $query->whereHas('add_stock_lines.product', function ($subquery) {
                     $subquery->where('subcategory_id3',\request()->subcategory_id3);
                 });
+            })
+            ->when(\request()->branch_id != null, function ($query) {
+                $branchId = \request()->branch_id;
+                $query->whereHas('store.branch', function ($storeQuery) use ($branchId) {
+                    $storeQuery->where('id', $branchId);
+                });
+            })
+            ->when(\request()->store_id != null && !empty($storeIds), function ($query) use ($storeIds) {
+                $query->whereHas('store', fn ($query) => $query->whereIn('store_id', $storeIds));
             })
             ->when(request()->supplier_id != null, function ($query) {
                 $query->where('supplier_id',request()->supplier_id);

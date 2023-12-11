@@ -118,7 +118,7 @@
                       <i class="fas fa-globe"></i>
                   </button>
               </div>
-              @error('name')
+              @error('products.' . $key . '.name')
                   <label class="text-danger error-msg">{{ $message }}</label>
               @enderror
               @include('layouts.translation_inputs', [
@@ -141,7 +141,7 @@
                   'placeholder' => __('lang.product_code'),
               ]) !!}
 
-              @error('product_sku')
+              @error('products.' . $key . '.product_sku')
                   <label class="text-danger error-msg">{{ $message }}</label>
               @enderror
           </div>
@@ -160,7 +160,7 @@
                   'placeholder' => __('lang.product_symbol'),
               ]) !!}
 
-              @error('product_symbol')
+              @error('products.' . $key . '.product_symbol')
                   <label class="text-danger error-msg">{{ $message }}</label>
               @enderror
           </div>
@@ -263,7 +263,7 @@
                                           style="cursor: pointer" data-toggle="modal" data-select_category="0"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
-                                  @error('category_id')
+                                  @error('products.' . $key . '.category_id')
                                       <label class="text-danger error-msg">{{ $message }}</label>
                                   @enderror
                               </div>
@@ -300,7 +300,7 @@
                                           style="cursor: pointer" data-toggle="modal" data-select_category="1"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
-                                  @error('category_id')
+                                  @error('products.' . $key . '.category_id')
                                       <label class="text-danger error-msg">{{ $message }}</label>
                                   @enderror
                               </div>
@@ -336,7 +336,7 @@
                                           style="cursor: pointer" data-toggle="modal" data-select_category="2"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
-                                  @error('subcategory_id2')
+                                  @error('products.' . $key . '.subcategory_id2')
                                       <label class="text-danger error-msg">{{ $message }}</label>
                                   @enderror
                               </div>
@@ -372,7 +372,7 @@
                                           style="cursor: pointer" data-toggle="modal" data-select_category="3"><i
                                               class="fas fa-plus"></i></a>
                                   </div>
-                                  @error('subcategory_id3')
+                                  @error('products.' . $key . '.subcategory_id3')
                                       <label class="text-danger error-msg">{{ $message }}</label>
                                   @enderror
                               </div>
@@ -413,7 +413,7 @@
                                       'placeholder' => __('lang.product_code'),
                                   ]) !!}
 
-                                  @error('sku.0')
+                                  @error('products.' . $key . '.variations.0.sku')
                                       <label class="text-danger error-msg">{{ $message }}</label>
                                   @enderror
 
