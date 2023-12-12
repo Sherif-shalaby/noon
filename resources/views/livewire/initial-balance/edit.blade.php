@@ -31,7 +31,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-  
+
                             <div class="col-md-2">
                                 {!! Form::label('name', __('lang.product_name'), ['class' => 'h5']) !!}
                                 {!! Form::text('name', $item[0]['name'], [
@@ -71,8 +71,8 @@
                                     wire:change="changeExchangeRateBasedPrices()">
                             </div>
 
-                             {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
-                             <div class="col-md-1">
+                            {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
+                            <div class="col-md-1">
                                 {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5 ']) !!}
                                 {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
                                     'wire:model' => 'item.0.balance_return_request',
@@ -81,11 +81,16 @@
                             </div>
                             <div class="col-md-1">
                                 <label for="invoice_currency" class="h5 pt-1">@lang('lang.currency') :*</label>
-                                {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
-                                    ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
-                                     'required', 'data-name' => 'transaction_currency', 'wire:model' => 'transaction_currency']) !!}
+                                {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency, [
+                                    'class' => 'form-control select2',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-live-search' => 'true',
+                                    'required',
+                                    'data-name' => 'transaction_currency',
+                                    'wire:model' => 'transaction_currency',
+                                ]) !!}
                                 @error('transaction_currency')
-                                <span class="error text-danger">{{ $message }}</span>
+                                    <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
@@ -126,8 +131,8 @@
                                 ) !!}
                             </div>
 
-                          
-                            
+
+
                             <div class="col-md-3">
                                 <div class="main_category">
                                     {!! Form::label('category', __('lang.category'), ['class' => 'h5']) !!}
@@ -155,7 +160,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div
-                                    class="subcategory_id1 {{ ($show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0)  ? (empty($item[0]['subcategory_id1'])?'d-none':'') : '' }}">
+                                    class="subcategory_id1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id1']) ? 'd-none' : '') : '' }}">
                                     {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
@@ -180,7 +185,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div
-                                    class="subcategory2 {{ $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id2'])?'d-none':'') : '' }}">
+                                    class="subcategory2 {{ $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id2']) ? 'd-none' : '') : '' }}">
                                     {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
@@ -193,8 +198,7 @@
                                         <a data-href="{{ route('categories.sub_category_modal') }}"
                                             data-container=".view_modal"
                                             class="btn btn-primary text-white btn-sm ml-2 openCategoryModal"
-                                            data-toggle="modal" data-select_category="2"><i
-                                                class="fas fa-plus"></i></a>
+                                            data-toggle="modal" data-select_category="2"><i class="fas fa-plus"></i></a>
                                         {{-- <button type="button" class="btn btn-primary btn-sm ml-2  openCategoryModal"
                                         data-toggle="modal" data-target=".createSubCategoryModal"
                                         data-select_category="2"><i class="fas fa-plus"></i></button> --}}
@@ -208,7 +212,8 @@
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="subcategory3 {{ $show_category3 == 0 ? (empty($item[0]['subcategory_id3'])?'d-none':'') : '' }}">
+                                <div
+                                    class="subcategory3 {{ $show_category3 == 0 ? (empty($item[0]['subcategory_id3']) ? 'd-none' : '') : '' }}">
                                     {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id3', $subcategories3, $item[0]['subcategory_id3'], [
@@ -232,7 +237,7 @@
                                     @enderror
                                 </div>
                             </div>
-                           
+
                             <div class="col-md-3">
                                 {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                                 <div class="d-flex justify-content-center">
@@ -252,13 +257,13 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
-                           
+
+
                         </div>
                         <br>
 
                         {{-- add prices --}}
-                        
+
                         {{-- <div class="row">
                                     <div class="col-md-12 pt-5">
                                         <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
@@ -350,8 +355,8 @@
                             </h4>
                         </div>
 
-                         {{-- sizes --}}
-                         <div class="row">
+                        {{-- sizes --}}
+                        <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.product_dimensions') }}</h5>
                                 <button type="button" class="btn btn-warning btn-sm ml-2 "
@@ -359,7 +364,8 @@
                                         class="fas {{ $show_dimensions == 0 ? 'fa-arrow-right' : 'fa-arrow-left' }}"></i></button>
                             </div>
                         </div>
-                        <div class="row dimensions {{ $show_dimensions == 0 ? (empty($item[0]['basic_unit_variation_id'])?'d-none':'') : '' }}">
+                        <div
+                            class="row dimensions {{ $show_dimensions == 0 ? (empty($item[0]['basic_unit_variation_id']) ? 'd-none' : '') : '' }}">
                             <div class="col-md-2">
                                 {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!}
                                 <input type="text" wire:model='item.0.weight' wire:change='changeSize()'
@@ -407,7 +413,8 @@
                             </div>
 
                             <div class="col-md-2">
-                                <label for="basic_unit_variation_id" class="h5 pt-3">{{ __('lang.basic_unit_for_import_product') . ':*' }}</label>
+                                <label for="basic_unit_variation_id"
+                                    class="h5 pt-3">{{ __('lang.basic_unit_for_import_product') . ':*' }}</label>
                                 {!! Form::select('basic_unit_variation_id', $basic_unit_variations, $item[0]['basic_unit_variation_id'], [
                                     'id' => 'basic_unit_variation_id',
                                     'class' => ' form-control select2 basic_unit_variation_id',
@@ -420,8 +427,8 @@
                         </div>
 
 
-                           {{-- discount --}}
-                           <div class="row">
+                        {{-- discount --}}
+                        <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.discount') }}</h5>
                                 <button type="button" class="btn btn-warning btn-sm ml-2 "
@@ -430,8 +437,8 @@
                             </div>
                         </div>
                         @foreach ($prices as $key => $price)
-                        <div class="discount {{ $show_discount == 0 ? (empty($prices[$key]['fill_id'])?'d-none':'') : '' }}">
-                            
+                            <div class="discount {{ $show_discount == 0 ? (empty($prices) ? 'd-none' : '') : '' }}">
+
                                 <div class="row">
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
@@ -583,10 +590,10 @@
                                         @endif
                                     </div>
                                 </div>
-                        </div>
+                            </div>
                         @endforeach
-                         {{-- new store --}}
-                         <div class="row">
+                        {{-- new store --}}
+                        <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.add_to_another_store') }}</h5>
                                 <button type="button" class="btn btn-warning btn-sm ml-2 "
@@ -594,27 +601,28 @@
                                         class="fas {{ $show_store == 0 ? 'fa-arrow-right' : 'fa-arrow-left' }}"></i></button>
                             </div>
                             @forelse ($fill_stores as $i => $store)
-                                <div class="row {{ $show_store == 0 ? (empty($fill_stores[$i]['extra_store_id'])?'d-none':'') : '' }}">
+                                <div
+                                    class="row {{ $show_store == 0 ? (empty($fill_stores[$i]['extra_store_id']) ? 'd-none' : '') : '' }}">
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-sm btn-primary"
-                                        wire:click="addStoreRow()">
-                                        <i class="fa fa-plus"></i>
+                                            wire:click="addStoreRow()">
+                                            <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="extra_store_id"
-                                        class="h5 ">{{ __('lang.store') . ':*' }}</label>
-                                            {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
-                                                'class' => 'form-control select2 extra_store_id',
-                                                'data-index' => $i,
-                                                'data-name' => 'extra_store_id',
-                                                'required',
-                                                'placeholder' => __('lang.please_select'),
-                                                'wire:model' => 'fill_stores.'.$i.'.extra_store_id',
-                                                'wire:key' => 'extra_store_id_'.$i,
-                                            ]) !!}
-                                            
-                                        {{-- @error('fill_stores.'.$i.'.extra_store_id')
+                                            class="h5 ">{{ __('lang.store') . ':*' }}</label>
+                                        {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
+                                            'class' => 'form-control select2 extra_store_id',
+                                            'data-index' => $i,
+                                            'data-name' => 'extra_store_id',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'wire:model' => 'fill_stores.' . $i . '.extra_store_id',
+                                            'wire:key' => 'extra_store_id_' . $i,
+                                        ]) !!}
+
+                                        {{-- @error('fill_stores.' . $i . '.extra_store_id')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror --}}
                                     </div>
@@ -629,29 +637,30 @@
                                                 'data-index' => $i,
                                                 'data-key' => $x,
                                                 'placeholder' => __('lang.please_select'),
-                                                'wire:model' => 'fill_stores.' . $i .'.data.'.$x. '.store_fill_id',
+                                                'wire:model' => 'fill_stores.' . $i . '.data.' . $x . '.store_fill_id',
                                             ]) !!}
                                         </div>
                                         <div class="col-md-1">
                                             {!! Form::label('quantity', __('lang.quantity')) !!}
                                             <input type="text" class="form-control quantity"
-                                                wire:model="fill_stores.{{ $i }}.data.{{$x}}.quantity"
+                                                wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"
                                                 placeholder = "{{ __('lang.quantity') }}">
-                                            @error('fill_stores.' . $i .'data'.$x. '.quantity')
+                                            @error('fill_stores.' . $i . 'data' . $x . '.quantity')
                                                 <br>
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
-                                            
+
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-sm btn-danger"
-                                            wire:click="delete_store_data_raw({{$i}},{{ $x }})">
-                                            <i class="fa fa-trash"></i>
+                                                wire:click="delete_store_data_raw({{ $i }},{{ $x }})">
+                                                <i class="fa fa-trash"></i>
                                             </button>
                                         </div>
-                                        <div class="col-md-1 {{$x!=(count($fill_stores[$i]['data'])-1)?'d-none':''}}">
+                                        <div
+                                            class="col-md-1 {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }}">
                                             <button type="button" class="btn btn-sm btn-primary"
-                                                wire:click="addStoreDataRow({{$i}})">
+                                                wire:click="addStoreDataRow({{ $i }})">
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                             {{-- @if ($i > 0) --}}
@@ -664,18 +673,18 @@
                                     @endforeach
                                 </div>
                             @empty
-                            <div class="row">
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-sm btn-primary"
-                                                wire:click="addStoreRow()">
-                                                <i class="fa fa-plus"></i>
-                                    </button>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                            wire:click="addStoreRow()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                             @endforelse
                         </div>
                     </div>
-                     
+
                     {{-- {!! Form::close() !!} --}}
                     <div class="col-sm-12">
                         <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
