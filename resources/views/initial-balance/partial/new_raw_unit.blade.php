@@ -66,7 +66,7 @@
         <td>
             <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
-                placeholder = "{{ __('lang.increase').' '.$rows[$index]['prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
+                placeholder = "{{ __('lang.value').' '.$rows[$index]['prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
             <span>{{$rows[$index]['prices'][$key]['dollar_increase']}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_increase')
                 <br>
