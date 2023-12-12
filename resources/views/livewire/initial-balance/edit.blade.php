@@ -256,7 +256,9 @@
                            
                         </div>
                         <br>
+
                         {{-- add prices --}}
+                        
                         {{-- <div class="row">
                                     <div class="col-md-12 pt-5">
                                         <h4 class="text-primary">{{ __('lang.add_prices_for_different_users') }}</h4>
@@ -315,47 +317,30 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="table-responsive">
-                                <table class="table" style="width: auto">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th style="width: 10%">@lang('lang.sku')</th>
-                                            <th style="width: 10%">@lang('lang.quantity')</th>
-                                            <th style="width: 10%">@lang('lang.unit')</th>
-                                            <th style="width: 10%">@lang('lang.fill_from_basic_unit')</th>
-                                            <th style="width: 10%">@lang('lang.basic_unit')</th>
-                                            <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
-                                            <th style="width: 10%">@lang('lang.purchase_price')$</th>
-                                            <th style="width: 10%">@lang('lang.selling_price') $</th>
-                                            <th style="width: 10%">@lang('lang.sub_total') $</th>
-                                            <th style="width: 10%">@lang('lang.purchase_price')</th>
-                                            <th style="width: 10%">@lang('lang.selling_price') </th>
-                                            <th style="width: 10%">@lang('lang.sub_total')</th>
-                                            <th style="width: 10%">@lang('lang.new_stock')</th>
-                                            {{-- <th style="width: 10%">@lang('lang.change_current_stock')</th> --}}
-                                            <th style="width: 10%">@lang('lang.action')</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($rows as $index => $row)
-                                            @include('initial-balance.partial.raw_unit', [
-                                                'index' => $index,
-                                            ])
-                                        @endforeach
-                                        <tr>
-                                            <td colspan="9" style="text-align: right"> @lang('lang.total')</td>
-                                            {{-- @if ($showColumn) --}}
-                                            <td> {{ $this->sum_dollar_tsub_total() }} </td>
-                                            <td></td>
-                                            <td></td>
-                                            {{-- @endif --}}
-                                            <td> {{ $this->sum_sub_total() }} </td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            @foreach ($rows as $index => $row)
+                                <div class="col-md-12 col-sm-12 col-lg-6">
+                                    <div class="table-responsive">
+                                        <table class="table " style="border: 2px solid rgb(177, 177, 177);">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width: 2%">#</th>
+                                                    <th style="width: 6%">@lang('lang.sku')</th>
+                                                    <th style="width: 6%">@lang('lang.unit')</th>
+                                                    <th style="width: 15%">@lang('lang.purchase_price')</th>
+                                                    <th style="width: 15%">@lang('lang.quantity')</th>
+                                                    <th style="width: 5%">@lang('lang.action')</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @include('initial-balance.partial.new_raw_unit', [
+                                                    'index' => $index,
+                                                ])
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endforeach
+
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
                             <h4>@lang('lang.items_count'):
@@ -600,43 +585,45 @@
                                 </div>
                         </div>
                         @endforeach
-                        {{-- new store --}}
-                        <div class="row">
+                         {{-- new store --}}
+                         <div class="row">
                             <div class="col-md-12 pt-5 ">
                                 <h5 class="text-primary">{{ __('lang.add_to_another_store') }}</h5>
                                 <button type="button" class="btn btn-warning btn-sm ml-2 "
                                     wire:click="showStore()"><i
                                         class="fas {{ $show_store == 0 ? 'fa-arrow-right' : 'fa-arrow-left' }}"></i></button>
                             </div>
-                            @foreach ($fill_stores as $i => $store)
-                                <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
+                            @forelse ($fill_stores as $i => $store)
+                                <div class="row {{ $show_store == 0 ? (empty($fill_stores[$i]['extra_store_id'])?'d-none':'') : '' }}">
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                        wire:click="addStoreRow()">
+                                        <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                     <div class="col-md-2">
-                                        {!! Form::label('extra_store_id', __('lang.store') . ':*', []) !!}
-                                        <div class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                wire:click="addStoreRow()">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
+                                        <label for="extra_store_id"
+                                        class="h5 ">{{ __('lang.store') . ':*' }}</label>
                                             {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
-                                                'class' => ' form-control  extra_store_id',
+                                                'class' => 'form-control select2 extra_store_id',
                                                 'data-index' => $i,
                                                 'data-name' => 'extra_store_id',
                                                 'required',
                                                 'placeholder' => __('lang.please_select'),
                                                 'wire:model' => 'fill_stores.'.$i.'.extra_store_id',
+                                                'wire:key' => 'extra_store_id_'.$i,
                                             ]) !!}
                                             
-                                        </div>
-                                        @error('fill_stores.'.$i.'.extra_store_id')
+                                        {{-- @error('fill_stores.'.$i.'.extra_store_id')
                                             <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                     @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                         <div class="col-md-1">
                                             <label for="store_fill_id"
                                                 class="h5 ">{{ __('lang.fill') . ':*' }}</label>
                                             {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
-                                                'id' => 'store_fill_id',
+                                                // 'id' => 'store_fill_id',
                                                 'class' => ' form-control select2 store_fill_id',
                                                 'data-name' => 'store_fill_id',
                                                 'data-index' => $i,
@@ -656,6 +643,12 @@
                                             @enderror
                                             
                                         </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-sm btn-danger"
+                                            wire:click="delete_store_data_raw({{$i}},{{ $x }})">
+                                            <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
                                         <div class="col-md-1 {{$x!=(count($fill_stores[$i]['data'])-1)?'d-none':''}}">
                                             <button type="button" class="btn btn-sm btn-primary"
                                                 wire:click="addStoreDataRow({{$i}})">
@@ -670,7 +663,16 @@
                                         </div>
                                     @endforeach
                                 </div>
-                            @endforeach
+                            @empty
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                                wire:click="addStoreRow()">
+                                                <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @endforelse
                         </div>
                     </div>
                      

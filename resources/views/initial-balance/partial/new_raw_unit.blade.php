@@ -48,7 +48,7 @@
             placeholder="{{ __('lang.quantity') }}">
     </td>
     <td class="text-center">
-        <div style="width:100px">
+        <div style="width:100px " class="{{$index=='0'?'d-none':''}}">
             <div class="btn btn-sm btn-danger py-0 px-1 " wire:click="delete_product({{ $index }})">
                 <i class="fa fa-trash"></i>
             </div>
