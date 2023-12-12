@@ -591,45 +591,13 @@
 
                                 <div
                                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {!! Form::label('weight', __('lang.weight'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
-                                    ]) !!}
-                                    <input type="text" wire:model='item.0.weight'
-                                        placeholder="{{ __('lang.weight') }}" wire:change='changeSize()'
-                                        class='form-control weight initial-balance-input m-0'
-                                        style="border:2px solid #ccc;width: 75px" />
-
-                                    @error('item.0.weight')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
-
-                                <div
-                                    class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {!! Form::label('height', __('lang.height'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                        'style' => 'font-weight:500;font-size:10px;color:#888',
-                                    ]) !!}
-                                    <input type="text" wire:model='item.0.height' wire:change='changeSize()'
-                                        class='form-control height initial-balance-input m-0'
-                                        style="border:2px solid #ccc;width: 75px"
-                                        placeholder={{ __('lang.height') }} />
-
-                                    @error('item.0.height')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
-                                </div>
-
-                                <div
-                                    class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                     {!! Form::label('length', __('lang.length'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
                                     <input type="text" wire:model='item.0.length' wire:change='changeSize()'
                                         class='form-control initial-balance-input m-0 length'
-                                        style="border:2px solid #ccc;width: 75px"
+                                        style="border:2px solid #ccc;width: 75px;font-size:12px"
                                         placeholder={{ __('lang.length') }} />
 
                                     @error('item.0.length')
@@ -645,10 +613,26 @@
                                     ]) !!}
                                     <input type="text" wire:model='item.0.width' wire:change='changeSize()'
                                         class='form-control  initial-balance-input m-0 width'
-                                        style="border:2px solid #ccc;width: 75px"
+                                        style="border:2px solid #ccc;width: 75px;font-size:12px"
                                         placeholder={{ __('lang.width') }} />
 
                                     @error('item.0.width')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+                                <div
+                                    class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                    {!! Form::label('height', __('lang.height'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
+                                    <input type="text" wire:model='item.0.height' wire:change='changeSize()'
+                                        class='form-control height initial-balance-input m-0'
+                                        style="border:2px solid #ccc;width: 75px;font-size:12px"
+                                        placeholder={{ __('lang.height') }} />
+
+                                    @error('item.0.height')
                                         <label class="text-danger error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
@@ -661,12 +645,34 @@
                                     ]) !!}
                                     <input type="text" wire:model='item.0.size' wire:change='changeSize()'
                                         class='form-control  initial-balance-input m-0  size'
-                                        style="border:2px solid #ccc;width: 75px" placeholder={{ __('lang.size') }} />
+                                        style="border:2px solid #ccc;width: 75px;font-size:12px"
+                                        placeholder={{ __('lang.size') }} />
 
                                     @error('item.0.size')
                                         <label class="text-danger error-msg">{{ $message }}</label>
                                     @enderror
                                 </div>
+
+                                <div
+                                    class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+                                    {!! Form::label('weight', __('lang.weight'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
+                                    <input type="text" wire:model='item.0.weight'
+                                        placeholder="{{ __('lang.weight') }}" wire:change='changeSize()'
+                                        class='form-control weight initial-balance-input m-0'
+                                        style="border:2px solid #ccc;width: 75px;font-size:12px" />
+
+                                    @error('item.0.weight')
+                                        <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+
+
+
+
                             </div>
                         </div>
                     </div>
