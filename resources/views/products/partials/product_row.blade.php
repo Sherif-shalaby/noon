@@ -250,7 +250,7 @@
                                         ">
                                       {!! Form::select(
                                           'products[' . $key . '][category_id]',
-                                          $categories,
+                                          $categories1,
                                           $key == 0 && isset($recent_product->category_id) ? $recent_product->category_id : null,
                                           [
                                               'class' => 'form-control select2 category',
@@ -287,7 +287,7 @@
                                         flex-wrap: nowrap;">
                                       {!! Form::select(
                                           'products[' . $key . '][subcategory_id1]',
-                                          $subcategories,
+                                          $categories2,
                                           $key == 0 && isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null,
                                           [
                                               'class' => 'form-control select2 subcategory',
@@ -323,7 +323,7 @@
                                         flex-wrap: nowrap;">
                                       {!! Form::select(
                                           'products[' . $key . '][subcategory_id2]',
-                                          $subcategories,
+                                          $categories3,
                                           $key == 0 && isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null,
                                           [
                                               'class' => 'form-control select2 subcategory2',
@@ -359,7 +359,7 @@
                                         flex-wrap: nowrap;">
                                       {!! Form::select(
                                           'products[' . $key . '][subcategory_id3]',
-                                          $subcategories,
+                                          $categories4,
                                           $key == 0 && isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null,
                                           [
                                               'class' => 'form-control select2 subcategory3',

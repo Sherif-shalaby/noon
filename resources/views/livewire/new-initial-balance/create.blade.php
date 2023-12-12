@@ -67,7 +67,10 @@
 
                                 <div class=" mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.15s;width: 75px">
-                                    {{-- {!! Form::label('product_symbol', __('lang.product_symbol'), ['class' => 'h5']) !!} --}}
+                                    {!! Form::label('product_symbol', __('lang.product_symbol'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     {!! Form::text('product_symbol', null, [
                                         'class' => 'form-control initial-balance-input',
                                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;',
@@ -81,7 +84,10 @@
 
                                 <div class=" mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 160px">
-                                    {{-- {!! Form::label('name', __('lang.product_name'), ['class' => 'h5']) !!} --}}
+                                    {!! Form::label('name', __('lang.product_name'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     {!! Form::text('name', $item[0]['name'], [
                                         'class' => 'form-control  required initial-balance-input',
                                         'style' => 'width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;',
@@ -96,7 +102,10 @@
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 200px">
-                                    {{-- {!! Form::label('supplier_id ', __('lang.supplier') . ':*', []) !!} --}}
+                                    {!! Form::label('supplier_id ', __('lang.supplier') . '*', [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="background-color: #dedede;
                                             border: none;
@@ -127,7 +136,10 @@
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 75px">
-                                    {{-- {!! Form::label('exchange_rate', __('lang.exchange_rate') . ':', []) !!} --}}
+                                    {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <input type="text" class="form-control initial-balance-input p-1"
                                         id="exchange_rate" value="{{ $item[0]['exchange_rate'] }}"
                                         style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
@@ -137,7 +149,10 @@
                                 {{-- +++++++++++++++++++++++ "balance return request"  +++++++++++++++++++++++ --}}
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 100px">
-                                    {{-- {!! Form::label('balance_return_request', __('lang.balance_return_request'), ['class' => 'h5']) !!} --}}
+                                    {!! Form::label('balance_return_request', __('lang.balance_return_request'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     {!! Form::text('balance_return_request', $item[0]['balance_return_request'], [
                                         'wire:model' => 'item.0.balance_return_request',
                                         'class' => 'form-control initial-balance-input p-1',
@@ -145,10 +160,45 @@
                                         'placeholder' => __('lang.balance_return_request'),
                                     ]) !!}
                                 </div>
+                                <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                    style="animation-delay: 1.2s;width: 160px">
+                                    {!! Form::label('store_id', __('lang.store') . '*', [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
+                                    <div class="d-flex justify-content-center align-items-center"
+                                        style="background-color: #dedede;
+                                         border: none;
+                                        border-radius: 16px;
+                                        color: #373737;
+                                        box-shadow: 0 8px 6px -5px #bbb;
+                                        width: 100%;
+                                        height: 30px;
+                                        flex-wrap: nowrap;">
+                                        {!! Form::select('store_id', $stores, $item[0]['store_id'], [
+                                            'class' => ' form-control select2 store_id',
+                                            'data-name' => 'store_id',
+                                            // 'multiple' => 'multiple',
+                                            'required',
+                                            'placeholder' => __('lang.store'),
+                                            'wire:model' => 'item.0.store_id',
+                                        ]) !!}
+                                        <button type="button"
+                                            class="add-button d-flex justify-content-center align-items-center"
+                                            data-toggle="modal" data-target=".add-store"
+                                            href="{{ route('store.create') }}"><i class="fas fa-plus"></i></button>
+
+                                    </div>
+                                    @error('item.0.store_id')
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 100px">
-                                    {{-- <label for="invoice_currency" class="h5 ">@lang('lang.currency') :*</label> --}}
+                                    <label for="invoice_currency"
+                                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                        style='font-weight:500;font-size:10px;color:#888'>@lang('lang.currency') *</label>
                                     <div class="d-flex justify-content-center align-items-center"
                                         style="background-color: #dedede;
                                             border: none;
@@ -172,7 +222,7 @@
                                     </div>
                                 </div>
 
-                                <div class="accordion">
+                                <div class="accordion d-flex">
                                     <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style=" background-color: transparent;border:none">
                                         <h2 class="accordion-header animate__animated animate__bounceInLeft p-0 d-flex justify-content-end align-items-center"
@@ -193,8 +243,9 @@
                                                 {{-- +++++++++++++++++++++++ "product_tax" selectbox +++++++++++++++++++++++ --}}
                                                 <div
                                                     class=" animate__animated  animate__bounceInRight mb-1 d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
-                                                    {{-- <label for="product"
-                                                        class="h5 ">{{ __('lang.product_tax') . ':*' }}</label> --}}
+                                                    <label for="product"
+                                                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.product_tax') . '*' }}</label>
                                                     <div class="d-flex justify-content-center align-items-center"
                                                         style="background-color: #dedede; border: none;
                                                         border-radius: 16px;
@@ -227,8 +278,9 @@
 
                                                 <div
                                                     class=" animate__animated  animate__bounceInRight mb-1 d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
-                                                    {{-- <label for="method"
-                                                        class="h5 ">{{ __('lang.tax_method') . ':*' }}</label> --}}
+                                                    <label for="method"
+                                                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.tax_method') . '*' }}</label>
                                                     <div class="d-flex justify-content-center align-items-center"
                                                         style="background-color: #dedede; border: none;
                                                         border-radius: 16px;
@@ -256,9 +308,21 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                <div class="mb-2 align-items-center animate__animated animate__bounceInLeft d-flex  flex-row-reverse  px-1"
-                                    style="width:200px;animation-delay: 1.2s;">
+                    <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        style="overflow-x: auto">
+                        <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  px-1"
+                                style="width:200px;animation-delay: 1.2s;">
+
+                                {!! Form::label('category', __('lang.category'), [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                                ]) !!}
+                                <div class="d-flex flex-row-reverse">
 
                                     <div class="d-flex justify-content-center align-items-center  main_category"
                                         style="background-color: #dedede; border: none;
@@ -269,7 +333,6 @@
                                         height: 30px;
                                         flex-wrap: nowrap;
                                         ">
-                                        {{-- {!! Form::label('category', __('lang.category'), ['class' => 'h5']) !!} --}}
                                         {!! Form::select('category_id', $categories, $item[0]['category_id'], [
                                             'class' => 'form-control select2 category_id',
                                             'placeholder' => __('lang.category'),
@@ -291,15 +354,21 @@
                                                 class="fas {{ $show_category1 == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i>
                                         </button>
                                     </div>
-
-                                    @error('item.0.category_id')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
 
-                                <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  d-flex flex-row-reverse  px-1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
-                                    style="width:200px">
+                                @error('item.0.category_id')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
+                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft  d-flex flex-column  px-1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
+                                style="width:200px">
+
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                                ]) !!}
+                                <div class="d-flex flex-row-reverse">
                                     <div class="d-flex justify-content-center align-items-center subcategory_id1 "
                                         style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -309,7 +378,6 @@
                                         height: 30px;
                                         flex-wrap: nowrap;
                                         ">
-                                        {{-- {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!} --}}
                                         {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
                                             'class' => 'form-control select2 subcategory1',
                                             'data-name' => 'subcategory_id1',
@@ -328,13 +396,19 @@
                                             wire:click="showCategory2()"><i
                                                 class="fas {{ $show_category2 == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i></button>
                                     </div>
-                                    @error('item.0.subcategory_id1')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
+                                @error('item.0.subcategory_id1')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
-                                <div class="mb-2 align-items-center animate__animated animate__bounceInLeft d-flex  flex-row-reverse  pl-1  {{ $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
-                                    style="width:200px">
+                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1  {{ $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
+                                style="width:200px">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                                ]) !!}
+                                <div class="d-flex flex-row-reverse">
                                     <div class="d-flex justify-content-center align-items-center  subcategory2"
                                         style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -344,7 +418,6 @@
                                         height: 30px;
                                         flex-wrap: nowrap;
                                         ">
-                                        {{-- {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 ']) !!} --}}
 
                                         {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
                                             'class' => 'form-control select2 subcategory2',
@@ -368,13 +441,19 @@
                                                 class="fas {{ $show_category3 == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i>
                                         </button>
                                     </div>
-                                    @error('item.0.subcategory_id2')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
+                                @error('item.0.subcategory_id2')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
+                            </div>
 
-                                <div class="mb-2 align-items-center animate__animated animate__bounceInLeft d-flex  flex-row-reverse  pl-1 {{ $show_category3 == 0 ? 'd-none' : '' }}"
-                                    style="width:200px">
+                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1 {{ $show_category3 == 0 ? 'd-none' : '' }}"
+                                style="width:200px">
+                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                                ]) !!}
+                                <div class="d-flex flex-row-reverse">
                                     <div class="d-flex justify-content-center align-items-center subcategory3 "
                                         style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -384,7 +463,6 @@
                                         height: 30px;
                                         flex-wrap: nowrap;
                                         ">
-                                        {{-- {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 ']) !!} --}}
                                         {!! Form::select('subcategory_id3', $subcategories3, $item[0]['subcategory_id3'], [
                                             'class' => 'form-control select2 subcategory3',
                                             'data-name' => 'subcategory_id3',
@@ -401,48 +479,19 @@
                                             style="cursor: pointer" data-toggle="modal" data-select_category="3"><i
                                                 class="fas fa-plus"></i></a>
                                     </div>
-                                    @error('item.0.subcategory_id3')
-                                        <label class="text-danger error-msg">{{ $message }}</label>
-                                    @enderror
                                 </div>
+                                @error('item.0.subcategory_id3')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                @enderror
                             </div>
                         </div>
                     </div>
 
                     <div class="d-flex animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                         style="animation-delay: 1.2s;">
-                        <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <div class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="overflow-x: auto">
-                            <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                style="width: 160px">
-                                {{-- {!! Form::label('store_id', __('lang.store') . ':*', []) !!} --}}
-                                <div class="d-flex justify-content-center align-items-center"
-                                    style="background-color: #dedede;
-                                         border: none;
-                                        border-radius: 16px;
-                                        color: #373737;
-                                        box-shadow: 0 8px 6px -5px #bbb;
-                                        width: 100%;
-                                        height: 30px;
-                                        flex-wrap: nowrap;">
-                                    {!! Form::select('store_id', $stores, $item[0]['store_id'], [
-                                        'class' => ' form-control select2 store_id',
-                                        'data-name' => 'store_id',
-                                        // 'multiple' => 'multiple',
-                                        'required',
-                                        'placeholder' => __('lang.store'),
-                                        'wire:model' => 'item.0.store_id',
-                                    ]) !!}
-                                    <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-target=".add-store"
-                                        href="{{ route('store.create') }}"><i class="fas fa-plus"></i></button>
 
-                                </div>
-                                @error('item.0.store_id')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
                             @include('store.create', ['quick_add' => 1])
                             @foreach ($rows as $index => $row)
                                 @include('initial-balance.partial.new_raw_unit', [
@@ -525,8 +574,9 @@
 
                                 <div
                                     class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
-                                    {{-- <label for="basic_unit_variation_id"
-                                        class="h5 pt-3">{{ __('lang.basic_unit_for_import_product') . ':*' }}</label> --}}
+                                    <label for="basic_unit_variation_id"
+                                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.basic_unit_for_import_product') . '*' }}</label>
                                     <div class="input-wrapper" style="width: 100%">
 
                                         {!! Form::select('basic_unit_variation_id', $basic_unit_variations, $item[0]['basic_unit_variation_id'], [
@@ -541,7 +591,10 @@
 
                                 <div
                                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {{-- {!! Form::label('weight', __('lang.weight'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::label('weight', __('lang.weight'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <input type="text" wire:model='item.0.weight'
                                         placeholder="{{ __('lang.weight') }}" wire:change='changeSize()'
                                         class='form-control weight initial-balance-input m-0'
@@ -554,7 +607,10 @@
 
                                 <div
                                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {{-- {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::label('height', __('lang.height'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <input type="text" wire:model='item.0.height' wire:change='changeSize()'
                                         class='form-control height initial-balance-input m-0'
                                         style="border:2px solid #ccc;width: 75px"
@@ -567,7 +623,10 @@
 
                                 <div
                                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {{-- {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::label('length', __('lang.length'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <input type="text" wire:model='item.0.length' wire:change='changeSize()'
                                         class='form-control initial-balance-input m-0 length'
                                         style="border:2px solid #ccc;width: 75px"
@@ -580,7 +639,10 @@
 
                                 <div
                                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {{-- {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::label('width', __('lang.width'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <input type="text" wire:model='item.0.width' wire:change='changeSize()'
                                         class='form-control  initial-balance-input m-0 width'
                                         style="border:2px solid #ccc;width: 75px"
@@ -593,7 +655,10 @@
 
                                 <div
                                     class="mb-2  animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                    {{-- {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!} --}}
+                                    {!! Form::label('size', __('lang.size'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                        'style' => 'font-weight:500;font-size:10px;color:#888',
+                                    ]) !!}
                                     <input type="text" wire:model='item.0.size' wire:change='changeSize()'
                                         class='form-control  initial-balance-input m-0  size'
                                         style="border:2px solid #ccc;width: 75px" placeholder={{ __('lang.size') }} />
@@ -630,7 +695,9 @@
                                         <div class="mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                             @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                             style="width: 160px">
-                                            {{-- <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . '*' }}</label> --}}
+                                            <label for="fill_id"
+                                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.fill') . '*' }}</label>
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="background-color: #dedede;
                                                 border: none;
@@ -655,7 +722,10 @@
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                          @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                          pl-1">
-                                            {{-- {!! Form::label('price', __('lang.quantity')) !!} --}}
+                                            {!! Form::label('price', __('lang.quantity'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <input type="text" style="width: 100px"
                                                 class="form-control initial-balance-input m-0 discount_quantity"
                                                 wire:model="prices.{{ $key }}.discount_quantity"
@@ -671,10 +741,13 @@
                                             class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                     pl-1">
-                                            {{-- {!! Form::label('price_category', __('lang.price_category'), ['style' => 'font-size: 10px;', 'class' => 'pt-2']) !!} --}}
+                                            {!! Form::label('price_category', __('lang.price_category'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <input type="text" style="width: 100px"
                                                 class="form-control initial-balance-input m-0 price_category"
-                                                name="price_category" placeholder="__('lang.price_category')"
+                                                name="price_category" placeholder="{{ __('lang.price_category') }}"
                                                 wire:model="prices.{{ $key }}.price_category"
                                                 maxlength="6">
                                         </div>
@@ -683,7 +756,10 @@
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                                             @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                             pl-1">
-                                            {{-- {!! Form::label('b_qty', __('lang.b_qty')) !!} --}}
+                                            {!! Form::label('b_qty', __('lang.b_qty'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <input type="text"
                                                 class="form-control initial-balance-input m-0 bonus_quantity"
                                                 wire:model="prices.{{ $key }}.bonus_quantity"
@@ -699,7 +775,10 @@
                                                                 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                                 pl-1"
                                             style="width: 160px">
-                                            {{-- {!! Form::label('customer_type', __('lang.customer_type')) !!} --}}
+                                            {!! Form::label('customer_type', __('lang.customer_type'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="background-color: #dedede;
                                                                                 border: none;
@@ -727,7 +806,10 @@
                                                                     @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
                                                                     pl-1"
                                             style="width: 160px">
-                                            {{-- {!! Form::label('price_type', __('lang.type')) !!} --}}
+                                            {!! Form::label('price_type', __('lang.type'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="background-color: #dedede;
                                                                         border: none;
@@ -772,10 +854,14 @@
                                         </div>
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                            {{-- {!! Form::label(
-                                                                    'price',
-                                                                    isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
-                                                                ) !!} --}}
+                                            {!! Form::label(
+                                                'price',
+                                                isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent'),
+                                                [
+                                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                                                ],
+                                            ) !!}
                                             <input type="text" name="price" style="width: 100px"
                                                 class="form-control initial-balance-input m-0 price"
                                                 wire:model="prices.{{ $key }}.dinar_price"
@@ -785,7 +871,10 @@
                                         </div>
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                            {{-- {!! Form::label('', __('lang.price')) !!} --}}
+                                            {!! Form::label('', __('lang.price'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <input type="text" name="" style="width: 100px"
                                                 class="form-control initial-balance-input m-0 price"
                                                 wire:model="prices.{{ $key }}.dinar_price_after_desc"
@@ -796,7 +885,10 @@
                                         </div>
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                            {{-- {!! Form::label('total_price', __('lang.total_price')) !!} --}}
+                                            {!! Form::label('total_price', __('lang.total_price'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <input type="text" name="total_price" style="width: 100px"
                                                 class="form-control initial-balance-input m-0 total_price"
                                                 wire:model="prices.{{ $key }}.dinar_total_price"
@@ -807,7 +899,10 @@
                                         </div>
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
-                                            {{-- {!! Form::label('piece_price', __('lang.piece_price')) !!} --}}
+                                            {!! Form::label('piece_price', __('lang.piece_price'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <input type="text" name="piece_price" style="width: 100px"
                                                 class="form-control initial-balance-input m-0 piece_price"
                                                 wire:model="prices.{{ $key }}.dinar_piece_price"
@@ -860,7 +955,10 @@
 
                                         <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1"
                                             style="width: 160px">
-                                            {{-- {!! Form::label('extra_store_id', __('lang.store') . ':*', []) !!} --}}
+                                            {!! Form::label('extra_store_id', __('lang.store') . '*', [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="background-color: #dedede;
                                                     border: none;
@@ -900,8 +998,9 @@
                                                 @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                                     <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                         style="width: 100px">
-                                                        {{-- <label for="store_fill_id"
-                                                            class="h5 ">{{ __('lang.fill') . ':*' }}</label> --}}
+                                                        <label for="store_fill_id"
+                                                            class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                            style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.fill') . '*' }}</label>
                                                         <div class="d-flex justify-content-center align-items-center"
                                                             style="background-color: #dedede;
                                                         border: none;
@@ -924,7 +1023,10 @@
                                                     </div>
                                                     <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                         style="width: 75px">
-                                                        {{-- {!! Form::label('quantity', __('lang.quantity')) !!} --}}
+                                                        {!! Form::label('quantity', __('lang.quantity'), [
+                                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                            'style' => 'font-weight:500;font-size:10px;color:#888',
+                                                        ]) !!}
                                                         <input type="text"
                                                             class="form-control quantity initial-balance-input"
                                                             wire:model="fill_stores.{{ $i }}.data.{{ $x }}.quantity"

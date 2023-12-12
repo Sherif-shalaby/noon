@@ -37,28 +37,15 @@ myDropzone = new Dropzone("div#my-dropzone", {
                         url: $("form#product-form").attr("action"),
                         data: $("#product-form").serialize(),
                         success: function (response) {
+                            console.log(response);
                             // Swal.fire(response.status);
-                            // Swal.fire("Success", response.status, "success");
-                            Swal.fire({
-                                title: "Success",
-                                text: response.status,
-                                icon: "success",
-                                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                                showConfirmButton: false // This will hide the "OK" button
-                            });
+                            Swal.fire("Success", response.status, "success");
                             location.replace('/categories');
                             // $(".ajaxform")[0].reset();
                         },
                         error: function (response) {
                             // Swal.fire(response.status);
-                            // Swal.fire("Error", response.status, "error");
-                            Swal.fire({
-                                title: "Error",
-                                text: response.status,
-                                icon: "error",
-                                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                                showConfirmButton: false // This will hide the "OK" button
-                            });
+                            Swal.fire("Error", response.status, "error");
                         },
 
                     });
@@ -86,29 +73,15 @@ myDropzone = new Dropzone("div#my-dropzone", {
     success: function (file, response) {
         if (response.success) {
             // Swal.fire(response.status);
-            // Swal.fire("Error", response.status, "error");
-            Swal.fire({
-                title: "Error",
-                text: response.status,
-                icon: "error",
-                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                showConfirmButton: false // This will hide the "OK" button
-            });
+            Swal.fire("Error", response.status, "error");
         }
         if (!response.success) {
             // Swal.fire(response.status);
-            // Swal.fire("Success", response.status, "success");
-            Swal.fire({
-                title: "Success",
-                text: response.status,
-                icon: "success",
-                timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                showConfirmButton: false // This will hide the "OK" button
-            });
+            Swal.fire("Success", response.status, "success");
             location.replace('/categories');
         }
     },
-    completemultiple: function (file, response) { },
+    completemultiple: function (file, response) {},
     reset: function () {
         this.removeAllFiles(true);
     },
@@ -135,7 +108,7 @@ myDropzone.on("thumbnail", function (file) {
         $($img).attr("src", reader.result);
         $cropperModal.modal("show");
         modalTemplate.on("shown.bs.modal", function () {
-            cropper = null;
+            cropper= null;
             cropper = new Cropper($img, {
                 initialAspectRatio: 1 / 1,
                 aspectRatio: 1 / 1,

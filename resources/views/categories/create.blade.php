@@ -87,13 +87,27 @@
                                                     <option value="" selected disabled readonly>
                                                         ---{{ __('select') }}---
                                                     </option>
-                                                    @forelse($cats as $cat)
-                                                        <option value="{{ $cat->id }}"
-                                                            {{ old('parent_id', request()->parent_id) == $cat->id ? 'selected' : null }}>
-                                                            {{ $cat->name }}
-                                                        </option>
-                                                    @empty
-                                                    @endforelse
+                                                    <option value="1">Category 1</option>
+                                                    <option value="2">Category 2</option>
+                                                    <option value="3">Category 3</option>
+                                                    <option value="4">Category 4</option>
+                                                    {{-- <div class="form-group">
+
+                                                    {!! Form::label('parent_id', __('lang.parent_category') . ':') !!}
+                                                    {!! Form::select('parent_id', [
+                                                        '0' => 'Category 1',
+                                                        '1' => 'Category 2',
+                                                        '2' => 'Category 3',
+                                                        '3' => 'Category 4',
+                                                    ], false, ['class' => 'form-control', 'data-live-search' => 'true', 'style' => 'width: 100%', 'placeholder' => __('lang.please_select'), 'id' => 'parent_id']) !!}
+                                                </div>
+                                                @forelse($cats as $cat)
+                                                    <option value="{{ $cat->id }}"
+                                                        {{ old('parent_id', request()->parent_id ) ==$cat->id?'selected':null }} >
+                                                        {{ $cat->name }}
+                                                    </option>
+                                                @empty
+                                                @endforelse --}}
                                                 </select>
                                             </div>
                                         </div>
@@ -129,7 +143,7 @@
                                     <div class="form-group">
                                         <label style="font-size: 12px;font-weight: 500;"
                                             class="d-block @if (app()->isLocale('ar')) text-end @else text-start @endif">@lang('categories.cover')</label>
-                                        {{-- <input class="form-control img" name="cover"  type="file" accept="image/*" > --}}
+                                        <input class="form-control img" name="cover" type="file" accept="image/*">
                                         <div class="dropzone d-flex justify-content-center align-items-center"
                                             style="padding: 0;" id="my-dropzone" required>
                                             <div class="dz-message" style="margin: 0;" data-dz-message>
@@ -149,7 +163,7 @@
                                 </button> --}}
                                 <div
                                     class="d-flex @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
-                                    <button type="button" class="btn btn-primary" id="submit-btn">
+                                    <button type="submit" class="btn btn-primary" id="submit-btn">
                                         <i class="la la-check-square-o"></i> {{ __('Add') }}
                                     </button>
                                 </div>
@@ -164,7 +178,7 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{ asset('js/category.js') }}"></script>
+    {{-- <script src="{{ asset('js/category.js') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
     {!! JsValidator::formRequest('App\Http\Requests\CategoryRequest', '#product-form') !!}
 @endpush

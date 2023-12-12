@@ -346,12 +346,12 @@
                                                     @if ($depart->parent_id === null)
                                                         <option value="{{ $depart->id }}">{{ $depart->name }}
                                                         </option>
-                                                        @if ($depart->subCategories->count() > 0)
+                                                        {{-- @if ($depart->subCategories->count() > 0)
                                                             @include('categories.category-select', [
                                                                 'categories' => $depart->subCategories,
                                                                 'prefix' => '-',
                                                             ])
-                                                        @endif
+                                                        @endif --}}
                                                     @endif
                                                 @endforeach
                                             </select>

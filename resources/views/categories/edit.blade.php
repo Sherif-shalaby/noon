@@ -90,13 +90,27 @@
                                                     <option value="" selected disabled readonly>
                                                         ---{{ __('select') }}---
                                                     </option>
-                                                    @forelse($cats as $cat)
-                                                        <option value="{{ $cat->id }}"
-                                                            {{ old('parent_id', $category->parent_id) == $cat->id ? 'selected' : null }}>
-                                                            {{ $cat->name }}
-                                                        </option>
-                                                    @empty
-                                                    @endforelse
+                                                    <option value="" disabled readonly>---{{ __('select') }}---
+                                                    </option>
+                                                    <option value="1"
+                                                        @if ($category->parent_id == 0) selected @endif>Category 1
+                                                    </option>
+                                                    <option value="2"
+                                                        @if ($category->parent_id == 1) selected @endif>Category 2
+                                                    </option>
+                                                    <option value="3"
+                                                        @if ($category->parent_id == 2) selected @endif>Category 3
+                                                    </option>
+                                                    <option value="4"
+                                                        @if ($category->parent_id == 3) selected @endif>Category 4
+                                                    </option>
+                                                    {{-- @forelse($cats as $cat)
+                                                    <option value="{{ $cat->id }}"
+                                                        {{ old('parent_id', $category->parent_id) == $cat->id ? 'selected' : null }}>
+                                                        {{ $cat->name }}
+                                                    </option>
+                                                @empty
+                                                @endforelse --}}
                                                 </select>
                                                 @error('parent_id')
                                                     <span class="text-danger">{{ $message }}</span>

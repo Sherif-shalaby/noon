@@ -71,7 +71,7 @@
                                                         <th>@lang('categories.cover')</th>
                                                         <th>@lang('categories.categorie_name')</th>
                                                         <th>@lang('categories.parent')</th>
-                                                        <th>@lang('categories.sub_categories')</th>
+                                                        {{-- <th>@lang('categories.sub_categories')</th> --}}
                                                         <th>@lang('categories.status')</th>
                                                         <th>@lang('added_by')</th>
                                                         <th>@lang('updated_by')</th>
@@ -108,10 +108,18 @@
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('categories.parent')">
 
-                                                                    {{ $categorie->parentName() }}
+                                                                    @if ($categorie->parent_id == 1)
+                                                                        Category 1
+                                                                    @elseif ($categorie->parent_id == 2)
+                                                                        Category 2
+                                                                    @elseif ($categorie->parent_id == 3)
+                                                                        Category 3
+                                                                    @else
+                                                                        Category 4
+                                                                    @endif
                                                             </td>
                                                             </span>
-                                                            <td>
+                                                            {{-- <td>
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
@@ -120,7 +128,7 @@
                                                                         class="btn btn-sm btn-primary">
                                                                         {{ $categorie->subCategories->count() }}</a>
                                                                 </span>
-                                                            </td>
+                                                            </td> --}}
                                                             <td>
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
