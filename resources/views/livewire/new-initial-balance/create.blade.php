@@ -83,7 +83,7 @@
                                 </div>
 
                                 <div class=" mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
-                                    style="animation-delay: 1.2s;width: 160px">
+                                    style="animation-delay: 1.2s;width: 320px">
                                     {!! Form::label('name', __('lang.product_name'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
