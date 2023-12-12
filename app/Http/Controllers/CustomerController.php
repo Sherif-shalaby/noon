@@ -103,6 +103,7 @@ class CustomerController extends Controller
    */
     public function store(CustomerRequest $request)
     {
+        // dd($request);
         try
         {
             DB::beginTransaction();
@@ -111,7 +112,7 @@ class CustomerController extends Controller
             $data['phone'] = json_encode($request->phone);
             // ++++++++++++++ store email in array ++++++++++++++++++
             $data['email'] = json_encode($request->email);
-
+            // ++++++++++++++ store created_by ++++++++++++++++++
             $data['created_by']=Auth::user()->id;
             // ========== uploaded image ==========
             if ($request->file('image'))
@@ -176,10 +177,11 @@ class CustomerController extends Controller
         catch (\Exception $e)
         {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            dd($e);
+            // dd($e);
             $output = [
                 'success' => false,
-                'msg' => __('lang.something_went_wrong')
+                // 'msg' => __('lang.something_went_wrong')
+                'msg' => $e->getMessage(),
             ];
         }
         return redirect()->back()->with('status', $output);
