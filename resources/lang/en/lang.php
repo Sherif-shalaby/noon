@@ -661,7 +661,7 @@ return [
     'product_sku_start' => 'Product Sku Start Number',
     'large_filling' => 'Large Filling',
     'small_filling' => 'Small Filling',
-    'increase'=>'',
+    'value'=>'Value',
 ];
 
 
