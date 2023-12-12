@@ -1,4 +1,4 @@
-
+{{--@dd($errors->all())--}}
     <div class="d-flex flex-wrap">
         <input type="hidden" name="products[{{$key ?? 0 }}]" value="{{$product->id ?? null}}">
         {{-- ++++++++++++++++ Brand ++++++++++++++++ --}}
@@ -10,7 +10,7 @@
                     'placeholder' => __('lang.please_select'),
                     'id' => 'brand_id'.$key,
                 ]) !!}
-                <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
+                <button type="button" class="btn btn-primary btn-sm ml-2 btn-add-modal" data-toggle="modal" data-key="{{ $key }}"
                         data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
 
             </div>
@@ -28,9 +28,10 @@
                     <i class="fas fa-globe"></i>
                 </button>
             </div>
-            @error('name')
+            @error('products.' . $key . '.name')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
+
             @include('layouts.translation_inputs', [
                 'attribute' => 'name',
                 'translations' =>  $key == 0 && isset($recent_product->translations) ? $recent_product->translations : [],
@@ -44,7 +45,7 @@
                 'class' => 'form-control',
             ]) !!}
             <br>
-            @error('product_symbol')
+            @error('products.' . $key .'.product_symbol')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
@@ -55,7 +56,7 @@
                 'class' => 'form-control',
             ]) !!}
             <br>
-            @error('product_sku')
+            @error('products.' . $key .'.product_sku')
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </div>
@@ -71,10 +72,10 @@
                                 'id' => 'categoryId'.$key,
 
                             ]) !!}
-                        <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                        <a data-href="{{route('categories.sub_category_modal')}}"  data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="0"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('category_id')
+                    @error('products.' . $key .'.category_id')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -86,10 +87,10 @@
                             'placeholder' => __('lang.please_select'),
                             'id' => 'subcategory_id1'.$key,'data-key' => $key
                         ]) !!}
-                        <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                        <a data-href="{{route('categories.sub_category_modal')}}" data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="1"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('category_id')
+                    @error('products.' . $key .'.category_id')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -102,10 +103,10 @@
                             'placeholder' => __('lang.please_select'),
                             'id' => 'subCategoryId2'.$key, 'data-key' => $key
                         ]) !!}
-                        <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                        <a data-href="{{route('categories.sub_category_modal')}}" data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="2"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('subcategory_id2')
+                    @error('products.' . $key .'.subcategory_id2')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -118,10 +119,10 @@
                             'placeholder' => __('lang.please_select'),
                             'id' => 'subCategoryId3'.$key, 'data-key' => $key
                         ]) !!}
-                        <a data-href="{{route('categories.sub_category_modal')}}" data-container=".view_modal" class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                        <a data-href="{{route('categories.sub_category_modal')}}" data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
                            data-select_category="3"><i class="fas fa-plus"></i></a>
                     </div>
-                    @error('subcategory_id3')
+                    @error('products.' . $key .'.subcategory_id3')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
@@ -148,7 +149,7 @@
                         <option value="{{ $tax->id }}">{{ $tax->name }}</option>
                     @endforeach
                 </select>
-                <button type="button" class="btn btn-primary btn-sm ml-2"
+                <button type="button" class="btn btn-primary btn-add-modal btn-sm ml-2" data-key="{{ $key }}"
                         data-toggle="modal" data-target="#add_product_tax_modal"
                         data-select_category="2"><i class="fas fa-plus"></i></button>
             </div>
@@ -176,20 +177,20 @@
                         'class' => 'form-control'
                     ]) !!}
                     <br>
-                    @error('sku.0')
+                    @error('products.' . $key . '.variations.0.sku')
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
                 <div class="col-md-2">
                     {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
-                        <select name="products[{{ $key }}][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="{{ $key }}">
+                        <select name="products[{{ $key }}][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0{{$key ??''}}" style="width: 100px;" data-key="{{ $key }}" id="{{$key}}">
                             <option value="">{{__('lang.please_select')}}</option>
                             @foreach($units as $unit)
                                 <option @if($key == 0 &&  isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
                             @endforeach
                         </select>
-                        <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+                        <button type="button" class="btn btn-primary btn-add-modal btn-sm ml-2 add_unit_raw" data-toggle="modal" data-key="{{$key}}" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
                 <div class="col-md-2 pt-4">
