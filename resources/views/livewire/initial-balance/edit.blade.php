@@ -430,7 +430,7 @@
                             </div>
                         </div>
                         @foreach ($prices as $key => $price)
-                        <div class="discount {{ $show_discount == 0 ? (empty($prices[$key]['fill_id'])?'d-none':'') : '' }}">
+                        <div class="discount {{ $show_discount == 0 ? (empty($prices)?'d-none':'') : '' }}">
                             
                                 <div class="row">
                                     <div class="col-md-1">

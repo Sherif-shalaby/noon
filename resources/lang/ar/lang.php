@@ -725,6 +725,7 @@ return array(
     'alert_quantity' => 'كمية التنبيه',
     'expired' => 'منتهي الصلاحية',
     'expired_quantity' => 'الكمية منتهية الصلاحية',
+    'increase'=>'',
 
 );
 
