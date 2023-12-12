@@ -51,7 +51,7 @@ $(document).on("change",".category",function () {
         url: "/category/get-subcategories/"+$(this).val(),
         dataType: "html",
         success: function (response) {
-            console.log(response)
+            // console.log(response)
             $(".subcategory").empty().append(response).change();
             $(".subcategory1").empty();
             $(".subcategory2").empty();
@@ -65,7 +65,7 @@ $(document).on("change",".subcategory",function () {
         url: "/category/get-subcategories/"+$(this).val(),
         dataType: "html",
         success: function (response) {
-            console.log(response)
+            // console.log(response)
             $(".subcategory2").empty().append(response).change();
             $(".subcategory3").empty();
         }

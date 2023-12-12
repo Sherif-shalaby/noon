@@ -174,6 +174,16 @@ Route::group(['middleware' => ['auth']], function () {
     //customers
     Route::get('customer/get-important-date-row', [CustomerController::class,'getImportantDateRow']);
     Route::resource('customers', CustomerController::class);
+    // general_setting : fetch "state" of selected "country" selectbox
+    Route::post('api/customers/fetch-state',[CustomerController::class,'fetchState']);
+    // general_setting : fetch "city" of selected "state" selectbox
+    Route::post('api/customers/fetch-cities',[CustomerController::class,'fetchCity']);
+    // general_setting : fetch "quarter" of selected "city" selectbox
+    Route::post('api/customers/fetch-quarters',[CustomerController::class,'fetchQuarter']);
+    // +++++++++++++++++++ Add "new region" +++++++++++++++++++
+    Route::post('customers/create/storeRegion', [CustomerController::class,'storeRegion'])->name('customers.storeRegion');
+    // +++++++++++++++++++ Add "new quarter" +++++++++++++++++++
+    Route::post('customers/create/storeQuarter', [CustomerController::class,'storeQuarter'])->name('customers.storeQuarter');
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
     Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');

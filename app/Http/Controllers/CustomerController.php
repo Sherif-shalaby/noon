@@ -2,26 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CustomerRequest;
-use App\Http\Requests\CustomerUpdateRequest;
-use App\Models\City;
-use App\Models\Country;
-use App\Models\Customer;
-use App\Models\CustomerImportantDate;
-use App\Models\CustomerType;
-use App\Models\PaymentTransactionSellLine;
-use App\Models\TransactionSellLine;
-use App\Models\Employee;
-use App\Models\System;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Utils\Util;
 use Carbon\Carbon;
+use App\Utils\Util;
+use App\Models\City;
+use App\Models\State;
+use App\Models\System;
+use App\Models\Country;
+use App\Models\Quarter;
+use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\CustomerType;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\TransactionSellLine;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CustomerImportantDate;
+use App\Http\Requests\CustomerRequest;
+use Illuminate\Contracts\View\Factory;
+use App\Models\PaymentTransactionSellLine;
+use App\Http\Requests\CustomerUpdateRequest;
+use Illuminate\Contracts\Foundation\Application;
 
 class CustomerController extends Controller
 {
@@ -73,62 +75,152 @@ class CustomerController extends Controller
     return view('customers.create',compact('customer_types','countryId','countryName'));
 
   }
-
+    // ++++++++++++++ fetchState(): to get "states" of "selected country" selectbox ++++++++++++++
+    public function fetchState(Request $request)
+    {
+        // return($request);
+        $data['states'] = State::where('country_id', $request->country_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++++++++++ fetchCity(): to get "cities" of "selected state" selectbox ++++++++++++++
+    public function fetchCity(Request $request)
+    {
+        // return($request);
+        $data['cities'] = City::where('state_id', $request->state_id)->get(['id','name']);
+        return response()->json($data);
+    }
+    // ++++++++++++++ fetchQuarter(): to get "quarters" of "selected city" selectbox ++++++++++++++
+    public function fetchQuarter(Request $request)
+    {
+        // return($request);
+        $data['quarters'] = Quarter::where('city_id', $request->city_id)->get(['id','name']);
+        return response()->json($data);
+    }
   /**
    * Store a newly created resource in storage.
    *
    * @return Response
    */
-  public function store(CustomerRequest $request)
-  {
-    try
+    public function store(CustomerRequest $request)
     {
-        DB::beginTransaction();
-        $data = $request->except('_token','phone','email');
-        // ++++++++++++++ store phones in array ++++++++++++++++++
-        $data['phone'] = json_encode($request->phone);
-        // ++++++++++++++ store email in array ++++++++++++++++++
-        $data['email'] = json_encode($request->email);
-
-        $data['created_by']=Auth::user()->id;
-        // ========== uploaded image ==========
-        if ($request->file('image'))
+        try
         {
-            $data['image'] = store_file($request->file('image'), 'customers');
+            DB::beginTransaction();
+            $data = $request->except('_token','phone','email');
+            // ++++++++++++++ store phones in array ++++++++++++++++++
+            $data['phone'] = json_encode($request->phone);
+            // ++++++++++++++ store email in array ++++++++++++++++++
+            $data['email'] = json_encode($request->email);
+
+            $data['created_by']=Auth::user()->id;
+            // ========== uploaded image ==========
+            if ($request->file('image'))
+            {
+                $data['image'] = store_file($request->file('image'), 'customers');
+            }
+            // dd($data);
+
+            $customer = Customer::create($data);
+
+
+            if (!empty($request->important_dates)) {
+                $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
+            }
+
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+            if($request->quick_add){
+                return $output;
+            }
+            DB::commit();
+
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
         }
-        // dd($data);
+        //   if ($request->quick_add) {
+        //       return $output;
+        //   }
 
-        $customer = Customer::create($data);
-
-
-        if (!empty($request->important_dates)) {
-            $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
-        }
-
-        $output = [
-            'success' => true,
-            'msg' => __('lang.success')
-        ];
-        if($request->quick_add){
-            return $output;
-        }
-        DB::commit();
-
-    } catch (\Exception $e) {
-        Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-        dd($e);
-        $output = [
-            'success' => false,
-            'msg' => __('lang.something_went_wrong')
-        ];
+        return redirect()->back()->with('status', $output);
     }
-    //   if ($request->quick_add) {
-    //       return $output;
-    //   }
+    // +++++++++ store region +++++++++++
+    public function storeRegion(Request $request)
+    {
+        try
+        {
+            // dd($request);
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'state_id' => 'required|integer',
+                'name' => 'required|string|max:255|unique:cities,name,NULL,id,state_id,' . $request->state_id,
+            ]);
+            // Create a new region in the cities table
+            $city = new City();
+            $city->state_id = $request->state_id;
+            $city->name = $request->name;
+            // Save the new region to the database
+            $city->save();
+            // Optionally, you can return a response to the client
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            dd($e);
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
+    }
 
-    return redirect()->back()->with('status', $output);
-  }
-  public function createOrUpdateCustomerImportantDate($customer_id, $customer_important_dates)
+    // +++++++++ store quarter +++++++++++
+    public function storeQuarter(Request $request)
+    {
+        // return($request);
+        try
+        {
+            // Validate the incoming request data
+            $validatedData = $request->validate([
+                'city_id' => 'required|integer',
+                'name' => 'required|string|max:255|unique:quarters,name,NULL,id,city_id,' . $request->input('city_id'),
+            ]);
+            // Create a new quarter in the quarter table
+            $quarter = new Quarter();
+            $quarter->city_id = (int)$request->city_id;
+            $quarter->name = $request->name;
+            // Save the new quarter to the database
+            $quarter->save();
+            // Optionally, you can return a response to the client
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            // dd($e);
+            $output = [
+                'success' => false,
+                // 'msg' => __('lang.something_went_wrong')
+                'msg' => $e->getMessage(),
+            ];
+        }
+        return redirect()->back()->with('status', $output);
+    }
+    public function createOrUpdateCustomerImportantDate($customer_id, $customer_important_dates)
     {
         $customer=CustomerImportantDate::where('customer_id',$customer_id)->delete();
         foreach ($customer_important_dates as $key => $value) {
@@ -143,36 +235,36 @@ class CustomerController extends Controller
             $customer_important_date->save();
         }
     }
-  /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return Application|Factory|View
-   */
-  public function show($id)
-  {
-      $customer = Customer::find($id);
-      return view('customers.show',compact('customer'));
-  }
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Application|Factory|View
+     */
+    public function show($id)
+    {
+        $customer = Customer::find($id);
+        return view('customers.show',compact('customer'));
+    }
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return Application|Factory|View
-   */
-  public function edit($id)
-  {
-    $customer = Customer::find($id);
-    $customer_types = CustomerType::pluck('name', 'id');
-    $countryId = System::getProperty('country_id');
-    $countryName = Country::where('id', $countryId)->pluck('name')->first();
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Application|Factory|View
+     */
+    public function edit($id)
+    {
+        $customer = Customer::find($id);
+        $customer_types = CustomerType::pluck('name', 'id');
+        $countryId = System::getProperty('country_id');
+        $countryName = Country::where('id', $countryId)->pluck('name')->first();
 
-    return view('customers.edit')->with(compact(
-        'customer',
-        'customer_types','countryId','countryName'
-    ));
-  }
+        return view('customers.edit')->with(compact(
+            'customer',
+            'customer_types','countryId','countryName'
+        ));
+    }
 
   /**
    * Update the specified resource in storage.
@@ -251,7 +343,7 @@ class CustomerController extends Controller
 
     public function get_due(Request $request){
         $today = Carbon::today()->toDateString();
-    
+
         if (!$request->date) {
              $dues = TransactionSellLine::where('payment_status', '!=', 'paid')
                 ->where('status', 'final')
@@ -263,7 +355,7 @@ class CustomerController extends Controller
                 ->where('due_date', '=', $request->date)
                 ->get();
         }
-    
+
         return view('customers.due', compact('dues'));
     }
     public function customer_dues($id,Request $request){
@@ -272,15 +364,15 @@ class CustomerController extends Controller
             ->where('payment_status', '!=', 'paid')
             ->where('status', 'final')
             ->where('due_date', '=', $request->date);
-        
+
         if ($request->date) {
             $dues->where('due_date', '=', $request->date);
         }
-        
+
         // Add the get() method to execute the query and retrieve the results
         $dues = $dues->get();
-        
-        // Now you can use $dues to access the results        
+
+        // Now you can use $dues to access the results
         return view('customers.due', compact('dues','cities'));
     }
     public function pay_due_view($id){
@@ -291,25 +383,25 @@ class CustomerController extends Controller
         $dueAmount = $due->final_total - $totalPayments;
         $dueDollarAmount = $due->dollar_final_total - $totalDollarPayments;
         $dollarExchange = System::getProperty('dollar_exchange');
-        
+
         return view('customers.due_modal')->with(compact('dueAmount', 'dueDollarAmount','due','dollarExchange'));
     }
 
-    
+
 
     public function pay_due(Request $request, $id){
         // return $request;
         // dd($request);
         $due = TransactionSellLine::where('id',$id)->first();
         $customer = Customer::where('id',$due->customer_id)->first();
-       
+
             if(number_format($request->dueAmount <= $request->due ) && number_format($request->dueDollarAmount <= $request->due_dollar)){
                 // return '1';
                 if($request->add_to_customer_balance_dinar < 0){
                     $customer->balance_in_dinar = $customer->balance_in_dinar + abs($request->add_to_customer_balance_dinar);
                 }
                 if($request->add_to_customer_balance_dollar < 0){
-                    $customer->balance_in_dinar = $customer->balance_in_dollar + abs($request->add_to_customer_balance_dollar); 
+                    $customer->balance_in_dinar = $customer->balance_in_dollar + abs($request->add_to_customer_balance_dollar);
                 }
                 $payment_data = [
                     'transaction_id' => $due->id,
@@ -319,7 +411,7 @@ class CustomerController extends Controller
                     'paid_on' => Carbon::now(),
                     'exchange_rate' => System::getProperty('dollar_exchange'),
                 ];
-              
+
                 if($request->amount_change_dinar && !$request->add_to_customer_balance_dinar){
                     $payment_data['amount_change_dinar']  = abs($request->amount_change_dollar);
                 }
@@ -333,7 +425,7 @@ class CustomerController extends Controller
                 $due->dinar_remaining = $due->dinar_remaining - $request->due;
                 $due->payment_status = 'paid';
                 $due->due_date = null;
-                
+
             }else if($request->dueAmount > $request->due || $request->dueDollarAmount > $request->due_dollar){
                 // return '2';
                 $payment_data = [

@@ -52,6 +52,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        return($request);
         // return $request->all();
 
 //        dd(!empty($request->parent_id));

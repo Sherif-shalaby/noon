@@ -44,12 +44,12 @@
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <div class="col-sm-4 pt-4 my-2" style="padding: 0 3.5rem">
+                            {{-- <div class="col-sm-4 pt-4 my-2" style="padding: 0 3.5rem">
                                 <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
                                    data-check_password="{{url('user/check-password')}}"
                                    class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
                                     @lang('lang.delete_all')</a>
-                            </div>
+                            </div> --}}
                             <div id="status"></div>
                             <table id="example" class="table table-striped table-bordered">
                                 <thead>

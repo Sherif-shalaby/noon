@@ -89,6 +89,13 @@
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
             </div>
         </div>
+        {{-- +++++++++ delete_all button ++++++++ --}}
+        <div class="col-2">
+            <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
+               data-check_password="{{url('user/check-password')}}"
+               class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                @lang('lang.delete_all')</a>
+        </div>
     </div>
     </form>
 </div>

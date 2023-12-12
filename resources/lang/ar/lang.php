@@ -160,6 +160,9 @@ return array(
     // ++++++++++++ customers +++++++++++++++
     'customer_types'=>'أنواع العملاء',
     'customer_type'=>'نوع العميل',
+    'quarters'=>'الاحياء',
+    'add_quarter'=>'اضافة حي',
+    'add_region'=>'اضافة منطقة',
     'add_customer_type'=>'اضافة نوع عميل',
     'edit_customer_type'=>'تعديل نوع العميل',
     'edit_brand'=>'تعديل العلامة التجارية',

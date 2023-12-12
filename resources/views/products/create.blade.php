@@ -137,6 +137,7 @@
                     </div>
                     <div class="col-md-12">
                         <div class="row">
+                            {{-- +++++++++++++++++++++ category +++++++++++++++++++++ --}}
                             <div class="col-md-3">
                                 {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -153,6 +154,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
+                            {{-- +++++++++++++++++++++ subcategory1 +++++++++++++++++++++ --}}
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -168,7 +170,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-
+                            {{-- +++++++++++++++++++++ subcategory2 +++++++++++++++++++++ --}}
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -184,7 +186,7 @@
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-
+                            {{-- +++++++++++++++++++++ subcategory3 +++++++++++++++++++++ --}}
                             <div class="col-md-3">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
                                 <div class="d-flex justify-content-center">
@@ -243,7 +245,7 @@
                             </button>
                         </div>
                     </div>
-
+                    {{-- +++++++++++++++ product_unit_raw ++++++++++++++++++ --}}
                     <div class="col-md-12 product_unit_raws ">
                         @include('products.product_unit_raw')
                         <input type="hidden" id="raw_unit_index" value="0" />
