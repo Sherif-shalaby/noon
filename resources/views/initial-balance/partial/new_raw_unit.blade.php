@@ -65,22 +65,26 @@
         </td>
         <td>
             <input type="text" class="form-control dinar_sell_price"
+                wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
+                placeholder = "{{ __('lang.increase').' '.$rows[$index]['prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
+            <span>{{$rows[$index]['prices'][$key]['dollar_increase']}} $</span>
+            @error('rows.' . $index.'prices'. $key . '.dinar_increase')
+                <br>
+                <label class="text-danger error-msg">{{ $message }}</label>
+            @enderror
+        </td>
+       
+        <td>
+            <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
-            @error('rows.' . $index . '.dinar_sell_price')
+            <span>{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>
+            @error('rows.' . $index.'prices'. $key . '.dinar_sell_price')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-        <td>
-            <input type="text" class="form-control dollar_sell_price"
-                wire:model="rows.{{ $index }}.prices.{{ $key }}.dollar_sell_price"
-                placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] .'$' }}">
-            @error('rows.' . $index . '.dollar_sell_price')
-                <br>
-                <label class="text-danger error-msg">{{ $message }}</label>
-            @enderror
-        </td>
+       
         
         
     </tr>

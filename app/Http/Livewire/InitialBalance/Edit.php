@@ -198,6 +198,7 @@ class Edit extends Component
     public function addStoreRow()
     {
         $new_store = [
+            'stock_id'=>'',
             'extra_store_id' => '',
             'data' => [
                 [
@@ -220,13 +221,14 @@ class Edit extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => ''
+            'id' => '','stock_line_id'=>'', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => ''
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
         // array_unshift($this->rows, $newRow);
         foreach ($this->customer_types as $customer_type) {
             $new_price = [
+                'id'=>null,
                 'customer_type_id' => $customer_type->id,
                 'customer_name' => $customer_type->name,
                 'percent' => null,
@@ -258,7 +260,17 @@ class Edit extends Component
         ];
         array_unshift($this->prices, $new_price);
     }
+    public function  changeFill($index)
+    {
+        $fill = $this->num_uf($this->rows[$index]['fill']);
+        $purchase_price = $this->num_uf($this->rows[$index - 1]['purchase_price']);
+        $this->rows[$index]['purchase_price'] = number_format($purchase_price / $fill, 3);
 
+        foreach ($this->rows[$index]['prices'] as $key => $price) {
+            $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
+            $this->changePercent($index, $key);
+        }
+    }
     public function render()
     {
         $currenciesId = [System::getProperty('currency'), 2];
@@ -349,7 +361,7 @@ class Edit extends Component
                     $this->unit_variations[] = $stock->variation->unit_id;
 
                     // $new_price=[];
-                    if (!empty($stock->prices)) {
+                    if (!empty($stock->prices->isNotEmpty())) {
                         foreach ($stock->prices as $price) {
                             $new_price = [
                                 'id' => $price->id,
@@ -376,6 +388,8 @@ class Edit extends Component
                         }
                     } else {
                         $new_price = [
+                            'fill_id'=>null,
+                            'stock_line_id' =>null,
                             'price_type' => null,
                             'price_category' => null,
                             'price' => null,
@@ -401,6 +415,7 @@ class Edit extends Component
                         // dd(44);
                         if (!empty($v_price)) {
                             $new_price = [
+                                'id'=>$v_price->id,
                                 'variation_id' => $v_price->variation_id,
                                 'customer_type_id' => $v_price->customer_type_id,
                                 'customer_name' => $customer_type->name,
@@ -412,6 +427,7 @@ class Edit extends Component
                             $this->rows[$index]['prices'][] = $new_price;
                         } else {
                             $new_price = [
+                                'id'=>null,
                                 'customer_type_id' => $customer_type->id,
                                 'customer_name' => $customer_type->name,
                                 'percent' => null,
@@ -424,11 +440,12 @@ class Edit extends Component
                     }
                 }
                 $this->basic_unit_variations = Unit::whereIn('id', $this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
-                $this->item[0]['basic_unit_variation_id'] = Variation::find($recent_stock->add_stock_lines->first()->product->product_dimensions->variation_id ?? 0)->unit_id;
+                $this->item[0]['basic_unit_variation_id'] = Variation::find($recent_stock->add_stock_lines->first()->product->product_dimensions->variation_id ?? 0)->unit_id??null;
                 ///////////////////////
                 $recent_stock_extra = StockTransaction::where('parent_transction', $stockId)->where('type', 'initial_balance')->orderBy('created_at', 'desc')->get();
                 foreach ($recent_stock_extra as $i => $stock) {
                     $new_store = [
+                        'stock_id'=>$stock->id,
                         'extra_store_id' => $stock->store_id,
                         'data' => []
                     ];
@@ -467,41 +484,7 @@ class Edit extends Component
     }
     public function addRaw()
     {
-        $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '',
-            'fill_quantity' => '',
-            'fill_type' => 'fixed',
-            'fill_currency' => 'dinar',
-            'purchase_price' => '',
-            'selling_price' => '',
-            'dollar_purchase_price' => '',
-            'dollar_selling_price' => '',
-            'unit_id' => '',
-            'basic_unit_id' => '',
-            'change_price_stock' => '',
-            'equal' => '',
-            'method' => '',
-            'prices' => [
-                [
-                    'price_type' => null,
-                    'price_currency' => 'dinar',
-                    'price_category' => null,
-                    'price' => null,
-                    'dinar_price' => null,
-                    'discount_quantity' => null,
-                    'bonus_quantity' => null,
-                    'price_customer_types' => null,
-                    'dinar_price_after_desc' => null,
-                    'price_after_desc' => null,
-                    'dinar_total_price' => null,
-                    'total_price' => null,
-                    'dinar_piece_price' => null,
-                    'piece_price' => null,
-                ],
-            ],
-        ];
-        array_unshift($this->rows, $newRow);
-        // $this->dispatchBrowserEvent('initialize-select2');
+        $this->addPrices();
     }
     public function changeUnit($index)
     {
@@ -512,34 +495,6 @@ class Edit extends Component
             }
         }
         $this->basic_unit_variations = Unit::whereIn('id', $this->unit_variations)->orderBy('name', 'asc')->pluck('name', 'id');
-        ////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////// calculate row based on other rows//////////////
-        $unit = $this->rows[$index]['unit_id'];
-        $unit_index = '';
-        foreach ($this->rows as $i => $item) {
-            if ($item['basic_unit_id'] === $unit) {
-                $unit_index = $i;
-                break;
-            }
-        }
-        if ($unit_index !== '') {
-            $this->rows[$index]['equal'] = 1;
-            $this->rows[$index]['quantity'] = 0;
-            $this->rows[$index]['fill_type'] = $this->rows[$unit_index]['fill_type'];
-            if ((float)$this->rows[$unit_index]['equal'] != 0) {
-                $this->rows[$index]['dollar_purchase_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_purchase_price']) / (float)$this->rows[$unit_index]['equal']);
-                $this->rows[$index]['dollar_selling_price'] = ($this->num_uf($this->rows[$unit_index]['dollar_selling_price']) / (float)$this->rows[$unit_index]['equal']);
-                $this->rows[$index]['purchase_price'] = ($this->num_uf($this->rows[$unit_index]['purchase_price']) / (float)$this->rows[$unit_index]['equal']);
-                $this->rows[$index]['selling_price'] = ($this->num_uf($this->rows[$unit_index]['selling_price']) / (float)$this->rows[$unit_index]['equal']);
-                if ($this->rows[$index]['fill_type'] == "fixed") {
-                    $this->rows[$index]['fill_quantity'] = (float)$this->rows[$unit_index]['fill_quantity'] / (float)$this->rows[$unit_index]['equal'];
-                    $this->rows[$index]['fill_currency'] = $this->rows[$unit_index]['fill_currency'];
-                } else {
-                    $this->rows[$index]['fill_quantity'] = $this->rows[$unit_index]['fill_quantity'];
-                }
-                // $this->changePurchasePrice($index);
-            }
-        }
     }
     public function changeBaseUnit($index)
     {
@@ -626,6 +581,41 @@ class Edit extends Component
                 $transaction->transaction_currency = $this->transaction_currency;
                 $transaction->updated_by = Auth::user()->id;
                 $transaction->save();
+              
+                $store_transactions=StockTransaction::where('parent_transaction',$this->item[0]['stockId'])->get();
+                foreach($store_transactions as $key=>$stock){
+                    foreach($this->fill_stores as $index=>$store){
+                        if(!empty($store['stock_id'])&&$stock->id==$store['stock_id']){
+                            $stock->store_id = $store['extra_store_id'];
+                            $stock->status = 'received';
+                            $stock->order_date = Carbon::now();
+                            $stock->transaction_date =  Carbon::now();
+                            $stock->purchase_type = 'local';
+                            $stock->type = 'initial_balance';
+                            $stock->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
+                            $stock->transaction_currency = $this->transaction_currency;
+                            $stock->updated_by = Auth::user()->id;
+                            $stock->save();
+                        }
+                    }
+                }
+
+                foreach($this->fill_stores as $index=>$store){
+                    if(empty($store['stock_id'])){
+                        $new_transaction = new StockTransaction();
+                        $new_transaction->store_id = $this->item[0]['store_id'];
+                        $new_transaction->status = 'received';
+                        $new_transaction->order_date = Carbon::now();
+                        $new_transaction->transaction_date =  Carbon::now();
+                        $new_transaction->purchase_type = 'local';
+                        $new_transaction->type = 'initial_balance';
+                        $new_transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
+                        $new_transaction->transaction_currency = $this->transaction_currency;
+                        $new_transaction->updated_by = Auth::user()->id;
+                        $new_transaction->parent_transction = $transaction->id;
+                        $new_transaction->save();
+                    }
+                }
                 //Edit Product
                 $product = Product::find($this->item[0]['id']);
                 $product->name = $this->item[0]['name'];
@@ -667,6 +657,19 @@ class Edit extends Component
                     $Variation->created_by = Auth::user()->id;
                     $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
                     $Variation->save();
+                    foreach($this->rows[$index]['prices'] as $p=>$price){
+                        if (isset($this->rows[$index]['prices'][$key]['id'])) {
+                            $Variation = VariationPrice::find($this->rows[$index]['id']);
+                        } else {
+                            $Variation_price = new VariationPrice();
+                        }
+                        $Variation_price->variation_id = $Variation->id;
+                        $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
+                        $Variation_price->dinar_sell_price = $this->rows[$index]['prices'][$key]['dinar_sell_price'] ?? null;
+                        $Variation_price->dollar_sell_price = $this->rows[$index]['prices'][$key]['dollar_sell_price'] ?? null;
+                        $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
+                        $Variation_price->save();
+                    }
                     ////////////////
 
                     $add_stock_data = [
@@ -982,6 +985,13 @@ class Edit extends Component
     {
         $this->rows[$index]['dollar_purchase_price'] = number_format((float)$this->num_uf($this->rows[$index]['purchase_price']) / (float)$this->exchange_rate, 3);
         $this->changeDollarFilling($index);
+    }
+    public function changePercent($index, $key)
+    {
+        $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
+        $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
+        $this->rows[$index]['prices'][$key]['dinar_sell_price'] = ($purchase_price * $percent) / 100;
+        $this->rows[$index]['prices'][$key]['dollar_sell_price'] = $this->rows[$index]['prices'][$key]['dinar_sell_price']  / $this->num_uf($this->exchange_rate);
     }
     public function changeExchangeRateBasedPrices()
     {

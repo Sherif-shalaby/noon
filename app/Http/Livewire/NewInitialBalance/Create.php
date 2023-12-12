@@ -1000,7 +1000,9 @@ class Create extends Component
                 'customer_type_id' => $customer_type->id,
                 'customer_name' => $customer_type->name,
                 'percent' => null,
-                'dollar_sell_price' => null,
+                'dollar_increase' => 0,
+                'dinar_increase' => null,
+                'dollar_sell_price' => 0,
                 'dinar_sell_price' => null,
                 'quantity' => null,
             ];
@@ -1011,8 +1013,36 @@ class Create extends Component
     {
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
-        $this->rows[$index]['prices'][$key]['dinar_sell_price'] = ($purchase_price * $percent) / 100;
-        $this->rows[$index]['prices'][$key]['dollar_sell_price'] = $this->rows[$index]['prices'][$key]['dinar_sell_price']  / $this->num_uf($this->exchange_rate);
+        if($this->transaction_currency != 2){
+            $this->rows[$index]['prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
+            $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->rows[$index]['prices'][$key]['dinar_increase']  / $this->num_uf($this->exchange_rate),3);
+            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dinar_increase'],3);
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dollar_increase'],3);
+        }else{
+            $this->rows[$index]['prices'][$key]['dollar_increase'] = ($purchase_price * $percent) / 100;
+            $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->rows[$index]['prices'][$key]['dollar_increase']  * $this->num_uf($this->exchange_rate),3);
+            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dinar_increase'],3);
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dollar_increase'],3);
+        }
+    }
+    public function changeIncrease($index, $key)
+    {
+        $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
+        $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
+        if($this->transaction_currency != 2){
+            if($percent==0 || $percent==null){
+                $this->rows[$index]['prices'][$key]['dollar_increase']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])/ $this->num_uf($this->exchange_rate),3);
+                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dinar_increase'],3);
+                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dollar_increase'],3);
+                }
+        }else{
+            if($percent==0 || $percent==null){
+                $this->rows[$index]['prices'][$key]['dollar_increase']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']));
+                $this->rows[$index]['prices'][$key]['dinar_increase']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])* $this->num_uf($this->exchange_rate));
+                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dinar_increase'],3);
+                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price+$this->rows[$index]['prices'][$key]['dollar_increase'],3);
+            }
+        }
     }
     public function  changeFill($index)
     {
@@ -1022,7 +1052,13 @@ class Create extends Component
 
         foreach ($this->rows[$index]['prices'] as $key => $price) {
             $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
-            $this->changePercent($index, $key);
+            if( $this->rows[$index]['prices'][$key]['percent'] !=null){
+                $this->changePercent($index, $key);
+            }else{
+                $this->rows[$index]['prices'][$key]['dinar_increase']=number_format($this->rows[$index - 1]['prices'][$key]['dinar_increase']/ $fill, 3);
+                $this->rows[$index]['prices'][$key]['dollar_increase']=number_format($this->rows[$index - 1]['prices'][$key]['dollar_increase']/ $fill, 3);
+                $this->changeIncrease($index, $key);
+            }
         }
     }
     public function showDiscount()
