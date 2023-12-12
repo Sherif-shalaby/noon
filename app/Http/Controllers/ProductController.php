@@ -121,8 +121,10 @@ class ProductController extends Controller
      }
 //     dd(isset($recent_product));
     $units=Unit::orderBy('created_at', 'desc')->get();
-    $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
-    $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
+    $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
+    $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
+    $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
+    $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     // product_tax
@@ -132,8 +134,8 @@ class ProductController extends Controller
       $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
 
       return view('products.create',
-    compact('categories','brands','units','stores','branches',
-        'product_tax','quick_add','unitArray','subcategories',
+    compact('categories1','categories2','categories3','categories4','brands','units','stores','branches',
+        'product_tax','quick_add','unitArray',
         'clear_all_input_form','recent_product'));
   }
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */

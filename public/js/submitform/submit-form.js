@@ -194,24 +194,24 @@ var main_category_id=0;
 $(".openCategoryModal").click(function (e){
     select_category=$(this).data('select_category');
     if(select_category=="0"){
-        main_category_id= 0;
+        main_category_id= 1;
     }
     else if(select_category=="1"){
-        main_category_id= $("#categoryId").val();
+        main_category_id= 2;
     }
     else if(select_category=="2"){
-        main_category_id= $("#subcategory_id1").val();
+        main_category_id= 3;
     }
     else if(select_category=="3"){
-        main_category_id= $("#subCategoryId2").val();
+        main_category_id= 4;
     }
     console.log(select_category,main_category_id)
 
-    if((main_category_id!=='' && select_category!=0) || main_category_id===0){
+    // if((main_category_id!=='' && select_category!=0) || main_category_id===0){
     $(this).addClass('btn-modal');
-    }else{
-        Swal.fire("warning", LANG.no_parent_category, "warning");
-    }
+    // }else{
+    //     Swal.fire("warning", LANG.no_parent_category, "warning");
+    // }
 });
 $("#create-category-btn").click(function (e){
     e.preventDefault();

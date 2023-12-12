@@ -303,8 +303,8 @@
     @endif
     <script>
         document.addEventListener('livewire:load', function () {
-            $('.depart').select().on('change', function (e) {
-                @this.set('department_id', $(this).val());
+            $('.depart1').select().on('change', function (e) {
+                @this.set('department_id1', $(this).val());
             });
         });
         document.addEventListener('livewire:load', function () {

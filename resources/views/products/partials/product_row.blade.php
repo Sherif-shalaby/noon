@@ -66,7 +66,7 @@
                 <div class="col-md-3" data-key="{{ $key }}">
                     {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
-                            {!! Form::select('products['.$key.'][category_id]', $categories, $key == 0 && isset($recent_product->category_id) ? $recent_product->category_id : null, [
+                            {!! Form::select('products['.$key.'][category_id]', $categories1, $key == 0 && isset($recent_product->category_id) ? $recent_product->category_id : null, [
                                 'class' => 'form-control select2 category',
                                 'placeholder' => __('lang.please_select'),
                                 'id' => 'categoryId'.$key,
@@ -82,7 +82,7 @@
                 <div class="col-md-3">
                     {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
-                        {!! Form::select('products['.$key.'][subcategory_id1]', $subcategories, $key == 0 && isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
+                        {!! Form::select('products['.$key.'][subcategory_id1]', $categories2, $key == 0 && isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
                             'class' => 'form-control select2 subcategory',
                             'placeholder' => __('lang.please_select'),
                             'id' => 'subcategory_id1'.$key,'data-key' => $key
@@ -98,7 +98,7 @@
                 <div class="col-md-3">
                     {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
-                        {!! Form::select('products['.$key.'][subcategory_id2]', $subcategories, $key == 0 && isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
+                        {!! Form::select('products['.$key.'][subcategory_id2]', $categories3, $key == 0 && isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
                             'class' => 'form-control select2 subcategory2',
                             'placeholder' => __('lang.please_select'),
                             'id' => 'subCategoryId2'.$key, 'data-key' => $key
@@ -114,7 +114,7 @@
                 <div class="col-md-3">
                     {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
-                        {!! Form::select('products['.$key.'][subcategory_id3]', $subcategories, $key == 0 && isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
+                        {!! Form::select('products['.$key.'][subcategory_id3]', $categories4, $key == 0 && isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
                             'class' => 'form-control select2 subcategory3',
                             'placeholder' => __('lang.please_select'),
                             'id' => 'subCategoryId3'.$key, 'data-key' => $key
