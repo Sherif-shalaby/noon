@@ -42,7 +42,7 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $products = [], $variations = [], $department_id = null, $items = [], $price, $total, $client_phone,
+    public $products = [], $variations = [], $department_id1 = null,$department_id2 = null,$department_id3 = null,$department_id4 = null, $items = [], $price, $total, $client_phone,
         $client_id, $client, $cash = 0, $rest, $invoice, $invoice_id, $date, $payment_status, $data = [], $payments = [],
         $invoice_lang, $transaction_currency, $store_id, $store_pos_id, $showColumn = false, $anotherPayment = false, $sale_note,
         $payment_note, $staff_note, $payment_types, $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar,
@@ -77,8 +77,17 @@ class Create extends Component
             $this->changeAllProducts();
             //        $this->store_pos = StorePos::where('store_id', $this->store_id)->where('user_id', Auth::user()->id)->pluck('name','id')->toArray();
         }
-        if (isset($data['var1']) && $data['var1'] == "department_id") {
-            $this->updatedDepartmentId($data['var2'], 'department_id');
+        if (isset($data['var1']) && $data['var1'] == "department_id1") {
+            $this->updatedDepartmentId($data['var2'], 'department_id1');
+        }
+        if (isset($data['var1']) && $data['var1'] == "department_id2") {
+            $this->updatedDepartmentId($data['var2'], 'department_id2');
+        }
+        if (isset($data['var1']) && $data['var1'] == "department_id3") {
+            $this->updatedDepartmentId($data['var2'], 'department_id3');
+        }
+        if (isset($data['var1']) && $data['var1'] == "department_id4") {
+            $this->updatedDepartmentId($data['var2'], 'department_id4');
         }
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
@@ -87,7 +96,10 @@ class Create extends Component
     public function mount(Util $commonUtil)
     {
         $this->payment_types = $commonUtil->getPaymentTypeArrayForPos();
-        $this->department_id = null;
+        $this->department_id1 = null;
+        $this->department_id2 = null;
+        $this->department_id3 = null;
+        $this->department_id4 = null;
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if (empty($this->store_pos)) {
@@ -141,7 +153,7 @@ class Create extends Component
 
     public function render()
     {
-        $departments = Category::get();
+        $departments = Category::where('parent_id' ,'!=',null)->get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
         $languages = System::getLanguageDropdown();
@@ -451,13 +463,22 @@ class Create extends Component
 
     public function updatedDepartmentId($value, $name)
     {
-        $this->allproducts = Product::when($name == 'department_id', function ($query) {
-            $query->where(function ($query) {
-                $query->where('category_id', $this->department_id)
-                    ->orWhere('subcategory_id1', $this->department_id)
-                    ->orWhere('subcategory_id2', $this->department_id)
-                    ->orWhere('subcategory_id3', $this->department_id);
-            });
+        $this->allproducts = Product::when($name == 'department_id1', function ($query) {
+            $query->where('category_id', $this->department_id1);
+            // $query->where(function ($query) {
+            //     $query->where('category_id', $this->department_id1)
+            //         ->Where('subcategory_id1', $this->department_id2)
+            //         ->Where('subcategory_id2', $this->department_id3)
+            //         ->Where('subcategory_id3', $this->department_id4);
+            // });
+        })->when($name == 'department_id2', function ($query) {
+            $query->where('subcategory_id1', $this->department_id2);
+        })
+        ->when($name == 'department_id3', function ($query) {
+            $query->where('subcategory_id2', $this->department_id3);
+        })
+        ->when($name == 'department_id4', function ($query) {
+            $query->where('subcategory_id3', $this->department_id4);
         })->when($name == 'brand_id', function ($query) use ($value) {
             $query->where('brand_id', $this->brand_id);
         })->when($name == 'highest_price' && $this->highest_price == "1", function ($query) {

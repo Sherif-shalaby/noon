@@ -47,46 +47,46 @@ $(document).on("change",".is_price_permenant",function () {
     $(this).closest("tr").find(".price_end_date").prop('disabled', (i, v) => !v);
     $(this).closest("tr").find(".price_end_date").val(null);
 });
-$(document).on("change",".category",function () {
-    var key = $(this).closest('.col-md-3').data('key');
-    console.log(key);
-    $.ajax({
-        type: "get",
-        url: "/category/get-subcategories/"+$(this).val(),
-        dataType: "html",
-        success: function (response) {
-            console.log(response)
-            $("#subcategory_id1" + key).empty().append(response).change();
-            $("#subCategoryId2" + key).empty();
-            $("#subCategoryId3" + key).empty();
-        }
-    });
-});
-$(document).on("change",".subcategory",function () {
-    var key = $(this).data('key');
-    $.ajax({
-        type: "get",
-        url: "/category/get-subcategories/"+$(this).val(),
-        dataType: "html",
-        success: function (response) {
-            console.log(response)
-            $("#subCategoryId2" + key).empty().append(response).change();
-            $("#subCategoryId3" + key).empty();
-        }
-    });
-});
-$(document).on("change",".subcategory2",function () {
-    var key = $(this).data('key');
-    $.ajax({
-        type: "get",
-        url: "/category/get-subcategories/"+$(this).val(),
-        dataType: "html",
-        success: function (response) {
-            console.log(response)
-            $("#subCategoryId3" + key).empty().append(response).change();
-        }
-    });
-});
+// $(document).on("change",".category",function () {
+//     var key = $(this).closest('.col-md-3').data('key');
+//     console.log(key);
+//     $.ajax({
+//         type: "get",
+//         url: "/category/get-subcategories/"+$(this).val(),
+//         dataType: "html",
+//         success: function (response) {
+//             console.log(response)
+//             $("#subcategory_id1" + key).empty().append(response).change();
+//             $("#subCategoryId2" + key).empty();
+//             $("#subCategoryId3" + key).empty();
+//         }
+//     });
+// });
+// $(document).on("change",".subcategory",function () {
+//     var key = $(this).data('key');
+//     $.ajax({
+//         type: "get",
+//         url: "/category/get-subcategories/"+$(this).val(),
+//         dataType: "html",
+//         success: function (response) {
+//             console.log(response)
+//             $("#subCategoryId2" + key).empty().append(response).change();
+//             $("#subCategoryId3" + key).empty();
+//         }
+//     });
+// });
+// $(document).on("change",".subcategory2",function () {
+//     var key = $(this).data('key');
+//     $.ajax({
+//         type: "get",
+//         url: "/category/get-subcategories/"+$(this).val(),
+//         dataType: "html",
+//         success: function (response) {
+//             console.log(response)
+//             $("#subCategoryId3" + key).empty().append(response).change();
+//         }
+//     });
+// });
 $(document).ready(function() {
     $('.js-example-basic-multiple').select2(
         {

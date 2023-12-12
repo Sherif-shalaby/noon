@@ -66,13 +66,27 @@
                                             <label for="parent_id">@lang('categories.parent')</label>
                                             <select name="parent_id" class="form-control select2"  id="my-select">
                                                 <option value="" selected disabled readonly>---{{ __('select') }}---</option>
+                                                <option value="1" >Category 1</option>
+                                                <option value="2">Category 2</option>
+                                                <option value="3">Category 3</option>
+                                                <option value="4">Category 4</option>
+                                                {{-- <div class="form-group">
+                                                    
+                                                    {!! Form::label('parent_id', __('lang.parent_category') . ':') !!}
+                                                    {!! Form::select('parent_id', [
+                                                        '0' => 'Category 1',
+                                                        '1' => 'Category 2',
+                                                        '2' => 'Category 3',
+                                                        '3' => 'Category 4',
+                                                    ], false, ['class' => 'form-control', 'data-live-search' => 'true', 'style' => 'width: 100%', 'placeholder' => __('lang.please_select'), 'id' => 'parent_id']) !!}
+                                                </div>
                                                 @forelse($cats as $cat)
                                                     <option value="{{ $cat->id }}"
                                                         {{ old('parent_id', request()->parent_id ) ==$cat->id?'selected':null }} >
                                                         {{ $cat->name }}
                                                     </option>
                                                 @empty
-                                                @endforelse
+                                                @endforelse --}}
                                             </select>
                                         </div>
                                         @error('parent_id')
@@ -93,7 +107,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>@lang('categories.cover')</label>
-                                            {{-- <input class="form-control img" name="cover"  type="file" accept="image/*" > --}}
+                                            <input class="form-control img" name="cover"  type="file" accept="image/*" >
                                             <div class="dropzone" id="my-dropzone" required>
                                                 <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
                                             </div>
@@ -106,7 +120,7 @@
                                 {{-- <button type="submit" class="btn btn-primary">
                                     <i class="la la-check-square-o"></i> {{ __('Add') }}
                                 </button> --}}
-                                <button type="button" class="btn btn-primary" id="submit-btn">
+                                <button type="submit" class="btn btn-primary" id="submit-btn">
                                     <i class="la la-check-square-o"></i> {{ __('Add') }}
                                 </button>
                             </div>
@@ -120,7 +134,7 @@
     </div>
 @endsection
 @push('js')
-<script src="{{ asset('js/category.js') }}"></script>
+{{-- <script src="{{ asset('js/category.js') }}"></script> --}}
 <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 {!! JsValidator::formRequest('App\Http\Requests\CategoryRequest','#product-form'); !!}
 @endpush
