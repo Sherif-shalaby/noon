@@ -7,6 +7,7 @@ use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\MoneySafeTransaction;
 use App\Models\Product;
+use App\Models\ProductDimension;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\ProductTax;
@@ -16,6 +17,8 @@ use App\Models\Supplier;
 use App\Models\System;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\VariationPrice;
+use App\Models\VariationStockline;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -147,13 +150,15 @@ class InitialBalanceController extends Controller
                     }
                 }
                 if (!empty($product->variations())) {
+                    $variation=$product->variations()->pluck('id')->toArray();
                     $product->variations()->update([
                         'deleted_by'=>Auth::user()->id
                     ]);
+                    VariationPrice::whereIn('variation_id', $variation)->delete();
                     $product->variations()->delete();
                 }
                 ProductTax::where('product_id', $add_stock_lines->first()->product_id)->delete();
-
+                ProductDimension::where('product_id', $add_stock_lines->first()->product_id)->delete();
                 $product->deleted_by = Auth::user()->id;
                 $product->save();
                 $product->delete();
@@ -171,6 +176,7 @@ class InitialBalanceController extends Controller
                 if (!empty($delete_add_stock_line_ids)) {
                     AddStockLine::where('stock_transaction_id', $id)->whereIn('id', $delete_add_stock_line_ids)->delete();
                     ProductPrice::whereIn('stock_line_id',$delete_add_stock_line_ids)->delete();
+                    VariationStockline::whereIn('stock_line_id',$delete_add_stock_line_ids)->delete();
                 }
             }
 

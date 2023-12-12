@@ -574,40 +574,37 @@
                                     wire:click="showStore()"><i
                                         class="fas {{ $show_store == 0 ? 'fa-arrow-right' : 'fa-arrow-left' }}"></i></button>
                             </div>
-                            @foreach ($fill_stores as $i => $store)
+                            @forelse ($fill_stores as $i => $store)
                                 <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                        wire:click="addStoreRow()">
+                                        <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                     <div class="col-md-2">
-                                        {!! Form::label('extra_store_id', __('lang.store') . ':*', []) !!}
-                                        <div class="d-flex justify-content-center">
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                wire:click="addStoreRow()">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
+                                        <label for="extra_store_id"
+                                        class="h5 ">{{ __('lang.store') . ':*' }}</label>
                                             {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
-                                                'class' => ' form-control  extra_store_id',
+                                                'class' => 'form-control select2 extra_store_id',
                                                 'data-index' => $i,
                                                 'data-name' => 'extra_store_id',
                                                 'required',
                                                 'placeholder' => __('lang.please_select'),
                                                 'wire:model' => 'fill_stores.'.$i.'.extra_store_id',
+                                                'wire:key' => 'extra_store_id_'.$i,
                                             ]) !!}
                                             
-                                            {{-- <button type="button" class="btn btn-primary btn-sm ml-2"
-                                                data-toggle="modal" data-target=".add-store"
-                                                href="{{ route('store.create') }}"><i
-                                                    class="fas fa-plus"></i></button> --}}
-                                            {{-- @include('store.create', ['quick_add' => 1]) --}}
-                                        </div>
-                                        @error('fill_stores.'.$i.'.extra_store_id')
+                                        {{-- @error('fill_stores.'.$i.'.extra_store_id')
                                             <span class="error text-danger">{{ $message }}</span>
-                                        @enderror
+                                        @enderror --}}
                                     </div>
                                     @foreach ($fill_stores[$i]['data'] as $x => $fill)
                                         <div class="col-md-1">
                                             <label for="store_fill_id"
                                                 class="h5 ">{{ __('lang.fill') . ':*' }}</label>
                                             {!! Form::select('store_fill_id', $basic_unit_variations, $fill_stores[$i]['data'][$x]['store_fill_id'], [
-                                                'id' => 'store_fill_id',
+                                                // 'id' => 'store_fill_id',
                                                 'class' => ' form-control select2 store_fill_id',
                                                 'data-name' => 'store_fill_id',
                                                 'data-index' => $i,
@@ -627,6 +624,12 @@
                                             @enderror
                                             
                                         </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-sm btn-danger"
+                                            wire:click="delete_store_data_raw({{$i}},{{ $x }})">
+                                            <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
                                         <div class="col-md-1 {{$x!=(count($fill_stores[$i]['data'])-1)?'d-none':''}}">
                                             <button type="button" class="btn btn-sm btn-primary"
                                                 wire:click="addStoreDataRow({{$i}})">
@@ -641,7 +644,16 @@
                                         </div>
                                     @endforeach
                                 </div>
-                            @endforeach
+                            @empty
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                                wire:click="addStoreRow()">
+                                                <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @endforelse
                         </div>
                     </div>
 

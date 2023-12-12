@@ -162,10 +162,10 @@ class Create extends Component
             } else if ($data['var1'] == "store_fill_id" && $data['var3'] !== '') {
                 $this->fill_stores[$data['var3']]['data'][$data['var4']]['store_fill_id'] = $data['var2'];
             }
-            // else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
-            //     // dd($data);
-            //     $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
-            // }
+            else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
+                // dd($data);
+                $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
+            }
             else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
@@ -451,6 +451,7 @@ class Create extends Component
                 $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
                 $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
                 $Variation->product_id = $product->id;
+                $Variation->equal = $this->num_uf($this->rows[$index]['fill']);
                 $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
                 // $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
                 $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
@@ -503,100 +504,105 @@ class Create extends Component
         for ($i = -1; $i < count($this->fill_stores); $i++) {
             // dd($this->fill_stores);
             //Add stock transaction
+            $parent_transction=0;
             $store_id = $i < 0 ? $this->item[0]['store_id'] : $this->fill_stores[$i]['extra_store_id'];
-            $transaction = new StockTransaction();
-            $transaction->store_id = $store_id;
-            $transaction->status = 'received';
-            $transaction->order_date = Carbon::now();
-            $transaction->transaction_date =  Carbon::now();
-            $transaction->purchase_type = 'local';
-            $transaction->type = 'initial_balance';
-            $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
-            $transaction->transaction_currency = $this->transaction_currency;
-            $transaction->created_by = Auth::user()->id;
-            $transaction->save();
-            foreach ($this->rows as $index => $row) {
-                $quantity = 0;
-                if ($i > -1) {
-                    foreach ($this->fill_stores[$i]['data'] as $s => $store) {
-                        if ($store['store_fill_id'] == Variation::where('product_id', $product_id)->where('id', $this->variations[$index])->first()->unit_id) {
-                            $quantity = $store['quantity'];
-                        }
-                    }
-                }
-                $add_stock_data = [
-                    'product_id' => $product_id,
-                    'variation_id' => $this->variations[$index],
-                    'stock_transaction_id' => $transaction->id,
-                    'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
-                    // 'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
-                    // 'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
-                    'purchase_price' => null,
-                    'sell_price' => null,
-                    // 'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-                    'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
-                    'dollar_sell_price' =>  null,
-                    'dollar_sub_total' =>  null,
-                    'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
-                    // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
-                    // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
-                    // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-                    // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
-                ];
-                $stockLine = AddStockLine::create($add_stock_data);
-                if (!empty($this->prices)) {
-                    foreach ($this->prices as $price) {
-
-                        if (!empty($price['dinar_price']) || !empty($price['discount_quantity'])) {
-                            if ($price['fill_id'] == Variation::find($this->variations[$index])->unit_id) {
-                                // dd(6);
-                                $price_data = [
-                                    'variation_id' => $this->variations[$index],
-                                    'stock_line_id' => $stockLine->id,
-                                    'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
-                                    'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
-                                    'price' => !empty($price['price']) ? $this->num_uf($price['price'])  : null,
-                                    'dinar_price' => !empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null,
-                                    'price_customers' => !empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null,
-                                    'dinar_price_customers' => !empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc'])  : null,
-                                    'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
-                                    'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
-                                    'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
-                                    'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
-                                    'created_by' => Auth::user()->id,
-                                    'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['total_price'])  : null,
-                                    'total_price' => !empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null,
-                                    'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
-                                    'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
-                                ];
-                                ProductPrice::create($price_data);
+            if(!empty($store_id )){
+                $transaction = new StockTransaction();
+                $transaction->store_id = $store_id;
+                $transaction->status = 'received';
+                $transaction->order_date = Carbon::now();
+                $transaction->transaction_date =  Carbon::now();
+                $transaction->purchase_type = 'local';
+                $transaction->type = 'initial_balance';
+                $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
+                $transaction->transaction_currency = $this->transaction_currency;
+                $transaction->created_by = Auth::user()->id;
+                $transaction->parent_transction = $parent_transction;
+                $transaction->save();
+                $parent_transction = $i==-1?$transaction->id:0;
+                foreach ($this->rows as $index => $row) {
+                    $quantity = 0;
+                    if ($i > -1) {
+                        foreach ($this->fill_stores[$i]['data'] as $s => $store) {
+                            if ($store['store_fill_id'] == Variation::where('product_id', $product_id)->where('id', $this->variations[$index])->first()->unit_id) {
+                                $quantity = $store['quantity'];
                             }
                         }
                     }
-                }
-                // dd($variations[$index]);
-                foreach ($this->rows[$index]['prices'] as $key => $price) {
-                    if (isset($this->rows[$index]['prices'][$key]['customer_type_id'])) {
-                        // dd($this->rows[$index]['prices']);
-                        if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
-                            $variation_price = VariationPrice::where('variation_id', $this->variations[$index])->where('customer_type_id', $this->rows[$index]['prices'][$key]['customer_type_id'])->first();
-                            $add_variation_stock_data = [
-                                'variation_price_id' => $variation_price->id,
-                                'stock_line_id' => $stockLine->id,
-                                // 'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
-                                'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
-                                'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])  : null,
-                                'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
-                                'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
-                                'dollar_sell_price' => ($this->transaction_currency == 2) ? ($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']))  : 0,
-                                'dollar_sub_total' => !empty($this->dollar_sub_total($index, $key)) ? $this->num_uf((float)$this->dollar_sub_total($index, $key))  : null,
-                                // 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
-                            ];
-                            $variationstockLine =  VariationStockline::create($add_variation_stock_data);
+                    $add_stock_data = [
+                        'product_id' => $product_id,
+                        'variation_id' => $this->variations[$index],
+                        'stock_transaction_id' => $transaction->id,
+                        'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
+                        // 'fill_type' => isset($this->rows[$index]['fill_type']) ? $this->rows[$index]['fill_type'] : '',
+                        // 'fill_quantity' => isset($this->rows[$index]['fill_quantity']) ? $this->num_uf($this->rows[$index]['fill_quantity']) : 0,
+                        'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
+                        'sell_price' => null,
+                        // 'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
+                        'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
+                        'dollar_sell_price' =>  null,
+                        'dollar_sub_total' =>  null,
+                        'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
+                        // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
+                        // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
+                        // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
+                        // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+                    ];
+                    $stockLine = AddStockLine::create($add_stock_data);
+                    if (!empty($this->prices)) {
+                        foreach ($this->prices as $price) {
+
+                            if (!empty($price['dinar_price']) || !empty($price['discount_quantity'])) {
+                                if ($price['fill_id'] == Variation::find($this->variations[$index])->unit_id) {
+                                    // dd(6);
+                                    $price_data = [
+                                        'variation_id' => $this->variations[$index],
+                                        'stock_line_id' => $stockLine->id,
+                                        'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
+                                        'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
+                                        'price' => !empty($price['price']) ? $this->num_uf($price['price'])  : null,
+                                        'dinar_price' => !empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null,
+                                        'price_customers' => !empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null,
+                                        'dinar_price_customers' => !empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc'])  : null,
+                                        'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
+                                        'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
+                                        'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
+                                        'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
+                                        'created_by' => Auth::user()->id,
+                                        'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['total_price'])  : null,
+                                        'total_price' => !empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null,
+                                        'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
+                                        'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
+                                    ];
+                                    ProductPrice::create($price_data);
+                                }
+                            }
                         }
                     }
+                    // dd($variations[$index]);
+                    foreach ($this->rows[$index]['prices'] as $key => $price) {
+                        if (isset($this->rows[$index]['prices'][$key]['customer_type_id'])) {
+                            // dd($this->rows[$index]['prices']);
+                            if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
+                                $variation_price = VariationPrice::where('variation_id', $this->variations[$index])->where('customer_type_id', $this->rows[$index]['prices'][$key]['customer_type_id'])->first();
+                                $add_variation_stock_data = [
+                                    'variation_price_id' => $variation_price->id,
+                                    'stock_line_id' => $stockLine->id,
+                                    // 'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
+                                    'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
+                                    'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])  : null,
+                                    'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
+                                    'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
+                                    'dollar_sell_price' => ($this->transaction_currency == 2) ? ($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']))  : 0,
+                                    'dollar_sub_total' => !empty($this->dollar_sub_total($index, $key)) ? $this->num_uf((float)$this->dollar_sub_total($index, $key))  : null,
+                                    // 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
+                                ];
+                                $variationstockLine =  VariationStockline::create($add_variation_stock_data);
+                            }
+                        }
+                    }
+                    $this->updateProductQuantityStore($product_id, $this->variations[$index], $store_id, $this->num_uf($this->rows[$index]['quantity']));
                 }
-                $this->updateProductQuantityStore($product_id, $this->variations[$index], $store_id, $this->num_uf($this->rows[$index]['quantity']));
             }
         }
     }
@@ -979,6 +985,7 @@ class Create extends Component
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
+
     }
     public function addPrices()
     {
@@ -1005,7 +1012,7 @@ class Create extends Component
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
         $this->rows[$index]['prices'][$key]['dinar_sell_price'] = ($purchase_price * $percent) / 100;
-        $this->rows[$index]['prices'][$key]['dollar_sell_price'] = $this->rows[$index]['prices'][$key]['dinar_sell_price']  * $this->num_uf($this->exchange_rate);
+        $this->rows[$index]['prices'][$key]['dollar_sell_price'] = $this->rows[$index]['prices'][$key]['dinar_sell_price']  / $this->num_uf($this->exchange_rate);
     }
     public function  changeFill($index)
     {
@@ -1061,21 +1068,23 @@ class Create extends Component
     {
         unset($this->fill_stores[$key]);
     }
+    public function delete_store_data_raw($index, $key )
+    {
+        unset($this->fill_stores[$index]['data'][$key]);
+    }
     public function changePrice($index, $via = 'price')
     {
-
-        // dd($this->prices);
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
-        // dd($row_index);
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
             $this->discount_from_original_price = System::getProperty('discount_from_original_price');
-            $sell_price = ($row_index != null) ? (($this->transaction_currency != 2) ? ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price'])) : ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']))) : null;
+            $sell_price = ($row_index >=0) ? (($this->transaction_currency != 2) ? ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price'])) : ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']))) : null;
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
             if (empty($this->discount_from_original_price) && !empty($this->prices[$index]['discount_quantity'])) {
                 $price = ($sell_price * $this->num_uf($this->prices[$index]['discount_quantity'])) / $total_quantity;
+                
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 4);
                 } else {
@@ -1083,6 +1092,7 @@ class Create extends Component
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $percent * $price, 4);
                 }
             } else {
+                // dd($sell_price);
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $this->prices[$index]['dinar_price'], 4);
                 } else {
