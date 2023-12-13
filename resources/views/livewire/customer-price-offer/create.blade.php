@@ -23,7 +23,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- {!! Form::open([ 'id' => 'add_st ock_form']) !!} --}}
+                    {{-- {!! Form::open([ 'id' => 'add_stock_form']) !!} --}}
                     <form action="{{ route('pos.store') }}">
                         <div class="card-body py-0">
                             <div class="col-md-12">
@@ -41,7 +41,7 @@
                                             class=" input-wrapper d-flex justify-content-between align-items-center width-fit">
                                             <select class=" initial-balance-input m-auto client"
                                                 style="width: 100%; border:2px solid #ccc" wire:model="store_id"
-                                                id="Client_Select" required>
+                                                id="Client_Select" wire:change="updateCurrentStock" required>
                                                 <option value="" readonly selected> {{ __('lang.please_select') }}
                                                 </option>
                                                 @foreach ($stores as $store)

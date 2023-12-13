@@ -480,6 +480,7 @@ return array(
     'price_of_piece' => 'سعر القطعه الواحده',
     'invoice' => 'فاتوره',
     'dear' => 'حضرة السيد',
+    'create_invoice' => 'انشاء فاتوره',
     'respected' => 'المحترم',
     'total_after_discount' => 'المجموع بعد الخصم',
     'previous_balance' => 'الرصيد السابق',
@@ -739,4 +740,7 @@ return array(
     'expired_quantity' => 'الكمية منتهية الصلاحية',
     'value' => 'قيمة',
     'overall' => 'إجمالي',
+    'quarters' => 'الاحياء',
+    'add_quarter' => 'اضافة حي',
+    'add_region' => 'اضافة منطقة',
 );

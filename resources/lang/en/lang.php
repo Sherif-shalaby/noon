@@ -677,4 +677,5 @@ return [
     'small_filling' => 'Small Filling',
     'value' => 'Value',
     'overall' => 'Total',
+    'create_invoice' => 'create invoice',
 ];

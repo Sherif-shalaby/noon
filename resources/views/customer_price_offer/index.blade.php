@@ -20,6 +20,16 @@
                     </ul>
                 </div>
             </div>
+            {{-- +++++++++++++++++++ "انشاء عرض سعر للعميل" +++++++++++++++++++ --}}
+            <div class="col-md-4 ">
+                <div
+                    class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
+                    {{-- ++++++++++++++++++++ create purchase_order ++++++++++++ --}}
+                    <a href="{{ route('customer_price_offer.create') }}" class="btn btn-primary" target="__blank">
+                        @lang('lang.create_customer_price_offer')
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

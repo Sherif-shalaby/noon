@@ -158,6 +158,14 @@
                                                                     class="dripicons-document-edit"></i>
                                                                 @lang('lang.edit')</a>
                                                         </li>
+                                                        {{-- ++++++++++++++ create_invoice button ++++++++++++++ --}}
+                                                        <li>
+                                                            <a href="{{ route('invoices.edit', $offer->id) }}"
+                                                                class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                                                <i class="dripicons-document-edit"></i>
+                                                                @lang('lang.create_invoice')
+                                                            </a>
+                                                        </li>
 
                                                         {{-- ++++++++++++++ delete button ++++++++++++++ --}}
                                                         <form method="POST"
