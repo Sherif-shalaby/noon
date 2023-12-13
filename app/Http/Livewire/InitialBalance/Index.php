@@ -32,7 +32,7 @@ class Index extends Component
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $users=User::orderBy('created_at', 'desc')->pluck('name','id');
-        $this->stocks =  StockTransaction::whereIn('type',['initial_balance_payment','initial_balance'])
+        $this->stocks =  StockTransaction::where('parent_transction',0)->whereIn('type',['initial_balance_payment','initial_balance'])
             ->when(\request()->dont_show_zero_stocks =="on", function ($query) {
                 $query->whereHas('product_stores', function ($query) {
                     $query->where('quantity_available', '>', 0);

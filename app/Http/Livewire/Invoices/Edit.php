@@ -147,7 +147,7 @@ class Edit extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
-        $departments = Category::get();
+        $departments = Category::where('parent_id' ,'!=',null)->get();
         $this->brands = Brand::orderby('created_at', 'desc')->pluck('name', 'id');
         $this->customers = Customer::orderBy('created_by', 'asc')->get();
         $languages = System::getLanguageDropdown();

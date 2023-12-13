@@ -218,7 +218,7 @@ return array(
     'partially_received' => 'تم الاستلام جزئيًا',
     'date_and_time' => 'التاريخ والوقت',
     'select_products' => 'حدد المنتجات',
-    'items_count' => 'عدد الأصناف',
+    'items_count' => 'عدد التعبئات',
     'items_quantity' => 'الكميه الاجماليه',
     'total' => 'مجموع',
     'files' => 'الملفات',
@@ -705,6 +705,12 @@ return array(
     'sold_qty' => 'الكمية المباعة',
     'all_selling' => 'كل المبيعات',
     'all_stock' => 'كل المخزون',
+    'choose_big_unit'=>'اختر اكبر تعبئة',
+    'choose_small_unit'=>'اختر تعبئة اصغر',
+    'add_to_another_store'=>'أضف الى مخزن اخر',
+    'product_sku_start' => 'رمز الماده يبدأ ب',
+    'large_filling' => 'أكبر تعبئه',
+    'small_filling' => 'تعبئه اصغر',
 
     'piece_price'=>'سعر القطعة',    'evening_shift' => 'شيفت مسائي' ,
     'employee_products' => 'المنتجات المسئول عنها الموظف',
@@ -723,6 +729,7 @@ return array(
     'alert_quantity' => 'كمية التنبيه',
     'expired' => 'منتهي الصلاحية',
     'expired_quantity' => 'الكمية منتهية الصلاحية',
+    'value'=>'قيمة',
 
 );
 
