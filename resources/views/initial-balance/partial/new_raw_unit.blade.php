@@ -163,12 +163,12 @@
                         style="width: 75px">
                         <label
                             class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                            style='font-weight:500;font-size:10px;color:#888'>{{ $rows[$index]['prices'][$key]['customer_name'] . '$' }}</label>
+                            style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.overall') }}</label>
 
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
-                            placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
+                            placeholder = "{{ __('lang.overall') }}">
                         <span
                             style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_sell_price'] }}
                             $</span>

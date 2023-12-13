@@ -676,4 +676,5 @@ return [
     'large_filling' => 'Large Filling',
     'small_filling' => 'Small Filling',
     'value' => 'Value',
+    'overall' => 'Total',
 ];
