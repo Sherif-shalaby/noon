@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('product_stores', function(Blueprint $table) {
-            $table->unsignedBigInteger('variation_id')->nullable();
-            $table->foreign('variation_id')->references('id')->on('variations')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+        Schema::table('product_stores', function (Blueprint $table) {
+            // ++++++++++++++++ blocked_until column ++++++++++++++++
+            $table->timestamp('blocked_until')->nullable()->after('block_quantity');
         });
     }
 
@@ -28,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-
+        Schema::table('product_stores', function (Blueprint $table) {
+            $table->dropColumn('blocked_until');
+        });
     }
 };

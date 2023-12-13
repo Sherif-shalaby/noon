@@ -80,6 +80,7 @@
                         <label class="text-danger error-msg">{{ $message }}</label>
                         @enderror
                     </div>
+
                     <div class="col-md-12 product_raws">
                         @for ($i = 0; $i < 3; $i++)
                             @include('products.partials.product_row',['key' => $i])
@@ -94,7 +95,6 @@
                         </div>
                     </div>
 
-{{--                    --}}
 
                     {{-- product description --}}
 {{--                    <div class="col-md-12">--}}

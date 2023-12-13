@@ -51,7 +51,7 @@ class Index extends Component
                                         {
                                             $q->where('store_id', 'like', '%' . $this->store_id . '%');
                                         }
-                                    })->paginate(10);
+                                    })->orderBy('created_at', 'desc')->paginate(10);
         $stores = Store::getDropdown();
         $customers = Customer::get();
 

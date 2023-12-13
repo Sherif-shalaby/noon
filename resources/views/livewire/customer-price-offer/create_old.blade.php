@@ -34,7 +34,7 @@
                                         <label for="store_id" class="text-primary">@lang('lang.store')</label>
                                         <div class="d-flex justify-content-center">
                                             <select class="form-control client" wire:model="store_id" id="Client_Select" >
-                                                <option  value="0 " readonly selected> {{ __('lang.please_select') }} </option>
+                                                <option  value="0" readonly selected> {{ __('lang.please_select') }} </option>
                                                 @foreach ($stores as $store)
                                                     <option value="{{ $store->id }}">{{ $store->name }}</option>
                                                 @endforeach

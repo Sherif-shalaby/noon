@@ -87,6 +87,7 @@ $(document).on("change",".is_price_permenant",function () {
 //         }
 //     });
 // });
+// >>>>>>> new_test+
 $(document).ready(function() {
     $('.js-example-basic-multiple').select2(
         {

@@ -37,6 +37,7 @@ return [
     'language'=>'Language',
     'currency'=>'Currency',
     'invoice_lang'=>'Invoice Lang',
+    'create_invoice' => 'create invoice',
     'watsapp_numbers'=>'Watsapp Number',
     'letter_header'=>'Letter Header',
     'letter_footer'=>'Letter Footer',

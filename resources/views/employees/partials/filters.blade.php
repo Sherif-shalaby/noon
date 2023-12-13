@@ -138,51 +138,50 @@
                             $('#subcategory_id1').append('<option value="'+val.id+'">'+val.name+'</option>')
                         });
                     }
-                })
-            });
-            // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
-            $('#subcategory_id1').change(function(event) {
-                    var idSubcategory2 = this.value;
-                    // alert(idSubcategory2);
-                    $('#subcategory_id2').html('');
-                    $.ajax({
-                    url: "/api/fetch-sub_categories2",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {subcategories2_id: idSubcategory2,_token:"{{ csrf_token() }}"},
-                    success:function(response)
+            })
+        });
+        // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
+        $('#subcategory_id1').change(function(event) {
+                var idSubcategory2 = this.value;
+                // alert(idSubcategory2);
+                $('#subcategory_id2').html('');
+                $.ajax({
+                url: "/api/fetch-sub_categories2",
+                type: 'POST',
+                dataType: 'json',
+                data: {subcategories2_id: idSubcategory2,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    $('#subcategory_id2').html('<option value="10">{{ __("lang.subcategory").'2' }}</option>');
+                    $.each(response.subcategory_id2,function(index, val)
                     {
-                        $('#subcategory_id2').html('<option value="10">{{ __("lang.subcategory").'2' }}</option>');
-                        $.each(response.subcategory_id2,function(index, val)
-                        {
-                            console.log(val);
-                            $('#subcategory_id2').append('<option value="'+val.id+'">'+val.name+'</option>')
-                        });
-                    }
-                })
-            });
-            // +++++++++++++++++++++++++++++++++ subcategory3 filter +++++++++++++++++++++++++++++++++
-            $('#subcategory_id2').change(function(event) {
-                    var idSubcategory3 = this.value;
-                    // alert(idSubcategory3);
-                    $('#subcategory_id3').html('');
-                    $.ajax({
-                    url: "/api/fetch-sub_categories3",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {subcategories3_id: idSubcategory3,_token:"{{ csrf_token() }}"},
-                    success:function(response)
+                        console.log(val);
+                        $('#subcategory_id2').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+        // +++++++++++++++++++++++++++++++++ subcategory3 filter +++++++++++++++++++++++++++++++++
+        $('#subcategory_id2').change(function(event) {
+                var idSubcategory3 = this.value;
+                // alert(idSubcategory3);
+                $('#subcategory_id3').html('');
+                $.ajax({
+                url: "/api/fetch-sub_categories3",
+                type: 'POST',
+                dataType: 'json',
+                data: {subcategories3_id: idSubcategory3,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    $('#subcategory_id3').html('<option value="10">{{ __("lang.subcategory").'3' }}</option>');
+                    $.each(response.subcategory_id3,function(index, val)
                     {
-                        $('#subcategory_id3').html('<option value="10">{{ __("lang.subcategory").'3' }}</option>');
-                        $.each(response.subcategory_id3,function(index, val)
-                        {
-                            // console.log(val);
-                            $('#subcategory_id3').append('<option value="'+val.id+'">'+val.name+'</option>')
-                        });
-                    }
-                })
-            });
-
+                        // console.log(val);
+                        $('#subcategory_id3').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
     });
 </script>
 

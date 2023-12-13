@@ -96,6 +96,14 @@
                                                                 class="dripicons-document-edit"></i> @lang('lang.edit')</a>
                                                         </li>
                                                         <li class="divider"></li>
+                                                        {{-- ++++++++++++++ create_invoice button ++++++++++++++ --}}
+                                                        <li>
+                                                            <a href="{{ route('invoices.edit', $offer->id) }}" class="btn">
+                                                                <i class="dripicons-document-edit"></i> @lang('lang.create_invoice')
+                                                            </a>
+                                                        </li>
+
+                                                        <li class="divider"></li>
                                                             {{-- ++++++++++++++ delete button ++++++++++++++ --}}
                                                             <form method="POST" action="{{ route('customer_price_offer.destroy', $offer->id) }}">
                                                                 @csrf

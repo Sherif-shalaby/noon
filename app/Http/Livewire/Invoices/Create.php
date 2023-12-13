@@ -112,12 +112,29 @@ class Create extends Component
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('NoUserPos');
         }
-        if (!empty($store_pos)) {
+        if (!empty($store_pos))
+        {
             $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
             $branch = $store_pos->user->employee->branch;
             $this->store_id = array_key_first($this->stores);
             $this->changeAllProducts();
         }
+        /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                Set "store" of "last TransactionSellLine" of "login user"
+                as default value for "stores dropdown" in "sell_screen"
+            ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+         */
+        // dd($this->stores[1]);
+        $last_sell_trans = TransactionSellLine::where('employee_id', auth()->user()->id)->latest()->first();
+        if( !empty($last_sell_trans->store_id) )
+        {
+            $this->store_id = $last_sell_trans->store_id;
+        }
+        else
+        {
+            $this->store_id = array_key_first($this->stores);
+        }
+
         if (!empty($branch)) {
             if ($branch->type == 'sell_car') {
                 $this->reprsenative_sell_car = true;
@@ -226,28 +243,6 @@ class Create extends Component
         ));
     }
 
-    // public function sell_trans()
-    // {
-    //     $customers_rt = Customer::orderBy('created_at', 'desc')->pluck('name','id');
-    //     $sell_lines = TransactionSellLine::query();
-
-    //     // Check if the user is a superadmin or admin
-    //     if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
-    //         // If the user is a superadmin or admin, get all sell lines
-    //         $sell_lines = $sell_lines->orderBy('created_at', 'desc');
-    //     } else {
-    //         // If the user is not a superadmin or admin, get sell lines created by the current user
-    //         $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
-    //     }
-
-    //     // Filter by the selected created_by value if it is set
-    //     if ($this->customer_id) {
-    //         $sell_lines = $sell_lines->where('customer_id', $this->customer_id);
-    //     }
-
-    //     $sell_lines = $sell_lines->paginate(10);
-    //     return view('invoices.partials.recent_transactions',compact('branch','stores'));
-    // }
     public function changeAllProducts()
     {
         $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
@@ -346,7 +341,6 @@ class Create extends Component
                 //                $sell_line->tax_rate = !empty($item['tax_rate']) ? $this->num_uf($item['tax_rate']) : 0;
                 //                $sell_line->item_tax = !empty($item['item_tax']) ? $this->num_uf($item['item_tax']) : 0;
                 $sell_line->save();
-//                $keep_sell_lines[] = $sell_line->id;
 
                 $stock_id = $item['current_stock']['id'];
 
@@ -360,7 +354,6 @@ class Create extends Component
             // Add Payment Method
             if ($transaction->status != 'draft') {
                 if($this->payment_status == 'pending'){
-//                    $transaction_payment = PaymentTransactionSellLine::where('transaction_id', $transaction->id)->first();
                     $total_paid = 0;
                     $dollar_total_paid = 0;
                     $transaction = TransactionSellLine::find($transaction->id);
@@ -372,11 +365,8 @@ class Create extends Component
                     $transaction->dinar_remaining =  $final_amount;
                     //  dollar_remaining : 'الباقي بالدولار'
                     $transaction->dollar_remaining =  $dollar_final_amount;
-//                    $transaction_payment->amount = $total_paid;
-//                    $transaction_payment->dollar_amount = $dollar_total_paid;
                     $this->amount = $total_paid;
                     $this->dollar_amount = $dollar_total_paid;
-//                    $transaction_payment->save();
                     $transaction->save();
                 }
                 if ($this->dollar_amount > 0  || $this->amount > 0) {
