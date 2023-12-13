@@ -436,7 +436,6 @@
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
                                         {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
-                                            'id' => 'fill_id',
                                             'class' => ' form-control select2 fill_id',
                                             'data-name' => 'fill_id',
                                             'data-index' => $key,
