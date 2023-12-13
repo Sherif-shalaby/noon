@@ -498,10 +498,11 @@ class Create extends Component
     }
     public function saveTransaction($product_id, $variations = [])
     {
+        $parent_transction = [];
         for ($i = -1; $i < count($this->fill_stores); $i++) {
             // dd($this->fill_stores);
             //Add stock transaction
-            $parent_transction = 0;
+
             $store_id = $i < 0 ? $this->item[0]['store_id'] : $this->fill_stores[$i]['extra_store_id'];
             if (!empty($store_id)) {
                 $transaction = new StockTransaction();
@@ -514,9 +515,9 @@ class Create extends Component
                 $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
                 $transaction->transaction_currency = $this->transaction_currency;
                 $transaction->created_by = Auth::user()->id;
-                $transaction->parent_transction = $parent_transction;
+                $transaction->parent_transction = !empty($parent_transction[0]) ? $parent_transction[0] : 0;
                 $transaction->save();
-                $parent_transction = $i == -1 ? $transaction->id : 0;
+                $parent_transction[] = $transaction->id;
                 foreach ($this->rows as $index => $row) {
                     $quantity = 0;
                     if ($i > -1) {
@@ -572,14 +573,13 @@ class Create extends Component
                                         'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
                                     ];
                                     ProductPrice::create($price_data);
+                                } else {
                                 }
                             }
                         }
                     }
-                    // dd($variations[$index]);
                     foreach ($this->rows[$index]['prices'] as $key => $price) {
-                        if (isset($this->rows[$index]['prices'][$key]['customer_type_id'])) {
-                            // dd($this->rows[$index]['prices']);
+                        if (!empty($this->rows[$index]['prices'][$key]['customer_type_id'])) {
                             if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
                                 $variation_price = VariationPrice::where('variation_id', $this->variations[$index])->where('customer_type_id', $this->rows[$index]['prices'][$key]['customer_type_id'])->first();
                                 $add_variation_stock_data = [
@@ -825,17 +825,9 @@ class Create extends Component
         $this->rows[$index]['dollar_purchase_price'] = number_format((float)$this->num_uf($this->rows[$index]['purchase_price']) / (float)$this->exchange_rate, 3);
         $this->changeDollarFilling($index);
     }
-    // public function changeExchangeRateBasedPrices()
-    // {
-    //     // $this->exchange_rate=$this->changeExchangeRate();
-    //     foreach ($this->rows as $index => $row) {
-    //         if ($this->rows[$index]['purchase_price'] != "") {
-    //             $this->changePurchasePrice($index);
-    //             $this->sub_total($index);
-    //             $this->dollar_sub_total($index);
-    //         }
-    //     }
-    // }
+    public function changeExchangeRateBasedPrices()
+    {
+    }
     public function changeFilling($index)
     {
         if (!empty($this->rows[$index]['fill_quantity'])) {
@@ -986,8 +978,7 @@ class Create extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
-            '', 'show_prices' => false,
+            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -1021,7 +1012,6 @@ class Create extends Component
             $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])  / $this->num_uf($this->exchange_rate), 3);
             $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
-            dd(1);
         } else {
             $this->rows[$index]['prices'][$key]['dollar_increase'] = ($purchase_price * $percent) / 100;
             $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
