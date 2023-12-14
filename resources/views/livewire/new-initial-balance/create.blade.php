@@ -594,7 +594,7 @@
                                                 'wire:model' => 'fill_stores.'.$i.'.extra_store_id',
                                                 'wire:key' => 'extra_store_id_'.$i,
                                             ]) !!}
-                                            
+
                                         {{-- @error('fill_stores.'.$i.'.extra_store_id')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror --}}
@@ -622,7 +622,7 @@
                                                 <br>
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
-                                            
+
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-sm btn-danger"
@@ -715,6 +715,8 @@
                 var index = $(this).data('index');
                 var key = $(this).data('key');
                 var select2 = $(this);
+                console.log(select2.select2("val"))
+
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),
