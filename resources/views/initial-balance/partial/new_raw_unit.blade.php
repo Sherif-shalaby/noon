@@ -75,7 +75,7 @@
         </td>
 
         <td>
-            <inpnewut type="text" class="form-control dinar_sell_price"
+            <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
             <span>{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>

@@ -52,12 +52,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
-        // return($request);
-        // return $request->all();
-        // return $request->translations['name'];
-    //    dd($request);
         $data =  $request->data;
-//        dd($request['data'],empty($request->parent_id));
         $input['name']        = $request->name;
         $input['status']      = $request->status ?? $data['status'];
         $input['parent_id']   = $request->parent_id ? $request->parent_id : null;
@@ -85,7 +80,7 @@ class CategoryController extends Controller
                 return $output;
             }
         }
-        
+
         return redirect()->back()->with('status', $output);
         // return response()->json(['status' => __('categories.addsuccess')]);
 
