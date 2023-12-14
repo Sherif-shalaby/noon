@@ -4,9 +4,9 @@
         top: 190px;
     }
 </style>
-<section class="">
+<section class="mb-0">
     <div class="col-md-22">
-        <div class="card mt-3">
+        <div class="card mt-3 mb-0">
             <div
                 class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                 <h4 class="print-title ">

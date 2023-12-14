@@ -38,7 +38,7 @@
     {{-- @livewire('add-stock.add-payment') --}}
     <section class="">
         <div class="col-md-22">
-            <div class="card mt-3">
+            <div class="card mt-3 mb-0">
                 <div
                     class="card-header d-flex align-items-center @if (app()->isLocale('ar')) justify-content-end @else justify-content-start @endif">
                     <h3 class="print-title">@lang('lang.stock')</h3>
