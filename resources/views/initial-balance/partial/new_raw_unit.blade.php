@@ -84,11 +84,10 @@
             <div
                 class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                 <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.cost') }}</label>
                 <input type="text" class="form-control initial-balance-input purchase_price"
                     style="width: 90px;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
-                    wire:model="rows.{{ $index }}.purchase_price"
-                    placeholder = "{{ __('lang.purchase_price') }}">
+                    wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.cost') }}">
                 @error('rows.' . $index . '.purchase_price')
                     <label class="text-danger error-msg">{{ $message }}</label>
                 @enderror

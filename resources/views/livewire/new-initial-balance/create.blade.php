@@ -131,8 +131,8 @@
                                     @error('item.0.supplier_id ')
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
-                                    @include('suppliers.quick_add', ['quick_add' => 1])
                                 </div>
+                                @include('suppliers.quick_add', ['quick_add' => 1])
 
                                 <div class="mb-2 align-items-center animate__animated animate__bounceInLeft  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif pl-1"
                                     style="animation-delay: 1.2s;width: 75px">
@@ -492,7 +492,6 @@
                         <div class="d-flex justify-content-start align-items-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="overflow-x: auto">
 
-                            @include('store.create', ['quick_add' => 1])
                             @foreach ($rows as $index => $row)
                                 @include('initial-balance.partial.new_raw_unit', [
                                     'index' => $index,
@@ -500,6 +499,7 @@
                             @endforeach
                         </div>
                     </div>
+                    @include('store.create', ['quick_add' => 1])
                     {{-- add prices --}}
 
                     {{-- <div class="row text-right">

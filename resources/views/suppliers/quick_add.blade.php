@@ -1,6 +1,6 @@
-<div class="modal modal-supplier-add animate__animated add-supplier" data-animate-in="animate__rollIn"
-    data-animate-out="animate__rollOut" tabindex="-1" role="dialog" aria-hidden="true" style="display: none">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal modal-supplier-add animate__animated add-supplier" data-animate-in="animate__rollIn" tabindex="-1"
+    role="dialog" aria-hidden="true" style="display: none">
+    <div class="modal-dialog rollIn  animated modal-lg" role="document">
         <div class="modal-content">
             {!! Form::open([
                 'url' => route('suppliers.store'),
@@ -387,7 +387,7 @@
         </div>
     </div>
 </div>
-<script>
+{{-- <script>
     $(document).ready(function() {
         var modelEl = $('.modal-supplier-add');
 
@@ -410,4 +410,4 @@
                 }
             })
     })
-</script>
+</script> --}}

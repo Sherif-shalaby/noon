@@ -1,7 +1,14 @@
 @extends('layouts.app')
 @section('title', __('lang.sells'))
 @section('breadcrumbbar')
+    <style>
+        @media(max-width:768px) {
 
+            .wrapper1 {
+                margin-top: 125px !important
+            }
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">

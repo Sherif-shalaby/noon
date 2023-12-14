@@ -29,8 +29,20 @@
             }
         }
 
+        @media(max-width:575px) {
+            .table-top-head {
+                top: 350px !important
+            }
+        }
+
         .wrapper1 {
             margin-top: 50px;
+        }
+
+        @media(max-width:768px) {
+            .wrapper1 {
+                margin-top: 115px;
+            }
         }
     </style>
     <div class="animate-in-page">
