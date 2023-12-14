@@ -55,10 +55,13 @@
             </div>
 
             <div class=" animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                style="width: 100px">
-                <button class="btn btn-sm mx-1 d-flex justify-content-center align-items-center btn-primary"
-                    style="width: 100%" wire:click="addRaw()" type="button">
-                    <i class="fa fa-plus"></i> @lang('lang.add')
+                style="width: 100px;margin-top: 7px;">
+                <button class="btn btn-sm mx-1 d-flex justify-content-evenly align-items-center btn-primary"
+                    style="width: 100%;font-weight: 500" wire:click="addRaw()" type="button">
+                    <i class="fa fa-plus"></i>
+                    <span>
+                        @lang('lang.add')
+                    </span>
                 </button>
             </div>
 

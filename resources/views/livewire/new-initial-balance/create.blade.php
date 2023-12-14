@@ -226,9 +226,9 @@
                                     <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style=" background-color: transparent;border:none">
                                         <h2 class="accordion-header animate__animated animate__bounceInLeft p-0 d-flex justify-content-end align-items-center"
-                                            style="animation-delay: 1.2s;">
+                                            style="animation-delay: 1.2s;margin-top: 7px;">
                                             <div class="accordion-button"
-                                                style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;min-width: 140px;"
+                                                style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;min-width: 140px;font-size: 14px;font-weight: 500"
                                                 onclick="toggleProductAccordion(`balanceTax`)">
                                                 <span class="balanceTax mx-2">
                                                     <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
@@ -560,7 +560,7 @@
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
                                 <div class="accordion-button"
-                                    style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;min-width: 140px;"
+                                    style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;min-width: 140px;font-size: 14px;font-weight: 500"
                                     wire:click="showDimensions()">
                                     <span class="mx-2">
                                         <i class="fas {{ $show_dimensions == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }} d-flex justify-content-center align-items-center"
@@ -683,7 +683,7 @@
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
                                 <div class="accordion-button"
-                                    style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 140px;"
+                                    style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 140px;font-size: 14px;font-weight: 500"
                                     wire:click="showDiscount()">
                                     <span class="mx-2">
                                         <i class="fas {{ $show_discount == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center"
@@ -944,7 +944,7 @@
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
                                 <div class="accordion-button"
-                                    style="padding: 8px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;"
+                                    style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500"
                                     wire:click="showStore()">
                                     <span class="mx-2">
                                         <i class="fas {{ $show_store == 0 ? 'fa-arrow-down' : 'fa-arrow-up' }} d-flex justify-content-center align-items-center"
