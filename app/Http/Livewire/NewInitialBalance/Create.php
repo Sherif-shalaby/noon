@@ -1085,6 +1085,7 @@ class Create extends Component
     {
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
+        $total_quantity = 0;
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
