@@ -123,7 +123,7 @@ class SuppliersController extends Controller
 
             $output = [
                 'success' => true,
-//                'id' => $supplier->id,
+                'id' => $supplier->id,
                 'msg' => __('lang.success')
             ];
             if ($request->ajax()) {
