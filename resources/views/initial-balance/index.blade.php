@@ -24,7 +24,7 @@
                 <div
                     class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                     <a type="button" class="btn btn-primary"
-                        href="{{ route('initial-balance.create') }}">@lang('lang.add_initial_balance')</a>
+                        href="{{ route('new-initial-balance.create') }}">@lang('lang.add_initial_balance')</a>
                 </div>
             </div>
         </div>
