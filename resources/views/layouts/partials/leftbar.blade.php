@@ -43,6 +43,11 @@
                     width="45px" height="45px">
             </a>
         </div>
+        <div class="profilename ">
+            <a>
+                <button class="btn-danger btn-sm" id="power_off_btn"><i class="fa fa-power-off"></i></button>
+            </a>
+        </div>
 
 
         {{-- +++++++++++++++++ Notification +++++++++++++++++ --}}
