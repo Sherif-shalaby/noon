@@ -286,6 +286,7 @@ class Create extends Component
         //   ];
         //     array_unshift($this->rows, $newRow);
         $this->addPrices();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeUnit($index)
     {
@@ -461,8 +462,8 @@ class Create extends Component
                             $Variation_price = new VariationPrice();
                             $Variation_price->variation_id = $Variation->id;
                             $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                            $Variation_price->dinar_sell_price = $this->rows[$index]['prices'][$key]['dinar_sell_price'] ?? null;
-                            $Variation_price->dollar_sell_price = $this->rows[$index]['prices'][$key]['dollar_sell_price'] ?? null;
+                            $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
+                            $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
                             $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
                             $Variation_price->save();
                         }
@@ -493,7 +494,7 @@ class Create extends Component
             }
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
-            //             dd($e);
+            dd($e);
         }
     }
     public function saveTransaction($product_id, $variations = [])
@@ -778,6 +779,7 @@ class Create extends Component
     {
         unset($this->rows[$index]);
         $this->rows = array_values($this->rows);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function convertDollarPrice($index)
@@ -978,7 +980,8 @@ class Create extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
+            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
+            '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -1001,6 +1004,7 @@ class Create extends Component
     {
         $this->rows[$index]['show_prices'] =
             !$this->rows[$index]['show_prices'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changePercent($index, $key)
     {
@@ -1058,14 +1062,17 @@ class Create extends Component
     public function showDiscount()
     {
         $this->show_discount = !($this->show_discount);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showStore()
     {
         $this->show_store = !($this->show_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDimensions()
     {
         $this->show_dimensions = !($this->show_dimensions);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory1()
     {
@@ -1076,6 +1083,7 @@ class Create extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory2()
     {
@@ -1085,10 +1093,12 @@ class Create extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory3()
     {
         $this->show_category3 = !($this->show_category3);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_price_raw($key)
     {

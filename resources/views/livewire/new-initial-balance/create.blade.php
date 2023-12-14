@@ -312,8 +312,8 @@
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                        style="overflow-x: auto">
+                    <div
+                        class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  px-1"
                                 style="width:200px;animation-delay: 1.2s;">
@@ -1089,6 +1089,18 @@
 
 @push('javascripts')
     <script>
+        document.addEventListener('componentRefreshed', function() {
+            // Execute your JavaScript code here after Livewire component refreshes
+            const value = localStorage.getItem("showHideDollar");
+
+            var dollarCells = document.getElementsByClassName('dollar-cell');
+
+            for (var i = 0; i < dollarCells.length; i++) {
+                if (value === "hide") {
+                    dollarCells[i].classList.add('showHideDollarCells')
+                }
+            }
+        });
         document.addEventListener('livewire:load', function() {
             $('.js-example-basic-multiple').select2({
                 placeholder: LANG.please_select,
