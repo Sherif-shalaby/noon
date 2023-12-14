@@ -299,7 +299,15 @@ $(document).on("submit", "#create-category-form", function (e) {
         },
         success: function (result) {
             if (result.success) {
-                Swal.fire("Success", result.msg, "success");
+                Swal.fire({
+                    title: `${result.msg}`,
+                    type: 'success',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    // confirmButtonText:"حسنا",
+                    // confirmButtonColor: '#3085d6',
+                    timer: 1000
+                });
                 $("#createCategoryModal").modal("hide");
                 $(".createSubCategoryModal").modal("hide");
                 console.log(main_category_id);
@@ -419,14 +427,8 @@ $(document).on("submit", "#quick_add_product_tax_form", function (e) {
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
+
             }
         },
     });
@@ -473,14 +475,8 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                     },
                 });
             } else {
-                // Swal.fire("Error", result.msg, "error");
-                Swal.fire({
-                    title: "Error",
-                    text: response.status,
-                    icon: "error",
-                    timer: 1000, // Set the timer to 1000 milliseconds (1 second)
-                    showConfirmButton: false // This will hide the "OK" button
-                });
+                Swal.fire("Error", result.msg, "error");
+
             }
         },
     });
