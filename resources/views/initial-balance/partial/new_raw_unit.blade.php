@@ -32,7 +32,7 @@
             <div class="d-flex justify-content-center">
                 <input type="text" class="form-control fill {{ $index == 0 ?'d-none':''}}" style="width:90px !important;"
                 wire:model="rows.{{ $index }}.fill" placeholder = "{{ __('lang.fill') }}" wire:change="changeFill({{$index}})">
-            
+
                 <input type="text" class="form-control purchase_price" style="width:120px !important; "
                     wire:model="rows.{{ $index }}.purchase_price" placeholder = "{{ __('lang.purchase_price') }}">
                 @error('rows.' . $index . '.purchase_price')
@@ -66,16 +66,16 @@
         <td>
             <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
-                placeholder = "{{ __('lang.value').' '.$rows[$index]['prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
+                placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
             <span>{{$rows[$index]['prices'][$key]['dollar_increase']}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_increase')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-       
+
         <td>
-            <input type="text" class="form-control dinar_sell_price"
+            <inpnewut type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_sell_price"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}">
             <span>{{$rows[$index]['prices'][$key]['dollar_sell_price']}} $</span>
@@ -84,8 +84,8 @@
                 <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
-       
-        
-        
+
+
+
     </tr>
 @endforeach
