@@ -171,8 +171,12 @@ class CustomerController extends Controller
             // Optionally, you can return a response to the client
             $output = [
                 'success' => true,
+                'id' => $city->id,
+                'state_id' => $city->state_id,
                 'msg' => __('lang.success')
             ];
+            return $output;
+            // return response()->json(City::all());
         }
         catch (\Exception $e)
         {
@@ -184,7 +188,7 @@ class CustomerController extends Controller
                 'msg' => $e->getMessage(),
             ];
         }
-        return redirect()->back()->with('status', $output);
+        // return redirect()->back()->with('status', $output);
     }
 
     // +++++++++ store quarter +++++++++++
@@ -207,8 +211,11 @@ class CustomerController extends Controller
             // Optionally, you can return a response to the client
             $output = [
                 'success' => true,
+                'id' => $quarter->id,
+                'city_id'    => $quarter->city_id,
                 'msg' => __('lang.success')
             ];
+            return $output;
         }
         catch (\Exception $e)
         {
@@ -220,7 +227,7 @@ class CustomerController extends Controller
                 'msg' => $e->getMessage(),
             ];
         }
-        return redirect()->back()->with('status', $output);
+        // return redirect()->back()->with('status', $output);
     }
     public function createOrUpdateCustomerImportantDate($customer_id, $customer_important_dates)
     {
@@ -341,6 +348,20 @@ class CustomerController extends Controller
         $customers_dp = $this->Util->createDropdownHtml($customers, __('lang.please_select'));
         $output = [$customers_dp , array_key_last($customers)];
         return $output;
+    }
+    // ++++++++++++++++++ Task 14-12-2023 : cities dropdown in "customer create" page +++++++++++++
+    public function getDropDownCity($state_id)
+    {
+        $cities = City::where('state_id',$state_id)->orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
+        $cities_dp = $this->Util->createDropdownHtml($cities, __('lang.please_select'));
+        return  $cities_dp;
+    }
+    // ++++++++++++++++++ Task 14-12-2023 : quarter dropdown in "customer create" page +++++++++++++
+    public function getDropDownQuarter($city_id)
+    {
+        $quarters = Quarter::where('city_id',$city_id)->orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
+        $quarters_dp = $this->Util->createDropdownHtml($quarters, __('lang.please_select'));
+        return  $quarters_dp;
     }
 
     public function get_due(Request $request){

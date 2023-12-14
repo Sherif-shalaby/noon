@@ -162,7 +162,7 @@
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="state-dd">@lang('lang.state')</label>
-                                <select id="state-dd" name="state_id" class="form-control">
+                                <select id="state-dd" name="state_id" class="form-control select2">
                                     @php
                                         $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
                                     @endphp
@@ -511,6 +511,7 @@
                 data: {city_id: idCity,_token:"{{ csrf_token() }}"},
                 success:function(response)
                 {
+                    console.log("Quarter = "+response.quarters);
                     $('#quarter-dd').html('<option value="">Select Quarter</option>');
                     $.each(response.quarters,function(index, val)
                     {

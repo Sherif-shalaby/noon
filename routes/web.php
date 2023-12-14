@@ -181,11 +181,15 @@ Route::group(['middleware' => ['auth']], function () {
     // general_setting : fetch "quarter" of selected "city" selectbox
     Route::post('api/customers/fetch-quarters',[CustomerController::class,'fetchQuarter']);
     // +++++++++++++++++++ Add "new region" +++++++++++++++++++
-    Route::post('customers/create/storeRegion', [CustomerController::class,'storeRegion'])->name('customers.storeRegion');
+    Route::post('customers/create/', [CustomerController::class,'storeRegion'])->name('customers.storeRegion');
     // +++++++++++++++++++ Add "new quarter" +++++++++++++++++++
     Route::post('customers/create/storeQuarter', [CustomerController::class,'storeQuarter'])->name('customers.storeQuarter');
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    // ++++++++++++ task 14-12-2023 : get "cities" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-city/{id}', [CustomerController::class,'getDropdownCity']);
+    // ++++++++++++ task 14-12-2023 : get "quarters" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-quarter/{id}', [CustomerController::class,'getDropdownQuarter']);
     Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
     Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
 
