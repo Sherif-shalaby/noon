@@ -11,7 +11,21 @@
         }
 
         .table-top-head {
-            top: 85px;
+            top: 102px;
+        }
+
+        .wrapper1 {
+            margin-top: 25px;
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 192px !important
+            }
+
+            .wrapper1 {
+                margin-top: 115px !important;
+            }
         }
     </style>
     <div class="animate-in-page">

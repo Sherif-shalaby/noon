@@ -4,6 +4,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
+    <style>
+        .dropdown-menu {
+            left: -60px !important
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div

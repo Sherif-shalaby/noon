@@ -698,6 +698,21 @@
                                     <div
                                         class="d-flex  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
+                                        <div
+                                            class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
+                                                    @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
+                                                    pl-1">
+                                            {!! Form::label('price_category', __('lang.price_category'), [
+                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                                'style' => 'font-weight:500;font-size:10px;color:#888',
+                                            ]) !!}
+                                            <input type="text" style="width: 100px"
+                                                class="form-control initial-balance-input m-0 price_category"
+                                                name="price_category" placeholder="{{ __('lang.price_category') }}"
+                                                wire:model="prices.{{ $key }}.price_category"
+                                                maxlength="6">
+                                        </div>
+
                                         <div class="mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                             @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                             style="width: 160px">
@@ -743,20 +758,7 @@
                                             @enderror
                                         </div>
 
-                                        <div
-                                            class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
-                                                    @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                                    pl-1">
-                                            {!! Form::label('price_category', __('lang.price_category'), [
-                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                'style' => 'font-weight:500;font-size:10px;color:#888',
-                                            ]) !!}
-                                            <input type="text" style="width: 100px"
-                                                class="form-control initial-balance-input m-0 price_category"
-                                                name="price_category" placeholder="{{ __('lang.price_category') }}"
-                                                wire:model="prices.{{ $key }}.price_category"
-                                                maxlength="6">
-                                        </div>
+
 
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
@@ -858,6 +860,7 @@
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
                                         </div>
+
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label(
@@ -875,6 +878,7 @@
                                                 placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                 @if (empty($prices[$key]['price_type'])) readonly @endif>
                                         </div>
+
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label('', __('lang.price'), [
@@ -887,8 +891,9 @@
                                                 placeholder = "{{ __('lang.price') }}">
                                             {{-- <p>
                                             {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
-                                        </p> --}}
+                                                </p> --}}
                                         </div>
+
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                             {!! Form::label('total_price', __('lang.total_price'), [
@@ -901,7 +906,7 @@
                                                 placeholder = "{{ __('lang.total_price') }}">
                                             {{-- <p>
                                             {{ __('lang.total_price') . ' $' }}:{{ $this->prices[$key]['total_price'] ?? '' }}
-                                        </p> --}}
+                                            </p> --}}
                                         </div>
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
@@ -915,7 +920,7 @@
                                                 placeholder = "{{ __('lang.piece_price') }}">
                                             {{-- <p>
                                             {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
-                                        </p> --}}
+                                             </p> --}}
                                         </div>
 
                                         <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-start pl-1"

@@ -3,7 +3,21 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 315px;
+            top: 270px;
+        }
+
+        .wrapper1 {
+            margin-top: 25px;
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 650px !important
+            }
+
+            .wrapper1 {
+                margin-top: 110px !important;
+            }
         }
     </style>
     <div class="breadcrumbbar m-0 px-3 py-0">

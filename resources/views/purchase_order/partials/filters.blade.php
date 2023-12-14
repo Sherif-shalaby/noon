@@ -1,85 +1,105 @@
 <div class="card-body">
-    <form  method="get" id="filter_form">
-        <div class="row">
+    <form method="get" id="filter_form">
+        <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {{-- ++++++++++++++++++ "main_category" filter ++++++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select('category_id', $categories,null, ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
-                    ) !!}
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('category_id', $categories, null, [
+                        'class' => 'form-control select2 category',
+                        'placeholder' => __('lang.category'),
+                        'id' => 'categoryId',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select( 'subcategory_id1', [],null,
-                        ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
-                    ) !!}
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('subcategory_id1', [], null, [
+                        'class' => 'form-control select2 subcategory1',
+                        'placeholder' => __('lang.subcategory') . ' 1',
+                        'id' => 'subcategory_id1',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select( 'subcategory_id2', [] ,null,
-                            ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
-                    ) !!}
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('subcategory_id2', [], null, [
+                        'class' => 'form-control select2 subcategory2',
+                        'placeholder' => __('lang.subcategory') . ' 2',
+                        'id' => 'subcategory_id2',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select('subcategory_id3', [] ,null,
-                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
-                    ) !!}
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('subcategory_id3', [], null, [
+                        'class' => 'form-control select2 subcategory3',
+                        'placeholder' => __('lang.subcategory') . ' 3',
+                        'id' => 'subcategory_id3',
+                    ]) !!}
                 </div>
             </div>
             {{-- +++++++++++++++ products filter +++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select('product_id', $products,null, ['class' => 'form-control select2 products','placeholder'=>__('lang.select_products'),'id' => 'product_id']
-                    ) !!}
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('product_id', $products, null, [
+                        'class' => 'form-control select2 products',
+                        'placeholder' => __('lang.select_products'),
+                        'id' => 'product_id',
+                    ]) !!}
                 </div>
             </div>
             {{-- +++++++++++++++ purchase_type filter +++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')] ,null, ['class' => 'form-control select2 purchase_type','placeholder'=>__('lang.purchase_type'),'id' => 'purchase_type_id']
-                    ) !!}
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('purchase_type', [__('lang.local'), __('lang.export')], null, [
+                        'class' => 'form-control select2 purchase_type',
+                        'placeholder' => __('lang.purchase_type'),
+                        'id' => 'purchase_type_id',
+                    ]) !!}
                 </div>
             </div>
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
-            <div class="col-2">
-                <div class="form-group">
-                    {{-- ======= "filter" button ======= --}}
-                    <button type="button" id="filter_btn" class="btn btn-primary" title="search">
-                        <i class="fa fa-eye"></i> {{ __('lang.filter') }}
-                    </button>
-                </div>
+            <div class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+
+                {{-- ======= "filter" button ======= --}}
+                <button type="button" id="filter_btn" class="btn btn-primary" title="search">
+                    <i class="fa fa-eye"></i> {{ __('lang.filter') }}
+                </button>
+
             </div>
 
         </div>
     </form>
 </div>
 <script>
-    $(document).ready(function()
-    {
+    $(document).ready(function() {
         // ======================================== Employee Products Table ========================================
         // +++++++++++++++ updateSubcategories() +++++++++++++++
         // Function to update subcategories based on the selected category ID
-        function updateSubcategories()
-        {
+        function updateSubcategories() {
             $.ajax({
-                method : "get",
+                method: "get",
                 url: "/purchase_order/",
-                data : {
-                    category_id     : $('body').find('.category option:selected').val(),
-                    subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
-                    subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
-                    subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
-                    product_id      : $('body').find('.products option:selected').val(),
-                    purchase_type   : $('body').find('.purchase_type option:selected').val(),
+                data: {
+                    category_id: $('body').find('.category option:selected').val(),
+                    subcategory_id1: $('body').find('.subcategory1 option:selected').val(),
+                    subcategory_id2: $('body').find('.subcategory2 option:selected').val(),
+                    subcategory_id3: $('body').find('.subcategory3 option:selected').val(),
+                    product_id: $('body').find('.products option:selected').val(),
+                    purchase_type: $('body').find('.purchase_type option:selected').val(),
 
                 },
-                success: function (response) {
+                success: function(response) {
                     console.log("The Response Data : ");
                     console.log(response)
                     // Clear existing table content
@@ -92,7 +112,8 @@
                             '<td>' + purchase_order.po_no + '</td>' +
                             '<td>' + purchase_order.transaction_date + '</td>' +
                             '<td>' + purchase_order.created_by + '</td>' +
-                            '<td>' + (purchase_order.supplier ? purchase_order.supplier.name : '') + '</td>' +
+                            '<td>' + (purchase_order.supplier ? purchase_order.supplier
+                                .name : '') + '</td>' +
                             '<td>' + (purchase_order.final_total) + '</td>' +
                             '<td>' + purchase_order.status + '</td>' +
                             '<td>' +
@@ -120,13 +141,13 @@
                         $('#datatable-buttons tbody').append(row);
                     });
                 },
-                error: function (error) {
+                error: function(error) {
                     console.error("Error fetching filtered products:", error);
                 }
             });
         }
         // when clicking on "filter button" , call "updateSubcategories()" method
-        $('#filter_btn').click(function(){
+        $('#filter_btn').click(function() {
             updateSubcategories();
         });
         // +++++++++++++++++++++++++++++++++ subcategory1 filter +++++++++++++++++++++++++++++++++
@@ -134,61 +155,72 @@
             var idSubcategory1 = this.value;
             // alert(idSubcategory1);
             $('#subcategory_id1').html('');
-                $.ajax({
-                    url: "/api/fetch-sub_categories1",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {subcategories1_id: idSubcategory1,_token:"{{ csrf_token() }}"},
-                    success:function(response)
-                    {
-                        $('#subcategory_id1').html('<option value="10">{{ __("lang.subcategory") }}</option>');
+            $.ajax({
+                url: "/api/fetch-sub_categories1",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    subcategories1_id: idSubcategory1,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $('#subcategory_id1').html(
+                        '<option value="10">{{ __('lang.subcategory') }}</option>');
 
-                        $.each(response.subcategory_id1,function(index, val)
-                        {
-                            // console.log(val);
-                            $('#subcategory_id1').append('<option value="'+val.id+'">'+val.name+'</option>')
-                        });
-                    }
-                })
-            });
+                    $.each(response.subcategory_id1, function(index, val) {
+                        // console.log(val);
+                        $('#subcategory_id1').append('<option value="' + val.id +
+                            '">' + val.name + '</option>')
+                    });
+                }
+            })
+        });
         // +++++++++++++++++++++++++++++++++ subcategory2 filter +++++++++++++++++++++++++++++++++
         $('#subcategory_id1').change(function(event) {
-                var idSubcategory2 = this.value;
-                // alert(idSubcategory2);
-                $('#subcategory_id2').html('');
-                $.ajax({
+            var idSubcategory2 = this.value;
+            // alert(idSubcategory2);
+            $('#subcategory_id2').html('');
+            $.ajax({
                 url: "/api/fetch-sub_categories2",
                 type: 'POST',
                 dataType: 'json',
-                data: {subcategories2_id: idSubcategory2,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#subcategory_id2').html('<option value="10">{{ __("lang.subcategory").'2' }}</option>');
-                    $.each(response.subcategory_id2,function(index, val)
-                    {
+                data: {
+                    subcategories2_id: idSubcategory2,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $('#subcategory_id2').html(
+                        '<option value="10">{{ __('lang.subcategory') . '2' }}</option>'
+                    );
+                    $.each(response.subcategory_id2, function(index, val) {
                         console.log(val);
-                        $('#subcategory_id2').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        $('#subcategory_id2').append('<option value="' + val.id +
+                            '">' + val.name + '</option>')
                     });
                 }
             })
         });
         // +++++++++++++++++++++++++++++++++ subcategory3 filter +++++++++++++++++++++++++++++++++
         $('#subcategory_id2').change(function(event) {
-                var idSubcategory3 = this.value;
-                // alert(idSubcategory3);
-                $('#subcategory_id3').html('');
-                $.ajax({
+            var idSubcategory3 = this.value;
+            // alert(idSubcategory3);
+            $('#subcategory_id3').html('');
+            $.ajax({
                 url: "/api/fetch-sub_categories3",
                 type: 'POST',
                 dataType: 'json',
-                data: {subcategories3_id: idSubcategory3,_token:"{{ csrf_token() }}"},
-                success:function(response)
-                {
-                    $('#subcategory_id3').html('<option value="10">{{ __("lang.subcategory").'3' }}</option>');
-                    $.each(response.subcategory_id3,function(index, val)
-                    {
+                data: {
+                    subcategories3_id: idSubcategory3,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    $('#subcategory_id3').html(
+                        '<option value="10">{{ __('lang.subcategory') . '3' }}</option>'
+                    );
+                    $.each(response.subcategory_id3, function(index, val) {
                         // console.log(val);
-                        $('#subcategory_id3').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        $('#subcategory_id3').append('<option value="' + val.id +
+                            '">' + val.name + '</option>')
                     });
                 }
             })
@@ -196,4 +228,3 @@
 
     });
 </script>
-

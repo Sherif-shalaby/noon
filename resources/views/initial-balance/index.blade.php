@@ -1,6 +1,25 @@
 @extends('layouts.app')
 @section('title', __('lang.initial_balance'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 175px;
+        }
+
+        .wrapper1 {
+            margin-top: 25px;
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 265px !important
+            }
+
+            .wrapper1 {
+                margin-top: 110px !important;
+            }
+        }
+    </style>
     <div class="breadcrumbbar m-0 px-3 py-0">
         <div
             class="d-flex align-items-center justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">

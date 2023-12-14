@@ -112,8 +112,11 @@
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'
                                     for="max_amount_in_dollar">@lang('lang.max_amount_in_dollar')</label>
-                                <input type="number" class="form-control initial-balance-input m-auto width-full"
-                                    name="max_amount_in_dollar" id="max_amount_in_dollar" />
+                                <div class="input-wrapper">
+
+                                    <input type="number" class="form-control initial-balance-input m-auto width-full"
+                                        name="max_amount_in_dollar" id="max_amount_in_dollar" />
+                                </div>
                             </div>
                             {{-- +++++++++++++++++++++++ min_amount_in_dinar +++++++++++++++++++++++ --}}
                             <div class="col-md-3 mb-2 d-flex align-items-center

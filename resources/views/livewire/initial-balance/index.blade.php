@@ -1,8 +1,3 @@
-<style>
-    .table-top-head {
-        top: 190px;
-    }
-</style>
 <div class="animate-in-page">
     <section class="">
         <div class="col-md-22">
