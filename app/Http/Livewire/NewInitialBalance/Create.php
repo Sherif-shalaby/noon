@@ -463,8 +463,8 @@ class Create extends Component
                         $Variation_price = new VariationPrice();
                         $Variation_price->variation_id = $Variation->id;
                         $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                        $Variation_price->dinar_sell_price = $this->rows[$index]['prices'][$key]['dinar_sell_price'] ?? null;
-                        $Variation_price->dollar_sell_price = $this->rows[$index]['prices'][$key]['dollar_sell_price'] ?? null;
+                        $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
+                        $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
                         $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
                         $Variation_price->save();
                     }
@@ -496,7 +496,7 @@ class Create extends Component
                  }
                  catch (\Exception $e){
                      $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-        //             dd($e);
+                     dd($e);
                  }
     }
     public function saveTransaction($product_id, $variations = [])
@@ -505,7 +505,7 @@ class Create extends Component
         for ($i = -1; $i < count($this->fill_stores); $i++) {
             // dd($this->fill_stores);
             //Add stock transaction
-            
+
             $store_id = $i < 0 ? $this->item[0]['store_id'] : $this->fill_stores[$i]['extra_store_id'];
             if(!empty($store_id )){
                 $transaction = new StockTransaction();
@@ -1114,7 +1114,7 @@ class Create extends Component
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
             if (empty($this->discount_from_original_price) && !empty($this->prices[$index]['discount_quantity'])) {
                 $price = ($sell_price * $this->num_uf($this->prices[$index]['discount_quantity'])) / $total_quantity;
-                
+
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 4);
                 } else {
