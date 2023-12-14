@@ -70,14 +70,14 @@
                                             }
                                         @endphp
                                         <tr>
-                                            <td>{{ \Carbon\Carbon::parse($wage->wage_transaction->transaction_date)->format('Y-m-d') }}</td>
-                                            <td>{{ $wage->employee->employee_name }}</td>
-                                            <td>{{ $wage->payment_type }}</td>
-                                            <td>{{ $wage->employee->fixed_wage_value }}</td>
-                                            <td>{{ number_format($wage->employee->commission_value,2) }}</td>
-                                            <td>{{ number_format($totalAmount,2) }}</td>
-                                            <td>{{ number_format($wage->wage_transaction->final_total - $totalAmount,2) }}</td>
-                                            <td>{{ $wage->wage_transaction->payment_status }}</td>
+                                            <td title="@lang('lang.date')">{{ \Carbon\Carbon::parse($wage->wage_transaction->transaction_date)->format('Y-m-d') }}</td>
+                                            <td title="@lang('lang.employee_name')">{{ $wage->employee->employee_name }}</td>
+                                            <td title="@lang('lang.payment_method')">{{ $wage->payment_type }}</td>
+                                            <td title="@lang('lang.salary')">{{ $wage->employee->fixed_wage_value }}</td>
+                                            <td title="@lang('lang.commission')">{{ number_format($wage->employee->commission_value,2) }}</td>
+                                            <td title="@lang('lang.paid_amount')">{{ number_format($totalAmount,2) }}</td>
+                                            <td title="@lang('lang.duePaid')">{{ number_format($wage->wage_transaction->final_total - $totalAmount,2) }}</td>
+                                            <td title="@lang('lang.payment_status')">{{ $wage->wage_transaction->payment_status }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

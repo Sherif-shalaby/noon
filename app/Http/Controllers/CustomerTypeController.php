@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers;
 
@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class CustomerTypeController extends Controller 
+class CustomerTypeController extends Controller
 {
 
   /**
@@ -32,7 +32,7 @@ class CustomerTypeController extends Controller
    */
   public function create()
   {
-    
+
   }
 
   /**
@@ -68,7 +68,7 @@ class CustomerTypeController extends Controller
    */
   public function show($id)
   {
-    
+
   }
 
   /**
@@ -141,7 +141,7 @@ class CustomerTypeController extends Controller
     }
     return $output;
   }
-  
+
 }
 
 ?>

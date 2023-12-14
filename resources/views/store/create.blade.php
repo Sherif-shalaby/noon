@@ -1,5 +1,5 @@
 
-<div class="modal fade add-store"  tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade add-store" wire:ignore  tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             {!! Form::open(['url' => route('store.store'), 'method' => 'post','id' => isset($quick_add)&&$quick_add? 'quick_add_store_form' : 'add_store' ]) !!}
@@ -11,6 +11,10 @@
                 </div>
 
                 <div class="modal-body">
+                     <div class="form-group">
+                        {!! Form::label('branch_id', __('lang.branch'))  !!}
+                        {!! Form::select('branch_id',$branches,null, ['class' => 'form-control select2' , 'placeholder' => __('lang.branch') ]);  !!}
+                    </div>
                     <div class="form-group">
                         <input type="hidden" name="quick_add" value="{{ isset($quick_add)&&$quick_add?$quick_add:'' }}">
                         {!! Form::label('name', __('lang.name')) .'*' !!}
@@ -32,15 +36,11 @@
                         {!! Form::label('manager_mobile_number', __('lang.manager_mobile_number'))  !!}
                         {!! Form::text('manager_mobile_number',null, ['class' => 'form-control' , 'placeholder' => __('lang.manager_mobile_number') ]);  !!}
                     </div>
-                    {{-- <div class="form-group">
-                        {!! Form::label('branch_id', __('lang.branch'))  !!}
-                        {!! Form::select('branch_id',$branches,null, ['class' => 'form-control select2' , 'placeholder' => __('lang.branch') ]);  !!}
-                    </div> --}}
+                   
                     <div class="form-group">
                         {!! Form::label('details', __('lang.details'))  !!}
                         {!! Form::textarea('email',null, ['class' => 'form-control' , 'placeholder' => __('lang.details') , 'rows' => '2']);  !!}
                     </div>
-
                 </div>
 
                 <div class="modal-footer">

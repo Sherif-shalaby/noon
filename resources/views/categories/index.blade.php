@@ -44,7 +44,7 @@
                                             <th>@lang('categories.cover')</th>
                                             <th>@lang('categories.categorie_name')</th>
                                             <th>@lang('categories.parent')</th>
-                                            <th>@lang('categories.sub_categories')</th>
+                                            {{-- <th>@lang('categories.sub_categories')</th> --}}
                                             <th>@lang('categories.status')</th>
                                             <th>@lang('added_by')</th>
                                             <th>@lang('updated_by')</th>
@@ -57,11 +57,21 @@
                                                 <td>{{ $index+1 }}</td>
                                                 <td><img src="{{$categorie->imagepath}}" style="width: 50px; height: 50px;" alt="{{ $categorie->name }}" ></td>
                                                 <td>{{ $categorie->name }}</td>
-                                                <td>{{ $categorie->parentName()}}</td>
                                                 <td>
+                                                    @if($categorie->parent_id == 1)
+                                                        Category 1
+                                                    @elseif ($categorie->parent_id == 2)
+                                                        Category 2
+                                                    @elseif ($categorie->parent_id == 3)
+                                                        Category 3
+                                                    @else
+                                                        Category 4
+                                                    @endif
+                                                </td>
+                                                                                                {{-- <td>
                                                     <a href="{{ route('sub-categories', $categorie->id) }}" class="btn btn-sm btn-primary">
                                                         {{ $categorie->subCategories->count() }}</a>
-                                                </td>
+                                                </td> --}}
                                                 <td>{{ __($categorie->status())}}</td>
                                                 <td>
                                                     @if ($categorie->user_id  > 0 and $categorie->user_id != null)

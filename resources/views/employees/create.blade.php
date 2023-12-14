@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.jobs'))
+@section('title', __('lang.employee_module'))
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
         {{-- ///////// left side //////////// --}}
@@ -48,7 +48,7 @@
                                     {{-- ++++++++++++++++++++++ employee's products ++++++++++++++++++++  --}}
                                     <div class="row mt-4 m-auto">
                                         {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
-                                        <table id="productTable" class="table table-striped table-bordered m-auto">
+                                        <table id="datatable-buttons" class="table table-striped table-bordered m-auto">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -70,15 +70,15 @@
                                                             {{-- get "all checked products" --}}
                                                             <input type="checkbox" name="ids[]" class="checkbox_ids" value="{{$product->id}}" />
                                                         </td>
-                                                        <td>{{$product->name}}</td>
-                                                        <td>{{$product->sku}}</td>
-                                                        <td>{{$product->category->name??''}}</td>
-                                                        <td>
+                                                        <td title="@lang('lang.product_name')">{{$product->name}}</td>
+                                                        <td title="@lang('lang.sku')">{{$product->sku}}</td>
+                                                        <td title="@lang('lang.category')">{{$product->category->name??''}}</td>
+                                                        <td title="@lang('lang.subcategories_name')">
                                                             {{$product->subCategory1->name??''}} <br>
                                                             {{$product->subCategory2->name??''}} <br>
                                                             {{$product->subCategory3->name??''}}
                                                         </td>
-                                                        <td>{{!empty($product->brand)?$product->brand->name:''}}</td>
+                                                        <td title="@lang('lang.brand')">{{!empty($product->brand)?$product->brand->name:''}}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -101,38 +101,44 @@
                                                    placeholder="Email">
                                         </div>
                                     </div>
+                                    {{-- +++++++++++++++++ password , confirm_password +++++++++++++++++ --}}
                                     <div class="row mt-4">
-                                        {{-- ============= password ============= --}}
+                                        {{-- ========== password ========== --}}
                                         <div class="col-sm-6">
                                             <label for="password">@lang('lang.password'):*</label>
                                             <input type="password" class="form-control" name="password" id="password"
                                                     placeholder="Create New Password">
                                         </div>
-                                        {{-- ============= confirm_password ============= --}}
+                                        {{-- ========== confirm_password ========== --}}
                                         <div class="col-sm-6">
                                             <label for="pass">@lang('lang.confirm_password'):*</label>
                                             <input type="password" class="form-control" id="password_confirmation"
                                                      name="password_confirmation" placeholder="Conform Password">
                                         </div>
                                     </div>
+                                    {{-- ++++++++++++++++++++++ branch , stores ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
+                                        {{-- ========== branch ========== --}}
                                         <div class="col-sm-6">
                                             <label for="branch_id">@lang('lang.branch')</label>
                                             {!! Form::select('branch_id', $branches, null, ['class' => 'form-control select2','placeholder' => __('lang.please_select') , 'data-live-search' => 'true', 'id' => 'branch_id']) !!}
                                         </div>
+                                        {{-- ========== stores ========== --}}
                                         <div class="col-sm-6">
                                             <label for="store_id">@lang('lang.stores')</label>
                                             {!! Form::select('store_id[]', $stores, null, ['class' => 'form-control select2', 'multiple', 'data-live-search' => 'true', 'id' => 'store_id']) !!}
                                         </div>
                                     </div>
+                                    {{-- ++++++++++++++++++++++ date_of_start_working , date_of_birth ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
-
+                                        {{-- ============= date_of_start_working ============= --}}
                                         <div class="col-sm-6">
                                             <label for="date_of_start_working">@lang('lang.date_of_start_working')</label>
                                             <input type="date" class="form-control"
                                                    name="date_of_start_working" id="date_of_start_working"
                                                    placeholder="@lang('lang.date_of_start_working')">
                                         </div>
+                                        {{-- ============= date_of_birth ============= --}}
                                         <div class="col-sm-6">
                                             <label for="date_of_birth">@lang('lang.date_of_birth')</label>
                                             <input type="date" class="form-control" name="date_of_birth"
@@ -140,11 +146,12 @@
                                         </div>
 
                                     </div>
+                                    {{-- ++++++++++++++++++++++ job_type , phone_number ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
                                         {{-- ============= job_type ============= --}}
                                         <div class="col-sm-6">
                                             <label for="job_type">@lang('lang.jobs')</label>
-                                            {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true']) !!}
+                                            {!! Form::select('job_type_id', $jobs, null, ['class' => 'form-control selectpicker', 'placeholder' => __('lang.select_job_type'), 'data-live-search' => 'true' , 'id'=>'job_type_id']) !!}
                                         </div>
                                         {{-- ============= phone_number ============= --}}
                                         <div class="col-sm-6">
@@ -154,18 +161,21 @@
                                         </div>
 
                                     </div>
+                                    {{-- ++++++++++++++++++++++ upload_files , profile_photo ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
-
+                                        {{-- ============= upload_files ============= --}}
                                         <div class="col-sm-6">
                                             <label for="upload_files">@lang('lang.upload_files')</label>
                                             {!! Form::file('upload_files[]', ['class' => 'form-control', 'multiple']) !!}
                                         </div>
+                                        {{-- ============= profile_photo ============= --}}
                                         <div class="col-md-6">
                                             <label for="photo">@lang('lang.profile_photo')</label>
                                             <input type="file" name="photo" id="photo" class="form-control" />
                                         </div>
                                     </div>
-
+                                    {{-- ++++++++++++++++++++++ حدد أيام العمل في الأسبوع ++++++++++++++++++++  --}}
+                                    {{-- ============= حدد أيام العمل في الأسبوع ============= --}}
                                     <div class="row mt-4">
                                         @foreach ($leave_types as $leave_type)
                                             <div class="col-sm-6">
@@ -185,6 +195,7 @@
                                             </div>
                                         @endforeach
                                     </div>
+                                    {{-- ++++++++++++++++++++++ salary_details ++++++++++++++++++++  --}}
                                     <div class="row mt-4">
                                         <!-- Button salary modal -->
                                         <button type="button" style="margin-left: 15px;" class="btn btn-primary"
@@ -274,7 +285,6 @@
                                             @include('employees.partials.permission')
                                         </div>
                                     </div>
-
                                     {{-- +++++++++++++ save Button +++++++++++ --}}
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
@@ -297,17 +307,7 @@
 
 @push('javascripts')
     <script>
-        $(document).on("change","#branch_id",function () {
-            $.ajax({
-                type: "get",
-                url: "/get_branch_stores/"+$(this).val(),
-                dataType: "html",
-                success: function (response) {
-                    console.log(response)
-                    $("#store_id").empty().append(response).change();
-                }
-            });
-        });
+
         $(document ).ready(function() {
             $('.checked_all').change(function() {
                 tr = $(this).closest('tr');
@@ -321,6 +321,7 @@
                     }
                 })
             })
+            // +++++++++++++++++++++++++++++++++ Permissions Table +++++++++++++++++++++++++++++++++
             $('.all_module_check_all').change(function() {
                 var all_module_check_all = $(this).prop('checked');
                 $('#permission_table > tbody > tr').each((i, tr) => {
@@ -348,6 +349,7 @@
 
                 })
             })
+            // when check "first checkbox" then check "all checkboxes" in the same column
             $('.module_check_all').change(function() {
                 let moudle_id = $(this).closest('tr').data('moudle');
                 if ($(this).prop('checked')) {
@@ -358,6 +360,7 @@
                     $('.sub_module_permission_' + moudle_id).find('.check_box').prop('checked', false);
                 }
             })
+            // "details checkboxes" column : when check "details checkbox" Then check "all checkboxes" of "details" column
             $(document).on('change', '.view_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_view').prop('checked', true);
@@ -365,6 +368,7 @@
                     $('.check_box_view').prop('checked', false);
                 }
             });
+            // "انشاء" column : when check "انشاء checkbox" Then check "all checkboxes" of in the "same row"
             $(document).on('change', '.create_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_create').prop('checked', true);
@@ -372,6 +376,15 @@
                     $('.check_box_create').prop('checked', false);
                 }
             });
+            // "edit" column : when check "تعديل checkbox" Then check "all checkboxes" of in the "same row"
+            $(document).on('change', '.edit_check_all', function() {
+                if ($(this).prop('checked')) {
+                    $('.check_box_edit').prop('checked', true);
+                } else {
+                    $('.check_box_edit').prop('checked', false);
+                }
+            });
+            // "حذف" column : when check "حذف checkbox" Then check "all checkboxes" of in the "same row"
             $(document).on('change', '.delete_check_all', function() {
                 if ($(this).prop('checked')) {
                     $('.check_box_delete').prop('checked', true);
@@ -379,6 +392,7 @@
                     $('.check_box_delete').prop('checked', false);
                 }
             });
+            // Check All checkboxes in the same column
             $(document).on('focusout', '.check_in', function() {
                 $('.check_in').val($(this).val())
             })
@@ -433,89 +447,41 @@
                 // Initially update labels visibility based on the checked state of checkboxes
                 updateLabelsVisibility();
             });
-            // // ======================================== Employee Products Table ========================================
-            // // +++++++++++++++ updateSubcategories() +++++++++++++++
-            // // Function to update subcategories based on the selected category ID
-            // function updateSubcategories()
-            // {
-            //     console.log( $('body').find('.category option:selected').val() );
-            //     $.ajax({
-            //         method : "get",
-            //         url: "/employees/create/",
-            //         // get "all inputFields of form that have name and value"
-            //         // data: $('#filter_form').serialize(),
-            //         data : {
-            //             category_id : $('body').find('.category option:selected').val(),
-            //             subcategory_id1 : $('body').find('.subcategory1 option:selected').val(),
-            //             subcategory_id2 : $('body').find('.subcategory2 option:selected').val(),
-            //             subcategory_id3 : $('body').find('.subcategory3 option:selected').val(),
-            //             brand_id : $('body').find('.brand option:selected').val(),
-            //         },
-            //         success: function (response) {
-            //             console.log("The Response Data : ");
-            //             console.log(response)
-            //             // Clear existing table content
-            //             $('#productTable tbody').empty();
-            //             // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
-            //             // Assuming response.products is the array of products received from the server response
-            //             $.each(response, function(index, product) {
-            //                 console.log(product);
-            //                 var row = '<tr>' +
-            //                     '<td>' + (index + 1) + '</td>' +
-            //                     '<td><input type="checkbox" name="ids[]" class="checkbox_ids" value="' + product.id + '" data-product_id="' + product.id + '" /></td>' +
-            //                     '<td>' + product.name + '</td>' +
-            //                     '<td>' + product.sku + '</td>' +
-            //                     '<td>' + (product.category ? product.category.name : '') + '</td>' +
-            //                     '<td>' +
-            //                     (product.subCategory1 ? product.subCategory1.name + '<br>' : '') +
-            //                     (product.subCategory2 ? product.subCategory2.name + '<br>' : '') +
-            //                     (product.subCategory3 ? product.subCategory3.name : '') +
-            //                     '</td>' +
-            //                     '<td>' + (product.brand ? product.brand.name : '') + '</td>' +
-            //                     '</tr>';
-            //                 $('#productTable tbody').append(row);
-            //             });
-
-            //         },
-            //         error: function (error) {
-            //             console.error("Error fetching filtered products:", error);
-            //         }
-            //     });
-            // }
-            // // when clicking on "filter button" , call "updateSubcategories()" method
-            // $('#filter_btn').click(function(){
-            //     updateSubcategories();
-            // });
             // ======================================== Checkboxes of "products" table ========================================
             // when click on "all checkboxs" , it will checked "all checkboxes"
             $('#select_all_ids').click(function() {
                 $('.checkbox_ids').prop('checked', $(this).prop('checked'));
             });
-            // ++++++++++++++++++++++++++++ submit button +++++++++++++++++++++++++
-            // $('#submit-btn').click(function(event) {
-
-            //     // Prevent the default form submission behavior
-            //     event.preventDefault();
-            //     // Serialize the form data from the form with ID 'productForm'
-            //     var formData = $('#productForm').serialize();
-
-            //     // Make the AJAX request
-            //     $.ajax({
-            //         type: 'POST',
-            //         url: '/products',
-            //         data: formData,
-            //         dataType: 'json',
-            //         success: function(response) {
-            //             console.log(response.message); // Output success message
-            //             // Handle success, for example, show a success message to the user
-            //         },
-            //         error: function(error) {
-            //             console.error('Error:', error);
-            //             // Handle errors, for example, show an error message to the user
-            //         }
-            //     });
-            // });
-
+            // ++++++++++++++++++++ Get "job_type" Permissions +++++++++++++++++++++++++
+            // when select "job_type" , it will get "all permissions" of "selected job type"
+            $('#job_type_id').change(function()
+            {
+                var jobTypeId = $(this).val();
+                console.log("The Selected 'job_type' = "+jobTypeId);
+                // Make an AJAX request to fetch permissions based on the selected job type
+                $.ajax({
+                    url: '/get-job-type-permissions/' + jobTypeId, // Replace with your actual route
+                    type: 'GET',
+                    success: function (data)
+                    {
+                        updatePermissionCheckboxes(data);
+                        console.log(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error fetching job type permissions:', error);
+                    }
+                });
+            });
+            // ------- updatePermissionCheckboxes() -------------
+            function updatePermissionCheckboxes(permissions)
+            {
+                // Uncheck all checkboxes first
+                $('.check_box').prop('checked', false);
+                // Check checkboxes based on permissions array
+                permissions.forEach(function (permission) {
+                    $('input[name="permissions[' + permission + ']"]').prop('checked', true);
+                });
+            }
         });
     </script>
 @endpush

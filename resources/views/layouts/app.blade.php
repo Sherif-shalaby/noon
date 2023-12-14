@@ -266,7 +266,17 @@
                     }
                 });
         });
-
+        $(document).on("change","#branch_id",function () {
+            $.ajax({
+                type: "get",
+                url: "/get_branch_stores/"+$(this).val(),
+                dataType: "html",
+                success: function (response) {
+                    console.log(response)
+                    $("#store_id").empty().append(response).change();
+                }
+            });
+        });
 
     </script>
 {{-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
@@ -291,6 +301,33 @@
         }
     });
 </script> --}}
+    @push('javascripts')
+        <script>
+            document.addEventListener('livewire:load', function () {
+                Livewire.on('printInvoice', function (htmlContent) {
+                    // Set the generated HTML content
+                    $("#receipt_section").html(htmlContent);
+                    // Trigger the print action
+                    window.print("#receipt_section");
+                });
+            });
+            $(document).on("click", ".print-invoice", function () {
+                // $(".modal").modal("hide");
+                $.ajax({
+                    method: "get",
+                    url: $(this).data("href"),
+                    data: {},
+                    success: function (result) {
+                        if (result.success) {
+                            Livewire.emit('printInvoice', result.html_content);
+                        }
+                    },
+                });
+            });
+
+        </script>
+    @endpush
+
 
 </body>
 

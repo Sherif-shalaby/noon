@@ -37,7 +37,7 @@ class SettingController extends Controller
         $currencies  = $this->allCurrencies();
         $selected_currencies=System::getProperty('currency') ? json_decode(System::getProperty('currency'), true) : [];
         // Get All Countries
-        $countries = Country::get(['name','id']);
+        $countries = Country::pluck('name','id');
         // return $countries;
         return view('general-settings.index',compact('countries','settings','languages','currencies','selected_currencies'));
     }
@@ -201,6 +201,10 @@ class SettingController extends Controller
                 ['key' => 'tax'],
                 ['value' => $request->tax, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+            System::updateOrCreate(
+                ['key' => 'product_sku_start'],
+                ['value' => $request->product_sku_start, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+            );
             if (!empty($request->currency)) {
                 $currency = Currency::find($request->currency);
                 $currency_data = [
@@ -229,8 +233,9 @@ class SettingController extends Controller
             // +++++++++++++++++++++ Country_id ++++++++++++++++++++
             System::updateOrCreate(
                 ['key' => 'country_id'],
-                ['value' => $request->country, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
+                ['value' => $request->country_id, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
+//            dd()
 
             $data['letter_header'] = null;
             if ($request->has('letter_header') && !is_null('letter_header')) {

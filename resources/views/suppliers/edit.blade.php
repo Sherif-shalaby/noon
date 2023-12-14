@@ -40,7 +40,7 @@
                                     {{-- ++++++++++++++++++++ name ++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
-                                            <label for="name">@lang('lang.name')</label>
+                                            <label for="name"> <span class="text-danger">*</span> @lang('lang.name')</label>
                                             <div class="select_body d-flex justify-content-between align-items-center" >
                                                 <input type="text" required
                                                        class="form-control"
@@ -53,24 +53,85 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{-- ++++++++++++++++++++ categories ++++++++++++++++++++ --}}
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="parent_id">@lang('categories.categories')</label>
-                                            <select name="supplier_category_id" class="form-control select2"  id="my-select">
-                                                <option value="" selected disabled readonly>---{{ __('select') }}---</option>
-                                                @forelse($supplier_categories as $key=> $val)
-                                                    <option value="{{ $key }}" @if($supplier->supplier_category_id == $key) selected @else ''@endif >
-                                                        {{ $val }}
-                                                    </option>
-                                                @empty
-                                                @endforelse
-                                            </select>
+                                    {{-- ++++++++++++++++++++ company_name ++++++++++++++++++++ --}}
+                                    <div class="col-md-4 ">
+                                        <div class="form-group ">
+                                            <label for="name"> <span class="text-danger">*</span> @lang('lang.company_name')</label>
+                                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="@lang('lang.company_name')"
+                                                       name="company_name"
+                                                       value="{{ $supplier->company_name }}" required >
+                                                @error('company_name')
+                                                <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
                                         </div>
-                                        @error('supplier_category_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
                                     </div>
+                                    {{-- +++++++++++++++++++++++++++++++ mobile_number array ++++++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <table class="bordered">
+                                                <thead class="phone_thead">
+                                                <tr>
+                                                    <th class="text-left" style="font-weight: normal;">
+                                                        <label class="mb-2">
+                                                            <span class="text-danger">*</span>@lang('lang.mobile_number')
+                                                        </label>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="phone_tbody">
+                                                    <tr>
+                                                        <td class="col-md-12 p-0">
+                                                            <div class="select_body d-flex justify-content-between align-items-center" >
+                                                                @php
+                                                                    $phoneArray = explode(',', $supplier->mobile_number);
+                                                                    // Remove square brackets from each element in the emailArray
+                                                                    foreach ($phoneArray as $key => $phone)
+                                                                    {
+                                                                        $phoneArray[$key] = str_replace(['[', ']','"'], '', $phone);
+                                                                    }
+                                                                @endphp
+                                                                @foreach ($phoneArray as $index=> $phone)
+                                                                    @if($index == 0)
+                                                                        <input type="text"
+                                                                               class="form-control"
+                                                                               placeholder="@lang('lang.phone_number')"
+                                                                               name="mobile_number[]"
+                                                                               value="{{ $phone }}" required >
+                                                                        <td  class="col-md-6">
+                                                                            {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                                            <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_phone" type="button">
+                                                                                <i class="fa fa-plus"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                        @error('mobile_number')
+                                                                        <div class="alert alert-danger">{{ $message }}</div>
+                                                                        @enderror
+                                                                    @else
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input  type="text" class="form-control" placeholder="@lang('lang.mobile_number')" name="mobile_number[]"
+                                                                                        value="{{ $phone }}" required >
+                                                                                @error('mobile_number')
+                                                                                <div class="alert alert-danger">{{ $message }}</div>
+                                                                                @enderror
+                                                                            </td>
+                                                                            <td>
+                                                                                <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_phone">-</a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                     {{-- ++++++++++++++++++++ exchange_rate ++++++++++++++++++++ --}}
                                     <div class="col-md-4 ">
                                         <div class="form-group ">
@@ -120,259 +181,122 @@
                                             </div>
                                         </div>
                                     </div>
+{{--                                    {-- ++++++++++++++++++++ country ++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <label for="country-dd">@lang('lang.country')</label>
+                                        <select id="country-dd" name="country" class="form-control" disabled>
+                                            <option value="{{ $countryId }}">
+                                                {{ $countryName }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="state-dd">@lang('lang.state')</label>
+                                            <select id="state-dd" name="state_id" class="form-control select2" >
+                                                <option value=""> @lang('lang.please_select')</option>
+                                                @php
+                                                    $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
+                                                    if(!empty($supplier->state)){
+                                                        $cities = \App\Models\City::where('state_id', $supplier->state_id)->get(['id','name']);
+                                                    }
+                                                @endphp
+                                                @foreach ( $states as $state)
+                                                    <option value="{{ $state->id }}" {{ $supplier->state_id == $state->id ? 'selected' : '' }}>
+                                                        {{ $state->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="city-dd">@lang('lang.city')</label>
+                                            <select id="city-dd" name="city_id" class="form-control select2">
+                                                <option value=""> @lang('lang.please_select')</option>
+                                                @if(isset($cities))
+                                                    @foreach ( $cities as $city)
+                                                        <option value="{{ $city->id }}" {{ $supplier->city_id == $city->id ? 'selected' : '' }}>
+                                                            {{ $city->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
 
-                                    {{-- ++++++++++++++++++++ email ++++++++++++++++++++ --}}
-                                    {{-- <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="email">@lang('lang.email')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text" required
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.email')"
-                                                       name="email"
-                                                       value="{{ $supplier->email }}" >
-                                                @error('email')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    {{-- ++++++++++++++++++++ mobile_number ++++++++++++++++++++ --}}
-                                    {{-- <div class="col-md-6 ">
-                                        <div class="form-group ">
-                                            <label for="mobile_number">@lang('lang.phone_number')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.phone_number')"
-                                                       name="mobile_number"
-                                                       value="{{$supplier->mobile_number }}" >
-                                                @error('mobile_number')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    {{-- ++++++++++++++++++++ company_name ++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="name">@lang('lang.company_name')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.company_name')"
-                                                       name="company_name"
-                                                       value="{{ $supplier->company_name }}" >
-                                                @error('company_name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
                                         </div>
                                     </div>
-                                    {{-- ++++++++++++++++++++ vat_number ++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="vat_number">@lang('lang.vat_number')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.vat_number')"
-                                                       name="vat_number"
-                                                       value="{{ $supplier->vat_number }}" >
-                                                @error('vat_number')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                    {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <label for="owner_debt_in_dinar">@lang('lang.owner_debt_in_dinar')</label>
+                                        <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dinar" id="owner_debt_in_dinar" value="{{ $supplier->owner_debt_in_dinar }}"/>
                                     </div>
-                                    {{-- ++++++++++++++++++++ address ++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="address">@lang('lang.address')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.address')"
-                                                       name="address"
-                                                       value="{{ $supplier->address }}" >
-                                                @error('address')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- ++++++++++++++++++++ city ++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="city">@lang('lang.city')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.city')"
-                                                       name="city"
-                                                       value="{{ $supplier->city }}" >
-                                                @error('city')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- ++++++++++++++++++++ country ++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="country">@lang('lang.country')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.country')"
-                                                       name="country"
-                                                       value="{{ $supplier->country }}" >
-                                                @error('country')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {{-- ++++++++++++++++++++ postal_code ++++++++++++++++++++ --}}
-                                    <div class="col-md-4 ">
-                                        <div class="form-group ">
-                                            <label for="postal_code">@lang('lang.postal_code')</label>
-                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                <input type="text"
-                                                       class="form-control"
-                                                       placeholder="@lang('lang.postal_code')"
-                                                       name="postal_code"
-                                                       value="{{ $supplier->postal_code }}" >
-                                                @error('postal_code')
-                                                <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
+                                    {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
+                                    <div class="col-md-4">
+                                        <label for="owner_debt_in_dollar">@lang('lang.owner_debt_in_dollar')</label>
+                                        <input type="number" class="form-control" style="border-color:#aaa" name="owner_debt_in_dollar" id="owner_debt_in_dollar" value="{{ $supplier->owner_debt_in_dollar }}" />
                                     </div>
                                     {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                                     <div class="col-md-4">
                                         <div class="form-group ">
                                             <table class="bordered">
                                                 <thead class="email_thead">
-                                                    <tr>
-                                                        <th class="text-left" style="font-weight: normal;">
-                                                            <label class="mb-2">
-                                                                <span class="text-danger">*</span>@lang('lang.email')
-                                                            </label>
-                                                        </th>
-                                                    </tr>
+                                                <tr>
+                                                    <th class="text-left" style="font-weight: normal;">
+                                                        <label class="mb-2">
+                                                            @lang('lang.email')
+                                                        </label>
+                                                    </th>
+                                                </tr>
                                                 </thead>
                                                 <tbody class="email_tbody">
-                                                    <tr>
-                                                        <td class="col-md-12 p-0">
-                                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                                <input type="text"
-                                                                    class="form-control"
-                                                                    placeholder="@lang('lang.email')"
-                                                                    name="email[]"
-                                                                    value="{{ old('email') }}" required >
-                                                                <td  class="col-md-6">
-                                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                                    <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_email" type="button">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </a>
-                                                                </td>
-                                                                @error('email')
+                                                <tr>
+                                                    <td class="col-md-12 p-0">
+                                                        <div class="select_body d-flex justify-content-between align-items-center" >
+                                                            @php
+                                                                $emailArray = explode(',', $supplier->email);
+                                                                // Remove square brackets from each element in the emailArray
+                                                                foreach ($emailArray as $key => $email)
+                                                                {
+                                                                    $emailArray[$key] = str_replace(['[', ']','"'], '', $email);
+                                                                }
+                                                            @endphp
+                                                            @foreach ($emailArray as $index => $email)
+                                                                @if($index == 0)
+                                                                    <input type="text"
+                                                                           class="form-control"
+                                                                           placeholder="@lang('lang.email')"
+                                                                           name="email[]"
+                                                                           value="{{ $email == 'null' ? '' : $email }}">
+                                                                    <td  class="col-md-6">
+                                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                                        <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_email" type="button">
+                                                                            <i class="fa fa-plus"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                    @error('email')
                                                                     <div class="alert alert-danger">{{ $message }}</div>
-                                                                @enderror
-                                                                @php
-                                                                    $emailArray = explode(',', $supplier->email);
-                                                                    // Remove square brackets from each element in the emailArray
-                                                                    foreach ($emailArray as $key => $email)
-                                                                    {
-                                                                        $emailArray[$key] = str_replace(['[', ']','"'], '', $email);
-                                                                    }
-                                                                @endphp
-                                                                    {{-- Iterate over the email array elements --}}
-                                                                    @foreach ($emailArray as $email)
+                                                                    @enderror
+                                                                @else
                                                                     <tr>
                                                                         <td>
                                                                             <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
                                                                                     value="{{ $email }}" required >
-                                                                                    @error('email')
-                                                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                                                    @enderror
+                                                                            @error('email')
+                                                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                                            @enderror
                                                                         </td>
                                                                         <td>
                                                                             <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
                                                                         </td>
                                                                     </tr>
-                                                                    @endforeach
-                                                                </tr>
-                                                            </div>
-                                                        </td>
+                                                                @endif
 
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    {{-- +++++++++++++++++++++++++++++++ mobile_number array ++++++++++++++++++++++++ --}}
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <table class="bordered">
-                                                <thead class="phone_thead">
-                                                    <tr>
-                                                        <th class="text-left" style="font-weight: normal;">
-                                                            <label class="mb-2">
-                                                                <span class="text-danger">*</span>@lang('lang.mobile_number')
-                                                            </label>
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="phone_tbody">
-                                                    <tr>
-                                                        <td class="col-md-12 p-0">
-                                                            <div class="select_body d-flex justify-content-between align-items-center" >
-                                                                <input type="text"
-                                                                    class="form-control"
-                                                                    placeholder="@lang('lang.phone_number')"
-                                                                    name="mobile_number[]"
-                                                                    value="{{ old('mobile_number') }}" required >
-                                                                <td  class="col-md-6">
-                                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                                    <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow_phone" type="button">
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </a>
-                                                                </td>
-                                                                @error('mobile_number')
-                                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                                @enderror
-                                                                @php
-                                                                    $phoneArray = explode(',', $supplier->mobile_number);
-                                                                    // Remove square brackets from each element in the emailArray
-                                                                    foreach ($phoneArray as $key => $phone)
-                                                                    {
-                                                                        $phoneArray[$key] = str_replace(['[', ']','"'], '', $phone);
-                                                                    }
-                                                                @endphp
-                                                                {{-- Iterate over the email array elements --}}
-                                                                @foreach ($phoneArray as $phone)
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input  type="text" class="form-control" placeholder="@lang('lang.mobile_number')" name="mobile_number[]"
-                                                                                    value="{{ $phone }}" required >
-                                                                                    @error('mobile_number')
-                                                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                                                    @enderror
-                                                                        </td>
-                                                                        <td>
-                                                                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_phone">-</a>
-                                                                        </td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </div>
-                                            </td>
-
-                                                    </tr>
+                                                            @endforeach
+                                                        </div>
+                                                    </td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -381,15 +305,47 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>@lang('image')</label>
-                                            <input class="form-control img" name="image"  type="file" accept="image/*" >
-                                            <div class="dropzone" id="my-dropzone">
-                                                <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                            </div>
-                                            @error('cover')<span class="text-danger">{{ $message }}</span>@enderror
+                                            <input class="form-control img" name="image"  type="file" accept="image/*"  value="{{ $supplier->image }}">
+                                            {{--                                            @if($supplier->image)--}}
+                                            {{--                                                <img src="{{ asset('uploads/' . $supplier->image) }}" alt="Supplier Image" width="100" height="100">--}}
+                                            {{--                                            @endif--}}
+                                            @error('cover')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
                                 <br>
+                                    {{-- ====================== notes , address ====================== --}}
+                                    <div class="row">
+                                        {{-- ++++++++++++ notes ++++++++++++ --}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                {!! Form::label('notes', __('lang.notes')) !!}
+                                                {!! Form::textarea('notes', $supplier->notes, [
+                                                    'class' => 'form-control',
+                                                ]) !!}
+                                                @error('notes')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        {{-- ++++++++++++ address ++++++++++++ --}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                {!! Form::label('address', __('lang.address')) !!}
+                                                {!! Form::textarea('address', $supplier->address, [
+                                                    'class' => 'form-control',
+                                                ]) !!}
+                                                @error('address')
+                                                <label class="text-danger error-msg">{{ $message }}</label>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                             </div>
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-primary">
@@ -415,7 +371,7 @@
         var tr =`<tr>
                     <td>
                         <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="{{ old('email') }}" required >
+                                value="{{ old('email') }}" >
                                 @error('email')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
@@ -451,6 +407,28 @@
     } );
     $('.phone_tbody').on('click','.deleteRow_phone',function(){
         $(this).parent().parent().remove();
+    });
+
+    // ++++++++++++++++++++++ Countries , State , Cities Selectbox +++++++++++++++++
+    // ================ state selectbox ================
+    $('#state-dd').change(function(event) {
+        var idState = this.value;
+        $('#city-dd').html('');
+        $.ajax({
+            url: "/api/fetch-cities",
+            type: 'POST',
+            dataType: 'json',
+            data: {state_id: idState,_token:"{{ csrf_token() }}"},
+            success:function(response)
+            {
+                $('#city-dd').html('<option value="">Select State</option>');
+                console.log(response);
+                $.each(response.cities,function(index, val)
+                {
+                    $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                });
+            }
+        })
     });
 </script>
 @endpush

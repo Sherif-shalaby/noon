@@ -32,4 +32,8 @@ class CashRegister extends Model
         }
         return $this->belongsTo(User::class, 'cash_given_to')->withDefault(['name' => '']);
     }
+    public function store_pos()
+    {
+        return $this->belongsTo(StorePos::class, 'store_pos_id')->withDefault(['name' => '']);
+    }
 }

@@ -18,7 +18,7 @@
                             <input type="text" class="form-control" value="" name="name" id="name" required>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('store', __('lang.stores'), ['class' => 'pt-3']) !!}
                             {!! Form::select(
@@ -32,7 +32,7 @@
                                 ],
                             ) !!}
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="modal-footer">

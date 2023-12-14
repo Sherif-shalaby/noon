@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 
 use App\Models\AddStockLine;
+use App\Models\Branch;
+use App\Models\Brand;
 use App\Models\CashRegisterTransaction;
+use App\Models\Category;
 use App\Models\Currency;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
@@ -17,6 +20,7 @@ use App\Models\System;
 use App\Models\User;
 use App\Utils\MoneySafeUtil;
 use App\Utils\ProductUtil;
+use App\Utils\ReportsFilters;
 use App\Utils\StockTransactionUtil;
 use App\Utils\Util;
 use Illuminate\Http\Request;
@@ -34,15 +38,32 @@ class AddStockController extends Controller
     protected $moneysafeUtil;
     protected $productUtil;
     protected $stockTransactionUtil;
+    protected $reportsFilters;
 
 
-    public function __construct(Util $commonUtil,ProductUtil $productUtil,MoneySafeUtil $moneySafeUtil, StockTransactionUtil $stockTransactionUtil)
+
+    public function __construct(Util $commonUtil,ProductUtil $productUtil,MoneySafeUtil $moneySafeUtil, StockTransactionUtil $stockTransactionUtil,ReportsFilters $reportsFilters)
     {
         $this->commonUtil = $commonUtil;
         $this->moneysafeUtil = $moneySafeUtil;
         $this->productUtil = $productUtil;
         $this->stockTransactionUtil = $stockTransactionUtil;
+        $this->reportsFilters = $reportsFilters;
 
+
+    }
+    public function index(){
+        $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+        $users = User::orderBy('created_at', 'desc')->pluck('name','id');
+        $brands = Brand::pluck('name','id');
+        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $payment_status_array = $this->commonUtil->getPaymentStatusArray();
+        $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        $stocks  = $this->reportsFilters->addStockFilter();
+        return view('add-stock.index')->with(compact('stocks','suppliers','users','brands','categories',
+            'subcategories','payment_status_array','branches','stores'));
     }
 
     public function show($id)
@@ -108,11 +129,11 @@ class AddStockController extends Controller
         $payment_type_array = $this->commonUtil->getPaymentTypeArray();
         $transaction = StockTransaction::find($transaction_id);
         $users = User::Notview()->pluck('name', 'id');
-        $exchange_rate = $transaction->transaction_payments()->latest()->first()->exchange_rate;
+//        dd(count($transaction->transaction_payments) > 0 );
+        $exchange_rate = count($transaction->transaction_payments) > 0 ? $transaction->transaction_payments->last()->exchange_rate : System::getProperty('dollar_exchange');
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $pending_amount = $this->calculatePendingAmount($transaction_id);
-
         $supplier = $transaction->supplier->id;
 
         if(isset($supplier->exchange_rate)) {
@@ -147,7 +168,6 @@ class AddStockController extends Controller
                 'paid_on' => $this->commonUtil->uf_date($data['paid_on']) . ' ' . date('H:i:s'),
                 'exchange_rate' => $request->exchange_rate,
                 'created_by' => Auth::user()->id,
-//                'payment_for' => !empty($data['payment_for']) ? $data['payment_for'] : $transaction->customer_id,
                 'paying_currency' => $request->paying_currency,
             ];
             DB::beginTransaction();
@@ -159,12 +179,6 @@ class AddStockController extends Controller
             if(isset($request->change_exchange_rate_to_supplier)){
                 $transaction->supplier->update(['exchange_rate' => $request->exchange_rate]);
             }
-
-//            if ($request->upload_documents) {
-//                foreach ($request->file('upload_documents', []) as $key => $doc) {
-//                    $transaction_payment->addMedia($doc)->toMediaCollection('transaction_payment');
-//                }
-//            }
             // check user and add money to user.
             if ($data['method'] == 'cash') {
                 $user_id = null;
@@ -285,7 +299,7 @@ class AddStockController extends Controller
                     $pending = $final_total - $amount;
                 }
                 else{
-                    $amount += $payment->amount / $payment->exchange_rate;
+                    $amount += $payment->amount / $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                     $pending = $final_total - $amount;
                 }
             }
@@ -294,7 +308,7 @@ class AddStockController extends Controller
             $final_total = $transaction->final_total;
             foreach ($payments as $payment){
                 if($payment->paying_currency == 2){
-                    $amount += $payment->amount * $payment->exchange_rate;
+                    $amount += $payment->amount * $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                     $pending = $final_total - $amount;
                 }
                 else{
@@ -304,7 +318,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($pending,2);
+        return number_format($pending,3);
     }
 
     public function calculatePaidAmount($transaction_id): string
@@ -320,7 +334,7 @@ class AddStockController extends Controller
                     $paid = $payment->amount;
                 }
                 else{
-                    $paid = $payment->amount / $payment->exchange_rate;
+                    $paid = $payment->amount / $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                 }
             }
         }
@@ -328,7 +342,7 @@ class AddStockController extends Controller
             $final_total = $transaction->final_total;
             foreach ($payments as $payment){
                 if($payment->paying_currency == 2){
-                    $paid = $payment->amount * $payment->exchange_rate;
+                    $paid = $payment->amount * $payment->exchange_rate ?? System::getProperty('dollar_exchange');
                 }
                 else{
                     $paid = $payment->amount;
@@ -336,7 +350,7 @@ class AddStockController extends Controller
             }
         }
 
-        return number_format($paid,2);
+        return number_format($paid,3);
     }
 
 

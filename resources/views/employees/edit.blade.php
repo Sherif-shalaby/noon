@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('lang.employee'))
+@section('title', __('lang.edit_employee'))
 
 @section('breadcrumbbar')
     <div class="breadcrumbbar">
@@ -9,7 +9,8 @@
                 <div class="breadcrumb-list">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{url('/')}}">@lang('lang.dashboard')</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">@lang('lang.employees')</li>
+                        <li class="breadcrumb-item"><a href="{{route('employees.index')}}">@lang('lang.employees')</a></li>
+                        <li class="breadcrumb-item active"><a href="{{route('employees.edit',$employee->id)}}">@lang('lang.edit_employee')</a></li>
                     </ol>
                 </div>
             </div>
@@ -175,10 +176,7 @@
                                                 {!! Form::text('check_in[' . $key . ']', !empty($employee->check_in[$key]) ? $employee->check_in[$key] : null, ['class' => 'form-control input-md check_in time_picker ']) !!}
                                             </td>
                                             <td>
-                                                {!! Form::text('check_out[' . $key . ']', !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null, [
-'class' => 'form-control input-md check_out
-                                        time_picker',
-]) !!}
+                                                {!! Form::text('check_out[' . $key . ']', !empty($employee->check_out[$key]) ? $employee->check_out[$key] : null, ['class' => 'form-control input-md check_out time_picker',]) !!}
                                             </td>
                                         </tr>
                                     @endforeach

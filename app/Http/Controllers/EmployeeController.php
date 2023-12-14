@@ -2,33 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
 use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
 use App\Models\Brand;
-use App\Models\Leave;
 use App\Models\Store;
+use App\Models\Branch;
 use App\Models\JobType;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Employee;
 use App\Models\LeaveType;
-use App\Models\Attendance;
 use App\Models\CustomerType;
-use App\Models\EmployeeProducts;
-use App\Utils\MoneySafeUtil;
 use Illuminate\Http\Request;
 use App\Models\NumberOfLeave;
 use Illuminate\Support\Facades\DB;
-use App\Utils\StockTransactionUtil;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AddEmployeeNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class EmployeeController extends Controller
 {
@@ -150,10 +144,10 @@ class EmployeeController extends Controller
 
     }
 
-  /* =========================== store() =========================== */
-  public function store(Request $request)
-  {
-    //   return response($request);
+    /* =========================== store() =========================== */
+    public function store(Request $request)
+    {
+        //   return response($request);
         $request->validate([
             'email' => 'required|email|unique:users|max:255',
             'name' => 'required|max:255',
@@ -204,10 +198,25 @@ class EmployeeController extends Controller
             $employee->comission_stores = json_encode(!empty($data['commission_stores']) ? $data['commission_stores'] : []);
             $employee->comission_cashier = json_encode(!empty($data['commission_cashiers']) ? $data['commission_cashiers'] : []);
             $employee->branch_id  = $request->branch_id ?? null;
-            if ($request->hasFile('photo')) {
+            if ($request->hasFile('photo'))
+
+            {
                 $employee->photo = store_file($request->file('photo'), 'employees');
             }
             $employee->save();
+            // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+            // Fetch the user
+            $users = User::where('id','!=',auth()->user()->id)->get();
+            $employee_name = $employee->employee_name;
+            // Get the name of the user creating the employee
+            $userCreateEmp = auth()->user()->name;
+            $type = "create_employee";
+            // Send notification to users
+            foreach ($users as $user)
+            {
+                Notification::send($user, new AddEmployeeNotification($employee->id ,$userCreateEmp,$employee_name,$type));
+            }
+            // +++++++++++++++ End : Notification ++++++++++++++++++++++
             // insert "employee_id" and "product_id" of employee's product into "employee_product" table
             if(isset($data['ids']))
             {
@@ -289,60 +298,48 @@ class EmployeeController extends Controller
         $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
         return response()->json($data);
     }
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return Application|Factory|View
-   */
-  public function edit($id)
-  {
-      $jobs = JobType::pluck('title', 'id')->toArray();
-      $customer_types = CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
-      $cashiers = Employee::getDropdownByJobType('Cashier');
-      $week_days = Employee::getWeekDays();
-      $payment_cycle = Employee::paymentCycle();
-      $commission_type = Employee::commissionType();
-      $commission_calculation_period = Employee::commissionCalculationPeriod();
-      $modulePermissionArray = User::modulePermissionArray();
-//      dd()
-      $subModulePermissionArray = User::subModulePermissionArray();
-      $employee = Employee::find($id);
-      $user = User::find($employee->user_id);
-      $stores = Store::pluck('name', 'id')->toArray();
-      $branches = Branch::pluck('name', 'id')->toArray();
-      $selected_stores = $employee->stores->pluck('id');
-      $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
+  /* =========================== edit() =========================== */
+    public function edit($id)
+    {
+        $jobs = JobType::pluck('title', 'id')->toArray();
+        $customer_types = CustomerType::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+        $cashiers = Employee::getDropdownByJobType('Cashier');
+        $week_days = Employee::getWeekDays();
+        $payment_cycle = Employee::paymentCycle();
+        $commission_type = Employee::commissionType();
+        $commission_calculation_period = Employee::commissionCalculationPeriod();
+        $modulePermissionArray = User::modulePermissionArray();
+        $subModulePermissionArray = User::subModulePermissionArray();
+        $employee = Employee::find($id);
+        $user = User::find($employee->user_id);
+        $stores = Store::pluck('name', 'id')->toArray();
+        $branches = Branch::pluck('name', 'id')->toArray();
+        $selected_stores = $employee->stores->pluck('id');
+        $products = Product::orderBy('name', 'asc')->pluck('name', 'id');
 
-      return view('employees.edit')->with(compact(
-          'jobs',
-          'employee',
-          'stores',
-          'stores',
-          'customer_types',
-          'cashiers',
-          'week_days',
-          'payment_cycle',
-          'commission_type',
-          'products',
-          'commission_calculation_period',
-          'modulePermissionArray',
-          'subModulePermissionArray',
-          'user',
-          'selected_stores',
-          'branches'
+        return view('employees.edit')->with(compact(
+            'jobs',
+            'employee',
+            'stores',
+            'stores',
+            'customer_types',
+            'cashiers',
+            'week_days',
+            'payment_cycle',
+            'commission_type',
+            'products',
+            'commission_calculation_period',
+            'modulePermissionArray',
+            'subModulePermissionArray',
+            'user',
+            'selected_stores',
+            'branches'
       ));
 
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  int  $id
-   * @return RedirectResponse
-   */
-  public function update($id ,Request $request)
-  {
+    }
+    // +++++++++++++++++++++++++++++++++++ update() +++++++++++++++++++++++++++++++++
+    public function update($id ,Request $request)
+    {
         $validated = $request->validate([
             'email' => 'required|email|max:255',
             'name' => 'required|max:255'
@@ -423,7 +420,8 @@ class EmployeeController extends Controller
             //add of update number of leaves
             $this->createOrUpdateNumberofLeaves($request, $id);
 
-            if (!empty($data['permissions'])) {
+            if (!empty($data['permissions']))
+            {
                 foreach ($data['permissions'] as $key => $value) {
                     $permissions[] = $key;
                 }
@@ -453,7 +451,16 @@ class EmployeeController extends Controller
             return redirect()->back()->with('status', $output);
         }
     }
+    // +++++++++++++++++++++++++++++++++++ getJobTypePermissions() +++++++++++++++++++++++++++++++++
+    public function getJobTypePermissions($id)
+    {
+        // Get the JobType model for the specified ID
+        $jobType = JobType::findOrFail($id);
+        // Retrieve permissions associated with the job type
+        $permissions = $jobType->permissions()->pluck('name')->toArray();
+        return response()->json($permissions);
 
+    }
     /* ============================= destroy() ============================= */
     public function destroy($id)
     {
@@ -475,7 +482,6 @@ class EmployeeController extends Controller
             ];
         }
         return redirect()->back()->with('status', $output);
-
     }
     /* ============================= addPoints() ============================= */
     public function  addPoints()

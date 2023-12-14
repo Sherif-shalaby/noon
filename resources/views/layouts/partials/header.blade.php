@@ -1,126 +1,3 @@
-
-  <!-- Start Topbar -->
-{{--<div class="topbar no-print">--}}
-{{--    <!-- Start container-fluid -->--}}
-{{--    <div class="container-fluid">--}}
-{{--        <!-- Start row -->--}}
-{{--        <div class="row align-items-center">--}}
-{{--            <!-- Start col -->--}}
-{{--            <div class="col-md-12 align-self-center">--}}
-{{--                <div class="togglebar">--}}
-{{--                    <ul class="list-inline mb-0">--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            <div class="logobar">--}}
-{{--                                <a href="{{url('/')}}" class=""><img src="{{asset('/uploads/'.$settings['logo'])}}" width="45" height="45" class="img-fluid" alt="logo"></a>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            <div class="searchbar">--}}
-{{--                                <form>--}}
-{{--                                    <div class="input-group">--}}
-{{--                                      <input type="search" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">--}}
-{{--                                      <div class="input-group-append">--}}
-{{--                                        <button class="btn" type="submit" id="button-addon2"><img src="{{asset('images/svg-icon/search.svg')}}" class="img-fluid" alt="search"></button>--}}
-{{--                                      </div>--}}
-{{--                                    </div>--}}
-{{--                                </form>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--                <div class="infobar">--}}
-{{--                    <ul class="list-inline mb-0">--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            <div class="notifybar">--}}
-{{--                                <a href="https://api.whatsapp.com/send?phone={{$settings['watsapp_numbers']}}">--}}
-{{--                                    <img src="{{asset('images/topbar/whatsapp.jpg')}}" class="img-fluid" alt="notifications" width="45px" height="45px">--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            <div class="notifybar">--}}
-{{--                                <a href="{{ route('invoices.create') }}">--}}
-{{--                                    <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px">--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            <div class="notifybar">--}}
-{{--                                <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">--}}
-{{--                                    <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">--}}
-{{--                                    <span class="live-icon"></span>--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            @php--}}
-{{--                                $flags=(object)[--}}
-{{--                                    'en'=>'us',--}}
-{{--                                    'ar'=>'eg'--}}
-{{--                                    ];--}}
-{{--                                $local_code=LaravelLocalization::getCurrentLocale();--}}
-{{--                           @endphp--}}
-{{--                            <div class="languagebar">--}}
-{{--                                <div class="dropdown">--}}
-{{--                                  <a class="dropdown-toggle text-black" href="#" role="button" id="languagelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="flag flag-icon-{{ $flags->$local_code }} flag-icon-squared"></i>&nbsp;{{ LaravelLocalization::getCurrentLocaleNative() }}</a>--}}
-{{--                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languagelink">--}}
-{{--                                    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)--}}
-{{--                                        <a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">--}}
-{{--                                            <i class="flag  flag-icon-{{$flags->$localeCode}} flag-icon-squared"></i>{{ $properties['native'] }}--}}
-{{--                                        </a>--}}
-{{--                                    @endforeach--}}
-{{--                                  </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        <li class="list-inline-item">--}}
-{{--                            <div class="profilebar">--}}
-{{--                                <div class="dropdown">--}}
-{{--                                  <a class="dropdown-toggle" href="#" role="button" id="profilelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{asset('images/users/profile.svg')}}" class="img-fluid" alt="profile"><span class="feather icon-chevron-down live-icon"></span></a>--}}
-{{--                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profilelink">--}}
-{{--                                    <div class="dropdown-item">--}}
-{{--                                        <div class="profilename">--}}
-{{--                                          <h5>Shourya Kumar</h5>--}}
-{{--                                          <p>Social Media Strategist</p>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
-{{--                                    <div class="dropdown-item">--}}
-{{--                                        <div class="userbox">--}}
-{{--                                            <ul class="list-inline mb-0">--}}
-{{--                                                <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/user.svg')}}" class="img-fluid" alt="user"></a></li>--}}
-{{--                                                <li class="list-inline-item"><a href="#" class="profile-icon"><img src="{{asset('images/svg-icon/email.svg')}}" class="img-fluid" alt="email"></a></li>--}}
-{{--                                                <li class="list-inline-item">--}}
-{{--                                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="profile-icon"><img src="{{asset('images/svg-icon/logout.svg')}}" class="img-fluid" alt="logout"></a>--}}
-{{--                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"--}}
-{{--                                                        style="display: none;">--}}
-{{--                                                        @csrf--}}
-{{--                                                    </form>--}}
-{{--                                                </li>--}}
-{{--                                            </ul>--}}
-{{--                                        </div>--}}
-{{--                                      </div>--}}
-{{--                                  </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        <li class="list-inline-item menubar-toggle" @if(request()->segment(2) == 'invoices') style="display: inline-block;!important;"@endif>--}}
-{{--                            <div class="menubar">--}}
-{{--                                <a class="menu-hamburger navbar-toggle bg-transparent" href="javascript:void();" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="true">--}}
-{{--                                    <img src="{{asset('images/svg-icon/collapse.svg')}}" class="img-fluid menu-hamburger-collapse" alt="collapse">--}}
-{{--                                    <img src="{{asset('images/svg-icon/close.svg')}}" class="img-fluid menu-hamburger-close" alt="close">--}}
-{{--                                </a>--}}
-{{--                             </div>--}}
-{{--                        </li>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--            <!-- End col -->--}}
-{{--        </div>--}}
-{{--        <!-- End row -->--}}
-{{--    </div>--}}
-{{--    <!-- End container-fluid -->--}}
-{{--</div>--}}
-<!-- End Topbar -->
 <!-- Start Navigationbar -->
 <div class="navigationbar no-print">
     <!-- Start container-fluid -->
@@ -162,12 +39,12 @@
                     @endif
                   @if(!empty($module_settings['stock_module']))
                             <li>
-                                <a href="{{route('initial-balance.create')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
+                                <a href="{{route('new-initial-balance.create')}}" ><img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components"><span>{{__('lang.initial_balance')}}</span></a>
                             </li>
                     @endif
                 {{-- @endcan --}}
                 {{-- ###################### Purchase_Order : امر شراء ###################### --}}
-                <li>
+
                     <li class="dropdown">
                         <a href="#">
                             <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
@@ -180,7 +57,6 @@
                             <li><a href="{{ route('required-products.index') }}"><i class="mdi mdi-circle"></i>@lang('lang.required_products')</a></li>
                         </ul>
                     </li>
-                </li>
 
                 {{-- ###################### Returns : المرتجعات ###################### --}}
                 {{-- @can('return_module')  --}}
@@ -193,6 +69,17 @@
                         </li>
                     @endif
                 {{-- @endcan  --}}
+                  {{-- ###################### Supplier Returns :  المرتجعات للموردين ###################### --}}
+                  @if(!empty($module_settings['return_module']))
+                      <li class="dropdown">
+                          <a href="javaScript:void();" class="dropdown-toggle" data-toggle="dropdown"><img src="{{asset('images/topbar/return.png')}}" class="img-fluid" alt="pages"><span>{{__('lang.supplier_returns')}}</span></a>
+                          <ul class="dropdown-menu">
+                              <li><a href="{{route('suppliers.returns.products')}}"><i class="mdi mdi-circle"></i>@lang('lang.products')</a></li>
+                              <li><a href="{{route('suppliers.returns.invoices')}}"><i class="mdi mdi-circle"></i>@lang('lang.invoices')</a></li>
+                          </ul>
+                      </li>
+                  @endif
+
                 {{-- ###################### Employees : الموظفين ###################### --}}
                 {{-- @can('employee_module')  --}}
                     @if(!empty($module_settings['employee_module']))
@@ -249,18 +136,30 @@
 
                 {{-- @endcan --}}
                 {{-- ###################### sell car : عربة بيع ###################### --}}
-                {{-- @can('sell_car_module')  --}}
-                <li>
-                    <a href="{{route('sell-car.index')}}">
-                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
-                        <span>{{__('lang.sell_car')}}</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('representatives.index')}}">
+                {{-- @can('sell_car_module')  --}}`
+                  <li class="dropdown">
+                      <a href="#">
+                          <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                          <span>{{__('lang.sell_car')}}</span>
+                      </a>
+                      <ul class="dropdown-menu">
+                          {{-- ########### purchase_order : اوامر الشراء########### --}}
+                          <li><a href="{{route('sell-car.index')}}"><i class="mdi mdi-circle"></i>@lang('lang.sell_car')</a></li>
+                          {{-- ########### required_products : المواد المطلوبة ########### --}}
+                          <li><a href="{{ route('delivery.index') }}"><i class="mdi mdi-circle"></i>@lang('lang.plans')</a></li>
+                      </ul>
+                  </li>
+
+                <li class="dropdown">
+                    <a href="#">
                         <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
                         <span>{{__('lang.representatives_requests')}}</span>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{route('representatives.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.representatives_requests')}}</a></li>
+                        <li><a href="{{route('rep_plan.index')}}"><i class="mdi mdi-circle"></i>{{__('lang.plans')}}</a></li>
+
+                    </ul>
                 </li>
                 {{-- @endcan --}}
                 {{-- ###################### settings : الاعدادات ###################### --}}
@@ -385,16 +284,44 @@
                                 <span>{{__('lang.reports')}}</span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{route('reports.products')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.product_report')}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('reports.initial_balance')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.initial_balance')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ purchases report +++++++++++ --}}
                                 <li>
-                                    <a href="{{route('purchases-report.index')}}">
+                                    <a href="{{route('reports.add_stock')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.purchases_report')}}
+                                    </a>
+                                </li>
+                                    {{--          Best Seller Report           --}}
+                                <li>
+                                    <a href="{{route('reports.best_seller')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.best_seller_report')}}
                                     </a>
                                 </li>
                                 {{-- +++++++++++ sales report +++++++++++ --}}
                                 <li>
                                     <a href="{{route('sales-report.index')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.sales_report')}}
+                                    </a>
+                                </li>
+                                {{--          Daily sells Report           --}}
+                                <li>
+                                    <a href="{{route('reports.daily_sales_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.daily_sale_report')}}
+                                    </a>
+                                </li>
+                                {{--          Daily Purchase Report           --}}
+                                <li>
+                                    <a href="{{route('reports.daily_purchase_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.daily_purchase_report')}}
                                     </a>
                                 </li>
                                 {{-- +++++++++++ receivable report +++++++++++ --}}
@@ -415,6 +342,18 @@
                                         <i class="mdi mdi-circle"></i>{{__('lang.customers_report')}}
                                     </a>
                                 </li>
+                                {{-- +++++++++++ employees sales report +++++++++++ --}}
+                                   <li>
+                                    <a href="{{route('sales-per-employee.index')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.sales_per_employee')}}
+                                    </a>
+                                </li>
+                                   {{-- +++++++++++ monthly sales & purchase report +++++++++++ --}}
+                                   <li>
+                                    <a href="{{route('report.monthly_sale_report')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.monthly_sale_and_purchase_report')}}
+                                    </a>
+                                </li>
                                 {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
                                 <li>
                                     <a href="{{route('daily-report-summary.index')}}">
@@ -425,6 +364,12 @@
                                 <li>
                                     <a href="{{route('get-due-report.index')}}">
                                         <i class="mdi mdi-circle"></i>{{__('lang.get_due_report')}}
+                                    </a>
+                                </li>
+                                {{-- +++++++++++ Get Due Report +++++++++++ --}}
+                                <li>
+                                    <a href="{{route('report.store_stock_chart')}}">
+                                        <i class="mdi mdi-circle"></i>{{__('lang.store_stock_chart')}}
                                     </a>
                                 </li>
                                 {{-- +++++++++++ Supplier Report +++++++++++ --}}
@@ -444,7 +389,12 @@
 
                     @endif
                 {{-- @endcan --}}
-
+                <li>
+                    <a href="{{route('dues')}}">
+                        <img src="{{asset('images/topbar/warehouse.png')}}" class="img-fluid" alt="components">
+                        <span>{{__('lang.dues')}}</span>
+                    </a>
+                </li>
 
 
               </ul>

@@ -44,12 +44,12 @@
                         </div>
                         {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                         <div class="table-responsive">
-                            <div class="col-sm-4 pt-4 my-2" style="padding: 0 3.5rem">
+                            {{-- <div class="col-sm-4 pt-4 my-2" style="padding: 0 3.5rem">
                                 <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
                                    data-check_password="{{url('user/check-password')}}"
                                    class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
                                     @lang('lang.delete_all')</a>
-                            </div>
+                            </div> --}}
                             <div id="status"></div>
                             <table id="example" class="table table-striped table-bordered">
                                 <thead>
@@ -94,14 +94,15 @@
                                             @endphp
                                         @endforeach
 
-                                    @foreach($product->variations as $variation)
-                                        @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
-                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
-                                        @else
-                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
-                                        @endif
-
-                                    @endforeach
+                                        @forelse($product->variations as $variation)
+                                            @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
+                                                <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
+                                            @else
+                                                <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
+                                            @endif
+                                        @empty
+                                            <span>{{$product->product_stores->sum('quantity_available')}} </span>
+                                        @endforelse
                                     </td>
                                     <td>{{$product->category->name??''}}</td>
                                     <td>
@@ -169,9 +170,23 @@
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
+                                                    <a target="_blank" href="{{route('remove_expiry',$product->id)}}"
+                                                       class="btn"><i class="fa fa-hourglass-half"></i>
+                                                         @lang('lang.remove_expiry')
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
                                                     <a target="_blank" href="{{route('get_remove_damage',$product->id)}}"
                                                        class="btn"><i class="fa fa-filter"></i>
                                                          @lang('lang.remove_damage')
+                                                    </a>
+                                                </li>
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a target="_blank" href="{{url('add-stock/create?product_id='.$product->id)}}"
+                                                       class="btn"><i class="fa fa-plus"></i>
+                                                         @lang('lang.add_new_stock')
                                                     </a>
                                                 </li>
                                                 <li class="divider"></li>
@@ -210,7 +225,8 @@
             <!-- End col -->
         </div>
         <!-- End row -->
-<div class="view_modal no-print" >@endsection
+<div class="view_modal no-print" >
+    @endsection
 @push('javascripts')
 <script src="{{ asset('js/product/product.js') }}"></script>
 <script>

@@ -25,7 +25,7 @@
             <a href="{{ route('logout') }}" class="profile-icon" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                 <img src="{{ asset('images/svg-icon/logout.svg') }}" class="img-fluid" alt="logout">
             </a>
-            
+
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
@@ -40,12 +40,20 @@
                 <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
             </a>
         </div>
+        <div class="profilename ">
+            <a>
+                <button class="btn-danger btn-sm" id="power_off_btn"><i class="fa fa-power-off"></i></button>
+            </a>
+        </div>
         {{--                    <div class="notifybar">--}}
         {{--                        <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">--}}
         {{--                            <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">--}}
         {{--                            <span class="live-icon"></span>--}}
         {{--                        </a>--}}
         {{--                    </div>--}}
+
+        {{-- +++++++++++++++++ Notification +++++++++++++++++ --}}
+        @include('layouts.partials.notification_list')
         @php
             $flags=(object)[
                 'en'=>'us',

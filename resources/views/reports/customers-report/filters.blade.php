@@ -1,58 +1,93 @@
-<div class="card-body">
-    <form action="{{route('products.index')}}" method="get">
-    <div class="row">
-        <div class="col-2">
+<form action="{{ route('customers-report.index') }}">
+    <div class="row pb-3">
+        <div class="col-md-2">
             <div class="form-group">
-                {!! Form::select(
-                    'category_id',
-                    $categories,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.category')]
-                ) !!}
+                {!! Form::label('start_date', __('lang.start_date'), []) !!}
+                {!! Form::date('start_date', request()->start_date, ['class' => 'form-control sale_filter']) !!}
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
             <div class="form-group">
-                {!! Form::select(
-                    'store_id',
-                    $stores,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.store')]
-                ) !!}
+                {!! Form::label('start_time', __('lang.start_time'), []) !!}
+                {!! Form::time('start_time', request()->start_time, [
+                    'class' => 'form-control sale_filter
+                                    time_picker sale_filter',
+                ]) !!}
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
             <div class="form-group">
-                {!! Form::select(
-                    'unit_id',
-                    $units,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.unit')]
-                ) !!}
+                {!! Form::label('end_date', __('lang.end_date'), []) !!}
+                {!! Form::date('end_date', request()->end_date, ['class' => 'form-control sale_filter']) !!}
             </div>
         </div>
-        <div class="col-2">
+        <div class="col-md-2">
             <div class="form-group">
-                {!! Form::select(
-                    'brand_id',
-                    $brands,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.brand')]
-                ) !!}
+                {!! Form::label('end_time', __('lang.end_time'), []) !!}
+                {!! Form::time('end_time', request()->end_time, [
+                    'class' => 'form-control sale_filter time_picker
+                                    sale_filter',
+                ]) !!}
             </div>
         </div>
-        <div class="col-2">
+
+        <div class="col-md-2">
             <div class="form-group">
-                {!! Form::select(
-                    'created_by',
-                    $users,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
-                ) !!}
+                {!! Form::label('customer_id', __('lang.customer'), []) !!}
+                {!! Form::select('customer_id', $customers, request()->customer_id, [
+                    'class' => 'form-control select2 sale_filter',
+                    'placeholder' => __('lang.all'),
+                ]) !!}
             </div>
         </div>
-        {{-- <div class="col-2"></div> --}}
-        <div class="col-1">
+        <div class="col-md-2">
             <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
-                    <i class="fa fa-eye"></i> {{ __('Search') }}</button>
+                {!! Form::label('store_id', __('lang.store'), []) !!}
+                {!! Form::select('store_id', $stores, request()->store_id, [
+                    'class' => 'form-control select2 sale_filter',
+                    'placeholder' => __('lang.all'),
+                ]) !!}
             </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                {!! Form::select('pos_id', $store_pos, request()->pos_id, [
+                    'class' => 'form-control select2 sale_filter',
+                    'placeholder' => __('lang.all'),
+                ]) !!}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                {!! Form::label('product_id', __('lang.product'), []) !!}
+                {!! Form::select('product_id', $products, request()->product_id, [
+                    'class' => 'form-control select2 sale_filter',
+                    'placeholder' => __('lang.all'),
+                ]) !!}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                {!! Form::label('created_by', __('lang.created_by'), []) !!}
+                {!! Form::select('created_by', $users, request()->created_by, [
+                    'class' => 'form-control select2',
+                    'placeholder' => __('lang.all'),
+                ]) !!}
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                {!! Form::label('payment_status', __('lang.payment_status'), []) !!}
+                {!! Form::select('payment_status', $payment_status_array, request()->payment_status, [
+                    'class' => 'form-control select2',
+                    'placeholder' => __('lang.all'),
+                ]) !!}
+            </div>
+        </div>
+        <div class="col-md-2 pt-4">
+            <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
+                <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
         </div>
     </div>
-    </form>
-</div>
+</form>

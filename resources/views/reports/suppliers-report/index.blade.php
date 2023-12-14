@@ -138,7 +138,7 @@
                                                         {{$purchase_order->transaction->supplier->name}}
                                                     @endif
                                                 </td>
-                                                <td>{{$purchase_order->product->name}}</td>
+                                                {{-- <td>{{$purchase_order->product->name}}</td> --}}
                                                 <td> {{@num_format($purchase_order->quantity)}} </td>
                                                 <td></td>
                                                 {{-- <td>{{ $purchase_order->transaction->final_total }}</td> --}}

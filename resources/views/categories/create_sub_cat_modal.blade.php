@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade createSubCategoryModal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
+<div class="modal fade createSubCategoryModal"  id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;"
      aria-hidden="true">
     <div class="modal-dialog  rollIn  animated" role="document">
         <div class="modal-content">
@@ -20,7 +20,7 @@
                                placeholder="@lang('categories.categorie_name')"
                                name="name"
                                value="{{ old('name') }}" >
-                       
+
                         <button  class="btn btn-primary btn-sm ml-2" type="button"
                                  data-toggle="collapse" data-target="#translation_table_category"
                                  aria-expanded="false" aria-controls="collapseExample">

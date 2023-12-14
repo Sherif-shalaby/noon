@@ -29,6 +29,7 @@ class CustomerRequest extends FormRequest
             'notes' => 'nullable|max:255',
             'city_id' => 'nullable',
             'state_id' => 'nullable',
+            'quarter_id' => 'nullable',
         ];
     }
     public function messages()

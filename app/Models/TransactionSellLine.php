@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class TransactionSellLine extends Model
 {
@@ -15,6 +16,7 @@ class TransactionSellLine extends Model
 
         return $this->hasMany(SellLine::class,'transaction_id','id');
     }
+
     public function delivery()
     {
         return $this->belongsTo(Employee::class,'deliveryman_id');
@@ -27,7 +29,6 @@ class TransactionSellLine extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id', 'id')->withDefault(['name' => '']);
     }
-
     public function store()
     {
         return $this->belongsTo(Store::class, 'store_id', 'id')->withDefault(['name' => '']);
@@ -64,6 +65,10 @@ class TransactionSellLine extends Model
     public function created_by_user()
     {
         return $this->belongsTo(User::class, 'created_by')->withDefault(['name' => '']);
+    }
+    public function receipts()
+    {
+        return $this->hasMany(ReceiptTransactionSellLinesFiles::class,'transaction_sell_line_id');
     }
 
 }

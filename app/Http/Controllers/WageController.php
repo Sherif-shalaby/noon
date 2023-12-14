@@ -56,8 +56,10 @@ class WageController extends Controller
     {
         $employees = Employee::with('user')->get()->pluck('user.name', 'id');
         $payment_types = Wage::getPaymentTypes();
+        $payment_cycle = Wage::paymentCycle();
         $users = User::Notview()->pluck('name', 'id');
-        return view('employees.wages.create',compact('employees','payment_types','users'));
+        return view('employees.wages.create',
+                    compact('employees','payment_types','payment_cycle','users'));
     }
     // +++++++++++++++++ Get "مصدر الاموال" depending on "طريقة الدفع" +++++++++++++++++
     public function getSourceByTypeDropdown($type = null)
@@ -180,7 +182,17 @@ class WageController extends Controller
     {
         //
     }
-
+    // ++++++++++++++++ getEmployeePaymentCycle ++++++++++++++++
+    public function getEmployeePaymentCycle($id)
+    {
+        $employee = Employee::find($id);
+        $payment_cycles = Wage::paymentCycle();
+        if (!$employee) {
+            return response()->json(['error' => 'Employee not found'], 404);
+        }
+        // return $employee;
+        return response()->json(['payment_cycle' => $employee->payment_cycle,'payment_cycles' => $payment_cycles ]);
+    }
     /**
      * Show the form for editing the specified resource.
      *

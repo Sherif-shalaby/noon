@@ -52,34 +52,42 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        // return($request);
         // return $request->all();
-
-//        dd(!empty($request->parent_id));
+        // return $request->translations['name'];
+    //    dd($request);
         $data =  $request->data;
 //        dd($request['data'],empty($request->parent_id));
         $input['name']        = $request->name;
-        $input['status']      = $data['status'];
-        $input['parent_id']   = !empty($request->parent_id) ? $request->parent_id : null;
+        $input['status']      = $request->status ?? $data['status'];
+        $input['parent_id']   = $request->parent_id ? $request->parent_id : null;
         if ($request->file('cover')) {
             $input['cover'] = store_file($request->file('cover'), 'categories');
         }
-        if(!empty($data['translations[name]']))
+        if(!empty( $request->translations['name'] )||  !empty( $data['translations']['name'] ))
         {
-            $input['translation']= $data['translations[name]'];
+            $input['translation']=  $request->translations['name'] ??  $data['translations']['name'] ;
         }else{
             $input['translation']=[];
         }
         $category = Category::create($input);
-
-        if ($data['quick_add']) {
-            $output = [
-                'success' => true,
-                'id' => $category->id,
-                'msg' => __('lang.success')
-            ];
-            return $output;
+        $output = [
+            'success' => true,
+            'msg' => __('lang.success')
+        ];
+        if($data){
+            if ($data['quick_add']) {
+                $output = [
+                    'success' => true,
+                    'id' => $category->id,
+                    'msg' => __('lang.success')
+                ];
+                return $output;
+            }
         }
-        return response()->json(['status' => __('categories.addsuccess')]);
+        
+        return redirect()->back()->with('status', $output);
+        // return response()->json(['status' => __('categories.addsuccess')]);
 
     }
 

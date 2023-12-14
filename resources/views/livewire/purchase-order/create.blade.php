@@ -29,8 +29,9 @@
                     <form action="{{ route('pos.store') }}">
                         <div class="card-body">
                             <div class="col-md-12">
+                                {{-- ------------------- filters ------------------- --}}
                                 <div class="row">
-                                    {{-- ////////////////// stores filter ////////////////// --}}
+                                    {{-- ////////// stores filter ////////// --}}
                                     <div class="col-md-4">
                                         <label for="store_id" class="text-primary">
                                             @lang('lang.store'):<span style="color:#dc3545;">*</span>
@@ -48,7 +49,7 @@
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    {{-- ////////////////// suppliers filter ////////////////// --}}
+                                    {{-- ////////// suppliers filter ////////// --}}
                                     <div class="col-md-4">
                                         <label for="customer_id" class="text-primary">
                                             @lang('lang.suppliers'):<span style="color:#dc3545;">*</span>
@@ -137,7 +138,7 @@
                                 </div>
                             </div>
                             <br>
-                            {{-- ++++++++++++++++++++++ products ++++++++++++++++++++++ --}}
+                            {{-- ++++++++++++++++++++++ leftSidebar : filters ++++++++++++++++++++++ --}}
                             <div class="row">
                                 <div class="col-md-3 border border-1 mr-1 p-0">
                                     {{-- ============= filter : الموردين ============= --}}

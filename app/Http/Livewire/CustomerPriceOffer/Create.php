@@ -83,6 +83,9 @@ class Create extends Component
     // ++++++++++++++++++++++++++++++++++ render() == index() method ++++++++++++++++++++++++++++++++++
     public function render(): Factory|View|Application
     {
+        // ++++++++++ updateCurrentStock() : Fetch and set the initial value of $current_stock ++++++++++
+        $this->updateCurrentStock();
+
         $status_array = $this->getPurchaseOrderStatusArray();
         $payment_status_array = $this->getPaymentStatusArray();
         $payment_type_array = $this->getPaymentTypeArray();
@@ -163,14 +166,13 @@ class Create extends Component
         $this->validateOnly($propertyName);
     }
     // ++++++++++++++++++++++++++++++++++ store() method ++++++++++++++++++++++++++++++++++
-
     public function store(): Redirector|Application|RedirectResponse
     {
         $this->validate([
             'store_id' => 'required',
             'customer_id' => 'required',
-            'block_for_days' => 'required',
-            'validity_days' => 'required',
+            // 'block_for_days' => 'required',
+            // 'validity_days' => 'required',
         ]);
         try
         {
@@ -219,7 +221,7 @@ class Create extends Component
             DB::beginTransaction();
             // add  products to stock lines
             $customer_offer_prices = [];
-            // ++++++++++++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++++++++++++
+            // ++++++++++++++++++ CustomerOfferPrice table : insert Products ++++++++++++++++++
             foreach ($this->items as $index => $item)
             {
                 if (!empty($item['product']['id']) && !empty($item['quantity']))
@@ -232,7 +234,7 @@ class Create extends Component
                     $customer_offer_price['transaction_customer_offer_id'] = $transaction_customer_offer->id;
                     $customer_offer_price['product_id'] = $item['product']['id'];
                     $customer_offer_price['quantity'] = $item['quantity'];
-                    $customer_offer_price['current_stock'] = $item['current_stock'];
+                    // $customer_offer_price['current_stock'] = $item['current_stock'];
                     $customer_offer_price['sell_price'] = $item['selling_price'];
                     $customer_offer_price['dollar_sell_price'] = $item['dollar_selling_price'];
                     // created_by
@@ -250,6 +252,17 @@ class Create extends Component
 
                     // Add the customer offer price for this item to the array
                     $customer_offer_prices[] = $customer_offer_price;
+                    // +++++++++++++++++++++ ProductStore Table ++++++++++++++
+                    // Delete "blocked Quantity" From "available Quantity" of "product"
+                    $product_store = ProductStore::where('product_id',$item['product']['id'])
+                                                ->where('store_id',$this->store_id)->first();
+                    // store "block_quantity" in "store_products" table
+                    $product_store->block_quantity = $item['quantity'];
+                    // Update blocked_until field based on blockDays
+                    $product_store->blocked_until = now()->addDays($this->block_for_days);
+                    // Subtract "block_quantity" from "quantity" of "product" in "product_store"  table
+                    $product_store->quantity_available -= $item['quantity'];
+                    $product_store->save();
                 }
             }
 
@@ -267,7 +280,7 @@ class Create extends Component
         }
         return redirect()->route('customer_price_offer.create');
     }
-
+    // ++++++++++++++++++++++++++++++++++ add_product() method ++++++++++++++++++++++++++++++++++
     public function add_product($id, $add_via = null)
     {
         if(!empty($this->searchProduct)){
@@ -345,7 +358,35 @@ class Create extends Component
         ];
         array_push($this->items, $new_item);
     }
-
+    // +++++++++++++++++++ updateCurrentStock() +++++++++++++++++++
+    //  When change "store" Then Change "current_stock" column according to "selected Store"
+    public function updateCurrentStock()
+    {
+        if (!empty($this->store_id))
+        {
+            $store_id = (int)$this->store_id;
+            foreach( $this->items as $key => $item )
+            {
+                $current_stock_all = ProductStore::select('quantity_available')
+                    ->where('product_id', $item['product']['id'])
+                    ->where('store_id', $store_id)
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+                $current_stock = isset($current_stock_all->quantity_available) ? $current_stock_all->quantity_available : null;
+                // Update "current_stock" for "All products"
+                $this->items[$key]['current_stock'] = $current_stock;
+            }
+        } else {
+            // Handle the case where store_id is empty, set $current_stock to null or a default value
+            $this->current_stock = null;
+        }
+    }
+    // +++++++++++++++++++++++++ Call func() ===> updateCurrentStock() +++++++++++++++++++
+    public function func()
+    {
+        // Update $current_stock when store_id changes
+        $this->updateCurrentStock();
+    }
     public function getVariationData($index){
        $variant = Variation::find($this->items[$index]['variation_id']);
        $this->items[$index]['unit'] = $variant->unit->name;
@@ -459,7 +500,21 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
             }
         }
-        return number_format($this->num_uf($totalCost),2);
+        // Apply discount based on discount type
+        // 1- if discount_type == fixed
+        if ($this->discount_type === 'fixed') {
+            $totalCost -= $this->discount_value;
+        }
+        // 2- if discount_type == percentage
+        elseif ($this->discount_type === 'percentage') {
+            $discountAmount = ($this->discount_value / 100) * $totalCost;
+            $totalCost -= $discountAmount;
+        }
+
+        // Make sure the total cost is not negative
+        $totalCost = max($totalCost, 0);
+
+        return number_format($this->num_uf($totalCost), 2);
     }
     // +++++++++++++++ sum_dollar_total_cost() : sum all "dollar_sell_price" values ++++++++++++++++
     public function sum_dollar_total_cost()
@@ -468,11 +523,11 @@ class Create extends Component
         if(!empty($this->items)){
             foreach ($this->items as $item)
             {
-//                dd($item['dollar_total_cost']);
+                // dd($item['dollar_total_cost']);
                 $totalDollarCost += $item['dollar_total_cost'];
             }
         }
-//        dd($totalDollarCost);
+                // dd($totalDollarCost);
         return number_format($totalDollarCost,2);
     }
 
