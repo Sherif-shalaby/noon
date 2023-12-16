@@ -799,6 +799,7 @@
                                                 <select wire:model="prices.{{ $key }}.price_customer_types"
                                                     data-name='price_customer_types' data-index="{{ $key }}"
                                                     data-key="{{ $key }}" class="form-control select2"
+                                                    wire:change="changePrice({{ $key }})"
                                                     placeholder="{{ __('lang.customer_type') }}">
                                                     @foreach ($customer_types as $type)
                                                         <option value="{{ $type->id }}">

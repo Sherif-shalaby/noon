@@ -3,7 +3,6 @@
         <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{ $index ?? 0 }}][variation_id]"
             value="{{ $variation->id ?? null }}">
         @if (isset($index) && $index !== '')
-
             <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="width: 75px">
                 {{-- {!! Form::label('equal', __('lang.equal'), [
@@ -68,8 +67,10 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                 @enderror
             </div>
+
             <div class="col-md-2 d-flex justify-content-center align-items-end">
-                <button class="btn btn-sm btn-primary add_small_unit" type="button" data-key="{{ $key }}">
+                <button class="btn btn-sm btn-primary add_small_unit" type="button" onclick="fadeButton(event)"
+                    data-key="{{ $key }}">
                     <i class="fa fa-equals"></i>
                 </button>
             </div>
@@ -95,3 +96,22 @@
             {{--        </div> --}}
         @endif
     </div>
+
+    <script>
+        function fadeButton(event) {
+            // console.log("wdewe");
+            var button = event.target
+
+            button.classList.add("disabled");
+            // let rowId = parseInt($("#raw_unit_index\\[" + key + "\\]").val());
+            // if (rowId > 0) {
+            //     $(this).removeClass('add_small_unit')
+
+            // }
+            // if (rowId >= 0) {
+            //     $(this).addClass('opacity-75')
+
+            // }
+            //   $(`#raw_unit_index${key}`).val()
+        }
+    </script>

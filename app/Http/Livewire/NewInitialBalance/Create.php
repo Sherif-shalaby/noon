@@ -86,7 +86,7 @@ class Create extends Component
             ]
         ]
     ];
-    //    public $subcategories1 = [], $subcategories2 = [], $subcategories3 = [];
+    public $subcategories1 = [], $subcategories2 = [], $subcategories3 = [];
     public $quantity = [], $purchase_price = [], $selling_price = [],
         $base_unit = [], $divide_costs, $total_size = [], $total_weight = [],
         $sub_total = [], $change_price_stock = [], $store_id, $status,
@@ -166,11 +166,26 @@ class Create extends Component
                 $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
             } else {
                 $this->item[0][$data['var1']] = $data['var2'];
+                if ($data['var1'] == 'category_id') {
+                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                if ($data['var1'] == 'subcategory_id1') {
+                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                if ($data['var1'] == 'subcategory_id2') {
+                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
+                if ($data['var1'] == 'subcategory_id3') {
+                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                }
                 if ($data['var1'] == 'transaction_currency') {
                     //                    dd($data['var2']);
                     $this->transaction_currency = (int)$data['var2'];
                 }
             }
+            $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
             $this->exchange_rate = $this->changeExchangeRate();
             // $this->changeExchangeRateBasedPrices();
         }
@@ -188,9 +203,18 @@ class Create extends Component
                 $this->item[0]['name'] = $recent_stock->add_stock_lines->first()->product->name ?? null;
                 $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
                 $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
-                $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
-                $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
-                $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+                if (!empty($this->item[0]['category_id'])) {
+                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
+                }
+                if (!empty($this->item[0]['subcategory_id1'] && count($this->subcategories1) > 0)) {
+                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
+                }
+                if (!empty($this->item[0]['subcategory_id2']) && count($this->subcategories2) > 0) {
+                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
+                }
                 $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
                 $this->item[0]['length'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->length ?? null;
                 $this->item[0]['width'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->width ?? null;
@@ -213,10 +237,8 @@ class Create extends Component
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
-        $categories = Category::orderBy('name', 'asc')->where('parent_id', 1)->pluck('name', 'id')->toArray();
-        $subcategories1 = Category::orderBy('name', 'asc')->where('parent_id', 2)->pluck('name', 'id')->toArray();
-        $subcategories2 = Category::orderBy('name', 'asc')->where('parent_id', 3)->pluck('name', 'id')->toArray();
-        $subcategories3 = Category::orderBy('name', 'asc')->where('parent_id', 4)->pluck('name', 'id')->toArray();
+        $categories = Category::orderBy('name', 'asc')->where('parent_id', null)->pluck('name', 'id')->toArray();
+        $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $products = Product::all();
         $stores = Store::getDropdown();
         $branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
@@ -236,10 +258,7 @@ class Create extends Component
                 'categories',
                 'customer_types',
                 'branches',
-                'selected_currencies',
-                'subcategories1',
-                'subcategories2',
-                'subcategories3',
+                'selected_currencies'
             )
         );
     }
@@ -474,7 +493,7 @@ class Create extends Component
             }
         } catch (\Exception $e) {
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
-            dd($e);
+            //             dd($e);
         }
     }
     public function saveTransaction($product_id, $variations = [])
@@ -539,19 +558,19 @@ class Create extends Component
                                         'stock_line_id' => $stockLine->id,
                                         'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
                                         'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
-                                        'price' => !empty($price['price']) ? $this->num_uf($price['price'])  : null,
-                                        'dinar_price' => !empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null,
-                                        'price_customers' => !empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null,
-                                        'dinar_price_customers' => !empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc'])  : null,
+                                        'price' => ($this->transaction_currency == 2) ? (!empty($price['price']) ? $this->num_uf($price['price'])  : null) : null,
+                                        'dinar_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null) : null,
+                                        'price_customers' => ($this->transaction_currency == 2) ? (!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null) : null,
+                                        'dinar_price_customers' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc']) : null) : null,
                                         'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
                                         'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
                                         'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
                                         'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
                                         'created_by' => Auth::user()->id,
-                                        'dinar_total_price' => !empty($price['dinar_total_price']) ? $this->num_uf($price['total_price'])  : null,
-                                        'total_price' => !empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null,
-                                        'dinar_piece_price' => !empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price'])  : null,
-                                        'piece_price' => !empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null,
+                                        'dinar_total_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_total_price']) ? $this->num_uf($price['total_price']) : null) : null,
+                                        'total_price' => ($this->transaction_currency == 2) ? (!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null) : null,
+                                        'dinar_piece_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null) : null,
+                                        'piece_price' => ($this->transaction_currency == 2) ? (!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null) : null,
                                     ];
                                     ProductPrice::create($price_data);
                                 } else {
@@ -618,6 +637,9 @@ class Create extends Component
     }
     public function create()
     {
+        $this->subcategories1 = Category::where('parent_id', $this->edit_product['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+        $this->subcategories2 = Category::where('parent_id', $this->edit_product['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+        $this->subcategories3 = Category::where('parent_id', $this->edit_product['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
         $this->item[0] =
             [
                 'isExist' => 1,
@@ -1085,34 +1107,31 @@ class Create extends Component
     {
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
-        $total_quantity = 0;
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
             $this->discount_from_original_price = System::getProperty('discount_from_original_price');
-            if (!empty($price_key)) {
-                $sell_price = ($row_index >= 0) ? (($this->transaction_currency != 2) ? ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price'])) : ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']))) : null;
-                $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
-                if (empty($this->discount_from_original_price) && !empty($this->prices[$index]['discount_quantity'])) {
-                    $price = ($sell_price * $this->num_uf($this->prices[$index]['discount_quantity'])) / $total_quantity;
+            $sell_price = ($row_index >= 0) && isset($price_key) ? (($this->transaction_currency != 2) ? ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price'])) : ($this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']))) : null;
+            $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
+            if (empty($this->discount_from_original_price) && !empty($this->prices[$index]['discount_quantity'])) {
+                $price = ($sell_price * $this->num_uf($this->prices[$index]['discount_quantity'])) / $total_quantity;
 
-                    if ($this->prices[$index]['price_type'] == "fixed") {
-                        $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 4);
-                    } else {
-                        $percent = $this->num_uf($this->prices[$index]['dinar_price']) / 100;
-                        $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $percent * $price, 4);
-                    }
+                if ($this->prices[$index]['price_type'] == "fixed") {
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 4);
                 } else {
-                    // dd($sell_price);
-                    if ($this->prices[$index]['price_type'] == "fixed") {
-                        $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $this->prices[$index]['dinar_price'], 4);
-                    } else {
-                        $percent = $this->num_uf($this->prices[$index]['dinar_price']) / 100;
-                        $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $percent * $sell_price, 4);
-                    }
+                    $percent = $this->num_uf($this->prices[$index]['dinar_price']) / 100;
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $percent * $price, 4);
+                }
+            } else {
+                // dd($sell_price);
+                if ($this->prices[$index]['price_type'] == "fixed") {
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $this->prices[$index]['dinar_price'], 4);
+                } else {
+                    $percent = $this->num_uf($this->prices[$index]['dinar_price']) / 100;
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $percent * $sell_price, 4);
                 }
             }
-            $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * $this->num_uf($this->prices[$index]['discount_quantity']));
+            $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity'])) ? $this->num_uf($this->prices[$index]['discount_quantity']) : 1));
             $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity) : 0;
         }
     }
@@ -1126,9 +1145,11 @@ class Create extends Component
     }
     public function getCustomerType($index, $customer_type)
     {
-        foreach ($this->rows[$index]['prices'] as $key => $row) {
-            if ($this->rows[$index]['prices'][$key]['customer_type_id'] == $customer_type) {
-                return $key;
+        if (isset($index)) {
+            foreach ($this->rows[$index]['prices'] as $key => $row) {
+                if ($this->rows[$index]['prices'][$key]['customer_type_id'] == $customer_type) {
+                    return $key;
+                }
             }
         }
     }

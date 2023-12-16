@@ -16,12 +16,12 @@ $(() => {
     };
     $("#product_details").summernote(usrCfg);
 });
-$(document).on('change','.width,.height,.length',function(){
+$(document).on('change', '.width,.height,.length', function () {
     var key = $(this).data('key');
-    let width= parseFloat($('#width' + key).val());
-    let height= parseFloat($('#height' + key).val());
-    let length= parseFloat($('#length' + key).val());
-    let size=width*height*length;
+    let width = parseFloat($('#width' + key).val());
+    let height = parseFloat($('#height' + key).val());
+    let length = parseFloat($('#length' + key).val());
+    let size = width * height * length;
     console.log(size)
     $('#size' + key).val(size);
 });
@@ -41,7 +41,7 @@ $(document).on("click", ".remove_row", function () {
     row_id = $(this).closest("tr").data("row_id");
     $(this).closest("tr").remove();
 });
-$(document).on("change",".is_price_permenant",function () {
+$(document).on("change", ".is_price_permenant", function () {
     $(this).closest("tr").find(".price_start_date").prop('disabled', (i, v) => !v);
     $(this).closest("tr").find(".price_start_date").val(null);
     $(this).closest("tr").find(".price_end_date").prop('disabled', (i, v) => !v);
@@ -87,7 +87,7 @@ $(document).on("change",".is_price_permenant",function () {
 //         }
 //     });
 // });
-$(document).ready(function() {
+$(document).ready(function () {
     $('.js-example-basic-multiple').select2(
         {
             placeholder: LANG.please_select,
@@ -97,9 +97,9 @@ $(document).ready(function() {
 });
 $(document).on("click", ".add_unit_row", function () {
     let key = $(this).data('key');
-    let row_id = parseInt($("#raw_unit_index\\[" + key + "\\]").val()) +1 ;
-    console.log(row_id, key);
-    if(row_id === 1){
+    let row_id = parseInt($("#raw_unit_index\\[" + key + "\\]").val()) + 1;
+    // console.log(row_id, key);
+    if (row_id === 1) {
         $("#raw_unit_index\\[" + key + "\\]").val(row_id);
         $.ajax({
             method: "get",
@@ -113,9 +113,9 @@ $(document).on("click", ".add_unit_row", function () {
     }
 });
 $(document).on("click", ".add_small_unit", function () {
-    let key = $(this).data('key');
-    let row_id = parseInt($("#raw_unit_index\\[" + key + "\\]").val()) +1 ;
-    console.log(row_id, key);
+    // let key = $(this).data('key');
+    let row_id = parseInt($("#raw_unit_index\\[" + key + "\\]").val()) + 1;
+    // console.log(row_id, key);
     $("#raw_unit_index\\[" + key + "\\]").val(row_id);
     $.ajax({
         method: "get",
@@ -133,7 +133,7 @@ $(document).on("click", ".remove_row", function () {
 });
 $(document).on("change", ".unit_select", function () {
     let key = $(this).data('key');
-    console.log(key)
+    // console.log(key)
     var selectBox1 = $('#products\\[' + key + '\\]\\[variation_id\\]');
     selectBox1.empty();
     let selectBoxValues = {};
@@ -149,7 +149,7 @@ $(document).on("change", ".unit_select", function () {
     $.ajax({
         method: "get",
         url: "/variations/units/get-dropdown",
-        data: {selectBoxValues:jsonData},
+        data: { selectBoxValues: jsonData },
         traditional: true,
         contactType: "html",
         success: function (data_html) {
@@ -164,7 +164,7 @@ $(document).on("change", ".unit_select", function () {
 function getSelectBoxValues() {
     var selectedValues = [];
     $('.unit_select').each(function () {
-        if($(this).val()!==''){
+        if ($(this).val() !== '') {
             selectedValues.push($(this).val());
         }
     });
@@ -172,8 +172,8 @@ function getSelectBoxValues() {
 }
 
 $(document).on("click", ".add_product_row", function () {
-    let row_id = parseInt($("#raw_product_index").val())+ 1;
-    $("#raw_product_index").val(row_id );
+    let row_id = parseInt($("#raw_product_index").val()) + 1;
+    $("#raw_product_index").val(row_id);
     $.ajax({
         method: "get",
         url: "/product/add_product_raw",
