@@ -69,7 +69,7 @@
             </div>
 
             <div class="col-md-2 d-flex justify-content-center align-items-end">
-                <button class="btn btn-sm btn-primary add_small_unit" type="button" onclick="fadeButton(event)"
+                <button class="btn btn-sm btn-primary add_small_unit" type="button" onclick="disableButton(event)"
                     data-key="{{ $key }}">
                     <i class="fa fa-equals"></i>
                 </button>
@@ -98,20 +98,9 @@
     </div>
 
     <script>
-        function fadeButton(event) {
-            // console.log("wdewe");
-            var button = event.target
-
+        function disableButton(event) {
+            var button = event.currentTarget
             button.classList.add("disabled");
-            // let rowId = parseInt($("#raw_unit_index\\[" + key + "\\]").val());
-            // if (rowId > 0) {
-            //     $(this).removeClass('add_small_unit')
 
-            // }
-            // if (rowId >= 0) {
-            //     $(this).addClass('opacity-75')
-
-            // }
-            //   $(`#raw_unit_index${key}`).val()
         }
     </script>

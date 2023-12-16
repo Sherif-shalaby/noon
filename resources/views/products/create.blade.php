@@ -4,11 +4,13 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
-    <style>
+    {{-- <style>
         .dropdown-menu {
-            left: -60px !important
+            min-width: 200px !important;
+            right: 0 !important;
+            transform-origin: center right;
         }
-    </style>
+    </style> --}}
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -75,8 +77,8 @@
                         {{-- ++++++++++++++++ stores ++++++++++++++++ --}}
                         <div class="col-12 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="position: relative;z-index: 2;">
-                            <div
-                                class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
+
+                            <div class="col-md-3 mb-2 p-0">
                                 {!! Form::label('store', __('lang.store'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-1 ' : 'mx-2 mb-1',
                                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -91,13 +93,13 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                                     {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
-                                        'class' => 'form-control selectpicker',
+                                        'class' => 'form-control selectpicker col-md-10',
                                         'multiple' => 'multiple',
-                                        // 'placeholder' => __('lang.store'),
+                                        'placeholder' => __('lang.please_select'),
                                         'id' => 'store_id',
                                     ]) !!}
                                     <button type="button"
-                                        class="add-button d-flex justify-content-center align-items-center"
+                                        class="add-button col-md-2 d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
                                             class="fas fa-plus"></i></button>
                                 </div>
@@ -106,6 +108,7 @@
                                 @enderror
                             </div>
                         </div>
+
                         <div class="col-md-12 product_raws">
                             @for ($i = 0; $i < 3; $i++)
                                 @include('products.partials.product_row', ['key' => $i])

@@ -284,8 +284,8 @@
 
                               <button
                                   class="btn btn-sm btn-primary add_small_unit animate__animated  animate__bounceInRight"
-                                  type="button" data-key="{{ $key }}" id="addButton"
-                                  onclick="fadeButton({{ $key }})">
+                                  type="button" data-key="{{ $key }}" id="addButton{{ $key }}"
+                                  onclick="fadeButton(event ,{{ $key }})">
                                   <i class="fa fa-equals"></i>
                               </button>
 
@@ -726,11 +726,11 @@
   @include('products.partials.crop-multi-imge-modal', ['key' => $key])
 
   <script>
-      function fadeButton(key) {
+      function fadeButton(event, key) {
+          let button = event.target
           let rowId = parseInt($("#raw_unit_index\\[" + key + "\\]").val());
           if (rowId >= 0) {
-              $('#addButton').addClass('disabled')
-
+              $('#addButton' + key).addClass('disabled')
           }
       }
   </script>
