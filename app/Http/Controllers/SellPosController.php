@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AddStockLine;
-use App\Models\CashRegisterTransaction;
-use App\Models\PaymentTransactionSellLine;
-use App\Models\Product;
-use App\Models\ReceiptTransactionSellLinesFiles;
-use App\Models\SellLine;
-use App\Models\System;
-use App\Models\TransactionSellLine;
+use App\Utils\Util;
 use App\Models\User;
+use App\Models\System;
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\SellLine;
+use App\Utils\ProductUtil;
+use App\Models\AddStockLine;
+use Illuminate\Http\Request;
+use App\Utils\TransactionUtil;
 use App\Utils\CashRegisterUtil;
 use App\Utils\NotificationUtil;
-use App\Utils\ProductUtil;
-use App\Utils\TransactionUtil;
-use App\Utils\Util;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionSellLine;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\View\Factory;
+use App\Models\CashRegisterTransaction;
+use App\Models\PaymentTransactionSellLine;
+use App\Models\ReceiptTransactionSellLinesFiles;
+use Illuminate\Contracts\Foundation\Application;
 
 class SellPosController extends Controller
 {
@@ -217,6 +218,32 @@ class SellPosController extends Controller
         }
 
         return $output;
+    }
+    // ++++++++++++++++++++++ multiDeleteRow ++++++++++++++++++++++
+    public function multiDeleteRow(Request $request)
+    {
+        // dd($request);
+        try
+        {
+            DB::beginTransaction();
+            $delete_all_id_array = explode(',',$request->delete_all_id);
+            // dd($delete_all_id_array);
+            TransactionSellLine::whereIn('id',$delete_all_id_array)->delete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.delete_msg')
+            ];
+            DB::commit();
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return redirect()->back()->with('status', $output);
     }
 
     public function getPaymentTypeArrayForPos()

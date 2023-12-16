@@ -14,9 +14,9 @@
             padding: 0 !important;
             padding-left: 4px;
             padding-right: 4px;
-            color: #fff;
-            border: 1px solid #596fd7;
-            background-color: #596fd7;
+            color: #000;
+            border: 1px solid #ccc;
+            background-color: #fff;
             height: 39px !important;
         }
 
@@ -103,7 +103,6 @@
                             <div id="status"></div>
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                             <div class="col-md-3 col-lg-3">
-                                {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
                                         <select class="form-select form-control form-control-lg">
@@ -537,15 +536,6 @@
 </script>
 <script>
         // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
-        // $("input:checkbox:not(:checked)").each(function() {
-        //     var column = "table ." + $(this).attr("name");
-        //     $(column).hide();
-        // });
-
-        // $("input:checkbox").click(function(){
-        //     var column = "table ." + $(this).attr("name");
-        //     $(column).toggle();
-        // });
         $(".checkbox_class:not(:checked)").each(function() {
             var column = "table ." + $(this).attr("name");
             $(column).hide();

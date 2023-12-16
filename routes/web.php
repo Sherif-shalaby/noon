@@ -275,6 +275,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('invoices/edit/{invoice}', function ($id) {
         return view('invoices.edit', compact('id'));
     })->name('invoices.edit');
+    // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
+    Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
+
     Route::resource('pos',SellPosController::class);
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
