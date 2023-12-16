@@ -356,7 +356,7 @@ class CustomerController extends Controller
         $cities_dp = $this->Util->createDropdownHtml($cities, __('lang.please_select'));
         return  $cities_dp;
     }
-    // ++++++++++++++++++ Task 14-12-2023 : quarter dropdown in "customer create" page +++++++++++++
+    // ++++++++++++++++++ Task 14-12-2023 : quarters dropdown in "customer create" page +++++++++++++
     public function getDropDownQuarter($city_id)
     {
         $quarters = Quarter::where('city_id',$city_id)->orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
