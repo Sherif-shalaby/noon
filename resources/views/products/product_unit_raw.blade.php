@@ -1,14 +1,14 @@
-    <div
-        class="d-flex animate__animated  animate__bounceInRight unit-row[{{ $key }}]  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+    <div class="d-flex animate__animated  animate__bounceInRight unit-row[{{ $key }}]  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+        style="margin-top:-8px ">
         <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{ $index ?? 0 }}][variation_id]"
             value="{{ $variation->id ?? null }}">
         @if (isset($index) && $index !== '')
             <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="width: 75px">
-                {{-- {!! Form::label('equal', __('lang.equal'), [
-                        'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
-                        'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!} --}}
+                {!! Form::label('equal', __('lang.equal'), [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                ]) !!}
                 {!! Form::text(
                     'products[' . $key . '][variations][' . $index . '][equal]',
                     isset($product->variations[$index - 1]->equal) ? $product->variations[$index - 1]->equal : null,
@@ -22,10 +22,10 @@
 
             <div
                 class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                {{-- {!! Form::label('unit', __('lang.small_filling'), [
-                        'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
-                        'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!} --}}
+                {!! Form::label('unit', __('lang.small_filling'), [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                ]) !!}
                 <div class="d-flex justify-content-center align-items-center"
                     style="background-color: #dedede; border: none;
                                         border-radius: 16px;
@@ -53,10 +53,10 @@
 
             <div class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                 style="width: 75px">
-                {{-- {!! Form::label('sku', __('lang.product_code'), [
-                        'class' => app()->isLocale('ar') ? 'd-block text-end   mb-0' : ' mb-0 ',
-                        'style' => 'font-size: 12px;font-weight: 500;',
-                    ]) !!} --}}
+                {!! Form::label('sku', __('lang.product_code'), [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                    'style' => 'font-weight:500;font-size:10px;color:#888',
+                ]) !!}
                 {!! Form::text('products[' . $key . '][variations][' . $index . '][sku]', $variation->sku ?? null, [
                     'class' => 'form-control initial-balance-input',
                     'style' => 'width:100%;margin:0 !important;border:2px solid #ccc',
@@ -68,12 +68,11 @@
                 @enderror
             </div>
 
-            <div class="col-md-2 d-flex justify-content-center align-items-end">
-                <button class="btn btn-sm btn-primary add_small_unit" type="button" onclick="disableButton(event)"
-                    data-key="{{ $key }}">
-                    <i class="fa fa-equals"></i>
-                </button>
-            </div>
+            <button style="margin-top:17px"
+                class="btn btn-sm btn-primary d-flex justify-content-center align-items-center add_small_unit h-50"
+                type="button" onclick="disableButton(event)" data-key="{{ $key }}">
+                <i class="fa fa-equals"></i>
+            </button>
 
 
 

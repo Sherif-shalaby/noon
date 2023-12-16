@@ -4,13 +4,11 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 @endpush
 @section('breadcrumbbar')
-    {{-- <style>
+    <style>
         .dropdown-menu {
-            min-width: 200px !important;
-            right: 0 !important;
-            transform-origin: center right;
+            min-width: 100% !important
         }
-    </style> --}}
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -80,8 +78,8 @@
 
                             <div class="col-md-3 mb-2 p-0">
                                 {!! Form::label('store', __('lang.store'), [
-                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-1 ' : 'mx-2 mb-1',
-                                    'style' => 'font-size: 12px;font-weight: 500;',
+                                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                                    'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
                                 <div class="d-flex justify-content-center align-items-center"
                                     style="background-color: #dedede;
