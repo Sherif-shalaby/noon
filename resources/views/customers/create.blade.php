@@ -192,8 +192,7 @@
                                 <label for="quarters_id">@lang('lang.quarters')</label>
                                 <div class="d-flex justify-content-center">
                                     <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
-                                    <button type="button" class="btn btn-primary" data-toggle="modal"  id="add_quarters_btn_id"
-                                            data-target="#createQuarterModal">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>

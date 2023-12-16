@@ -354,7 +354,7 @@ $(document).on("submit", "#customer-region-form", function (e) {
             {
                 Swal.fire("Success", result.msg, "success");
                 $("#createRegionModal").modal("hide");
-                var city_id = result.quarter_id;
+                var city_id = result.id;
                 var state_id = result.state_id;
                 console.log("Outer Second Ajax Request : ",result);
                 $.ajax({
@@ -365,8 +365,10 @@ $(document).on("submit", "#customer-region-form", function (e) {
                     success: function (data_html) {
                         console.log("Inner Second Ajax Request : "+data_html);
                         console.log(city_id);
+                        // Update the dropdown with the new options
                         $("#city-dd").empty().append(data_html);
-                        $("#city-dd").val(city_id).change();
+                        // Set the selected value in the dropdown
+                        $("#city-dd").val(city_id).change(); // Set the newly added city as selected
                     },
                 });
             } else {
