@@ -1131,7 +1131,7 @@ class Create extends Component
                 }
             }
             $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity']))?$this->num_uf($this->prices[$index]['discount_quantity']):1));
-            $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity) : 0;
+            $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity,3) : 0;
         }
     }
     public function getKey($fill_id)
