@@ -454,7 +454,7 @@
                                         {!! Form::label('customer_type', __('lang.customer_type')) !!}
                                         <select wire:model="prices.{{ $key }}.price_customer_types"
                                             data-name='price_customer_types' data-index="{{ $key }}"
-                                            data-key="{{ $key }}" class="form-control select2"
+                                            data-key="{{ $key }}" class="form-control select2" wire:change="changePrice({{ $key }})"
                                             placeholder="{{ __('lang.please_select') }}">
                                             @foreach ($customer_types as $type)
                                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -519,6 +519,9 @@
                                             wire:change="changePrice({{ $key }})"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
+                                        {{-- <p>
+                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price'] ?? '' }}
+                                        </p> --}}
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('', __('lang.price')) !!}
@@ -543,6 +546,7 @@
                                         <input type="text" name="piece_price" class="form-control piece_price"
                                             wire:model="prices.{{ $key }}.dinar_piece_price"
                                             placeholder = "{{ __('lang.total_price') }}">
+                                            {{-- <span>{{$rows[$index]['prices'][$key]['dollar_piece_price']??0}} $</span> --}}
                                         {{-- <p>
                                             {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
                                         </p> --}}
