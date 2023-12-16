@@ -37,6 +37,7 @@ myDropzone = new Dropzone("div#my-dropzone", {
                         url: $("form#product-form").attr("action"),
                         data: $("#product-form").serialize(),
                         success: function (response) {
+                            console.log(response);
                             // Swal.fire(response.status);
                             Swal.fire("Success", response.status, "success");
                             location.replace('/categories');
