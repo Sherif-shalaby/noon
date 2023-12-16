@@ -286,6 +286,7 @@ class Create extends Component
         //   ];
         //     array_unshift($this->rows, $newRow);
         $this->addPrices();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeUnit($index)
     {
@@ -778,6 +779,7 @@ class Create extends Component
     {
         unset($this->rows[$index]);
         $this->rows = array_values($this->rows);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function convertDollarPrice($index)
@@ -1002,6 +1004,7 @@ class Create extends Component
     {
         $this->rows[$index]['show_prices'] =
             !$this->rows[$index]['show_prices'];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changePercent($index, $key)
     {
@@ -1059,14 +1062,17 @@ class Create extends Component
     public function showDiscount()
     {
         $this->show_discount = !($this->show_discount);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showStore()
     {
         $this->show_store = !($this->show_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDimensions()
     {
         $this->show_dimensions = !($this->show_dimensions);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory1()
     {
@@ -1077,6 +1083,7 @@ class Create extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory2()
     {
@@ -1086,10 +1093,12 @@ class Create extends Component
             $this->show_category2 = 0;
             $this->show_category3 = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showCategory3()
     {
         $this->show_category3 = !($this->show_category3);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_price_raw($key)
     {
@@ -1132,7 +1141,7 @@ class Create extends Component
                 }
             }
             $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity'])) ? $this->num_uf($this->prices[$index]['discount_quantity']) : 1));
-            $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity) : 0;
+            $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity, 3) : 0;
         }
     }
     public function getKey($fill_id)
