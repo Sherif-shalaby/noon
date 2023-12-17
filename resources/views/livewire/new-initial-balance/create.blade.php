@@ -314,9 +314,10 @@
 
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
-                            <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                                <br>
+                            <h4>
+{{--                                @lang('lang.items_count'):--}}
+{{--                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>--}}
+{{--                                <br>--}}
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
@@ -500,7 +501,7 @@
                                                 name="discount_from_original_price" id="discount_from_original_price"
                                                 style="font-size: 0.75rem"
                                                 @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                                wire:change="changePrice({{ $key }})">
+                                                wire:change="change_discount_from_original_price({{ $key }})">
                                             <label class="custom-control-label"
                                                 for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
                                         </div>
@@ -581,10 +582,10 @@
                             @forelse ($fill_stores as $i => $store)
                                 <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
                                     <div class="col-md-1">
-                                        <button type="button" class="btn btn-sm btn-primary"
+                                        `<button type="button" class="btn btn-sm btn-primary"
                                         wire:click="addStoreRow()">
                                         <i class="fa fa-plus"></i>
-                                        </button>
+                                        </button>`
                                     </div>
                                     <div class="col-md-2">
                                         <label for="extra_store_id"
