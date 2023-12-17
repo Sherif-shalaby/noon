@@ -127,12 +127,12 @@ class ProductController extends Controller
     $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
     $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
-    $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+    $stores=Store::orderBy('created_at', 'desc')->get();
     // product_tax
     $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+    $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
 
       return view('products.create',
     compact('categories1','categories2','categories3','categories4','brands','units','stores','branches',
@@ -142,12 +142,11 @@ class ProductController extends Controller
   /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
   public function store(Request $request)
   {
-
-      try {
-          DB::beginTransaction();
-          foreach ($request->products as $re_product) {
-              if ($re_product['name'] != null) {
-                  $product_data = [
+        try {
+            DB::beginTransaction();
+            foreach ($request->products as $re_product) {
+                if ($re_product['name'] != null) {
+                    $product_data = [
                       'name' => $re_product['name'],
                       'translations' => !empty($re_product['translations']) ? $re_product['translations'] : [],
                       'category_id' => $re_product['category_id'],
@@ -262,6 +261,56 @@ class ProductController extends Controller
         }
 
         return $discount_customers;
+    }
+    /* ++++++++++++++++++++++ add_store() ++++++++++++++++++++++ */
+    public function add_store(Request $request)
+    {
+        // dd($request);
+        try
+        {
+            $store = new Store();
+            $store->branch_id               = $request->branch_id;
+            $store->name                    = $request->name;
+            $store->phone_number            = $request->phone_number;
+            $store->email                   = $request->email;
+            $store->manager_name            = $request->manager_name;
+            $store->manager_mobile_number   = $request->manager_mobile_number;
+            $store->created_by              = auth()->user()->id;
+            $store->save();
+            $output = [
+                'success'  => true,
+                'store_id' => $store->id,
+                'msg' => __('lang.success')
+            ];
+        }
+        catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return $output;
+    }
+    /* ++++++++++++++++++++++ get store Dropdown() ++++++++++++++++++++++ */
+    public function getStoresDropdown()
+    {
+        $stores = Store::orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
+        $stores_dp = $this->Util->createDropdownHtml($stores, __('lang.please_select'));
+        $output = [$stores_dp , array_key_last($stores)];
+        return $output;
+    }
+    // +++++++++++++++ Get Dropdown List ++++++++++++++++++
+    public function createDropdownHtml($array, $append_text = null)
+    {
+        $html = '';
+        if (!empty($append_text)) {
+            $html = '<option value="">' . $append_text . '</option>';
+        }
+        foreach ($array as $key => $value) {
+            $html .= '<option value="' . $key . '">' . $value . '</option>';
+        }
+        return $html;
     }
   public function generateSku()
   {
@@ -567,6 +616,7 @@ class ProductController extends Controller
             'key','units','categories','subcategories','branches','brands','stores','product_tax','unitArray'
         ));
     }
+    // +++++++++++++++++++ delete multiple products ++++++++++++++++
     public function multiDeleteRow(Request $request){
         try {
             DB::beginTransaction();

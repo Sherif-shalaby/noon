@@ -195,8 +195,6 @@ class SellPosController extends Controller
             }
             $return_ids =TransactionSellLine::where('return_parent_id', $id)->pluck('id');
 
-
-
             TransactionSellLine::where('return_parent_id', $id)->delete();
             TransactionSellLine::where('parent_sale_id', $id)->delete();
             CashRegisterTransaction::wherein('transaction_id', $return_ids)->delete();

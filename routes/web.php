@@ -163,6 +163,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
     Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    // ======= add "new store" in realtime =====
+    Route::post('product/create/add_store', [ProductController::class,'add_store'])->name('product.add_store');
+    // ++++++++++++ get "stores" dropdown ++++++++++++
+    Route::get('product/get-dropdown-store/', [ProductController::class,'getStoresDropdown']);
     // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
     // fetch "sub_categories1" of selected "main_category" selectbox
     Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_product_sub_categories1']);
@@ -293,9 +297,10 @@ Route::group(['middleware' => ['auth']], function () {
     // ========= "create_invoice" link =============
     // Route::get('customer_price_offer/create_invoice/{id}', [CustomerOfferPriceController::class, 'create_invoice'])->name('customer_price_offer.create_invoice');
     // Route::view('customer_price_offer/create_invoice/{id}', 'customer_price_offer.create_invoice')->name('customer_price_offer.create_invoice');
-    // Route::get('invoices/edit/{invoice}', function ($id) {
-    //     return view('invoices.edit', compact('id'));
-    // })->name('invoices.edit');
+    // ################################# edit invoice #################################
+    Route::get('invoices/edit/{invoice}', function ($id) {
+        return view('invoices.edit', compact('id'));
+    })->name('invoices.edit');
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################

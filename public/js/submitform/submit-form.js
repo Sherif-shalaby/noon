@@ -121,6 +121,7 @@ $("#create-store-btn").click(function (e){
         $("#quick_add_store_form").submit();
     },500)
 });
+// ++++++++++++++++++ ajax : products module : quick_add_store ++++++++++++++++++
 $(document).on("submit", "form#quick_add_store_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -132,16 +133,20 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         success: function (result) {
             if (result.success) {
                 Swal.fire("Success", result.msg, "success");
+                console.log("First Ajax Request : Store new store");
+                console.log(result);
+                console.log(result.store_id);
                 $(".add-store").modal("hide");
-                var store_id = result.id;
                 $.ajax({
                     method: "get",
-                    url: "/stores/get-dropdown",
+                    url: "/product/get-dropdown-store/",
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $("#store_id").empty().append(data_html);
-                        $("#store_id").val(store_id).trigger();
+                        console.log("Second Ajax Request : Get dropdown of stores");
+                        console.log(data_html);
+                        $("#store_id").empty().append(data_html[0]);
+                        $("#store_id").val(data_html[1]).change();
                     },
                 });
             } else {
@@ -150,6 +155,7 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         },
     });
 });
+
 $("#create-supplier-btn").click(function (e){
     e.preventDefault();
     setTimeout(()=>{
@@ -420,7 +426,7 @@ $(document).on("submit", "#customer-region-form", function (e) {
                 console.log("Outer Second Ajax Request : ",result);
                 $.ajax({
                     method: "get",
-                    url: "/customer/get-dropdown-city/"+state_id,
+                    url: "/customer/get-dropdown-add_store/"+state_id,
                     data: {},
                     contactType: "html",
                     success: function (data_html) {

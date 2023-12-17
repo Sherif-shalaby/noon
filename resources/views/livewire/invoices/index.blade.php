@@ -352,9 +352,11 @@
                                                     </a>
                                                 </li>
                                                 <li class="divider"></li>
+                                                {{-- +++++++++ edit button +++++++++++ --}}
                                                 <li>
-                                                    <a href="{{ route('invoices.edit', $line->id) }}" class="btn"><i
-                                                            class="dripicons-document-edit"></i> {{ __('lang.edit') }}</a>
+                                                    <a href="{{ route('invoices.edit', $line->id) }}" class="btn">
+                                                        <i class="dripicons-document-edit"></i> {{ __('lang.edit') }}
+                                                    </a>
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
