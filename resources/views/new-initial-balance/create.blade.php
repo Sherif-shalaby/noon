@@ -10,6 +10,11 @@
             padding: 0 !important;
             background-color: transparent;
         }
+
+        .select2 {
+            background: transparent;
+            width: 100%;
+        }
     </style>
     <div class="animate-in-page relative">
         <div class="breadcrumbbar m-0 px-3 py-0">

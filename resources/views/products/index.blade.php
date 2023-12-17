@@ -39,7 +39,7 @@
             margin-top: 50px;
         }
 
-        @media(max-width:768px) {
+        @media(max-width:767px) {
             .wrapper1 {
                 margin-top: 115px;
             }

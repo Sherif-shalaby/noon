@@ -113,10 +113,11 @@
 
             </div>
             {{-- +++++++++ delete_all button ++++++++ --}}
-            <div class="col-6 col-sm-4 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            <div class="col-6 col-sm-4 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                 style="animation-delay: 1.15s">
                 <a data-href="{{ url('product/multiDeleteRow') }}" id="delete_all"
-                    data-check_password="{{ url('user/check-password') }}" style="font-weight: 500;width: 100%;"
+                    data-check_password="{{ url('user/check-password') }}"
+                    style="font-weight: 500;width: fit-content;font-size: 14px"
                     class="btn btn-sm btn-danger text-white delete_all"><i class="fa fa-trash"></i>
                     @lang('lang.delete_all')</a>
             </div>

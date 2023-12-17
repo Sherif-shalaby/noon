@@ -12,9 +12,9 @@
                                     class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     {{-- +++++++++++++++ store filter +++++++++++++++ --}}
                                     <div
-                                        class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-6 col-lg-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         {!! Form::label('store_id', __('lang.store'), [
-                                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-quarter' : 'h5  mx-2 mb-0 width-quarter',
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end h5  mx-2 mb-0 width-fit' : 'h5  mx-2 mb-0 width-fit',
                                             'style' => 'font-size: 12px;font-weight: 500;',
                                         ]) !!}
                                         <div class="input-wrapper">
@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
                                     {{-- ++++++++++++++++++++++ customer filter ++++++++++++++++++++++ --}}
-                                    <div class="col-md-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    <div class="col-6 col-lg-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         wire:ignore>
                                         <label
                                             class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -47,27 +47,29 @@
                                     </div>
                                     {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
                                     <div
-                                        class="col-2  mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-6 col-lg-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                         <label for="" style="font-size: 12px;font-weight: 500;"
                                             class="mx-2 mb-0 width-fit @if (app()->isLocale('ar')) d-block text-end @endif">{{ __('site.From') }}</label>
-                                        <input type="date" class="form-control initial-balance-input m-0"
+                                        <input type="date" class="form-control initial-balance-input mx-3 mx-lg-0"
                                             wire:model="from">
 
                                     </div>
                                     {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
                                     <div
-                                        class="col-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-6 col-lg-2 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                                        <label style="font-size: 12px;font-weight: 500;" for=""
-                                            class="small-label">{{ __('site.To') }}</label>
-                                        <input type="date" class="form-control initial-balance-input m-0"
+                                        <label
+                                            class="mx-2 mb-0 width-fit small-label @if (app()->isLocale('ar')) d-block text-end @endif"
+                                            style="font-size: 12px;font-weight: 500;"
+                                            for="">{{ __('site.To') }}</label>
+                                        <input type="date" class="form-control initial-balance-input mx-3 mx-lg-0"
                                             wire:model="to">
 
                                     </div>
                                     {{-- +++++++++++++++ clear_filter Button +++++++++++++++ --}}
                                     <div
-                                        class="col-md-2 d-flex align-items-center justify-content-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                        class="col-6 col-lg-2 d-flex align-items-center justify-content-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                         <a href="{{ route('customer_price_offer.index') }}"
                                             class="btn btn-danger">@lang('lang.clear_filters')</a>

@@ -5,6 +5,16 @@
         .table-top-head {
             top: 85px;
         }
+
+        .wrapper1 {
+            margin-top: 55px;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 145px;
+            }
+        }
     </style>
     <div class="animate-in-page">
 
@@ -55,7 +65,7 @@
                             @lang('lang.jobs')</h4>
                     </div>
                     <div class="card-body">
-                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif" style="margin-top:55px ">
+                        <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                             <div class="div1"></div>
                         </div>
                         <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">

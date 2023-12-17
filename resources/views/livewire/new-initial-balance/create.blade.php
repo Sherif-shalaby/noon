@@ -1,24 +1,3 @@
-{{-- <style>
-    .accordion-item {
-        background-color: transparent
-    }
-
-    .accordion-button {
-        padding: 8px !important;
-
-    background-color: #596fd7 !important;
-    color: white !important;
-    border-radius: 6px !important;
-    cursor: pointer;
-    justify-content: space-between
-    }
-
-    .accordion-content {
-        display: none;
-        width: fit-content
-    }
-</style> --}}
-
 <section class="forms">
     <div class="container-fluid">
         <div class="row">
@@ -569,8 +548,8 @@
                                     {{ __('lang.product_dimensions') }}
                                 </div>
                             </h2>
-                            <div
-                                class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  dimensions {{ $show_dimensions == 0 ? 'd-none' : '' }}">
+                            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  dimensions {{ $show_dimensions == 0 ? 'd-none' : '' }}"
+                                style="overflow-x: auto">
 
                                 <div
                                     class="mb-2 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1">
@@ -695,8 +674,8 @@
                             <div class="d-flex flex-column  discount {{ $show_discount == 0 ? 'd-none' : '' }}">
 
                                 @foreach ($prices as $key => $price)
-                                    <div
-                                        class="d-flex  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    <div class="d-flex  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                        style="overflow-x: auto">
 
                                         <div
                                             class="  mb-2 animate__animated animate__bounceInLeft d-flex flex-column
@@ -959,8 +938,11 @@
                                     {{ __('lang.add_to_another_store') }}
                                 </div>
                             </h2>
-                            <div class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}"
-                                style="overflow-x: auto">
+                            <div
+                                class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
+                                <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                                 @foreach ($fill_stores as $i => $store)
                                     <div
                                         class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -980,13 +962,8 @@
                                                 width: 100%;
                                                 height: 30px;
                                                 flex-wrap: nowrap;">
-                                                <button type="button"
-                                                    class="add-button d-flex justify-content-center align-items-center"
-                                                    wire:click="addStoreRow()">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
                                                 {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
-                                                    'class' => ' form-control  extra_store_id',
+                                                    'class' => ' select2  extra_store_id',
                                                     'data-index' => $i,
                                                     'data-name' => 'extra_store_id',
                                                     'required',
@@ -1003,11 +980,12 @@
                                                 <span class="error text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
+
                                         <div
                                             class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                            <div
-                                                class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                @foreach ($fill_stores[$i]['data'] as $x => $fill)
+                                            @foreach ($fill_stores[$i]['data'] as $x => $fill)
+                                                <div
+                                                    class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                     <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                                                         style="width: 100px">
                                                         <label for="store_fill_id"
@@ -1051,9 +1029,9 @@
                                                         @enderror
 
                                                     </div>
-                                                    <div class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mb-2 animate__animated animate__bounceInLeft d-flex px-1"
+                                                    <div class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1 animate__animated animate__bounceInLeft d-flex px-1"
                                                         style="width: 75px">
-                                                        <button type="button" class="btn btn-sm btn-primary"
+                                                        <button type="button" class="btn btn-sm btn-primary mx-1 "
                                                             wire:click="addStoreDataRow({{ $i }})">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
@@ -1064,26 +1042,27 @@
                                                         </button>
                                                         {{-- @endif --}}
                                                     </div>
-                                                @endforeach
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
                                 @endforeach
-                            </div>
 
+                            </div>
                         </div>
                     </div>
+
+                </div>
+
+                {{-- {!! Form::close() !!} --}}
+                <div class="col-sm-12">
+                    <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
+                        class="btn btn-primary pull-right btn-flat submit"
+                        wire:click.prevent="store()">@lang('lang.save')</button>
+
                 </div>
             </div>
         </div>
-
-    </div>
-
-    {{-- {!! Form::close() !!} --}}
-    <div class="col-sm-12">
-        <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
-            class="btn btn-primary pull-right btn-flat submit" wire:click.prevent="store()">@lang('lang.save')</button>
-
-    </div>
-    </div>
-    </div>
     </div>
     </div>
 </section>

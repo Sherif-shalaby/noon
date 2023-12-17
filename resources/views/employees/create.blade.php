@@ -20,6 +20,20 @@
         .accordion-content {
             display: none;
         }
+
+        .table-head {
+            margin-top: 55px;
+        }
+
+        @media(max-width:767px) {
+            .table-head {
+                margin-top: 145px;
+            }
+        }
+
+        .bootstrap-select {
+            width: 100% !important
+        }
     </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -87,9 +101,7 @@
                                                 <h2 class="accordion-header d-flex justify-content-end"
                                                     id="employee-products">
                                                     <div class="accordion-button" id="product-accordion-button"
-                                                        style="
-    margin-top: -30px;
-"
+                                                        style="margin-top: -30px;"
                                                         onclick="toggleAccordion(`collapseOneEmployeesProducts`)">
                                                         <span class="collapseOneEmployeesProducts mx-2">
                                                             <i class="fas fa-arrow-down" style="font-size: 0.8rem"></i>
@@ -100,8 +112,8 @@
                                                 <div id="collapseOneEmployeesProducts" class="accordion-content">
                                                     <div class="accordion-body p-0">
 
-                                                        <div class="row"
-                                                            style="max-height: 70vh;overflow: scroll;margin-top: 50px;">
+                                                        <div class="row table-head"
+                                                            style="max-height: 70vh;overflow: scroll;">
                                                             {{-- ++++++++++++++ employee's products Table ++++++++++ --}}
                                                             <table id="datatable-buttons"
                                                                 class="table table-striped table-bordered m-auto @if (app()->isLocale('ar')) dir-rtl @endif">
@@ -223,7 +235,8 @@
                                                     for="branch_id">@lang('lang.branch')</label>
                                                 <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('branch_id', $branches, null, [
-                                                        'class' => ' selectpicker p-0 width-full',
+                                                        'class' => ' selectpicker p-0',
+                                                        'style' => 'width:100% !important',
                                                         'placeholder' => __('lang.please_select'),
                                                         'data-live-search' => 'true',
                                                         'id' => 'branch_id',
@@ -237,7 +250,8 @@
                                                     for="store_id">@lang('lang.stores')</label>
                                                 <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('store_id[]', $stores, null, [
-                                                        'class' => 'selectpicker  p-0 width-full',
+                                                        'class' => 'selectpicker  p-0',
+                                                        'style' => 'width:100% !important',
                                                         'multiple',
                                                         'data-live-search' => 'true',
                                                         'id' => 'store_id',
@@ -252,19 +266,15 @@
                                                     for="job_type">@lang('lang.jobs')</label>
                                                 <div class="input-wrapper" style="background-color: transparent">
                                                     {!! Form::select('job_type_id', $jobs, null, [
-                                                        'class' => 'selectpicker p-0 width-full',
+                                                        'class' => 'selectpicker p-0 ',
+                                                        'style' => 'width:100% !important',
                                                         'placeholder' => __('lang.select_job_type'),
                                                         'data-live-search' => 'true',
                                                         'id' => 'job_type_id',
                                                     ]) !!}
                                                 </div>
                                             </div>
-
-
                                         </div>
-
-
-
                                         <div class="accordion mb-1 animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.6s">
                                             <div class="accordion-item" style="border: none">

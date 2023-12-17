@@ -3,6 +3,17 @@
 @push('css')
 @endpush
 @section('breadcrumbbar')
+    <style>
+        .width-quarter {
+            width: 100% !important
+        }
+
+        @media(min-width:768px) {
+            .width-quarter {
+                width: 25% !important
+            }
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -27,7 +38,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-4 flex-column">
                     <div
                         class="widgetbar d-flex @if (app()->isLocale('ar')) justify-content-start @else justify-content-end @endif">
                         <a href="{{ route('suppliers.index') }}" class="btn btn-primary">
@@ -59,7 +70,7 @@
                                     <div
                                         class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                         {{-- ++++++++++++++++++++++ name ++++++++++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.1s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -76,7 +87,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++++++++ company_name ++++++++++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.15s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -94,7 +105,7 @@
                                         </div>
 
                                         {{-- +++++++++++++++++++++++++++++++ exchange_rate ++++++++++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.2s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -112,7 +123,7 @@
 
                                         </div>
 
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.25s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -131,7 +142,7 @@
 
                                         </div>
                                         {{-- --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.3s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -150,7 +161,7 @@
 
                                         </div>
                                         {{-- +++++++++++++++++++++++++++++++ postal_code ++++++++++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.35s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -169,7 +180,7 @@
 
                                         {{-- +++++++++++++++++++++++ owner_debt_in_dinar +++++++++++++++++++++++ --}}
 
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.4s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -181,7 +192,7 @@
                                             </div>
                                         </div>
                                         {{-- +++++++++++++++++++++++ owner_debt_in_dollar +++++++++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center dollar-cell @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center dollar-cell @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.45s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -194,7 +205,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.5s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -210,7 +221,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.55s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -232,7 +243,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.6s">
                                             <label style="font-weight: 700;font-size: 13px;"
                                                 class="mx-2 mb-0 width-quarter @if (app()->isLocale('ar')) d-block text-end @endif"
@@ -244,7 +255,7 @@
                                             </div>
                                         </div>
                                         {{-- ++++++++++++ images ++++++++++++ --}}
-                                        <div class="col-md-4 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                        <div class="col-6 col-md-4 flex-column mb-2 d-flex  align-items-end align-items-md-center @if (app()->isLocale('ar')) flex-md-row-reverse @else flex-md-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.65s">
 
                                             <label style="font-weight: 700;font-size: 13px;"
@@ -352,8 +363,8 @@
                                         <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.8s">
                                             {!! Form::label('notes', __('lang.notes'), [
-                                                'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter ',
-                                                'style' => 'font-weight: 700;font-size: 13px;',
+                                                'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0  : mx-2 mb-0  ',
+                                                'style' => 'font-weight: 700;font-size: 13px;width:25%',
                                             ]) !!}
                                             <div class="input-wrapper" style="width: 100%;height: 50%;margin: 0">
                                                 {!! Form::textarea('notes', null, [
@@ -369,8 +380,8 @@
                                         <div class="col-md-6 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                             style="animation-delay: 1.85s">
                                             {!! Form::label('address', __('lang.address'), [
-                                                'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0 width-quarter : mx-2 mb-0 width-quarter ',
-                                                'style' => 'font-weight: 700;font-size: 13px;',
+                                                'class' => ' app()->isLocale("ar")? d-block text-end mx-2 mb-0  : mx-2 mb-0  ',
+                                                'style' => 'font-weight: 700;font-size: 13px;width:25%',
                                             ]) !!}
                                             <div class="input-wrapper" style="width: 100%;height: 50%;margin: 0">
                                                 {!! Form::textarea('address', null, [
