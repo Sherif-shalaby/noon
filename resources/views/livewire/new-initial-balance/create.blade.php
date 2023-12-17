@@ -516,19 +516,19 @@
 
                     </div> --}}
                     <div class="col-md-12 text-center mt-1 ">
-                        <h4>@lang('lang.items_count'):
-                            <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                            <br>
-                            {{ $this->count_total_by_variations() }}
-                            @if (!empty($variationSums))
-                                @foreach ($variationSums as $unit_name => $variant)
-                                    {{ $unit_name }}:
-                                    <span class="items_quantity_span" style="margin-right: 15px;">
-                                        {{ $variant }} </span><br>
-                                @endforeach
-                            @endif
-                            {{--                                @lang('lang.items_quantity'): <span class="items_quantity_span" --}}
-                            {{--                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
+                        {{-- <h4>@lang('lang.items_count'):
+                             <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
+                            <br> --}}
+                        {{ $this->count_total_by_variations() }}
+                        @if (!empty($variationSums))
+                            @foreach ($variationSums as $unit_name => $variant)
+                                {{ $unit_name }}:
+                                <span class="items_quantity_span" style="margin-right: 15px;">
+                                    {{ $variant }} </span><br>
+                            @endforeach
+                        @endif
+                        {{--                                @lang('lang.items_quantity'): <span class="items_quantity_span" --}}
+                        {{--                                    style="margin-right: 15px;">{{ $totalQuantity }}</span> --}}
                         </h4>
                     </div>
                     {{-- sizes --}}
@@ -831,7 +831,7 @@
                                                     name="discount_from_original_price"
                                                     id="discount_from_original_price" style="font-size: 0.75rem"
                                                     @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                                    wire:change="changePrice({{ $key }})">
+                                                    wire:change="change_discount_from_original_price({{ $key }})">
                                                 <label class="custom-control-label"
                                                     style="font-size: 10px;font-weight: 500"
                                                     for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>

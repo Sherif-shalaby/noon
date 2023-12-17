@@ -235,7 +235,7 @@ class Create extends Component
         $this->branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
-        $this->discount_from_original_price = System::getProperty('discount_from_original_price');
+        $this->discount_from_original_price = 1;
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         $categories = Category::orderBy('name', 'asc')->where('parent_id', null)->pluck('name', 'id')->toArray();
         $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
@@ -278,6 +278,11 @@ class Create extends Component
         foreach ($this->rows as $index => $row) {
             $this->totalQuantity += (int)$this->rows[$index]['quantity'];
         }
+    }
+    public function change_discount_from_original_price($index)
+    {
+        $this->change_discount_from_original_price = 0;
+        $this->changePrice($index);
     }
     public function addRaw()
     {
@@ -767,12 +772,12 @@ class Create extends Component
 
     public function sum_sub_total()
     {
-        return number_format(array_sum($this->sub_total), 2);
+        return number_format(array_sum($this->sub_total), 3);
     }
 
     public function sum_dollar_sub_total()
     {
-        return number_format(array_sum($this->dollar_sub_total), 2);
+        return number_format(array_sum($this->dollar_sub_total), 3);
     }
 
     public function delete_product($index)
@@ -1126,22 +1131,29 @@ class Create extends Component
                 $price = ($sell_price * $this->num_uf($this->prices[$index]['discount_quantity'])) / $total_quantity;
 
                 if ($this->prices[$index]['price_type'] == "fixed") {
-                    $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 4);
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 3);
                 } else {
                     $percent = $this->num_uf($this->prices[$index]['dinar_price']) / 100;
-                    $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $percent * $price, 4);
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $percent * $price, 3);
                 }
             } else {
                 // dd($sell_price);
                 if ($this->prices[$index]['price_type'] == "fixed") {
-                    $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $this->prices[$index]['dinar_price'], 4);
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $this->prices[$index]['dinar_price'], 3);
                 } else {
                     $percent = $this->num_uf($this->prices[$index]['dinar_price']) / 100;
-                    $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $percent * $sell_price, 4);
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($sell_price - $percent * $sell_price, 3);
                 }
             }
-            $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity'])) ? $this->num_uf($this->prices[$index]['discount_quantity']) : 1));
-            $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity, 3) : 0;
+            if (empty($this->discount_from_original_price)) {
+                $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity'])) ? $this->num_uf($this->prices[$index]['discount_quantity']) : 1), 3);
+                $this->prices[$index]['dinar_piece_price'] = $this->prices[$index]['dinar_price_after_desc'];
+            } else {
+                $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity'])) ? $this->num_uf($this->prices[$index]['discount_quantity']) : 1), 3);
+                $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity, 3) : 0;
+            }
+            //            $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity']))?$this->num_uf($this->prices[$index]['discount_quantity']):1));
+            //            $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity,3) : 0;
         }
     }
     public function getKey($fill_id)
