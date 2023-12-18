@@ -155,41 +155,6 @@
                 // Increment the row count
                 rowCount++;
             });
-           // ++++++++++++++++++ ajax : quick_add_store ++++++++++++++++++
-            // $(document).on("submit", "form#quick_add_store_form", function (e) {
-            //     e.preventDefault();
-            //     var data = $(this).serialize();
-            //     $.ajax({
-            //         method: "post",
-            //         url: $(this).attr("action"),
-            //         dataType: "json",
-            //         data: data,
-            //         success: function (result) {
-            //             if (result.success) {
-            //                 console.log("First Ajax Request : Store new store");
-            //                 console.log(result);
-            //                 console.log(result.store_id);
-            //                 Swal.fire("Success", result.msg, "success");
-            //                 $(".add-store").modal("hide");
-            //                 var store_id = result.id;
-            //                 $.ajax({
-            //                     method: "get",
-            //                     url: "/product/get-dropdown-store/"+result.store_id,
-            //                     data: {},
-            //                     contactType: "html",
-            //                     success: function (data_html) {
-            //                         console.log("Second Ajax Request : Get dropdown of stores");
-            //                         console.log(data_html);
-            //                         $("#store_id").empty().append(data_html);
-            //                         $("#store_id").val(result.store_id).trigger();
-            //                     },
-            //                 });
-            //             } else {
-            //                 Swal.fire("Error", result.msg, "error");
-            //             }
-            //         },
-            //     });
-            // });
         });
     </script>
 

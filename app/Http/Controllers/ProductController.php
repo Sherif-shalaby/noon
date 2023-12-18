@@ -107,9 +107,10 @@ class ProductController extends Controller
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
     $suppliers=Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+    $branches = Branch::orderBy('created_at', 'desc')->pluck('name','id');
     $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
-      return view('products.index',compact('products','categories','suppliers','brands','units','stores','users','subcategories'));
+      return view('products.index',compact('products','categories','branches','suppliers','brands','units','stores','users','subcategories'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
