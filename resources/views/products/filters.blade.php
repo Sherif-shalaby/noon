@@ -12,13 +12,25 @@
 <div class="card-body">
     <form action="{{ route('products.index') }}" method="get">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
+            <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                style="animation-delay: 1.15s">
+                <div class="input-wrapper">
+                    {!! Form::select('branch_id', $branches, null, [
+                        'class' => 'form-control select2',
+                        'placeholder' => __('lang.branch'),
+                        'id' => 'branch_id',
+                    ]) !!}
+                </div>
+            </div>
             {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
             <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                 style="animation-delay: 1.15s">
                 <div class="input-wrapper">
-                    {!! Form::select('store_id', $stores, request()->store_id, [
-                        'class' => 'form-control select2',
+                    {!! Form::select('store_id', [], null, [
+                        'class' => 'form-control select2 store',
                         'placeholder' => __('lang.store'),
+                        'id' => 'store_id',
                     ]) !!}
                 </div>
             </div>

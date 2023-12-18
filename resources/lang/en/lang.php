@@ -211,6 +211,7 @@ return [
     'edit_supplier' => 'Edit Supplier',
     'exchange_rate' => 'Exchange Rate',
     'city' => 'City',
+    'quarters' => 'Neighbourhood',
     'country' => 'Country',
     'postal_code' => 'Postal Code',
     'type' => 'Type',

@@ -557,6 +557,7 @@ return array(
     'tax' => 'ضريبة',
     'select_to_delete' => 'حدد للحذف',
     'select_to_add' => 'حدد للاضافة',
+    'are_you_want_delete_all' => 'هل متاكد من عملية الحذف',
     'delete_all' => 'حذف جماعي',
     'filter' => 'تصفية',
     'dont_show_zero_stocks' => 'عدم اظهار منتجات بدون مخزون',

@@ -90,7 +90,7 @@
                                         width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
+                                    {{-- {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
                                         'class' => 'form-control selectpicker col-md-10',
                                         'multiple' => 'multiple',
                                         'placeholder' => __('lang.please_select'),
@@ -99,7 +99,21 @@
                                     <button type="button"
                                         class="add-button col-md-2 d-flex justify-content-center align-items-center"
                                         data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
-                                            class="fas fa-plus"></i></button>
+                                            class="fas fa-plus"></i></button> --}}
+                                    <select id="store_id" name="store_id[]" id = 'store_id' class="form-control select2"
+                                        multiple="multiple">
+                                        <option value="">@lang('lang.please_select')</option>
+                                        @foreach ($stores as $store)
+                                            <option value="{{ $store->id }}">
+                                                {{ $store->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    <button type="button" class="btn btn-primary btn-sm ml-2" id="add_new_store"
+                                        data-toggle="modal" data-target="#createStoreModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
                                 @error('store_id')
                                     <label class="text-danger error-msg">{{ $message }}</label>

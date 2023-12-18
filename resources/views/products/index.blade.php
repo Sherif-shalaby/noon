@@ -44,6 +44,54 @@
                 margin-top: 115px;
             }
         }
+
+        /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
+
+        .selectBox {
+            position: relative;
+        }
+
+        /* selectbox style */
+        .selectBox select {
+            width: 100%;
+            padding: 0 !important;
+            padding-left: 4px;
+            padding-right: 4px;
+            color: #000;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            height: 39px !important;
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+            height: 125px;
+            overflow: auto;
+            padding-top: 10px;
+            /* text-align: end;  */
+        }
+
+        #checkboxes label {
+            display: block;
+            padding: 5px;
+        }
+
+        #checkboxes label:hover {
+            background-color: #ddd;
+        }
+
+        #checkboxes label span {
+            font-weight: normal;
+        }
     </style>
     <div class="animate-in-page">
 
@@ -110,7 +158,130 @@
                                     </div>
                                 </div>
                             </div>
-
+                            {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
+                            <div class="col-md-3 col-lg-3">
+                                <div class="multiselect col-md-12">
+                                    <div class="selectBox" onclick="showCheckboxes()">
+                                        <select class="form-select form-control form-control-lg">
+                                            <option>@lang('lang.show_hide_columns')</option>
+                                        </select>
+                                        <div class="overSelect"></div>
+                                    </div>
+                                    {{-- ///////////////// checkboxes ///////////////// --}}
+                                    <div id="checkboxes">
+                                        {{-- +++++++++++++++++ checkbox1 : image +++++++++++++++++ --}}
+                                        <label for="col1_id">
+                                            <input type="checkbox" id="col1_id" name="col1" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.image')</span> &nbsp;
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox2 : product_name +++++++++++++++++ --}}
+                                        <label for="col2_id">
+                                            <input type="checkbox" id="col2_id" name="col2" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.product_name')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox3 : sku +++++++++++++++++ --}}
+                                        <label for="col3_id">
+                                            <input type="checkbox" id="col3_id" name="col3" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.sku')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox4 : stock +++++++++++++++++ --}}
+                                        <label for="col4_id">
+                                            <input type="checkbox" id="col4_id" name="col4" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.select_to_delete')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox5 : stock +++++++++++++++++ --}}
+                                        <label for="col5_id">
+                                            <input type="checkbox" id="col5_id" name="col5" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.stock')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox6 : category +++++++++++++++++ --}}
+                                        <label for="col6_id">
+                                            <input type="checkbox" id="col6_id" name="col6" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.category')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox7 : subcategories_name +++++++++++++++++ --}}
+                                        <label for="col7_id">
+                                            <input type="checkbox" id="col7_id" name="col7" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.subcategories_name')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox8 : height +++++++++++++++++ --}}
+                                        <label for="col8_id">
+                                            <input type="checkbox" id="col8_id" name="col8" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.height')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox9 : length +++++++++++++++++ --}}
+                                        <label for="col9_id">
+                                            <input type="checkbox" id="col9_id" name="col9" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.length')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox10 : width +++++++++++++++++ --}}
+                                        <label for="col10_id">
+                                            <input type="checkbox" id="col10_id" name="col10" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.width')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox11 : size +++++++++++++++++ --}}
+                                        <label for="col11_id">
+                                            <input type="checkbox" id="col11_id" name="col11" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.size')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox12 : weight +++++++++++++++++ --}}
+                                        <label for="col12_id">
+                                            <input type="checkbox" id="col12_id" name="col12" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.weight')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox13 : basic_unit_for_import_product +++++++++++++++++ --}}
+                                        <label for="col13_id">
+                                            <input type="checkbox" id="col13_id" name="col13" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.basic_unit_for_import_product')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox14 : stores +++++++++++++++++ --}}
+                                        <label for="col14_id">
+                                            <input type="checkbox" id="col14_id" name="col14" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.stores')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox15 : brand +++++++++++++++++ --}}
+                                        <label for="col15_id">
+                                            <input type="checkbox" id="col15_id" name="col15" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.brand')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox16 : added_by +++++++++++++++++ --}}
+                                        <label for="col16_id">
+                                            <input type="checkbox" id="col16_id" name="col16" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.added_by')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox17 : updated_by +++++++++++++++++ --}}
+                                        <label for="col17_id">
+                                            <input type="checkbox" id="col17_id" name="col17" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.updated_by')</span>
+                                        </label>
+                                        {{-- +++++++++++++++++ checkbox18 : action +++++++++++++++++ --}}
+                                        <label for="col18_id">
+                                            <input type="checkbox" id="col18_id" name="col18" class="checkbox_class"
+                                                checked="checked" />
+                                            <span>@lang('lang.action')</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <br /><br />
+                            {{-- ++++++++++++++++++ Table Columns ++++++++++++++++++ --}}
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div1"></div>
@@ -160,7 +331,7 @@
                                                                 {{ $index + 1 }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col1">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="width: 50px;height: 50px;font-size: 12px;font-weight: 600"
@@ -171,7 +342,7 @@
 
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col2">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -179,7 +350,7 @@
                                                                 {{ $product->name }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col3">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -187,7 +358,7 @@
                                                                 {{ $product->sku }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col4">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 data-tooltip="@lang('lang.select_to_delete')">
@@ -197,7 +368,7 @@
                                                                     data-product_id="{{ $product->id }}" />
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col5">
                                                             @foreach ($product->product_stores as $store)
                                                                 @php
                                                                     $unit = !empty($store->variations) ? $store->variations : [];
@@ -239,7 +410,7 @@
                                                                 </span>
                                                             @endforelse
                                                         </td>
-                                                        <td>
+                                                        <td class="col6">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -247,7 +418,7 @@
                                                                 {{ $product->category->name ?? '' }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col7">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -257,7 +428,7 @@
                                                                 {{ $product->subCategory3->name ?? '' }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col8">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -265,7 +436,7 @@
                                                                 {{ $product->product_dimensions->height ?? 0 }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col9">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -273,7 +444,7 @@
                                                                 {{ $product->product_dimensions->length ?? 0 }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col0">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -281,7 +452,7 @@
                                                                 {{ $product->product_dimensions->width ?? 0 }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col11">
                                                             <span
                                                                 class="text-primary custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -290,7 +461,7 @@
                                                             </span>
                                                         </td>
                                                         {{-- <td>{{!empty($product->unit)?$product->unit->name:''}}</td> --}}
-                                                        <td>
+                                                        <td class="col12">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -298,7 +469,7 @@
                                                                 {{ $product->product_dimensions->weight ?? 0 }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col13">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -310,7 +481,7 @@
                                                                     : '' }}
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col14">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -320,7 +491,7 @@
                                                                 @endforeach
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col15">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -334,7 +505,7 @@
                                                         {{--                                        @endforeach --}}
                                                         {{--                                    </td> --}}
                                                         {{-- ++++++++++++++++++++++ created_at column ++++++++++++++++++++++ --}}
-                                                        <td>
+                                                        <td class="col16">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -353,7 +524,7 @@
                                                             </span>
                                                         </td>
                                                         {{-- ++++++++++++++++++++++ updated_at column ++++++++++++++++++++++ --}}
-                                                        <td>
+                                                        <td class="col17">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 10px;font-weight: 600"
@@ -371,7 +542,7 @@
                                                                 @endif
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td class="col18">
                                                             <div class=" btn-group">
                                                                 <button type="button"
                                                                     class="btn btn-default btn-sm dropdown-toggle d-flex justify-content-center align-items-center"
@@ -660,5 +831,29 @@
                     });
                 }
             });
+        </script>
+        <script>
+            // +++++++++++++++++ Checkboxs and label inside selectbox ++++++++++++++
+            $(".checkbox_class:not(:checked)").each(function() {
+                var column = "table ." + $(this).attr("name");
+                $(column).hide();
+            });
+            $(".checkbox_class").click(function() {
+                var column = "table ." + $(this).attr("name");
+                $(column).toggle();
+            });
+            // +++++++++++++++++ Checkboxs and label inside selectbox : showCheckboxes() method ++++++++++++++
+            var expanded = false;
+
+            function showCheckboxes() {
+                var checkboxes = document.getElementById("checkboxes");
+                if (!expanded) {
+                    checkboxes.style.display = "block";
+                    expanded = true;
+                } else {
+                    checkboxes.style.display = "none";
+                    expanded = false;
+                }
+            }
         </script>
     @endpush
