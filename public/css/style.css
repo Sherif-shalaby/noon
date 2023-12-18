@@ -258,7 +258,7 @@ nav {
 
 .rightbar {
     /* overflow: hidden; */
-    min-height: 500px;
+    /* min-height: 500px; */
     position: relative;
     /* z-index: 999; */
     transition: all 0.3s ease;

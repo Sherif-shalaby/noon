@@ -30,12 +30,12 @@
 @section('content')
 
     <!-- Start Contentbar -->
-    <div class="contentbar">
+    <div class="contentbar mb-0 pb-0">
         <!-- Start row -->
         <div class="row">
             <!-- Start col -->
             <div class="col-lg-12">
-                <div class="card m-b-30">
+                <div class="card mb-0">
                     <div class="card-header">
                         <h5 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
                             @lang('lang.daily_report_summary')</h5>
@@ -51,7 +51,7 @@
                         {{-- ================================ Tabs Body ================================ --}}
                         <div class="col-md-12">
                             <table
-                                class="table table-striped table-hover table-bordered @if (app()->isLocale('ar')) dir-rtl @endif">
+                                class="table table-striped table-hover table-bordered mb-0 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <tbody>
                                     @php
                                         // ///////////////////// التدفقات النقدية الخارجة /////////////////////

@@ -1,32 +1,41 @@
 <div class="card-body">
     {{-- <form action="{{route('products.index')}}" method="get"> --}}
-    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+    <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-
-        {{-- +++++++++++++++ stores filter +++++++++++++++ --}}
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        {{-- ++++++++++++++ start_date filter +++++++++++++++ --}}
+        <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.1s">
-            {!! Form::label('store_id', __('lang.store'), [
+
+            {!! Form::label('from', __('site.From'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                 'style' => 'font-size: 12px;font-weight: 500;',
             ]) !!}
-            <div class="input-wrapper">
-                {!! Form::select('store_id', $stores, null, [
-                    'class' => 'form-control select2 stores',
-                    'placeholder' => __('lang.please_select'),
-                    'id' => 'store_id',
-                ]) !!}
-            </div>
+            {!! Form::datetimeLocal('from', null, [
+                'class' => 'form-control mt-0 initial-balance-input width-full start_date w-100',
+            ]) !!}
+
+        </div>
+        {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
+        <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            style="animation-delay: 1.1s">
+
+            {!! Form::label('to', __('site.To'), [
+                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
+                'style' => 'font-size: 12px;font-weight: 500;',
+            ]) !!}
+            {!! Form::datetimeLocal('to', null, [
+                'class' => 'form-control mt-0 initial-balance-input width-full end_date w-100',
+            ]) !!}
+
         </div>
         {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-            style="animation-delay: 1.25s">
+        <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            style="animation-delay: 1.1s">
             {!! Form::label('branch_id', __('lang.branch'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                 'style' => 'font-size: 12px;font-weight: 500;',
             ]) !!}
             <div class="input-wrapper">
-
                 {!! Form::select('branch_id', $branches, null, [
                     'class' => 'form-control select2',
                     'placeholder' => __('lang.please_select'),
@@ -35,8 +44,9 @@
             </div>
         </div>
         {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-            style="animation-delay: 1.3s">
+        <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            style="animation-delay: 1.1s">
+
             {!! Form::label('store_id', __('lang.store'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                 'style' => 'font-size: 12px;font-weight: 500;',
@@ -49,48 +59,20 @@
                     'id' => 'store_id',
                 ]) !!}
             </div>
+
         </div>
-        {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-            style="animation-delay: 1.15s">
-            {!! Form::label('from', __('site.From'), [
-                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-size: 12px;font-weight: 500;',
-            ]) !!}
-            {!! Form::datetimeLocal('from', null, [
-                'class' => 'form-control initial-balance-input width-full start_date',
-            ]) !!}
-        </div>
-        {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-            style="animation-delay: 1.2s">
-            {!! Form::label('to', __('site.To'), [
-                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                'style' => 'font-size: 12px;font-weight: 500;',
-            ]) !!}
-            {!! Form::datetimeLocal('to', null, [
-                'class' => 'form-control  mt-0 initial-balance-input width-full end_date',
-            ]) !!}
-        </div>
-        {{-- ++++++++++++++++++++ stores_pos filter ++++++++++++++++++++ --}}
-        {{-- <div class="col-md-2">
-                <div class="form-group">
-                    {!! Form::label('store_pos_id', __('lang.pos'), []) !!}
-                    {!! Form::select('store_pos_id', $store_pos, request()->store_pos_id, ['class' =>
-                    'form-control select2 stores_pos', 'placeholder' => __('lang.please_select'),'data-live-search'=>"true"]) !!}
-                </div>
-            </div> --}}
 
         {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
-        <div class="col-md-2 mb-2 d-flex align-items-end justify-content-center animate__animated animate__bounceInLeft flex-column"
-            style="animation-delay: 1.35s">
+        <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            style="animation-delay: 1.1s">
             {{-- ======= "filter" button ======= --}}
-            <button type="button" id="filter_btn" class="btn btn-primary" title="search">
+            <button type="button" id="filter_btn" class="btn btn-primary mt-4" title="search">
                 <i class="fa fa-eye"></i> {{ __('lang.filter') }}
             </button>
         </div>
     </div>
     {{-- </form> --}}
+
 </div>
 <script>
     $(document).ready(function() {
@@ -112,7 +94,7 @@
                     $('#datatable-buttons tbody').empty();
                     // +++++++++++++++++++++++++ table content according to filters +++++++++++++++++++++++++++
                     console.log("Wage Transactions Total: ", response
-                    .wage_transactions_final_total);
+                        .wage_transactions_final_total);
                     console.log("Stock Transactions Total: ", response
                         .stock_transactions_final_total);
                     var row = '<tr>' +

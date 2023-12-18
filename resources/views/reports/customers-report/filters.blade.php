@@ -1,6 +1,6 @@
 <form action="{{ route('customers-report.index') }}">
     <div class="row pb-3  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.1s">
 
             {!! Form::label('start_date', __('lang.start_date'), [
@@ -12,7 +12,7 @@
             ]) !!}
 
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.15s">
 
             {!! Form::label('start_time', __('lang.start_time'), [
@@ -24,7 +24,7 @@
             ]) !!}
 
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.2s">
 
             {!! Form::label('end_date', __('lang.end_date'), [
@@ -36,7 +36,7 @@
             ]) !!}
 
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.25s">
 
             {!! Form::label('end_time', __('lang.end_time'), [
@@ -49,7 +49,7 @@
 
         </div>
 
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.3s">
 
             {!! Form::label('customer_id', __('lang.customer'), [
@@ -63,7 +63,7 @@
                 ]) !!}
             </div>
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.35s">
 
             {!! Form::label('store_id', __('lang.store'), [
@@ -77,7 +77,7 @@
                 ]) !!}
             </div>
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.4s">
 
             {!! Form::label('pos_id', __('lang.pos'), [
@@ -91,7 +91,7 @@
                 ]) !!}
             </div>
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.45s">
 
             {!! Form::label('product_id', __('lang.product'), [
@@ -105,7 +105,7 @@
                 ]) !!}
             </div>
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.5s">
 
             {!! Form::label('created_by', __('lang.created_by'), [
@@ -119,7 +119,7 @@
                 ]) !!}
             </div>
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.55s">
 
             {!! Form::label('payment_status', __('lang.payment_status'), [
@@ -133,7 +133,7 @@
                 ]) !!}
             </div>
         </div>
-        <div class="col-md-2 mb-2 d-flex align-items-center justify-content-end animate__animated animate__bounceInLeft flex-column"
+        <div class="col-6 col-md-2 mb-2 d-flex align-items-center justify-content-end animate__animated animate__bounceInLeft flex-column"
             style="animation-delay: 1.6s ">
             <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
                 <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>

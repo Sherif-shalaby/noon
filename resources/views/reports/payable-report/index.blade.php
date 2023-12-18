@@ -1,6 +1,53 @@
 @extends('layouts.app')
 @section('title', __('lang.payable_report'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 80px !important;
+        }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+
+
+
+        @media(max-width:991px) {
+            .table-top-head {
+                top: 80px !important
+            }
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 160px !important
+            }
+        }
+
+        .wrapper1 {
+            margin-top: 20px;
+        }
+
+        .input-wrapper {
+            width: 100% !important;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 115px;
+            }
+
+            .input-wrapper {
+                width: 60%
+            }
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -28,12 +75,12 @@
 @section('content')
     <div class="animate-in-page">
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar mb-0 pb-0">
             <!-- Start row -->
             <div class="row">
                 <!-- Start col -->
                 <div class="col-lg-12">
-                    <div class="card m-b-30">
+                    <div class="card mb-0">
                         {{-- <div class="card-header">
                             <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.products')</h5>
@@ -47,138 +94,152 @@
                                 </div>
                             </div>
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                            <div class="table-responsive  @if (app()->isLocale('ar')) dir-rtl @endif">
-                                <table id="datatable-buttons"
-                                    class="table table-striped table-bordered table-button-wrapper table-hover ">
-                                    <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>@lang('lang.total_paid')</th>
-                                            <th>@lang('lang.action')</th>
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                        <table id="datatable-buttons"
+                                            class="table table-striped table-bordered  table-hover ">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>@lang('lang.total_paid')</th>
+                                                    <th>@lang('lang.action')</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
 
 
-                                        @php
-                                            // ///////////////////// الرواتب/////////////////////
-                                            $wage_transactions_final_total = !empty($wage_transactions->sum('final_total')) ? $wage_transactions->sum('final_total') : '';
-                                            // ///////////////////// المشتريات /////////////////////
-                                            $stock_transactions_final_total = !empty($stock_transactions->sum('final_total')) ? $stock_transactions->sum('final_total') : '';
-                                        @endphp
+                                                @php
+                                                    // ///////////////////// الرواتب/////////////////////
+                                                    $wage_transactions_final_total = !empty($wage_transactions->sum('final_total')) ? $wage_transactions->sum('final_total') : '';
+                                                    // ///////////////////// المشتريات /////////////////////
+                                                    $stock_transactions_final_total = !empty($stock_transactions->sum('final_total')) ? $stock_transactions->sum('final_total') : '';
+                                                @endphp
 
-                                        {{-- ++++++++++++++++++ Row 1 : الرواتب ++++++++++++++++++ --}}
-                                        <tr>
-                                            {{-- ====== column header ====== --}}
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600">
-                                                    <b>@lang('lang.wages')</b>
-                                                </span>
-                                            </td>
-                                            {{-- ====== wage_transactions_final_total ====== --}}
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600" data-tooltip="total_paid">
+                                                {{-- ++++++++++++++++++ Row 1 : الرواتب ++++++++++++++++++ --}}
+                                                <tr>
+                                                    {{-- ====== column header ====== --}}
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600">
+                                                            <b>@lang('lang.wages')</b>
+                                                        </span>
+                                                    </td>
+                                                    {{-- ====== wage_transactions_final_total ====== --}}
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="total_paid">
 
-                                                    @if (!empty($wage_transactions_final_total))
-                                                        {{ $wage_transactions_final_total }}
-                                                    @endif
-                                                </span>
-                                            </td>
-                                            {{-- ====== Actions button ====== --}}
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    @lang('lang.action')
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">
-                                                    <li>
-                                                        <a href="{{ route('wages.index') }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                                            target="_blank">
-                                                            <i class="fa fa-eye"></i>
-                                                            @lang('lang.view') </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        {{-- +++++++++ Row 2 : المشتريات +++++++++ --}}
-                                        <tr>
-                                            {{-- ====== column header ====== --}}
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600">
-                                                    <b>@lang('lang.stock')</b>
-                                                </span>
-                                            </td>
-                                            {{-- ====== stock_transactions_final_total ====== --}}
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600" data-tooltip="total_paid">
-                                                    @if (!empty($stock_transactions_final_total))
-                                                        {{ $stock_transactions_final_total }}
-                                                    @endif
-                                                </span>
-                                            </td>
-                                            {{-- ====== Actions button ====== --}}
-                                            <td>
-                                                <button type="button" class="btn btn-default btn-sm dropdown-toggle"
-                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    @lang('lang.action')
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
-                                                    user="menu">
-                                                    <li>
-                                                        <a href="{{ route('stocks.index') }}"
-                                                            class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                                            target="_blank">
-                                                            <i class="fa fa-eye"></i>
-                                                            @lang('lang.view')
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                        {{-- +++++++++ Row 3 : مجموع الرواتب و المشتريات  +++++++++ --}}
-                                        <tr>
-                                            {{-- ====== column header ====== --}}
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600">
-                                                    <b>@lang('lang.total')</b>
-                                                </span>
-                                            </td>
-                                            {{-- ====== sum of stock_transactions and wage_transactions final_total ====== --}}
-                                            <td>
-                                                <span
-                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                    style="font-size: 12px;font-weight: 600" data-tooltip="total_paid">
-                                                    @if (!empty($wage_transactions_final_total) && !empty($stock_transactions_final_total))
-                                                        {{ $wage_transactions_final_total + $stock_transactions_final_total }}
-                                                    @endif
-                                                </span>
-                                            </td>
-                                            {{-- ====== Actions button ====== --}}
-                                            <td>
+                                                            @if (!empty($wage_transactions_final_total))
+                                                                {{ $wage_transactions_final_total }}
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    {{-- ====== Actions button ====== --}}
+                                                    <td>
+                                                        <button type="button"
+                                                            class="btn btn-default btn-sm dropdown-toggle"
+                                                            style="font-size: 12px;font-weight: 600" data-toggle="dropdown"
+                                                            aria-haspopup="true" aria-expanded="false">
+                                                            @lang('lang.action')
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                            user="menu">
+                                                            <li>
+                                                                <a href="{{ route('wages.index') }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-eye"></i>
+                                                                    @lang('lang.view') </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                                {{-- +++++++++ Row 2 : المشتريات +++++++++ --}}
+                                                <tr>
+                                                    {{-- ====== column header ====== --}}
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600">
+                                                            <b>@lang('lang.stock')</b>
+                                                        </span>
+                                                    </td>
+                                                    {{-- ====== stock_transactions_final_total ====== --}}
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="total_paid">
+                                                            @if (!empty($stock_transactions_final_total))
+                                                                {{ $stock_transactions_final_total }}
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    {{-- ====== Actions button ====== --}}
+                                                    <td>
+                                                        <button type="button"
+                                                            class="btn btn-default btn-sm dropdown-toggle"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                            @lang('lang.action')
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
+                                                            user="menu">
+                                                            <li>
+                                                                <a href="{{ route('stocks.index') }}"
+                                                                    class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                                    target="_blank">
+                                                                    <i class="fa fa-eye"></i>
+                                                                    @lang('lang.view')
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                                {{-- +++++++++ Row 3 : مجموع الرواتب و المشتريات  +++++++++ --}}
+                                                <tr>
+                                                    {{-- ====== column header ====== --}}
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600">
+                                                            <b>@lang('lang.total')</b>
+                                                        </span>
+                                                    </td>
+                                                    {{-- ====== sum of stock_transactions and wage_transactions final_total ====== --}}
+                                                    <td>
+                                                        <span
+                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                            style="font-size: 12px;font-weight: 600"
+                                                            data-tooltip="total_paid">
+                                                            @if (!empty($wage_transactions_final_total) && !empty($stock_transactions_final_total))
+                                                                {{ $wage_transactions_final_total + $stock_transactions_final_total }}
+                                                            @endif
+                                                        </span>
+                                                    </td>
+                                                    {{-- ====== Actions button ====== --}}
+                                                    <td>
 
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="view_modal no-print">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="view_modal no-print">
 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

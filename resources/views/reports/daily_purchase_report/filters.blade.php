@@ -1,7 +1,7 @@
 <div class="card-body">
     <form action="{{ route('reports.daily_purchase_report') }}" method="get">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.1s">
                 {!! Form::label('branch_id', __('lang.branch'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -20,7 +20,7 @@
                     $stores = \App\Models\Store::where('branch_id', request()->branch_id)->pluck('name', 'id');
                 }
             @endphp
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
                 {!! Form::label('store_id', __('lang.store'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -34,7 +34,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.2s">
                 {!! Form::label('supplier_id', __('lang.supplier'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -49,7 +49,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-center justify-content-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-center justify-content-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.25s">
                 <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>

@@ -2,7 +2,7 @@
     <form action="{{ route('reports.best_seller') }}" method="get">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.1s">
 
                 {!! Form::label('branch_id', __('lang.branch'), [
@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
                 @php
                     if (!empty(request()->branch_id)) {
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.2s">
 
                 {!! Form::label('category_id', __('lang.category'), [
@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.25s">
 
                 {!! Form::label('subcategory_id1', __('lang.subcategory') . ' 1', [
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.3s">
 
                 {!! Form::label('subcategory_id2', __('lang.subcategory') . ' 2', [
@@ -92,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.35s">
 
                 {!! Form::label('subcategory_id3', __('lang.subcategory') . ' 3', [
@@ -108,7 +108,7 @@
                     ]) !!}
                 </div>
             </div>
-            {{--            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            {{--            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.1s"> --}}
             {{--                <div class="form-group"> --}}
             {{--                    {!! Form::label('supplier_id', __('lang.supplier'))  !!} --}}
@@ -119,7 +119,7 @@
             {{--                    ) !!} --}}
             {{--                </div> --}}
             {{--            </div> --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.4s">
 
                 {!! Form::label('brand_id', __('lang.brand'), [
@@ -136,7 +136,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.45s">
 
                 <label style="font-size: 12px;font-weight: 500;"
@@ -149,7 +149,7 @@
                 ]) !!}
 
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.5s">
 
                 <label style="font-size: 12px;font-weight: 500;"
@@ -162,7 +162,7 @@
                 ]) !!}
 
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-center justify-content-center animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-lg-2 mb-2 d-flex align-items-center justify-content-center animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.55s">
 
                 <button type="submit" name="submit" class="btn btn-primary width-100" title="search">

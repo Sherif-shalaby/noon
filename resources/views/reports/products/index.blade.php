@@ -33,9 +33,17 @@
             margin-top: 50px;
         }
 
+        .input-wrapper {
+            width: 100% !important;
+        }
+
         @media(max-width:767px) {
             .wrapper1 {
                 margin-top: 115px;
+            }
+
+            .input-wrapper {
+                width: 60%
             }
         }
     </style>
@@ -70,12 +78,12 @@
 @section('content')
     <div class="animate-in-page">
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar mb-0 pb-0">
             <!-- Start row -->
             <div class="row">
                 <!-- Start col -->
                 <div class="col-lg-12">
-                    <div class="card m-b-30">
+                    <div class="card mb-0">
                         <div class="card-header">
                             <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.product_report')</h5>
@@ -97,7 +105,7 @@
                                     <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
                                         <div id="status"></div>
                                         <table id="datatable-buttons"
-                                            class="table dataTable table-striped  table-button-wrapper table-hover  table-bordered"
+                                            class="table dataTable table-striped  table-hover  table-bordered"
                                             style="height: 90vh;overflow: scroll">
                                             <thead>
                                                 <tr>

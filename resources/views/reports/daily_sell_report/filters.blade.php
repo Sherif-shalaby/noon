@@ -1,7 +1,7 @@
 <div class="card-body">
     <form action="{{ route('reports.daily_sales_report') }}" method="get">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.1s">
 
                 {!! Form::label('branch_id', __('lang.branch'), [
@@ -21,7 +21,7 @@
                     $stores = \App\Models\Store::where('branch_id', request()->branch_id)->pluck('name', 'id');
                 }
             @endphp
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-6 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
 
                 {!! Form::label('store_id', __('lang.store'), [

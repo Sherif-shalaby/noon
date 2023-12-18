@@ -1,7 +1,7 @@
 <div class="card-body">
     <form action="{{ route('reports.initial_balance') }}" method="get">
         <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.1s">
                 {!! Form::label('product_name', __('lang.product_name'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -13,7 +13,7 @@
                     'wire:model' => 'product_name',
                 ]) !!}
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.15s">
                 {!! Form::label('product_sku', __('lang.sku'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -25,7 +25,7 @@
                     'wire:model' => 'product_sku',
                 ]) !!}
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.2s">
                 {!! Form::label('product_symbol', __('lang.product_symbol'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -37,7 +37,7 @@
                     'wire:model' => 'product_symbol',
                 ]) !!}
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.25s">
                 {!! Form::label('category_id', __('lang.category'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -52,7 +52,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.3s">
                 {!! Form::label('subcategory_id1', __('lang.subcategory') . ' 1', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -67,7 +67,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.35s">
                 {!! Form::label('subcategory_id2', __('lang.subcategory') . ' 2', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -81,7 +81,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.4s">
                 {!! Form::label('subcategory_id3', __('lang.subcategory') . ' 3', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -96,7 +96,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.45s">
                 {!! Form::label('supplier_id', __('lang.supplier'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -112,7 +112,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.5s">
                 {!! Form::label('created_by', __('lang.created_by'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -128,7 +128,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.55s">
                 {!! Form::label('brand_id', __('lang.brand'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -143,7 +143,7 @@
                     ]) !!}
                 </div>
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.6s">
                 <label style="font-size: 12px;font-weight: 500;"
                     class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -154,7 +154,7 @@
                     'wire:model' => 'from',
                 ]) !!}
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.65s">
                 <label style="font-size: 12px;font-weight: 500;"
                     class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
@@ -165,7 +165,7 @@
                     'wire:model' => 'to',
                 ]) !!}
             </div>
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.7s">
                 <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>

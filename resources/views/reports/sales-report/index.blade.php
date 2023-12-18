@@ -1,6 +1,53 @@
 @extends('layouts.app')
 @section('title', __('lang.sales_report'))
 @section('breadcrumbbar')
+    <style>
+        .table-top-head {
+            top: 45px !important;
+        }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
+            }
+        }
+
+
+
+        @media(max-width:991px) {
+            .table-top-head {
+                top: 45px !important
+            }
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 55px !important
+            }
+        }
+
+        .wrapper1 {
+            margin-top: 15px;
+        }
+
+        .input-wrapper {
+            width: 100% !important;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 115px;
+            }
+
+            .input-wrapper {
+                width: 60%
+            }
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">
@@ -30,12 +77,12 @@
 @section('content')
     <div class="animate-in-page">
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar mb-0 pb-0">
             <!-- Start row -->
             <div class="row">
                 <!-- Start col -->
                 <div class="col-lg-12">
-                    <div class="card m-b-30">
+                    <div class="card mb-0">
                         <div class="card-header">
                             <h5 class="card-title  @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.products')</h5>
@@ -49,90 +96,96 @@
                                 </div>
                             </div>
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
-                            <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif"
-                                style="height: 90vh;overflow: scroll">
-                                <table id="datatable-buttons"
-                                    class="table dataTable table-hover table-button-wrapper table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>اسم المنتج</th>
-                                            <th>مبلغ المبيعات</th>
-                                            <th>الكمية المباعة</th>
-                                            <th>في المخزن</th>
-                                            {{-- <th>@lang('lang.action')</th>  --}}
-                                        </tr>
-                                    </thead>
+                            <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div1"></div>
+                            </div>
+                            <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                <div class="div2 table-scroll-wrapper">
+                                    <!-- content goes here -->
+                                    <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                        <table id="datatable-buttons" class="table dataTable table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>اسم المنتج</th>
+                                                    <th>مبلغ المبيعات</th>
+                                                    <th>الكمية المباعة</th>
+                                                    <th>في المخزن</th>
+                                                    {{-- <th>@lang('lang.action')</th>  --}}
+                                                </tr>
+                                            </thead>
 
-                                    <tbody>
-                                        @foreach ($all_products as $index => $product)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="اسم المنتج">
+                                            <tbody>
+                                                @foreach ($all_products as $index => $product)
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="اسم المنتج">
 
-                                                        {{ $product->name }}
-                                                    </span>
-                                                </td>
+                                                                {{ $product->name }}
+                                                            </span>
+                                                        </td>
 
-                                                @php
-                                                    // ++++++++++++++++++++ sell_price_var ++++++++++++++++++++
-                                                    $sell_price_var = 0;
-                                                    $sell_price_var = 0;
-                                                    // ++++++++++++++++++++ sell_quantity_var ++++++++++++++++++++
-                                                    $sell_quantity = 0;
-                                                    // ++++++++++++++++++++ sell_store_var ++++++++++++++++++++
-                                                    $sell_store = 0;
-                                                    foreach ($product->sell_lines as $key => $sellLine) {
-                                                        // =========== sell_quantity ===========
-                                                        $sell_quantity = $sell_quantity + ($sellLine->quantity - $sellLine->quantity_returned);
-                                                        // =========== sell_price ===========
-                                                        if (!empty($sellLine->sell_price)) {
-                                                            $sell_price_var = $sell_price_var + $sellLine->sell_price;
-                                                        } else {
-                                                            $sell_price_var = $sell_price_var + $sellLine->dollar_sell_price * $sellLine->exchange_rate;
-                                                        }
-                                                        // =========== store ===========
-                                                        foreach ($product->stock_lines as $key => $stock_line) {
-                                                            $sell_store = $stock_line->quantity - $stock_line->quantity_sold + $stock_line->quantity_returned;
-                                                        }
-                                                    }
-                                                @endphp
-                                                {{-- ++++++++++ مبلغ المبيعات ++++++++++ --}}
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="مبلغ المبيعات">
+                                                        @php
+                                                            // ++++++++++++++++++++ sell_price_var ++++++++++++++++++++
+                                                            $sell_price_var = 0;
+                                                            $sell_price_var = 0;
+                                                            // ++++++++++++++++++++ sell_quantity_var ++++++++++++++++++++
+                                                            $sell_quantity = 0;
+                                                            // ++++++++++++++++++++ sell_store_var ++++++++++++++++++++
+                                                            $sell_store = 0;
+                                                            foreach ($product->sell_lines as $key => $sellLine) {
+                                                                // =========== sell_quantity ===========
+                                                                $sell_quantity = $sell_quantity + ($sellLine->quantity - $sellLine->quantity_returned);
+                                                                // =========== sell_price ===========
+                                                                if (!empty($sellLine->sell_price)) {
+                                                                    $sell_price_var = $sell_price_var + $sellLine->sell_price;
+                                                                } else {
+                                                                    $sell_price_var = $sell_price_var + $sellLine->dollar_sell_price * $sellLine->exchange_rate;
+                                                                }
+                                                                // =========== store ===========
+                                                                foreach ($product->stock_lines as $key => $stock_line) {
+                                                                    $sell_store = $stock_line->quantity - $stock_line->quantity_sold + $stock_line->quantity_returned;
+                                                                }
+                                                            }
+                                                        @endphp
+                                                        {{-- ++++++++++ مبلغ المبيعات ++++++++++ --}}
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="مبلغ المبيعات">
 
-                                                        {{ number_format($sell_price_var, 2) }}
-                                                </td>
-                                                </span>
-                                                {{-- ++++++++++ الكمية المباعة +++++++++ --}}
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="الكمية المباعة">
+                                                                {{ number_format($sell_price_var, 2) }}
+                                                        </td>
+                                                        </span>
+                                                        {{-- ++++++++++ الكمية المباعة +++++++++ --}}
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="الكمية المباعة">
 
 
-                                                        {{ $sell_quantity }}
-                                                </td>
-                                                </span>
-                                                {{-- ++++++++++ في المخزن ++++++++++ --}}
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600" data-tooltip="في المخزن">
+                                                                {{ $sell_quantity }}
+                                                        </td>
+                                                        </span>
+                                                        {{-- ++++++++++ في المخزن ++++++++++ --}}
+                                                        <td>
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="في المخزن">
 
-                                                        {{ $sell_store }}
-                                                    </span>
-                                                </td>
-                                                {{-- @foreach ($product->stock_lines as $stockLine)
+                                                                {{ $sell_store }}
+                                                            </span>
+                                                        </td>
+                                                        {{-- @foreach ($product->stock_lines as $stockLine)
                                                 {{-- ++++++++++ مبلغ المشتريات ++++++++++ --}}
-                                                {{-- <td>
+                                                        {{-- <td>
                                                     @if (!empty($stockLine->purchase_price))
                                                         @php
                                                             $purchase_price_var = $purchase_price_var + $stockLine->purchase_price;
@@ -146,17 +199,17 @@
                                                         {{  number_format( ( $purchase_price_var ) , 2 ) }}
                                                     @endif
                                                 </td> --}}
-                                                {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
-                                                {{-- <td>
+                                                        {{-- ++++++++++ الكمية المشتراة++++++++++ --}}
+                                                        {{-- <td>
                                                     {{ number_format($stockLine->quantity,2) }}
                                                 </td> --}}
-                                                {{-- ++++++++++ في المخزن ++++++++++ --}}
-                                                {{-- <td>
+                                                        {{-- ++++++++++ في المخزن ++++++++++ --}}
+                                                        {{-- <td>
                                                     {{ number_format( ( $stockLine->quantity - $stockLine->quantity_sold ) + ( $stockLine->quantity_returned ) , 2 ) }}
                                                 </td> --}}
-                                                {{-- @endforeach  --}}
-                                                {{-- ++++++++++++++++++++++++++ Actions +++++++++++++++++++ --}}
-                                                {{-- <td>
+                                                        {{-- @endforeach  --}}
+                                                        {{-- ++++++++++++++++++++++++++ Actions +++++++++++++++++++ --}}
+                                                        {{-- <td>
                                                 <div class="btn-group">
                                                     <div class="bn-group">
                                                         <a href="{{ route('invoices.show', $product->id) }}" title="{{ __('Show') }}"
@@ -187,13 +240,15 @@
                                                     </div>
                                                 </div>
                                             </td> --}}
-                                            </tr>
-                                            {{-- @include('products.edit',$product) --}}
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                                <div class="view_modal no-print">
+                                                    </tr>
+                                                    {{-- @include('products.edit',$product) --}}
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                        <div class="view_modal no-print">
 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

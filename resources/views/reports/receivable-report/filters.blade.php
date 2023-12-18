@@ -2,7 +2,7 @@
     <form action="{{ route('products.index') }}" method="get">
         <div class="row  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
             {{-- +++++++++++++++ payers filter +++++++++++++++ --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.1s">
                 {!! Form::label('payer_id', __('lang.payer'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -16,15 +16,14 @@
                     ]) !!}
                 </div>
             </div>
-            {{-- ++++++++++++++++++++ receivers filter ++++++++++++++++++++ --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-                style="animation-delay: 1.15s">
+            {{-- +++++++++++++++++++ receivers filter ++++++++++++++++++++ --}}
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                style="animation-delay: 1.1s">
                 {!! Form::label('receiver_id', __('lang.receiver'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 <div class="input-wrapper">
-
                     {!! Form::select('receiver_id', $receivers, request()->receiver_id, [
                         'class' => 'form-control select2 receivers',
                         'placeholder' => __('lang.please_select'),
@@ -33,46 +32,40 @@
                 </div>
             </div>
             {{-- ++++++++++++++++++++ stores_pos filter ++++++++++++++++++++ --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-                style="animation-delay: 1.2s">
-                {!! Form::label('store_pos_id', __('lang.pos'), [
-                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                    'style' => 'font-size: 12px;font-weight: 500;',
-                ]) !!}
-                <div class="input-wrapper">
-
-                    {!! Form::select('store_pos_id', $store_pos, request()->store_pos_id, [
-                        'class' => 'form-control select2 stores_pos',
-                        'placeholder' => __('lang.please_select'),
-                        'data-live-search' => 'true',
-                    ]) !!}
+            {{-- <div class="col-md-2">
+                <div class="form-group">
+                    {!! Form::label('store_pos_id', __('lang.pos'), []) !!}
+                    {!! Form::select('store_pos_id', $store_pos, request()->store_pos_id, ['class' =>
+                    'form-control select2 stores_pos', 'placeholder' => __('lang.please_select'),'data-live-search'=>"true"]) !!}
                 </div>
-            </div>
+            </div> --}}
             {{-- +++++++++++++++ start_date filter +++++++++++++++ --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-                style="animation-delay: 1.25s">
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                style="animation-delay: 1.1s">
                 {!! Form::label('from', __('site.From'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 {!! Form::datetimeLocal('from', null, [
-                    'class' => 'form-control start_date  mt-0 initial-balance-input width-full',
+                    'class' => 'form-control mt-0 initial-balance-input width-full start_date w-100',
                 ]) !!}
             </div>
             {{-- +++++++++++++++ end_date filter +++++++++++++++ --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
-                style="animation-delay: 1.3s">
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                style="animation-delay: 1.1s">
                 {!! Form::label('to', __('site.To'), [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
-                {!! Form::datetimeLocal('to', null, ['class' => 'form-control end_date  mt-0 initial-balance-input width-full']) !!}
+                {!! Form::datetimeLocal('to', null, [
+                    'class' => 'form-control mt-0 initial-balance-input width-full end_date w-100',
+                ]) !!}
             </div>
             {{-- ++++++++++++++++++ "filter" and "clear filters" button ++++++++++++++++++ --}}
-            <div class="col-md-2 mb-2 d-flex align-items-end justify-content-center animate__animated animate__bounceInLeft flex-column"
-                style="animation-delay: 1.35s">
+            <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
+                style="animation-delay: 1.1s">
                 {{-- ======= "filter" button ======= --}}
-                <button type="button" id="filter_btn" class="btn btn-primary" title="search">
+                <button type="button" id="filter_btn" class="btn btn-primary mt-2" title="search">
                     <i class="fa fa-eye"></i> {{ __('lang.filter') }}
                 </button>
             </div>

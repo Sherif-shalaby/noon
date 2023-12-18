@@ -36,12 +36,12 @@
     <div class="animate-in-page">
 
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar mb-0 pb-0">
             <!-- Start row -->
             <div class="row">
                 <!-- Start col -->
                 <div class="col-lg-12">
-                    <div class="card m-b-30">
+                    <div class="card mb-0">
                         <div class="card-header">
                             <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.supplier_report')</h5>
@@ -86,104 +86,114 @@
                                 {{-- +++++++++++++++++++++ Table 1 +++++++++++++++++++++ --}}
                                 <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                     aria-labelledby="nav-home-tab">
-                                    <table id="datatable-buttons" style="width: 100%"
-                                        class="table dataTable table-hover table-bordered @if (app()->isLocale('ar')) dir-rtl @endif">
-                                        <thead>
-                                            <tr>
-                                                <th>@lang('lang.date')</th>
-                                                <th>@lang('lang.reference_no')</th>
-                                                <th>@lang('lang.supplier')</th>
-                                                <th>@lang('lang.product')</th>
-                                                <th class="sum">@lang('lang.grand_total')</th>
-                                                <th class="sum">@lang('lang.paid')</th>
-                                                <th class="sum">@lang('lang.duePaid')</th>
-                                                <th>@lang('lang.status')</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                @foreach ($add_stocks as $add_stock)
-                                            <tr>
-                                                {{-- @foreach ($add_stocks->transaction as $line) --}}
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.date')">
-                                                        {{ @format_date($add_stock->transaction->transaction_date) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.reference_no')">
-                                                        {{ $add_stock->transaction->invoice_no }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.supplier')">
+                                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div1"></div>
+                                    </div>
+                                    <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div2 table-scroll-wrapper">
+                                            <!-- content goes here -->
+                                            <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                                <table id="datatable-buttons"
+                                                    class="table dataTable table-hover table-bordered ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@lang('lang.date')</th>
+                                                            <th>@lang('lang.reference_no')</th>
+                                                            <th>@lang('lang.supplier')</th>
+                                                            <th>@lang('lang.product')</th>
+                                                            <th class="sum">@lang('lang.grand_total')</th>
+                                                            <th class="sum">@lang('lang.paid')</th>
+                                                            <th class="sum">@lang('lang.duePaid')</th>
+                                                            <th>@lang('lang.status')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            @foreach ($add_stocks as $add_stock)
+                                                        <tr>
+                                                            {{-- @foreach ($add_stocks->transaction as $line) --}}
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.date')">
+                                                                    {{ @format_date($add_stock->transaction->transaction_date) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.reference_no')">
+                                                                    {{ $add_stock->transaction->invoice_no }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.supplier')">
 
-                                                        @if (!empty($add_stock->transaction->supplier))
-                                                            {{ $add_stock->transaction->supplier->name }}
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.product')">
+                                                                    @if (!empty($add_stock->transaction->supplier))
+                                                                        {{ $add_stock->transaction->supplier->name }}
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.product')">
 
-                                                        @if (!empty($add_stock->product))
-                                                            {{ $add_stock->product->name }}
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.grand_total')">
+                                                                    @if (!empty($add_stock->product))
+                                                                        {{ $add_stock->product->name }}
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.grand_total')">
 
-                                                        {{ @num_format($add_stock->transaction->final_total) }}
-                                                </td>
-                                                </span>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.paid')">
+                                                                    {{ @num_format($add_stock->transaction->final_total) }}
+                                                            </td>
+                                                            </span>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.paid')">
 
-                                                        {{ @num_format($add_stock->transaction->transaction_payments->sum('amount')) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.duePaid')">
+                                                                    {{ @num_format($add_stock->transaction->transaction_payments->sum('amount')) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.duePaid')">
 
-                                                        {{ @num_format($add_stock->transaction->final_total - $add_stock->transaction->transaction_payments->sum('amount')) }}
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span
-                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                        style="font-size: 12px;font-weight: 600"
-                                                        data-tooltip="@lang('lang.status')">
-                                                        {{ $add_stock->transaction->payment_status }}
-                                                    </span>
-                                                </td>
-                                                {{-- @endforeach --}}
-                                            </tr>
-                                            @endforeach
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                                    {{ @num_format($add_stock->transaction->final_total - $add_stock->transaction->transaction_payments->sum('amount')) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span
+                                                                    class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                    style="font-size: 12px;font-weight: 600"
+                                                                    data-tooltip="@lang('lang.status')">
+                                                                    {{ $add_stock->transaction->payment_status }}
+                                                                </span>
+                                                            </td>
+                                                            {{-- @endforeach --}}
+                                                        </tr>
+                                                        @endforeach
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -191,85 +201,96 @@
                                 {{-- +++++++++++++++++++++ Table 2 +++++++++++++++++++++ --}}
                                 <div class="tab-pane fade"id="nav-profile" role="tabpanel"
                                     aria-labelledby="nav-profile-tab">
-                                    <table id="datatable-buttons" style="width: 100%"
-                                        class="table dataTable table-hover table-bordered @if (app()->isLocale('ar')) dir-rtl @endif">
-                                        <thead>
-                                            <tr>
-                                                <th>@lang('lang.date')</th>
-                                                <th>@lang('lang.reference_no')</th>
-                                                <th>@lang('lang.supplier_name')</th>
-                                                {{-- <th>@lang('lang.product_name')</th> --}}
-                                                <th>@lang('lang.quantity')</th>
-                                                <th>@lang('lang.paid')</th>
-                                                <th>@lang('lang.duePaid')</th>
-                                                <th>@lang('lang.status')</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($supplier_purchase_orders as $purchase_order)
-                                                <tr>
-                                                    <td>
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.date')">
+                                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div1"></div>
+                                    </div>
+                                    <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div2 table-scroll-wrapper">
+                                            <!-- content goes here -->
+                                            <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                                <table id="datatable-buttons"
+                                                    class="table dataTable table-hover table-bordered ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@lang('lang.date')</th>
+                                                            <th>@lang('lang.reference_no')</th>
+                                                            <th>@lang('lang.supplier_name')</th>
+                                                            {{-- <th>@lang('lang.product_name')</th> --}}
+                                                            <th>@lang('lang.quantity')</th>
+                                                            <th>@lang('lang.paid')</th>
+                                                            <th>@lang('lang.duePaid')</th>
+                                                            <th>@lang('lang.status')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($supplier_purchase_orders as $purchase_order)
+                                                            <tr>
+                                                                <td>
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.date')">
 
-                                                            {{ @format_date($purchase_order->transaction->transaction_date) }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.reference_no')">
+                                                                        {{ @format_date($purchase_order->transaction->transaction_date) }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.reference_no')">
 
-                                                            {{ $purchase_order->transaction->po_no }}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.supplier_name')">
-                                                            @if (!empty($purchase_order->transaction->supplier))
-                                                                {{ $purchase_order->transaction->supplier->name }}
-                                                            @endif
-                                                        </span>
-                                                    </td>
-                                                    {{-- <td>{{$purchase_order->product->name}}</td> --}}
-                                                    <td>
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.quantity')">
-                                                            {{ @num_format($purchase_order->quantity) }}
-                                                        </span>
-                                                    </td>
-                                                    <td></td>
-                                                    {{-- <td>{{ $purchase_order->transaction->final_total }}</td> --}}
-                                                    {{-- <td>{{@num_format($purchase_order->transaction_payments->sum('amount'))}}</td> --}}
-                                                    <td></td>
-                                                    <td></td>
-                                                    {{-- <td>{{@num_format($purchase_order->final_total - $purchase_order->transaction_payments->sum('amount'))}}</td> --}}
-                                                    <td>
-                                                        <span
-                                                            class="custom-tooltip d-flex justify-content-center align-items-center"
-                                                            style="font-size: 12px;font-weight: 600"
-                                                            data-tooltip="@lang('lang.status')">
+                                                                        {{ $purchase_order->transaction->po_no }}
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.supplier_name')">
+                                                                        @if (!empty($purchase_order->transaction->supplier))
+                                                                            {{ $purchase_order->transaction->supplier->name }}
+                                                                        @endif
+                                                                    </span>
+                                                                </td>
+                                                                {{-- <td>{{$purchase_order->product->name}}</td> --}}
+                                                                <td>
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.quantity')">
+                                                                        {{ @num_format($purchase_order->quantity) }}
+                                                                    </span>
+                                                                </td>
+                                                                <td></td>
+                                                                {{-- <td>{{ $purchase_order->transaction->final_total }}</td> --}}
+                                                                {{-- <td>{{@num_format($purchase_order->transaction_payments->sum('amount'))}}</td> --}}
+                                                                <td></td>
+                                                                <td></td>
+                                                                {{-- <td>{{@num_format($purchase_order->final_total - $purchase_order->transaction_payments->sum('amount'))}}</td> --}}
+                                                                <td>
+                                                                    <span
+                                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                        style="font-size: 12px;font-weight: 600"
+                                                                        data-tooltip="@lang('lang.status')">
 
-                                                            @if ($purchase_order->status == 'final')
-                                                                <span class="badge badge-success">@lang('lang.completed')</span>
-                                                            @elseif($purchase_order->status == 'sent_admin')
-                                                                Sent Admin
-                                                            @else
-                                                                {{ ucfirst($purchase_order->status) }}
-                                                            @endif
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                                        @if ($purchase_order->status == 'final')
+                                                                            <span
+                                                                                class="badge badge-success">@lang('lang.completed')</span>
+                                                                        @elseif($purchase_order->status == 'sent_admin')
+                                                                            Sent Admin
+                                                                        @else
+                                                                            {{ ucfirst($purchase_order->status) }}
+                                                                        @endif
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -277,23 +298,32 @@
                                 {{-- +++++++++++++++++++++ Table 3 +++++++++++++++++++++ --}}
                                 <div class="tab-pane fade"id="nav-contact" role="tabpanel"
                                     aria-labelledby="nav-contact-tab">
-                                    <table id="datatable-buttons" style="width: 100%"
-                                        class="table table-striped table-bordered @if (app()->isLocale('ar')) dir-rtl @endif">
-                                        <thead>
-                                            <tr>
-                                                <th>@lang('lang.date')</th>
-                                                <th>@lang('lang.payment_ref')</th>
-                                                <th>@lang('lang.sale_ref')</th>
-                                                <th>@lang('lang.purchase_ref')</th>
-                                                <th>@lang('lang.paid')</th>
-                                                <th class="sum">@lang('lang.amount')</th>
-                                                <th>@lang('lang.created_by')</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div1"></div>
+                                    </div>
+                                    <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
+                                        <div class="div2 table-scroll-wrapper">
+                                            <!-- content goes here -->
+                                            <div style="min-width: 1800px;max-height: 90vh;overflow: auto">
+                                                <table id="datatable-buttons" class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@lang('lang.date')</th>
+                                                            <th>@lang('lang.payment_ref')</th>
+                                                            <th>@lang('lang.sale_ref')</th>
+                                                            <th>@lang('lang.purchase_ref')</th>
+                                                            <th>@lang('lang.paid')</th>
+                                                            <th class="sum">@lang('lang.amount')</th>
+                                                            <th>@lang('lang.created_by')</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
 
-                                        </tbody>
-                                    </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
 

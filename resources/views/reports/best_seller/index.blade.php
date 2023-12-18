@@ -1,6 +1,18 @@
 @extends('layouts.app')
 @section('title', __('lang.product_report'))
 @section('breadcrumbbar')
+    <style>
+        .input-wrapper {
+            width: 100% !important;
+        }
+
+        @media(max-width:767px) {
+
+            .input-wrapper {
+                width: 60%
+            }
+        }
+    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -33,12 +45,12 @@
     <div class="animate-in-page">
 
         <!-- Start Contentbar -->
-        <div class="contentbar">
+        <div class="contentbar mb-0 pb-0 ">
             <!-- Start row -->
             <div class="row">
                 <!-- Start col -->
                 <div class="col-lg-12">
-                    <div class="card m-b-30">
+                    <div class="card mb-0">
                         <div class="card-header">
                             <h5 class="card-title @if (app()->isLocale('ar')) text-end @else text-start @endif">
                                 @lang('lang.best_seller_report')</h5>
