@@ -685,7 +685,7 @@
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 'style' => 'font-weight:500;font-size:10px;color:#888',
                                             ]) !!}
-                                            <input type="text" style="width: 100px"
+                                            <input type="text" style="width: 100px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 price_category"
                                                 name="price_category" placeholder="{{ __('lang.price_category') }}"
                                                 wire:model="prices.{{ $key }}.price_category"
@@ -726,7 +726,7 @@
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 'style' => 'font-weight:500;font-size:10px;color:#888',
                                             ]) !!}
-                                            <input type="text" style="width: 100px"
+                                            <input type="text" style="width: 100px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 discount_quantity"
                                                 wire:model="prices.{{ $key }}.discount_quantity"
                                                 wire:change="changePrice({{ $key }}, 'quantity')"
@@ -750,7 +750,7 @@
                                             <input type="text"
                                                 class="form-control initial-balance-input m-0 bonus_quantity"
                                                 wire:model="prices.{{ $key }}.bonus_quantity"
-                                                style="width: 100px"
+                                                style="width: 100px;border:2px solid #cececf;"
                                                 wire:change="changePrice({{ $key }}, 'quantity')"
                                                 placeholder = "{{ __('lang.b_qty') }}">
                                             @error('prices.' . $key . '.bonus_quantity')
@@ -865,7 +865,8 @@
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 'style' => 'font-weight:500;font-size:10px;color:#888',
                                             ]) !!}
-                                            <input type="text" name="" style="width: 100px"
+                                            <input type="text" name=""
+                                                style="width: 150px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 price"
                                                 wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                 placeholder = "{{ __('lang.price') }}">
@@ -880,7 +881,8 @@
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 'style' => 'font-weight:500;font-size:10px;color:#888',
                                             ]) !!}
-                                            <input type="text" name="total_price" style="width: 100px"
+                                            <input type="text" name="total_price"
+                                                style="width: 150px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 total_price"
                                                 wire:model="prices.{{ $key }}.dinar_total_price"
                                                 placeholder = "{{ __('lang.total_price') }}">
@@ -894,7 +896,8 @@
                                                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                 'style' => 'font-weight:500;font-size:10px;color:#888',
                                             ]) !!}
-                                            <input type="text" name="piece_price" style="width: 100px"
+                                            <input type="text" name="piece_price"
+                                                style="width: 150px;border:2px solid #cececf;"
                                                 class="form-control initial-balance-input m-0 piece_price"
                                                 wire:model="prices.{{ $key }}.dinar_piece_price"
                                                 placeholder = "{{ __('lang.piece_price') }}">
@@ -903,7 +906,7 @@
                                              </p> --}}
                                         </div>
 
-                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-start pl-1"
+                                        <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"
                                             style="width: 100px">
                                             <button type="button" class="btn btn-sm mx-1 btn-primary"
                                                 wire:click="addPriceRow()">
