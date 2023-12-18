@@ -98,77 +98,14 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('category_id', $categories, $product->category_id, [
-                                        'class' => 'form-control select2 category',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'categoryId',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="0"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $categories, $product->subcategory_id1, [
-                                        'class' => 'form-control select2 subcategory',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId1',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="1"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id2', $categories, $product->subcategory_id2, [
-                                        'class' => 'form-control select2 subcategory2',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId2',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="2"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('subcategory_id2')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id3', $categories, $product->subcategory_id3, [
-                                        'class' => 'form-control select2 subcategory3',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId3',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="3"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('subcategory_id3')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
+                    {{-- +++++++++++++++++++++++ "categories" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-12 product_raws">
+                        @for ($i = 0; $i < 3; $i++)
+                            @include('products.partials.product_row',['key' => $i])
+                        @endfor
+                        <input type="hidden" id="raw_product_index" value="2" />
                     </div>
+
                     {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>

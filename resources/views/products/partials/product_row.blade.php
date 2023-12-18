@@ -72,8 +72,13 @@
                                 'id' => 'categoryId'.$key,
 
                             ]) !!}
-                        <a data-href="{{route('categories.sub_category_modal')}}"  data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                           data-select_category="0"><i class="fas fa-plus"></i></a>
+                        {{-- <a data-href="{{route('categories.sub_category_modal')}}"  data-key="{{ $key }}" data-container=".view_modal" class="btn btn-primary btn-add-modal text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                           data-select_category="0" data-target="#translation_table_product"><i class="fas fa-plus"></i></a> --}}
+
+                           <a   data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
+                                class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
+                                data-select_category="0"><i class="fas fa-plus"></i>
+                            </a>
                     </div>
                     @error('products.' . $key .'.category_id')
                     <label class="text-danger error-msg">{{ $message }}</label>
@@ -284,7 +289,8 @@
                                 <div class="row mx-0" style="border: 1px solid #ddd;padding: 30px 0px;">
                                     <div class="col-12 p3 text-center">
                                         <label for="projectinput2" class='h5'>
-                                            {{ __('lang.product_image') }}</label>
+                                            {{ __('lang.product_image') }}
+                                        </label>
                                     </div>
                                     <div class="col-5">
                                         <div class="mt-3">
