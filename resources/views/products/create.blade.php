@@ -61,7 +61,7 @@
                     <div class="col-md-3">
                         {!! Form::label('store', __('lang.store'), ['class' => 'h5 pt-3']) !!}
                         <div class="d-flex justify-content-center">
-                            {!! Form::select(
+                            {{-- {!! Form::select(
                                 'store_id[]',
                                 $stores,
                                 isset($recent_product->stores) ? $recent_product->stores : null,
@@ -71,15 +71,26 @@
                                     'placeholder' => __('lang.please_select'),
                                     'id' => 'store_id',
                                 ],
-                            ) !!}
-                            <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                    data-target=".add-store" href="{{ route('store.create') }}"><i
-                                    class="fas fa-plus"></i></button>
+                            ) !!} --}}
+                            <select id="store_id" name="store_id[]" id = 'store_id' class="form-control select2" multiple="multiple">
+                                <option value="">@lang('lang.please_select')</option>
+                                @foreach ( $stores as $store)
+                                    <option value="{{ $store->id }}">
+                                        {{ $store->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <button type="button" class="btn btn-primary btn-sm ml-2" id="add_new_store" data-toggle="modal"
+                                    data-target="#createStoreModal">
+                                    <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         @error('store_id')
                         <label class="text-danger error-msg">{{ $message }}</label>
                         @enderror
                     </div>
+
 
                     <div class="col-md-12 product_raws">
                         @for ($i = 0; $i < 3; $i++)
@@ -94,32 +105,6 @@
                             </button>
                         </div>
                     </div>
-
-
-                    {{-- product description --}}
-{{--                    <div class="col-md-12">--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="col-md-12">--}}
-{{--                                <div class="container-fluid">--}}
-{{--                                    <div class="form-group">--}}
-{{--                                        <label for="details" class="h5 pt-5">{{ __('lang.product_details') }}&nbsp;--}}
-{{--                                            <button class="btn btn-primary btn-sm ml-2" type="button"--}}
-{{--                                                data-toggle="collapse" data-target="#translation_details_product"--}}
-{{--                                                aria-expanded="false" aria-controls="collapseExample">--}}
-{{--                                                <i class="fas fa-globe"></i>--}}
-{{--                                            </button></label>--}}
-
-{{--                                        {!! Form::textarea('details', isset($recent_product->details) ? $recent_product->details : null, ['class' => 'form-control', 'id' => 'product_details']) !!}--}}
-{{--                                        @include('layouts.translation_textarea', [--}}
-{{--                                            'attribute' => 'details',--}}
-{{--                                            'translations' => !empty($recent_product) ? $recent_product->details_translations : [],--}}
-{{--                                            'type' => 'product',--}}
-{{--                                        ])--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
                 </div>
                 <div class="col-md-12">
                     <button type="submit" class="btn btn-primary">@lang('lang.save')</button>
@@ -129,6 +114,7 @@
         </div>
     </div>
     <div class="view_modal no-print"></div>
+    @include('products.partials.add_store_modal')
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
