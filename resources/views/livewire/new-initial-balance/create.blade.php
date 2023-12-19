@@ -733,6 +733,7 @@
                 var key = $(this).data('key');
                 var select2 = $(this);
                 console.log(select2.select2("val"))
+                console.log(index)
 
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
