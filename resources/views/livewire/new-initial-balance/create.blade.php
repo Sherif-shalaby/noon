@@ -411,11 +411,11 @@
                         </div>
                         <div class="discount {{ $show_discount == 0 ? 'd-none' : '' }}">
                             @foreach ($prices as $key => $price)
-                                <div class="row">
+                            {{-- {{ $price['parent_price']==1?'d-none':''}} --}}
+                                <div class="row {{ $price['parent_price']==1?'d-none':''}}">
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
                                         {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
-                                            'id' => 'fill_id',
                                             'class' => ' form-control select2 fill_id',
                                             'data-name' => 'fill_id',
                                             'data-index' => $key,
@@ -551,6 +551,18 @@
                                          <p>
                                             {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
                                         </p>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="apply_on_all_customers" id="apply_on_all_customers{{ $key }}"
+                                                style="font-size: 0.75rem"
+                                                wire:model="prices.{{ $key }}.apply_on_all_customers"
+                                                wire:change="applyOnAllCustomers({{ $key }})">
+                                                <br>
+                                            <label class="custom-control-label"
+                                                for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
+                                        </div>
                                     </div>
 
                                     <div class="col-md-1">

@@ -73,6 +73,8 @@ class Create extends Component
             'total_price' => null,
             'dinar_piece_price' => null,
             'piece_price' => null,
+            'apply_on_all_customers' => 0,
+            'parent_price' => 0,
         ]
     ];
     public $fill_stores = [
@@ -161,12 +163,10 @@ class Create extends Component
                 $this->prices[$data['var3']]['fill_id'] = $data['var2'];
             } else if ($data['var1'] == "store_fill_id" && $data['var3'] !== '') {
                 $this->fill_stores[$data['var3']]['data'][$data['var4']]['store_fill_id'] = $data['var2'];
-            }
-            else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
+            } else if ($data['var1'] == "extra_store_id" && $data['var3'] !== '') {
                 // dd($data);
                 $this->fill_stores[$data['var3']]['extra_store_id'] = $data['var2'];
-            }
-            else {
+            } else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
                     $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
@@ -281,8 +281,9 @@ class Create extends Component
             $this->totalQuantity += (int)$this->rows[$index]['quantity'];
         }
     }
-    public function change_discount_from_original_price($index){
-        $this->change_discount_from_original_price = 0 ;
+    public function change_discount_from_original_price($index)
+    {
+        $this->change_discount_from_original_price = 0;
         $this->changePrice($index);
     }
     public function addRaw()
@@ -407,111 +408,110 @@ class Create extends Component
         //////////
         // $this->validate();
         $this->updatedInputs();
-         try {
-        if (empty($this->rows)) {
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
-        } else {
-            // dd(77);
-            DB::beginTransaction();
-            // Add stock transaction
-            //Add Product
-            $product = [];
-            if ($this->item[0]['isExist'] == 1) {
-                $product = Product::find($this->item[0]['id']);
-                $product->name = $this->item[0]['name'];
-                $product->sku = "Default";
-                $product->category_id = $this->item[0]['category_id'];
-                $product->subcategory_id1 = $this->item[0]['subcategory_id1'];
-                $product->subcategory_id2 = $this->item[0]['subcategory_id2'];
-                $product->subcategory_id3 = $this->item[0]['subcategory_id3'];
-                $product->method = $this->item[0]['method'];
-                $product->product_symbol = !empty($this->item[0]['product_symbol']) ? $this->item[0]['product_symbol'] : $this->generateSymbol();
-                $product->balance_return_request = $this->item[0]['balance_return_request'] ?? 0;
-                $product->save();
-                // $product->variations()->delete();
+        try {
+            if (empty($this->rows)) {
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.add_sku_with_sku_for_product'),]);
             } else {
-                $product = new Product();
-                $product->name = $this->item[0]['name'];
-                $product->sku = "Default";
-                $product->category_id = $this->item[0]['category_id'];
-                $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ? $this->item[0]['subcategory_id1'] : null;
-                $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
-                $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
-                $product->method = !empty($this->item[0]['method']) ? $this->item[0]['method'] : null;
-                $product->product_symbol = $this->item[0]['product_symbol'];
-                $product->balance_return_request = !empty($this->item[0]['balance_return_request']) ? $this->num_uf($this->item[0]['balance_return_request']) : 0;
-                $product->save();
-                if (!empty($this->item[0]['product_tax_id'])) {
-                    ProductTax::create([
-                        'product_tax_id' => $this->item[0]['product_tax_id'],
-                        'product_id' => $product->id,
-                    ]);
-                }
-            }
-            // add  products to stock lines
-            foreach ($this->rows as $index => $row) {
-                // if($this->rows[$index]['skuExist']!==1){
-                $Variation = new Variation();
-                $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
-                $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
-                $Variation->product_id = $product->id;
-                $Variation->equal = $this->num_uf($this->rows[$index]['fill']);
-                $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
-                // $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
-                $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
-                $Variation->created_by = Auth::user()->id;
-                $Variation->save();
-                $this->variations[$index] = $Variation->id;
-                foreach ($this->rows[$index]['prices'] as $key => $price) {
-                    if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
-                        $Variation_price = new VariationPrice();
-                        $Variation_price->variation_id = $Variation->id;
-                        $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
-                        $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
-                        $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
-                        $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
-                        $Variation_price->save();
+                // dd(77);
+                DB::beginTransaction();
+                // Add stock transaction
+                //Add Product
+                $product = [];
+                if ($this->item[0]['isExist'] == 1) {
+                    $product = Product::find($this->item[0]['id']);
+                    $product->name = $this->item[0]['name'];
+                    $product->sku = "Default";
+                    $product->category_id = $this->item[0]['category_id'];
+                    $product->subcategory_id1 = $this->item[0]['subcategory_id1'];
+                    $product->subcategory_id2 = $this->item[0]['subcategory_id2'];
+                    $product->subcategory_id3 = $this->item[0]['subcategory_id3'];
+                    $product->method = $this->item[0]['method'];
+                    $product->product_symbol = !empty($this->item[0]['product_symbol']) ? $this->item[0]['product_symbol'] : $this->generateSymbol();
+                    $product->balance_return_request = $this->item[0]['balance_return_request'] ?? 0;
+                    $product->save();
+                    // $product->variations()->delete();
+                } else {
+                    $product = new Product();
+                    $product->name = $this->item[0]['name'];
+                    $product->sku = "Default";
+                    $product->category_id = $this->item[0]['category_id'];
+                    $product->subcategory_id1 = !empty($this->item[0]['subcategory_id1']) ? $this->item[0]['subcategory_id1'] : null;
+                    $product->subcategory_id2 = !empty($this->item[0]['subcategory_id2']) ? $this->item[0]['subcategory_id2'] : null;
+                    $product->subcategory_id3 = !empty($this->item[0]['subcategory_id3']) ? $this->item[0]['subcategory_id3'] : null;
+                    $product->method = !empty($this->item[0]['method']) ? $this->item[0]['method'] : null;
+                    $product->product_symbol = $this->item[0]['product_symbol'];
+                    $product->balance_return_request = !empty($this->item[0]['balance_return_request']) ? $this->num_uf($this->item[0]['balance_return_request']) : 0;
+                    $product->save();
+                    if (!empty($this->item[0]['product_tax_id'])) {
+                        ProductTax::create([
+                            'product_tax_id' => $this->item[0]['product_tax_id'],
+                            'product_id' => $product->id,
+                        ]);
                     }
                 }
+                // add  products to stock lines
+                foreach ($this->rows as $index => $row) {
+                    // if($this->rows[$index]['skuExist']!==1){
+                    $Variation = new Variation();
+                    $Variation->sku = !empty($this->rows[$index]['sku']) ? $this->rows[$index]['sku'] : $this->generateSku($product->name);
+                    $Variation->equal = !empty($this->rows[$index]['equal']) ? (float)$this->rows[$index]['equal'] : null;
+                    $Variation->product_id = $product->id;
+                    $Variation->equal = $this->num_uf($this->rows[$index]['fill']);
+                    $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
+                    // $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
+                    $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
+                    $Variation->created_by = Auth::user()->id;
+                    $Variation->save();
+                    $this->variations[$index] = $Variation->id;
+                    foreach ($this->rows[$index]['prices'] as $key => $price) {
+                        if (!empty($this->rows[$index]['prices'][$key]['dollar_sell_price']) || !empty($this->rows[$index]['prices'][$key]['dinar_sell_price'])) {
+                            $Variation_price = new VariationPrice();
+                            $Variation_price->variation_id = $Variation->id;
+                            $Variation_price->customer_type_id = $this->rows[$index]['prices'][$key]['customer_type_id'] ?? null;
+                            $Variation_price->dinar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price']) ?? null;
+                            $Variation_price->dollar_sell_price = $this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']) ?? null;
+                            $Variation_price->percent = $this->rows[$index]['prices'][$key]['percent'] ?? null;
+                            $Variation_price->save();
+                        }
+                    }
 
-                ////////////////
-            }
+                    ////////////////
+                }
 
-            if (
-                $this->item[0]['height'] == ('' || 0) && $this->item[0]['length'] == ('' || 0) && $this->item[0]['width'] == ('' || 0)
-                || $this->item[0]['size'] == ('' || 0) && $this->item[0]['weight'] == ('' || 0)
-            ) {
-            } else {
-                ProductDimension::create([
-                    'product_id' => $product->id,
-                    'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
-                    'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
-                    'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
-                    'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
-                    'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
-                    'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
-                ]);
+                if (
+                    $this->item[0]['height'] == ('' || 0) && $this->item[0]['length'] == ('' || 0) && $this->item[0]['width'] == ('' || 0)
+                    || $this->item[0]['size'] == ('' || 0) && $this->item[0]['weight'] == ('' || 0)
+                ) {
+                } else {
+                    ProductDimension::create([
+                        'product_id' => $product->id,
+                        'variation_id' => !empty($this->item[0]['basic_unit_variation_id']) ? (Variation::where('product_id', $product->id)->where('unit_id', $this->item[0]['basic_unit_variation_id'])->first()->id ?? '') : null,
+                        'height' => !empty($this->item[0]['height']) ? $this->item[0]['height'] : 0,
+                        'length' => !empty($this->item[0]['length']) ? $this->item[0]['length'] : 0,
+                        'width' => !empty($this->item[0]['width']) ? $this->item[0]['width'] : 0,
+                        'weight' => !empty($this->item[0]['weight']) ? $this->item[0]['weight'] : 0,
+                        'size' => !empty($this->item[0]['size']) ? $this->item[0]['size'] : 0,
+                    ]);
+                }
+                $this->saveTransaction($product->id,);
+                DB::commit();
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
+                return redirect('/new-initial-balance/create');
             }
-            $this->saveTransaction($product->id,);
-            DB::commit();
-            $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
-            return redirect('/new-initial-balance/create');
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => __('lang.something_went_wrongs'),]);
+            //             dd($e);
         }
-                 }
-                 catch (\Exception $e){
-                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => __('lang.something_went_wrongs'),]);
-        //             dd($e);
-                 }
     }
     public function saveTransaction($product_id, $variations = [])
     {
-        $parent_transction=[];
+        $parent_transction = [];
         for ($i = -1; $i < count($this->fill_stores); $i++) {
             // dd($this->fill_stores);
             //Add stock transaction
 
             $store_id = $i < 0 ? $this->item[0]['store_id'] : $this->fill_stores[$i]['extra_store_id'];
-            if(!empty($store_id )){
+            if (!empty($store_id)) {
                 $transaction = new StockTransaction();
                 $transaction->store_id = $store_id;
                 $transaction->status = 'received';
@@ -522,7 +522,7 @@ class Create extends Component
                 $transaction->supplier_id = !empty($this->item[0]['supplier_id']) ? $this->item[0]['supplier_id'] : null;
                 $transaction->transaction_currency = $this->transaction_currency;
                 $transaction->created_by = Auth::user()->id;
-                $transaction->parent_transction =!empty($parent_transction[0])?$parent_transction[0]:0;
+                $transaction->parent_transction = !empty($parent_transction[0]) ? $parent_transction[0] : 0;
                 $transaction->save();
                 $parent_transction[] = $transaction->id;
                 foreach ($this->rows as $index => $row) {
@@ -565,23 +565,22 @@ class Create extends Component
                                         'stock_line_id' => $stockLine->id,
                                         'unit_id' => !empty($price['fill_id']) ? $price['fill_id'] : null,
                                         'price_type' => !empty($price['price_type']) ? $price['price_type'] : null,
-                                        'price' => ($this->transaction_currency == 2) ?(!empty($price['price']) ? $this->num_uf($price['price'])  : null):null,
-                                        'dinar_price' => ($this->transaction_currency != 2) ?(!empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null):null,
-                                        'price_customers' => ($this->transaction_currency == 2) ?(!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null):null,
-                                        'dinar_price_customers' => ($this->transaction_currency != 2) ?(!empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc']) : null):null,
+                                        'price' => ($this->transaction_currency == 2) ? (!empty($price['price']) ? $this->num_uf($price['price'])  : null) : null,
+                                        'dinar_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price']) ? $this->num_uf($price['dinar_price'])  : null) : null,
+                                        'price_customers' => ($this->transaction_currency == 2) ? (!empty($price['price_after_desc']) ? $this->num_uf($price['price_after_desc'])  : null) : null,
+                                        'dinar_price_customers' => ($this->transaction_currency != 2) ? (!empty($price['dinar_price_after_desc']) ? $this->num_uf($price['dinar_price_after_desc']) : null) : null,
                                         'price_category' => isset($price['price_category']) ? $price['price_category'] : null,
                                         'quantity' => !empty($price['discount_quantity']) ? $this->num_uf($price['discount_quantity']) : null,
                                         'bonus_quantity' => !empty($price['bonus_quantity']) ? $this->num_uf($price['bonus_quantity']) : null,
                                         'price_customer_types' => !empty($price['price_customer_types']) ? $price['price_customer_types'] : null,
                                         'created_by' => Auth::user()->id,
-                                        'dinar_total_price' => ($this->transaction_currency != 2) ?(!empty($price['dinar_total_price']) ? $this->num_uf($price['total_price']) : null):null,
-                                        'total_price' => ($this->transaction_currency == 2) ?(!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null):null,
-                                        'dinar_piece_price' => ($this->transaction_currency != 2) ?(!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null):null,
-                                        'piece_price' => ($this->transaction_currency == 2) ?(!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null):null,
+                                        'dinar_total_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_total_price']) ? $this->num_uf($price['total_price']) : null) : null,
+                                        'total_price' => ($this->transaction_currency == 2) ? (!empty($price['total_price']) ? $this->num_uf($price['total_price'])  : null) : null,
+                                        'dinar_piece_price' => ($this->transaction_currency != 2) ? (!empty($price['dinar_piece_price']) ? $this->num_uf($price['dinar_piece_price']) : null) : null,
+                                        'piece_price' => ($this->transaction_currency == 2) ? (!empty($price['piece_price']) ? $this->num_uf($price['piece_price'])  : null) : null,
                                     ];
                                     ProductPrice::create($price_data);
-                                }else{
-
+                                } else {
                                 }
                             }
                         }
@@ -630,7 +629,7 @@ class Create extends Component
         // } else {
         //     return $sku;
         // }
-        $start = System::getProperty('product_sku_start')??'';
+        $start = System::getProperty('product_sku_start') ?? '';
         $number = Product::count();
         $sku = $start . $number;
         return $sku;
@@ -958,6 +957,8 @@ class Create extends Component
             'dinar_total_price' => null,
             'piece_price' => null,
             'dinar_piece_price' => null,
+            'apply_on_all_customers' => 0,
+            'parent_price' => 0,
         ];
         array_unshift($this->prices, $new_price);
     }
@@ -976,13 +977,11 @@ class Create extends Component
     }
     public function addStoreDataRow($index)
     {
-        // dd($this->fill_stores);
         $new_store_data = [
             'store_fill_id' => '',
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
-
     }
     public function addPrices()
     {
@@ -1010,35 +1009,35 @@ class Create extends Component
     {
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
-        if($this->transaction_currency != 2){
+        if ($this->transaction_currency != 2) {
 
             $this->rows[$index]['prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
-            $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])  / $this->num_uf($this->exchange_rate),3);
-            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price+$this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']),3);
-            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate))+$this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']),3);
-        }else{
+            $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])  / $this->num_uf($this->exchange_rate), 3);
+            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
+        } else {
             $this->rows[$index]['prices'][$key]['dollar_increase'] = ($purchase_price * $percent) / 100;
-            $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate),3);
-            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate))+$this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']),3);
-            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price+$this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']),3);
+            $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
+            $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
+            $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
         }
     }
     public function changeIncrease($index, $key)
     {
         $purchase_price = $this->num_uf($this->rows[$index]['purchase_price']);
         $percent = $this->num_uf($this->rows[$index]['prices'][$key]['percent']);
-        if($this->transaction_currency != 2){
-            if($percent==0 || $percent==null){
-                $this->rows[$index]['prices'][$key]['dollar_increase']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])/ $this->num_uf($this->exchange_rate),3);
-                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price+$this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']),3);
-                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate))+$this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']),3);
-                }
-        }else{
-            if($percent==0 || $percent==null){
-                $this->rows[$index]['prices'][$key]['dollar_increase']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']));
-                $this->rows[$index]['prices'][$key]['dinar_increase']=number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase'])* $this->num_uf($this->exchange_rate));
-                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate))+$this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']),3);
-                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price+$this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']),3);
+        if ($this->transaction_currency != 2) {
+            if ($percent == 0 || $percent == null) {
+                $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) / $this->num_uf($this->exchange_rate), 3);
+                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
+                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
+            }
+        } else {
+            if ($percent == 0 || $percent == null) {
+                $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']));
+                $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']) * $this->num_uf($this->exchange_rate));
+                $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
+                $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
             }
         }
     }
@@ -1050,11 +1049,11 @@ class Create extends Component
 
         foreach ($this->rows[$index]['prices'] as $key => $price) {
             $this->rows[$index]['prices'][$key]['percent'] = $this->rows[$index - 1]['prices'][$key]['percent'];
-            if( $this->rows[$index]['prices'][$key]['percent'] !=null){
+            if ($this->rows[$index]['prices'][$key]['percent'] != null) {
                 $this->changePercent($index, $key);
-            }else{
-                $this->rows[$index]['prices'][$key]['dinar_increase']=number_format($this->rows[$index - 1]['prices'][$key]['dinar_increase']/ $fill, 3);
-                $this->rows[$index]['prices'][$key]['dollar_increase']=number_format($this->rows[$index - 1]['prices'][$key]['dollar_increase']/ $fill, 3);
+            } else {
+                $this->rows[$index]['prices'][$key]['dinar_increase'] = number_format($this->rows[$index - 1]['prices'][$key]['dinar_increase'] / $fill, 3);
+                $this->rows[$index]['prices'][$key]['dollar_increase'] = number_format($this->rows[$index - 1]['prices'][$key]['dollar_increase'] / $fill, 3);
                 $this->changeIncrease($index, $key);
             }
         }
@@ -1096,13 +1095,22 @@ class Create extends Component
     }
     public function delete_price_raw($key)
     {
+        if ($this->prices[$key]['apply_on_all_customers']) {
+            foreach ($this->prices as $i => $price) {
+                if ($i != $key) {
+                    if ($this->prices[$key]['fill_id'] == $price['fill_id']) {
+                        unset($this->prices[$i]);
+                    }
+                }
+            }
+        }
         unset($this->prices[$key]);
     }
     public function delete_store_raw($key)
     {
         unset($this->fill_stores[$key]);
     }
-    public function delete_store_data_raw($index, $key )
+    public function delete_store_data_raw($index, $key)
     {
         unset($this->fill_stores[$index]['data'][$key]);
     }
@@ -1110,39 +1118,15 @@ class Create extends Component
     {
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
+        $actual_price = 0;
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
             $this->discount_from_original_price = System::getProperty('discount_from_original_price');
-            $sell_price = ($row_index >=0)&& isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']) : null;
-            $dollar_sell_price = ($row_index >=0)&& isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']) : null;
+            $sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']) : null;
+            $dollar_sell_price = ($row_index >= 0) && isset($price_key) ?  $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']) : null;
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
             if (empty($this->discount_from_original_price) && !empty($this->prices[$index]['discount_quantity'])) {
-                 if ($this->prices[$index]['price_type'] == "fixed") {
-                     if ($this->transaction_currency == 2) {
-                         if (!empty($this->prices[$index]['dinar_price'])) {
-                             if ($via == 'quantity' && !empty($this->prices[$index]['dinar_price']) && !empty($this->prices[$index]['price'])) {
-                                 $actual_price = $this->prices[$index]['price'];
-                             } else {
-                                 $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
-                                 $this->prices[$index]['dinar_price'] = number_format($this->num_uf( $this->prices[$index]['dinar_price'] ) * (float)$this->exchange_rate, 3);
-                             }
-                         }
-                         $dollar_price = number_format($this->num_uf($actual_price), 3);
-                     } else {
-                         $dollar_price = number_format($this->num_uf($this->prices[$index]['dinar_price']) / $this->num_uf($this->exchange_rate), 3);
-                     }
-                     $this->prices[$index]['price'] = $this->num_uf($dollar_price);
-                     $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), 3);
-                     $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), 3);
-                 } elseif ($this->prices[$index]['price_type'] === 'percentage') {
-                     $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
-                     $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), 3);
-                     $this->prices[$index]['price_after_desc'] = number_format( ($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price)) ), 3);
-                     $this->prices[$index]['price'] = $this->num_uf($this->prices[$index]['dinar_price']);
-                 }
-            }
-            else {
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     if ($this->transaction_currency == 2) {
                         if (!empty($this->prices[$index]['dinar_price'])) {
@@ -1150,7 +1134,31 @@ class Create extends Component
                                 $actual_price = $this->prices[$index]['price'];
                             } else {
                                 $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
-                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf( $this->prices[$index]['dinar_price'] ) * (float)$this->exchange_rate, 3);
+                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, 3);
+                            }
+                        }
+                        $dollar_price = number_format($this->num_uf($actual_price), 3);
+                    } else {
+                        $dollar_price = number_format($this->num_uf($this->prices[$index]['dinar_price']) / $this->num_uf($this->exchange_rate), 3);
+                    }
+                    $this->prices[$index]['price'] = $this->num_uf($dollar_price);
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format($this->num_uf($sell_price) - $this->num_uf($this->prices[$index]['dinar_price']), 3);
+                    $this->prices[$index]['price_after_desc'] = number_format($this->num_uf($dollar_sell_price) - $this->num_uf($this->prices[$index]['price']), 3);
+                } elseif ($this->prices[$index]['price_type'] === 'percentage') {
+                    $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
+                    $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), 3);
+                    $this->prices[$index]['price_after_desc'] = number_format(($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), 3);
+                    $this->prices[$index]['price'] = $this->num_uf($this->prices[$index]['dinar_price']);
+                }
+            } else {
+                if ($this->prices[$index]['price_type'] == "fixed") {
+                    if ($this->transaction_currency == 2) {
+                        if (!empty($this->prices[$index]['dinar_price'])) {
+                            if ($via == 'quantity' && !empty($this->prices[$index]['dinar_price']) && !empty($this->prices[$index]['price'])) {
+                                $actual_price = $this->prices[$index]['price'];
+                            } else {
+                                $actual_price = $this->num_uf($this->prices[$index]['dinar_price']);
+                                $this->prices[$index]['dinar_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price']) * (float)$this->exchange_rate, 3);
                             }
                         }
                         $dollar_price = number_format($this->num_uf($actual_price), 3);
@@ -1163,21 +1171,70 @@ class Create extends Component
                 } else {
                     $percent = $this->num_uf($this->prices[$index]['dinar_price'])  / 100;
                     $this->prices[$index]['dinar_price_after_desc'] = number_format(($this->num_uf($sell_price) - ($percent * $this->num_uf($sell_price))), 3);
-                    $this->prices[$index]['price_after_desc'] = number_format( ($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price)) ), 3);
+                    $this->prices[$index]['price_after_desc'] = number_format(($this->num_uf($dollar_sell_price) - ($percent * $this->num_uf($dollar_sell_price))), 3);
                     $this->prices[$index]['price'] = $this->num_uf($this->prices[$index]['dinar_price']);
                 }
             }
             $price = !empty($this->prices[$index]['dinar_price_after_desc']) ? $this->num_uf($this->prices[$index]['dinar_price_after_desc']) : $this->num_uf($sell_price);
             $dollar_price = !empty($this->prices[$index]['price_after_desc']) ? $this->num_uf((float)$this->prices[$index]['price_after_desc']) : $this->num_uf($dollar_sell_price);
             $this->prices[$index]['total_price'] = number_format($this->num_uf($dollar_price) * (!empty($this->prices[$index]['discount_quantity']) ? $this->num_uf($total_quantity) : 1), 3);
-            $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($price) * ( !empty( $this->num_uf( $this->prices[$index]['discount_quantity'] ) ) ? $this->num_uf($total_quantity) : 1 ) ,3);
-            if(empty($this->discount_from_original_price)){
-                $this->prices[$index]['dinar_piece_price'] = number_format($this->num_uf( $this->prices[$index]['dinar_price_after_desc'] ) ,3);
-                $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['price_after_desc']) , 3);
+            $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($price) * (!empty($this->num_uf($this->prices[$index]['discount_quantity'])) ? $this->num_uf($total_quantity) : 1), 3);
+            if (empty($this->discount_from_original_price)) {
+                $this->prices[$index]['dinar_piece_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']), 3);
+                $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['price_after_desc']), 3);
+            } else {
+                $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity, 3) : 0;
+                $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1), 3);
             }
-            else{
-                $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity,3) : 0;
-                $this->prices[$index]['piece_price'] = number_format($this->num_uf( $this->prices[$index]['total_price'] ) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1), 3);
+        }
+    }
+    public function applyOnAllCustomers($key)
+    {
+        $fill_id = $this->prices[$key]['fill_id'];
+        if ($this->prices[$key]['apply_on_all_customers'] == 1) {
+            $row_index = $this->getKey($fill_id) ?? null;
+            if ($row_index >= 0) {
+                $customer_type = $this->prices[$key]['price_customer_types'];
+                $price_key = $this->getCustomerType($row_index, $customer_type);
+                $percent=($this->num_uf($this->prices[$key]['dinar_price'])/$this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']));
+                $dollar_percent=($this->num_uf($this->prices[$key]['price'])/$this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']));
+                if ($price_key >= 0) {
+                    foreach ($this->rows[$row_index]['prices'] as $index => $price) {
+                        if ($price['customer_type_id'] != $this->prices[$key]['price_customer_types']) {
+                            $dinar_price_value=$this->num_uf($this->rows[$row_index]['prices'][$index]['dinar_sell_price'])*($percent);
+                            $price_value=$this->num_uf($this->rows[$row_index]['prices'][$index]['dollar_sell_price'])*($dollar_percent);
+                            $new_price = [
+                                'fill_id' => $this->prices[$key]['fill_id'],
+                                'price_type' => $this->prices[$key]['price_type'],
+                                'price_category' => $this->prices[$key]['price_category'],
+                                'price_currency' => $this->prices[$key]['price_currency'],
+                                'price' => $this->prices[$key]['price_type'] == 'percentage' ? $this->prices[$key]['price'] : ($price_value??0),
+                                'dinar_price' => $this->prices[$key]['price_type'] == 'percentage' ? $this->prices[$key]['dinar_price'] : ($dinar_price_value??0),
+                                'discount_quantity' => $this->prices[$key]['discount_quantity'],
+                                'bonus_quantity' => $this->prices[$key]['bonus_quantity'],
+                                'price_customer_types' => $this->rows[$row_index]['prices'][$index]['customer_type_id'],
+                                'price_after_desc' => $this->prices[$key]['price_type'] == $this->prices[$key]['price_after_desc'],
+                                'dinar_price_after_desc' => $this->prices[$key]['dinar_price_after_desc'],
+                                'total_price' => $this->prices[$key]['total_price'],
+                                'dinar_total_price' => $this->prices[$key]['dinar_total_price'],
+                                'piece_price' => $this->prices[$key]['piece_price'],
+                                'dinar_piece_price' => $this->prices[$key]['dinar_piece_price'],
+                                'apply_on_all_customers' => 0,
+                                'parent_price' => 1,
+                            ];
+                            $this->prices[] = $new_price;
+                            $this->changePrice(count($this->prices)-1);
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ($this->prices as $i => $price) {
+                if ($i != $key) {
+                    if ($fill_id == $price['fill_id']) {
+                        unset($this->prices[$i]);
+                    }
+                }
             }
         }
     }
@@ -1191,7 +1248,7 @@ class Create extends Component
     }
     public function getCustomerType($index, $customer_type)
     {
-        if(isset($index)){
+        if (isset($index)) {
             foreach ($this->rows[$index]['prices'] as $key => $row) {
                 if ($this->rows[$index]['prices'][$key]['customer_type_id'] == $customer_type) {
                     return $key;
