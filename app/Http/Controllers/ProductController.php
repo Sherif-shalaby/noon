@@ -141,11 +141,12 @@ class ProductController extends Controller
         'clear_all_input_form','recent_product'));
   }
     /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         try {
             DB::beginTransaction();
-            foreach ($request->products as $re_product) {
+            foreach ($request->products as $re_product)
+            {
                 if ($re_product['name'] != null) {
                     $product_data = [
                         'name' => $re_product['name'],

@@ -101,7 +101,10 @@
                                     <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}>{{ $customer->name }}</option>
                                 @endforeach
                             </select>
-                            <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+                            <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;"
+                                data-toggle="modal" data-target="#add_customer">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                         @error('client_id')
                         <span class="text-danger">{{ $message }}</span>
