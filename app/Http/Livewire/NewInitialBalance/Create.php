@@ -73,6 +73,8 @@ class Create extends Component
             'total_price' => null,
             'dinar_piece_price' => null,
             'piece_price' => null,
+            'apply_on_all_customers'=>0,
+            'parent_price'=>0,
         ]
     ];
     public $fill_stores = [
@@ -954,6 +956,8 @@ class Create extends Component
             'dinar_total_price' => null,
             'piece_price' => null,
             'dinar_piece_price' => null,
+            'apply_on_all_customers'=>0,
+            'parent_price'=>0,
         ];
         array_unshift($this->prices, $new_price);
     }
@@ -972,7 +976,6 @@ class Create extends Component
     }
     public function addStoreDataRow($index)
     {
-        // dd($this->fill_stores);
         $new_store_data = [
             'store_fill_id' => '',
             'quantity' => '',
@@ -1114,7 +1117,6 @@ class Create extends Component
             $total_quantity = $this->num_uf($this->prices[$index]['discount_quantity']) + $this->num_uf($this->prices[$index]['bonus_quantity']);
             if (empty($this->discount_from_original_price) && !empty($this->prices[$index]['discount_quantity'])) {
                 $price = ($sell_price * $this->num_uf($this->prices[$index]['discount_quantity'])) / $total_quantity;
-                
                 if ($this->prices[$index]['price_type'] == "fixed") {
                     $this->prices[$index]['dinar_price_after_desc'] = number_format($price - $this->prices[$index]['dinar_price'], 4);
                 } else {
@@ -1132,6 +1134,50 @@ class Create extends Component
             }
             $this->prices[$index]['dinar_total_price'] = number_format($this->num_uf($this->prices[$index]['dinar_price_after_desc']) * (!empty($this->num_uf($this->prices[$index]['discount_quantity']))?$this->num_uf($this->prices[$index]['discount_quantity']):1));
             $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity,3) : 0;
+        }
+    }
+    public function applyOnAllCustomers($key){
+        $fill_id = $this->prices[$key]['fill_id'];
+        if($this->prices[$key]['apply_on_all_customers']==1){
+            $row_index = $this->getKey($fill_id) ?? null;
+            if ($row_index >= 0) {
+                $customer_type = $this->prices[$key]['price_customer_types'];
+                $price_key = $this->getCustomerType($row_index, $customer_type);
+                if($price_key >=0){
+                    foreach($this->rows[$row_index]['prices'] as $index=>$price){
+                        if($price['customer_type_id']!=$this->prices[$key]['price_customer_types']){
+                            $new_price = [
+                                'fill_id' => $this->prices[$key]['fill_id'],
+                                'price_type' => $this->prices[$key]['price_type'],
+                                'price_category' => $this->prices[$key]['price_category'],
+                                'price_currency' => $this->prices[$key]['price_currency'],
+                                'price' => $this->prices[$key]['price'],
+                                'dinar_price' => $this->prices[$key]['dinar_price'],
+                                'discount_quantity' => $this->prices[$key]['discount_quantity'],
+                                'bonus_quantity' => $this->prices[$key]['bonus_quantity'],
+                                'price_customer_types' => $this->rows[$row_index]['prices'][$index]['customer_type_id'],
+                                'price_after_desc' => $this->prices[$key]['price_after_desc'],
+                                'dinar_price_after_desc' => if()$this->prices[$key]['dinar_price_after_desc'],
+                                'total_price' => $this->prices[$key]['total_price'],
+                                'dinar_total_price' => $this->prices[$key]['dinar_total_price'],
+                                'piece_price' => $this->prices[$key]['piece_price'],
+                                'dinar_piece_price' => $this->prices[$key]['dinar_piece_price'],
+                                'apply_on_all_customers'=>0,
+                                'parent_price'=>1,
+                            ];
+                            $this->prices[]= $new_price;
+                        }
+                    }
+                }
+            }
+        }else{
+            foreach($this->prices as $i=>$price){
+                if($i!=$key){
+                    if($fill_id==$price['fill_id']){
+                        unset($this->prices[$i]);
+                    }
+                }
+            }
         }
     }
     public function getKey($fill_id)

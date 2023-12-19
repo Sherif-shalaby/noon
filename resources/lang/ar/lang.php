@@ -730,6 +730,7 @@ return array(
     'expired' => 'منتهي الصلاحية',
     'expired_quantity' => 'الكمية منتهية الصلاحية',
     'value'=>'قيمة',
+    'apply_on_all_customers'=>'تطبيق على كل العملاء',
 
 );
 
