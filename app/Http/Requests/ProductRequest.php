@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'products.*.name' => 'max:255|unique:products',
+            'products.*.name' => 'max:255|unique:products,name',
             'products.*.product_sku' => 'nullable|max:255|unique:products,sku',
             'products.*.height' => 'nullable|numeric|between:0,99999999999.99',
             'products.*.length' => 'nullable|numeric|between:0,99999999999.99',
