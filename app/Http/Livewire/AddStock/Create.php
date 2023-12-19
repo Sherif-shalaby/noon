@@ -67,7 +67,8 @@ class Create extends Component
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency,$expenses_currency ,$current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id, $variationSums = [],$expenses = [];
+        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
+        $variationSums = [],$expenses = [], $customer_types;
 
 
     public function mount(){
@@ -109,6 +110,8 @@ class Create extends Component
         }
         $this->exchange_rate = $this->changeExchangeRate();
         $this->discount_from_original_price = System::getProperty('discount_from_original_price');
+        $this->customer_types = CustomerType::orderBy('name', 'asc')->get();
+
         $this->dispatchBrowserEvent('initialize-select2');
     }
     protected $listeners = ['listenerReferenceHere'];
@@ -361,7 +364,7 @@ class Create extends Component
                     'discount_dependency' =>!empty($item['discount_dependency']) ? ($item['discount_dependency']): null,
                     'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
                     'notes' =>!empty($item['notes']) ? ($item['notes']): null,
-                    
+
                 ];
 //                dd($add_stock_data);
                 $stock_line = AddStockLine::create($add_stock_data);
@@ -567,6 +570,7 @@ class Create extends Component
         if(!empty($variations)){
             $variant = !empty($stock) ? Variation::find($stock->variation_id) : Variation::find($variations->first()->id??0);
         }
+        $customer_prices = $this->addCustomersPrice();
           $new_item = [
             'show_product_data' => $show_product_data,
             'variations' => $variations,
@@ -599,6 +603,7 @@ class Create extends Component
             'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
             'used_currency' => null,
             'store_id'=>null,
+            'customer_prices' => $customer_prices,
             'prices' => [
                 [
                     'price_type' => null,
@@ -615,6 +620,7 @@ class Create extends Component
                     'piece_price' => null,
                     'dinar_piece_price' => null,
                 ],
+
             ],
         ];
         if(!empty($index)){
@@ -681,6 +687,7 @@ class Create extends Component
         array_unshift($this->items, $new_item);
         }
     }
+
     public function addPriceRow($index){
           $new_price = [
               'price_type' => null,
@@ -700,6 +707,65 @@ class Create extends Component
         array_unshift($this->items[$index]['prices'], $new_price);
     }
 
+    public function addCustomersPrice(){
+        $customer_prices = [];
+
+        foreach ($this->customer_types as $customer_type) {
+            $new_price = [
+                'customer_type_id' => $customer_type->id,
+                'customer_name' => $customer_type->name,
+                'percent' => null,
+                'dollar_increase' => null,
+                'dinar_increase' => null,
+                'dollar_sell_price' => null,
+                'dinar_sell_price' => null,
+                'quantity' => null,
+            ];
+            array_unshift($customer_prices, $new_price);
+        }
+        return $customer_prices;
+    }
+
+    public function changePercent($index, $key)
+    {
+        $purchase_price = 1000;
+        $percent = $this->num_uf($this->items[$index]['customer_prices'][$key]['percent']);
+        if (!empty($this->items[$index]['used_currency'])) {
+            if ($this->items[$index]['used_currency'] != 2) {
+
+                $this->items[$index]['customer_prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
+                $this->items[$index]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase'])  / $this->num_uf($this->exchange_rate), 3);
+                $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+            } else {
+                $this->items[$index]['customer_prices'][$key]['dollar_increase'] = ($purchase_price * $percent) / 100;
+                $this->items[$index]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
+                $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+            }
+        }
+    }
+    public function changeIncrease($index, $key)
+    {
+        $purchase_price = 1000;
+        $percent = $this->num_uf($this->items[$index]['customer_prices'][$key]['percent']);
+        if (!empty($this->items[$index]['used_currency'])) {
+            if ($this->items[$index]['used_currency'] != 2) {
+                if ($percent == 0 || $percent == null) {
+                    $this->items[$index]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']) / $this->num_uf($this->exchange_rate), 3);
+                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                }
+            } else {
+                if ($percent == 0 || $percent == null) {
+                    $this->items[$index]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']));
+                    $this->items[$index]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']) * $this->num_uf($this->exchange_rate));
+                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                }
+            }
+        }
+    }
     public function delete_price_raw($index,$key)
   {
       unset($this->items[$index]['prices'][$key]);
@@ -1155,7 +1221,7 @@ class Create extends Component
             if( $currency == 2 ){
                 $this->items[$index]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
                 $this->items[$index]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate);
-                
+
             }else{
                 $this->items[$index]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
                 $this->items[$index]['purchase_price']= $this->num_uf( $actual_purchase_price);
@@ -1163,8 +1229,8 @@ class Create extends Component
             // dd($this->items[$index]['purchase_price'],
             // $this->items[$index]['dollar_purchase_price']);
         }
-      
-       
+
+
     }
     public function changeExchangeRate(){
         if ( isset($this->supplier) ) {
@@ -1297,25 +1363,25 @@ class Create extends Component
                 $unitName =   $variant->basic_unit->name  ?? '';
                 $units[$unitName] =  $variant['equal']   * $quantity_by_unit;
             }
-            
-           
+
+
         }
       }
     // foreach ($variations as $key => $variant) {
     //     if (!empty($variant['unit_id'])) {
     //         $unitName = $variant['unit']['name'] ?? '';
-    
+
     //         // Calculate the conversion factor from the basic unit to the current unit
     //         $conversionFactor = $variant['equal'] / $variation['equal'];
-    
+
     //         // Store the conversion factor for the current unit
     //         $units[$unitName] = $conversionFactor;
-    
+
     //         // Update the quantity_by_unit for subsequent units
     //         $quantity_by_unit *= $conversionFactor;
     //     }
     // }
-    
+
     // // Adjust quantities based on the selected variation
     // foreach ($units as $unitName => $conversionFactor) {
     //     $units[$unitName] *= $quantity_by_unit;
