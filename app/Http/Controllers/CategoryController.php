@@ -52,6 +52,10 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
+        // return($request);
+        // return $request->all();
+
+//        dd(!empty($request->parent_id));
         $data =  $request->data;
         $input['name']        = $request->name;
         $input['status']      = $request->status ?? $data['status'];

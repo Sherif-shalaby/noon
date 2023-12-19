@@ -562,6 +562,7 @@ return array(
     'select_to_delete'=> 'حدد للحذف',
     'select_to_add' => 'حدد للاضافة' ,
     'delete_all' => 'حذف جماعي',
+    'are_you_want_delete_all' => 'هل متاكد من عملية الحذف',
     'filter'=>'تصفية',
     'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
     'sku_required'=>'الباركود موجود من قبل',

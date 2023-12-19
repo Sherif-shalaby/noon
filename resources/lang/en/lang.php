@@ -214,6 +214,7 @@ return [
     'exchange_rate'=>'Exchange Rate',
     'city'=>'City',
     'country'=>'Country',
+    'quarters'=>'Neighbourhood',
     'postal_code'=>'Postal Code',
     'type'=>'Type',
     'percentage'=>'Percentage',
