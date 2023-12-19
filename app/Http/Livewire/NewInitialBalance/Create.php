@@ -73,6 +73,8 @@ class Create extends Component
             'total_price' => null,
             'dinar_piece_price' => null,
             'piece_price' => null,
+            'apply_on_all_customers' => 0,
+            'parent_price' => 0,
         ]
     ];
     public $fill_stores = [
@@ -957,6 +959,8 @@ class Create extends Component
             'dinar_total_price' => null,
             'piece_price' => null,
             'dinar_piece_price' => null,
+            'apply_on_all_customers' => 0,
+            'parent_price' => 0,
         ];
         array_unshift($this->prices, $new_price);
     }
@@ -975,7 +979,6 @@ class Create extends Component
     }
     public function addStoreDataRow($index)
     {
-        // dd($this->fill_stores);
         $new_store_data = [
             'store_fill_id' => '',
             'quantity' => '',
@@ -985,7 +988,8 @@ class Create extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => '', 'show_prices' => false,
+            'id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
+            '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;
@@ -1106,6 +1110,15 @@ class Create extends Component
     }
     public function delete_price_raw($key)
     {
+        if ($this->prices[$key]['apply_on_all_customers']) {
+            foreach ($this->prices as $i => $price) {
+                if ($i != $key) {
+                    if ($this->prices[$key]['fill_id'] == $price['fill_id']) {
+                        unset($this->prices[$i]);
+                    }
+                }
+            }
+        }
         unset($this->prices[$key]);
     }
     public function delete_store_raw($key)
@@ -1120,6 +1133,7 @@ class Create extends Component
     {
         $fill_id = $this->prices[$index]['fill_id'];
         $row_index = $this->getKey($fill_id) ?? null;
+        $actual_price = 0;
         if ($row_index >= 0) {
             $customer_type = $this->prices[$index]['price_customer_types'];
             $price_key = $this->getCustomerType($row_index, $customer_type);
@@ -1186,6 +1200,56 @@ class Create extends Component
             } else {
                 $this->prices[$index]['dinar_piece_price'] = $total_quantity > 0 ? number_format($this->num_uf($this->prices[$index]['dinar_total_price']) / $total_quantity, 3) : 0;
                 $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1), 3);
+            }
+        }
+    }
+    public function applyOnAllCustomers($key)
+    {
+        $fill_id = $this->prices[$key]['fill_id'];
+        if ($this->prices[$key]['apply_on_all_customers'] == 1) {
+            $row_index = $this->getKey($fill_id) ?? null;
+            if ($row_index >= 0) {
+                $customer_type = $this->prices[$key]['price_customer_types'];
+                $price_key = $this->getCustomerType($row_index, $customer_type);
+                $percent = ($this->num_uf($this->prices[$key]['dinar_price']) / $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']));
+                $dollar_percent = ($this->num_uf($this->prices[$key]['price']) / $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']));
+                if ($price_key >= 0) {
+                    foreach ($this->rows[$row_index]['prices'] as $index => $price) {
+                        if ($price['customer_type_id'] != $this->prices[$key]['price_customer_types']) {
+                            $dinar_price_value = $this->num_uf($this->rows[$row_index]['prices'][$index]['dinar_sell_price']) * ($percent);
+                            $price_value = $this->num_uf($this->rows[$row_index]['prices'][$index]['dollar_sell_price']) * ($dollar_percent);
+                            $new_price = [
+                                'fill_id' => $this->prices[$key]['fill_id'],
+                                'price_type' => $this->prices[$key]['price_type'],
+                                'price_category' => $this->prices[$key]['price_category'],
+                                'price_currency' => $this->prices[$key]['price_currency'],
+                                'price' => $this->prices[$key]['price_type'] == 'percentage' ? $this->prices[$key]['price'] : ($price_value ?? 0),
+                                'dinar_price' => $this->prices[$key]['price_type'] == 'percentage' ? $this->prices[$key]['dinar_price'] : ($dinar_price_value ?? 0),
+                                'discount_quantity' => $this->prices[$key]['discount_quantity'],
+                                'bonus_quantity' => $this->prices[$key]['bonus_quantity'],
+                                'price_customer_types' => $this->rows[$row_index]['prices'][$index]['customer_type_id'],
+                                'price_after_desc' => $this->prices[$key]['price_type'] == $this->prices[$key]['price_after_desc'],
+                                'dinar_price_after_desc' => $this->prices[$key]['dinar_price_after_desc'],
+                                'total_price' => $this->prices[$key]['total_price'],
+                                'dinar_total_price' => $this->prices[$key]['dinar_total_price'],
+                                'piece_price' => $this->prices[$key]['piece_price'],
+                                'dinar_piece_price' => $this->prices[$key]['dinar_piece_price'],
+                                'apply_on_all_customers' => 0,
+                                'parent_price' => 1,
+                            ];
+                            $this->prices[] = $new_price;
+                            $this->changePrice(count($this->prices) - 1);
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ($this->prices as $i => $price) {
+                if ($i != $key) {
+                    if ($fill_id == $price['fill_id']) {
+                        unset($this->prices[$i]);
+                    }
+                }
             }
         }
     }

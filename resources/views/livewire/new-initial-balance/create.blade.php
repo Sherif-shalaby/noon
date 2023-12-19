@@ -704,12 +704,12 @@
                                                     border-radius: 16px;
                                                     color: #373737;
                                                     box-shadow: 0 8px 6px -5px #bbb;
-                                                    width: 100%;
+                                                    width: 90px;
                                                     height: 30px;
                                                     flex-wrap: nowrap;">
                                                 {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
                                                     'id' => 'fill_id',
-                                                    'class' => ' form-control select2 fill_id',
+                                                    'class' => 'select2 fill_id',
                                                     'data-name' => 'fill_id',
                                                     'data-index' => $key,
                                                     'placeholder' => __('lang.fill'),
@@ -717,6 +717,7 @@
                                                 ]) !!}
                                             </div>
                                         </div>
+
 
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
@@ -949,6 +950,18 @@
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             @endif
+                                        </div>
+                                        <div class="custom-control custom-switch mb-2 animate__animated animate__bounceInLeft d-flex flex-column
+                                            @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
+                                            style="width: 160px">
+                                            <input type="checkbox" name="apply_on_all_customers"
+                                                id="apply_on_all_customers" class="custom-control-input"
+                                                wire:model="prices.{{ $key }}.apply_on_all_customers"
+                                                wire:change="applyOnAllCustomers({{ $key }})">
+                                            <label
+                                                class= "custom-control-label @if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                style='font-weight:500;font-size:10px;color:#888'
+                                                for="apply_on_all_customers">@lang('lang.apply_on_all_customers')</label>
                                         </div>
                                     </div>
                                 @endforeach

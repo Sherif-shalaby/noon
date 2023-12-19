@@ -744,4 +744,5 @@ return array(
     'quarters' => 'الاحياء',
     'add_quarter' => 'اضافة حي',
     'add_region' => 'اضافة منطقة',
+    'apply_on_all_customers' => 'تطبيق على كل العملاء',
 );

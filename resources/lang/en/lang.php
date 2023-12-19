@@ -679,4 +679,5 @@ return [
     'value' => 'Value',
     'overall' => 'Total',
     'create_invoice' => 'create invoice',
+    'apply_on_all_customers' => 'Apply on all customers',
 ];
