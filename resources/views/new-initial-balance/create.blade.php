@@ -6,6 +6,10 @@
             width: 100px;
         }
 
+        .extra_store_accordion .select2-selection__rendered {
+            width: 100%;
+        }
+
         .form-select {
             padding: 0 !important;
             background-color: transparent;

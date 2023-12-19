@@ -994,12 +994,13 @@
                                     <div
                                         class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1"
+
+
+                                        <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
                                             style="width: 160px">
-                                            {!! Form::label('extra_store_id', __('lang.store') . '*', [
-                                                'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
-                                                'style' => 'font-weight:500;font-size:10px;color:#888',
-                                            ]) !!}
+                                            <label for="extra_store_id"
+                                                class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                                                style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.store') . ':*' }}</label>
                                             <div class="d-flex justify-content-center align-items-center"
                                                 style="background-color: #dedede;
                                                     border: none;
@@ -1010,24 +1011,20 @@
                                                 height: 30px;
                                                 flex-wrap: nowrap;">
                                                 {!! Form::select('extra_store_id', $stores, $fill_stores[$i]['extra_store_id'], [
-                                                    'class' => ' select2  extra_store_id',
+                                                    'class' => 'form-control select2 extra_store_id',
                                                     'data-index' => $i,
                                                     'data-name' => 'extra_store_id',
                                                     'required',
-                                                    'placeholder' => __('lang.store'),
+                                                    'placeholder' => __('lang.please_select'),
                                                     'wire:model' => 'fill_stores.' . $i . '.extra_store_id',
+                                                    'wire:key' => 'extra_store_id_' . $i,
                                                 ]) !!}
-                                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2"
-                                                data-toggle="modal" data-target=".add-store"
-                                                href="{{ route('store.create') }}"><i
-                                                    class="fas fa-plus"></i></button> --}}
-                                                {{-- @include('store.create', ['quick_add' => 1]) --}}
-                                            </div>
-                                            @error('fill_stores.' . $i . '.extra_store_id')
-                                                <span class="error text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
 
+                                            </div>
+                                            {{-- @error('fill_stores.' . $i . '.extra_store_id')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror --}}
+                                        </div>
                                         <div
                                             class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                             @foreach ($fill_stores[$i]['data'] as $x => $fill)
