@@ -147,7 +147,9 @@ class Create extends Component
             if (($data['var1'] == "unit_id" || $data['var1'] == "basic_unit_id") && $data['var3'] !== '') {
                 $this->rows[$data['var3']][$data['var1']] = $data['var2'];
                 if ($data['var1'] == "unit_id") {
-                    $this->changeUnit($data['var3']);
+                    $this->units = Unit::orderBy('created_at', 'desc')->get();
+                    $this->rows[$data['var3']]['unit_id'] = $data['var2'];
+//                    $this->changeUnit($data['var3']);
                     // $this->count_total_by_variations();
                 }
                 // if ($data['var1'] == "basic_unit_id") {
@@ -242,7 +244,18 @@ class Create extends Component
         $categories = Category::orderBy('name', 'asc')->where('parent_id', null)->pluck('name', 'id')->toArray();
         $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $products = Product::all();
-        $stores = Store::getDropdown();
+        $stores = Store::whereHas('branch', function ($query) {
+            $query->where('type', 'branch');
+        })->with('branch')->get()->map(function ($store) {
+            return [
+                'id' => $store->id,
+                'full_name' => $store->name . ' - ' . $store->branch->name,
+            ];
+        })->pluck('full_name', 'id')->toArray();
+
+//        dd($stores);// Convert the collection to an array
+
+
         $branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
 
         $basic_units = Unit::orderBy('created_at', 'desc')->pluck('name', 'id');

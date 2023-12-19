@@ -97,6 +97,8 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                                 $(".basic_unit_id"+raw_index).empty().append(data_html);
                                 $(".basic_unit_id"+raw_index).val(unit_id).change();
                             }else{
+                                console.log(data_html)
+                                console.log(unit_id)
                                 $(".unit_id"+raw_index).empty().append(data_html);
                                 $(".unit_id"+raw_index).val(unit_id).change();
                             }
