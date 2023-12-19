@@ -144,96 +144,96 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         try {
-                DB::beginTransaction();
-                foreach ($request->products as $re_product) {
-                    if ($re_product['name'] != null) {
-                        $product_data = [
-                            'name' => $re_product['name'],
-                            'translations' => !empty($re_product['translations']) ? $re_product['translations'] : [],
-                            'category_id' => $re_product['category_id'],
-                            'subcategory_id1' => $re_product['subcategory_id1'] ?? null,
-                            'subcategory_id2' => $re_product['subcategory_id2'] ?? null,
-                            'subcategory_id3' => $re_product['subcategory_id3'] ?? null,
-                            'brand_id' => $re_product['brand_id'],
-                            'sku' => !empty($re_product['product_sku']) ? $re_product['product_sku'] : $this->generateSku(),
-                            'details' => !empty($re_product['details']) ? $re_product['details'] : null,
-                            'details_translations' => !empty($re_product['details_translations']) ? $re_product['details_translations'] : [],
-                            'active' => !empty($re_product['active']) ? 1 : 0,
-                            'created_by' => Auth::user()->id,
-                            'method' => !empty($re_product['method']) ? $re_product['method'] : null,
-                            'product_symbol' => !empty($re_product['product_symbol']) ? $re_product['product_symbol'] : null,
-                            'balance_return_request' => !empty($re_product['balance_return_request']) ? $re_product['balance_return_request'] : null,
-                        ];
-                        $product = Product::create($product_data);
-                        // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
-                        if (!empty($re_product['product_tax_id'])) {
-                            ProductTax::create([
-                                'product_tax_id' => $re_product['product_tax_id'],
-                                'product_id' => $product->id,
-                            ]);
-                        }
-                        if (!empty($request->store_id)) {
-                            $product->stores()->attach($request->store_id);
-                        }
-                        if (isset($re_product['image']) && !is_null($re_product['image'])) {
-                            $imageData = $this->getCroppedImage($re_product['image']);
-                            $extention = explode(";", explode("/", $imageData)[1])[0];
-                            $image = rand(1, 1500) . "_image." . $extention;
-                            $filePath = public_path('uploads/products/' . $image);
-                            $image = $image;
-                            $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
-                            $product->image = $image;
-                            $product->save();
-                        }
-                        if (!empty($re_product['variations'])) {
-                            $variations = $re_product['variations'];
-                            if (!empty($variations)) {
-                                foreach ($variations as $key => $variant) {
-                                    if (isset($variant['new_unit_id'])) {
-                                        $var_data = [
-                                            'product_id' => $product->id,
-                                            'unit_id' => $variant['new_unit_id'],
-                                            'basic_unit_id' => !empty($variations[$key + 1]) ? $variations[$key + 1]['new_unit_id'] : null,
-                                            'equal' => !empty($variations[$key + 1]) ? $variations[$key + 1]['equal'] : null,
-                                            'sku' => !empty($variant['sku']) ? $variant['sku'] : $this->generateSku(),
-                                            'created_by' => Auth::user()->id
-                                        ];
-                                        Variation::create($var_data);
-                                    }
+            DB::beginTransaction();
+            foreach ($request->products as $re_product) {
+                if ($re_product['name'] != null) {
+                    $product_data = [
+                        'name' => $re_product['name'],
+                        'translations' => !empty($re_product['translations']) ? $re_product['translations'] : [],
+                        'category_id' => $re_product['category_id'],
+                        'subcategory_id1' => $re_product['subcategory_id1'] ?? null,
+                        'subcategory_id2' => $re_product['subcategory_id2'] ?? null,
+                        'subcategory_id3' => $re_product['subcategory_id3'] ?? null,
+                        'brand_id' => $re_product['brand_id'],
+                        'sku' => !empty($re_product['product_sku']) ? $re_product['product_sku'] : $this->generateSku(),
+                        'details' => !empty($re_product['details']) ? $re_product['details'] : null,
+                        'details_translations' => !empty($re_product['details_translations']) ? $re_product['details_translations'] : [],
+                        'active' => !empty($re_product['active']) ? 1 : 0,
+                        'created_by' => Auth::user()->id,
+                        'method' => !empty($re_product['method']) ? $re_product['method'] : null,
+                        'product_symbol' => !empty($re_product['product_symbol']) ? $re_product['product_symbol'] : null,
+                        'balance_return_request' => !empty($re_product['balance_return_request']) ? $re_product['balance_return_request'] : null,
+                    ];
+                    $product = Product::create($product_data);
+                    // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
+                    if (!empty($re_product['product_tax_id'])) {
+                        ProductTax::create([
+                            'product_tax_id' => $re_product['product_tax_id'],
+                            'product_id' => $product->id,
+                        ]);
+                    }
+                    if (!empty($request->store_id)) {
+                        $product->stores()->attach($request->store_id);
+                    }
+                    if (isset($re_product['image']) && !is_null($re_product['image'])) {
+                        $imageData = $this->getCroppedImage($re_product['image']);
+                        $extention = explode(";", explode("/", $imageData)[1])[0];
+                        $image = rand(1, 1500) . "_image." . $extention;
+                        $filePath = public_path('uploads/products/' . $image);
+                        $image = $image;
+                        $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
+                        $product->image = $image;
+                        $product->save();
+                    }
+                    if (!empty($re_product['variations'])) {
+                        $variations = $re_product['variations'];
+                        if (!empty($variations)) {
+                            foreach ($variations as $key => $variant) {
+                                if (isset($variant['new_unit_id'])) {
+                                    $var_data = [
+                                        'product_id' => $product->id,
+                                        'unit_id' => $variant['new_unit_id'],
+                                        'basic_unit_id' => !empty($variations[$key + 1]) ? $variations[$key + 1]['new_unit_id'] : null,
+                                        'equal' => !empty($variations[$key + 1]) ? $variations[$key + 1]['equal'] : null,
+                                        'sku' => !empty($variant['sku']) ? $variant['sku'] : $this->generateSku(),
+                                        'created_by' => Auth::user()->id
+                                    ];
+                                    Variation::create($var_data);
                                 }
                             }
                         }
-                        if ($re_product['height'] == ('' || 0) && $re_product['length'] == ('' || 0) && $re_product['width'] == ('' || 0)
-                            || $re_product['size'] == ('' || 0) && $re_product['weight'] == ('' || 0)) {
-                        } else {
-                            $product_dimensions = [
-                                'product_id' => $product->id ?? null,
-                                'variation_id' => Variation::where('product_id', $product->id)->where('unit_id', $re_product['variation_id'])->first()->id ?? null,
-                                'height' => $re_product['height'],
-                                'length' => $re_product['length'],
-                                'width' => $re_product['width'],
-                                'size' => $re_product['size'],
-                                'weight' => $re_product['weight']
-                            ];
-                            ProductDimension::create($product_dimensions);
-
-                        }
                     }
+                    if ($re_product['height'] == ('' || 0) && $re_product['length'] == ('' || 0) && $re_product['width'] == ('' || 0)
+                        || $re_product['size'] == ('' || 0) && $re_product['weight'] == ('' || 0)) {
+                    } else {
+                        $product_dimensions = [
+                            'product_id' => $product->id ?? null,
+                            'variation_id' => Variation::where('product_id', $product->id)->where('unit_id', $re_product['variation_id'])->first()->id ?? null,
+                            'height' => $re_product['height'],
+                            'length' => $re_product['length'],
+                            'width' => $re_product['width'],
+                            'size' => $re_product['size'],
+                            'weight' => $re_product['weight']
+                        ];
+                        ProductDimension::create($product_dimensions);
 
+                    }
                 }
-                DB::commit();
 
-                $output = [
-                    'success' => true,
-                    'msg' => __('lang.success')
-                ];
-        } catch (\Exception $e) {
-            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            }
+            DB::commit();
+
             $output = [
-                'success' => false,
-                'msg' => __('lang.something_went_wrong')
+                'success' => true,
+                'msg' => __('lang.success')
             ];
-        }
+            } catch (\Exception $e) {
+                Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+                $output = [
+                    'success' => false,
+                    'msg' => __('lang.something_went_wrong')
+                ];
+            }
 
         // +++++++++++++++ Start : Notification ++++++++++++++++++++++
         // Fetch the user
@@ -246,6 +246,8 @@ class ProductController extends Controller
         foreach ($users as $user) {
             Notification::send($user, new AddProductNotification($product->id, $userCreateEmp, $product_name, $type));
         }
+        // return $output;
+        return redirect()->route('products.index')->with('status', $output);
     }
     public function getPriceCustomerFromType($customer_types)
     {
