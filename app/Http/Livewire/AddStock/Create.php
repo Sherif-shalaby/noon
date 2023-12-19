@@ -23,6 +23,7 @@ use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
 use App\Models\Transaction;
+use App\Models\Unit;
 use App\Models\User;
 use App\Models\Variation;
 use Carbon\Carbon;
@@ -41,20 +42,22 @@ use function Symfony\Component\String\s;
 class Create extends Component
 {
     protected $rules = [
-        'store_id' => 'required',
+        // 'store_id' => 'required',
         'supplier' => 'required',
-        'paying_currency' => 'required',
+        // 'paying_currency' => 'required',
         'purchase_type' => 'required',
         'payment_status' => 'required',
         'method' => 'required',
         'amount' => 'required',
-        'transaction_currency' => 'required',
-        'items.*.dollar_purchase_price' => 'required_if:items.*.purchase_price,==,null,0,|nullable|numeric',
+        // 'transaction_currency' => 'required',
+        'items.*.dollar_purchase_price' => 'nullable|numeric',
         'items.*.purchase_price' => 'required_if:items.*.dollar_purchase_price,==,null,0,|nullable|numeric',
         'items.*.dollar_selling_price' => 'required_if:items.*.purchase_price,!=,null,0,|nullable|numeric',
         'items.*.selling_price' => 'required_if:items.*.dollar_purchase_price,!=,null,0,|nullable|numeric',
         'source_type' => 'required',
         'source_id' => 'required',
+        'items.*.store_id' => 'required',
+        'items.*.used_currency' => 'required',
     ];
 
     use WithPagination;
@@ -62,9 +65,9 @@ class Create extends Component
     public $divide_costs , $other_expenses = 0, $other_payments = 0, $store_id, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
-        $transaction_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
+        $transaction_currency,$expenses_currency ,$current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
-        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id, $variationSums = [];
+        $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id, $variationSums = [],$expenses = [];
 
 
     public function mount(){
@@ -93,8 +96,8 @@ class Create extends Component
                 $this->divide_costs = $recent_stock->divide_costs ?? null;
                 $this->payment_status = $recent_stock->payment_status ?? null;
                 $this->invoice_no = $recent_stock->invoice_no ?? null;
-                $this->other_expenses = !empty((int)$recent_stock->other_expenses) ? $recent_stock->other_expenses : null;
-                $this->discount_amount = !empty((int)$recent_stock->discount_amount) ? $recent_stock->discount_amount: null;
+                // $this->other_expenses = !empty((int)$recent_stock->other_expenses) ? $recent_stock->other_expenses : null;
+                // $this->discount_amount = !empty((int)$recent_stock->discount_amount) ? $recent_stock->discount_amount: null;
                 $this->other_payments = !empty((int)$recent_stock->other_payments) ? $recent_stock->other_payments: null;
                 $this->amount = $transaction_payment->amount ?? null;
                 $this->method = $transaction_payment->method ?? null;
@@ -219,13 +222,23 @@ class Create extends Component
             'users'));
     }
 
+    public function addExpense()
+    {
+        $this->expenses[] = ['details' => '', 'amount' => 0];
+    }
+
+    public function removeExpense($index)
+    {
+        unset($this->expenses[$index]);
+        $this->expenses = array_values($this->expenses);
+    }
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
     public function store(): Redirector|Application|RedirectResponse
     {
-        if (!empty($this->other_expenses) || !empty($this->other_payments)){
+        if (!empty($this->expenses)){
             $this->rules = [
                 'store_id' => 'required',
                 'supplier' => 'required',
@@ -269,10 +282,11 @@ class Create extends Component
             $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
             $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
             $transaction->supplier_id = $this->supplier;
-            $transaction->transaction_currency = $this->transaction_currency;
+            // $transaction->transaction_currency = $this->transaction_currency;
             $transaction->payment_status = $this->payment_status;
-            $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
-            $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
+            $transaction->expenses = json_encode($this->expenses);
+            // $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
+            // $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
             $transaction->grand_total = $this->num_uf($this->sum_total_cost());
             $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             $transaction->dollar_grand_total = $this->num_uf($this->sum_dollar_total_cost());
@@ -336,6 +350,18 @@ class Create extends Component
                     'exchange_rate' => !empty($supplier->exchange_rate) ? $this->num_uf($supplier->exchange_rate) : null,
                     'fill_type' => $item['fill_type'] ?? null,
                     'fill_quantity' => !empty($item['fill_quantity']) ? $this->num_uf($item['fill_quantity']): null,
+                    'store_id'=> !empty($item['store_id']) ? ($item['store_id']): null,
+                    'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
+                    'discount_percent' =>!empty($item['discount_percent']) ? ($item['discount_percent']): null,
+                    'discount' =>!empty($item['discount']) ? ($item['discount']): null,
+                    'cash_discount' =>!empty($item['cash_discount']) ? ($item['cash_discount']): null,
+                    'seasonal_discount' =>!empty($item['seasonal_discount']) ? ($item['seasonal_discount']): null,
+                    'annual_discount' =>!empty($item['annual_discount']) ? ($item['annual_discount']): null,
+                    'discount_on_bonus_quantity' =>!empty($item['discount_on_bonus_quantity']) ? ($item['discount_on_bonus_quantity']): null,
+                    'discount_dependency' =>!empty($item['discount_dependency']) ? ($item['discount_dependency']): null,
+                    'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
+                    'notes' =>!empty($item['notes']) ? ($item['notes']): null,
+                    
                 ];
 //                dd($add_stock_data);
                 $stock_line = AddStockLine::create($add_stock_data);
@@ -571,6 +597,8 @@ class Create extends Component
             'current_stock' => $current_stock,
             'total_stock' => $current_stock + 1,
             'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
+            'used_currency' => null,
+            'store_id'=>null,
             'prices' => [
                 [
                     'price_type' => null,
@@ -725,6 +753,8 @@ class Create extends Component
        }
        $this->items[$index]['unit'] = $variant->unit->name??'';
        $this->items[$index]['base_unit_multiplier'] = $variant->equal??0;
+
+       $this->getSubUnits($index);
     //    dd($product_data->product_dimensions);
     }
 
@@ -821,12 +851,15 @@ class Create extends Component
     }
 
     public function cost($index){
-
+        $totalExpenses = 0;
+        foreach ($this->expenses as $expense) {
+            $totalExpenses += (float)$expense['amount'];
+        }
         if($this->paying_currency == 2){
-            (float)$cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->num_uf($this->exchange_rate);
+            (float)$cost = ( (float)$totalExpenses ) * $this->num_uf($this->exchange_rate);
         }
         else{
-            (float)$cost = (float)$this->other_expenses + (float)$this->other_payments ;
+            (float)$cost = (float)$totalExpenses ;
         }
         // convert purchase price from Dollar To Dinar
         $purchase_price = $this->convertDollarPrice($index);
@@ -870,12 +903,15 @@ class Create extends Component
 
     public function dollar_cost($index){
 
-
+        $totalExpenses = 0;
+        foreach ($this->expenses as $expense) {
+            $totalExpenses += (float)$expense['amount'];
+        }
         if($this->paying_currency == 2){
-            $dollar_cost = ( (float)$this->other_expenses + (float)$this->other_payments ) * $this->num_uf($this->exchange_rate);
+            $dollar_cost = ( (float)$totalExpenses  ) * $this->num_uf($this->exchange_rate);
         }
         else{
-            $dollar_cost = (float)$this->other_expenses + (float)$this->other_payments ;
+            $dollar_cost = (float)$totalExpenses ;
         }
         // convert purchase price from Dinar to Dollar
        $purchase_price = $this->convertDinarPrice($index);
@@ -1112,6 +1148,24 @@ class Create extends Component
 
     }
 
+    public function convertPurchasePrice($index){
+        $actual_purchase_price =$this->num_uf(  $this->items[$index]['purchase_price']);
+        if(!empty($this->items[$index]['used_currency'])){
+            $currency = $this->num_uf( $this->items[$index]['used_currency']);
+            if( $currency == 2 ){
+                $this->items[$index]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
+                $this->items[$index]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate);
+                
+            }else{
+                $this->items[$index]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
+                $this->items[$index]['purchase_price']= $this->num_uf( $actual_purchase_price);
+            }
+            // dd($this->items[$index]['purchase_price'],
+            // $this->items[$index]['dollar_purchase_price']);
+        }
+      
+       
+    }
     public function changeExchangeRate(){
         if ( isset($this->supplier) ) {
             $supplier = Supplier::where('id', $this->supplier)
@@ -1221,5 +1275,56 @@ class Create extends Component
        $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
     //    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
        return ( $discountAmount );
+    }
+    public function getSubUnits($index){
+        $units = [];
+      $variations = Variation::where('product_id',$this->items[$index]['product']['id'])->get();
+      $variation = Variation::find($this->items[$index]['variation_id']);
+      $quantity_by_unit = 1;
+      foreach($variations as $key => $variant){
+        // Check if the variant has a unit_id
+        if (!empty($variant['unit_id'])) {
+            if( $variation->unit_id == $variant['unit_id'] && $variation->basic_unit_id == $variant['basic_unit_id'] ){
+                $unitName =  $variation->basic_unit->name ?? '';
+                $units[$unitName] =  $variant['equal'];
+            }
+            else if(!empty($variant->basic_unit_id) && $variation->basic_unit_id == $variant['unit_id'] ){
+                $unitName =   $variant['basic_unit']['name'] ?? '';
+                $units[$unitName] =  $variant['equal'] * $variation->equal;
+                $quantity_by_unit = $variant['equal'] * $variation->equal;
+            }
+            else if (isset($variations[$key + 1]) && $variant->basic_unit_id  == $variations[$key + 1]['unit_id'] ){
+                $unitName =   $variant->basic_unit->name  ?? '';
+                $units[$unitName] =  $variant['equal']   * $quantity_by_unit;
+            }
+            
+           
+        }
+      }
+    // foreach ($variations as $key => $variant) {
+    //     if (!empty($variant['unit_id'])) {
+    //         $unitName = $variant['unit']['name'] ?? '';
+    
+    //         // Calculate the conversion factor from the basic unit to the current unit
+    //         $conversionFactor = $variant['equal'] / $variation['equal'];
+    
+    //         // Store the conversion factor for the current unit
+    //         $units[$unitName] = $conversionFactor;
+    
+    //         // Update the quantity_by_unit for subsequent units
+    //         $quantity_by_unit *= $conversionFactor;
+    //     }
+    // }
+    
+    // // Adjust quantities based on the selected variation
+    // foreach ($units as $unitName => $conversionFactor) {
+    //     $units[$unitName] *= $quantity_by_unit;
+    // }
+      dd( $units);
+        //   if($variant->basic_unit_id != null){
+        //     $unit = Unit::where('id',$variant->basic_unit_id)->first();
+        //   }
+
+
     }
 }
