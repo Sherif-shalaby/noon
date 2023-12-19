@@ -857,6 +857,16 @@
                                                 wire:change="changePrice({{ $key }})"
                                                 placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                                 @if (empty($prices[$key]['price_type'])) readonly @endif>
+                                            <p class="dollar-cell d-flex flex-row-reverse"
+                                                style="font-weight:500;font-size:10px;">
+                                                <span>
+                                                    {{ __('lang.price') . ' $' }}
+                                                </span>
+                                                :
+                                                <span>
+                                                    {{ $this->prices[$index]['price'] ?? '' }}
+                                                </span>
+                                            </p>
                                         </div>
 
                                         <div
@@ -870,9 +880,16 @@
                                                 class="form-control initial-balance-input m-0 price"
                                                 wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                 placeholder = "{{ __('lang.price') }}">
-                                            {{-- <p>
-                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
-                                                </p> --}}
+                                            <p class="dollar-cel d-flex flex-row-reverse"
+                                                style="font-weight:500;font-size:10px;">
+                                                <span>
+                                                    {{ __('lang.price') . ' $' }}
+                                                </span>
+                                                :
+                                                <span>
+                                                    {{ $this->prices[$index]['price_after_desc'] ?? '' }}
+                                                </span>
+                                            </p>
                                         </div>
 
                                         <div
@@ -886,9 +903,16 @@
                                                 class="form-control initial-balance-input m-0 total_price"
                                                 wire:model="prices.{{ $key }}.dinar_total_price"
                                                 placeholder = "{{ __('lang.total_price') }}">
-                                            {{-- <p>
-                                            {{ __('lang.total_price') . ' $' }}:{{ $this->prices[$key]['total_price'] ?? '' }}
-                                            </p> --}}
+                                            <p class="dollar-cell d-flex flex-row-reverse"
+                                                style="font-weight:500;font-size:10px;">
+                                                <span>
+                                                    {{ __('lang.total_price') . ' $' }}
+                                                </span>
+                                                :
+                                                <span>
+                                                    {{ $this->prices[$key]['total_price'] ?? '' }}
+                                                </span>
+                                            </p>
                                         </div>
                                         <div
                                             class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
@@ -901,9 +925,16 @@
                                                 class="form-control initial-balance-input m-0 piece_price"
                                                 wire:model="prices.{{ $key }}.dinar_piece_price"
                                                 placeholder = "{{ __('lang.piece_price') }}">
-                                            {{-- <p>
-                                            {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
-                                             </p> --}}
+                                            <p class="dollar-cell d-flex flex-row-reverse"
+                                                style="font-weight:500;font-size:10px;">
+                                                <span>
+                                                    {{ __('lang.piece_price') . ' $' }}
+                                                </span>
+                                                :
+                                                <span>
+                                                    {{ $this->prices[$key]['piece_price'] ?? '' }}
+                                                </span>
+                                            </p>
                                         </div>
 
                                         <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"

@@ -29,6 +29,8 @@
                                             <th>@lang('lang.date_and_time')</th>
                                             <th>@lang('lang.product')</th>
                                             <th>@lang('lang.supplier')</th>
+                                            <th>@lang('lang.store')</th>
+                                            <th>@lang('lang.quantity')</th>
                                             <th>@lang('lang.created_by')</th>
                                             <th class="notexport">@lang('lang.action')</th>
                                         </tr>
@@ -58,6 +60,41 @@
                                                         style="font-size: 12px;font-weight: 600"
                                                         data-tooltip="@lang('lang.supplier')">
                                                         {{ $stock->supplier->name ?? '' }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.store')">
+
+                                                        {{ $stock->store->name . ' ( ' . $stock->store->branch->name . ' ) ' }}
+                                                        @if (count($stock->childTransactions) > 0)
+                                                            @foreach ($stock->childTransactions as $transaction)
+                                                                <br>
+                                                                {{ $transaction->store->name . ' ( ' . $transaction->store->branch->name . ' ) ' }}
+                                                            @endforeach
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                        style="font-size: 12px;font-weight: 600"
+                                                        data-tooltip="@lang('lang.quantity')">
+
+                                                        @foreach ($stock->add_stock_lines as $index => $line)
+                                                            {{ @num_format($line->quantity) . ' ( ' . $line->variation->unit->name . ' ) ' }}
+                                                            {{ !empty($transaction->add_stock_lines[$index + 1]) ? '<br>' : '' }}
+                                                        @endforeach
+                                                        @if (count($stock->childTransactions) > 0)
+                                                            @foreach ($stock->childTransactions as $transaction)
+                                                                @foreach ($transaction->add_stock_lines as $index => $line)
+                                                                    {{ @num_format($line->quantity) . ' ( ' . $line->variation->unit->name . ' ) ' }}
+                                                                    {{ !empty($transaction->add_stock_lines[$index + 1]) ? '<br>' : '' }}
+                                                                @endforeach
+                                                            @endforeach
+                                                        @endif
                                                     </span>
                                                 </td>
                                                 <td>

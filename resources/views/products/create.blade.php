@@ -110,8 +110,9 @@
                                         @endforeach
                                     </select>
 
-                                    <button type="button" class="btn btn-primary btn-sm ml-2" id="add_new_store"
-                                        data-toggle="modal" data-target="#createStoreModal">
+                                    <button type="button"
+                                        class=" add-button d-flex justify-content-center align-items-center"
+                                        id="add_new_store" data-toggle="modal" data-target="#createStoreModal">
                                         <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
@@ -144,6 +145,7 @@
         </div>
     </div>
     <div class="view_modal no-print"></div>
+    @include('products.partials.add_store_modal')
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])

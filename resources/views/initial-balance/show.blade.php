@@ -75,7 +75,7 @@
                                 <div
                                     class="col-md-4 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                     {!! Form::label('store', __('lang.store'), ['class' => 'mb-0']) !!}:
-                                    <b>{{ $add_stock->store->name ?? '' }}</b>
+                                    <b>{{ $add_stock->store->name . ' ( ' . $add_stock->store->branch->name . ' ) ' ?? '' }}</b>
                                 </div>
                                 <div
                                     class="col-md-4
