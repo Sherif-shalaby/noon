@@ -246,8 +246,7 @@ class ProductController extends Controller
         foreach ($users as $user) {
             Notification::send($user, new AddProductNotification($product->id, $userCreateEmp, $product_name, $type));
         }
-        // return $output;
-        return redirect()->route('products.index')->with('status', $output);
+        return redirect()->back()->with('status', $output);
     }
     public function getPriceCustomerFromType($customer_types)
     {
