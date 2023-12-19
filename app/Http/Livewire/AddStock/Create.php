@@ -1344,53 +1344,51 @@ class Create extends Component
     }
     public function getSubUnits($index){
         $units = [];
-      $variations = Variation::where('product_id',$this->items[$index]['product']['id'])->get();
-      $variation = Variation::find($this->items[$index]['variation_id']);
-      $quantity_by_unit = 1;
-      foreach($variations as $key => $variant){
-        // Check if the variant has a unit_id
-        if (!empty($variant['unit_id'])) {
-            if( $variation->unit_id == $variant['unit_id'] && $variation->basic_unit_id == $variant['basic_unit_id'] ){
-                $unitName =  $variation->basic_unit->name ?? '';
-                $units[$unitName] =  $variant['equal'];
+        $product_variations = Variation::where('product_id',$this->items[$index]['product']['id'])->get();
+        $variation = Variation::find($this->items[$index]['variation_id']);
+        $qtyByUnit = 1;
+        $qty=1;
+            foreach ($product_variations as $key => $product_variation) {
+                if (!empty($product_variation['unit_id'])) {
+                    if( $variation->id == $product_variation->id  ){
+                        $unitName =  $variation->basic_unit->name ?? '';
+                        $units[$unitName] =  $product_variation['equal'];
+                    }
+                    else if(!empty($product_variation->basic_unit_id) && $variation->basic_unit_id == $product_variation['unit_id'] ){
+                        $unitName =   $product_variation['basic_unit']['name'] ?? '';
+                        if($product_variation->basic_unit_id != $variation->unit_id ){
+                            $units[$unitName] =  $product_variation['equal'] * $variation->equal;
+                            $qtyByUnit = $product_variation['equal'] * $variation->equal;
+                        }
+                    }
+                    else if (isset($product_variations[$key + 1]) && $product_variation->basic_unit_id  == $product_variations[$key + 1]['unit_id'] ){
+                        $unitName =   $product_variation->basic_unit->name  ?? '';
+                        if($product_variation->basic_unit_id != $variation->unit_id ) {
+                            $units[$unitName] = $product_variation['equal'] * $qtyByUnit;
+                        }
+                    }
+                    if (!empty($product_variations[$key-1])){
+                        if($variation->unit_id == $product_variations[$key-1]->basic_unit_id){
+                            $qty = 1 / $product_variations[$key-1]->equal;
+                            $units[$product_variations[$key-1]->unit->name] = $qty;
+                        }
+                        if(!empty($product_variations[$key-2])){
+                            $i = $key-2;
+                            do{
+                                if($product_variations[$i]->basic_unit_id == $product_variations[$i+1]->unit_id){
+                                    if($variation->unit_id != $product_variations[$i]->unit_id && !isset($units[$product_variations[$i]->unit->name])){
+                                        $qty *= 1/$product_variations[$i]->equal;
+                                        $units[$product_variations[$i]->unit->name] = $qty ;
+                                    }
+                                }
+                            $i--;
+                            }while ($i >= 0);
+                        }
+                    }
+                }
             }
-            else if(!empty($variant->basic_unit_id) && $variation->basic_unit_id == $variant['unit_id'] ){
-                $unitName =   $variant['basic_unit']['name'] ?? '';
-                $units[$unitName] =  $variant['equal'] * $variation->equal;
-                $quantity_by_unit = $variant['equal'] * $variation->equal;
-            }
-            else if (isset($variations[$key + 1]) && $variant->basic_unit_id  == $variations[$key + 1]['unit_id'] ){
-                $unitName =   $variant->basic_unit->name  ?? '';
-                $units[$unitName] =  $variant['equal']   * $quantity_by_unit;
-            }
 
-
-        }
-      }
-    // foreach ($variations as $key => $variant) {
-    //     if (!empty($variant['unit_id'])) {
-    //         $unitName = $variant['unit']['name'] ?? '';
-
-    //         // Calculate the conversion factor from the basic unit to the current unit
-    //         $conversionFactor = $variant['equal'] / $variation['equal'];
-
-    //         // Store the conversion factor for the current unit
-    //         $units[$unitName] = $conversionFactor;
-
-    //         // Update the quantity_by_unit for subsequent units
-    //         $quantity_by_unit *= $conversionFactor;
-    //     }
-    // }
-
-    // // Adjust quantities based on the selected variation
-    // foreach ($units as $unitName => $conversionFactor) {
-    //     $units[$unitName] *= $quantity_by_unit;
-    // }
       dd( $units);
-        //   if($variant->basic_unit_id != null){
-        //     $unit = Unit::where('id',$variant->basic_unit_id)->first();
-        //   }
-
 
     }
 }
