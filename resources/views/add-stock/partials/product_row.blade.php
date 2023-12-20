@@ -341,7 +341,7 @@
         <td title="{{__('lang.unit')}}">
             @if(isset($store['variations']) && count($store['variations']) > 0)
                 <div class="d-flex justify-content-center">
-                    <select name="items.{{$index}}.stores.{{ $i }}.variation_id" class="form-control select ." style="width: 130px" wire:model="items.{{ $index }}.stores.{{ $i }}.variation_id" wire:change="getVariationData({{ $index }})">
+                    <select name="items.{{$index}}.stores.{{ $i }}.variation_id" class="form-control select ." style="width: 130px" wire:model="items.{{ $index }}.stores.{{ $i }}.variation_id" wire:change="getVariationData({{ $index }},'stores',{{$i}})">
                         <option value="" selected>{{__('lang.please_select')}}</option>
                         @foreach($store['variations'] as $variant)
                             @if(!empty($variant['unit_id']))
@@ -381,15 +381,15 @@
         
 
         <td title="{{__('lang.sub_total')}}">
-{{--            @if(!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))--}}
-{{--                <span class="sub_total_span" >--}}
-{{--                {{$this->sub_total($index)}}--}}
-{{--            </span>--}}
-{{--                <span class="sub_total_span" >--}}
-{{--                {{$this->dollar_sub_total($index)}}$--}}
-{{--            </span>--}}
+            @if(!empty($store['quantity']) && (!empty($store['purchase_price']) || !empty($store['dollar_purchase_price'])))
+                <span class="sub_total_span" >
+                {{$this->sub_total($index,'stores',$i)}}
+                </span>
+                    <span class="sub_total_span" >
+                    {{$this->dollar_sub_total($index,'stores',$i)}}$
+                </span>
 
-{{--            @endif--}}
+            @endif
         </td>
         <td>
             <div class="d-flex justify-content-between">
@@ -458,7 +458,7 @@
         </td>
         <td  title="{{__('lang.action')}}" class="text-center">
             <div class="btn btn-sm btn-danger py-0 px-1"
-                 wire:click="delete_product({{ $index }})">
+                 wire:click="delete_product({{ $index }},'stores',{{ $i }})">
                 <i class="fa fa-trash"></i>
             </div>
         </td>
@@ -472,14 +472,14 @@
         @foreach ($store['customer_prices'] as $key => $price)
             <td></td>
             <td>
-                <input type="text" class="form-control percent" name="percent" wire:change="changePercent({{$index}},{{$key}})"
-                       wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent" maxlength="6"
-                       placeholder="%">
+                <input type="text" class="form-control percent" name="percent" wire:change="changePercent({{$index}},{{$key}},'stores',{{$i}})"
+                   wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent" maxlength="6"
+                   placeholder="%">
             </td>
             <td>
                 <input type="text" class="form-control dinar_sell_price"
                        wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.dinar_increase"
-                       placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}})">
+                       placeholder = "{{ $items[$index]['stores'][$i]['customer_prices'][$key]['customer_name'] }}" wire:change="changeIncrease({{$index}},{{$key}},'stores',{{$i}})">
                 <span>{{ $items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] }} $</span>
                 @error('items.' . $index.'.stores'. $i .'customer_prices'. $key . '.dinar_increase')
                 <br>
