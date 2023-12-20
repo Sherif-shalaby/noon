@@ -1181,6 +1181,10 @@ class Create extends Component
         
         
     }
+    public function purchase_final_dollar($index){
+        $dollar = $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate);
+        return $dollar;
+    }
 
     public function final_purchase_for_piece($index){
         if( $this->purchase_final($index) > 0){
@@ -1192,6 +1196,12 @@ class Create extends Component
             //  dd( $final_purchase_for_piece);
              return   $final_purchase_for_piece;
         }
+     
+    }
+
+    public function dollar_final_purchase_for_piece($index){
+      $dollar =  $this->num_uf($this->final_purchase_for_piece($index))  / $this->num_uf($this->exchange_rate);
+      return $dollar;
      
     }
     

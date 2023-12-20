@@ -146,6 +146,9 @@
             <span class="final_total_span" aria-placeholder="final purchase">
                 {{$this->purchase_final($index)}}
             </span>
+            <span class="final_total_span" aria-placeholder="final purchase">
+                {{$this->purchase_final_dollar($index)}} $
+            </span>
         @endif
     </td>
 
@@ -153,6 +156,9 @@
         @if(!empty($product['quantity']) && (!empty($product['purchase_price'])))
             <span class="final_total_span" aria-placeholder="final purchase for piece">
                 {{$this->final_purchase_for_piece($index)}}
+            </span>
+            <span class="final_total_span" aria-placeholder="final purchase for piece">
+                {{$this->dollar_final_purchase_for_piece($index)}} $
             </span>
         @endif
     </td>
