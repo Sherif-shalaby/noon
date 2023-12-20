@@ -315,7 +315,7 @@
                                                         <li>
                                                             <a href="{{route('customers.edit', $customer->id)}}" class="btn" target="_blank"><i class="dripicons-document-edit"></i> @lang('lang.update')</a>
                                                         </li>
-                                                            <li class="divider"></li>
+                                                        <li class="divider"></li>
                                                             <li>
                                                                 <a data-href="{{route('customers.destroy', $customer->id)}}"
                                                                     class="btn text-red delete_item"><i class="fa fa-trash"></i>
