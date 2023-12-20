@@ -101,14 +101,13 @@ class CustomerController extends Controller
    *
    * @return Response
    */
-    public function store(Request $request)
+    public function store(CustomerRequest $request)
     {
         // dd($request);
-        // DB::beginTransaction();
         try
         {
+            DB::beginTransaction();
             $data = $request->except('_token','phone','email');
-            // $data = $request->all();
             // ++++++++++++++ store phones in array ++++++++++++++++++
             $data['phone'] = json_encode($request->phone);
             // ++++++++++++++ store email in array ++++++++++++++++++
@@ -123,7 +122,6 @@ class CustomerController extends Controller
             // dd($data);
 
             $customer = Customer::create($data);
-            // DB::commit();
 
 
             if (!empty($request->important_dates)) {
@@ -134,6 +132,10 @@ class CustomerController extends Controller
                 'success' => true,
                 'msg' => __('lang.success')
             ];
+            if($request->quick_add){
+                return $output;
+            }
+            DB::commit();
 
         } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
@@ -143,9 +145,9 @@ class CustomerController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-          if ($request->quick_add) {
-              return $output;
-          }
+        //   if ($request->quick_add) {
+        //       return $output;
+        //   }
 
         return redirect()->back()->with('status', $output);
     }
