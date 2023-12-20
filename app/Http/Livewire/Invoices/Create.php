@@ -2,43 +2,44 @@
 
 namespace App\Http\Livewire\Invoices;
 // use Pusher\Pusher;
-use App\Models\AddStockLine;
-use App\Models\BalanceRequestNotification;
+use App\Utils\pos;
+use Carbon\Carbon;
+use App\Utils\Util;
+use App\Models\User;
 use App\Models\Brand;
-use App\Models\CashRegister;
-use App\Models\CashRegisterTransaction;
+use App\Models\Store;
+use App\Models\System;
+use App\Models\Country;
+use App\Models\Invoice;
+use App\Models\JobType;
+use App\Models\Product;
+use Livewire\Component;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\CustomerType;
 use App\Models\Employee;
-use App\Models\Invoice;
-use App\Models\JobType;
-use App\Models\MoneySafeTransaction;
-use App\Models\PaymentTransactionSellLine;
-use App\Models\Product;
+use App\Models\SellLine;
+use App\Models\StorePos;
+use App\Models\Variation;
+use App\Models\Transaction;
+use App\Models\AddStockLine;
+use App\Models\CashRegister;
+use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
-use App\Models\PurchaseOrderLine;
-use App\Models\PurchaseOrderTransaction;
 use App\Models\RequiredProduct;
-use App\Models\SellLine;
 use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\StorePos;
-use App\Models\System;
-use App\Models\Transaction;
+use App\Models\PurchaseOrderLine;
 use App\Models\TransactionPayment;
-use App\Models\TransactionSellLine;
-use App\Models\Variation;
-use App\Utils\pos;
-use App\Utils\Util;
-use Carbon\Carbon;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionSellLine;
 use Illuminate\Support\Facades\Log;
-use Livewire\Component;
+use App\Models\MoneySafeTransaction;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CashRegisterTransaction;
+use App\Models\PurchaseOrderTransaction;
+use App\Models\BalanceRequestNotification;
+use App\Models\PaymentTransactionSellLine;
 
 class Create extends Component
 {
@@ -50,7 +51,7 @@ class Create extends Component
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $dollar_highest_price, $dollar_lowest_price,$due_date, $created_by,$customer_id;
+        $dollar_highest_price, $dollar_lowest_price,$due_date, $created_by,$customer_id,$countryId,$countryName,$country;
 
     protected $rules = [
         'items' => 'array|min:1',
@@ -100,6 +101,9 @@ class Create extends Component
         $this->department_id2 = null;
         $this->department_id3 = null;
         $this->department_id4 = null;
+        // add new_customer
+        $this->countryId = System::getProperty('country_id');
+        $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if (empty($this->store_pos)) {
