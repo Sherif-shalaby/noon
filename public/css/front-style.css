@@ -1,3 +1,9 @@
+label {
+    color: #888 !important;
+    font-weight: 500 !important;
+    font-size: 10px !important;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

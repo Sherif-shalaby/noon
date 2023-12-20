@@ -26,7 +26,7 @@
             color: #fff;
             border: 1px solid #596fd7;
             background-color: #596fd7;
-            height: 39px !important;
+            /* height: 39px !important; */
         }
 
         .overSelect {

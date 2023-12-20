@@ -2,13 +2,9 @@
 @section('title', __('lang.add_products'))
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/product.css') }}">
 @endpush
 @section('breadcrumbbar')
-    <style>
-        .dropdown-menu {
-            min-width: 100% !important
-        }
-    </style>
     <div class="animate-in-page">
         <div class="breadcrumbbar m-0 px-3 py-0">
             <div
@@ -48,7 +44,7 @@
 
             <!-- Start col -->
             <div class="col-lg-12">
-                <div class="card m-b-30 p-2">
+                <div class="card mb-0 p-2">
                     <div class="row ">
                         <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>
@@ -90,18 +86,8 @@
                                         width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    {{-- {!! Form::select('store_id[]', $stores, isset($recent_product->stores) ? $recent_product->stores : null, [
-                                        'class' => 'form-control selectpicker col-md-10',
-                                        'multiple' => 'multiple',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'store_id',
-                                    ]) !!}
-                                    <button type="button"
-                                        class="add-button col-md-2 d-flex justify-content-center align-items-center"
-                                        data-toggle="modal" data-target=".add-store" href="{{ route('store.create') }}"><i
-                                            class="fas fa-plus"></i></button> --}}
-                                    <select id="store_id" name="store_id[]" id = 'store_id' class="form-control select2"
-                                        multiple="multiple">
+                                    <select id="store_id" name="store_id[]" id = 'store_id'
+                                        class="form-control selectpicker" multiple="multiple">
                                         <option value="">@lang('lang.please_select')</option>
                                         @foreach ($stores as $store)
                                             <option value="{{ $store->id }}">
@@ -128,12 +114,10 @@
                             @endfor
                             <input type="hidden" id="raw_product_index" value="2" />
                         </div>
-                        <div class="col-md-12 mb-3">
-                            <div class="col-md-3">
-                                <button class="btn btn btn-primary add_product_row" type="button">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
+                        <div class="col-md-12 mb-3 d-flex justify-content-end">
+                            <button class="btn btn btn-success add_product_row" type="button">
+                                <i class="fa fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-12">

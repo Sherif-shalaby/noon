@@ -16,7 +16,7 @@
         }
 
         .table-top-head {
-            top: 170px !important;
+            top: 200px !important;
         }
 
         .table-scroll-wrapper {
@@ -29,14 +29,26 @@
             }
         }
 
+        @media(max-width:991px) {
+            .table-top-head {
+                top: 200px !important
+            }
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 250px !important
+            }
+        }
+
         @media(max-width:575px) {
             .table-top-head {
-                top: 350px !important
+                top: 385px !important
             }
         }
 
         .wrapper1 {
-            margin-top: 50px;
+            margin-top: 35px;
         }
 
         @media(max-width:767px) {
@@ -59,8 +71,8 @@
             padding-right: 4px;
             color: #000;
             border: 1px solid #ccc;
-            background-color: #fff;
-            height: 39px !important;
+            background-color: #dedede;
+            /* height: 39px !important; */
         }
 
         .overSelect {
@@ -159,16 +171,16 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++++ Show/Hide Table Columns : selectbox of checkboxes ++++++++++++++++++ --}}
-                            <div class="col-md-3 col-lg-3">
+                            <div class="col-md-3 col-lg-3" style="position: relative;z-index: 9;">
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
-                                        <select class="form-select form-control form-control-lg">
+                                        <select class="form-select form-control">
                                             <option>@lang('lang.show_hide_columns')</option>
                                         </select>
                                         <div class="overSelect"></div>
                                     </div>
                                     {{-- ///////////////// checkboxes ///////////////// --}}
-                                    <div id="checkboxes">
+                                    <div id="checkboxes" style="background-color: white">
                                         {{-- +++++++++++++++++ checkbox1 : image +++++++++++++++++ --}}
                                         <label for="col1_id">
                                             <input type="checkbox" id="col1_id" name="col1" class="checkbox_class"
@@ -280,7 +292,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <br /><br />
                             {{-- ++++++++++++++++++ Table Columns ++++++++++++++++++ --}}
                             {{-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel & Note.</h6> --}}
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
@@ -299,26 +310,26 @@
                                                         top: 0;
                                                         z-index: 1000;">
                                                     <th>#</th>
-                                                    <th>@lang('lang.image')</th>
-                                                    <th>@lang('lang.product_name')</th>
-                                                    <th>@lang('lang.sku')</th>
-                                                    <th>@lang('lang.select_to_delete')</th>
-                                                    <th>@lang('lang.stock')</th>
-                                                    <th>@lang('lang.category')</th>
-                                                    <th>@lang('lang.subcategories_name')</th>
-                                                    <th>@lang('lang.height')</th>
-                                                    <th>@lang('lang.length')</th>
-                                                    <th>@lang('lang.width')</th>
-                                                    <th>@lang('lang.size')</th>
-                                                    {{-- <th>@lang('lang.unit')</th> --}}
-                                                    <th>@lang('lang.weight')</th>
-                                                    <th>{{ __('lang.basic_unit_for_import_product') }}</th>
-                                                    <th>@lang('lang.stores')</th>
-                                                    <th>@lang('lang.brand')</th>
-                                                    {{--                                    <th>@lang('lang.discount')</th> --}}
-                                                    <th>@lang('added_by')</th>
-                                                    <th>@lang('updated_by')</th>
-                                                    <th>@lang('lang.action')</th>
+                                                    <th class="col1">@lang('lang.image')</th>
+                                                    <th class="col2">@lang('lang.product_name')</th>
+                                                    <th class="col3">@lang('lang.sku')</th>
+                                                    <th class="col4">@lang('lang.select_to_delete')</th>
+                                                    <th class="col5">@lang('lang.stock')</th>
+                                                    <th class="col6">@lang('lang.category')</th>
+                                                    <th class="col7">@lang('lang.subcategories_name')</th>
+                                                    <th class="col8">@lang('lang.height')</th>
+                                                    <th class="col9">@lang('lang.length')</th>
+                                                    <th class="col10">@lang('lang.width')</th>
+                                                    <th class="col11">@lang('lang.size')</th>
+                                                    {{-- <th class="col1">@lang('lang.unit')</th> --}}
+                                                    <th class="col12">@lang('lang.weight')</th>
+                                                    <th class="col13">{{ __('lang.basic_unit_for_import_product') }}</th>
+                                                    <th class="col14">@lang('lang.stores')</th>
+                                                    <th class="col15">@lang('lang.brand')</th>
+                                                    {{--                                    <th class="col1">@lang('lang.discount')</th> --}}
+                                                    <th class="col16">@lang('added_by')</th>
+                                                    <th class="col17">@lang('updated_by')</th>
+                                                    <th class="col18">@lang('lang.action')</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

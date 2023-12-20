@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card mt-3">
+                <div class="card mt-3 mb-1">
                     <div class="card-header animate__animated animate__fadeInUp" style="animation-delay: 1.1s">
 
                         @if (!empty($is_raw_material))
@@ -294,7 +294,7 @@
                     <div
                         class="d-flex justify-content-start align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  px-1"
+                            <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  px-1"
                                 style="width:200px;animation-delay: 1.2s;">
 
                                 {!! Form::label('category', __('lang.category'), [
@@ -328,7 +328,7 @@
                                     </div>
 
                                     <div style="width: 20%">
-                                        <button type="button" class="btn btn-primary btn-sm ml-2"
+                                        <button type="button" class="plus-button-x h-100"
                                             wire:click="showCategory1()"><i
                                                 class="fas {{ $show_category1 == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i>
                                         </button>
@@ -340,7 +340,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft  d-flex flex-column  px-1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
+                            <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft  d-flex flex-column  px-1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
                                 style="width:200px">
 
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
@@ -371,7 +371,7 @@
                                                 class="fas fa-plus"></i></a>
                                     </div>
                                     <div style="width: 20%">
-                                        <button type="button" class="btn btn-primary btn-sm ml-2"
+                                        <button type="button" class="plus-button-x h-100"
                                             wire:click="showCategory2()"><i
                                                 class="fas {{ $show_category2 == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i></button>
                                     </div>
@@ -381,7 +381,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1  {{ $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
+                            <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1  {{ $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
                                 style="width:200px">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -415,7 +415,7 @@
                                         data-select_category="2"><i class="fas fa-plus"></i></button> --}}
                                     </div>
                                     <div style="width: 20%">
-                                        <button type="button" class="btn btn-primary btn-sm ml-2"
+                                        <button type="button" class="plus-button-x h-100"
                                             wire:click="showCategory3()"><i
                                                 class="fas {{ $show_category3 == 0 ? 'fa-arrow-left' : 'fa-arrow-right' }}"></i>
                                         </button>
@@ -426,7 +426,7 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1 {{ $show_category3 == 0 ? 'd-none' : '' }}"
+                            <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1 {{ $show_category3 == 0 ? 'd-none' : '' }}"
                                 style="width:200px">
                                 {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
@@ -661,7 +661,7 @@
                         <div class="accordion-item d-flex flex-column"
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
-                                <div class="accordion-button"
+                                <div class="accordion-button-down"
                                     style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 140px;font-size: 14px;font-weight: 500"
                                     wire:click="showDiscount()">
                                     <span class="mx-2">
@@ -975,7 +975,7 @@
                         <div class="accordion-item d-flex flex-column"
                             style=" background-color: transparent;border:none">
                             <h2 class="accordion-header p-0 d-flex justify-content-end align-items-center">
-                                <div class="accordion-button"
+                                <div class="accordion-button-down"
                                     style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500"
                                     wire:click="showStore()">
                                     <span class="mx-2">
@@ -987,7 +987,7 @@
                             </h2>
                             <div
                                 class="d-flex flex-column justify-content-start align-items-end   {{ $show_store == 0 ? 'd-none' : '' }}">
-                                <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow()">
+                                <button type="button" class="plus-button py-2 my-1" wire:click="addStoreRow()">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 @foreach ($fill_stores as $i => $store)
@@ -1073,14 +1073,14 @@
                                                         @enderror
 
                                                     </div>
-                                                    <div class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1 animate__animated animate__bounceInLeft d-flex px-1"
-                                                        style="width: 75px">
-                                                        <button type="button" class="btn btn-sm btn-primary mx-1 "
+                                                    <div
+                                                        class=" {{ $x != count($fill_stores[$i]['data']) - 1 ? 'd-none' : '' }} mt-1 animate__animated animate__bounceInLeft d-flex px-1">
+                                                        <button type="button" class="plus-button mx-1 py-2"
                                                             wire:click="addStoreDataRow({{ $i }})">
                                                             <i class="fa fa-plus"></i>
                                                         </button>
                                                         {{-- @if ($i > 0) --}}
-                                                        <button class="btn btn-sm btn-danger"
+                                                        <button class="del-button mx-1 py-2"
                                                             wire:click="delete_store_raw({{ $i }})">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
@@ -1099,9 +1099,9 @@
                 </div>
 
                 {{-- {!! Form::close() !!} --}}
-                <div class="col-sm-12">
+                <div class="col-sm-12 d-flex">
                     <button type="submit" name="submit" id="submit-save" style="margin: 10px" value="save"
-                        class="btn btn-primary pull-right btn-flat submit"
+                        class="btn btn-primary pull-right mt-0 btn-flat submit"
                         wire:click.prevent="store()">@lang('lang.save')</button>
 
                 </div>
@@ -1168,6 +1168,8 @@
                 var index = $(this).data('index');
                 var key = $(this).data('key');
                 var select2 = $(this);
+                console.log(select2.select2("val"))
+                console.log(index)
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),

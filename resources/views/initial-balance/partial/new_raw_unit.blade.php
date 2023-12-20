@@ -56,7 +56,7 @@
 
             <div class=" animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
                 style="width: 100px;margin-top: 7px;">
-                <button class="btn btn-sm mx-1 d-flex justify-content-evenly align-items-center btn-primary"
+                <button class="mx-1 d-flex justify-content-evenly align-items-center plus-button h-100"
                     style="width: 100%;font-weight: 500" wire:click="addRaw()" type="button">
                     <i class="fa fa-plus"></i>
                     <span>
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div style="width:50px">
-                    <button class="btn btn-sm btn-primary py-0 px-1 "data-bs-toggle=" collapse"
+                    <button class="plus-button h-100 py-1 px-1 "data-bs-toggle=" collapse"
                         data-bs-target="#panelsStayOpen-collapse{{ $index }}" data-index="{{ $index }}"
                         aria-expanded="true" aria-controls="panelsStayOpen-collapse{{ $index }}"
                         wire:click="stayShow({{ $index }})">
