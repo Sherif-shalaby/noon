@@ -1129,13 +1129,23 @@ class Create extends Component
         }
         return $this->num_uf($totalDollarSubTotal);
     }
-    public function changeCurrentStock($index){
-        $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
-        // dd($this->items[$index]['total_stock']);
-        $this->purchase_final($index);
-        if( $this->purchase_final($index) > 0){
-            $this->final_purchase_for_piece($index);
+    public function changeCurrentStock($index,$var = null, $i =null){
+        if($var == 'stores'){
+            $this->items[$index]['stores'][$i]['total_stock'] = $this->items[$index]['stores'][$i]['quantity'] + $this->items[$index]['stores'][$i]['current_stock'];
+            // dd($this->items[$index]['total_stock']);
+            $this->purchase_final($index ,$var, $i);
+            if( $this->purchase_final($index,$var, $i) > 0){
+                $this->final_purchase_for_piece($index,$var, $i);
+            }
+        }else{
+            $this->items[$index]['total_stock'] = $this->items[$index]['quantity'] + $this->items[$index]['current_stock'];
+            // dd($this->items[$index]['total_stock']);
+            $this->purchase_final($index);
+            if( $this->purchase_final($index) > 0){
+                $this->final_purchase_for_piece($index);
+            }
         }
+        
     }
     public function total_quantity(){
         $totalQuantity = 0;
@@ -1160,105 +1170,207 @@ class Create extends Component
         else
             return $this->sum_dollar_total_cost();
     }
-    public function purchase_final($index){
-        $final_purchase = $this->num_uf($this->items[$index]['purchase_price']) ;
-        // dd($this->items[$index]['bonus_quantity']);
-        if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == true){
-            // dd($this->items[$index]['bonus_quantity']);
-            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']));
-            // dd($final_purchase);
-        }else{
-            $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity'] ));
-        }
-        if(isset($this->items[$index]['discount_dependency'])&& $this->items[$index]['discount_dependency'] == true){
-
-            if(isset($this->items[$index]['discount_percent'])){
-                $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
-            }
-
-            if(isset($this->items[$index]['discount'])){
-                $final_purchase -= $this->num_uf($this->items[$index]['discount']);
-            }
-
-            if(isset($this->items[$index]['cash_discount'])){
-                $final_purchase -= $this->num_uf($this->items[$index]['cash_discount']);
-            }
-
-            if(isset($this->items[$index]['seasonal_discount'])){
-                $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2);
-            }
-
-            if(isset($this->items[$index]['annual_discount'])){
-                $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
-            }
-        }else{
-            $original =$this->num_uf( $this->items[$index]['purchase_price']);
-            // dd( $original);
-            if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == true){
-                $original =  $original * ($this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']));
+    public function purchase_final($index ,$var = null, $i = null){
+        if($var == 'stores'){
+            $final_purchase = $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']) ;
+            // dd($this->items[$index]['stores'][$i]['bonus_quantity']);
+            if(isset($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && $this->items[$index]['stores'][$i]['discount_on_bonus_quantity'] == true){
+                // dd($this->items[$index]['bonus_quantity']);
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']));
+                // dd($final_purchase);
             }else{
-                $original =  $original * ($this->num_uf($this->items[$index]['quantity'] ));
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['stores'][$i]['quantity'] ));
             }
-            $discount_percent = 0;
-            $annual_discount = 0;
-            $discount = 0;
-            $cash_discount =0;
-            $seasonal_discount = 0 ;
-            if(isset($this->items[$index]['discount_percent'])){
-                $discount_percent = round($original * ( $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
-            }
+            if(isset($this->items[$index]['stores'][$i]['discount_dependency'])&& $this->items[$index]['stores'][$i]['discount_dependency'] == true){
 
-            if(isset($this->items[$index]['discount'])){
-                $discount =$this->num_uf( $this->items[$index]['discount']);
-            }
+                if(isset($this->items[$index]['discount_percent'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
+                }
 
-            if(isset($this->items[$index]['cash_discount'])){
-                $cash_discount =  $this->num_uf($this->items[$index]['cash_discount']);
-            }
+                if(isset($this->items[$index]['discount'])){
+                    $final_purchase -= $this->num_uf($this->items[$index]['discount']);
+                }
 
-            if(isset($this->items[$index]['seasonal_discount'])){
-                $seasonal_discount =$this->num_uf( round($original * ($this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2));
-            }
+                if(isset($this->items[$index]['cash_discount'])){
+                    $final_purchase -= $this->num_uf($this->items[$index]['cash_discount']);
+                }
 
-            if(isset($this->items[$index]['annual_discount'])){
-                $annual_discount = round($original * ( $this->num_uf($this->items[$index]['annual_discount'] )/ 100), 2);
-            }
+                if(isset($this->items[$index]['seasonal_discount'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2);
+                }
 
-            $final_purchase = $original - ( $discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount );
+                if(isset($this->items[$index]['annual_discount'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
+                }
+            }else{
+                $original =$this->num_uf( $this->items[$index]['stores'][$i]['purchase_price']);
+                // dd( $original);
+                if(isset($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && $this->items[$index]['stores'][$i]['discount_on_bonus_quantity'] == true){
+                    $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity']) + $this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']));
+                }else{
+                    $original =  $original * ($this->num_uf($this->items[$index]['stores'][$i]['quantity'] ));
+                }
+                $discount_percent = 0;
+                $annual_discount = 0;
+                $discount = 0;
+                $cash_discount =0;
+                $seasonal_discount = 0 ;
+                if(isset($this->items[$index]['stores'][$i]['discount_percent'])){
+                    $discount_percent = round($original * ( $this->num_uf($this->items[$index]['stores'][$i]['discount_percent']) / 100), 2);
+                }
+
+                if(isset($this->items[$index]['discount'])){
+                    $discount =$this->num_uf( $this->items[$index]['stores'][$i]['discount']);
+                }
+
+                if(isset($this->items[$index]['cash_discount'])){
+                    $cash_discount =  $this->num_uf($this->items[$index]['stores'][$i]['cash_discount']);
+                }
+
+                if(isset($this->items[$index]['seasonal_discount'])){
+                    $seasonal_discount =$this->num_uf( round($original * ($this->num_uf($this->items[$index]['stores'][$i]['seasonal_discount'] )/ 100), 2));
+                }
+
+                if(isset($this->items[$index]['annual_discount'])){
+                    $annual_discount = round($original * ( $this->num_uf($this->items[$index]['stores'][$i]['annual_discount'] )/ 100), 2);
+                }
+
+                $final_purchase = $original - ( $discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount );
+                // dd( $final_purchase);
+            }
             // dd( $final_purchase);
-        }
-        // dd( $final_purchase);
-        if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['bonus_quantity']) ){
-            $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['bonus_quantity'])* $this->num_uf($this->items[$index]['purchase_price']));
-        }
-        return $final_purchase;
-        if( $this->purchase_final($index) > 0){
-            $this->final_purchase_for_piece($index);
+            if(isset($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && $this->items[$index]['stores'][$i]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['stores'][$i]['bonus_quantity']) ){
+                $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity'])* $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']));
+            }
+            return $final_purchase;
+            if( $this->purchase_final($index,$var,$i) > 0){
+                $this->final_purchase_for_piece($index,$var,$i);
+            }
+        }else{
+            $final_purchase = $this->num_uf($this->items[$index]['purchase_price']) ;
+            // dd($this->items[$index]['bonus_quantity']);
+            if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == true){
+                // dd($this->items[$index]['bonus_quantity']);
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']));
+                // dd($final_purchase);
+            }else{
+                $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity'] ));
+            }
+            if(isset($this->items[$index]['discount_dependency'])&& $this->items[$index]['discount_dependency'] == true){
+
+                if(isset($this->items[$index]['discount_percent'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
+                }
+
+                if(isset($this->items[$index]['discount'])){
+                    $final_purchase -= $this->num_uf($this->items[$index]['discount']);
+                }
+
+                if(isset($this->items[$index]['cash_discount'])){
+                    $final_purchase -= $this->num_uf($this->items[$index]['cash_discount']);
+                }
+
+                if(isset($this->items[$index]['seasonal_discount'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2);
+                }
+
+                if(isset($this->items[$index]['annual_discount'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
+                }
+            }else{
+                $original =$this->num_uf( $this->items[$index]['purchase_price']);
+                // dd( $original);
+                if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == true){
+                    $original =  $original * ($this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']));
+                }else{
+                    $original =  $original * ($this->num_uf($this->items[$index]['quantity'] ));
+                }
+                $discount_percent = 0;
+                $annual_discount = 0;
+                $discount = 0;
+                $cash_discount =0;
+                $seasonal_discount = 0 ;
+                if(isset($this->items[$index]['discount_percent'])){
+                    $discount_percent = round($original * ( $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
+                }
+
+                if(isset($this->items[$index]['discount'])){
+                    $discount =$this->num_uf( $this->items[$index]['discount']);
+                }
+
+                if(isset($this->items[$index]['cash_discount'])){
+                    $cash_discount =  $this->num_uf($this->items[$index]['cash_discount']);
+                }
+
+                if(isset($this->items[$index]['seasonal_discount'])){
+                    $seasonal_discount =$this->num_uf( round($original * ($this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2));
+                }
+
+                if(isset($this->items[$index]['annual_discount'])){
+                    $annual_discount = round($original * ( $this->num_uf($this->items[$index]['annual_discount'] )/ 100), 2);
+                }
+
+                $final_purchase = $original - ( $discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount );
+                // dd( $final_purchase);
+            }
+            // dd( $final_purchase);
+            if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['bonus_quantity']) ){
+                $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['bonus_quantity'])* $this->num_uf($this->items[$index]['purchase_price']));
+            }
+            return $final_purchase;
+            if( $this->purchase_final($index) > 0){
+                $this->final_purchase_for_piece($index);
+            }
         }
 
 
     }
-    public function purchase_final_dollar($index){
-        $dollar = $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate);
-        return $dollar;
-    }
-
-    public function final_purchase_for_piece($index){
-        if( $this->purchase_final($index) > 0){
-            if(isset($this->items[$index]['bonus_quantity'])){
-                $final_purchase_for_piece =   $this->purchase_final($index) / ($this->num_uf($this->items[$index]['bonus_quantity']) + $this->num_uf($this->items[$index]['quantity']));
-             }else{
-                 $final_purchase_for_piece =   $this->purchase_final($index) / $this->num_uf($this->items[$index]['quantity']);
-             }
-            //  dd( $final_purchase_for_piece);
-             return   $final_purchase_for_piece;
+    public function purchase_final_dollar($index,$var=null,$i=null){
+        if($var == 'stores'){
+            $dollar = $this->num_uf($this->purchase_final($index,$var,$i)) / $this->num_uf($this->exchange_rate);
+            return $dollar;
+        }else{
+            $dollar = $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate);
+            return $dollar;
         }
+        
+    }
+
+    public function final_purchase_for_piece($index,$var=null,$i=null){
+        if($var=='stores'){
+            if( $this->purchase_final($index,$var,$i) > 0){
+                if(isset($this->items[$index]['stores'][$i]['bonus_quantity'])){
+                    $final_purchase_for_piece =   $this->purchase_final($index,$var,$i) / ($this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']) + $this->num_uf($this->items[$index]['quantity']));
+                 }else{
+                     $final_purchase_for_piece =   $this->purchase_final($index,$var,$i) / $this->num_uf($this->items[$index]['stores'][$i]['quantity']);
+                 }
+                //  dd( $final_purchase_for_piece);
+                 return   $final_purchase_for_piece;
+            }
+        }else{
+            if( $this->purchase_final($index) > 0){
+                if(isset($this->items[$index]['bonus_quantity'])){
+                    $final_purchase_for_piece =   $this->purchase_final($index) / ($this->num_uf($this->items[$index]['bonus_quantity']) + $this->num_uf($this->items[$index]['quantity']));
+                 }else{
+                     $final_purchase_for_piece =   $this->purchase_final($index) / $this->num_uf($this->items[$index]['quantity']);
+                 }
+                //  dd( $final_purchase_for_piece);
+                 return   $final_purchase_for_piece;
+            }
+        }
+       
 
     }
 
-    public function dollar_final_purchase_for_piece($index){
-      $dollar =  $this->num_uf($this->final_purchase_for_piece($index))  / $this->num_uf($this->exchange_rate);
-      return $dollar;
+    public function dollar_final_purchase_for_piece($index,$var=null,$i=null){
+        if($var=='stores'){
+            $dollar =  $this->num_uf($this->final_purchase_for_piece($index,$var,$i))  / $this->num_uf($this->exchange_rate);
+            return $dollar;
+        }else{
+            $dollar =  $this->num_uf($this->final_purchase_for_piece($index))  / $this->num_uf($this->exchange_rate);
+            return $dollar;
+        }
+     
 
     }
 
@@ -1380,26 +1492,52 @@ class Create extends Component
 
     }
 
-    public function convertPurchasePrice($index){
-        $actual_purchase_price =$this->num_uf(  $this->items[$index]['purchase_price']);
-        if(!empty($this->items[$index]['used_currency'])){
-            $currency = $this->num_uf( $this->items[$index]['used_currency']);
-            if( $currency == 2 ){
-                $this->items[$index]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
-                $this->items[$index]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate) ?? 0;
-
-            }else{
-                $this->items[$index]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
-                $this->items[$index]['purchase_price']= $this->num_uf( $actual_purchase_price) ?? 0;
+    public function convertPurchasePrice($index,$var=null,$i=null){
+        // dd('test');
+        if($var == 'stores'){
+            $actual_purchase_price =$this->num_uf(  $this->items[$index]['stores'][$i]['purchase_price']);
+            dd($actual_purchase_price);
+            if(!empty($this->items[$index]['used_currency'])){
+                $currency = $this->num_uf( $this->items[$index]['used_currency']);
+                dd($currency);
+                if( $currency == 2 ){
+                    $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
+                    $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate) ?? 0;
+    
+                }else{
+                    $this->items[$index]['stores'][$i]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
+                    $this->items[$index]['stores'][$i]['purchase_price']= $this->num_uf( $actual_purchase_price) ?? 0;
+                }
+                // dd($this->items[$index]['purchase_price']);
+                // $this->items[$index]['dollar_purchase_price']);
             }
-            // dd($this->items[$index]['purchase_price'],
-            // $this->items[$index]['dollar_purchase_price']);
+    
+            $this->purchase_final($index,$var,$i);
+            if( $this->purchase_final($index,$var,$i) > 0){
+                $this->final_purchase_for_piece($index,$var,$i);
+            }
+        }else{
+            $actual_purchase_price =$this->num_uf(  $this->items[$index]['purchase_price']);
+            if(!empty($this->items[$index]['used_currency'])){
+                $currency = $this->num_uf( $this->items[$index]['used_currency']);
+                if( $currency == 2 ){
+                    $this->items[$index]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
+                    $this->items[$index]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate) ?? 0;
+    
+                }else{
+                    $this->items[$index]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
+                    $this->items[$index]['purchase_price']= $this->num_uf( $actual_purchase_price) ?? 0;
+                }
+                // dd($this->items[$index]['purchase_price'],
+                // $this->items[$index]['dollar_purchase_price']);
+            }
+    
+            $this->purchase_final($index);
+            if( $this->purchase_final($index) > 0){
+                $this->final_purchase_for_piece($index);
+            }
         }
-
-        $this->purchase_final($index);
-        if( $this->purchase_final($index) > 0){
-            $this->final_purchase_for_piece($index);
-        }
+       
 
 
     }
