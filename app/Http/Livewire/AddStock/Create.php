@@ -602,6 +602,7 @@ class Create extends Component
             'total_stock' => $current_stock + 1,
             'fill_quantity' => !empty($stock) ? $stock->fill_quantity : null,
             'used_currency' => null,
+            'stores' => [],
             'store_id'=>null,
             'customer_prices' => $customer_prices,
             'prices' => [
@@ -726,6 +727,62 @@ class Create extends Component
         return $customer_prices;
     }
 
+    public function addStoreRow($index){
+        $customer_prices = $this->addCustomersPrice();
+        $new_store = [
+            'variations' => $this->items[$index]['variations'],
+            'variation_id' => null ,
+            'product' => $this->items[$index]['product'],
+            'purchase_price' =>  null,
+            'dollar_purchase_price' =>  null,
+            'purchase_price_span' => null,
+            'dollar_purchase_price_span' =>  null,
+            'dollar_selling_price' =>  null,
+            'selling_price' =>  null,
+            'selling_price_span' =>  null,
+            'dollar_selling_price_span' =>  null,
+            'quantity' => 1,
+            'unit' =>  '',
+            'base_unit_multiplier' =>  0,
+            'fill_type' => 'fixed',
+            'sub_total' => 0,
+            'dollar_sub_total' => 0,
+            'size' => 0,
+            'total_size' => 0,
+            'weight' => 0,
+            'total_weight' => 0,
+            'dollar_cost' => 0,
+            'cost' => 0,
+            'dollar_total_cost' => 0,
+            'total_cost' => 0,
+            'current_stock' => $this->items[$index]['current_stock'],
+            'total_stock' => $this->items[$index]['current_stock'] + 1,
+            'fill_quantity' =>  null,
+            'used_currency' => null,
+            'store_id' => null,
+            'customer_prices' => $customer_prices,
+            'prices' => [
+                [
+                    'price_type' => null,
+                    'price_category' => null,
+                    'price' => null,
+                    'dinar_price' => null,
+                    'discount_quantity' => null,
+                    'bonus_quantity' => null,
+                    'price_customer_types' => null,
+                    'price_after_desc' => null,
+                    'dinar_price_after_desc' => null,
+                    'total_price' => null,
+                    'dinar_total_price' =>null,
+                    'piece_price' => null,
+                    'dinar_piece_price' => null,
+                ],
+
+            ],
+        ];
+//        dd($new_store);
+        array_unshift($this->items[$index]['stores'], $new_store);
+    }
     public function changePercent($index, $key)
     {
         $purchase_price = $this->final_purchase_for_piece($index);
@@ -869,7 +926,7 @@ class Create extends Component
         }
 
     }
-  
+
 
     public function dollar_sub_total($index)
     {
@@ -888,7 +945,7 @@ class Create extends Component
 
     }
     // public function final_total(){
-        
+
     // }
 
     public function total_size($index){
@@ -1114,23 +1171,23 @@ class Create extends Component
             $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity'] ));
         }
         if(isset($this->items[$index]['discount_dependency'])&& $this->items[$index]['discount_dependency'] == true){
-            
+
             if(isset($this->items[$index]['discount_percent'])){
                 $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
             }
-        
+
             if(isset($this->items[$index]['discount'])){
                 $final_purchase -= $this->num_uf($this->items[$index]['discount']);
             }
-        
+
             if(isset($this->items[$index]['cash_discount'])){
                 $final_purchase -= $this->num_uf($this->items[$index]['cash_discount']);
             }
-        
+
             if(isset($this->items[$index]['seasonal_discount'])){
                 $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2);
             }
-        
+
             if(isset($this->items[$index]['annual_discount'])){
                 $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
             }
@@ -1143,26 +1200,26 @@ class Create extends Component
                 $original =  $original * ($this->num_uf($this->items[$index]['quantity'] ));
             }
             $discount_percent = 0;
-            $annual_discount = 0; 
+            $annual_discount = 0;
             $discount = 0;
             $cash_discount =0;
             $seasonal_discount = 0 ;
             if(isset($this->items[$index]['discount_percent'])){
                 $discount_percent = round($original * ( $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
             }
-        
+
             if(isset($this->items[$index]['discount'])){
                 $discount =$this->num_uf( $this->items[$index]['discount']);
             }
-        
+
             if(isset($this->items[$index]['cash_discount'])){
                 $cash_discount =  $this->num_uf($this->items[$index]['cash_discount']);
             }
-        
+
             if(isset($this->items[$index]['seasonal_discount'])){
                 $seasonal_discount =$this->num_uf( round($original * ($this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2));
             }
-        
+
             if(isset($this->items[$index]['annual_discount'])){
                 $annual_discount = round($original * ( $this->num_uf($this->items[$index]['annual_discount'] )/ 100), 2);
             }
@@ -1178,8 +1235,8 @@ class Create extends Component
         if( $this->purchase_final($index) > 0){
             $this->final_purchase_for_piece($index);
         }
-        
-        
+
+
     }
     public function purchase_final_dollar($index){
         $dollar = $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate);
@@ -1196,15 +1253,15 @@ class Create extends Component
             //  dd( $final_purchase_for_piece);
              return   $final_purchase_for_piece;
         }
-     
+
     }
 
     public function dollar_final_purchase_for_piece($index){
       $dollar =  $this->num_uf($this->final_purchase_for_piece($index))  / $this->num_uf($this->exchange_rate);
       return $dollar;
-     
+
     }
-    
+
     public function delete_product($index){
         unset($this->items[$index]);
     }
