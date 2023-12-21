@@ -122,13 +122,13 @@
             </div>
         </div>
     </td>
-    <td >
+    <td >name="discount_dependency"
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
                 {{-- <label for="fixed_fill_quantity_{{ $index }}">@lang('lang.fixed')</label> --}}
                 <input type="text"  class="form-control" wire:model="items.{{ $index }}.cash_discount" style="width: 100px;"wire:change="purchase_final({{$index}})" placeholder="cash discount">
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" name="discount_dependency" id="discount_dependency" wire:model="items.{{ $index }}.discount_dependency"  wire:change="purchase_final({{$index}})" style="font-size: 0.75rem"
+                    <input type="checkbox" class="custom-control-input"  id="discount_dependency" wire:model="items.{{ $index }}.discount_dependency"  wire:change="purchase_final({{$index}})" style="font-size: 0.75rem"
                             value="true">
                             {{-- wire:change="changePrice({{ $index }}, {{ $key }})"> --}}
                     <label class="custom-control-label" for="discount_dependency" >@lang('lang.discount_dependency')</label>
@@ -327,13 +327,15 @@
         <td></td>
         <td>
             <div class="col-md-3">
-                <div class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                <div class="d-flex align-items-center text-nowrap gap-1">
                     <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow({{ $index }})">
                         <i class="fa fa-plus"></i>
                     </button>
-                    {!! Form::select('store_id', $stores, $store_id, ['class' => 'form-control select', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),  'wire:model' => 'items.' . $index . '.stores'. $i .'.store_id']) !!}
+                    {!! Form::select('stores.' . $i . '.store_id', $stores, $store_id, ['class' => 'form-control select', 'data-live-search' => 'true',
+                          'required', 'placeholder' => __('lang.please_select'),
+                          'wire:model' => 'items.' . $index . '.stores.' . $i . '.store_id']) !!}
                     @error('items.' . $index . '.stores'. $i .'.store_id')
-                    <span class="error text-danger">{{ $message }}</span>
+                        <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -400,7 +402,7 @@
                 <div class="input-group-prepend">
                     <input type="text"  class="form-control" wire:model="items.{{ $index }}.stores.{{$i}}.discount"  style="width: 100px;" wire:change="purchase_final({{$index}},'stores',{{$i}})" placeholder="discount amount">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="discount_on_bonus_quantity" wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity" wire:change="purchase_final({{$index}},'stores',{{$i}})"  style="font-size: 0.75rem"
+                        <input type="checkbox" class="custom-control-input" id="discount_on_bonus_quantity{{$i}}" wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity" wire:change="purchase_final({{$index}},'stores',{{$i}})"  style="font-size: 0.75rem"
                                value="true">
                         <label class="custom-control-label" for="discount_on_bonus_quantity">@lang('lang.discount_on_bonus_quantity')</label>
                     </div>
@@ -414,7 +416,7 @@
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="discount_dependency{{$i}}" wire:model="items.{{ $index }}.stores.{{ $i }}.discount_dependency"  wire:change="purchase_final({{$index}},'stores',{{$i}})" style="font-size: 0.75rem"
                                value="true">
-                        <label class="custom-control-label" name="discount_dependency" for="discount_dependency{{$i}}" >@lang('lang.discount_dependency')</label>
+                        <label class="custom-control-label"  for="discount_dependency{{$i}}" >@lang('lang.discount_dependency')</label>
                     </div>
                 </div>
 
@@ -546,7 +548,7 @@
                 'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem"
+                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem"
                         @if( !empty($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
                         wire:change="changePrice({{ $index }}, {{ $key }})">
                 <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>

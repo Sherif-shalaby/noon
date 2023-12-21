@@ -26,6 +26,8 @@ use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\Variation;
+use App\Models\VariationPrice;
+use App\Models\VariationStockline;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -338,7 +340,7 @@ class Create extends Component
                     'stock_transaction_id' => $transaction->id ,
                     'quantity' => $this->num_uf($item['quantity']),
                     'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
-                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
+                    'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : 0,
                     'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
                     'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
                     'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
@@ -369,11 +371,21 @@ class Create extends Component
                 ];
 //                dd($add_stock_data);
                 $stock_line = AddStockLine::create($add_stock_data);
-
+                foreach ($item['customer_prices'] as $key => $price) {
+                    if (!empty($price['dollar_sell_price']) || !empty($price['dinar_sell_price'])) {
+                        $Variation_price = new VariationPrice();
+                        $Variation_price->variation_id = $item['variation_id'];
+                        $Variation_price->customer_type_id = $price['customer_type_id'] ?? null;
+                        $Variation_price->dinar_sell_price = $this->num_uf($price['dinar_sell_price']) ?? null;
+                        $Variation_price->dollar_sell_price = $this->num_uf($price['dollar_sell_price']) ?? null;
+                        $Variation_price->percent = $price['percent'] ?? null;
+                        $Variation_price->save();
+                    }
+                }
                 $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
                 if(!empty($item['stores'])){
-                    foreach ($item['stores'] as $item_store){
-                        $this->addStockData($item_store,$transaction->id,$stock_line->used_currency);
+                    foreach ($item['stores'] as $key => $item_store){
+                        $this->addStockData($item_store,$transaction->id,$stock_line->used_currency,$index,$key);
                     }
                 }
                 // add product Prices
@@ -527,15 +539,15 @@ class Create extends Component
         return redirect('/add-stock/create');
     }
 
-    public function addStockData($item, $parent_transaction, $used_currency){
-         $transaction = $this->addChildTransaction($parent_transaction,$item['store_id']);
+    public function addStockData($item, $parent_transaction, $used_currency,$index,$i){
+         $transaction = $this->addChildTransaction($parent_transaction,$this->items[$index]['stores'.$i]['store_id']);
         $add_stock_data = [
             'variation_id' => $item['variation_id'] ?? null,
             'product_id' => $item['product']['id'],
             'stock_transaction_id' => $transaction->id ,
             'quantity' => $this->num_uf($item['quantity']),
-            'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
-            'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
+            'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : 0 ,
+            'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : 0,
             'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
             'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
             'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
@@ -562,11 +574,23 @@ class Create extends Component
 //            'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
             'notes' =>!empty($item['notes']) ? ($item['notes']): null,
             'used_currency ' => !empty($used_currency) ? $used_currency : null,
-            'store_id' => !empty($item['store_id']) ? $item['store_id'] : null,
         ];
         $stock_line = AddStockLine::create($add_stock_data);
 
-        $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
+        foreach ($item['customer_prices'] as $key => $price) {
+            if (!empty($price['dollar_sell_price']) || !empty($price['dinar_sell_price'])) {
+                $Variation_price = new VariationPrice();
+                $Variation_price->variation_id = $item['variation_id'];
+                $Variation_price->customer_type_id = $price['customer_type_id'] ?? null;
+                $Variation_price->dinar_sell_price = $this->num_uf($price['dinar_sell_price']) ?? null;
+                $Variation_price->dollar_sell_price = $this->num_uf($price['dollar_sell_price']) ?? null;
+                $Variation_price->percent = $price['percent'] ?? null;
+                $Variation_price->save();
+            }
+        }
+//        dd($this->items[$index]['stores'.$i]['store_id']);
+        $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $this->items[$index]['stores'.$i]['store_id'], $item['quantity']);
+
         if(!empty($item['prices'])){
             foreach ($item['prices'] as $price){
                 $price_data = [
