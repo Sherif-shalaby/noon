@@ -151,7 +151,7 @@ class Create extends Component
                 if ($data['var1'] == "unit_id") {
                     $this->units = Unit::orderBy('created_at', 'desc')->get();
                     $this->rows[$data['var3']]['unit_id'] = $data['var2'];
-//                    $this->changeUnit($data['var3']);
+                   $this->changeUnit($data['var3']);
                     // $this->count_total_by_variations();
                 }
                 // if ($data['var1'] == "basic_unit_id") {
@@ -471,7 +471,7 @@ class Create extends Component
                     $Variation->product_id = $product->id;
                     $Variation->equal = $this->num_uf($this->rows[$index]['fill']);
                     $Variation->unit_id = $this->rows[$index]['unit_id'] !== "" ? $this->rows[$index]['unit_id'] : null;
-                    // $Variation->basic_unit_id = $this->rows[$index]['basic_unit_id'] !== "" ? $this->rows[$index]['basic_unit_id'] : null;
+                    $Variation->basic_unit_id = isset($this->rows[$index-1]) && !empty($this->rows[$index-1]['unit_id'])?$this->rows[$index-1]['unit_id']:null;
                     $Variation->product_symbol = $this->item[0]['product_symbol'] . ($index + 1);
                     $Variation->created_by = Auth::user()->id;
                     $Variation->save();
@@ -607,7 +607,7 @@ class Create extends Component
                                     'stock_line_id' => $stockLine->id,
                                     // 'quantity' => ($i == -1) && $this->rows[$index]['quantity'] !== '' ? $this->num_uf($this->rows[$index]['quantity'])  : $quantity,
                                     'purchase_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['purchase_price']) : null,
-                                    'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])  : null,
+                                    'sell_price' => ($this->transaction_currency != 2) ? $this->num_uf($this->rows[$index]['prices'][$key]['dinar_sell_price'])  : 0,
                                     'sub_total' => !empty($this->sub_total[$index]) ? $this->num_uf((float)$this->sub_total[$index]) : null,
                                     'dollar_purchase_price' => ($this->transaction_currency == 2) ? $this->num_uf($this->rows[$index]['purchase_price'])  : null,
                                     'dollar_sell_price' => ($this->transaction_currency == 2) ? ($this->num_uf($this->rows[$index]['prices'][$key]['dollar_sell_price']))  : 0,
