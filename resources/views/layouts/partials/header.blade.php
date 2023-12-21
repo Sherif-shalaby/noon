@@ -340,14 +340,15 @@
                         class="dropdown-menu list-style-none
                         @if (app()->isLocale('ar')) text-end @else text-start @endif">
                         {{-- ########### purchase_order : اوامر الشراء########### --}}
-                        <li>
+                        <li class="navbar_item">
                             <a class="purchases-order-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 href="{{ route('purchase_order.index') }}"
                                 style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
                                     class="mdi mdi-circle"></i>@lang('lang.show_purchase_order')</a>
                         </li>
                         {{-- ########### required_products : المواد المطلوبة ########### --}}
-                        <li><a class="required-products-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                        <li class="navbar_item"><a
+                                class="required-products-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                 href="{{ route('required-products.index') }}"
                                 style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
                                     class="mdi mdi-circle"></i>@lang('lang.required_products')</a></li>
@@ -402,7 +403,8 @@
                         </a>
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            <li><a class="return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                            <li class="navbar_item"><a
+                                    class="return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     href="{{ route('sell_return.index') }}"
                                     style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
                                         class="mdi mdi-circle"></i>@lang('lang.sells_return')</a></li>
@@ -457,7 +459,7 @@
                         </a>
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            <li>
+                            <li class="navbar_item">
                                 <a class="product-return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     href="{{ route('suppliers.returns.products') }}"
                                     style="cursor: pointer;font-weight: 600;text-decoration: none;"><i
@@ -465,7 +467,7 @@
                                     @lang('lang.products')
                                 </a>
                             </li>
-                            <li>
+                            <li class="navbar_item">
                                 <a class="supplier-return-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     href="{{ route('suppliers.returns.invoices') }}"
                                     style="cursor: pointer;font-weight: 600;text-decoration: none;">
@@ -548,22 +550,23 @@
                         </a>
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('jobs.index') }}"
                                     class="jobs-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.jobs')</a>
                             </li>
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('employees.create') }}"
                                     class="employees-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.employees')</a></li>
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('wages.create') }}"
                                     class="wages-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.wages')</a>
                             </li>
                             {{-- ########### Attendance : الحضور و الانصراف ########### --}}
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li class="navbar_item"><a
+                                    style="cursor: pointer;font-weight: 600;text-decoration: none;font-size: 12px"
                                     href="{{ route('attendance.index') }}"
                                     class="attendance-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>@lang('lang.attend_and_leave')</a></li>
@@ -615,11 +618,11 @@
                         </a>
                         <ul
                             class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('customers.create') }}"
                                     class="customers-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>{{ __('lang.customers') }}</a></li>
-                            <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                            <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                     href="{{ route('customertypes.index') }}"
                                     class="customer-types-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                         class="mdi mdi-circle"></i>{{ __('lang.customer_types') }}</a></li>
@@ -1110,14 +1113,14 @@
                     </a>
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li>
+                        <li class="navbar_item">
                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                 href="{{ route('delivery.index') }}"
                                 class="delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
                                 {{ __('lang.index') }}</a>
                         </li>
-                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                 href="{{ route('delivery_plan.plansList') }}"
                                 class="plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
@@ -1188,13 +1191,13 @@
 
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                 href="{{ route('sell-car.index') }}"
                                 class="sell-car-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
                                 @lang('lang.sell_car')</a>
                         </li>
-                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                 href="{{ route('delivery.index') }}"
                                 class="sell-car-delivery-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
@@ -1322,14 +1325,14 @@
                     </a>
                     <ul
                         class="dropdown-menu list-style-none @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                        <li>
+                        <li class="navbar_item">
                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                 href="{{ route('representatives.index') }}"
                                 class="rep-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
                                 {{ __('lang.representatives_requests') }}</a>
                         </li>
-                        <li><a style="cursor: pointer;font-weight: 600;text-decoration: none"
+                        <li class="navbar_item"><a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                 href="{{ route('rep_plan.index') }}"
                                 class="rep-plans-button d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <i class="mdi mdi-circle"></i>
@@ -1407,7 +1410,7 @@
                                 <li class="mega-menu-col col-md-3 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- ////// اخفاء واظهار اقسام البرنامج ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="modules-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif"
                                                 href="{{ route('getModules') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1415,7 +1418,7 @@
                                             </a>
                                         </li>
                                         {{-- ////// الاعدادات العامة ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="general_settings-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif"
                                                 href="{{ route('settings.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1423,7 +1426,7 @@
                                             </a>
                                         </li>
                                         {{-- ////// الخزائن ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="moneysafes-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif"
                                                 href="{{ route('moneysafe.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1436,7 +1439,7 @@
                                 <li class="mega-menu-col col-md-3 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- ////// المخازن ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif stores-button"
                                                 href="{{ route('store.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1444,7 +1447,7 @@
                                             </a>
                                         </li>
                                         {{-- ////// العلامة التجاية ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif brands-button"
                                                 href="{{ route('brands.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1452,7 +1455,7 @@
                                             </a>
                                         </li>
                                         {{-- ////// الاقسام ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif categories-button"
                                                 href="{{ route('sub-categories', 'category') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1465,7 +1468,7 @@
                                 <li class="mega-menu-col col-md-3 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- ////// الالوان ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif colors-button"
                                                 href="{{ route('colors.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1473,7 +1476,7 @@
                                             </a>
                                         </li>
                                         {{-- ////// المقاسات ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif sizes-button"
                                                 href="{{ route('sizes.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1481,7 +1484,7 @@
                                             </a>
                                         </li>
                                         {{-- ////// الوحدات ////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif units-button"
                                                 href="{{ route('units.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1493,7 +1496,7 @@
                                 <li class="mega-menu-col col-md-3 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- ////////// نقاط البيع للصرافين ////////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif stores_pos-button"
                                                 href="{{ route('store-pos.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1501,7 +1504,7 @@
                                             </a>
                                         </li>
                                         {{-- ////////// الضرائب العامة ////////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif general-tax-button"
                                                 href="{{ route('general-tax.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1509,7 +1512,7 @@
                                             </a>
                                         </li>
                                         {{-- ////////// ضرائب المنتجات ////////// --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif product_tax-button"
                                                 href="{{ route('product-tax.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1520,7 +1523,7 @@
                                 </li>
                                 <li class="mega-menu-col col-md-3 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none;"
                                                 href="{{ route('branches.index') }}"
                                                 class="branch-button d-flex @if (app()->isLocale('ar')) width-full text-end flex-row-reverse  @else flex-row text-start @endif text-decoration-none">
@@ -1593,7 +1596,7 @@
                                 style="list-style: none" role="menu">
                                 <li class="mega-menu-col col-md-4 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="product-report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('reports.products') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none;">
@@ -1601,7 +1604,7 @@
                                             </a>
                                         </li>
 
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="initial_balance_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none;"
                                                 href="{{ route('reports.initial_balance') }}">
@@ -1610,7 +1613,7 @@
                                         </li>
 
                                         {{-- +++++++++++ purchases report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="purchases_report-button d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('reports.add_stock') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none;">
@@ -1619,7 +1622,7 @@
                                         </li>
 
                                         {{-- +++++++++++ Supplier Report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('get-supplier-report.index') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-supplier-report-button">
@@ -1628,7 +1631,7 @@
                                         </li>
 
                                         {{-- +++++++++++ employees sales report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('sales-per-employee.index') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif sales_per_employee-report-button">
@@ -1636,7 +1639,7 @@
                                             </a>
                                         </li>
                                         {{--          Daily Purchase Report           --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('reports.daily_purchase_report') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily_purchase_report-button">
@@ -1648,7 +1651,7 @@
                                 <li class="mega-menu-col col-md-4 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ sales report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="sales-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('sales-report.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1656,7 +1659,7 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ receivable report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="receivable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('receivable-report.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1664,7 +1667,7 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ payable report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="payable-report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('payable-report.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none;">
@@ -1672,7 +1675,7 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ Representative Salary Report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="representative_salary_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('representative_salary_report.index') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1681,7 +1684,7 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ monthly sales & purchase report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="monthly_sale_and_purchase_report-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('report.monthly_sale_report') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1690,7 +1693,7 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ Get Due Report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a class="store_stock_chart-button  d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif"
                                                 href="{{ route('report.store_stock_chart') }}"
                                                 style="cursor: pointer;font-weight: 600;text-decoration: none">
@@ -1702,7 +1705,7 @@
                                 <li class="mega-menu-col col-md-4 p-0">
                                     <ul class="sub-menu p-0" style="list-style: none">
                                         {{-- +++++++++++ customers report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('customers-report.index') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif customers-report-button">
@@ -1710,7 +1713,7 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ Daily Report Summary +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('daily-report-summary.index') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily-report-summary-button">
@@ -1718,21 +1721,21 @@
                                             </a>
                                         </li>
                                         {{-- +++++++++++ Get Due Report +++++++++++ --}}
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('get-due-report.index') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif get-due-report-button">
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.get_due_report') }}
                                             </a>
                                         </li>
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('reports.best_seller') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif best-seller-button">
                                                 <i class="mdi mdi-circle"></i>{{ __('lang.best_seller_report') }}
                                             </a>
                                         </li>
-                                        <li>
+                                        <li class="navbar_item">
                                             <a style="cursor: pointer;font-weight: 600;text-decoration: none"
                                                 href="{{ route('reports.daily_sales_report') }}"
                                                 class=" d-flex @if (app()->isLocale('ar')) flex-row-reverse  @else flex-row @endif daily_sale_report-button">
