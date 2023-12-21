@@ -22,11 +22,11 @@
                             @if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives')
                                 <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
                                     <a style="text-decoration: none;color: #596fd7"
-                                        href="{{ route('representatives.index') }}">@lang('lang.representatives')</a>
+                                        href="{{ route('representatives.index') }}">/ @lang('lang.representatives')</a>
                                 </li>
                             @else
                                 <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active">
-                                    <a style="text-decoration: none;color: #596fd7" href="#">@lang('lang.delivery')</a>
+                                    <a style="text-decoration: none;color: #596fd7" href="#">/ @lang('lang.delivery')</a>
                                 </li>
                             @endif
                             <li class="breadcrumb-item @if (app()->isLocale('ar')) mr-2 @else ml-2 @endif active"
@@ -56,16 +56,18 @@
                                         <form action="{{ route('delivery_plan.plansList') }}" method="get">
                                             <div
                                                 class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                                                <div class="col-2">
-                                                    <div class="form-group">
+                                                <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                    style="animation-delay: 1.15s">
+                                                    <div class="input-wrapper">
                                                         {!! Form::select('city_id', $cities, null, [
                                                             'class' => 'form-control select2',
                                                             'placeholder' => __('lang.cities'),
                                                         ]) !!}
                                                     </div>
                                                 </div>
-                                                <div class="col-2">
-                                                    <div class="form-group">
+                                                <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                    style="animation-delay: 1.15s">
+                                                    <div class="input-wrapper">
                                                         <select name="delivery_id" class="form-control select2"
                                                             placeholder="@if (request()->segment(2) . '/' . request()->segment(3) == 'plans/representatives') {{ __('lang.representatives') }} @else {{ __('lang.delivery') }} @endif">
                                                             <option value="">
@@ -82,11 +84,13 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-2">
-                                                    <div class="form-group">
+                                                <div class="col-6 col-sm-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                                    style="animation-delay: 1.15s">
+                                                    <div class="input-wrapper">
                                                         {{-- <label for="date">@lang('lang.date')</label> --}}
-                                                        <input type="date" class="form-control" name="date"
-                                                            id="date" placeholder="@lang('lang.date')">
+                                                        <input type="date"
+                                                            class="form-control initial-balance-input width-full"
+                                                            name="date" id="date" placeholder="@lang('lang.date')">
                                                     </div>
                                                 </div>
 

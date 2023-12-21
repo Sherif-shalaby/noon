@@ -3,15 +3,16 @@
     style="display: none;" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div
+                class="modal-header d-flex justify-content-between py-0 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <h5 class="modal-title" id="edit">@lang('lang.show_invoices')</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="table-responsive">
-                    <table id="datatable-buttons" class="table table-striped table-bordered table-button-wrapper">
+                <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
+                    <table id="datatable-buttons" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th>@lang('lang.date_and_time')</th>
