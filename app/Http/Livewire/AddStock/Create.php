@@ -974,16 +974,16 @@ class Create extends Component
     public function sub_total($index, $via = null, $i = null)
     {
         if($via == 'stores'){
+            $this->convertPurchasePrice($index,$via,$i);
             if(isset($this->items[$index]['stores'][$i]['quantity']) && (isset($this->items[$index]['stores'][$i]['purchase_price']) ||isset($this->items[$index]['stores'][$i]['dollar_purchase_price']) )){
                 // convert purchase price from Dollar To Dinar
                 $purchase_price = $this->convertDollarPrice($index, $via ,$i);
 
                 $this->items[$index]['stores'][$i]['sub_total'] = (int)$this->items[$index]['stores'][$i]['quantity'] * (float)$purchase_price ;
-
                 return number_format($this->items[$index]['stores'][$i]['sub_total'], 3);
             }
             else{
-                $this->items[$index]['purchase_price'] = null;
+                $this->items[$index]['stores'][$i]['purchase_price'] = null;
             }
         }
         else {
@@ -1238,7 +1238,7 @@ class Create extends Component
                 $this->final_purchase_for_piece($index);
             }
         }
-        
+
     }
     public function total_quantity(){
         $totalQuantity = 0;
@@ -1426,7 +1426,7 @@ class Create extends Component
             $dollar = $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate);
             return $dollar;
         }
-        
+
     }
 
     public function final_purchase_for_piece($index,$var=null,$i=null){
@@ -1451,7 +1451,7 @@ class Create extends Component
                  return   $final_purchase_for_piece;
             }
         }
-       
+
 
     }
 
@@ -1463,7 +1463,7 @@ class Create extends Component
             $dollar =  $this->num_uf($this->final_purchase_for_piece($index))  / $this->num_uf($this->exchange_rate);
             return $dollar;
         }
-     
+
 
     }
 
@@ -1567,41 +1567,60 @@ class Create extends Component
         return $register;
     }
 
-    public function convertDollarPrice($index){
-        if(empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])){
-            $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->num_uf($this->exchange_rate);
+    public function convertDollarPrice($index, $via = null, $i = null ){
+        if($via == 'stores'){
+            if(empty($this->items[$index]['stores'][$i]['purchase_price']) && !empty($this->items[$index]['stores'][$i]['dollar_purchase_price'])){
+                $purchase_price = (float)$this->items[$index]['stores'][$i]['dollar_purchase_price'] * $this->num_uf($this->exchange_rate);
+            }
+            else{
+                $purchase_price = $this->items[$index]['stores'][$i]['purchase_price'] ?? '';
+            }
         }
         else{
-            $purchase_price = $this->items[$index]['purchase_price'] ?? '';
+            if(empty($this->items[$index]['purchase_price']) && !empty($this->items[$index]['dollar_purchase_price'])){
+                $purchase_price = (float)$this->items[$index]['dollar_purchase_price'] * $this->num_uf($this->exchange_rate);
+            }
+            else{
+                $purchase_price = $this->items[$index]['purchase_price'] ?? '';
+            }
         }
+
         return $purchase_price;
     }
 
-    public function convertDinarPrice($index)
+    public function convertDinarPrice($index, $via = null, $i = null)
     {
-//        dd($this->purchase_price[$index]);
-        if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
-            $purchase_price = $this->items[$index]['purchase_price'] / $this->num_uf($this->exchange_rate);
+        if($via == 'stores'){
+            if (!empty($this->items[$index]['stores'][$i]['purchase_price']) && empty($this->items[$index]['stores'][$i]['dollar_purchase_price'])) {
+                $purchase_price = $this->items[$index]['stores'][$i]['purchase_price'] / $this->num_uf($this->exchange_rate);
+            }
+            else {
+                $purchase_price = $this->items[$index]['stores'][$i]['dollar_purchase_price'] ?? '';
+            }
         }
-        else {
-            $purchase_price = $this->items[$index]['dollar_purchase_price'] ?? '';
+        else{
+            if (!empty($this->items[$index]['purchase_price']) && empty($this->items[$index]['dollar_purchase_price'])) {
+                $purchase_price = $this->items[$index]['purchase_price'] / $this->num_uf($this->exchange_rate);
+            }
+            else {
+                $purchase_price = $this->items[$index]['dollar_purchase_price'] ?? '';
+            }
         }
+
         return $purchase_price;
 
     }
 
     public function convertPurchasePrice($index,$var=null,$i=null){
-        // dd('test');
+//         dd('test',$var,$i);
         if($var == 'stores'){
             $actual_purchase_price =$this->num_uf(  $this->items[$index]['stores'][$i]['purchase_price']);
-            dd($actual_purchase_price);
             if(!empty($this->items[$index]['used_currency'])){
                 $currency = $this->num_uf( $this->items[$index]['used_currency']);
-                dd($currency);
                 if( $currency == 2 ){
                     $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
                     $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate) ?? 0;
-    
+
                 }else{
                     $this->items[$index]['stores'][$i]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
                     $this->items[$index]['stores'][$i]['purchase_price']= $this->num_uf( $actual_purchase_price) ?? 0;
@@ -1609,7 +1628,7 @@ class Create extends Component
                 // dd($this->items[$index]['purchase_price']);
                 // $this->items[$index]['dollar_purchase_price']);
             }
-    
+
             $this->purchase_final($index,$var,$i);
             if( $this->purchase_final($index,$var,$i) > 0){
                 $this->final_purchase_for_piece($index,$var,$i);
@@ -1621,7 +1640,7 @@ class Create extends Component
                 if( $currency == 2 ){
                     $this->items[$index]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
                     $this->items[$index]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate) ?? 0;
-    
+
                 }else{
                     $this->items[$index]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);
                     $this->items[$index]['purchase_price']= $this->num_uf( $actual_purchase_price) ?? 0;
@@ -1629,13 +1648,13 @@ class Create extends Component
                 // dd($this->items[$index]['purchase_price'],
                 // $this->items[$index]['dollar_purchase_price']);
             }
-    
+
             $this->purchase_final($index);
             if( $this->purchase_final($index) > 0){
                 $this->final_purchase_for_piece($index);
             }
         }
-       
+
 
 
     }

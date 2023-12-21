@@ -327,7 +327,7 @@
         <td></td>
         <td>
             <div class="col-md-3">
-                <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                <div class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
                     <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow({{ $index }})">
                         <i class="fa fa-plus"></i>
                     </button>
@@ -372,20 +372,21 @@
             @enderror
         </td>
         <td title="{{__('lang.purchase_price')}}">
-            <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price" wire:change="convertPurchasePrice('{{ $index }}','stores','{{ $i }}')" style="width: 61px;"  required>
+            <input type="number" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price"
+                   style="width: 61px;"  required>
             <span>{{$items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
             @error('items.'.$index.'.stores'. $i .'.purchase_price')
                 <span class="error text-danger">{{ $message }}</span>
             @enderror
         </td>
-        
+
 
         <td title="{{__('lang.sub_total')}}">
             @if(!empty($store['quantity']) && (!empty($store['purchase_price']) || !empty($store['dollar_purchase_price'])))
                 <span class="sub_total_span" >
-                {{$this->sub_total($index,'stores',$i)}}
+                    {{$this->sub_total($index,'stores',$i)}}
                 </span>
-                    <span class="sub_total_span" >
+                <span class="sub_total_span" >
                     {{$this->dollar_sub_total($index,'stores',$i)}}$
                 </span>
 
