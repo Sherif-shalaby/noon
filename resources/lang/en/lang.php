@@ -665,6 +665,7 @@ return [
     'small_filling' => 'Small Filling',
     'value'=>'Value',
     'apply_on_all_customers'=>'Apply on all customers',
+    'c_type'=>'Customer type',
 ];
 
 
