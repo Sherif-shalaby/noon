@@ -362,14 +362,20 @@ class Create extends Component
                     'annual_discount' =>!empty($item['annual_discount']) ? ($item['annual_discount']): null,
                     'discount_on_bonus_quantity' =>!empty($item['discount_on_bonus_quantity']) ? ($item['discount_on_bonus_quantity']): null,
                     'discount_dependency' =>!empty($item['discount_dependency']) ? ($item['discount_dependency']): null,
-                    'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
+//                    'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
                     'notes' =>!empty($item['notes']) ? ($item['notes']): null,
+                    'used_currency ' => !empty($item['used_currency']) ? $item['used_currency'] :null,
 
                 ];
 //                dd($add_stock_data);
                 $stock_line = AddStockLine::create($add_stock_data);
 
                 $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
+                if(!empty($item['stores'])){
+                    foreach ($item['stores'] as $item_store){
+                        $this->addStockData($item_store,$transaction->id,$stock_line->used_currency);
+                    }
+                }
                 // add product Prices
                 if(!empty($item['prices'])){
                     foreach ($item['prices'] as $price){
@@ -519,6 +525,107 @@ class Create extends Component
             dd($e);
         }
         return redirect('/add-stock/create');
+    }
+
+    public function addStockData($item, $parent_transaction, $used_currency){
+         $transaction = $this->addChildTransaction($parent_transaction,$item['store_id']);
+        $add_stock_data = [
+            'variation_id' => $item['variation_id'] ?? null,
+            'product_id' => $item['product']['id'],
+            'stock_transaction_id' => $transaction->id ,
+            'quantity' => $this->num_uf($item['quantity']),
+            'purchase_price' => !empty($item['purchase_price']) ? $this->num_uf($item['purchase_price'])  : null ,
+            'final_cost' => !empty($item['total_cost']) ? $this->num_uf($item['total_cost'])  : null,
+            'sub_total' => !empty($item['sub_total']) ? $this->num_uf($item['sub_total']) : null,
+            'sell_price' => !empty($item['selling_price']) ? $this->num_uf($item['selling_price']) : null,
+            'dollar_purchase_price' => !empty($item['dollar_purchase_price']) ? $this->num_uf($item['dollar_purchase_price']) : null,
+            'dollar_final_cost' => !empty($item['dollar_total_cost']) ? $this->num_uf($item['dollar_total_cost']) : 0,
+            'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total']) : null,
+            'dollar_sell_price' => !empty($item['dollar_selling_price']) ? $this->num_uf($item['dollar_selling_price']) : null,
+            'cost' => !empty($item['cost']) ? $this->num_uf(  $item['cost'] ): null,
+            'dollar_cost' => !empty($item['dollar_cost']) ? $this->num_uf($item['dollar_cost']) : null,
+            'expiry_date' => !empty($item['expiry_date']) ? $item['expiry_date'] : null,
+            'expiry_warning' => !empty($item['expiry_warning']) ? $item['expiry_warning'] : null,
+            'convert_status_expire' => !empty($item['convert_status_expire']) ? $item['convert_status_expire'] : null,
+            'exchange_rate' => !empty($supplier->exchange_rate) ? $this->num_uf($supplier->exchange_rate) : null,
+            'fill_type' => $item['fill_type'] ?? null,
+            'fill_quantity' => !empty($item['fill_quantity']) ? $this->num_uf($item['fill_quantity']): null,
+            'store_id'=> !empty($item['store_id']) ? ($item['store_id']): null,
+            'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
+            'discount_percent' =>!empty($item['discount_percent']) ? ($item['discount_percent']): null,
+            'discount' =>!empty($item['discount']) ? ($item['discount']): null,
+            'cash_discount' =>!empty($item['cash_discount']) ? ($item['cash_discount']): null,
+            'seasonal_discount' =>!empty($item['seasonal_discount']) ? ($item['seasonal_discount']): null,
+            'annual_discount' =>!empty($item['annual_discount']) ? ($item['annual_discount']): null,
+            'discount_on_bonus_quantity' =>!empty($item['discount_on_bonus_quantity']) ? ($item['discount_on_bonus_quantity']): null,
+            'discount_dependency' =>!empty($item['discount_dependency']) ? ($item['discount_dependency']): null,
+//            'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
+            'notes' =>!empty($item['notes']) ? ($item['notes']): null,
+            'used_currency ' => !empty($used_currency) ? $used_currency : null,
+            'store_id' => !empty($item['store_id']) ? $item['store_id'] : null,
+        ];
+        $stock_line = AddStockLine::create($add_stock_data);
+
+        $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
+        if(!empty($item['prices'])){
+            foreach ($item['prices'] as $price){
+                $price_data = [
+                    'product_id' => $item['product']['id'],
+                    'price_type' => $price['price_type'],
+                    'price_category' => $price['price_category'],
+                    'price' => $this->num_uf($price['price']),
+                    'dinar_price' => $this->num_uf($price['dinar_price']),
+                    'quantity' => $this->num_uf($price['discount_quantity']),
+                    'bonus_quantity' => $this->num_uf($price['bonus_quantity']),
+                    'price_customers'=>!empty($price['price_after_desc']) ? $this->num_uf( $price['price_after_desc'] ) : null,
+                    'dinar_price_customers'=>!empty($price['dinar_price_after_desc']) ? $this->num_uf( $price['dinar_price_after_desc']) : null,
+                    'price_customer_types' => $price['price_customer_types'],
+                    'created_by' => Auth::user()->id,
+                    'stock_line_id ' => $stock_line->id,
+                    'dinar_total_price' => !empty($item['selling_price']) ? $this->num_uf( $price['total_price'] ) : null,
+                    'total_price' => !empty($item['dollar_selling_price']) ? $this->num_uf( $price['total_price'] ) : null,
+                    'dinar_piece_price' => !empty($item['selling_price']) ? $this->num_uf( $price['piece_price'] ) : null,
+                    'piece_price' => !empty($item['dollar_selling_price']) ? $this->num_uf( $price['piece_price'] ) : null,
+                    'stock_line_id' => $stock_line->id,
+                ];
+                ProductPrice::create($price_data);
+
+            }
+        }
+    }
+    public function addChildTransaction($parent,$store_id){
+        $transaction = new StockTransaction();
+        $transaction->store_id = $store_id;
+        $transaction->status = 'received';
+        $transaction->order_date = !empty($ref_transaction_po) ? $ref_transaction_po->transaction_date : Carbon::now();
+        $transaction->transaction_date = !empty($this->transaction_date) ? $this->transaction_date : Carbon::now();
+        $transaction->purchase_type = $this->purchase_type;
+        $transaction->type = 'add_stock';
+        $transaction->invoice_no = !empty($this->invoice_no) ? $this->invoice_no : null;
+        $transaction->discount_amount = !empty($this->discount_amount) ? $this->discount_amount : 0;
+        $transaction->supplier_id = $this->supplier;
+        // $transaction->transaction_currency = $this->transaction_currency;
+        $transaction->payment_status = $this->payment_status;
+        $transaction->expenses = json_encode($this->expenses);
+        // $transaction->other_payments = !empty($this->other_payments) ? $this->other_payments : 0;
+        // $transaction->other_expenses = !empty($this->other_expenses) ? $this->other_expenses : 0;
+        $transaction->grand_total = $this->num_uf($this->sum_total_cost());
+        $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
+        $transaction->dollar_grand_total = $this->num_uf($this->sum_dollar_total_cost());
+        $transaction->dollar_final_total = $this->num_uf($this->dollar_final_total());
+        $transaction->notes = !empty($this->notes) ? $this->notes : null;
+        $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
+        $transaction->notify_me = !empty($this->notify_before_days) ? 1 : 0;
+        $transaction->created_by = Auth::user()->id;
+        $transaction->source_id = !empty($this->source_id) ? $this->source_id : null;
+        $transaction->source_type = !empty($this->source_type) ? $this->source_type : null;
+        $transaction->due_date = !empty($this->due_date) ? $this->due_date : null;
+        $transaction->divide_costs = !empty($this->divide_costs) ? $this->divide_costs : null;
+        $transaction->po_no = !empty($ref_transaction_po) ? $ref_transaction_po->po_no : null;
+        $transaction->purchase_order_id = !empty($this->po_id) ? $this->po_id : null;
+        $transaction->parent_transction = $parent;
+        $transaction->save();
+        return $transaction;
     }
 
     public function add_product($id, $add_via = null, $index = null,$new_unit_raw=0){
