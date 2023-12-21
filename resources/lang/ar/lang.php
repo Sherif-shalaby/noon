@@ -745,4 +745,5 @@ return array(
     'add_quarter' => 'اضافة حي',
     'add_region' => 'اضافة منطقة',
     'apply_on_all_customers' => 'تطبيق على كل العملاء',
+    'c_type'=>'نوع العميل',
 );

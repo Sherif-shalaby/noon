@@ -252,6 +252,8 @@
                                 <table class="table">
                                     <tr>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
+                                            @lang('lang.sku')</th>
+                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%">
                                             @lang('lang.product')</th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center;width: 10%;">
                                             @lang('lang.quantity')</th>
@@ -259,6 +261,8 @@
                                             @lang('lang.extra')</th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
                                             @lang('lang.unit')</th>
+                                        <th style="font-weight: 700;font-size: 10px;text-align: center;width: 5%;">
+                                            @lang('lang.c_type')</th>
                                         <th style="font-weight: 700;font-size: 10px;text-align: center;width: 8%">
                                             @lang('lang.price')</th>
                                         <th class="dollar-cell"
@@ -285,7 +289,9 @@
                                     @endphp
                                     @foreach ($items as $key => $item)
                                         <tr style="height: 50px">
-
+                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                class="px-1 border-right ">{{ $item['product']['product_symbol'] }}
+                                            </td>
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
@@ -340,6 +346,26 @@
                                                                 <option value="{{ $var['id'] }}"
                                                                     {{ $i == 0 ? 'selected' : '' }}>
                                                                     {{ $var['unit']['name'] ?? '' }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </td>
+
+                                            <td style="font-weight: 700;font-size: 10px;height: 50px;"
+                                                class="px-1 border-right ">
+                                                <select class="form-control"
+                                                    style="height:30% !important;width:100px;"
+                                                    wire:model="items.{{ $key }}.customer_type_id"
+                                                    wire:change="changeCustomerType({{ $key }})">
+                                                    <option value="0">select</option>
+                                                    @if (!empty($item['customer_types']))
+                                                        @foreach ($item['customer_types'] as $x => $var)
+                                                            @if (!empty($var['id']))
+                                                                <option value="{{ $var['id'] }}"
+                                                                    {{ $x == 0 ? 'selected' : '' }}>
+                                                                    {{ $var['name'] ?? '' }}
                                                                 </option>
                                                             @endif
                                                         @endforeach
@@ -511,7 +537,7 @@
 
 
 {{-- <!-- This will be printed --> --}}
-<section class="invoice print_section print-only" id="receipt_section"> </section>
+<section class="invoice print_section print-only" id="receipt_section_print">fff </section>
 @push('javascripts')
 
     @if (empty($store_pos) || empty($stores))
@@ -544,9 +570,9 @@
         document.addEventListener('livewire:load', function() {
             Livewire.on('printInvoice', function(htmlContent) {
                 // Set the generated HTML content
-                $("#receipt_section").html(htmlContent);
+                $("#receipt_section_print").html(htmlContent);
                 // Trigger the print action
-                window.print("#receipt_section");
+                window.print("#receipt_section_print");
             });
         });
         $(document).on("click", ".print-invoice", function() {
