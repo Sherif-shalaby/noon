@@ -540,6 +540,7 @@ class Create extends Component
 
     public function add_product($id)
     {
+        dd($id);
 
         if (!empty($this->searchProduct)) {
             $this->searchProduct = '';
@@ -549,6 +550,7 @@ class Create extends Component
         }
         $product = Product::where('id', $id)->first();
         $quantity_available = $this->quantityAvailable($product);
+        dd($product);
         if ($quantity_available < 1) {
             $this->dispatchBrowserEvent('quantity_not_enough', ['id' => $id]);
         } else {
@@ -580,9 +582,9 @@ class Create extends Component
                 $get_Variation_price=VariationPrice::where('variation_id',$product->variations()->first()->id);
                 $customer_types_variations=$get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes=CustomerType::whereIn('id',$customer_types_variations)->get();
-                // dd($get_Variation_price->first());
-                $price = !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->sell_price??0), 2) : 0;
-                $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->dollar_sell_price??0), 2) : 0;
+//                 dd( !empty($current_stock->id));
+                $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->sell_price??0), 3) : 0;
+                $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->dollar_sell_price??0), 3) : 0;
                 $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
@@ -740,7 +742,7 @@ class Create extends Component
         $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
         $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
         $this->computeForAll();
-    
+
     }
     public function resetAll()
     {

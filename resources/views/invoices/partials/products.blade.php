@@ -69,9 +69,9 @@
                                 <div>
                                     <span>{{ $product->sku }} </span>
                                     <span>{{ $product->name }}</span>
-                                    {{--                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
-                                    {{--                                                {{ $product->store?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
-                                    {{--                                            </span>--}}
+{{--                                    <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
+{{--                                        {{ $product->store?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
+{{--                                    </span>--}}
                                 </div>
                             </div>
                         @empty
