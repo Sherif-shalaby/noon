@@ -510,7 +510,7 @@
         <td title="{{__('lang.unit')}}">
             @if(count($product['variations']) > 0)
                 <div class="d-flex justify-content-center">
-                    <select name="items.{{$index}}.variation_id" class="form-control select ." style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+                    <select name="items.{{ $index }}.prices.{{$key}}.fill_id" class="form-control select ." style="width: 130px" wire:model="items.{{ $index }}.prices.{{$key}}.fill_id">
                         <option value="" selected>{{__('lang.please_select')}}</option>
                         @foreach($product['variations'] as $variant)
                             @if(!empty($variant['unit_id']))
@@ -534,10 +534,18 @@
             {!! Form::label('price_category' ,__('lang.price_category')) !!}
             <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
         </td>
-        {{-- <td colspan="1">
+         <td colspan="1">
             {!! Form::label('b_qty',__('lang.b_qty')) !!}
             <input type="text" class="form-control bonus_quantity" wire:model="items.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.b_qty')}}" >
-        </td> --}}
+        </td>
+        <td colspan="2">
+            {!! Form::label('customer_type',__('lang.customer_type')) !!}
+            <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control select" placeholder="{{__('lang.please_select')}}">
+                @foreach($customer_types as $type)
+                    <option value="{{$type->id}}">{{$type->name}}</option>
+                @endforeach
+            </select>
+        </td>
         <td colspan="2">
             {!! Form::label('price_type' ,__('lang.type')) !!}
             {!! Form::select('items.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
@@ -550,7 +558,7 @@
             <div class="custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem"
                         @if( !empty($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
-                        wire:change="changePrice({{ $index }}, {{ $key }})">
+                        wire:change="change_discount_from_original_price({{ $index }})">
                 <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
             </div>
             @error('items.'.$index.'.prices.'.$key.'.price_type')
@@ -558,6 +566,7 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
+
         <td>
             {!! Form::label('price' ,!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')}}" >
@@ -586,15 +595,6 @@
 {{--            <p>--}}
 {{--                {{ __('lang.piece_price')}}:{{$this->items[$index]['prices'][$key]['dinar_piece_price']??''}}--}}
 {{--            </p>--}}
-        </td>
-
-        <td colspan="2">
-            {!! Form::label('customer_type',__('lang.customer_type')) !!}
-            <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
-                @foreach($customer_types as $type)
-                    <option value="{{$type->id}}">{{$type->name}}</option>
-                @endforeach
-            </select>
         </td>
          <td>
             <button type="button" class="btn btn-sm btn-primary" wire:click="addPriceRow({{ $index }})">
