@@ -731,8 +731,16 @@ return array(
     'expired_quantity' => 'الكمية منتهية الصلاحية',
     'value'=>'قيمة',
     'apply_on_all_customers'=>'تطبيق على كل العملاء',
+    'from_a_to_z'=> 'من الاف للياء',
+    'from_z_to_a'=> 'من الياء للالف',
+    'alphabetical_order' => 'ترتيب ابجدي' ,
+    'nearest_expiry_filter'=>'اقرب انتهائا للصلاحية',
+    'longest_expiry_filter'=>'أطول انتهائا للصلاحية',
+    'dollar_highest_price'=>'$ الاعلى سعرا',
+    'dollar_lowest_price'=>'$ الاقل سعرا',
+    'dollar_price' => 'السعر بالدولار' ,
+    'expiry_order' => 'الصلاحية',
     'c_type'=>'نوع العميل',
     'quarter' => 'الحي',
-
 );
 

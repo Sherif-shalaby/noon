@@ -52,6 +52,7 @@ class Create extends Component
         $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost, $dollar_remaining = 0,
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
+
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
         $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country;
 
@@ -450,7 +451,7 @@ class Create extends Component
         $this->customer_data = Customer::find($id);
         //        dd($this->customer_data);
     }
-
+    // ++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++
     public function updatedDepartmentId($value, $name)
     {
         $this->allproducts = Product::when($name == 'department_id1', function ($query) {
@@ -464,6 +465,7 @@ class Create extends Component
         })->when($name == 'department_id2', function ($query) {
             $query->where('subcategory_id1', $this->department_id2);
         })
+
             ->when($name == 'department_id3', function ($query) {
                 $query->where('subcategory_id2', $this->department_id3);
             })
