@@ -581,6 +581,7 @@ class Create extends Component
 
     public function add_product($id)
     {
+        dd($id);
 
         if (!empty($this->searchProduct)) {
             $this->searchProduct = '';
@@ -590,6 +591,7 @@ class Create extends Component
         }
         $product = Product::where('id', $id)->first();
         $quantity_available = $this->quantityAvailable($product);
+        dd($product);
         if ($quantity_available < 1) {
             $this->dispatchBrowserEvent('quantity_not_enough', ['id' => $id]);
         } else {
@@ -618,8 +620,13 @@ class Create extends Component
                     $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
                 }
             } else {
-                $price = !empty($current_stock->sell_price) ? number_format($current_stock->sell_price, 2) : 0;
-                $dollar_price = !empty($current_stock->dollar_sell_price) ? number_format($current_stock->dollar_sell_price, 2) : 0;
+
+                $get_Variation_price=VariationPrice::where('variation_id',$product->variations()->first()->id);
+                $customer_types_variations=$get_Variation_price->pluck('customer_type_id')->toArray();
+                $customerTypes=CustomerType::whereIn('id',$customer_types_variations)->get();
+//                 dd( !empty($current_stock->id));
+                $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->sell_price??0), 3) : 0;
+                $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->dollar_sell_price??0), 3) : 0;
                 $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
@@ -768,7 +775,15 @@ class Create extends Component
         }
         $this->computeForAll();
     }
+    public function changeCustomerType($key){
+        // dd($this->items[$key]['variation']);
+        $variation_price=VariationPrice::where('variation_id',$this->items[$key]['unit_id'])->where('customer_type_id',$this->items[$key]['customer_type_id'])->first();
+        $variation_stock_line=VariationStockline::where('stock_line_id',$this->items[$key]['current_stock']['id'])->where('variation_price_id',$variation_price->id)->first();
+        $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
+        $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
+        $this->computeForAll();
 
+    }
     public function resetAll()
     {
         $this->client_id = '';
