@@ -175,6 +175,7 @@ function getSelectBoxValues() {
 $(document).on("click", ".add_product_row", function () {
     let row_id = parseInt($("#raw_product_index").val())+ 1;
     $("#raw_product_index").val(row_id );
+    console.log(row_id)
     $.ajax({
         method: "get",
         url: "/product/add_product_raw",

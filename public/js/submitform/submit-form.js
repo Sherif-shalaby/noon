@@ -97,6 +97,8 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
                                 $(".basic_unit_id"+raw_index).empty().append(data_html);
                                 $(".basic_unit_id"+raw_index).val(unit_id).change();
                             }else{
+                                console.log(data_html)
+                                console.log(unit_id)
                                 $(".unit_id"+raw_index).empty().append(data_html);
                                 $(".unit_id"+raw_index).val(unit_id).change();
                             }
@@ -121,6 +123,7 @@ $("#create-store-btn").click(function (e){
         $("#quick_add_store_form").submit();
     },500)
 });
+// ++++++++++++++++++ ajax : products module : quick_add_store ++++++++++++++++++
 $(document).on("submit", "form#quick_add_store_form", function (e) {
     e.preventDefault();
     var data = $(this).serialize();
@@ -132,16 +135,20 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         success: function (result) {
             if (result.success) {
                 Swal.fire("Success", result.msg, "success");
+                console.log("First Ajax Request : Store new store");
+                console.log(result);
+                console.log(result.store_id);
                 $(".add-store").modal("hide");
-                var store_id = result.id;
                 $.ajax({
                     method: "get",
-                    url: "/stores/get-dropdown",
+                    url: "/product/get-dropdown-store/",
                     data: {},
                     contactType: "html",
                     success: function (data_html) {
-                        $("#store_id").empty().append(data_html);
-                        $("#store_id").val(store_id).trigger();
+                        console.log("Second Ajax Request : Get dropdown of stores");
+                        console.log(data_html);
+                        $("#store_id").empty().append(data_html[0]);
+                        $("#store_id").val(data_html[1]).change();
                     },
                 });
             } else {
@@ -150,11 +157,13 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
         },
     });
 });
+
 $("#create-supplier-btn").click(function (e){
     e.preventDefault();
     setTimeout(()=>{
         $("#add_supplier").submit();
         $("#quick_add_supplier_form").submit();
+        console.log('submitted');
     },500)
 });
 $(document).on("submit", "form#quick_add_supplier_form", function (e) {
@@ -170,6 +179,7 @@ $(document).on("submit", "form#quick_add_supplier_form", function (e) {
                 Swal.fire("Success", result.msg, "success");
                 $(".add-supplier").modal("hide");
                 var supplier_id = result.id;
+                console.log(supplier_id)
                 $.ajax({
                     method: "get",
                     url: "/suppliers/get-dropdown",
@@ -278,16 +288,6 @@ $(document).on("submit", "#create-category-form", function (e) {
                             if(select_category=="0"){
                                 $("#categoryId").empty().append(data_html);
                                 $("#categoryId").val(category_id).change();
-                            }else if(select_category=="2"){
-                                console.log(data_html);
-
-                                $("#subCategoryId2").empty().append(data_html);
-                                $("#subCategoryId2").val(category_id).change();
-                                // $("#subCategoryId2").val(category_id).trigger();
-                            }else if(select_category=="3"){
-                                $("#subCategoryId3").empty().append(data_html);
-                                $("#subCategoryId3").val(category_id).change();
-                                // $("#subCategoryId3").val(category_id).trigger();
                             }
                             else if(select_category=="1"){
                                 $("#subcategory_id1").empty().append(data_html);
@@ -295,6 +295,17 @@ $(document).on("submit", "#create-category-form", function (e) {
 
                                 // $("#subcategory_id1").val(category_id).trigger();
                             }
+                            else if(select_category=="2"){
+                                $("#subCategoryId2").empty().append(data_html);
+                                $("#subCategoryId2").val(category_id).change();
+                                // $("#subCategoryId2").val(category_id).trigger();
+                            }
+                            else if(select_category=="3"){
+                                $("#subCategoryId3").empty().append(data_html);
+                                $("#subCategoryId3").val(category_id).change();
+                                // $("#subCategoryId3").val(category_id).trigger();
+                            }
+
                         }
 
                     }
@@ -389,6 +400,82 @@ $(document).on("submit", "#quick_add_customer_form", function (e) {
                         $("#client_id").empty().append(data_html[0]);
 
                         $("#client_id").val(data_html[1]).change();
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
+// +++++++++++++++++++++++ customer_cities_Dropdown ++++++++++++++++++++
+$(document).on("submit", "#customer-region-form", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            console.log("First Ajax Request : ",result);
+            if (result.success)
+            {
+                Swal.fire("Success", result.msg, "success");
+                $("#createRegionModal").modal("hide");
+                var city_id = result.id;
+                var state_id = result.state_id;
+                console.log("Outer Second Ajax Request : ",result);
+                $.ajax({
+                    method: "get",
+                    url: "/customer/get-dropdown-add_store/"+state_id,
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        console.log("Inner Second Ajax Request : "+data_html);
+                        console.log(city_id);
+                        // Update the dropdown with the new options
+                        $("#city-dd").empty().append(data_html);
+                        // Set the selected value in the dropdown
+                        $("#city-dd").val(city_id).change(); // Set the newly added city as selected
+                    },
+                });
+            } else {
+                Swal.fire("Error", result.msg, "error");
+            }
+        },
+    });
+});
+// +++++++++++++++++++++++ customer_quarters_Dropdown ++++++++++++++++++++
+$(document).on("submit", "#customer-quarter-form", function (e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+        method: "post",
+        url: $(this).attr("action"),
+        dataType: "json",
+        data: data,
+        success: function (result) {
+            console.log("First Ajax Request : ",result);
+            if (result.success)
+            {
+                Swal.fire("Success", result.msg, "success");
+                $("#createQuarterModal").modal("hide");
+                var quarter_id = result.id;
+                var city_id = result.city_id;
+                console.log("Outer Second Ajax Request : ",result);
+                $.ajax({
+                    method: "get",
+                    url: "/customer/get-dropdown-quarter/"+city_id,
+                    data: {},
+                    contactType: "html",
+                    success: function (data_html) {
+                        console.log("Inner Second Ajax Request : "+data_html);
+                        console.log("city_id = "+city_id);
+                        console.log("quarter_id = "+quarter_id);
+                        console.log("data_html = "+data_html);
+                        $("#quarter-dd").empty().append(data_html);
+                        $("#quarter-dd").val(quarter_id).change();
                     },
                 });
             } else {
