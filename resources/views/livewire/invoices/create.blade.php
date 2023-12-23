@@ -143,7 +143,7 @@
                             <select class="form-control client select2" wire:model="client_id" id="client_id" data-name="client_id">
                                 <option  value="0 " readonly >اختر </option>
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}>{{ $customer->name }}</option>
+                                    <option value="{{ $customer->id }}" {{$client_id==$customer->id?'selected':''}}> {{ $customer->name }} - {{($customer->phone != '[null]' ) ? $customer->phone : ''}}</option>
                                 @endforeach
                             </select>
                             <button type="button" class="btn btn-sm ml-2 text-white" style="background-color: #6e81dc;" data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
@@ -153,10 +153,10 @@
                         @enderror
                     </div>
                 </div>
+
+                </div>
                 <div class="row">
-                    <div class="col-md-7">
-                        @include('invoices.partials.search')
-                    </div>
+
                     <div class="col-md-5">
                         <div class="card-app">
                             <div class="row">
@@ -177,6 +177,42 @@
                                 </div>
                                 <div class="col-md-2">
                                     <span> @lang('lang.balance_in_dollar') : {{ $customer_data->balance_in_dollar ?? 0 }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.customer_type') : {{ $customer_data->customer_type->name ?? '' }}</span>
+                                </div>
+                                @php
+                                    if(!empty($customer_data->state_id)){
+                                        $state = \App\Models\State::find($customer_data->state_id);
+                                    }
+                                @endphp
+                                <div class="col-md-2">
+                                    <span> @lang('lang.state') : {{ !empty($state) ? $state->name : '' }}</span>
+                                </div>
+                                @php
+                                    if(!empty($customer_data->city_id)){
+                                        $city = \App\Models\City::find($customer_data->city_id);
+                                    }
+                                @endphp
+                                <div class="col-md-2">
+                                    <span> @lang('lang.city') : {{ !empty($city) ? $city->name : '' }}</span>
+                                </div>
+                                @php
+                                    if(!empty($customer_data->quarter_id )){
+                                        $quarter = \App\Models\Quarter::find($customer_data->quarter_id );
+                                    }
+                                @endphp
+                                <div class="col-md-2">
+                                    <span> @lang('lang.quarter') : {{ !empty($quarter) ? $quarter->name : '' }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ?? '' }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.email') : {{ !empty($customer_data->email) ?? '' }}</span>
+                                </div>
+                                <div class="col-md-2">
+                                    <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ?? '' }}</span>
                                 </div>
                                 <div class="col-md-3">
                                     <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
@@ -335,6 +371,11 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        <tr>
+                                            {{--                                            <div class="col-md-7">--}}
+                                            @include('invoices.partials.search')
+                                            {{--                                            </div>--}}
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -480,6 +521,7 @@
             });
 
         });
+
     </script>
 
 @endpush
