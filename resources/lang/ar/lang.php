@@ -712,8 +712,8 @@ return array(
     'product_sku_start' => 'رمز الماده يبدأ ب',
     'large_filling' => 'أكبر تعبئه',
     'small_filling' => 'تعبئه اصغر',
-
-    'piece_price'=>'سعر القطعة',    'evening_shift' => 'شيفت مسائي' ,
+    'piece_price'=>'سعر القطعة',
+    'evening_shift' => 'شيفت مسائي' ,
     'employee_products' => 'المنتجات المسئول عنها الموظف',
     'days_number_notify' => 'عدد الايام قبل التنبيه' ,
     // +++++++++++++++ notifications +++++++++++++++++
@@ -728,11 +728,11 @@ return array(
     'days' => 'أيام',
     'in_stock' => 'في المخزن',
     'alert_quantity' => 'كمية التنبيه',
-    'expired' => 'منتهي الصلاحية',
     'expired_quantity' => 'الكمية منتهية الصلاحية',
     'value'=>'قيمة',
     'apply_on_all_customers'=>'تطبيق على كل العملاء',
     'c_type'=>'نوع العميل',
+    'quarter' => 'الحي',
 
 );
 
