@@ -1,12 +1,13 @@
-<div class="col-xl-3 p-0 special-col animate__animated animate__bounceInLeft"
+<div class="col-xl-2 p-0 special-col animate__animated animate__bounceInLeft"
     style="animation-delay: 1.55s;height: 600px;overflow: scroll">
     <div class="card-app">
         <div class="title-card-app">
             الاقسام
             <div for="" class="d-flex justify-content-center align-items-center text-nowrap gap-1" wire:ignore>
-                <div class="row flex-row">
+                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                    style="padding: 2px">
                     {{-- الاقسام --}}
-                    <div class="col-md-3">
+                    <div class="col-md-4  d-flex flex-column" style="padding: 2px">
 
                         <select class="form-control depart1 select2" wire:model="department_id1"
                             data-name="department_id1">
@@ -20,8 +21,7 @@
                                 @endif
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-md-3">
+
 
                         <select class="form-control depart select2" wire:model="department_id2"
                             data-name="department_id2">
@@ -36,7 +36,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4  d-flex flex-column" style="padding: 2px">
                         <select class="form-control depart select2" wire:model="department_id3"
                             data-name="department_id3">
                             <option value="0 " readonly selected>اختر </option>
@@ -49,8 +49,7 @@
                                 @endif
                             @endforeach
                         </select>
-                    </div>
-                    <div class="col-md-3">
+
                         <select class="form-control depart select2" wire:model="department_id4"
                             data-name="department_id4">
                             <option value="0 " readonly selected>اختر </option>
@@ -63,7 +62,34 @@
                                 @endif
                             @endforeach
                         </select>
+
                     </div>
+                    <div class="col-md-4  d-flex flex-column" style="padding: 2px">
+
+                        {!! Form::label('brand_id', __('lang.brand') . '*', [
+                            'class' => 'mb-3',
+                            'style' => 'font-size: 12px;font-weight: 500;',
+                        ]) !!}
+
+                        {!! Form::select('brand_id', $brands, $brand_id, [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'brand_id',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'brand_id',
+                            'wire:model' => 'brand_id',
+                        ]) !!}
+                        @error('brand_id')
+                            <span style="font-size: 12px;font-weight: 500;"
+                                class="error text-danger">{{ $message }}</span>
+                        @enderror
+
+                    </div>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -72,7 +98,7 @@
                 {{-- <div class="row flex-wrap" style="width: 100%"> --}}
                 @if ($allproducts and $allproducts != null)
                     @forelse ($allproducts as $product)
-                        <div class="col-md-4 d-flex justify-content-between flex-column align-items-center p-0 order-btn"
+                        <div class="col-md-6 d-flex justify-content-between flex-column align-items-center p-0 order-btn"
                             wire:click='add_product({{ $product->id }})'
                             style="min-height: 50px;border:1px solid #ccc;">
                             @if ($product->image)

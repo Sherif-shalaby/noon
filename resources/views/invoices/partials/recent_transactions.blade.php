@@ -1,5 +1,5 @@
 <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif" style="max-height: 80vh;overflow: scroll">
-    <table id="datatable-buttons" class="table table-striped table-bordered table-hover">
+    <table id="datatable-buttons" class="table table-striped table-bordered table-hover" style="margin-top: 45px">
         <thead>
             <tr>
                 <th>@lang('lang.date_and_time')</th>

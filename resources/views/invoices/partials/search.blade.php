@@ -1,65 +1,70 @@
-<div class="col-md-3 p-0 mb-2 row animate__animated animate__bounceInLeft" style="animation-delay: 1.2s">
+<td colspan="15">
 
-    <div class="col-md-4">
-        <div class="search-box input-group">
-            <input type="search" name="search_by_product_symbol" id="search_by_product_symbol"
-                wire:model.debounce.200ms="search_by_product_symbol" placeholder="@lang('lang.enter_product_symbol')" class="form-control"
-                autocomplete="off">
+    <div class="col-md-8 p-0 mb-2 row animate__animated animate__bounceInLeft" style="animation-delay: 1.2s">
 
-            @if (!empty($search_by_product_symbol))
-                {{-- <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;"> --}}
-                <ul id="ui-id-1" tabindex="0"
-                    class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                    style="top: 37.423px; left: 39.645px; width: 90.2%; overflow: auto!important;max-height: 300px !important; border: 1px solid #ccc !important;">
-                    @foreach ($search_result as $product)
-                        <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
-                            <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                @if ($product->image)
-                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                        alt="{{ $product->name }}" class="img-thumbnail" width="100px">
-                                @else
-                                    <img src="{{ asset('uploads/' . $settings['logo']) }}" alt="{{ $product->name }}"
-                                        class="img-thumbnail" width="100px">
-                                @endif
-                                {{ $product->product_symbol ?? '' }} - {{ $product->name }}
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
-            {{--                                    {{$search_result->links()}} --}}
+        <div class="col-md-4">
+            <div class="search-box input-group ">
+                <input type="search" name="search_by_product_symbol" id="search_by_product_symbol"
+                    wire:model.debounce.200ms="search_by_product_symbol" placeholder="@lang('lang.enter_product_symbol')"
+                    class="form-control" autocomplete="off">
+
+                @if (!empty($search_by_product_symbol))
+                    {{-- <ul id="ui-id-1" tabindex="0" class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2" style="top: 37.423px; left: 39.645px; width: 90.2%;"> --}}
+                    <ul id="ui-id-1" tabindex="0"
+                        class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                        style="top: 37.423px; left: 39.645px; width: 90.2%; overflow: auto!important;max-height: 300px !important; border: 1px solid #ccc !important;">
+                        @foreach ($search_result as $product)
+                            <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
+                                <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                    @if ($product->image)
+                                        <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                            alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                    @else
+                                        <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                            alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                    @endif
+                                    {{ $product->product_symbol ?? '' }} - {{ $product->name }}
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+                {{--                                    {{$search_result->links()}} --}}
+            </div>
         </div>
-    </div>
-    <div class="col-md-8">
-        <div class="search-box input-group">
-            <button type="button" class="btn btn-secondary" id="search_button"><i class="fa fa-search"></i>
-            </button>
-            <input type="search" name="search_product" id="search_product" wire:model.debounce.200ms="searchProduct"
-                placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control" autocomplete="off">
+        <div class="col-md-8">
+            <div
+                class="search-box input-group d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <button type="button" class="btn btn-secondary" id="search_button"><i class="fa fa-search"></i>
+                </button>
+                <input type="search" name="search_product" id="search_product"
+                    wire:model.debounce.200ms="searchProduct" placeholder="@lang('lang.enter_product_name_to_print_labels')" class="form-control"
+                    autocomplete="off">
 
-            @if (!empty($search_result) && !empty($searchProduct))
-                {{-- <ul id="ui-id-1" tabindex="0"
+                @if (!empty($search_result) && !empty($searchProduct))
+                    {{-- <ul id="ui-id-1" tabindex="0"
                             class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
                             style="top: 37.423px; left: 39.645px; width: 90.2%;"> --}}
-                <ul id="ui-id-1" tabindex="0"
-                    class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
-                    style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important;max-height: 300px !important; border: 1px solid #ccc !important;">
-                    @foreach ($search_result as $product)
-                        <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
-                            <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
-                                @if ($product->image)
-                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                        alt="{{ $product->name }}" class="img-thumbnail" width="100px">
-                                @else
-                                    <img src="{{ asset('uploads/' . $settings['logo']) }}" alt="{{ $product->name }}"
-                                        class="img-thumbnail" width="100px">
-                                @endif
-                                {{ $product->sku ?? '' }} - {{ $product->name }}
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
+                    <ul id="ui-id-1" tabindex="0"
+                        class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front rounded-2"
+                        style="top: 37.423px; left: 39.645px; width: 90.2%;overflow: auto !important;max-height: 300px !important; border: 1px solid #ccc !important;">
+                        @foreach ($search_result as $product)
+                            <li class="ui-menu-item" wire:click="add_product({{ $product->id }})">
+                                <div id="ui-id-73" tabindex="-1" class="ui-menu-item-wrapper">
+                                    @if ($product->image)
+                                        <img src="{{ asset('uploads/products/' . $product->image) }}"
+                                            alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                    @else
+                                        <img src="{{ asset('uploads/' . $settings['logo']) }}"
+                                            alt="{{ $product->name }}" class="img-thumbnail" width="100px">
+                                    @endif
+                                    {{ $product->sku ?? '' }} - {{ $product->name }}
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
         </div>
     </div>
-</div>
+</td>

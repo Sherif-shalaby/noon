@@ -46,7 +46,7 @@
                 @if (!$this->checkRepresentativeUser())
                     <div class=" col-md-2">
                         <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
-                            class="btn btn-primary payment-btn " wire:click="pendingStatus" id="pay-later-btn"><i
+                            class="btn btn-primary payment-btn " onclick="openDueDateModal()" id="pay-later-btn"><i
                                 class="fa fa-hourglass-start"></i>
                             @lang('lang.pay_later')</button>
                     </div>
@@ -290,26 +290,6 @@
         </div>
     </div>
 </div>
-<!-- Add a modal to your HTML with an input field for due date -->
-<div class="modal" tabindex="-1" role="dialog" id="dueDateModal" wire:ignore>
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-body">
-                <label for="dueDate">Due Date:</label>
-                <input type="date" wire:model="due_date" class="form-control" id="dueDate">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="submitDueDateBtn"
-                    wire:click="pendingStatus">Submit</button>
-                <button type="button" class="btn btn-secondary" id="closeDueDateBtn" wire:click="pendingStatus"
-                    data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
 
 <script>
     //Function to open the due date modal

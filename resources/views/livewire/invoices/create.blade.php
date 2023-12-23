@@ -5,12 +5,12 @@
     <div class="row justify-content-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
         <div
-            class="col-md-6 row justify-content-between @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+            class="col-md-6 row justify-content-between  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
             {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
-            <div class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+            <div class="col-md-3 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif  flex-column animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.1s">
                 {!! Form::label('store_id', __('lang.store') . '*', [
-                    'class' => app()->isLocale('ar') ? 'd-block text-end h5  mb-0 width-fit' : ' mb-0 h5 width-fit',
+                    'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2  mb-1 width-fit' : 'mx-2 mb-1 h5 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 <div class="input-wrapper mx-2">
@@ -30,10 +30,10 @@
                 @enderror
             </div>
             {{-- ++++++++++++++++++++++ نقاط البيع +++++++++++++++++++++ --}}
-            <div class="col-md-3 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+            <div class="col-md-3 d-flex mb-2 @if (app()->isLocale('ar')) align-items-end  @else  align-items-start @endif   flex-column animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.15s">
                 {!! Form::label('store_pos_id', __('lang.pos') . '*', [
-                    'class' => app()->isLocale('ar') ? 'd-block text-end h5   mb-0 width-fit' : '  mb-0 h5 width-fit',
+                    'class' => app()->isLocale('ar') ? 'd-block text-end h5 mx-2 mb-1 width-fit' : 'mx-2  mb-1 h5 width-fit',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 <div class="input-wrapper mx-2">
@@ -51,23 +51,28 @@
                 @enderror
             </div>
             {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
-            <div class="col-md-6 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+            <div class="col-md-6 align-items-end d-flex mb-2 @if (app()->isLocale('ar')) flex-row-reverse  @else  flex-row @endif animate__animated animate__bounceInLeft"
                 style="animation-delay: 1.2s">
-                <label for="" class=" @if (app()->isLocale('ar')) d-block text-end @endif h5 mb-0"
-                    style="font-size: 12px;font-weight: 500;">العملاء</label>
-                <div class="input-wrapper mx-2">
-                    <select class="form-control client select2" wire:model="client_id" id="client_id"
-                        data-name="client_id">
-                        <option value="0 " readonly>اختر </option>
-                        @foreach ($customers as $customer)
-                            <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
-                                {{ $customer->name }}</option>
-                        @endforeach
-                    </select>
-                    <button type="button" class="add-button d-flex justify-content-center align-items-center"
-                        data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+                <div class="d-flex flex-column align-items-end col-md-7 customer_drop_down p-0">
+                    <label for=""
+                        class=" @if (app()->isLocale('ar')) d-block text-end @endif mx-2 h5 mb-1"
+                        style="font-size: 12px;font-weight: 500;">العملاء</label>
+                    <div class="input-wrapper mx-2">
+                        <select class="form-control client select2" style="width: 80%" wire:model="client_id"
+                            id="client_id" data-name="client_id">
+                            <option value="0 " readonly>اختر </option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->id }}" {{ $client_id == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->name }} - {{ $customer->phone != '[null]' ? $customer->phone : '' }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="button" class="add-button d-flex justify-content-center align-items-center"
+                            data-toggle="modal" data-target="#add_customer"><i class="fas fa-plus"></i></button>
+                    </div>
                 </div>
-                <div class="col-md-1 mx-1 p-0">
+
+                <div class="mx-1 p-0">
                     <button style="width: 100%; background: #5b808f;font-size: 13px;font-weight: 600"
                         wire:click="redirectToCustomerDetails({{ $client_id }})"
                         class="btn btn-primary d-flex justify-content-center align-items-center payment-btn">
@@ -140,98 +145,193 @@
     </div>
 
 
-    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-        <div class="col-md-2 d-flex mb-2 align-items-center  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-            style="animation-delay: 1.25s">
-            {!! Form::label('brand_id', __('lang.brand') . '*', [
-                'class' => app()->isLocale('ar') ? 'd-block text-end h5 mb-0 width-fit' : '  mb-0 h5 width-fit',
-                'style' => 'font-size: 12px;font-weight: 500;',
-            ]) !!}
-            <div class="input-wrapper mx-2">
+    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+        style="animation-delay: 1.1s">
+        <div class="col-md-8 d-flex flex-column">
+            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.customer_type')</span> :
+                    <span class="mx-1"
+                        style="font-weight: 500;">{{ $customer_data->customer_type->name ?? '' }}</span>
+                </div>
+                @php
+                    if (!empty($customer_data->state_id)) {
+                        $state = \App\Models\State::find($customer_data->state_id);
+                    }
+                @endphp
+                <div class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.city') </span> :
+                    <span class="mx-1" style="font-weight: 500;">{{ !empty($city) ? $city->name : '' }}</span>
+                </div>
+                @php
+                    if (!empty($customer_data->city_id)) {
+                        $city = \App\Models\City::find($customer_data->city_id);
+                    }
+                @endphp
+                <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.phone_number') </span> :
+                    <span class="mx-1" style="font-weight: 500;">{{ !empty($customer_data->phone) ?? '' }}</span>
 
-                {!! Form::select('brand_id', $brands, $brand_id, [
-                    'class' => 'select2 form-control',
-                    'data-live-search' => 'true',
-                    'id' => 'brand_id',
-                    'required',
-                    'placeholder' => __('lang.please_select'),
-                    'data-name' => 'brand_id',
-                    'wire:model' => 'brand_id',
+                </div>
+                <div class="col-md-5 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.notes') </span> :
+                    <span class="mx-1" style="font-weight: 500;">{{ !empty($customer_data->notes) ?? '' }}</span>
+
+                </div>
+            </div>
+
+            <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div
+                    class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.state') </span> :
+                    <span class="mx-1" style="font-weight: 500;"> {{ !empty($state) ? $state->name : '' }}</span>
+                </div>
+                @php
+                    if (!empty($customer_data->quarter_id)) {
+                        $quarter = \App\Models\Quarter::find($customer_data->quarter_id);
+                    }
+                @endphp
+                <div
+                    class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.quarter')</span> :
+                    <span class="mx-1" style="font-weight: 500;">
+                        {{ !empty($quarter) ? $quarter->name : '' }}</span>
+
+                </div>
+                <div
+                    class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.email') </span> :
+                    <span class="mx-1" style="font-weight: 500;">{{ !empty($customer_data->email) ?? '' }}</span>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4 d-flex">
+            {{-- +++++++++++ from_a_to_z , from_z_to_a filter +++++++++++ --}}
+            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+                {!! Form::label('alphabetical_order_id', __('lang.alphabetical_order') . '*', [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                    'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
+                <div class="input-wrapper" style="width: 100%">
+                    {!! Form::select(
+                        'alphabetical_order_id',
+                        [__('lang.from_a_to_z'), __('lang.from_z_to_a')],
+                        $alphabetical_order_id,
+                        [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'alphabetical_order_id',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'alphabetical_order_id',
+                            'wire:model' => 'alphabetical_order_id',
+                        ],
+                    ) !!}
+                </div>
+                @error('alphabetical_order_id')
+                    <span class="error text-danger">{{ $message }}</span>
+                @enderror
             </div>
-            @error('brand_id')
-                <span style="font-size: 12px;font-weight: 500;" class="error text-danger">{{ $message }}</span>
-            @enderror
-        </div>
 
-        @include('invoices.partials.search')
-        <div class="col-md-2 animate__animated animate__bounceInLeft" style="animation-delay: 1.3s">
+            {{-- +++++++++++ lowest_price , highest_price filter +++++++++++ --}}
+            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
 
-            <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
-                class=" d-flex mb-3 justify-content-between rounded p-2">
-
-                <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-                    <input type="checkbox" id="from_a_to_z" wire:model="from_a_to_z" name="customCheckboxInline2"
-                        class="sorting_filter filterInput">
-                    <label style="font-size: 11px;font-weight: 600;" for="from_a_to_z"
-                        class="checkbox-inline filterLabel mb-0 ml-2">
-                        @lang('lang.from_a_to_z')
-                    </label>
-                </div>
-
-                <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-                    <input type="checkbox" id="from_z_to_a" wire:model="from_z_to_a" name="customCheckboxInline2"
-                        class="sorting_filter filterInput">
-                    <label style="font-size: 11px;font-weight: 600;" class="checkbox-inline filterLabel mb-0 ml-2"
-                        for="from_z_to_a">@lang('lang.from_z_to_a')</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-2 animate__animated animate__bounceInLeft" style="animation-delay: 1.35s">
-            <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
-                class=" d-flex mb-3 justify-content-between rounded  p-2">
-                <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-
-                    <input type="checkbox" id="highest_price" wire:model="highest_price"
-                        name="customCheckboxInline2" class="sorting_filter filterInput">
-                    <label style="font-size: 11px;font-weight: 600;" class="checkbox-inline filterLabel mb-0 ml-2"
-                        for="highest_price">@lang('lang.highest_price')</label>
-
-                </div>
-
-                <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-
-                    <input type="checkbox" id="lowest_price" wire:model="lowest_price" name="customCheckboxInline2"
-                        class="sorting_filter filterInput">
-                    <label style="font-size: 11px;font-weight: 600;" class="checkbox-inline filterLabel mb-0 ml-2"
-                        for="lowest_price">@lang('lang.lowest_price')</label>
-
+                {!! Form::label('price_order_id', __('lang.price') . '*', [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                    'style' => 'font-size: 12px;font-weight: 500;',
+                ]) !!}
+                <div class="input-wrapper" style="width: 100%">
+                    {!! Form::select('price_order_id', [__('lang.lowest_price'), __('lang.highest_price')], $price_order_id, [
+                        'class' => 'select2 form-control',
+                        'data-live-search' => 'true',
+                        'id' => 'price_order_id',
+                        'required',
+                        'placeholder' => __('lang.please_select'),
+                        'data-name' => 'price_order_id',
+                        'wire:model' => 'price_order_id',
+                    ]) !!}
+                    @error('price_order_id')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
+            {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
+            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+
+                {!! Form::label('dollar_price_order_id', __('lang.dollar_price') . '*', [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                    'style' => 'font-size: 12px;font-weight: 500;',
+                ]) !!}
+                <div class="input-wrapper" style="width: 100%">
+                    {!! Form::select(
+                        'dollar_price_order_id',
+                        [__('lang.dollar_lowest_price'), __('lang.dollar_highest_price')],
+                        $dollar_price_order_id,
+                        [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'dollar_price_order_id',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'dollar_price_order_id',
+                            'wire:model' => 'dollar_price_order_id',
+                        ],
+                    ) !!}
+                </div>
+                @error('dollar_price_order_id')
+                    <span class="error text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+
+            {{-- +++++++++++ nearest_expiry , longest_expiry filter +++++++++++ --}}
+            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+                {!! Form::label('expiry_order_id', __('lang.expiry_order') . '*', [
+                    'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                    'style' => 'font-size: 12px;font-weight: 500;',
+                ]) !!}
+                <div class="input-wrapper" style="width: 100%">
+
+                    {!! Form::select(
+                        'expiry_order_id',
+                        [__('lang.nearest_expiry_filter'), __('lang.longest_expiry_filter')],
+                        $expiry_order_id,
+                        [
+                            'class' => 'select2 form-control',
+                            'data-live-search' => 'true',
+                            'id' => 'expiry_order_id',
+                            'required',
+                            'placeholder' => __('lang.please_select'),
+                            'data-name' => 'expiry_order_id',
+                            'wire:model' => 'expiry_order_id',
+                        ],
+                    ) !!}
+                </div>
+
+                @error('expiry_order_id')
+                    <span class="error text-danger">{{ $message }}</span>
+                @enderror
+            </div>
         </div>
+    </div>
 
-        <div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.4s">
 
-            <div style="background-color: #E6E6E6;color: black;border-right adius: 16px;box-shadow: 5px 8px 4px -5px #bbb inset;"
-                class=" d-flex mb-3 justify-content-between rounded p-2">
-                <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-                    <input class="sorting_filter filterInput" type="checkbox" id="nearest_expiry_filter"
-                        wire:model="nearest_expiry_filter" name="customCheckboxInline2">
-                    <label style="font-size: 11px;font-weight: 600;" class="checkbox-inline filterLabel mb-0 ml-2"
-                        for="nearest_expiry_filter">@lang('lang.nearest_expiry_filter')</label>
-
+    <!-- Add a modal to your HTML with an input field for due date -->
+    <div class="modal" tabindex="-1" role="dialog" id="dueDateModal" wire:ignore>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <label for="dueDate">Due Date:</label>
+                    <input type="date" wire:model="due_date" class="form-control" id="dueDate">
                 </div>
-
-                <div class="col-md-6 p-0 form-check-inline checkbox-dark d-flex">
-
-                    <input class="sorting_filter filterInput" type="checkbox" id="longest_expiry_filter"
-                        wire:model="longest_expiry_filter" name="customCheckboxInline2">
-                    <label style="font-size: 11px;font-weight: 600;" class="checkbox-inline filterLabel mb-0 ml-2"
-                        for="longest_expiry_filter">@lang('lang.longest_expiry_filter')</label>
-
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="submitDueDateBtn"
+                        wire:click="pendingStatus">Submit</button>
+                    <button type="button" class="btn btn-secondary" id="closeDueDateBtn" wire:click="pendingStatus"
+                        data-dismiss="modal">Close</button>
                 </div>
-
             </div>
         </div>
     </div>
@@ -241,8 +341,11 @@
 
 
     <div class="row cards hide-print @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+
         @include('invoices.partials.products')
-        <div class="col-xl-9 special-medal-col animate__animated animate__bounceInLeft" style="animation-delay: 1.6s">
+
+        <div class="col-xl-10 special-medal-col animate__animated animate__bounceInLeft"
+            style="animation-delay: 1.6s">
             <div class="card-app ">
                 <div class="body-card-app content py-2 ">
                     <div class="tab-content" id="v-pills-tabContent">
@@ -486,9 +589,12 @@
                                             </td>
                                         </tr>
                                     @endforeach
-
+                                    <tr>
+                                        @include('invoices.partials.search')
+                                    </tr>
                                 </table>
                             </div>
+
                             @include('invoices.partials.rightSidebar')
 
                         </div>

@@ -2,6 +2,11 @@
 @section('title', __('site.Sale_Screen'))
 @push('css')
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css') }}" />
+    <style>
+        .customer_drop_down .select2-container {
+            width: 75% !important
+        }
+    </style>
 @endpush
 
 @section('content')
