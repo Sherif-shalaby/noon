@@ -123,7 +123,7 @@ class Create extends Component
                 'return_parent_id' => $this->sale->id,
                 'exchange_rate' => 0,
                 'type' => 'sell_return',
-                'transaction_currency' => $this->sale->transaction_currency,
+                // 'transaction_currency' => $this->sale->transaction_currency,
                 'final_total' => $this->num_uf($this->final_total),
                 'grand_total' => $this->num_uf($this->final_total),
                 'transaction_date' => Carbon::now(),
@@ -359,12 +359,13 @@ class Create extends Component
 
         if ($transaction->type == 'sell_return') {
             $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
+            
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([
                     'amount' => $this->num_uf($payment['amount']),
                     'pay_method' => $payment['method'],
                     'type' => $type,
-                    'transaction_type' => $transaction->type,
+                    'transaction_type' => "returns",
                     'transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
@@ -376,7 +377,7 @@ class Create extends Component
                     'amount' => $this->num_uf($payment['amount']),
                     'pay_method' =>  $payment['method'],
                     'type' => $type,
-                    'transaction_type' => $transaction->type,
+                    'transaction_type' => "returns",
                     'transaction_id' => $transaction->id,
                     'transaction_payment_id' => $transaction_payment_id
                 ]);
