@@ -50,7 +50,7 @@ class Create extends Component
         $store_pos, $allproducts = [], $brand_id = 0, $brands = [], $deliveryman_id = null, $delivery_cost, $dollar_remaining = 0,
         $dinar_remaining = 0, $customer_data, $searchProduct, $stores, $reprsenative_sell_car = false, $final_total, $dollar_final_total,
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
-        $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
+        $search_by_product_symbol,$price_order_id,$dollar_price_order_id, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
         $dollar_highest_price, $dollar_lowest_price,$due_date, $created_by,$customer_id,$countryId,$countryName,$country;
 
     protected $rules = [
@@ -454,7 +454,7 @@ class Create extends Component
         $this->customer_data = Customer::find($id);
         //        dd($this->customer_data);
     }
-
+    // ++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++
     public function updatedDepartmentId($value, $name)
     {
         $this->allproducts = Product::when($name == 'department_id1', function ($query) {
@@ -473,48 +473,71 @@ class Create extends Component
         })
         ->when($name == 'department_id4', function ($query) {
             $query->where('subcategory_id3', $this->department_id4);
+        // ++++++++++++++++ brand_id filter ++++++++++++++++
         })->when($name == 'brand_id', function ($query) use ($value) {
             $query->where('brand_id', $this->brand_id);
-        })->when($name == 'highest_price' && $this->highest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as max_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('max(sell_price)'));
-            }])
-                ->orderBy('max_sell_price', 'desc');
-        })->when($name == 'lowest_price' && $this->lowest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as min_sell_price' => function ($subquery) {
+        // ========================== price_order filter ==========================
+        // ++++++++++++++++ if price_order == lowest_price ++++++++++++++++
+        })->when($this->price_order_id == 0 , function ($query)
+        {
+            $query->withCount(['stock_lines as min_sell_price' => function ($subquery)
+            {
                 $subquery->select(DB::raw('min(sell_price)'));
-            }])
-                ->orderBy('min_sell_price', 'asc');
-        })->when($name == 'dollar_highest_price' && $this->dollar_highest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as max_dollar_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('max(dollar_sell_price)'));
-            }])
-                ->orderBy('max_dollar_sell_price', 'desc');
-        })->when($name == 'dollar_lowest_price' && $this->lowest_price == "1", function ($query) {
-            $query->withCount(['stock_lines as min_dollar_sell_price' => function ($subquery) {
-                $subquery->select(DB::raw('min(dollar_sell_price)'));
-            }])
-                ->orderBy('min_dollar_sell_price', 'asc');
+            }])->orderBy('min_sell_price', 'asc');
         })
-            ->when($name == 'from_a_to_z', function ($query) {
-                $query->orderBy('products.name', 'desc');
-            })->when($name == 'from_z_to_a', function ($query) {
-                $query->orderBy('products.name', 'desc');
-            })->when($name == 'nearest_expiry_filter' && $this->nearest_expiry_filter == "1", function ($query) {
-                $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
-                    $subquery->where(function ($q) {
-                        $q->whereDate('expiry_date', '>', Carbon::now());
-                    });
-                }])->orderBy('expiry_date', 'asc');
-            })
-            ->when($name == 'longest_expiry_filter' && $this->longest_expiry_filter == "1", function ($query) {
-                $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
-                    $subquery->where(function ($q) {
-                        $q->whereDate('expiry_date', '>', Carbon::now());
-                    });
-                }])->orderBy('expiry_date', 'desc');
-            })
-            ->get();
+        // ++++++++++++++++ if price_order == highest_price ++++++++++++++++
+        ->when($this->price_order_id == 1, function ($query)
+        {
+            $query->withCount(['stock_lines as max_sell_price' => function ($subquery)
+            {
+                $subquery->select(DB::raw('max(sell_price)'));
+            }])->orderBy('max_sell_price', 'desc');
+        })
+        // ========================== alphabetical_order filter ==========================
+        // ++++++++++++++++ if alphabetical_order == from_a_to_z ++++++++++++++++
+        ->when($this->alphabetical_order_id == 0 , function ($query) {
+            $query->orderBy('name', 'asc');
+        })
+        // ++++++++++++++++ if alphabetical_order == from_z_to_a ++++++++++++++++
+        ->when($this->alphabetical_order_id == 1 , function ($query) {
+            $query->orderBy('name', 'desc');
+        })
+        // ========================== dollar_price_order filter ==========================
+        // ++++++++++++++++ if dollar_price_order_id == dollar_lowest_price ++++++++++++++++
+        ->when($this->dollar_price_order_id == 0 , function ($query)
+        {
+            $query->withCount(['stock_lines as min_dollar_sell_price' => function ($subquery)
+            {
+                $subquery->select(DB::raw('min(dollar_sell_price)'));
+            }])->orderBy('min_dollar_sell_price', 'asc');
+        })
+        // ++++++++++++++++ if dollar_price_order_id == dollar_highest_price ++++++++++++++++
+        ->when($this->dollar_price_order_id == 1, function ($query)
+        {
+            $query->withCount(['stock_lines as max_dollar_sell_price' => function ($subquery)
+            {
+                $subquery->select(DB::raw('max(dollar_sell_price)'));
+            }])->orderBy('max_dollar_sell_price', 'desc');
+        })
+        // ========================== nearest_expiry , longest_expiry filter ==========================
+        // ++++++++++++++++ if nearest_expiry_filter == nearest_expiry_filter ++++++++++++++++
+        ->when($this->expiry_order_id  == 1, function ($query) {
+            $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
+                $subquery->where(function ($q) {
+                    $q->whereDate('expiry_date', '>', Carbon::now());
+                });
+            }])->orderBy('expiry_date', 'asc');
+        })
+        // ++++++++++++++++ if nearest_expiry_filter == longest_expiry_filter ++++++++++++++++
+        ->when($this->expiry_order_id == 0 , function ($query) {
+            $query->withCount(['stock_lines as expiry_date' => function ($subquery) {
+                $subquery->where(function ($q) {
+                    $q->whereDate('expiry_date', '>', Carbon::now());
+                });
+            }])->orderBy('expiry_date', 'desc');
+        })
+        ->get();
+        // dd($this->allproducts);
     }
 
     public function redirectToCustomerDetails($clientId)

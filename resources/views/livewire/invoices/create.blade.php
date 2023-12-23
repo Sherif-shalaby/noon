@@ -28,28 +28,50 @@
                             <label for="from_z_to_a">@lang('lang.from_z_to_a')</label>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="highest_price" wire:model="highest_price" name="customCheckboxInline2">
-                            <label for="highest_price">@lang('lang.highest_price')</label>
+                    {{-- +++++++++++ lowest_price , highest_price filter +++++++++++ --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('price_order_id', __('lang.price') . ':*', []) !!}
+                            {!! Form::select(
+                                'price_order_id',
+                                [_('lang.highest_price'), _('lang.lowest_price')],
+                                $price_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'price_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'price_order_id',
+                                    'wire:model' => 'price_order_id',
+                                ]
+                            ) !!}
+                            @error('price_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="lowest_price" wire:model="lowest_price" name="customCheckboxInline2">
-                            <label for="lowest_price">@lang('lang.lowest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="dollar_highest_price" wire:model="dollar_highest_price" name="customCheckboxInline2">
-                            <label for="dollar_highest_price">@lang('lang.dollar_highest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="dollar_lowest_price" wire:model="dollar_lowest_price" name="customCheckboxInline2">
-                            <label for="dollar_lowest_price">@lang('lang.dollar_lowest_price')</label>
+                    {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('dollar_price_order_id', __('lang.dollar_price') . ':*', []) !!}
+                            {!! Form::select(
+                                'dollar_price_order_id',
+                                [_('lang.dollar_highest_price'), _('lang.dollar_lowest_price')],
+                                $dollar_price_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'dollar_price_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'dollar_price_order_id',
+                                    'wire:model' => 'dollar_price_order_id',
+                                ]
+                            ) !!}
+                            @error('dollar_price_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
