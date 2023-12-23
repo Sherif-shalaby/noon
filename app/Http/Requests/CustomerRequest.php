@@ -27,6 +27,7 @@ class CustomerRequest extends FormRequest
             'name' => 'required|max:255|unique:customers',
             'customer_type_id'=>'required',
             'notes' => 'nullable|max:255',
+            'country_id' => 'nullable',
             'city_id' => 'nullable',
             'state_id' => 'nullable',
             'quarter_id' => 'nullable',
