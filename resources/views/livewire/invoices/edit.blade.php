@@ -255,7 +255,7 @@
                     </div>
                 </div>
             </div>
-            @include('invoices.partials.rightSidebar')
+            {{-- @include('invoices.partials.rightSidebar') --}}
         </div>
         {!! Form::close() !!}
         <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>

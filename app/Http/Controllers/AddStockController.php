@@ -17,6 +17,7 @@ use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\TransactionSellLine;
 use App\Models\User;
 use App\Utils\MoneySafeUtil;
 use App\Utils\ProductUtil;
@@ -353,6 +354,20 @@ class AddStockController extends Controller
         return number_format($paid,3);
     }
 
+    public function recentTransactions(){
+        $sell_lines = TransactionSellLine::query();
 
+        // Check if the user is a superadmin or admin
+        if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
+            // If the user is a superadmin or admin, get all sell lines
+            $sell_lines = $sell_lines->orderBy('created_at', 'desc');
+        } else {
+            // If the user is not a superadmin or admin, get sell lines created by the current user
+            $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
+        }
+
+        $sell_lines = $sell_lines->paginate(10);
+        return view('invoices.partials.recent_transactions',compact('sell_lines'));
+    }
 
 }

@@ -585,16 +585,11 @@ class Create extends Component
                 $key = array_keys($newArr)[0];
                 ++$this->items[$key]['quantity'];
 
-
                 if ($quantity_available  < $this->items[$key]['quantity']) {
                     --$this->items[$key]['quantity'];
                     $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
                 } else {
                     $this->items[$key]['sub_total'] = ($this->num_uf($this->items[$key]['price']) * (float)$this->items[$key]['quantity']) - ((float)$this->items[$key]['quantity'] * $this->num_uf($this->items[$key]['discount']));
-                    // Move the item to the last index
-                    $itemToMove = $this->items[$key];
-                    unset($this->items[$key]);
-                    $this->items[] = $itemToMove;
                 }
             } else {
                 $get_Variation_price=VariationPrice::where('variation_id',$product->variations()->first()->id);
