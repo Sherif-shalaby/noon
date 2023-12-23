@@ -595,9 +595,15 @@ class Create extends Component
                 $get_Variation_price=VariationPrice::where('variation_id',$product->variations()->first()->id);
                 $customer_types_variations=$get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes=CustomerType::whereIn('id',$customer_types_variations)->get();
-//                 dd( !empty($current_stock->id));
                 $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->sell_price??0), 3) : 0;
                 $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id',$current_stock->id)->where('variation_price_id',$get_Variation_price->first()->id)->first()->dollar_sell_price??0), 3) : 0;
+                $dollar_exchange=System::getProperty('dollar_exchange');
+                if( $this->num_uf($dollar_exchange)> $this->num_uf($exchange_rate)){
+                    if($price ==0){
+                        $price=$this->num_uf($dollar_price)*$this->num_uf($exchange_rate);
+                        $dollar_price=0;
+                    }
+                }
                 $new_item = [
                     'variation' => $product->variations,
                     'product' => $product,
@@ -628,7 +634,7 @@ class Create extends Component
                     'stores' => $product_stores,
                     'unit_id' => ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)->first()->variation_id ?? '',
                 ];
-                array_unshift($this->items, $new_item);
+                $this->items[]= $new_item;
             }
         }
         $this->computeForAll();
@@ -1550,14 +1556,20 @@ class Create extends Component
     public function changeDinarPrice($key)
     {
         try {
-            $stock_line = AddStockLine::where('product_id', $this->items[$key]['product']['id'])->where('variation_id', $this->items[$key]['unit_id'])->first();
+            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
             if (!empty($stock_line)) {
-                $stock_line->sell_price = $this->num_uf($this->items[$key]['price']);
-                if (isset($stock_line->dollar_sell_price) && $stock_line->dollar_sell_price !== 0) {
-                    $stock_line->dollar_sell_price = $this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']);
-                    $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), 3);
+                $variation_price=VariationPrice::where('variation_id',$this->items[$key]['unit_id'])->where('customer_type_id',$this->items[$key]['customer_type_id'])->first();
+                $variation_stock=VariationStockline::where('stock_line_id',$this->items[$key]['current_stock']['id'])->where('variation_price_id',$variation_price->id)->first();
+                if($variation_stock->dollar_sell_price>0 && ($variation_stock->sell_price==0|| $variation_stock->sell_price==null)){
+                    $variation_stock->dollar_sell_price = $this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']);
+                }else{
+                    $variation_stock->sell_price = $this->num_uf($this->items[$key]['price']);
                 }
-                $stock_line->save();
+                // if (isset($variation_stock->dollar_sell_price) && $variation_stock->dollar_sell_price !== 0) {
+                //     $variation_stock->dollar_sell_price = $this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']);
+                //     $this->items[$key]['dollar_price'] = number_format($this->num_uf($this->items[$key]['price']) / $this->num_uf($this->items[$key]['exchange_rate']), 3);
+                // }
+                $variation_stock->save();
                 $this->subtotal($key);
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
             } else {
@@ -1571,14 +1583,21 @@ class Create extends Component
     public function changeDollarPrice($key)
     {
         try {
-            $stock_line = AddStockLine::where('product_id', $this->items[$key]['product']['id'])->where('variation_id', $this->items[$key]['unit_id'])->first();
+            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
             if (!empty($stock_line)) {
-                $stock_line->dollar_sell_price = $this->num_uf($this->items[$key]['dollar_price']);
-                if (isset($stock_line->sell_price) && $stock_line->sell_price !== 0) {
-                    $stock_line->sell_price = $this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']);
-                    $this->items[$key]['price'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']), 3);
+                $variation_price=VariationPrice::where('variation_id',$this->items[$key]['unit_id'])->where('customer_type_id',$this->items[$key]['customer_type_id'])->first();
+                $variation_stock=VariationStockline::where('stock_line_id',$stock_line->id)->where('variation_price_id',$variation_price->id)->first();
+                if($variation_stock->dollar_sell_price==0 && $variation_stock->sell_price>0){
+                    $variation_stock->sell_price = $this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']);
+                }else{
+                    $variation_stock->dollar_sell_price = $this->num_uf($this->items[$key]['dollar_price']);
                 }
-                $stock_line->save();
+                // $variation_stock->dollar_sell_price = $this->num_uf($this->items[$key]['dollar_price']);
+                // if (isset($variation_stock->sell_price) && $variation_stock->sell_price !== 0) {
+                //     $variation_stock->sell_price = $this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']);
+                //     $this->items[$key]['price'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['exchange_rate']), 3);
+                // }
+                $variation_stock->save();
                 $this->subtotal($key);
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
             } else {
