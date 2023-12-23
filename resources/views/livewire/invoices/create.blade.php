@@ -16,52 +16,96 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-4 pt-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="from_a_to_z" wire:model="from_a_to_z" name="customCheckboxInline2">
-                            <label for="from_a_to_z">@lang('lang.from_a_to_z')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4 pt-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="from_z_to_a" wire:model="from_z_to_a" name="customCheckboxInline2">
-                            <label for="from_z_to_a">@lang('lang.from_z_to_a')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="highest_price" wire:model="highest_price" name="customCheckboxInline2">
-                            <label for="highest_price">@lang('lang.highest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="lowest_price" wire:model="lowest_price" name="customCheckboxInline2">
-                            <label for="lowest_price">@lang('lang.lowest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="dollar_highest_price" wire:model="dollar_highest_price" name="customCheckboxInline2">
-                            <label for="dollar_highest_price">@lang('lang.dollar_highest_price')</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="dollar_lowest_price" wire:model="dollar_lowest_price" name="customCheckboxInline2">
-                            <label for="dollar_lowest_price">@lang('lang.dollar_lowest_price')</label>
-                        </div>
-                    </div>
+                    {{-- +++++++++++ from_a_to_z , from_z_to_a filter +++++++++++ --}}
                     <div class="col-md-4">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="nearest_expiry_filter" wire:model="nearest_expiry_filter" name="customCheckboxInline2">
-                            <label for="nearest_expiry_filter">@lang('lang.nearest_expiry_filter')</label>
+                        <div class="form-group">
+                            {!! Form::label('alphabetical_order_id', __('lang.alphabetical_order') . ':*', []) !!}
+                            {!! Form::select(
+                                'alphabetical_order_id',
+                                [ __('lang.from_a_to_z'), __('lang.from_z_to_a')],
+                                    $alphabetical_order_id,
+                                    [
+                                        'class' => 'select2 form-control',
+                                        'data-live-search' => 'true',
+                                        'id' => 'alphabetical_order_id',
+                                        'required',
+                                        'placeholder' => __('lang.please_select'),
+                                        'data-name' => 'alphabetical_order_id',
+                                        'wire:model' => 'alphabetical_order_id',
+                                    ]
+                            ) !!}
+                            @error('alphabetical_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
+                    {{-- +++++++++++ lowest_price , highest_price filter +++++++++++ --}}
                     <div class="col-md-4">
-                        <div class="form-check-inline checkbox-dark">
-                            <input type="checkbox" id="longest_expiry_filter" wire:model="longest_expiry_filter" name="customCheckboxInline2">
-                            <label for="longest_expiry_filter">@lang('lang.longest_expiry_filter')</label>
+                        <div class="form-group">
+                            {!! Form::label('price_order_id', __('lang.price') . ':*', []) !!}
+                            {!! Form::select(
+                                'price_order_id',
+                                [ __('lang.lowest_price'), __('lang.highest_price')],
+                                $price_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'price_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'price_order_id',
+                                    'wire:model' => 'price_order_id',
+                                ]
+                            ) !!}
+                            @error('price_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('dollar_price_order_id', __('lang.dollar_price') . ':*', []) !!}
+                            {!! Form::select(
+                                'dollar_price_order_id',
+                                [ __('lang.dollar_lowest_price'), __('lang.dollar_highest_price')],
+                                $dollar_price_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'dollar_price_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'dollar_price_order_id',
+                                    'wire:model' => 'dollar_price_order_id',
+                                ]
+                            ) !!}
+                            @error('dollar_price_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    {{-- +++++++++++ nearest_expiry , longest_expiry filter +++++++++++ --}}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            {!! Form::label('expiry_order_id', __('lang.expiry_order') . ':*', []) !!}
+                            {!! Form::select(
+                                'expiry_order_id',
+                                [ __('lang.nearest_expiry_filter') , __('lang.longest_expiry_filter')],
+                                $expiry_order_id,
+                                [
+                                    'class' => 'select2 form-control',
+                                    'data-live-search' => 'true',
+                                    'id' => 'expiry_order_id',
+                                    'required',
+                                    'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'expiry_order_id',
+                                    'wire:model' => 'expiry_order_id',
+                                ]
+                            ) !!}
+                            @error('expiry_order_id')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -107,6 +151,8 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-7">
@@ -435,6 +481,7 @@
             });
 
         });
+
     </script>
 
 @endpush

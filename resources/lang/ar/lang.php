@@ -601,12 +601,15 @@ return array(
     'quick_pay' =>'دفع سريع',
     'highest_price'=>'الاعلى سعرا',
     'lowest_price'=>'الاقل سعرا',
-    'from_a_to_z'=>'من الاف للياء',
-    'from_z_to_a'=>'من الياء للالف',
+    'from_a_to_z'=> 'من الاف للياء',
+    'from_z_to_a'=> 'من الياء للالف',
+    'alphabetical_order' => 'ترتيب ابجدي' ,
     'nearest_expiry_filter'=>'اقرب انتهائا للصلاحية',
     'longest_expiry_filter'=>'أطول انتهائا للصلاحية',
     'dollar_highest_price'=>'$ الاعلى سعرا',
     'dollar_lowest_price'=>'$ الاقل سعرا',
+    'dollar_price' => 'السعر بالدولار' ,
+    'expiry_order' => 'الصلاحية',
     'out_of_stock' => 'لا يوجد مخزون',
     'po' => 'أمر شراء',
     'branches' => 'الفروع',
@@ -733,6 +736,5 @@ return array(
     'value'=>'قيمة',
     'apply_on_all_customers'=>'تطبيق على كل العملاء',
     'c_type'=>'نوع العميل',
-
 );
 
