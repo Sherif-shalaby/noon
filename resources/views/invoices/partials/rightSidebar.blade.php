@@ -1,12 +1,12 @@
 <div class="col-xl-2">
     <div class="card-app">
-        <div class="d-flex  align-items-center   mt-1 body-card-app pt-2">
-            <input type="text" wire:model.defer="client_phone" id="" class="form-control w-60"
-                placeholder="{{ __('بحث برقم العميل') }}">
-            {{--            <input readonly type="text" class="{{ $client ? '' : 'd-none' }} form-control w-25" --}}
-            {{--                   value="{{ $client?->name }}"> --}}
-            <button wire:click='getClient' class="btn btn-sm btn-primary">{{ __('Search') }}</button>
-        </div>
+{{--        <div class="d-flex  align-items-center   mt-1 body-card-app pt-2">--}}
+{{--            <input type="text" wire:model.defer="client_phone" id="" class="form-control w-60"--}}
+{{--                placeholder="{{ __('بحث برقم العميل') }}">--}}
+{{--            --}}{{--            <input readonly type="text" class="{{ $client ? '' : 'd-none' }} form-control w-25" --}}
+{{--            --}}{{--                   value="{{ $client?->name }}"> --}}
+{{--            <button wire:click='getClient' class="btn btn-sm btn-primary">{{ __('Search') }}</button>--}}
+{{--        </div>--}}
         {{-- +++++++++++++++++ Customers Dropdown +++++++++++++++++ --}}
         {{-- <div class="mb-1 body-card-app pt-2" wire:ignore>
             <label for="" class="text-primary">العملاء</label>
@@ -25,7 +25,7 @@
             @include('customers.quick_add')
         </div> --}}
         {{-- +++++++++++++++++ الاجماليات +++++++++++++++++ --}}
-        <div class="title-card-app text-start mt-3">
+        <div class="title-card-app text-start">
             الاجماليات
         </div>
         <div class="body-card-app pt-2">
@@ -137,7 +137,7 @@
                         ]) !!}
                     </div>
                 </div>
-                @if($dinar_remaining != 0 || $dollar_remaining  != 0) 
+                @if($dinar_remaining != 0 || $dollar_remaining  != 0)
                     <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('due_date', ' تاريخ الاستحقاق', ['class' => 'text-primary']) !!}
@@ -207,7 +207,7 @@
                 {{--                </div> --}}
             </div>
             <div class="row hide-print mt-3">
-   
+
                         {{-- ++++++++++++++++++++++ زرار الدفع لاحقا++++++++++++++++++++ --}}
                         {{-- <div class="col-md-5">
                             <button style="width: 100%; background: #5b808f" type="button" class="btn btn-primary payment-btn"
@@ -306,7 +306,7 @@
                     </div> --}}
                 </div>
             </div>
-         
+
             <div class="col-md-12">
                 @include('invoices.partials.recent_transactions')
             </div>
@@ -319,19 +319,19 @@
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
 </div>
-              
+
   <script>
      //Function to open the due date modal
      function openDueDateModal() {
         $('#dueDateModal').css('display', 'block');
     }
-    
+
     // Wait for the document to be ready
     // $(document).ready(function() {
         // Handle the "Submit" button click event
         $('#dueDateModal').on('click', '#submitDueDateBtn', function() {
             // Get the selected due date from the input
-            
+
             // Close the modal after handling the due date
             $('#dueDateModal').css('display', 'none');
         });
@@ -343,9 +343,9 @@
         });
         $(document).on("click", "#recent-transaction-btn", function () {
             $("#recentTransaction").modal("show");
-        }); 
+        });
         $(document).on("click", "#closeRecentTransactionModal", function () {
             $("#recentTransaction").modal("hide");
-        }); 
+        });
     // });
   </script>
