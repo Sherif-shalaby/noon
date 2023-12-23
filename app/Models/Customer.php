@@ -20,7 +20,6 @@ class Customer extends Model
                                     'deposit_balance', 'added_balance','city_id','state_id','quarter_id',
                                     'created_by', 'deleted_by', 'updated_by', 'customer_type_id');
 
-    // ++++++++++++++++ customer has one type ++++++++++++++++
     public function customer_type()
     {
         return $this->belongsTo('App\Models\CustomerType', 'customer_type_id');

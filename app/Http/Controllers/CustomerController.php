@@ -103,10 +103,11 @@ class CustomerController extends Controller
    */
     public function store(CustomerRequest $request)
     {
+        // dd($request);
         try
         {
             DB::beginTransaction();
-            $data = $request->except('_token','phone','email','country_id');
+            $data = $request->except('_token','phone','email');
             // ++++++++++++++ store phones in array ++++++++++++++++++
             $data['phone'] = json_encode($request->phone);
             // ++++++++++++++ store email in array ++++++++++++++++++
@@ -118,7 +119,11 @@ class CustomerController extends Controller
             {
                 $data['image'] = store_file($request->file('image'), 'customers');
             }
+            // dd($data);
+
             $customer = Customer::create($data);
+
+
             if (!empty($request->important_dates)) {
                 $this->createOrUpdateCustomerImportantDate($customer->id, $request->important_dates);
             }
