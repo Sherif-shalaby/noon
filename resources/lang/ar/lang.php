@@ -562,6 +562,7 @@ return array(
     'select_to_delete'=> 'حدد للحذف',
     'select_to_add' => 'حدد للاضافة' ,
     'delete_all' => 'حذف جماعي',
+    'are_you_want_delete_all' => 'هل متاكد من عملية الحذف',
     'filter'=>'تصفية',
     'dont_show_zero_stocks'=>'عدم اظهار منتجات بدون مخزون',
     'sku_required'=>'الباركود موجود من قبل',
@@ -711,8 +712,8 @@ return array(
     'product_sku_start' => 'رمز الماده يبدأ ب',
     'large_filling' => 'أكبر تعبئه',
     'small_filling' => 'تعبئه اصغر',
-
-    'piece_price'=>'سعر القطعة',    'evening_shift' => 'شيفت مسائي' ,
+    'piece_price'=>'سعر القطعة',
+    'evening_shift' => 'شيفت مسائي' ,
     'employee_products' => 'المنتجات المسئول عنها الموظف',
     'days_number_notify' => 'عدد الايام قبل التنبيه' ,
     // +++++++++++++++ notifications +++++++++++++++++
@@ -727,9 +728,13 @@ return array(
     'days' => 'أيام',
     'in_stock' => 'في المخزن',
     'alert_quantity' => 'كمية التنبيه',
-    'expired' => 'منتهي الصلاحية',
     'expired_quantity' => 'الكمية منتهية الصلاحية',
     'value'=>'قيمة',
-
+    'apply_on_all_customers'=>'تطبيق على كل العملاء',
+    'c_type'=>'نوع العميل',
+    'quarter' => 'الحي',
+    'recent_transactions'=>'المعاملات الاخيرة',
+    'change_remaining_to_dinar'=>'تحويل الباقى الى دينار',
+    'change_bill_to_dinar'=>'تحويل الفاتورة الى دينار',
 );
 

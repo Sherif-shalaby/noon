@@ -314,9 +314,10 @@
 
                         </div>
                         <div class="col-md-12 text-center mt-1 ">
-                            <h4>@lang('lang.items_count'):
-                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>
-                                <br>
+                            <h4>
+{{--                                @lang('lang.items_count'):--}}
+{{--                                <span class="items_count_span" style="margin-right: 15px;">{{ count($rows) }}</span>--}}
+{{--                                <br>--}}
                                 {{ $this->count_total_by_variations() }}
                                 @if (!empty($variationSums))
                                     @foreach ($variationSums as $unit_name => $variant)
@@ -410,11 +411,11 @@
                         </div>
                         <div class="discount {{ $show_discount == 0 ? 'd-none' : '' }}">
                             @foreach ($prices as $key => $price)
-                                <div class="row">
+                            {{-- {{ $price['parent_price']==1?'d-none':''}} --}}
+                                <div class="row {{ $price['parent_price']==1?'d-none':''}}">
                                     <div class="col-md-1">
                                         <label for="fill_id" class="h5 pt-3">{{ __('lang.fill') . ':*' }}</label>
                                         {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
-                                            'id' => 'fill_id',
                                             'class' => ' form-control select2 fill_id',
                                             'data-name' => 'fill_id',
                                             'data-index' => $key,
@@ -454,7 +455,7 @@
                                         {!! Form::label('customer_type', __('lang.customer_type')) !!}
                                         <select wire:model="prices.{{ $key }}.price_customer_types"
                                             data-name='price_customer_types' data-index="{{ $key }}"
-                                            data-key="{{ $key }}" class="form-control select2"
+                                            data-key="{{ $key }}" class="form-control select2" wire:change="changePrice({{ $key }})"
                                             placeholder="{{ __('lang.please_select') }}">
                                             @foreach ($customer_types as $type)
                                                 <option value="{{ $type->id }}">{{ $type->name }}</option>
@@ -500,7 +501,7 @@
                                                 name="discount_from_original_price" id="discount_from_original_price"
                                                 style="font-size: 0.75rem"
                                                 @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                                wire:change="changePrice({{ $key }})">
+                                                wire:change="change_discount_from_original_price({{ $key }})">
                                             <label class="custom-control-label"
                                                 for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
                                         </div>
@@ -519,33 +520,49 @@
                                             wire:change="changePrice({{ $key }})"
                                             placeholder = "{{ isset($price['price_type']) && $price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent') }}"
                                             @if (empty($prices[$key]['price_type'])) readonly @endif>
+                                         <p>
+                                            {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price'] ?? '' }}
+                                        </p>
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('', __('lang.price')) !!}
                                         <input type="text" name="" class="form-control price"
                                             wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                             placeholder = "{{ __('lang.price') }}">
-                                        {{-- <p>
+                                         <p>
                                             {{ __('lang.price') . ' $' }}:{{ $this->prices[$index]['price_after_desc'] ?? '' }}
-                                        </p> --}}
+                                        </p>
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('total_price', __('lang.total_price')) !!}
                                         <input type="text" name="total_price" class="form-control total_price"
                                             wire:model="prices.{{ $key }}.dinar_total_price"
                                             placeholder = "{{ __('lang.total_price') }}">
-                                        {{-- <p>
+                                         <p>
                                             {{ __('lang.total_price') . ' $' }}:{{ $this->prices[$key]['total_price'] ?? '' }}
-                                        </p> --}}
+                                        </p>
                                     </div>
                                     <div class="col-md-1">
                                         {!! Form::label('piece_price', __('lang.piece_price')) !!}
                                         <input type="text" name="piece_price" class="form-control piece_price"
                                             wire:model="prices.{{ $key }}.dinar_piece_price"
                                             placeholder = "{{ __('lang.total_price') }}">
-                                        {{-- <p>
+{{--                                             <span>{{$rows[$index]['prices'][$key]['dollar_piece_price']??0}} $</span>--}}
+                                         <p>
                                             {{ __('lang.piece_price') . ' $' }}:{{ $this->prices[$key]['piece_price'] ?? '' }}
-                                        </p> --}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="apply_on_all_customers" id="apply_on_all_customers{{ $key }}"
+                                                style="font-size: 0.75rem"
+                                                wire:model="prices.{{ $key }}.apply_on_all_customers"
+                                                wire:change="applyOnAllCustomers({{ $key }})">
+                                                <br>
+                                            <label class="custom-control-label"
+                                                for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
+                                        </div>
                                     </div>
 
                                     <div class="col-md-1">
@@ -577,10 +594,10 @@
                             @forelse ($fill_stores as $i => $store)
                                 <div class="row {{ $show_store == 0 ? 'd-none' : '' }}">
                                     <div class="col-md-1">
-                                        <button type="button" class="btn btn-sm btn-primary"
+                                        `<button type="button" class="btn btn-sm btn-primary"
                                         wire:click="addStoreRow()">
                                         <i class="fa fa-plus"></i>
-                                        </button>
+                                        </button>`
                                     </div>
                                     <div class="col-md-2">
                                         <label for="extra_store_id"
@@ -594,7 +611,7 @@
                                                 'wire:model' => 'fill_stores.'.$i.'.extra_store_id',
                                                 'wire:key' => 'extra_store_id_'.$i,
                                             ]) !!}
-                                            
+
                                         {{-- @error('fill_stores.'.$i.'.extra_store_id')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror --}}
@@ -622,7 +639,7 @@
                                                 <br>
                                                 <label class="text-danger error-msg">{{ $message }}</label>
                                             @enderror
-                                            
+
                                         </div>
                                         <div class="col-md-1">
                                             <button class="btn btn-sm btn-danger"
@@ -715,6 +732,9 @@
                 var index = $(this).data('index');
                 var key = $(this).data('key');
                 var select2 = $(this);
+                console.log(select2.select2("val"))
+                console.log(index)
+
                 Livewire.emit('listenerReferenceHere', {
                     var1: name,
                     var2: select2.select2("val"),

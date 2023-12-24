@@ -2,12 +2,30 @@
     <form action="{{route('products.index')}}" method="get">
     <div class="row">
         {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
-        <div class="col-2">
+        {{-- <div class="col-2">
             <div class="form-group">
                 {!! Form::select(
                     'store_id',
                     $stores,request()->store_id,
                     ['class' => 'form-control select2','placeholder'=>__('lang.store')]
+                ) !!}
+            </div>
+        </div> --}}
+        {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
+        <div class="col-2">
+            <div class="form-group">
+                {!! Form::select(
+                    'branch_id',
+                    $branches,null,
+                    ['class' => 'form-control select2','placeholder'=>__('lang.branch'), 'id' => 'branch_id']
+                ) !!}
+            </div>
+        </div>
+        {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
+        <div class="col-2">
+            <div class="form-group">
+                {!! Form::select(
+                    'store_id',[],null,['class' => 'form-control select2 store','placeholder'=>__('lang.store'), 'id' => 'store_id']
                 ) !!}
             </div>
         </div>
@@ -164,6 +182,34 @@
                     });
                 }
             })
+        });
+         // +++++++++++++++++++++++++++++++++ branches and stores filter +++++++++++++++++++++++++++++++++
+         $('#branch_id').change(function(event) {
+            var idBranch = this.value;
+            // alert(idSubcategory1);
+            $('#store_id').html('');
+                $.ajax({
+                    url: "/api/fetch_branch_stores",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {branch_id: idBranch,_token:"{{ csrf_token() }}"},
+                    success:function(response)
+                    {
+                        console.log(response);
+                        $('#store_id').html('<option value="">{{ __("lang.store") }}</option>');
+                        // $.each(response.branch_id,function(index, val)
+                        $.each(response.store_id,function(index, val)
+                        {
+                            console.log("id = "+val.id ,"value = "+val.name);
+                            $('#store_id').append('<option value="'+val.id+'">'+val.name+'</option>')
+                        });
+                    },
+                    error: function (error)
+                    {
+                        console.error("Error fetching filtered stores:", error);
+                    }
+
+                })
         });
 
     });

@@ -163,6 +163,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/create/product_id={id}/getDamageProduct', [ProductController::class,'getDamageProduct'])->name("getDamageProduct");
     Route::get('product/remove_expiry/{id}', [ProductController::class,'get_remove_expiry'])->name('remove_expiry');
     Route::get('product/create/product_id={id}/convolutions', [ProductController::class,'addConvolution'])->name("addConvolution");
+    // ======= add "new store" in realtime =====
+    Route::post('product/create/add_store', [ProductController::class,'add_store'])->name('product.add_store');
+    // ++++++++++++ get "stores" dropdown ++++++++++++
+    Route::get('product/get-dropdown-store/', [ProductController::class,'getStoresDropdown']);
     // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
     // fetch "sub_categories1" of selected "main_category" selectbox
     Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_product_sub_categories1']);
@@ -183,11 +187,15 @@ Route::group(['middleware' => ['auth']], function () {
     // general_setting : fetch "quarter" of selected "city" selectbox
     Route::post('api/customers/fetch-quarters',[CustomerController::class,'fetchQuarter']);
     // +++++++++++++++++++ Add "new region" +++++++++++++++++++
-    Route::post('customers/create/storeRegion', [CustomerController::class,'storeRegion'])->name('customers.storeRegion');
+    Route::post('customers/create/', [CustomerController::class,'storeRegion'])->name('customers.storeRegion');
     // +++++++++++++++++++ Add "new quarter" +++++++++++++++++++
     Route::post('customers/create/storeQuarter', [CustomerController::class,'storeQuarter'])->name('customers.storeQuarter');
     Route::resource('customertypes', CustomerTypeController::class);
     Route::get('customer/get-dropdown', [CustomerController::class,'getDropdown']);
+    // ++++++++++++ task 14-12-2023 : get "cities" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-city/{id}', [CustomerController::class,'getDropdownCity']);
+    // ++++++++++++ task 14-12-2023 : get "quarters" dropdown ++++++++++++
+    Route::get('customer/get-dropdown-quarter/{id}', [CustomerController::class,'getDropdownQuarter']);
     Route::get('customer/dues', [CustomerController::class,'get_due'])->name('dues');
     Route::get('customer/customer_dues/{id}', [CustomerController::class,'customer_dues'])->name('customer_dues');
 
@@ -198,6 +206,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
+    Route::get('recent_transactions', [AddStockController::class,'recentTransactions'])->name('recent_transactions');
     Route::get('add-stock/index', [AddStockController::class,'index'])->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
@@ -268,9 +277,10 @@ Route::group(['middleware' => ['auth']], function () {
     // Sell Screen
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
-    Route::get('invoices/edit/{invoice}', function ($id) {
-        return view('invoices.edit', compact('id'));
-    })->name('invoices.edit');
+    Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
+    // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
+    Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
+
     Route::resource('pos',SellPosController::class);
     Route::resource('pos-pay',TransactionPaymentController::class);
     Route::get('transaction-payment/add-payment/{id}', [SellPosController::class, 'addPayment'])->name('add_payment');
@@ -286,9 +296,8 @@ Route::group(['middleware' => ['auth']], function () {
     // ========= "create_invoice" link =============
     // Route::get('customer_price_offer/create_invoice/{id}', [CustomerOfferPriceController::class, 'create_invoice'])->name('customer_price_offer.create_invoice');
     // Route::view('customer_price_offer/create_invoice/{id}', 'customer_price_offer.create_invoice')->name('customer_price_offer.create_invoice');
-    // Route::get('invoices/edit/{invoice}', function ($id) {
-    //     return view('invoices.edit', compact('id'));
-    // })->name('invoices.edit');
+    // ################################# edit invoice #################################
+
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################

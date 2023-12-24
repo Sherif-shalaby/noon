@@ -214,6 +214,7 @@ return [
     'exchange_rate'=>'Exchange Rate',
     'city'=>'City',
     'country'=>'Country',
+    'quarters'=>'Neighbourhood',
     'postal_code'=>'Postal Code',
     'type'=>'Type',
     'percentage'=>'Percentage',
@@ -663,6 +664,11 @@ return [
     'large_filling' => 'Large Filling',
     'small_filling' => 'Small Filling',
     'value'=>'Value',
+    'apply_on_all_customers'=>'Apply on all customers',
+    'c_type'=>'Customer type',
+    'recent_transactions'=>'Recent Transactions',
+    'change_remaining_to_dinar'=>'Change Remaining To Dinar',
+    'change_bill_to_dinar'=>'Change Bill To Dinar',
 ];
 
 

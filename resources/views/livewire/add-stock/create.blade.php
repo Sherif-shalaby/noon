@@ -36,13 +36,13 @@
                     <div class="card-body">
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-3">
+                                {{-- <div class="col-md-3">
                                     {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                                     {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control select2','data-name' => 'store_id', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'), 'wire:model' => 'store_id']) !!}
                                     @error('store_id')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="col-md-3">
                                     {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
                                     <div class="d-flex justify-content-center">
@@ -56,7 +56,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="col-md-2">
+                                {{-- <div class="col-md-2">
                                     <label for="invoice_currency">@lang('lang.invoice_currency') :*</label>
                                     {!! Form::select('invoice_currency', $selected_currencies, $transaction_currency,
                                         ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
@@ -64,7 +64,7 @@
                                     @error('transaction_currency')
                                     <span class="error text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="col-md-2">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . ':*', []) !!}
                                     {!! Form::select('purchase_type', ['import' =>  __('lang.import'), 'local' => __('lang.local')],$purchase_type ,
@@ -119,22 +119,42 @@
 
                             </div>
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {!! Form::label('other_expenses', __('lang.other_expenses'), []) !!} <br>
-                                        {!! Form::text('other_expenses', $other_expenses,
-                                        ['class' => 'form-control', 'placeholder' => __('lang.other_expenses'), 'id' => 'other_expenses',
-                                         'wire:model' => 'other_expenses' ,'wire:change'=>'changeTotalAmount()' ]) !!}
-                                    </div>
+                                <div class="col-md-2">
+                                    <label for="expenses_currency">@lang('lang.expenses_currency') :*</label>
+                                    {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency,
+                                        ['class' => 'form-control select2','placeholder' => __('lang.please_select'), 'data-live-search' => 'true',
+                                        'required', 'data-name' => 'expenses_currency', 'wire:model' => 'expenses_currency']) !!}
+                                    @error('expenses_currency')
+                                    <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-10">
+                                    @foreach($expenses as $index => $expense)
+                                        <div class="row">
+                                            <div class="form-group">
+                                                {!! Form::label('details', __('Details'), []) !!} <br>
+                                                {!! Form::text('details', $expense['details'],
+                                                    ['class' => 'form-control', 'placeholder' => __('Details'), 'wire:model' => 'expenses.' . $index . '.details']) !!}
+                                            </div>
+                                            <div class="form-group">
+                                                {!! Form::label('amount', __('Amount'), []) !!} <br>
+                                                {!! Form::text('amount', $expense['amount'],
+                                                    ['class' => 'form-control', 'placeholder' => __('Amount'), 'wire:model' => 'expenses.' . $index . '.amount','wire:change' => 'changeTotalAmount'],) !!}
+                                            </div>
+                                            <button class="btn btn-primary btn-sm ml-2" wire:click="removeExpense({{ $index }})">Remove</button>
+                                        </div>
+                                    @endforeach
+                            
+                                    <button class="btn btn-primary btn-sm ml-2 " wire:click="addExpense">Add Expense</button>
+                                </div>
+                                {{-- <div class="col-md-3">
                                     <div class="form-group">
                                         {!! Form::label('other_payments', __('lang.other_payments'), []) !!} <br>
                                         {!! Form::text('other_payments', $other_payments,
                                         ['class' => 'form-control', 'placeholder' => __('lang.other_payments'), 'id' => 'other_payments',
                                          'wire:model' => 'other_payments','wire:change'=>'changeTotalAmount()']) !!}
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                         <br>
@@ -233,36 +253,42 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
+                                        
 {{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th>--}}
+                                        <th >@lang('lang.currency')</th> 
                                         <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
-                                        <th style="width: 10%" >@lang('lang.sku')</th>
-                                        <th style="width: 10%">@lang('lang.quantity')</th>
+                                        <th style="width: 10%" >@lang('lang.store')</th>
+                                        {{-- <th style="width: 10%" >@lang('lang.sku')</th> --}}
                                         <th style="width: 10%">@lang('lang.unit')</th>
+                                        <th style="width: 10%">@lang('lang.quantity')</th>
+                                        <th style="width: 10%">@lang('lang.bonus_quantity')</th>
+                                        
 {{--                                        <th style="width: 10%">@lang('lang.fill')</th>--}}
 {{--                                        <th style="width: 10%">@lang('lang.basic_unit')</th>--}}
-                                        <th style="width: 10%">@lang('lang.to_get_sell_price')</th>
+                                       
 {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
 {{--                                        @if ($showColumn)--}}
-                                            <th style="width: 10%">@lang('lang.purchase_price')$</th>
+                                            {{-- <th style="width: 10%">@lang('lang.purchase_price')$</th>
                                             <th style="width: 10%">@lang('lang.selling_price')$</th>
-                                            <th style="width: 10%">@lang('lang.sub_total')$</th>
+                                            <th style="width: 10%">@lang('lang.sub_total')$</th> --}}
 {{--                                        @endif--}}
                                         <th style="width: 10%">@lang('lang.purchase_price')  </th>
-                                        <th style="width: 10%">@lang('lang.selling_price') </th>
+                                        {{-- <th style="width: 10%">@lang('lang.selling_price') </th> --}}
                                         <th style="width: 10%">@lang('lang.sub_total')</th>
-                                        <th style="width: 10%">@lang('lang.size')</th>
+                                        {{-- <th style="width: 10%">@lang('lang.size')</th>
                                         <th style="width: 10%">@lang('lang.total_size')</th>
                                         <th style="width: 10%">@lang('lang.weight')</th>
-                                        <th style="width: 10%">@lang('lang.total_weight')</th>
+                                        <th style="width: 10%">@lang('lang.total_weight')</th> --}}
 {{--                                        @if ($showColumn)--}}
-                                            <th style="width: 10%">@lang('lang.cost')$</th>
-                                            <th style="width: 10%">@lang('lang.total_cost')$</th>
+                                            {{-- <th style="width: 10%">@lang('lang.cost')$</th>
+                                            <th style="width: 10%">@lang('lang.total_cost')$</th> --}}
 {{--                                        @endif--}}
-                                        <th style="width: 10%">@lang('lang.cost') </th>
-                                        <th style="width: 10%">@lang('lang.total_cost')</th>
+                                        {{-- <th style="width: 10%">@lang('lang.cost') </th>
+                                        <th style="width: 10%">@lang('lang.total_cost')</th> --}}
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
                                         <th style="width: 10%">@lang('lang.change_current_stock')</th>
                                         <th style="width: 10%">@lang('lang.action')</th>
+                                        {{-- <th style="width: 10%">@lang('lang.to_get_sell_price')</th> --}}
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -273,28 +299,28 @@
                                         <tr>
                                             <td colspan="8" style="text-align: right"> @lang('lang.total')</td>
 {{--                                            @if ($showColumn)--}}
-                                                <td> {{$this->sum_dollar_sub_total()}} </td>
+                                                {{-- <td> {{$this->sum_dollar_sub_total()}} </td> --}}
                                                 <td></td>
                                                 <td></td>
 {{--                                            @endif--}}
-                                            <td> {{$this->sum_sub_total()}} </td>
+                                            {{-- <td> {{$this->sum_sub_total()}} </td> --}}
                                             <td></td>
                                             <td style="">
-                                                {{$this->sum_size() ?? 0}}
+                                                {{-- {{$this->sum_size() ?? 0}} --}}
                                             </td>
                                             <td></td>
                                             <td  style=";">
-                                                {{$this->sum_weight() ?? 0}}
+                                                {{-- {{$this->sum_weight() ?? 0}} --}}
                                             </td>
                                             <td></td>
 {{--                                            @if ($showColumn)--}}
                                                 <td>
-                                                    {{$this->sum_dollar_total_cost() ?? 0}}
+                                                    {{-- {{$this->sum_dollar_total_cost() ?? 0}} --}}
                                                 </td>
                                                 <td></td>
 {{--                                            @endif--}}
                                             <td  style=";">
-                                                {{$this->sum_total_cost() ?? 0}}
+                                                {{-- {{$this->sum_total_cost() ?? 0}} --}}
                                             </td>
 
                                         </tr>
