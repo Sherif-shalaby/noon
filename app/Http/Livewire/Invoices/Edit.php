@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use App\Models\CashRegisterTransaction;
+use App\Models\CustomerType;
 use App\Models\StockTransactionPayment;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\TransactionCustomerOfferPrice;
@@ -131,7 +132,7 @@ class Edit extends Component
         $product_id = request()->get('product_id');
         $suppliers  = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
         // ++++++++++++++ stores filter ++++++++++++++
-        $stores   = Store::get();
+        $this->stores   = Store::latest()->pluck('name','id')->toArray();
         // ++++++++++++++ customers filter ++++++++++++++
         $customers   = Customer::get();
         $stock_lines = AddStockLine::get();
@@ -139,7 +140,7 @@ class Edit extends Component
         $currenciesId = [System::getProperty('currency'), 2];
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $preparers = JobType::with('employess')->where('title','preparer')->get();
-        $stores = Store::getDropdown();
+        // $stores = Store::getDropdown();
         $departments = Category::get();
         $search_result = '';
         if(!empty($this->searchProduct))
@@ -177,9 +178,13 @@ class Edit extends Component
         $this->changeExchangeRate();
         $this->dispatchBrowserEvent('initialize-select2');
 
-
+        $this->store_pos=StorePos::latest()->pluck('name','id')->toArray();
+        $allproducts = Product::with(['stock_lines.transaction.transaction_payments'])->get();
+        $customer_types = CustomerType::latest()->pluck('name', 'id');
         return view('livewire.invoices.edit',
             compact(
+            'customer_types',
+            'allproducts',
             'departments',
             'selected_currencies',
             'search_result',
@@ -189,6 +194,13 @@ class Edit extends Component
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
+    }
+    public function quantityAvailable($product)
+    {
+        $quantity_available = ProductStore::where('product_id', $product->id)->where('store_id', $this->store_id)
+            ->first()->quantity_available ?? 0;
+
+        return $quantity_available;
     }
     // +++++++++++++++++++++++++ addLineProduct($line) : Add line product information +++++++++++++++++++++++++
     public function addLineProduct($line)
@@ -201,8 +213,10 @@ class Edit extends Component
             'quantity' => number_format($line->quantity,2),
             'price' => !empty($line->sell_price) ? $this->num_uf(number_format($line->sell_price,2)) : 0,
             'category_id' => $product->category?->id,
+            'extra_quantity' => 0,
             'customer_id' => $product->customer?->id,
             'discount' => null,
+            'quantity_available' => $this->quantityAvailable($product),
             'discount_price' => $line->discount_amount,
             'discount_type' =>  $line->discount_type,
             'dollar_price' => !empty($line->dollar_sell_price) ? number_format($line->dollar_sell_price,2) : 0  ,
