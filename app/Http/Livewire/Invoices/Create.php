@@ -834,10 +834,22 @@ class Create extends Component
     }
     public function changeCustomerType($key){
         // dd($this->items[$key]['variation']);
-        $variation_price=VariationPrice::where('variation_id',$this->items[$key]['unit_id'])->where('customer_type_id',$this->items[$key]['customer_type_id'])->first();
-        $variation_stock_line=VariationStockline::where('stock_line_id',$this->items[$key]['current_stock']['id'])->where('variation_price_id',$variation_price->id)->first();
-        $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
-        $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
+        $variation_price = VariationPrice::where('variation_id', $this->items[$key]['unit_id'])->where('customer_type_id', $this->items[$key]['customer_type_id'])->first();
+        if(isset($variation_price->id)){
+        $variation_stock_line = VariationStockline::where('stock_line_id', $this->items[$key]['current_stock']['id'])->where('variation_price_id', $variation_price->id)->first();
+        $dollar_exchange = System::getProperty('dollar_exchange');
+        if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate'])) {
+            if ($variation_stock_line->dinar_sell_price == 0) {
+                $this->items[$key]['price'] = $this->num_uf($variation_stock_line->dollar_sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']);
+                $this->items[$key]['dollar_price'] = 0;
+            }
+        }else{
+            $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
+            $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
+        } 
+        
+        }
+        $this->subtotal($key);
         $this->computeForAll();
 
     }
@@ -1420,7 +1432,7 @@ class Create extends Component
             }else{
                 $variation_price=VariationPrice::where('variation_id',$variation_id)->first();
             }
-            $stock_variation=VariationStockline::where('stock_line_id',$stock_line->id)->where('variation_price_id',$variation_price->id)->first();
+            $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
             if (empty($stock_variation->sell_price) && empty($stock_variation->dollar_sell_price)) {
                 //            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
                 $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);
@@ -1443,7 +1455,7 @@ class Create extends Component
             $variations = Variation::where('product_id', $this->items[$key]['product']['id'])->get();
             $product_store = ProductStore::where('product_id', $this->items[$key]['product']['id'])->where('store_id', $this->store_id)->first();
             $amount = 1;
-            $var_id = Variation::find($variation_id)->unit_id;
+            $var_id = Variation::find($variation_id)->unit_id??0;
             if (!empty($product_store->variations)) {
                 if ($var_id == $product_store->variations->unit_id) {
                     $this->items[$key]['quantity_available'] = $product_store->quantity_available;
@@ -1491,29 +1503,31 @@ class Create extends Component
     public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id)
     {
         $qtyByUnit = 1;
-        if ($stock_variation->basic_unit_id == $unit->unit_id) {
-            $qtyByUnit = 1 / $stock_variation->equal;
-        } elseif ($stock_variation->basic_unit_id == $unit->basic_unit_id) {
-            $qtyByUnit = $unit->equal / ($stock_variation->equal == 0 ? 1 : $stock_variation->equal);
-        } else {
-            foreach ($product_variations as $key => $product_variation) {
-                if (!empty($product_variations[$key + 1])) {
-                    if ($stock_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
-                        if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
-                            $qtyByUnit = $stock_variation->equal * $product_variations[$key + 1]->equal;
-                            break;
+        if(!empty($unit)){
+            if ($stock_variation->basic_unit_id == $unit->unit_id) {
+                $qtyByUnit = 1 / $stock_variation->equal;
+            } elseif ($stock_variation->basic_unit_id == $unit->basic_unit_id) {
+                $qtyByUnit = $unit->equal / ($stock_variation->equal == 0 ? 1 : $stock_variation->equal);
+            } else {
+                foreach ($product_variations as $key => $product_variation) {
+                    if (!empty($product_variations[$key + 1])) {
+                        if ($stock_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                            if ($product_variations[$key + 1]->basic_unit_id == $unit->unit_id) {
+                                $qtyByUnit = $stock_variation->equal * $product_variations[$key + 1]->equal;
+                                break;
+                            } else {
+                                $qtyByUnit = $product_variation->equal;
+                            }
                         } else {
-                            $qtyByUnit = $product_variation->equal;
+                            if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                                $qtyByUnit *= $product_variation->equal;
+                            }
                         }
                     } else {
-                        if ($product_variation->basic_unit_id == $product_variations[$key + 1]->unit_id) {
+                        if ($product_variation->basic_unit_id == $variation_id) {
                             $qtyByUnit *= $product_variation->equal;
+                            break;
                         }
-                    }
-                } else {
-                    if ($product_variation->basic_unit_id == $variation_id) {
-                        $qtyByUnit *= $product_variation->equal;
-                        break;
                     }
                 }
             }
