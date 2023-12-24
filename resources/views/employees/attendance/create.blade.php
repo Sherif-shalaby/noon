@@ -65,26 +65,24 @@
                                 <tbody class="table_tbody">
                                     <tr>
                                         <td>
-                                            <input type="date" class="form-control date" name="attendances[0][date]"
-                                                required></td>
-                                        <td>
-                                            {!! Form::select('attendances[0][employee_id]', $employees, null , ['class'
-                                            => 'form-control selectpicker', 'placeholder' => __('lang.please_select'),
-                                            'data-live-search' => 'true', 'required']) !!}
+                                            <input type="date" class="form-control date" name="date" required>
                                         </td>
                                         <td>
-                                            <input type="time" class="form-control time" name="attendances[0][check_in]"
-                                                required>
+                                            {!! Form::select('employees', $employees, null ,
+                                            ['class' => 'form-control select2', 'placeholder' => __('lang.please_select'),'data-live-search' => 'true', 'required']) !!}
                                         </td>
                                         <td>
-                                            <input type="time" class="form-control time"
-                                                name="attendances[0][check_out]" required>
+                                            <input type="time" class="form-control time" name="check_in" required>
                                         </td>
                                         <td>
-                                            {!! Form::select('attendances[0][status]', ['present' => 'Present', 'late'
-                                            => 'Late', 'on_leave' => 'On Leave'], null , ['class' => 'form-control
-                                            selectpicker', 'data-live-search' => 'true', 'placeholder' =>
-                                            __('lang.please_select'), 'required']) !!}
+                                            <input type="time" class="form-control time" name="check_out" required>
+                                        </td>
+                                        <td>
+                                            {!! Form::select('status',
+                                                [   'present' => 'Present', 'late'=> 'Late', 'on_leave' => 'On Leave'],
+                                                    null , ['class' => 'form-control select2', 'data-live-search' => 'true',
+                                                    'placeholder' => __('lang.please_select'), 'required'
+                                                ]) !!}
                                         </td>
                                         <td>
                                             {{ucfirst(Auth::user()->name)}}
