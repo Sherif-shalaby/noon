@@ -126,7 +126,16 @@ class Edit extends Component
         {
             $this->addLineProduct($line);
         }
-
+        $this->final_total = number_format($this->transaction_sell_line->final_total,3);
+        $this->total = number_format($this->transaction_sell_line->grand_total,3);
+        $this->dollar_final_total = number_format($this->transaction_sell_line->dollar_final_total,3);
+        $this->total_dollar = number_format( $this->transaction_sell_line->dollar_grand_total,3);
+        $this->dollar_remaining = number_format($this->transaction_sell_line->dollar_remainin,3);
+        $this->dinar_remaining = number_format($this->transaction_sell_line->dinar_remaining,3);
+        if(!empty($this->transaction_sell_line->transaction_payments)){
+            $this->dollar_amount = number_format($this->transaction_sell_line->transaction_payments->sum('dollar_amount'),3);
+            $this->amount =  number_format($this->transaction_sell_line->transaction_payments->sum('amount'),3);
+        }
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if (empty($this->store_pos)) {
             $this->dispatchBrowserEvent('NoUserPos');
@@ -453,6 +462,8 @@ class Edit extends Component
             'total_quantity' => !empty($product->unit) ?  1 * $product->unit->base_unit_multiplier : 1,
             'stores' => $product_stores,
             'unit_id' => $line->variation_id,
+            'customer_offer_id' => $line->id,
+            'sell_line_id'=> $line->id,
         ];
 //        $this->items[] =
 //            [
@@ -677,11 +688,11 @@ class Edit extends Component
                     'client_id' => $product->customer?->id,
                     'exchange_rate' => $exchange_rate,
                     'quantity_available' => $quantity_available,
-                    // 'stock_units' => $stock_units,
+                // 'stock_units' => $stock_units,
                     'sub_total' =>  (float) 1 * $this->num_uf($price),
                     'dollar_sub_total' => (float) 1 * $this->num_uf($dollar_price),
                     'current_stock' => $current_stock,
-                    //                    'discount_categories' =>  $discounts,
+//                    'discount_categories' =>  $discounts,
                     'discount_categories' => !empty($current_stock) ? $current_stock->prices()->get() : null,
                     'discount' => null,
                     'discount_price' => 0,
@@ -851,9 +862,21 @@ class Edit extends Component
     {
         // dd($this->items[$key]['variation']);
         $variation_price = VariationPrice::where('variation_id', $this->items[$key]['unit_id'])->where('customer_type_id', $this->items[$key]['customer_type_id'])->first();
-        $variation_stock_line = VariationStockline::where('stock_line_id', $this->items[$key]['current_stock']['id'])->where('variation_price_id', $variation_price->id)->first();
-        $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
-        $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
+        if(isset($variation_price->id)){
+            $variation_stock_line = VariationStockline::where('stock_line_id', $this->items[$key]['current_stock']['id'])->where('variation_price_id', $variation_price->id)->first();
+            $dollar_exchange = System::getProperty('dollar_exchange');
+            if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate'])) {
+                if ($variation_stock_line->dinar_sell_price == 0) {
+                    $this->items[$key]['price'] = $this->num_uf($variation_stock_line->dollar_sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']);
+                    $this->items[$key]['dollar_price'] = 0;
+                }
+            }else{
+                $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
+                $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
+            }
+
+        }
+        $this->subtotal($key);
         $this->computeForAll();
     }
     public function resetAll()
