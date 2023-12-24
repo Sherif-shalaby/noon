@@ -608,42 +608,12 @@
     {!! Form::close() !!}
     <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
 
-    <!-- recent transaction modal -->
-    <div id="recentTransaction" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        class="modal text-left">
-        <div class="modal-dialog modal-xl" role="document" style="max-width: 65%;">
-            <div class="modal-content @if (app()->isLocale('ar')) text-end @else text-start @endif">
-                <div
-                    class="modal-header d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <h4 class="modal-title">@lang('lang.recent_transactions')</h4>
-                    <button type="button" class="close m-0" data-dismiss="modal" aria-label="Close"
-                        id="closeRecentTransactionModal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="col-md-12 modal-filter">
-                        <div class="row">
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        @include('invoices.partials.recent_transactions')
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="closeRecentTransactionModal"
-                        data-dismiss="modal">@lang('lang.close')</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
 </section>
 @include('customers.quick_add', ['quick_add' => 1])
 
 
 {{-- <!-- This will be printed --> --}}
-<section class="invoice print_section print-only" id="receipt_section_print">fff </section>
+<section class="invoice print_section print-only" id="receipt_section_print"> </section>
 @push('javascripts')
 
     @if (empty($store_pos) || empty($stores))

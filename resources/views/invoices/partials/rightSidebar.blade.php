@@ -9,11 +9,18 @@
                         font-weight: 500;">
                 الاجماليات
             </div>
+            <div class="row">
+                <div class="col-md-9 {{ $dollar_final_total != 0 && $total_dollar != 0 ? '' : 'd-none' }}">
+                    <button type="button" class="btn btn-success"
+                        wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button>
+                </div>
+            </div>
             <div class="d-flex justify-content-between align-items-center flex-wrap col-md-10">
                 @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
                     <div class="col-md-2">
-                        <button data-method="cash" style="width: 100%" type="button" class="btn btn-success payment-btn"
-                            wire:click="submit" id="cash-btn"><i class="fa-solid fa-money-bill"></i>
+                        <button data-method="cash" style="width: 100%" type="button"
+                            class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
+                                class="fa-solid fa-money-bill"></i>
                             @lang('lang.pay')</button>
                         {{--                            @include('invoices.partials.payment') --}}
                     </div>
@@ -53,10 +60,9 @@
                 @endif
 
                 <div class="col-md-3 ">
-                    <button style="width: 100%;font-size: 10px;font-weight: 600;background-color: #ffc107;"
-                        type="button" class="btn btn-custom" id="recent-transaction-btn"><i
-                            class="dripicons-clock"></i>
-                        @lang('lang.recent_transactions')</button>
+                    <a href="{{ route('recent_transactions') }}" target="_blank" style="background-color: #ffc107;"
+                        type="button" class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
+                        @lang('lang.recent_transactions')</a>
                 </div>
             </div>
         </div>
@@ -164,6 +170,11 @@
                             'wire:model' => 'dollar_remaining',
                         ]) !!}
                     </div>
+                    <div class="{{ $dollar_remaining == '0' ? 'd-none' : '' }}"
+                        title="{{ __('lang.change_remaining_to_dinar') }}">
+                        <button class="btn btn-sm btn-danger text-white" type="button"
+                            wire:click="changeRemaining()">></button>
+                    </div>
                 </div>
                 @if ($dinar_remaining != 0 || $dollar_remaining != 0)
                     <div class="col-md-2">
@@ -229,7 +240,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-                        
+
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}

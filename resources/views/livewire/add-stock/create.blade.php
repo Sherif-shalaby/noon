@@ -460,11 +460,20 @@
                                     @endif
                                 </h4>
                                 <h4 class="mx-5"> @lang('lang.total') :
-                                    @if ($paying_currency == 2)
-                                        {{ $this->sum_dollar_total_cost() ?? 0.0 }}
-                                    @else
-                                        {{ $this->sum_total_cost() ?? 0.0 }}
-                                    @endif
+                                    {{-- @if ($paying_currency == 2) --}}
+                                    {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                    {{-- @else --}}
+                                    {{ $this->sum_total_cost() ?? 0.0 }}
+                                    {{-- @endif --}}
+                                    <span class="final_total_span"></span>
+                                </h4>
+
+                                <h4 class="dollar-cell"> @lang('lang.total')$ :
+                                    {{-- @if ($paying_currency == 2) --}}
+                                    {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                    {{-- @else --}}
+                                    {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
+                                    {{-- @endif --}}
                                     <span class="final_total_span"></span>
                                 </h4>
                             </div>
@@ -591,6 +600,27 @@
                                         <span style="font-size: 10px;font-weight: 700;"
                                             class="error text-danger">{{ $message }}</span>
                                     @enderror
+                                </div>
+                                <div class="mb-2 col-md-3 payment_fields hide d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    style="animation-delay: 2.2">
+                                    {!! Form::label('method', __('lang.payment_type'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                    ]) !!}
+                                    <div class="input-wrapper">
+                                        {!! Form::select('method', $payment_type_array, $method, [
+                                            'class' => 'form-control select2',
+                                            'data-live-search' => 'true',
+                                            'required',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'method',
+                                            'wire:model' => 'method',
+                                            'wire:change' => 'reset_change()',
+                                        ]) !!}
+                                        @error('method')
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 @include('add-stock.partials.payment_form')

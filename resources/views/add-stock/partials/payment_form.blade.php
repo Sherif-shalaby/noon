@@ -6,8 +6,11 @@
     ]) !!}
     <div class="input-wrapper">
         <input style="width: 100%" type="number" placeholder="{{ __('lang.amount') }}"
-            class="form-control initial-balance-input m-0" wire:model="total_amount">
+            class="form-control initial-balance-input m-0" wire:model="total_amount"wire:change="changeReceivedDinar()">
     </div>
+    @if ($dinar_remaining > 0)
+        <span wire:model="dinar_remaining">Change: {{ $dinar_remaining }}</span>
+    @endif
     @error('amount')
         <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
     @enderror
@@ -15,28 +18,23 @@
 
 <div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide"
     style="animation-delay: 2.25s">
-    {!! Form::label('method', __('lang.payment_type'), [
+    {!! Form::label('amount', __('lang.amount'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
         'style' => 'font-size: 12px;font-weight: 500;',
-    ]) !!}
-    <div class="input-wrapper">
-
-        {!! Form::select('method', $payment_type_array, $method, [
-            'class' => 'form-control select2',
-            'data-live-search' => 'true',
-            'required',
-            'placeholder' => __('lang.please_select'),
-            'data-name' => 'method',
-            'wire:model' => 'method',
-            'wire:change' => 'show',
-        ]) !!}
-    </div>
-    @error('method')
+    ]) !!} $
+    <input type="number" placeholder="{{ __('lang.amount') }}$"
+        class="form-control initial-balance-input width-full mx-0" wire:model="total_amount_dollar"
+        wire:change="changeReceivedDollar()">
+    @if ($dollar_remaining > 0)
+        <span wire:model="dollar_remaining">Change: {{ $dollar_remaining }}</span>
+        <button wire:click= "convertRemainingDollar()"><i class="fa-solid fa-retweet"></i></button>
+    @endif
+    @error('amount')
         <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
     @enderror
 
 </div>
-
+{{--
 <div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
     style="animation-delay: 2.3s">
     <label class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 width-quarter @endif  "
@@ -56,7 +54,7 @@
     @error('paying_currency')
         <span style="font-size: 10px;font-weight: 700;" class="error text-danger">{{ $message }}</span>
     @enderror
-</div>
+</div> --}}
 
 <div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide"
     style="animation-delay: 2.35">
@@ -93,7 +91,7 @@
 
 </div>
 
-@if ($method != 'cash')
+@if (isset($method) && $method != 'cash')
     <div
         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif not_cash_fields ">
         {!! Form::label('ref_number', __('lang.ref_number') . '*', [
