@@ -126,16 +126,7 @@ class Edit extends Component
         {
             $this->addLineProduct($line);
         }
-        $this->final_total = number_format($this->transaction_sell_line->final_total,3);
-        $this->total = number_format($this->transaction_sell_line->grand_total,3);
-        $this->dollar_final_total = number_format($this->transaction_sell_line->dollar_final_total,3);
-        $this->total_dollar = number_format( $this->transaction_sell_line->dollar_grand_total,3);
-        $this->dollar_remaining = number_format($this->transaction_sell_line->dollar_remainin,3);
-        $this->dinar_remaining = number_format($this->transaction_sell_line->dinar_remaining,3);
-        if(!empty($this->transaction_sell_line->transaction_payments)){
-            $this->dollar_amount = number_format($this->transaction_sell_line->transaction_payments->sum('dollar_amount'),3);
-            $this->amount =  number_format($this->transaction_sell_line->transaction_payments->sum('amount'),3);
-        }
+
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if (empty($this->store_pos)) {
             $this->dispatchBrowserEvent('NoUserPos');
@@ -271,7 +262,8 @@ class Edit extends Component
         // if ($this->customer_id) {
         //     $sell_lines = $sell_lines->where('customer_id', $this->customer_id);
         // }
-
+        $this->set_data();
+//        dd($this->final_total);
         $sell_lines = $sell_lines->paginate(10);
         return view('livewire.invoices.edit', compact(
             'departments',
@@ -284,7 +276,18 @@ class Edit extends Component
             'sell_lines',
         ));
     }
-
+    public function set_data(){
+        $this->final_total = number_format($this->transaction_sell_line->final_total,3);
+        $this->total = number_format($this->transaction_sell_line->grand_total,3);
+        $this->dollar_final_total = number_format($this->transaction_sell_line->dollar_final_total,3);
+        $this->total_dollar = number_format( $this->transaction_sell_line->dollar_grand_total,3);
+        $this->dollar_remaining = number_format($this->transaction_sell_line->dollar_remainin,3);
+        $this->dinar_remaining = number_format($this->transaction_sell_line->dinar_remaining,3);
+        if(!empty($this->transaction_sell_line->transaction_payments)){
+            $this->dollar_amount = number_format($this->transaction_sell_line->transaction_payments->sum('dollar_amount'),3);
+            $this->amount =  number_format($this->transaction_sell_line->transaction_payments->sum('amount'),3);
+        }
+    }
     public function store(): Redirector|Application|RedirectResponse
     {
         $this->validate([

@@ -1,6 +1,7 @@
 
 <section class="app my-3 no-print" style="margin-top: 35px!important;">
     <div class="" >
+
         {!! Form::open(['route' => 'pos.store','method'=>'post' ]) !!}
         <div class="row">
             <div class="col-sm-3">
@@ -254,9 +255,9 @@
                                             <th >@lang('lang.current_stock')</th>
                                             <th >@lang('lang.action')</th>
                                         </tr>
-                                        @php
-                                            $total = 0;
-                                        @endphp
+{{--                                        @php--}}
+{{--                                            $total = 0;--}}
+{{--                                        @endphp--}}
                                         @foreach ($items as $key => $item)
                                             <tr>
                                                 <td>{{$item['product']['product_symbol']}}</td>
