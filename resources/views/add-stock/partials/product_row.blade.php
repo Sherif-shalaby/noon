@@ -377,7 +377,7 @@
                 </div>
             </div>
 
-            <div style="width: 130px;padding:0;margin:0;font-size: 12px;margin-top:-10px"
+            <div style="width: 130px;padding:0;margin:0;font-size: 12px;margin-top:-25px"
                 class="d-flex justify-content-center align-items-end flex-column">
                 @if (isset($store['variations']) && count($store['variations']) > 0)
                     <label class="mb-0 mx-2" for="">{{ __('lang.unit') }}</label>
@@ -411,7 +411,7 @@
                 @enderror
             </div>
 
-            <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
+            <div style="width: 80px;padding:0;margin:0;font-size: 12px;margin-top: -17px"
                 class="d-flex justify-content-center align-items-end mx-1 flex-column">
                 {!! Form::label('price', __('lang.quantity'), [
                     'style' => 'font-weight:700;font-size: 10px;',
@@ -426,7 +426,7 @@
                 @enderror
             </div>
 
-            <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
+            <div style="width: 80px;padding:0;margin:0;font-size: 12px;margin-top: -17px"
                 class="d-flex justify-content-center align-items-end mx-1 flex-column">
                 {!! Form::label('b_qty', __('lang.b_qty'), [
                     'style' => 'font-weight:700;font-size: 10px;',
@@ -443,14 +443,14 @@
             </div>
 
             <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1 mx-1 mt-1"
-                style="width: 80px;min-height: 60px">
+                style="width: 80px;min-height: 60px;margin-top: -17px">
                 <label for="purchase_price"
                     class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
                 <input type="number" class="form-control mt-0 initial-balance-input width-full mb-0"
-                    wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price"
-                    style="width: 61px;" required>
-                <span>{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
+                    wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price" required>
+                <span
+                    style='font-weight:500;font-size:10px;color:#888'>{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
                 @error('items.' . $index . '.stores' . $i . '.purchase_price')
                     <span class="error text-danger">{{ $message }}</span>
                 @enderror
@@ -472,19 +472,18 @@
             </div>
 
             <div class=" animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1 mx-1 mt-1"
-                style="width: 50px;margin-bottom: 25px;">
+                style="width: 50px;margin-bottom: 20px;">
                 <input type="text" class="form-control initial-balance-input width-full m-0"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.discount_percent"
-                    style="width: 100px;"
                     wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="%">
             </div>
 
             <div class="mb-2 animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1 mx-1"
-                style="width: 120px;margin-top: -12px">
-                <input type="text" class="form-control mb-0 mt-4 initial-balance-input width-full"
+                style="width: 100px;margin-top: -12px">
+                <input type="text" style="margin-top: 29px"
+                    class="form-control mb-0 initial-balance-input width-full"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.discount"
-                    style="width: 100px;"
                     wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="discount amount">
                 <div class="custom-control custom-switch  d-flex justify-content-center align-items-center">
