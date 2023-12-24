@@ -5,6 +5,7 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="row">
+                    {{-- +++++++++++ brand filter +++++++++++ --}}
                     <div class="col-md-4">
                         <div class="form-group">
                             {!! Form::label('brand_id', __('lang.brand') . ':*', []) !!}

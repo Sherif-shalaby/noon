@@ -48,7 +48,7 @@
                                     </thead>
 
                                     <tbody>
-                                        {{-- @foreach ($attendances as $attendance)
+                                        @foreach ($attendances as $attendance)
                                         <tr>
                                             <td>
                                                 {{@format_date($attendance->date)}}
@@ -104,7 +104,7 @@
                                                 {{ucfirst($attendance->created_by)}}
                                             </td>
                                         </tr>
-                                        @endforeach --}}
+                                        @endforeach
                                     </tbody>
                                 </table>
 
