@@ -130,13 +130,13 @@
             </div>
         </div>
     </td>
-    <td >
+    <td >name="discount_dependency"
         <div class="d-flex justify-content-between">
             <div class="input-group-prepend">
                 {{-- <label for="fixed_fill_quantity_{{ $index }}">@lang('lang.fixed')</label> --}}
                 <input type="text"  class="form-control" wire:model="items.{{ $index }}.cash_discount" style="width: 100px;"wire:change="purchase_final({{$index}})" placeholder="cash discount">
                 <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" name="discount_dependency" id="discount_dependency" wire:model="items.{{ $index }}.discount_dependency"  wire:change="purchase_final({{$index}})" style="font-size: 0.75rem"
+                    <input type="checkbox" class="custom-control-input"  id="discount_dependency" wire:model="items.{{ $index }}.discount_dependency"  wire:change="purchase_final({{$index}})" style="font-size: 0.75rem"
                             value="true">
                             {{-- wire:change="changePrice({{ $index }}, {{ $key }})"> --}}
                     <label class="custom-control-label" for="discount_dependency" >@lang('lang.discount_dependency')</label>
@@ -335,13 +335,15 @@
         <td></td>
         <td>
             <div class="col-md-3">
-                <div class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                <div class="d-flex align-items-center text-nowrap gap-1">
                     <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow({{ $index }})">
                         <i class="fa fa-plus"></i>
                     </button>
-                    {!! Form::select('store_id', $stores, $store_id, ['class' => 'form-control select', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),  'wire:model' => 'items.' . $index . '.stores'. $i .'.store_id']) !!}
+                    {!! Form::select('stores.' . $i . '.store_id', $stores, $store_id, ['class' => 'form-control select', 'data-live-search' => 'true',
+                          'required', 'placeholder' => __('lang.please_select'),
+                          'wire:model' => 'items.' . $index . '.stores.' . $i . '.store_id']) !!}
                     @error('items.' . $index . '.stores'. $i .'.store_id')
-                    <span class="error text-danger">{{ $message }}</span>
+                        <span class="error text-danger">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
@@ -416,7 +418,7 @@
                 <div class="input-group-prepend">
                     <input type="text"  class="form-control" wire:model="items.{{ $index }}.stores.{{$i}}.discount"  style="width: 100px;" wire:change="purchase_final({{$index}},'stores',{{$i}})" placeholder="discount amount">
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="discount_on_bonus_quantity" wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity" wire:change="purchase_final({{$index}},'stores',{{$i}})"  style="font-size: 0.75rem"
+                        <input type="checkbox" class="custom-control-input" id="discount_on_bonus_quantity{{$i}}" wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity" wire:change="purchase_final({{$index}},'stores',{{$i}})"  style="font-size: 0.75rem"
                                value="true">
                         <label class="custom-control-label" for="discount_on_bonus_quantity">@lang('lang.discount_on_bonus_quantity')</label>
                     </div>
@@ -430,7 +432,7 @@
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="discount_dependency{{$i}}" wire:model="items.{{ $index }}.stores.{{ $i }}.discount_dependency"  wire:change="purchase_final({{$index}},'stores',{{$i}})" style="font-size: 0.75rem"
                                value="true">
-                        <label class="custom-control-label" name="discount_dependency" for="discount_dependency{{$i}}" >@lang('lang.discount_dependency')</label>
+                        <label class="custom-control-label"  for="discount_dependency{{$i}}" >@lang('lang.discount_dependency')</label>
                     </div>
                 </div>
 
@@ -524,7 +526,7 @@
         <td title="{{__('lang.unit')}}">
             @if(count($product['variations']) > 0)
                 <div class="d-flex justify-content-center">
-                    <select name="items.{{$index}}.variation_id" class="form-control select ." style="width: 130px" wire:model="items.{{ $index }}.variation_id" wire:change="getVariationData({{ $index }})">
+                    <select name="items.{{ $index }}.prices.{{$key}}.fill_id" class="form-control select ." style="width: 130px" wire:model="items.{{ $index }}.prices.{{$key}}.fill_id">
                         <option value="" selected>{{__('lang.please_select')}}</option>
                         @foreach($product['variations'] as $variant)
                             @if(!empty($variant['unit_id']))
@@ -548,10 +550,18 @@
             {!! Form::label('price_category' ,__('lang.price_category')) !!}
             <input type="text" class="form-control price_category" name="price_category" wire:model="items.{{$index}}.prices.{{$key}}.price_category" maxlength="6" >
         </td>
-        {{-- <td colspan="1">
+         <td colspan="1">
             {!! Form::label('b_qty',__('lang.b_qty')) !!}
             <input type="text" class="form-control bonus_quantity" wire:model="items.{{$index}}.prices.{{$key}}.bonus_quantity" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{__('lang.b_qty')}}" >
-        </td> --}}
+        </td>
+        <td colspan="2">
+            {!! Form::label('customer_type',__('lang.customer_type')) !!}
+            <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control select" placeholder="{{__('lang.please_select')}}">
+                @foreach($customer_types as $type)
+                    <option value="{{$type->id}}">{{$type->name}}</option>
+                @endforeach
+            </select>
+        </td>
         <td colspan="2">
             {!! Form::label('price_type' ,__('lang.type')) !!}
             {!! Form::select('items.'.$index.'.prices.'.$key.'.price_type', ['fixed'=>__('lang.fixed'),'percentage'=>__('lang.percentage')], null, [
@@ -562,9 +572,9 @@
                 'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price" style="font-size: 0.75rem"
+                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem"
                         @if( !empty($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
-                        wire:change="changePrice({{ $index }}, {{ $key }})">
+                        wire:change="change_discount_from_original_price({{ $index }})">
                 <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
             </div>
             @error('items.'.$index.'.prices.'.$key.'.price_type')
@@ -572,6 +582,7 @@
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
         </td>
+
         <td>
             {!! Form::label('price' ,!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')) !!}
             <input type="text" name="price" class="form-control price" wire:model="items.{{$index}}.prices.{{$key}}.price" wire:change="changePrice({{ $index }}, {{ $key }})" placeholder = "{{!empty($price['price_type'])&&$price['price_type'] == 'fixed' ? __('lang.amount') : __('lang.percent')}}" >
@@ -600,15 +611,6 @@
 {{--            <p>--}}
 {{--                {{ __('lang.piece_price')}}:{{$this->items[$index]['prices'][$key]['dinar_piece_price']??''}}--}}
 {{--            </p>--}}
-        </td>
-
-        <td colspan="2">
-            {!! Form::label('customer_type',__('lang.customer_type')) !!}
-            <select wire:model="items.{{$index}}.prices.{{$key}}.price_customer_types" data-name='price_customer_types' data-index="{{$key}}" class="form-control js-example-basic-multiple" multiple='multiple' placeholder="{{__('lang.please_select')}}">
-                @foreach($customer_types as $type)
-                    <option value="{{$type->id}}">{{$type->name}}</option>
-                @endforeach
-            </select>
         </td>
          <td>
             <button type="button" class="btn btn-sm btn-primary" wire:click="addPriceRow({{ $index }})">

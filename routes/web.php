@@ -206,6 +206,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 
     // stocks
+    Route::get('recent_transactions', [AddStockController::class,'recentTransactions'])->name('recent_transactions');
     Route::get('add-stock/index', [AddStockController::class,'index'])->name('stocks.index');
     Route::view('add-stock/create', 'add-stock.create')->name('stocks.create');
     Route::view('add-stock/{id}/edit/', 'add-stock.edit')->name('stocks.edit');
@@ -276,9 +277,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Sell Screen
     Route::view('invoices/create', 'invoices.create')->name('invoices.create');
 
-    Route::get('invoices/edit/{invoice}', function ($id) {
-        return view('invoices.edit', compact('id'));
-    })->name('invoices.edit');
+    Route::get('invoices/edit/{invoice}', [SellPosController::class,'editInvoice'])->name('invoices.edit');
     // ++++++++++++ invoices : "delete all selected invoices" ++++++++++++
     Route::post('pos/multiDeleteRow', [SellPosController::class,'multiDeleteRow'])->name('pos.multiDeleteRow');
 
@@ -298,9 +297,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('customer_price_offer/create_invoice/{id}', [CustomerOfferPriceController::class, 'create_invoice'])->name('customer_price_offer.create_invoice');
     // Route::view('customer_price_offer/create_invoice/{id}', 'customer_price_offer.create_invoice')->name('customer_price_offer.create_invoice');
     // ################################# edit invoice #################################
-    Route::get('invoices/edit/{invoice}', function ($id) {
-        return view('invoices.edit', compact('id'));
-    })->name('invoices.edit');
+
     // Route::get('customer_price_offer/edit/{id}', [CustomerOfferPriceController::class,'edit'])->name('customer_price_offer.edit');
     Route::delete('/customer_price_offer/delete/{id}', [CustomerOfferPriceController::class, 'destroy'])->name('customer_price_offer.destroy');;
     // ################################# Task : purchase_order : Livewire #################################
