@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', __('site.recent_transactions'))
+@section('title', __('lang.recent_transactions'))
 @push('css')
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css') }}" />
 @endpush
@@ -8,73 +8,90 @@
 
     <div class="row pt-5">
         <div class="card-body">
-            {{--    <form action="{{route('initial-balance.index')}}" method="get">--}}
+               <form action="{{route('recent_transactions')}}" method="get">
                     <div class="row">
-                        <div class="col-2">
-                            <div class="form-group">
-                                <label for="from">{{__('site.From')}}</label>
-                                {!! Form::date(
-                                    'from', null,
-                                    ['class' => 'form-control','placeholder'=>__('lang.from')]
-                                ) !!}
+                        <div class="col-md-2"></div>
+                        <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    {!! Form::select(
+                                        'customer_id',
+                                        $customers,null,
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.customer')]
+                                    ) !!}
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                <label for="to">{{__('site.To')}}</label>
-                                {!! Form::date(
-                                    'to', null,
-                                    ['class' => 'form-control','placeholder'=>__('lang.to')]
-                                ) !!}
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                {!! Form::select(
-                                    'customer_id',
-                                    $customers,null,
-                                    ['class' => 'form-control select2','placeholder'=>__('lang.customer')]
-                                ) !!}
-                            </div>
-                        </div>
-                    
-                        <div class="col-2">
-                            <div class="form-group">
-                                {!! Form::select(
-                                    'payment_type',
-                                    $payment_types,null,
-                                    ['class' => 'form-control select2','placeholder'=>__('lang.payment_type')]
-                                ) !!}
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                {!! Form::select(
-                                    'brand_id',
-                                    [], null,
-                                    ['class' => 'form-control select2','placeholder'=>__('lang.brand'), 'data-name' => 'brand_id','wire:model' => 'brand_id']
-                                ) !!}
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                {!! Form::select(
-                                    'created_by',
-                                    $users,null,
-                                    ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
-                                ) !!}
-                            </div>
-                        </div>
-                     
-                        {{-- <div class="col-2">
-                            <div class="form-group">
-                                <button type="button" name="submit" class="btn btn-danger width-100" title="search" wire:click="clear_filters">
-                                     {{ __('lang.clear_filters') }}</button>
-                            </div>
-                        </div> --}}
                         
+                            <div class="col-3">
+                                <div class="form-group">
+                                    {!! Form::select(
+                                        'method',
+                                        $payment_types,null,
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.payment_type')]
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    {!! Form::select(
+                                        'employee_id',
+                                        $employees, null,
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.cashier_man')]
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    {!! Form::select(
+                                        'deliveryman_id',
+                                        $delivery_men, null,
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.deliveryman')]
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div class="col-3 pt-4">
+                                <div class="form-group">
+                                    {!! Form::select(
+                                        'created_by',
+                                        $users,null,
+                                        ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="from">{{__('site.From')}}</label>
+                                    {!! Form::date(
+                                        'from', null,
+                                        ['class' => 'form-control','placeholder'=>__('lang.from')]
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="to">{{__('site.To')}}</label>
+                                    {!! Form::date(
+                                        'to', null,
+                                        ['class' => 'form-control','placeholder'=>__('lang.to')]
+                                    ) !!}
+                                </div>
+                            </div>
+                            <div class="col-2 pt-4">
+                                <div class="form-group">
+                                    <button type="submit" name="submit" class="btn btn-success width-100" title="search">
+                                         {{ __('lang.filter') }}</button>
+                                </div>
+                            </div>
+                            {{-- <div class="col-2">
+                                <div class="form-group">
+                                    <button type="button" name="submit" class="btn btn-danger width-100" title="search" wire:click="clear_filters">
+                                         {{ __('lang.clear_filters') }}</button>
+                                </div>
+                            </div> --}}
+                        </div>
+                        <div class="col-md-1"></div>
                     </div>
-            {{--    </form>--}}
+               </form>
             </div>
         <div class="table-responsive">
             <table id="datatable-buttons" class="table table-striped table-bordered">
