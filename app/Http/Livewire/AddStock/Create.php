@@ -68,8 +68,8 @@ class Create extends Component
         $transaction_currency,$expenses_currency ,$current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
-        $variationSums = [],$expenses = [], $customer_types;
-
+        $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units;
+        
 
     public function mount(){
 
@@ -204,7 +204,6 @@ class Create extends Component
         else{
             $products = Product::paginate();
         }
-
         $this->dispatchBrowserEvent('initialize-select2');
         return view('livewire.add-stock.create',
             compact('status_array',
@@ -234,6 +233,14 @@ class Create extends Component
     {
         unset($this->expenses[$index]);
         $this->expenses = array_values($this->expenses);
+    }
+    public function reset_change(){
+        // dd('test');
+        $this->dinar_remaining = 0;
+        $this->dollar_remaining = 0;
+    }
+    public function convertRemainingDollar(){
+        $this->total_amount = $this->num_uf( $this->total_amount) +($this->num_uf($this->dollar_remaining )*$this->num_uf( $this->exchange_rate)) ;
     }
     public function updated($propertyName)
     {
@@ -294,6 +301,8 @@ class Create extends Component
             $transaction->final_total = isset($this->discount_amount) ? ($this->num_uf($this->sum_total_cost()) - $this->discount_amount) : $this->num_uf($this->sum_total_cost());
             $transaction->dollar_grand_total = $this->num_uf($this->sum_dollar_total_cost());
             $transaction->dollar_final_total = $this->num_uf($this->dollar_final_total());
+            $transaction->dinar_remaining = $this->num_uf($this->dinar_remaining);
+            $transaction->dollar_remaining = $this->num_uf($this->dollar_remaining);
             $transaction->notes = !empty($this->notes) ? $this->notes : null;
             $transaction->notify_before_days = !empty($this->notify_before_days) ? $this->notify_before_days : 0;
             $transaction->notify_me = !empty($this->notify_before_days) ? 1 : 0;
@@ -999,8 +1008,9 @@ class Create extends Component
                 $this->items[$index]['purchase_price'] = null;
             }
         }
+        // $this->sum_total_cost();
 //        $this->changeFilling($index);
-
+        // $this->changeTotalAmount();
 
     }
 
@@ -1074,7 +1084,7 @@ class Create extends Component
         foreach ($this->expenses as $expense) {
             $totalExpenses += (float)$expense['amount'];
         }
-        if($this->paying_currency == 2){
+        if($this->expenses_currency == 2){
             (float)$cost = ( (float)$totalExpenses ) * $this->num_uf($this->exchange_rate);
         }
         else{
@@ -1126,7 +1136,7 @@ class Create extends Component
         foreach ($this->expenses as $expense) {
             $totalExpenses += (float)$expense['amount'];
         }
-        if($this->paying_currency == 2){
+        if($this->expenses_currency == 2){
             $dollar_cost = ( (float)$totalExpenses  ) * $this->num_uf($this->exchange_rate);
         }
         else{
@@ -1173,11 +1183,28 @@ class Create extends Component
     }
 
     public function sum_total_cost(){
+        // dd('test');
         $totalCost = 0;
         if(!empty($this->items)) {
+            
             foreach ($this->items as $item) {
+                // dd($item['stores']);
+                // dd($item['total_cost']);
                 $totalCost += (float)$item['total_cost'];
+                if(isset($item['stores']) && is_array($item['stores'])){
+                    foreach ($item['stores'] as $store) {
+                        // Assuming 'total_cost' is the key for the total cost in each store
+                        if(isset($store['total_cost'])){
+                            $totalCost += (float)$store['total_cost'];
+                        }
+                    }
+                }
+                
             }
+
+            // foreach($this->items[] as $item){
+
+            // }
         }
         $this->changeAmount(number_format($totalCost,3));
         return round_250($this->num_uf($totalCost));
@@ -1189,6 +1216,14 @@ class Create extends Component
             foreach ($this->items as $item) {
 //                dd($item['dollar_total_cost']);
                 $totalDollarCost += $item['dollar_total_cost'];
+                if(isset($item['stores']) && is_array($item['stores'])){
+                    foreach ($item['stores'] as $store) {
+                        // Assuming 'total_cost' is the key for the total cost in each store
+                        if(isset($store['dollar_total_cost'])){
+                            $totalDollarCost += (float)$store['dollar_total_cost'];
+                        }
+                    }
+                }
             }
         }
         $this->changeAmount(number_format($totalDollarCost,2));
@@ -1200,12 +1235,97 @@ class Create extends Component
         $this->amount = round_250($this->num_uf($value));
     }
     public function changeTotalAmount(){
-        if($this->paying_currency == 2){
-            $this->total_amount =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
-        }else{
+        // if($this->paying_currency == 2){
+            $this->total_amount_dollar =$this->num_uf($this->sum_dollar_total_cost()) -$this->calcPayment();
+        // }else{
             $this->total_amount =$this->sum_total_cost() -$this->calcPayment();
+        // }
+    }
+    public function changeReceivedDollar()
+    {
+        if ($this->total_amount_dollar !== null && $this->total_amount_dollar !== 0) {
+            if ($this->sum_total_cost() == 0 && $this->sum_dollar_total_cost() !== 0 && $this->total_amount_dollar !== 0 && $this->total_amount != 0) {
+                // $diff_dollar = $this->total_amount_dollar -  $this->dollar_final_total;
+                // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = $this->num_uf($this->sum_dollar_total_cost()) - ($this->num_uf($this->total_amount_dollar) + ($this->num_uf($this->total_amount) / System::getProperty('dollar_exchange')));
+            } elseif ($this->sum_dollar_total_cost() == 0 && $this->sum_total_cost() !== 0 && $this->total_amount_dollar !== 0 && $this->total_amount != 0) {
+                // $diff_dollar = $this->total_amount_dollar -  $this->dollar_final_total;
+                // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
+                $this->dinar_remaining = $this->num_uf($this->sum_total_cost()) - ($this->num_uf($this->total_amount) + ($this->num_uf($this->total_amount_dollar) * System::getProperty('dollar_exchange')));
+            } elseif ($this->dinar_remaining > 0 && $this->sum_dollar_total_cost() !== null && $this->sum_dollar_total_cost() !== 0 && $this->total_amount_dollar > $this->sum_dollar_total_cost()) {
+                $diff_dollar = $this->num_uf($this->total_amount_dollar) -  $this->num_uf($this->sum_dollar_total_cost());
+                $this->dinar_remaining = round_250($this->num_uf($this->dinar_remaining) - ($this->num_uf($diff_dollar) * System::getProperty('dollar_exchange')));
+                $this->dollar_remaining = 0;
+            } else {
+                // Check if total is in dinar and both dollar and dinar amounts are 0
+                if ($this->sum_total_cost() != 0 && $this->sum_dollar_total_cost() == 0 && $this->num_uf($this->total_amount) == 0) {
+                    // Round to the nearest 250 value
+                    $rounded_final_total = round_250($this->num_uf($this->sum_total_cost()));
+                    // Convert remaining dollar to dinar
+                    $this->dinar_remaining = round_250($this->num_uf($rounded_final_total) - ($this->num_uf($this->total_amount_dollar) * System::getProperty('dollar_exchange')));
+                }
+                // Handle the case where total is in dollar and both dollar and dinar amounts are 0
+                elseif ($this->sum_dollar_total_cost() != 0) {
+                    // Calculate remaining dollar amount directly
+                    $this->dollar_remaining = $this->num_uf($this->sum_dollar_total_cost()) - $this->num_uf($this->total_amount_dollar);
+                    if ($this->sum_total_cost() != 0) {
+                        $this->dinar_remaining = round_250($this->num_uf($this->sum_total_cost()) - $this->num_uf($this->total_amount));
+                        if ($this->dinar_remaining < 0 &&  $this->dollar_remaining > 0) {
+                            $diff_dinar = $this->num_uf($this->total_amount) -  $this->num_uf($this->sum_total_cost());
+                            $this->dollar_remaining = $this->num_uf($this->dollar_remaining) - ($this->num_uf($diff_dinar) / System::getProperty('dollar_exchange'));
+                            $this->dinar_remaining = 0;
+                            dd( $this->dollar_remaining);
+                        }
+                    }
+                }
+            }
+            
+        }
+        // dd( $this->dollar_remaining);
+    }
+
+    public function changeReceivedDinar()
+    {
+        if ($this->total_amount !== null && $this->total_amount !== 0) {
+            if ($this->sum_total_cost() == 0 && $this->sum_dollar_total_cost() !== 0 && $this->total_amount_dollar !== 0 && $this->total_amount != 0) {
+                $this->dollar_remaining = $this->num_uf($this->sum_dollar_total_cost()) - ($this->num_uf($this->total_amount_dollar) + ($this->num_uf($this->total_amount) / System::getProperty('dollar_exchange')));
+            } elseif ($this->sum_dollar_total_cost() == 0 && $this->sum_total_cost() !== 0 && $this->total_amount_dollar !== 0 && $this->total_amount != 0) {
+
+                $this->dinar_remaining = $this->num_uf($this->sum_total_cost()) - ($this->num_uf($this->total_amount) + ($this->num_uf($this->total_amount_dollar) * System::getProperty('dollar_exchange')));
+            } elseif ($this->dollar_remaining > 0 && $this->sum_total_cost() !== null && $this->sum_total_cost() !== 0 && $this->total_amount > $this->sum_total_cost()) {
+                $diff_dinar = $this->num_uf($this->total_amount) -  $this->num_uf($this->sum_total_cost());
+                $this->dollar_remaining = $this->num_uf($this->dollar_remaining) - ($this->num_uf($diff_dinar) / System::getProperty('dollar_exchange'));
+                $this->dinar_remaining = 0;
+            } else {
+                // Check if total is in dollars and both dollar and dinar amounts are 0
+                if ($this->sum_dollar_total_cost() != 0 && $this->sum_total_cost() == 0 && $this->total_amount_dollar == 0) {
+                    // Calculate remaining dollar amount directly
+                    $this->dollar_remaining = $this->num_uf($this->sum_dollar_total_cost()) - ($this->num_uf($this->total_amount) / System::getProperty('dollar_exchange'));
+                }
+                // Check if total is in dinars and both dollar and dinar amounts are 0
+                elseif ($this->sum_total_cost() != 0) {
+                    // Calculate remaining dinar amount
+                    $this->dinar_remaining = round_250($this->num_uf($this->sum_total_cost())) - $this->num_uf($this->total_amount);
+
+                    if ($this->sum_dollar_total_cost() != 0) {
+                        $this->dollar_remaining = $this->num_uf($this->sum_dollar_total_cost()) - $this->num_uf($this->total_amount_dollar);
+                        if ($this->dollar_remaining < 0 &&  $this->dinar_remaining > 0) {
+                            $diff_dollar = $this->num_uf($this->total_amount_dollar) -  $this->num_uf($this->sum_dollar_total_cost());
+                            $this->dinar_remaining = round_250($this->num_uf($this->dinar_remaining) - ($this->num_uf($diff_dollar) * System::getProperty('dollar_exchange')));
+                            $this->dollar_remaining = 0;
+                        }
+                    }
+                    // else{
+                    //     $this->dollar_remaining = $this->dollar_final_total - ($this->total_amount_dollar + ($this->amount / System::getProperty('dollar_exchange')));
+                    //     $this->dinar_remaining = $this->final_total - ($this->amount + ($this->total_amount_dollar * System::getProperty('dollar_exchange')));
+                    // }
+                    // Convert remaining dinar to dollars using the exchange rate
+                    // $this->dollar_remaining = $this->dinar_remaining * System::getProperty('dollar_exchange');
+                }
+            }
         }
     }
+   
     public function sum_sub_total(){
         $totalSubTotal = 0;
 
@@ -1276,24 +1396,29 @@ class Create extends Component
             }
             if(isset($this->items[$index]['stores'][$i]['discount_dependency'])&& $this->items[$index]['stores'][$i]['discount_dependency'] == true){
 
-                if(isset($this->items[$index]['discount_percent'])){
-                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['discount_percent']) / 100), 2);
+                if(isset($this->items[$index]['stores'][$i]['discount_percent'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['stores'][$i]['discount_percent']) / 100), 2);
                 }
 
-                if(isset($this->items[$index]['discount'])){
+                if(isset($this->items[$index]['stores'][$i]['discount'])){
                     $final_purchase -= $this->num_uf($this->items[$index]['discount']);
                 }
 
-                if(isset($this->items[$index]['cash_discount'])){
-                    $final_purchase -= $this->num_uf($this->items[$index]['cash_discount']);
+                if(isset($this->items[$index]['stores'][$i]['cash_discount'])){
+                    $final_purchase -= $this->num_uf($this->items[$index]['stores'][$i]['cash_discount']);
                 }
-
-                if(isset($this->items[$index]['seasonal_discount'])){
-                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2);
+                if($this->items[$index]['stores'][$i]['used_currency'] != 2){
+                    $this->items[$index]['stores'][$i]['total_cost'] = $this->num_uf( $final_purchase);
+                }else{
+                    $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
+                }
+               
+                if(isset($this->items[$index]['stores'][$i]['seasonal_discount'])){
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['stores'][$i]['seasonal_discount'] )/ 100), 2);
                 }
 
                 if(isset($this->items[$index]['annual_discount'])){
-                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
+                    $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['stores'][$i]['annual_discount']) / 100), 2);
                 }
             }else{
                 $original =$this->num_uf( $this->items[$index]['stores'][$i]['purchase_price']);
@@ -1312,19 +1437,24 @@ class Create extends Component
                     $discount_percent = round($original * ( $this->num_uf($this->items[$index]['stores'][$i]['discount_percent']) / 100), 2);
                 }
 
-                if(isset($this->items[$index]['discount'])){
+                if(isset($this->items[$index]['stores'][$i]['discount'])){
                     $discount =$this->num_uf( $this->items[$index]['stores'][$i]['discount']);
                 }
 
-                if(isset($this->items[$index]['cash_discount'])){
+                if(isset($this->items[$index]['stores'][$i]['cash_discount'])){
                     $cash_discount =  $this->num_uf($this->items[$index]['stores'][$i]['cash_discount']);
                 }
+                if($this->items[$index]['stores'][$i]['used_currency'] != 2){
+                    $this->items[$index]['stores'][$i]['total_cost'] = $this->num_uf( $final_purchase);
+                }else{
+                    $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
+                }
 
-                if(isset($this->items[$index]['seasonal_discount'])){
+                if(isset($this->items[$index]['stores'][$i]['seasonal_discount'])){
                     $seasonal_discount =$this->num_uf( round($original * ($this->num_uf($this->items[$index]['stores'][$i]['seasonal_discount'] )/ 100), 2));
                 }
 
-                if(isset($this->items[$index]['annual_discount'])){
+                if(isset($this->items[$index]['stores'][$i]['annual_discount'])){
                     $annual_discount = round($original * ( $this->num_uf($this->items[$index]['stores'][$i]['annual_discount'] )/ 100), 2);
                 }
 
@@ -1362,7 +1492,12 @@ class Create extends Component
                 if(isset($this->items[$index]['cash_discount'])){
                     $final_purchase -= $this->num_uf($this->items[$index]['cash_discount']);
                 }
-
+                if($this->items[$index]['used_currency'] != 2){
+                    $this->items[$index]['total_cost'] = $this->num_uf( $final_purchase);
+                    // dd($this->items[$index]['total_cost']);
+                }else{
+                    $this->items[$index]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
+                }
                 if(isset($this->items[$index]['seasonal_discount'])){
                     $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2);
                 }
@@ -1394,7 +1529,12 @@ class Create extends Component
                 if(isset($this->items[$index]['cash_discount'])){
                     $cash_discount =  $this->num_uf($this->items[$index]['cash_discount']);
                 }
-
+                if($this->items[$index]['used_currency'] != 2){
+                    $this->items[$index]['total_cost'] = $this->num_uf( $final_purchase);
+                    // dd($this->items[$index]['total_cost']);
+                }else{
+                    $this->items[$index]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
+                }
                 if(isset($this->items[$index]['seasonal_discount'])){
                     $seasonal_discount =$this->num_uf( round($original * ($this->num_uf($this->items[$index]['seasonal_discount'] )/ 100), 2));
                 }
@@ -1654,7 +1794,7 @@ class Create extends Component
                 $this->final_purchase_for_piece($index);
             }
         }
-
+        $this->changeTotalAmount();
 
 
     }
@@ -1763,10 +1903,20 @@ class Create extends Component
         return (float)$num;
     }
     public function calcPayment() {
+        $totalExpenses = 0;
+        foreach ($this->expenses as $expense) {
+            $totalExpenses += (float)$expense['amount'];
+        }
+        if($this->expenses_currency == 2){
+            (float)$cost = ( (float)$totalExpenses ) * $this->num_uf($this->exchange_rate);
+        }
+        else{
+            (float)$cost = (float)$totalExpenses ;
+        }
     //    $otherExpenses = is_numeric($this->other_expenses) ? (float)$this->other_expenses : 0;
        $discountAmount = is_numeric($this->discount_amount) ? (float)$this->discount_amount : 0;
     //    $otherPayments = is_numeric($this->other_payments) ? (float)$this->other_payments : 0;
-       return ( $discountAmount );
+       return ( $discountAmount + $totalExpenses );
     }
     public function getSubUnits($index, $via = null, $i = null){
         $units = [];
@@ -1819,5 +1969,7 @@ class Create extends Component
                 }
             }
         }
+        $this->units = $units;
+        // dd($this->units);
     }
 }

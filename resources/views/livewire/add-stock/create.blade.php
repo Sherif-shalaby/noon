@@ -275,19 +275,23 @@
                                         <th style="width: 10%">@lang('lang.purchase_price')  </th>
                                         {{-- <th style="width: 10%">@lang('lang.selling_price') </th> --}}
                                         <th style="width: 10%">@lang('lang.sub_total')</th>
-                                        {{-- <th style="width: 10%">@lang('lang.size')</th>
-                                        <th style="width: 10%">@lang('lang.total_size')</th>
-                                        <th style="width: 10%">@lang('lang.weight')</th>
-                                        <th style="width: 10%">@lang('lang.total_weight')</th> --}}
+
 {{--                                        @if ($showColumn)--}}
                                             {{-- <th style="width: 10%">@lang('lang.cost')$</th>
                                             <th style="width: 10%">@lang('lang.total_cost')$</th> --}}
 {{--                                        @endif--}}
                                         {{-- <th style="width: 10%">@lang('lang.cost') </th>
                                         <th style="width: 10%">@lang('lang.total_cost')</th> --}}
+                                      
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
                                         <th style="width: 10%">@lang('lang.change_current_stock')</th>
+                                     
                                         <th style="width: 10%">@lang('lang.action')</th>
+                                        <th></th>
+                                        <th style="width: 10%">@lang('lang.size')</th>
+                                        <th style="width: 10%">@lang('lang.total_size')</th>
+                                        <th style="width: 10%">@lang('lang.weight')</th>
+                                        <th style="width: 10%">@lang('lang.total_weight')</th>
                                         {{-- <th style="width: 10%">@lang('lang.to_get_sell_price')</th> --}}
                                     </tr>
                                     </thead>
@@ -348,11 +352,23 @@
                         <div class="col-md-12">
                             <div class="col-md-3 offset-md-8 text-right">
                                 <h3> @lang('lang.total') :
-                                    @if($paying_currency == 2)
-                                        {{$this->sum_dollar_total_cost() ?? 0.00}}
-                                    @else
+                                    {{-- @if($paying_currency == 2) --}}
+                                        {{-- {{$this->sum_dollar_total_cost() ?? 0.00}} --}}
+                                    {{-- @else --}}
                                         {{$this->sum_total_cost() ?? 0.00}}
-                                    @endif
+                                    {{-- @endif --}}
+                                    <span class="final_total_span"></span> </h3>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="col-md-3 offset-md-8 text-right">
+                                <h3> @lang('lang.total')$ :
+                                    {{-- @if($paying_currency == 2) --}}
+                                        {{$this->sum_dollar_total_cost() ?? 0.00}}
+                                    {{-- @else --}}
+                                        {{-- {{$this->sum_total_cost() ?? 0.00}} --}}
+                                    {{-- @endif --}}
                                     <span class="final_total_span"></span> </h3>
                             </div>
                         </div>
@@ -416,7 +432,17 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <div class="col-md-3 payment_fields hide">
+                                <div class="form-group">
+                                    {!! Form::label('method', __('lang.payment_type'), []) !!}
+                                    {!! Form::select('method', $payment_type_array, $method,
+                                    ['class' => 'form-control select2','data-live-search'=>"true", 'required', 'placeholder' => __('lang.please_select'),
+                                    'data-name' => 'method', 'wire:model' => 'method', 'wire:change' => 'reset_change()', ]) !!}
+                                    @error('method')
+                                    <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                             @include('add-stock.partials.payment_form')
                             @if($payment_status != 'paid' && isset($payment_status) )
                                 @if(!empty($amount))
