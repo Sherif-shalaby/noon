@@ -5,7 +5,77 @@
 @endpush
 
 @section('content')
+
     <div class="row pt-5">
+        <div class="card-body">
+            {{--    <form action="{{route('initial-balance.index')}}" method="get">--}}
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label for="from">{{__('site.From')}}</label>
+                                {!! Form::date(
+                                    'from', null,
+                                    ['class' => 'form-control','placeholder'=>__('lang.from')]
+                                ) !!}
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label for="to">{{__('site.To')}}</label>
+                                {!! Form::date(
+                                    'to', null,
+                                    ['class' => 'form-control','placeholder'=>__('lang.to')]
+                                ) !!}
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                {!! Form::select(
+                                    'customer_id',
+                                    $customers,null,
+                                    ['class' => 'form-control select2','placeholder'=>__('lang.customer')]
+                                ) !!}
+                            </div>
+                        </div>
+                    
+                        <div class="col-2">
+                            <div class="form-group">
+                                {!! Form::select(
+                                    'payment_type',
+                                    $payment_types,null,
+                                    ['class' => 'form-control select2','placeholder'=>__('lang.payment_type')]
+                                ) !!}
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                {!! Form::select(
+                                    'brand_id',
+                                    [], null,
+                                    ['class' => 'form-control select2','placeholder'=>__('lang.brand'), 'data-name' => 'brand_id','wire:model' => 'brand_id']
+                                ) !!}
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group">
+                                {!! Form::select(
+                                    'created_by',
+                                    $users,null,
+                                    ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
+                                ) !!}
+                            </div>
+                        </div>
+                     
+                        {{-- <div class="col-2">
+                            <div class="form-group">
+                                <button type="button" name="submit" class="btn btn-danger width-100" title="search" wire:click="clear_filters">
+                                     {{ __('lang.clear_filters') }}</button>
+                            </div>
+                        </div> --}}
+                        
+                    </div>
+            {{--    </form>--}}
+            </div>
         <div class="table-responsive">
             <table id="datatable-buttons" class="table table-striped table-bordered">
                 <thead>

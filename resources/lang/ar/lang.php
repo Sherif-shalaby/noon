@@ -733,6 +733,8 @@ return array(
     'apply_on_all_customers'=>'تطبيق على كل العملاء',
     'c_type'=>'نوع العميل',
     'quarter' => 'الحي',
-
+    'recent_transactions'=>'المعاملات الاخيرة',
+    'change_remaining_to_dinar'=>'تحويل الباقى الى دينار',
+    'change_bill_to_dinar'=>'تحويل الفاتورة الى دينار',
 );
 

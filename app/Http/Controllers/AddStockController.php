@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Customer;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\StockTransaction;
@@ -367,7 +368,24 @@ class AddStockController extends Controller
         }
 
         $sell_lines = $sell_lines->paginate(10);
-        return view('invoices.partials.recent_transactions',compact('sell_lines'));
+
+        $customers=Customer::latest()->pluck('name','id')->toArray();
+        $payment_types = $this->getPaymentTypeArrayForPos();
+        $users=User::latest()->pluck('name','id')->toArray();
+        return view('invoices.partials.recent_transactions',compact('sell_lines','customers','payment_types','users'));
     }
+    public function getPaymentTypeArrayForPos()
+    {
+        return [
+            'cash' => __('lang.cash'),
+            'card' => __('lang.credit_card'),
+            'cheque' => __('lang.cheque'),
+            'gift_card' => __('lang.gift_card'),
+            'bank_transfer' => __('lang.bank_transfer'),
+            'deposit' => __('lang.use_the_balance'),
+//            'paypal' => __('lang.paypal'),
+        ];
+    }
+
 
 }
