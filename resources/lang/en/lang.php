@@ -666,6 +666,18 @@ return [
     'value'=>'Value',
     'apply_on_all_customers'=>'Apply on all customers',
     'c_type'=>'Customer type',
+    'attendance_added' => 'Attendance Added',
+    'attendance_updated' => 'Attendance Updated',
+    'attendance_deleted' => 'Attendance Deleted',
+    'attendance_list' => 'Attendance List',
+    'check_in_time' => 'Check In Time',
+    'check_out_time' => 'Check Out Time',
+    'late' => 'Late',
+    'present' => 'Present',
+    'on_leave' => 'On Leave',
+    'leave_details' => 'Leave Details',
+    'number_of_days' => 'Number of Days',
+
 ];
 
 

@@ -736,6 +736,16 @@ return array(
     'apply_on_all_customers'=>'تطبيق على كل العملاء',
     'c_type'=>'نوع العميل',
     'quarter' => 'الحي',
-
+    'late' => 'متأخر',
+    'present' => 'حاضر',
+    'on_leave' => 'في إجازة',
+    'leave_details' => 'تفاصيل الإجازة',
+    'number_of_days' => 'عدد الأيام',
+    'attendance_added' => 'تمت إضافة الحضور',
+    'attendance_updated' => 'تم تحديث الحضور',
+    'attendance_deleted' => 'تم حذف الحضور',
+    'attendance_list' => 'قائمة الحضور',
+    'check_in_time' => 'تحقق في الوقت المناسب',
+    'check_out_time' => 'تحقق من الوقت',
 );
 
