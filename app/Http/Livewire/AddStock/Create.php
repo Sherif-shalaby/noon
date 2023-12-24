@@ -1628,7 +1628,7 @@ class Create extends Component
         }else{
             $final_purchase = $this->num_uf($this->items[$index]['purchase_price']) ;
             // dd($this->items[$index]['bonus_quantity']);
-            if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == true){
+            if(isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == true && isset($this->items[$index]['bonus_quantity'])){
                 // dd($this->items[$index]['bonus_quantity']);
                 $final_purchase =  $final_purchase * ($this->num_uf($this->items[$index]['quantity']) + $this->num_uf($this->items[$index]['bonus_quantity']));
                 // dd($final_purchase);
