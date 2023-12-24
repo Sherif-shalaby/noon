@@ -742,5 +742,8 @@ return array(
     'expiry_order' => 'الصلاحية',
     'c_type'=>'نوع العميل',
     'quarter' => 'الحي',
+    'recent_transactions'=>'المعاملات الاخيرة',
+    'change_remaining_to_dinar'=>'تحويل الباقى الى دينار',
+    'change_bill_to_dinar'=>'تحويل الفاتورة الى دينار',
 );
 

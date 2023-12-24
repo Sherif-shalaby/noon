@@ -393,7 +393,7 @@
 
 
 {{--<!-- This will be printed -->--}}
-<section class="invoice print_section print-only" id="receipt_section_print">fff </section>
+<section class="invoice print_section print-only" id="receipt_section_print"> </section>
 @push('javascripts')
     @if(empty($store_pos) || empty($stores))
         <script>

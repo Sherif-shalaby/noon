@@ -252,7 +252,7 @@
                                                     @if(isset($unit->unit_id) && ($unit->unit_id == $variation->unit_id))
                                                         <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name??''}}  <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
                                                     @else
-                                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">{{$product->product_stores->sum('quantity_available')}}</span></span> <br>
+                                                        <span class="product_unit" data-variation_id="{{$variation->id}}" data-product_id="{{$product->id}}">{{$variation->unit->name  ?? ''}} <span class="unit_value">0</span></span> <br>
                                                     @endif
                                                 @empty
                                                     <span>{{$product->product_stores->sum('quantity_available')}} </span>

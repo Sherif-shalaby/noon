@@ -9,6 +9,9 @@ use App\Models\Brand;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
 use App\Models\Currency;
+use App\Models\Customer;
+use App\Models\Employee;
+use App\Models\JobType;
 use App\Models\MoneySafe;
 use App\Models\MoneySafeTransaction;
 use App\Models\StockTransaction;
@@ -17,6 +20,7 @@ use App\Models\Store;
 use App\Models\StorePos;
 use App\Models\Supplier;
 use App\Models\System;
+use App\Models\TransactionSellLine;
 use App\Models\User;
 use App\Utils\MoneySafeUtil;
 use App\Utils\ProductUtil;
@@ -353,6 +357,56 @@ class AddStockController extends Controller
         return number_format($paid,3);
     }
 
+    public function recentTransactions(Request $request){
+        $sell_lines = TransactionSellLine::query();
+
+        // Check if the user is a superadmin or admin
+        if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
+            $sell_lines = $sell_lines->orderBy('created_at', 'desc');
+        } else {
+            $sell_lines = $sell_lines->where('created_by', auth()->user()->id)->orderBy('created_at', 'desc');
+        }
+        if (!empty(request()->from)) {
+            $sell_lines->whereDate('transaction_sell_lines.created_at', '>=', request()->from);
+        }
+        if (!empty(request()->to)) {
+            $sell_lines->whereDate('transaction_sell_lines.created_at', '<=', request()->to);
+        }
+        if (!empty(request()->customer_id)) {
+            $sell_lines->where('transaction_sell_lines.customer_id', request()->customer_id);
+        }
+        if (!empty(request()->deliveryman_id)) {
+            $sell_lines->where('transaction_sell_lines.deliveryman_id', request()->deliveryman_id);
+        }
+        if (!empty(request()->created_by)) {
+            $sell_lines->where('transaction_sell_lines.created_by', request()->created_by);
+        }
+        if (!empty(request()->method)) {
+            $sell_lines->where('payment_transaction_sell_lines.method', request()->method);
+        }
+        $sell_lines = $sell_lines->paginate(10);
+
+        $customers=Customer::latest()->pluck('name','id')->toArray();
+        $payment_types = $this->getPaymentTypeArrayForPos();
+        $users=User::latest()->pluck('name','id')->toArray();
+        $pos_users=StorePos::pluck('user_id')->toArray();
+        $employees=Employee::whereIn('user_id',$pos_users)->pluck('employee_name','id')->toArray();
+        $job_type_id=JobType::where('title','deliveryman')->first()->id??0;
+        $delivery_men=Employee::where('job_type_id',$job_type_id)->pluck('employee_name','id')->toArray();
+        return view('invoices.partials.recent_transactions',compact('sell_lines','customers','payment_types','users','employees','delivery_men'));
+    }
+    public function getPaymentTypeArrayForPos()
+    {
+        return [
+            'cash' => __('lang.cash'),
+            'card' => __('lang.credit_card'),
+            'cheque' => __('lang.cheque'),
+            'gift_card' => __('lang.gift_card'),
+            'bank_transfer' => __('lang.bank_transfer'),
+            'deposit' => __('lang.use_the_balance'),
+//            'paypal' => __('lang.paypal'),
+        ];
+    }
 
 
 }
