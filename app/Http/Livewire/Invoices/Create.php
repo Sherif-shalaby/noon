@@ -2,46 +2,59 @@
 
 namespace App\Http\Livewire\Invoices;
 // use Pusher\Pusher;
-use App\Models\AddStockLine;
+use App\Utils\pos;
+use Carbon\Carbon;
+use App\Utils\Util;
+use App\Models\User;
+// use App\Models\AddStockLine;
 use App\Models\Brand;
-use App\Models\CashRegister;
+use App\Models\System;
+use App\Models\Country;
+use App\Models\Invoice;
+use App\Models\JobType;
+use App\Models\Product;
+use Livewire\Component;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Customer;
-use App\Models\CustomerType;
 use App\Models\Employee;
-use App\Models\Invoice;
-use App\Models\JobType;
-use App\Models\MoneySafeTransaction;
-use App\Models\Product;
+use App\Models\SellLine;
+use App\Models\StorePos;
+use App\Models\Variation;
+use App\Models\AddStockLine;
+// use App\Models\PurchaseOrderLine;
+use App\Models\CashRegister;
+// use App\Models\TransactionSellLine;
+use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
-use App\Models\PurchaseOrderLine;
-use App\Models\RequiredProduct;
-use App\Models\SellLine;
-use App\Models\StockTransaction;
-use App\Models\Store;
-use App\Models\StorePos;
-use App\Models\System;
-use App\Models\Transaction;
-use App\Models\TransactionPayment;
-use App\Models\TransactionSellLine;
-use App\Models\Variation;
-use App\Utils\pos;
-use App\Utils\Util;
-use Carbon\Carbon;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use App\Models\CashRegisterTransaction;
-use App\Models\PurchaseOrderTransaction;
-use App\Models\BalanceRequestNotification;
-use App\Models\PaymentTransactionSellLine;
 use App\Models\VariationPrice;
+use App\Models\RequiredProduct;
+// use Illuminate\Support\Facades\Auth;
+// use App\Models\CashRegisterTransaction;
+// use App\Models\PurchaseOrderTransaction;
+// use App\Models\BalanceRequestNotification;
+// use App\Models\PaymentTransactionSellLine;
+use App\Models\StockTransaction;
+use App\Models\PurchaseOrderLine;
+use App\Models\TransactionPayment;
 use App\Models\VariationStockline;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Livewire\Component;
+use App\Models\TransactionSellLine;
 
+// use App\Models\MoneySafeTransaction;
+use Illuminate\Support\Facades\Log;
+use App\Models\MoneySafeTransaction;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CashRegisterTransaction;
+use App\Models\BalanceRequestNotification;
+use App\Models\PaymentTransactionSellLine;
+use App\Models\Store;
+
+// use App\Models\CashRegisterTransaction;
+// use App\Models\PurchaseOrderTransaction;
+// use App\Models\BalanceRequestNotification;
+// use App\Models\PaymentTransactionSellLine;
 
 class Create extends Component
 {
@@ -97,6 +110,22 @@ class Create extends Component
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
         }
+        // +++++++ alphabetical_order filter +++++++
+        if (isset($data['var1']) && $data['var1'] == "alphabetical_order_id") {
+            $this->updatedDepartmentId($data['var2'], 'alphabetical_order_id');
+        }
+        // +++++++ price_order filter +++++++
+        if (isset($data['var1']) && $data['var1'] == "price_order_id") {
+            $this->updatedDepartmentId($data['var2'], 'price_order_id');
+        }
+        // +++++++ dollar_price_order filter +++++++
+        if (isset($data['var1']) && $data['var1'] == "dollar_price_order_id") {
+            $this->updatedDepartmentId($data['var2'], 'dollar_price_order_id');
+        }
+        // +++++++ expiry_order filter +++++++
+        if (isset($data['var1']) && $data['var1'] == "expiry_order_id") {
+            $this->updatedDepartmentId($data['var2'], 'expiry_order_id');
+        }
     }
     public function mount(Util $commonUtil)
     {
@@ -105,6 +134,9 @@ class Create extends Component
         $this->department_id2 = null;
         $this->department_id3 = null;
         $this->department_id4 = null;
+        // add new_customer
+        $this->countryId = System::getProperty('country_id');
+        $this->countryName = Country::where('id', $this->countryId)->pluck('name')->first();
         $this->invoice_lang = !empty(System::getProperty('invoice_lang')) ? System::getProperty('invoice_lang') : 'en';
         $this->store_pos = StorePos::where('user_id', Auth::user()->id)->pluck('name', 'id')->toArray();
         if (empty($this->store_pos)) {
@@ -340,7 +372,7 @@ class Create extends Component
                 $sell_line->stock_sell_price = !empty($item['current_stock']['sell_price']) ? $item['current_stock']['sell_price'] : null;
                 $sell_line->stock_dollar_sell_price = !empty($item['current_stock']['dollar_sell_price']) ? $item['current_stock']['dollar_sell_price'] : null;
                 $sell_line->sell_price = !empty($item['price']) ? $item['price'] : null;
-                $sell_line->dollar_sell_price = !empty($item['dollar_price']) ? $this->num_uf($item['dollar_price']) : null;
+                $sell_line->dollar_sell_price = !empty($item['dollar_price']) ? $item['dollar_price'] : null;
                 $sell_line->purchase_price = !empty($item['current_stock']['purchase_price']) ? $item['current_stock']['purchase_price'] : null;
                 $sell_line->dollar_purchase_price = !empty($item['current_stock']['dollar_purchase_price']) ? $item['current_stock']['dollar_purchase_price'] : null;
                 $sell_line->exchange_rate = $item['exchange_rate'];
@@ -463,6 +495,7 @@ class Create extends Component
         //        dd($this->customer_data);
     }
     // ++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++
+    // ++++++++++++++++++++++++++ updatedDepartmentId() ++++++++++++++++++++++++++
     public function updatedDepartmentId($value, $name)
     {
         $this->allproducts = Product::when($name == 'department_id1', function ($query) {
@@ -580,11 +613,11 @@ class Create extends Component
             $this->dispatchBrowserEvent('quantity_not_enough', ['id' => $id]);
         } else {
             $current_stock = $this->getCurrentStock($product);
-            //$exchange_rate = $this->getProductExchangeRate($current_stock);
+            //            $exchange_rate = $this->getProductExchangeRate($current_stock);
             $exchange_rate =  !empty($current_stock->exchange_rate) ? $current_stock->exchange_rate : System::getProperty('dollar_exchange');
             $product_stores = $this->getProductStores($product);
             // $stock_units = $this->getUnits($product,$this->store_id);
-            // $discount = $this->getProductDiscount($current_stock);
+            //            $discount = $this->getProductDiscount($current_stock);
             if (isset($discount)) {
                 $discounts = $discount;
             } else
@@ -799,14 +832,14 @@ class Create extends Component
         }
         $this->computeForAll();
     }
-    public function changeCustomerType($key)
-    {
+    public function changeCustomerType($key){
         // dd($this->items[$key]['variation']);
-        $variation_price = VariationPrice::where('variation_id', $this->items[$key]['unit_id'])->where('customer_type_id', $this->items[$key]['customer_type_id'])->first();
-        $variation_stock_line = VariationStockline::where('stock_line_id', $this->items[$key]['current_stock']['id'])->where('variation_price_id', $variation_price->id)->first();
+        $variation_price=VariationPrice::where('variation_id',$this->items[$key]['unit_id'])->where('customer_type_id',$this->items[$key]['customer_type_id'])->first();
+        $variation_stock_line=VariationStockline::where('stock_line_id',$this->items[$key]['current_stock']['id'])->where('variation_price_id',$variation_price->id)->first();
         $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
         $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
         $this->computeForAll();
+
     }
     public function resetAll()
     {
@@ -1381,30 +1414,29 @@ class Create extends Component
         //        dd($this->items[$key]['unit_id']);
         if (!empty($this->items[$key]['unit_id'])) {
             $variation_id = $this->items[$key]['unit_id'];
-            // $product=Product::find($this->items[$key]['product']['id']);
             $stock_line = AddStockLine::where('variation_id', $variation_id)->first();
-            if (!empty($this->items[$key]['customer_type_id'])) {
-                $variation_price = VariationPrice::where('variation_id', $variation_id)->where('customer_type_id', $this->items[$key]['customer_type_id'])->first();
-            } else {
-                $variation_price = VariationPrice::where('variation_id', $variation_id)->first();
+            if(!empty($this->items[$key]['customer_type_id'])){
+                $variation_price=VariationPrice::where('variation_id',$variation_id)->where('customer_type_id',$this->items[$key]['customer_type_id'])->first();
+            }else{
+                $variation_price=VariationPrice::where('variation_id',$variation_id)->first();
             }
-            $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
+            $stock_variation=VariationStockline::where('stock_line_id',$stock_line->id)->where('variation_price_id',$variation_price->id)->first();
             if (empty($stock_variation->sell_price) && empty($stock_variation->dollar_sell_price)) {
                 //            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
-                $stock_variation1 = Variation::find($this->items[$key]['current_stock']['variation_id']);
+                $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);
                 $product_variations = Variation::where('product_id', $this->items[$key]['product']['id'])->get();
                 $unit = Variation::where('id', $variation_id)->first();
-                $qtyByUnit = $this->getNewSellPrice($stock_variation1, $product_variations, $unit, $variation_id);
+                $qtyByUnit = $this->getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id);
                 $this->items[$key]['price'] = number_format($this->items[$key]['current_stock']['sell_price'] * $qtyByUnit ?? 0, 2);
                 $this->items[$key]['dollar_price'] = number_format($this->items[$key]['current_stock']['dollar_sell_price'] * $qtyByUnit ?? 0, 2);
             } else {
-                $this->items[$key]['price'] = number_format($stock_variation->sell_price ?? 0, 2);
-                $this->items[$key]['dollar_price'] = number_format($stock_variation->dollar_sell_price ?? 0, 2);
+                $this->items[$key]['price'] = number_format($stock_line->sell_price ?? 0, 2);
+                $this->items[$key]['dollar_price'] = number_format($stock_line->dollar_sell_price ?? 0, 2);
                 $this->items[$key]['current_stock'] = $stock_line;
                 $this->items[$key]['discount_categories'] = $stock_line->prices()->get();
             }
             $this->items[$key]['sub_total'] = number_format($this->num_uf($this->items[$key]['price']) * $this->items[$key]['quantity'], 2);
-            $this->items[$key]['dollar_sub_total'] = number_format($this->num_uf($this->items[$key]['dollar_price']) * $this->num_uf($this->items[$key]['quantity']), 2);
+            $this->items[$key]['dollar_sub_total'] = number_format($this->items[$key]['dollar_price'] * $this->items[$key]['quantity'], 2);
             $this->items[$key]['discount'] = 0;
             $this->items[$key]['extra_quantity'] = 0;
             $qty = $this->items[$key]['quantity_available'];
