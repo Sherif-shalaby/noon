@@ -55,7 +55,7 @@ class AttendanceController extends Controller
         $attendance->save();
         $output = [
             'success' => true,
-            'msg' => __('lang.employee_added')
+            'msg' => __('lang.add_employee')
         ];
         // You can redirect to a success page or perform other actions here
         return redirect()->route('attendance.index')->with('status', $output);
