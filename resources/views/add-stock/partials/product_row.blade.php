@@ -55,6 +55,14 @@
                     @endforeach
                 </select>
             </div>
+            <div>
+                {{-- Iterate through units and display each unit name and value as a span --}}
+                @if(isset($units))
+                @foreach ($units as $unitName => $unitValue)
+                    <span>{{ $unitName }}: {{ $unitValue }}</span>
+                @endforeach
+                @endif
+            </div>
         @else
             <span>@lang('lang.no_units')</span>
         @endif
@@ -203,7 +211,7 @@
         @enderror
     </td> --}}
 
-    {{-- <td title="{{__('lang.size')}} ">
+    <td title="{{__('lang.size')}} ">
         <span class="size">
             {{ $product['size'] }}
         </span>
@@ -351,6 +359,14 @@
                             @endif
                         @endforeach
                     </select>
+                </div>
+                <div>
+                    {{-- Iterate through units and display each unit name and value as a span --}}
+                    @if(isset($units))
+                    @foreach ($units as $unitName => $unitValue)
+                        <span>{{ $unitName }}: {{ $unitValue }}</span>
+                    @endforeach
+                    @endif
                 </div>
             @else
                 <span>@lang('lang.no_units')</span>
