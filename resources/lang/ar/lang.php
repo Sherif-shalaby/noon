@@ -750,4 +750,6 @@ return array(
     'apply_on_all_customers' => 'تطبيق على كل العملاء',
     'c_type' => 'نوع العميل',
     'quarter' => 'الحي',
+    'choose_currency' => 'حدد العملة',
+    'expenses_currency' => 'عملة المصروفات',
 );

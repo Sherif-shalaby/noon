@@ -680,5 +680,7 @@ return [
     'overall' => 'Total',
     'create_invoice' => 'create invoice',
     'apply_on_all_customers' => 'Apply on all customers',
-    'c_type'=>'Customer type',
+    'c_type' => 'Customer type',
+    'choose_currency' => 'Choose currency',
+    'expenses_currency' => 'Expenses currency',
 ];

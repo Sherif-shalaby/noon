@@ -5,6 +5,40 @@
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css') }}" />
 @endpush
 @section('breadcrumbbar')
+    <style>
+        .store_drop_down .select2-container {
+            width: 95% !important
+        }
+
+        .form-select {
+            height: 100%;
+            padding-bottom: 0;
+            padding-top: 0;
+            background-color: #dedede !important;
+            border-radius: 16px;
+            border: 2px solid #cececf;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .form-select:focus {
+            border-color: #cececf !important;
+            outline: 0;
+            box-shadow: 0 0 0 0 !important;
+            background-color: white !important;
+        }
+
+        .initial-balance-input {
+            border: 2px solid #cececf;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .accordion-button:focus {
+            border: none !important;
+            outline: none !important
+        }
+    </style>
     <div class="animate-in-page">
 
         <div class="breadcrumbbar m-0 px-3 py-0">

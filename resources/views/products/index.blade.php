@@ -410,7 +410,7 @@
                                                                         <span
                                                                             class="unit_value custom-tooltip d-flex justify-content-center align-items-center"
                                                                             style="font-size: 12px;font-weight: 600"
-                                                                            data-tooltip="@lang('lang.stock')">{{ $product->product_stores->sum('quantity_available') }}</span></span>
+                                                                            data-tooltip="@lang('lang.stock')">0</span></span>
                                                                     <br>
                                                                 @endif
                                                             @empty
