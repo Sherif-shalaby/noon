@@ -1,120 +1,110 @@
 <div class="card-body">
-    <form action="{{route('products.index')}}" method="get">
-    <div class="row">
-        {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
-        {{-- <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'store_id',
-                    $stores,request()->store_id,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.store')]
-                ) !!}
+    <form action="{{route('products.index')}}" method="get" id="filters_form">
+        <div class="row">
+            {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'branch_id',
+                        $branches,null,
+                        ['class' => 'form-control select2','placeholder'=>__('lang.branch'), 'id' => 'branch_id']
+                    ) !!}
+                </div>
             </div>
-        </div> --}}
-        {{-- ++++++++++++++++++++ branches filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'branch_id',
-                    $branches,null,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.branch'), 'id' => 'branch_id']
-                ) !!}
+            {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'store_id',[],null,['class' => 'form-control select2 store','placeholder'=>__('lang.store'), 'id' => 'store_id']
+                    ) !!}
+                </div>
             </div>
-        </div>
-        {{-- ++++++++++++++++++++ stores filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'store_id',[],null,['class' => 'form-control select2 store','placeholder'=>__('lang.store'), 'id' => 'store_id']
-                ) !!}
+            {{-- ++++++++++++++++++++ suppliers filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'supplier_id',
+                        $suppliers,request()->supplier_id,
+                        ['class' => 'form-control select2','placeholder'=>__('lang.supplier')]
+                    ) !!}
+                </div>
             </div>
-        </div>
-        {{-- ++++++++++++++++++++ suppliers filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'supplier_id',
-                    $suppliers,request()->supplier_id,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.supplier')]
-                ) !!}
+            {{-- ++++++++++++++++++++ categories filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'category_id',
+                        $categories,request()->category_id,
+                        ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
+                    ) !!}
+                </div>
             </div>
-        </div>
-        {{-- ++++++++++++++++++++ categories filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'category_id',
-                    $categories,request()->category_id,
-                    ['class' => 'form-control select2 category','placeholder'=>__('lang.category'),'id' => 'categoryId']
-                ) !!}
+            {{-- ++++++++++++++++++++ subcategories1 filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'subcategory_id1', [] ,request()->subcategory_id1,
+                        ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
+                    ) !!}
+                </div>
             </div>
-        </div>
-        {{-- ++++++++++++++++++++ subcategories1 filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'subcategory_id1', [] ,request()->subcategory_id1,
-                    ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
-                ) !!}
+            {{-- ++++++++++++++++++++ subcategories2 filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'subcategory_id2',[] ,request()->subcategory_id2,
+                        ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
+                    ) !!}
+                </div>
             </div>
-        </div>
-        {{-- ++++++++++++++++++++ subcategories2 filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'subcategory_id2',[] ,request()->subcategory_id2,
-                    ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
-                ) !!}
+            {{-- ++++++++++++++++++++ subcategories3 filter ++++++++++++++++++++ --}}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'subcategory_id3', [] ,request()->subcategory_id3,
+                        ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
+                    ) !!}
+                </div>
             </div>
-        </div>
-        {{-- ++++++++++++++++++++ subcategories3 filter ++++++++++++++++++++ --}}
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'subcategory_id3', [] ,request()->subcategory_id3,
-                    ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
-                ) !!}
-            </div>
-        </div>
 
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'brand_id',
-                    $brands,request()->brand_id,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.brand')]
-                ) !!}
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'brand_id',
+                        $brands,request()->brand_id,
+                        ['class' => 'form-control select2','placeholder'=>__('lang.brand')]
+                    ) !!}
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    {!! Form::select(
+                        'created_by',
+                        $users,request()->created_by,
+                        ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
+                    ) !!}
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch1" {{!empty(request()->dont_show_zero_stocks) ? 'checked' : ''}} name="dont_show_zero_stocks">
+                    <label class="custom-control-label" for="customSwitch1">@lang('lang.dont_show_zero_stocks')</label>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
+                        <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
+                </div>
+            </div>
+            {{-- +++++++++ delete_all button ++++++++ --}}
+            <div class="col-2">
+                <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
+                data-check_password="{{url('user/check-password')}}"
+                class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
+                    @lang('lang.delete_all')</a>
             </div>
         </div>
-        <div class="col-2">
-            <div class="form-group">
-                {!! Form::select(
-                    'created_by',
-                    $users,request()->created_by,
-                    ['class' => 'form-control select2','placeholder'=>__('lang.created_by')]
-                ) !!}
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1" {{!empty(request()->dont_show_zero_stocks) ? 'checked' : ''}} name="dont_show_zero_stocks">
-                <label class="custom-control-label" for="customSwitch1">@lang('lang.dont_show_zero_stocks')</label>
-            </div>
-        </div>
-        <div class="col-2">
-            <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary width-100" title="search">
-                    <i class="fa fa-eye"></i> {{ __('lang.filter') }}</button>
-            </div>
-        </div>
-        {{-- +++++++++ delete_all button ++++++++ --}}
-        <div class="col-2">
-            <a data-href="{{url('product/multiDeleteRow')}}" id="delete_all"
-               data-check_password="{{url('user/check-password')}}"
-               class="btn btn-danger text-white delete_all"><i class="fa fa-trash"></i>
-                @lang('lang.delete_all')</a>
-        </div>
-    </div>
     </form>
 </div>
 <script>
@@ -183,8 +173,8 @@
                 }
             })
         });
-         // +++++++++++++++++++++++++++++++++ branches and stores filter +++++++++++++++++++++++++++++++++
-         $('#branch_id').change(function(event) {
+        // +++++++++++++++++++++++++++++++++ branches and stores filter +++++++++++++++++++++++++++++++++
+        $('#branch_id').change(function(event) {
             var idBranch = this.value;
             // alert(idSubcategory1);
             $('#store_id').html('');
@@ -211,7 +201,6 @@
 
                 })
         });
-
     });
 
 
