@@ -766,4 +766,5 @@ return array(
     'attendance_list' => 'قائمة الحضور',
     'check_in_time' => 'تحقق في الوقت المناسب',
     'check_out_time' => 'تحقق من الوقت',
+    'add_expenses' => 'اضافة مصروفات',
 );

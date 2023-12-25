@@ -9,7 +9,7 @@
         margin: 0
     }
 </style>
-<div class="modal fade add-store" id="createStoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade add-store" id="createStoreModal" tabindex="-1" role="dialog" aria-hidden="true" wire:ignore>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             {!! Form::open([

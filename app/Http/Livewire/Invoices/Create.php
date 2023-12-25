@@ -1,16 +1,14 @@
 <?php
 
 namespace App\Http\Livewire\Invoices;
-// use Pusher\Pusher;
+
 use App\Utils\pos;
 use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
-// use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\System;
 use App\Models\Country;
-use App\Models\Invoice;
 use App\Models\JobType;
 use App\Models\Product;
 use Livewire\Component;
@@ -22,39 +20,22 @@ use App\Models\SellLine;
 use App\Models\StorePos;
 use App\Models\Variation;
 use App\Models\AddStockLine;
-// use App\Models\PurchaseOrderLine;
 use App\Models\CashRegister;
-// use App\Models\TransactionSellLine;
 use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\VariationPrice;
 use App\Models\RequiredProduct;
-// use Illuminate\Support\Facades\Auth;
-// use App\Models\CashRegisterTransaction;
-// use App\Models\PurchaseOrderTransaction;
-// use App\Models\BalanceRequestNotification;
-// use App\Models\PaymentTransactionSellLine;
 use App\Models\StockTransaction;
-use App\Models\PurchaseOrderLine;
 use App\Models\TransactionPayment;
 use App\Models\VariationStockline;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionSellLine;
-
-// use App\Models\MoneySafeTransaction;
 use Illuminate\Support\Facades\Log;
-use App\Models\MoneySafeTransaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CashRegisterTransaction;
-use App\Models\BalanceRequestNotification;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\Store;
-
-// use App\Models\CashRegisterTransaction;
-// use App\Models\PurchaseOrderTransaction;
-// use App\Models\BalanceRequestNotification;
-// use App\Models\PaymentTransactionSellLine;
 
 class Create extends Component
 {
@@ -128,9 +109,9 @@ class Create extends Component
         }
         $this->dispatchBrowserEvent('componentRefreshed');
     }
-    public function mount(Util $commonUtil)
+    public function mount()
     {
-        $this->payment_types = $commonUtil->getPaymentTypeArrayForPos();
+        $this->payment_types = $this->getPaymentTypeArrayForPos();
         $this->department_id1 = null;
         $this->department_id2 = null;
         $this->department_id3 = null;
@@ -177,6 +158,7 @@ class Create extends Component
             $this->store_id = $last_sell_trans->store_id;
         } else {
             $this->store_id = array_key_first($this->stores);
+            $this->changeAllProducts();
         }
 
         if (!empty($branch)) {
@@ -458,6 +440,8 @@ class Create extends Component
             DB::commit();
             $this->items = [];
             $this->computeForAll();
+            $this->amount = 0;
+            $this->dollar_amount = 0;
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم إضافة الفاتورة بنجاح']);
             // return $this->redirect('/invoices/create');
         } catch (\Exception $e) {
@@ -735,28 +719,32 @@ class Create extends Component
     {
         $this->total = 0;
         $this->total_dollar = 0;
-        foreach ($this->items as $item) {
-            // dinar_sub_total
-            $this->total += round_250($this->num_uf($item['sub_total']));
-            // dollar_sub_total
-            $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
-            $this->discount += $this->num_uf($item['discount_price']);
-            $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
+        if (count($this->items) > 0) {
+            foreach ($this->items as $item) {
+                // dinar_sub_total
+                $this->total += round_250($this->num_uf($item['sub_total']));
+                // dollar_sub_total
+                $this->total_dollar += $this->num_uf($item['dollar_sub_total']);
+                $this->discount += $this->num_uf($item['discount_price']);
+                $this->discount_dollar += $this->num_uf($item['discount_price']) * $this->num_uf($item['exchange_rate']);
+            }
         }
         //        $this->dollar_amount = $this->total_dollar;
         //        $this->amount = round_250($this->total);
         $this->payments[0]['method'] = 'cash';
         $this->rest  = 0;
         // النهائي دينار
-        $this->final_total = round_250($this->num_uf($this->total));
+        $this->final_total = $this->total > 0 ? round_250($this->num_uf($this->total)) : 0;
         // النهائي دولار
         $this->dollar_final_total = $this->num_uf($this->total_dollar);
         // dd($this->dollar_final_total,round($this->dollar_final_total / 10) * 10);
-        $this->net_dollar_remaining = ($this->dollar_final_total - round($this->dollar_final_total, -1));
+        // $this->net_dollar_remaining = ($this->dollar_final_total - round($this->dollar_final_total, -1));
         // task : الباقي دينار
-        $this->dinar_remaining = round_250($this->num_uf($this->amount) - $this->num_uf($this->final_total));
+        $dinar_remaining = $this->num_uf($this->final_total) - $this->num_uf($this->amount);
+        $this->dinar_remaining = $dinar_remaining > 0 ? round_250($dinar_remaining) : 0;
         // task : الباقي دولار
-        $this->dollar_remaining = ($this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_final_total));
+        $dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
+        $this->dollar_remaining = $dollar_remaining > 0 ? round_250($dollar_remaining) : 0;
     }
     public function changeRemaining()
     {
@@ -767,30 +755,31 @@ class Create extends Component
 
         $this->dollar_remaining = 0;
         // task : الباقي دينار
+        $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
     }
     public function ChangeBillToDinar()
     {
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        if ($this->final_total == 0) {
-            $this->final_total = $this->dollar_final_total * $exchange_rate;
-            $this->dollar_final_total = 0;
-        }
-        if ($this->total == 0) {
-            $this->total = $this->total_dollar * $exchange_rate;
-            $this->total_dollar = 0;
-        }
-        if ($this->discount == 0) {
-            $this->discount = $this->discount_dollar * $exchange_rate;
-            $this->discount_dollar = 0;
-        }
-        if ($this->amount == 0) {
-            $this->amount = $this->dollar_amount * $exchange_rate;
-            $this->dollar_amount = 0;
-        }
-        if ($this->dinar_remaining == 0) {
-            $this->dinar_remaining = $this->dollar_remaining * $exchange_rate;
-            $this->dollar_remaining = 0;
-        }
+        // if($this->final_total==0){
+        $this->final_total += $this->dollar_final_total * $exchange_rate;
+        $this->dollar_final_total = 0;
+        // }
+        // if($this->total==0){
+        $this->total += $this->total_dollar * $exchange_rate;
+        $this->total_dollar = 0;
+        // }
+        // if($this->discount==0){
+        $this->discount += $this->discount_dollar * $exchange_rate;
+        $this->discount_dollar = 0;
+        // }
+        // if($this->amount==0){
+        $this->amount += $this->dollar_amount * $exchange_rate;
+        $this->dollar_amount = 0;
+        // }
+        // if($this->dinar_remaining==0){
+        $this->dinar_remaining += $this->dollar_remaining * $exchange_rate;
+        $this->dollar_remaining = 0;
+        // }
     }
     public function increment($key)
     {
@@ -845,14 +834,17 @@ class Create extends Component
         if (isset($variation_price->id)) {
             $variation_stock_line = VariationStockline::where('stock_line_id', $this->items[$key]['current_stock']['id'])->where('variation_price_id', $variation_price->id)->first();
             $dollar_exchange = System::getProperty('dollar_exchange');
-            if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate'])) {
-                if ($variation_stock_line->dinar_sell_price == 0) {
-                    $this->items[$key]['price'] = $this->num_uf($variation_stock_line->dollar_sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']);
+            if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate']) && $this->items[$key]['current_stock']['exchange_rate'] != null) {
+                if ($variation_stock_line->sell_price == 0) {
+                    $this->items[$key]['price'] = $this->num_uf($variation_stock_line->sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']);
                     $this->items[$key]['dollar_price'] = 0;
+                } else {
+                    $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
+                    $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, 3);
                 }
             } else {
                 $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
-                $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
+                $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, 3);
             }
         }
         $this->subtotal($key);
@@ -923,11 +915,11 @@ class Create extends Component
     public function changeReceivedDollar()
     {
         if ($this->dollar_amount !== null && $this->dollar_amount !== 0) {
-            if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0) {
+            if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - ($this->num_uf($this->dollar_amount) + ($this->num_uf($this->amount) / System::getProperty('dollar_exchange')));
-            } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0  && $this->amount != 0) {
+            } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dinar_remaining = $this->num_uf($this->final_total) - ($this->num_uf($this->amount) + ($this->num_uf($this->dollar_amount) * System::getProperty('dollar_exchange')));
@@ -946,7 +938,7 @@ class Create extends Component
                 // Handle the case where total is in dollar and both dollar and dinar amounts are 0
                 elseif ($this->dollar_final_total != 0) {
                     // Calculate remaining dollar amount directly
-                    $this->dollar_remaining = $this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_amount);
+                    $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
                     if ($this->final_total != 0) {
                         $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
                         if ($this->dinar_remaining < 0 &&  $this->dollar_remaining > 0) {
@@ -1438,6 +1430,7 @@ class Create extends Component
                 $variation_price = VariationPrice::where('variation_id', $variation_id)->first();
             }
             $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
+
             if (empty($stock_variation->sell_price) && empty($stock_variation->dollar_sell_price)) {
                 //            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
                 $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);

@@ -8,34 +8,32 @@
                         <h4>@lang('lang.add-stock')
                         </h4>
                     </div>
-                    <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <div class="col-md-7 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
-                            <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
+                    <div
+                        class="row justify-content-between py-1 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                        <div class="col-md-2 d-flex align-items-center justify-content-end animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.1s">
+
+                            {!! Form::checkbox('change_exchange_rate_to_supplier', 1, false, [
+                                'wire:model' => 'change_exchange_rate_to_supplier',
+                            ]) !!}
+                            <label class="mb-0 mx-1">
+                                @lang('lang.change_exchange_rate_to_supplier')
+                            </label>
+
                         </div>
-                        <div class="col-md-2 animate__animated animate__bounceInLeft" style="animation-delay: 1.1s">
-                            <div class="form-group">
-                                <label>
-                                    {!! Form::checkbox('change_exchange_rate_to_supplier', 1, false, [
-                                        'wire:model' => 'change_exchange_rate_to_supplier',
-                                    ]) !!}
-                                    @lang('lang.change_exchange_rate_to_supplier')
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.1s">
-                            <div class="i-checks">
+                        <div class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft"
+                            style="animation-delay: 1.1s">
+                            <div class="i-checks d-flex align-items-center ">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"
                                     @if (isset($clear_all_input_stock_form) && $clear_all_input_stock_form == '1') checked @endif class="">
-                                <label for="clear_all_input_form" style="font-size: 0.75rem">
-                                    <strong>
-                                        @lang('lang.clear_all_input_form')
-                                    </strong>
+                                <label for="clear_all_input_form" style="font-size: 0.75rem" class="mb-0 mx-1">
+                                    @lang('lang.clear_all_input_form')
                                 </label>
                             </div>
                         </div>
                     </div>
                     {{-- {!! Form::open(['id' => 'add_stock_form', 'wire:submit.prevent' => 'validateItems']) !!} --}}
-                    <div class="card-body px-0">
+                    <div class="card-body py-0 px-0">
                         <div class="col-md-12">
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                 <div
@@ -176,19 +174,19 @@
 
                                 </div>
                                 <div
-                                    class="col-md-4 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                                    class="col-md-4 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                     <div class="mb-2 col-md-4 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                         style="animation-delay: 1.5s">
                                         <label
                                             class="@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @endif"
                                             style="font-size: 12px;font-weight: 500;"
-                                            for="expenses_currency">@lang('lang.expenses_currency') *</label>
+                                            for="expenses_currency">@lang('lang.expenses_currency') </label>
                                         <div class="input-wrapper" style="width:100%">
                                             {!! Form::select('expenses_currency', $selected_currencies, $transaction_currency, [
                                                 'class' => 'form-control select2',
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-live-search' => 'true',
-                                                'required',
+                                            
                                                 'data-name' => 'expenses_currency',
                                                 'wire:model' => 'expenses_currency',
                                             ]) !!}
@@ -198,52 +196,61 @@
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <button class="btn btn-primary btn-sm ml-2" style="height: 30px"
-                                        wire:click="addExpense" style="animation-delay: 1.5s">+
+                                    <button
+                                        class="btn btn-primary animate__animated animate__bounceInLeft btn-sm mt-2 ml-2"
+                                        style="height: 30px;animation-delay: 1.5s"
+                                        wire:click="addExpense">{{ __('lang.add_expenses') }}
                                     </button>
-                                    <div>
 
-                                        @foreach ($expenses as $index => $expense)
-                                            <div class="row flex-row-reverse">
-                                                <div
-                                                    class="col-md-4 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-
-
-                                                    {!! Form::label('details', __('details'), ['class' => 'mx-2 mb-0']) !!}
-                                                    {!! Form::text('details', $expense['details'], [
-                                                        'class' => 'form-control  initial-balance-input width-full mt-0',
-                                                        'placeholder' => __('Details'),
-                                                        'wire:model' => 'expenses.' . $index . '.details',
-                                                    ]) !!}
-
-                                                </div>
-                                                <div
-                                                    class="col-md-4 d-flex mb-2 animate__animated animate__bounceInLeft flex-column py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-
-
-                                                    {!! Form::label('amount', __('amount'), ['class' => 'mx-2 mb-0']) !!}
-                                                    {!! Form::text('amount', $expense['amount'], [
-                                                        'class' => 'form-control initial-balance-input width-full mt-0',
-                                                        'placeholder' => __('Amount'),
-                                                        'wire:model' => 'expenses.' . $index . '.amount',
-                                                        'wire:change' => 'changeTotalAmount',
-                                                    ]) !!}
-
-                                                </div>
-                                                <div
-                                                    class="col-md-2 d-flex mb-2 animate__animated animate__bounceInLeft flex-column justify-content-center py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
-                                                    <button class="btn btn-danger btn-sm ml-2"
-                                                        wire:click="removeExpense({{ $index }})"><i
-                                                            class="fas fa-trash"></i></button>
-                                                </div>
-
-                                            </div>
-                                        @endforeach
-
-
-                                    </div>
                                 </div>
 
+                                <div class="col-md-12">
+
+                                    @foreach ($expenses as $index => $expense)
+                                        <div class="row flex-row-reverse align-items-center">
+                                            <div
+                                                class="col-md-6 d-flex mb-0 animate__animated animate__bounceInLeft flex-column py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+
+
+                                                {!! Form::label('details', __('lang.details'), ['class' => 'mx-2 mb-0']) !!}
+                                                {!! Form::text('expenses.' . $index . '.details', $expense['details'], [
+                                                    'class' => 'form-control  initial-balance-input width-full mb-0 mt-0',
+                                                    'placeholder' => __('lang.details'),
+                                                    'wire:model' => 'expenses.' . $index . '.details',
+                                                ]) !!}
+
+                                            </div>
+                                            <div
+                                                class="col-md-1 mb-0 d-flex animate__animated animate__bounceInLeft flex-column py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+
+
+                                                {!! Form::label('amount', __('lang.amount'), ['class' => 'mx-2 mb-0']) !!}
+                                                {!! Form::text('expenses.' . $index . '.amount', $expense['amount'], [
+                                                    'class' => 'form-control initial-balance-input width-full mb-0 mt-0',
+                                                    'placeholder' => __('lang.amount'),
+                                                    'wire:model' => 'expenses.' . $index . '.amount',
+                                                    'wire:change' => 'changeTotalAmount',
+                                                ]) !!}
+
+                                            </div>
+                                            <div
+                                                class="col-md-2 d-flex mb-0 mt-2 animate__animated animate__bounceInLeft justify-content-evenly justify-content-center py-0 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
+                                                <button class="btn btn-danger btn-sm ml-2"
+                                                    wire:click="removeExpense({{ $index }})"><i
+                                                        class="fas fa-trash"></i>
+                                                </button>
+                                                <button class="btn btn-primary btn-sm ml-2" wire:click="addExpense"><i
+                                                        class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+
+
+                                        </div>
+                                    @endforeach
+
+
+
+                                </div>
                             </div>
 
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
@@ -331,45 +338,79 @@
                                     style="height: 100vh;overflow: scroll;animation-delay: 1.8s">
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                         الأقسام الرئيسيه
-                                        <div for="" class="d-flex align-items-center text-nowrap gap-1"
-                                            wire:ignore>
-                                            {{-- الاقسام --}}
-                                            <select class="form-control select2" data-name="department_id"
-                                                wire:model="department_id">
-                                                <option value="" readonly selected>اختر </option>
-                                                @foreach ($departments as $depart)
-                                                    @if ($depart->parent_id === null)
-                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                        </option>
-                                                        {{-- @if ($depart->subCategories->count() > 0)
-                                                            @include('categories.category-select', [
-                                                                'categories' => $depart->subCategories,
-                                                                'prefix' => '-',
-                                                            ])
-                                                        @endif --}}
-                                                    @endif
-                                                @endforeach
-                                            </select>
+                                        <div class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                                            <div class="row">
+                                                {{-- الاقسام --}}
+                                                <select class="form-control depart1 select2"
+                                                    wire:model="department_id1" data-name="department_id1">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 1)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select class="form-control depart select2"
+                                                    wire:model="department_id2" data-name="department_id2">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 2)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select class="form-control depart select2"
+                                                    wire:model="department_id3" data-name="department_id3">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 3)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                                <select class="form-control depart select2"
+                                                    wire:model="department_id4" data-name="department_id4">
+                                                    <option value="0 " readonly selected>اختر </option>
+                                                    @foreach ($departments as $depart)
+                                                        @if ($depart->parent_id === 4)
+                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                            </option>
+                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                            {{-- @endif --}}
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="p-2">
-                                        @foreach ($products as $product)
-                                            <div class="order-btn py-2 border-bottom"
-                                                wire:click='add_product({{ $product->id }})'
-                                                style="cursor: pointer">
-                                                @if ($product->image)
-                                                    <img src="{{ asset('uploads/products/' . $product->image) }}"
-                                                        alt="{{ $product->name }}" class="img-thumbnail"
-                                                        width="100px">
-                                                @else
-                                                    <img src="{{ asset('uploads/' . $settings['logo']) }}"
-                                                        alt="{{ $product->name }}" class="img-thumbnail"
-                                                        width="100px">
-                                                @endif
-                                                <span>{{ $product->name }}</span>
-                                                <span>{{ $product->sku }} </span>
-                                            </div>
-                                        @endforeach
+                                        @if ($allproducts and $allproducts != null)
+                                            @forelse ($allproducts as $product)
+                                                <div class="order-btn" wire:click='add_product({{ $product->id }})'
+                                                    style="cursor: pointer">
+                                                    <span>{{ $product->name }}</span>
+                                                    <span>{{ $product->sku }} </span>
+                                                </div>
+                                                <hr />
+                                            @empty
+                                                <div class="col-md-12">
+                                                    <span>عفوا لايوجد منتجات فى هذا القسم</span>
+                                                </div>
+                                            @endforelse
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="table-responsive col-md-11 border border-1  animate__animated animate__bounceInLeft "
@@ -409,8 +450,7 @@
                                             </div>
 
                                             <div>
-                                                <span
-                                                    style="font-weight:700;font-size: 14px;">@lang('lang.total_weight')</span>
+                                                <span style="font-weight:700;font-size: 14px;">@lang('lang.total_weight')</span>
                                                 <span
                                                     style="font-weight:700;font-size: 16px;">{{ $this->sum_weight() ?? 0 }}</span>
                                             </div>
@@ -735,10 +775,17 @@
 {{-- <!-- This will be printed --> --}}
 <section class="invoice print_section print-only" id="receipt_section"> </section>
 @include('suppliers.quick_add', ['quick_add' => 1])
+@include('products.partials.add_store_modal')
+@include('store.create', ['quick_add' => $quick_add])
 
 
 @push('javascripts')
     <script>
+        document.addEventListener('livewire:load', function() {
+            $('.depart1').select().on('change', function(e) {
+                @this.set('department_id1', $(this).val());
+            });
+        });
         document.addEventListener('livewire:load', function() {
             Livewire.hook('message.processed', (message, component) => {
                 if (message.updateQueue && message.updateQueue.some(item => item.payload.event ===

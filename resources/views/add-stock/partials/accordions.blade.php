@@ -43,6 +43,52 @@
                                     maxlength="6">
                             </div>
 
+                            <div style="width: 130px;padding:0;margin:0;font-size: 12px;margin-top:-10px"
+                                class="d-flex justify-content-center align-items-end flex-column">
+                                @if (count($product['variations']) > 0)
+                                    <label class="mb-0 mx-2" for="">{{ __('lang.unit') }}</label>
+                                    <div class="input-wrapper" style="width: 100%">
+                                        <select name="items.{{ $index }}.prices.{{ $key }}.fill_id"
+                                            class="form-select mt-0"
+                                            wire:model="items.{{ $index }}.prices.{{ $key }}.fill_id">
+                                            <option value="" selected>{{ __('lang.please_select') }}
+                                            </option>
+                                            @foreach ($product['variations'] as $variant)
+                                                @if (!empty($variant['unit_id']))
+                                                    <option value="{{ $variant['id'] }}">
+                                                        {{ $variant['unit']['name'] ?? '' }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @else
+                                    <span>@lang('lang.no_units')</span>
+                                @endif
+                                @error('items.' . $index . '.variation_id')
+                                    <span class="error text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
+                            <div style="width: 100px;padding:0;margin:0;font-size: 12px;margin-top: -10px"
+                                class="d-flex justify-content-center align-items-end mx-1 flex-column">
+                                {!! Form::label('customer_type', __('lang.customer_type'), [
+                                    'style' => 'font-weight:700;font-size: 10px;',
+                                    'class' => 'mx-1 mb-0',
+                                ]) !!}
+                                <div class="input-wrapper" style="width: 100%">
+                                    <select
+                                        wire:model="items.{{ $index }}.prices.{{ $key }}.price_customer_types"
+                                        data-name='price_customer_types' data-index="{{ $key }}"
+                                        class="form-select" placeholder="{{ __('lang.please_select') }}">
+                                        @foreach ($customer_types as $type)
+                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div style="width: 145px;padding:0;margin:0;margin-top: 13px"
                                 class="d-flex justify-content-center align-items-end flex-column mx-1">
                                 {!! Form::label('price_type', __('lang.type'), [
@@ -105,32 +151,6 @@
                                     wire:model="items.{{ $index }}.prices.{{ $key }}.price_after_desc"
                                     placeholder = "{{ __('lang.price') }}">
                             </div>
-                            <div style="width: 130px;padding:0;margin:0;font-size: 12px;margin-top:-10px"
-                                class="d-flex justify-content-center align-items-end flex-column">
-                                @if (count($product['variations']) > 0)
-                                    <label class="mb-0 mx-2" for="">{{ __('lang.unit') }}</label>
-                                    <div class="input-wrapper" style="width: 100%">
-                                        <select name="items.{{ $index }}.prices.{{ $key }}.fill_id"
-                                            class="form-select mt-0"
-                                            wire:model="items.{{ $index }}.prices.{{ $key }}.fill_id">
-                                            <option value="" selected>{{ __('lang.please_select') }}
-                                            </option>
-                                            @foreach ($product['variations'] as $variant)
-                                                @if (!empty($variant['unit_id']))
-                                                    <option value="{{ $variant['id'] }}">
-                                                        {{ $variant['unit']['name'] ?? '' }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @else
-                                    <span>@lang('lang.no_units')</span>
-                                @endif
-                                @error('items.' . $index . '.variation_id')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
 
                             <div style="width: 80px;padding:0;margin:0;font-size: 12px;"
                                 class="d-flex justify-content-center align-items-end mx-1 flex-column">
@@ -186,23 +206,7 @@
 
                             </div>
 
-                            <div style="width: 100px;padding:0;margin:0;font-size: 12px;margin-top: -10px"
-                                class="d-flex justify-content-center align-items-end mx-1 flex-column">
-                                {!! Form::label('customer_type', __('lang.customer_type'), [
-                                    'style' => 'font-weight:700;font-size: 10px;',
-                                    'class' => 'mx-1 mb-0',
-                                ]) !!}
-                                <div class="input-wrapper" style="width: 100%">
-                                    <select
-                                        wire:model="items.{{ $index }}.prices.{{ $key }}.price_customer_types"
-                                        data-name='price_customer_types' data-index="{{ $key }}"
-                                        class="form-select" placeholder="{{ __('lang.please_select') }}">
-                                        @foreach ($customer_types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
+
                             <div style="width: 80px;padding:0;margin:0;font-size: 12px;border-radius: 6px;"
                                 class="d-flex justify-content-center align-items-center col-md-1">
                                 <button type="button" class="btn btn-sm btn-primary"
@@ -216,6 +220,7 @@
                                     </button>
                                 @endif
                             </div>
+
                         </div>
                     @endforeach
                 </div>
@@ -223,10 +228,10 @@
         </div>
     </div>
 
-    <div style="width: 100%;" class="accordion m-1" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item" style="border: none">
-            <h2 class="accordion-header">
-                <button class="accordion-button dis-button collapsed" style="padding: 5px 15px" type="button"
+    <div style="width: 100%;" class="accordion_test m-1" id="accordion_testPanelsStayOpenExample">
+        <div class="accordion_test-item" style="border: none">
+            <h2 class="accordion_test-header">
+                <button class="accordion_test-button dis-button collapsed" style="padding: 5px 15px" type="button"
                     data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}validity"
                     data-index="{{ $index }}" aria-expanded="true"
                     aria-controls="panelsStayOpen-collapse{{ $index }}validity"
@@ -234,7 +239,7 @@
                     <h6>
                         @lang('lang.validity')
                     </h6>
-                    <span class="accordion-arrow">
+                    <span class="accordion_test-arrow">
                         @if ($product['show_validity'])
                             <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
                         @else
@@ -244,8 +249,9 @@
                 </button>
             </h2>
             <div id="panelsStayOpen-collapse{{ $index }}validity"
-                class="accordion-collapse collapse @if ($product['show_validity']) show @endif">
-                <div class="accordion-body @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif p-0">
+                class="accordion_test-collapse collapse @if ($product['show_validity']) show @endif">
+                <div
+                    class="accordion_test-body @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif p-0">
 
                     <div class="p-0 mt-2 d-flex flex-wrap justify-content-between align-items-center rounded-3 text-center"
                         style="width: 100%;

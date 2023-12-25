@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\AddStock;
 
 use App\Models\AddStockLine;
+use App\Models\Branch;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
 use App\Models\Category;
@@ -64,7 +65,7 @@ class Create extends Component
 
     use WithPagination;
 
-    public $divide_costs, $other_expenses = 0, $other_payments = 0, $store_id, $order_date, $purchase_type,
+    public $divide_costs, $allproducts = [], $other_expenses = 0, $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null, $other_payments = 0, $store_id, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency, $expenses_currency, $current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
@@ -114,6 +115,10 @@ class Create extends Component
         $this->customer_types = CustomerType::orderBy('name', 'asc')->get();
 
         $this->dispatchBrowserEvent('initialize-select2');
+        $this->department_id1 = null;
+        $this->department_id2 = null;
+        $this->department_id3 = null;
+        $this->department_id4 = null;
     }
     protected $listeners = ['listenerReferenceHere'];
 
@@ -121,21 +126,34 @@ class Create extends Component
     {
         if (isset($data['var1'])) {
             $this->{$data['var1']} = $data['var2'];
-        }
-        if ($data['var1'] == 'po_id') {
-            $this->{$data['var1']} = (int)$data['var2'];
-            if (!empty($this->po_id)) {
-                $this->add_by_po();
+            if ($data['var1'] == 'po_id') {
+                $this->{$data['var1']} = (int)$data['var2'];
+                if (!empty($this->po_id)) {
+                    $this->add_by_po();
+                }
             }
-        }
-        if ($data['var1'] == 'transaction_currency') {
-            $this->paying_currency = $data['var2'];
-        }
-        if ($data['var1'] == 'supplier') {
-            $this->exchange_rate = $this->changeExchangeRate();
-        }
-        if ($data['var1'] == ('paying_currency' || 'divide_costs')) {
-            $this->changeTotalAmount();
+            if ($data['var1'] == 'transaction_currency') {
+                $this->paying_currency = $data['var2'];
+            }
+            if ($data['var1'] == 'supplier') {
+                $this->exchange_rate = $this->changeExchangeRate();
+            }
+            if ($data['var1'] == ('paying_currency' || 'divide_costs')) {
+                $this->changeTotalAmount();
+            }
+
+            if (isset($data['var1']) && $data['var1'] == "department_id1") {
+                $this->updatedDepartmentId($data['var2'], 'department_id1');
+            }
+            if (isset($data['var1']) && $data['var1'] == "department_id2") {
+                $this->updatedDepartmentId($data['var2'], 'department_id2');
+            }
+            if (isset($data['var1']) && $data['var1'] == "department_id3") {
+                $this->updatedDepartmentId($data['var2'], 'department_id3');
+            }
+            if (isset($data['var1']) && $data['var1'] == "department_id4") {
+                $this->updatedDepartmentId($data['var2'], 'department_id4');
+            }
         }
     }
 
@@ -153,7 +171,7 @@ class Create extends Component
         $stores = Store::whereHas('branch', function ($query) {
             $query->where('type', 'branch');
         })->pluck('name', 'id');
-        $departments = Category::get();
+        $departments = Category::where('parent_id', '!=', null)->get();
         $customer_types = CustomerType::latest()->get();
         $po_nos = PurchaseOrderTransaction::where('status', '!=', 'received')->pluck('po_no', 'id');
         $search_result = '';
@@ -203,6 +221,8 @@ class Create extends Component
             $products = Product::paginate();
         }
         $this->dispatchBrowserEvent('initialize-select2');
+        $branches = Branch::where('type', 'branch')->orderBy('created_by', 'desc')->pluck('name', 'id');
+        $quick_add = 1;
         return view(
             'livewire.add-stock.create',
             compact(
@@ -221,9 +241,45 @@ class Create extends Component
                 'departments',
                 'po_nos',
                 'search_result',
-                'users'
+                'users',
+                'branches',
+                'quick_add'
             )
         );
+    }
+
+    public function changeAllProducts()
+    {
+        $products_store = ProductStore::where('store_id', $this->store_id)->pluck('product_id');
+        $this->allproducts = Product::whereIn('id', $products_store)->get();
+        foreach ($this->items as $key => $item) {
+            if (!(ProductStore::where('product_id', $this->items[$key]['product']['id'])->where('store_id', $this->store_id)->exists())) {
+                $this->delete_item($key);
+            }
+        }
+    }
+
+    public function updatedDepartmentId($value, $name)
+    {
+        $this->allproducts = Product::when($name == 'department_id1', function ($query) {
+            $query->where('category_id', $this->department_id1);
+            // $query->where(function ($query) {
+            //     $query->where('category_id', $this->department_id1)
+            //         ->Where('subcategory_id1', $this->department_id2)
+            //         ->Where('subcategory_id2', $this->department_id3)
+            //         ->Where('subcategory_id3', $this->department_id4);
+            // });
+        })->when($name == 'department_id2', function ($query) {
+            $query->where('subcategory_id1', $this->department_id2);
+        })
+
+            ->when($name == 'department_id3', function ($query) {
+                $query->where('subcategory_id2', $this->department_id3);
+            })
+            ->when($name == 'department_id4', function ($query) {
+                $query->where('subcategory_id3', $this->department_id4);
+            })
+            ->get();
     }
 
     public function addExpense()
@@ -763,6 +819,7 @@ class Create extends Component
             'show_discount' => false,
             'show_validity' => false,
             'show_discount_details' => false,
+            'show_unit_details' => false,
             'prices' => [
                 [
                     'price_type' => null,
@@ -804,6 +861,12 @@ class Create extends Component
     {
         $this->items[$index]['show_discount_details'] =
             !$this->items[$index]['show_discount_details'];
+        $this->dispatchBrowserEvent('componentRefreshed');
+    }
+    public function stayShowUnitDetails($index)
+    {
+        $this->items[$index]['show_unit_details'] =
+            !$this->items[$index]['show_unit_details'];
         $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function add_by_po()

@@ -697,4 +697,6 @@ return [
     'on_leave' => 'On Leave',
     'leave_details' => 'Leave Details',
     'number_of_days' => 'Number of Days',
+    'add_expenses' => 'Add Expenses',
+
 ];
