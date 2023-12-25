@@ -189,7 +189,7 @@ class Edit extends Component
     // +++++++++ Get "customers" +++++++++
     public function updated($propertyName)
     {
-        $this->validateOnly($propertyName);
+        // $this->validateOnly($propertyName);
         if ($propertyName === 'highest_price') {
             $this->updatedDepartmentId($this->highest_price, 'highest_price');
         } else if ($propertyName === 'lowest_price') {
