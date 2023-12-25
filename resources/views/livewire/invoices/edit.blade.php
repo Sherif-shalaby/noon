@@ -206,13 +206,13 @@
                                 <span> @lang('lang.quarter') : {{ !empty($quarter) ? $quarter->name : '' }}</span>
                             </div>
                             <div class="col-md-2">
-                                <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ?? '' }}</span>
+                                <span> @lang('lang.phone_number') : {{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
                             </div>
                             <div class="col-md-2">
-                                <span> @lang('lang.email') : {{ !empty($customer_data->email) ?? '' }}</span>
+                                <span> @lang('lang.email') : {{ !empty($customer_data->email) ? $customer_data->email : '' }}</span>
                             </div>
                             <div class="col-md-2">
-                                <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ?? '' }}</span>
+                                <span> @lang('lang.notes') : {{ !empty($customer_data->notes) ? $customer_data->notes : '' }}</span>
                             </div>
                             <div class="col-md-3">
                                 <button style="width: 100%; background: #5b808f" wire:click="redirectToCustomerDetails({{ $client_id }})"
