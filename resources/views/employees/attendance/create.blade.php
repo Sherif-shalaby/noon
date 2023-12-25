@@ -101,15 +101,16 @@
                                                             </td>
                                                             <td>
                                                                 <input type="time" class="form-control time"
-                                                                    name="check_in" required>
+                                                                    name="check_in" id="check_in_id" required>
                                                             </td>
                                                             <td>
                                                                 <input type="time" class="form-control time"
-                                                                    name="check_out" required>
+                                                                    name="check_out" id="check_out_id" required>
                                                             </td>
                                                             <td>
                                                                 {!! Form::select('status', ['present' => 'Present', 'late' => 'Late', 'on_leave' => 'On Leave'], null, [
                                                                     'class' => 'form-control select2',
+                                                                    'id' => 'status_id',
                                                                     'data-live-search' => 'true',
                                                                     'placeholder' => __('lang.please_select'),
                                                                     'required',
@@ -169,6 +170,17 @@
         // +++++++++++++ remove "row" to table +++++++++++++
         $('.table_tbody').on('click', '.deleteRow', function() {
             $(this).parent().parent().remove();
+        });
+        // Assuming check_in and check_out are the IDs of your input fields
+        $('#check_in_id, #check_out_id').on('change', function() {
+            var checkInValue = $('#check_in_id').val();
+            var checkOutValue = $('#check_out_id').val();
+            // Check if both check_in and check_out values are set
+            if (checkInValue && checkOutValue) {
+                // Set the value of the status select box to "present"
+                $('#status_id').val('present').trigger(
+                'change'); // Use trigger('change') to trigger the change event
+            }
         });
     </script>
 @endsection

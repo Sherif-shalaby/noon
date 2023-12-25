@@ -86,8 +86,23 @@
                                                                 {{ \Carbon\Carbon::parse($attendance->check_out)->format('h:i:s A') }}
                                                             </td>
                                                             <td>
-                                                                <span
-                                                                    class="badge @attendance_status($attendance->status)">{{ __('lang.' . $attendance->status) }}</span>
+                                                                {{-- ///// status == late ///// --}}
+                                                                @if ($attendance->status == 'late')
+                                                                    <span class="badge badge-danger p-2">
+                                                                        {{ __('lang.' . $attendance->status) }}
+                                                                    </span>
+                                                                    {{-- ///// status == present ///// --}}
+                                                                @elseif ($attendance->status == 'present')
+                                                                    <span class="badge badge-success p-2">
+                                                                        {{ __('lang.' . $attendance->status) }}
+                                                                    </span>
+                                                                    {{-- ///// status == on_leave ///// --}}
+                                                                @else
+                                                                    <span class="badge badge-warning p-2">
+                                                                        {{ __('lang.' . $attendance->status) }}
+                                                                    </span>
+                                                                @endif
+
                                                                 @if ($attendance->status == 'late')
                                                                     @php
                                                                         $check_in_data = [];

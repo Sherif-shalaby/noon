@@ -70,7 +70,7 @@
 
 
 
-        <div class="body-card-app pt-2 d-flex flex-wrap justify-content-end align-items-center">
+        <div class="body-card-app pt-2 pb-0 d-flex flex-wrap justify-content-end align-items-center position-relative">
 
             <div class="col-md-8 p-0 d-flex justify-content-end">
                 @if (!$reprsenative_sell_car)
@@ -194,7 +194,6 @@
 
             </div>
 
-
             <div class="col-md-8 p-0 d-flex justify-content-end">
                 {{-- @if ($this->checkRepresentativeUser() && !$reprsenative_sell_car) --}}
                 <div class="col-sm-2">
@@ -240,7 +239,7 @@
                         {!! Form::number('discount', null, [
                             'class' => 'form-control p-1',
                             'style' => 'height:30px',
-
+                        
                             'wire:model' => 'discount',
                             'wire:change' => 'changeTotal',
                         ]) !!}
@@ -298,6 +297,8 @@
 
             </div>
 
+            <button class="btn btn-danger position-absolute" style="left: 10px;bottom:10px" wire:click="cancel">
+                @lang('lang.close')</button>
         </div>
     </div>
 </div>

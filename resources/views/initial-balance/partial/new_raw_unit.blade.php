@@ -35,8 +35,8 @@
                                         height: 30px;
                                         flex-wrap: nowrap;">
                     <select wire:model="rows.{{ $index }}.unit_id" data-name='unit_id'
-                        data-index="{{ $index }}" required class="form-control select2"
-                        style="width: 160px !important;">
+                        data-index="{{ $index }}" required
+                        class="form-control select2 unit_id{{ $index }}" style="width: 160px !important;">
                         <option value="">
                             {{ $index == 0 ? __('lang.choose_big_unit') : __('lang.choose_small_unit') }}
                         </option>

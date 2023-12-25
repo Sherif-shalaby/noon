@@ -1,4 +1,4 @@
-<section class="app mb-3 mt-0 no-print">
+<section class="app mb-0 mt-0 no-print">
 
     {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
 
@@ -170,12 +170,14 @@
                 @endphp
                 <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;"> @lang('lang.phone_number') </span> :
-                    <span class="mx-1" style="font-weight: 500;">{{ !empty($customer_data->phone) ?? '' }}</span>
+                    <span class="mx-1"
+                        style="font-weight: 500;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
 
                 </div>
                 <div class="col-md-5 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;"> @lang('lang.notes') </span> :
-                    <span class="mx-1" style="font-weight: 500;">{{ !empty($customer_data->notes) ?? '' }}</span>
+                    <span class="mx-1"
+                        style="font-weight: 500;">{{ !empty($customer_data->notes) ? $customer_data->notes : '' }}</span>
 
                 </div>
             </div>
@@ -201,7 +203,8 @@
                 <div
                     class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;"> @lang('lang.email') </span> :
-                    <span class="mx-1" style="font-weight: 500;">{{ !empty($customer_data->email) ?? '' }}</span>
+                    <span class="mx-1"
+                        style="font-weight: 500;">{{ !empty($customer_data->email) ? $customer_data->email : '' }}</span>
 
                 </div>
             </div>
@@ -259,7 +262,7 @@
                 </div>
             </div>
             {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
-            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column dollar-cell">
 
                 {!! Form::label('dollar_price_order_id', __('lang.dollar_price') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
@@ -598,6 +601,7 @@
                             @include('invoices.partials.rightSidebar')
 
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -606,7 +610,6 @@
     @include('invoices.partials.draft_transaction')
 
     {!! Form::close() !!}
-    <button class="btn btn-danger" wire:click="cancel"> @lang('lang.close')</button>
 
 </section>
 @include('customers.quick_add', ['quick_add' => 1])

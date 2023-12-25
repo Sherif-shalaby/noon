@@ -45,7 +45,7 @@
                                                  {{ $transaction->dollar_final_total }}
                                              </td>
                                              <td>
-                                                 {{ $transaction->customer->customer_type->name }}
+                                                 {{ $transaction->customer->customer_type->name ?? '' }}
                                              </td>
                                              <td>
                                                  {{ $transaction->customer->name }}
