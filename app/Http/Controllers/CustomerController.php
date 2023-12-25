@@ -181,7 +181,7 @@ class CustomerController extends Controller
         catch (\Exception $e)
         {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            // dd($e);
+             dd($e);
             $output = [
                 'success' => false,
                 // 'msg' => __('lang.something_went_wrong')
