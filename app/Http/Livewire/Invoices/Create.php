@@ -825,9 +825,8 @@ class Create extends Component
         $variation_price = VariationPrice::where('variation_id', $this->items[$key]['unit_id'])->where('customer_type_id', $this->items[$key]['customer_type_id'])->first();
         if(isset($variation_price->id)){
         $variation_stock_line = VariationStockline::where('stock_line_id', $this->items[$key]['current_stock']['id'])->where('variation_price_id', $variation_price->id)->first();
-        // dd($variation_stock_line);
         $dollar_exchange = System::getProperty('dollar_exchange');
-        if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate'])) {
+        if ($this->num_uf($dollar_exchange) > $this->num_uf($this->items[$key]['current_stock']['exchange_rate']) && $this->items[$key]['current_stock']['exchange_rate'] != null) {
             if ($variation_stock_line->sell_price == 0) {
                 $this->items[$key]['price'] = $this->num_uf($variation_stock_line->sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']);
                 $this->items[$key]['dollar_price'] = 0;
@@ -1425,7 +1424,7 @@ class Create extends Component
                 $variation_price=VariationPrice::where('variation_id',$variation_id)->first();
             }
             $stock_variation = VariationStockline::where('stock_line_id', $stock_line->id)->where('variation_price_id', $variation_price->id)->first();
-            
+
             if (empty($stock_variation->sell_price) && empty($stock_variation->dollar_sell_price)) {
                 //            $stock_line = AddStockLine::find($this->items[$key]['current_stock']['id']);
                 $stock_variation = Variation::find($this->items[$key]['current_stock']['variation_id']);
