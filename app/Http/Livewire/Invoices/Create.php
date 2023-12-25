@@ -1,16 +1,13 @@
 <?php
 
 namespace App\Http\Livewire\Invoices;
-// use Pusher\Pusher;
 use App\Utils\pos;
 use Carbon\Carbon;
 use App\Utils\Util;
 use App\Models\User;
-// use App\Models\AddStockLine;
 use App\Models\Brand;
 use App\Models\System;
 use App\Models\Country;
-use App\Models\Invoice;
 use App\Models\JobType;
 use App\Models\Product;
 use Livewire\Component;
@@ -22,39 +19,22 @@ use App\Models\SellLine;
 use App\Models\StorePos;
 use App\Models\Variation;
 use App\Models\AddStockLine;
-// use App\Models\PurchaseOrderLine;
 use App\Models\CashRegister;
-// use App\Models\TransactionSellLine;
 use App\Models\CustomerType;
 use App\Models\ProductPrice;
 use App\Models\ProductStore;
 use App\Models\VariationPrice;
 use App\Models\RequiredProduct;
-// use Illuminate\Support\Facades\Auth;
-// use App\Models\CashRegisterTransaction;
-// use App\Models\PurchaseOrderTransaction;
-// use App\Models\BalanceRequestNotification;
-// use App\Models\PaymentTransactionSellLine;
 use App\Models\StockTransaction;
-use App\Models\PurchaseOrderLine;
 use App\Models\TransactionPayment;
 use App\Models\VariationStockline;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionSellLine;
-
-// use App\Models\MoneySafeTransaction;
 use Illuminate\Support\Facades\Log;
-use App\Models\MoneySafeTransaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CashRegisterTransaction;
-use App\Models\BalanceRequestNotification;
 use App\Models\PaymentTransactionSellLine;
 use App\Models\Store;
-
-// use App\Models\CashRegisterTransaction;
-// use App\Models\PurchaseOrderTransaction;
-// use App\Models\BalanceRequestNotification;
-// use App\Models\PaymentTransactionSellLine;
 
 class Create extends Component
 {
@@ -176,6 +156,7 @@ class Create extends Component
             $this->store_id = $last_sell_trans->store_id;
         } else {
             $this->store_id = array_key_first($this->stores);
+            $this->changeAllProducts();
         }
 
         if (!empty($branch)) {
@@ -768,26 +749,26 @@ class Create extends Component
     }
     public function ChangeBillToDinar(){
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        if($this->final_total==0){
-            $this->final_total= $this->dollar_final_total * $exchange_rate;
+        // if($this->final_total==0){
+            $this->final_total+= $this->dollar_final_total * $exchange_rate;
             $this->dollar_final_total=0;
-        }
-        if($this->total==0){
-            $this->total= $this->total_dollar * $exchange_rate;
+        // }
+        // if($this->total==0){
+            $this->total+= $this->total_dollar * $exchange_rate;
             $this->total_dollar=0;
-        }
-        if($this->discount==0){
-            $this->discount= $this->discount_dollar * $exchange_rate;
+        // }
+        // if($this->discount==0){
+            $this->discount+= $this->discount_dollar * $exchange_rate;
             $this->discount_dollar=0;
-        }
-        if($this->amount==0){
-            $this->amount= $this->dollar_amount * $exchange_rate;
+        // }
+        // if($this->amount==0){
+            $this->amount+= $this->dollar_amount * $exchange_rate;
             $this->dollar_amount=0;
-        }
-        if($this->dinar_remaining==0){
-            $this->dinar_remaining= $this->dollar_remaining * $exchange_rate;
+        // }
+        // if($this->dinar_remaining==0){
+            $this->dinar_remaining+= $this->dollar_remaining * $exchange_rate;
             $this->dollar_remaining=0;
-        }
+        // }
     }
     public function increment($key)
     {
@@ -847,8 +828,8 @@ class Create extends Component
         }else{
             $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
             $this->items[$key]['price'] = number_format($variation_stock_line->dinar_sell_price, 3);
-        } 
-        
+        }
+
         }
         $this->subtotal($key);
         $this->computeForAll();
