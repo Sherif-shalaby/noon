@@ -133,18 +133,18 @@
                                         <div class="row">
                                             <div class="form-group">
                                                 {!! Form::label('details', __('Details'), []) !!} <br>
-                                                {!! Form::text('details', $expense['details'],
+                                                {!! Form::text('expenses.' . $index . '.details', $expense['details'],
                                                     ['class' => 'form-control', 'placeholder' => __('Details'), 'wire:model' => 'expenses.' . $index . '.details']) !!}
                                             </div>
                                             <div class="form-group">
                                                 {!! Form::label('amount', __('Amount'), []) !!} <br>
-                                                {!! Form::text('amount', $expense['amount'],
+                                                {!! Form::text('expenses.' . $index . '.amount', $expense['amount'],
                                                     ['class' => 'form-control', 'placeholder' => __('Amount'), 'wire:model' => 'expenses.' . $index . '.amount','wire:change' => 'changeTotalAmount'],) !!}
                                             </div>
                                             <button class="btn btn-primary btn-sm ml-2" wire:click="removeExpense({{ $index }})">Remove</button>
                                         </div>
                                     @endforeach
-                            
+
                                     <button class="btn btn-primary btn-sm ml-2 " wire:click="addExpense">Add Expense</button>
                                 </div>
                                 {{-- <div class="col-md-3">
@@ -253,19 +253,19 @@
                                     <thead>
                                     <tr>
                                         <th>#</th>
-                                        
+
 {{--                                        <th style="width: 7%" class="col-sm-8">@lang('lang.image')</th>--}}
-                                        <th >@lang('lang.currency')</th> 
+                                        <th >@lang('lang.currency')</th>
                                         <th style="width: 10%" class="col-sm-8">@lang('lang.products')</th>
                                         <th style="width: 10%" >@lang('lang.store')</th>
                                         {{-- <th style="width: 10%" >@lang('lang.sku')</th> --}}
                                         <th style="width: 10%">@lang('lang.unit')</th>
                                         <th style="width: 10%">@lang('lang.quantity')</th>
                                         <th style="width: 10%">@lang('lang.bonus_quantity')</th>
-                                        
+
 {{--                                        <th style="width: 10%">@lang('lang.fill')</th>--}}
 {{--                                        <th style="width: 10%">@lang('lang.basic_unit')</th>--}}
-                                       
+
 {{--                                        <th style="width: 10%">@lang('lang.total_quantity')</th>--}}
 {{--                                        @if ($showColumn)--}}
                                             {{-- <th style="width: 10%">@lang('lang.purchase_price')$</th>
@@ -282,10 +282,10 @@
 {{--                                        @endif--}}
                                         {{-- <th style="width: 10%">@lang('lang.cost') </th>
                                         <th style="width: 10%">@lang('lang.total_cost')</th> --}}
-                                      
+
                                         <th style="width: 10%">@lang('lang.new_stock')</th>
                                         <th style="width: 10%">@lang('lang.change_current_stock')</th>
-                                     
+
                                         <th style="width: 10%">@lang('lang.action')</th>
                                         <th></th>
                                         <th style="width: 10%">@lang('lang.size')</th>
