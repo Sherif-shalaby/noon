@@ -59,8 +59,9 @@
                     </div>
                 @endif
 
-                <div class="col-md-3 ">
-                    <a href="{{ route('recent_transactions') }}" target="_blank" style="background-color: #ffc107;"
+                <div class="col-md-3">
+                    <a href="{{ route('recent_transactions') }}"
+                        target="_blank"style="width: 100%;font-size: 12px;font-weight: 600;background-color: #ffc107;"
                         type="button" class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
                         @lang('lang.recent_transactions')</a>
                 </div>
