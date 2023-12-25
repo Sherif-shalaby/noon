@@ -133,7 +133,7 @@
                                 'wire:model' => 'dollar_remaining',
                             ]) !!}
                         </div>
-                        <div class="{{$dollar_remaining=='0'?'d-none':''}}" title="{{__('lang.change_remaining_to_dinar')}}">
+                        <div class="{{$dollar_remaining > 0 ? '':'d-none'}}" title="{{__('lang.change_remaining_to_dinar')}}">
                             <button class="btn btn-sm btn-danger text-white" type="button" wire:click="changeRemaining()">></button>
                         </div>
                     </div>
