@@ -71,7 +71,7 @@ class Create extends Component
         $files, $upload_documents, $ref_number, $bank_deposit_date, $bank_name,$total_amount = 0, $change_exchange_rate_to_supplier,
         $end_date, $exchangeRate , $dinar_price_after_desc, $search_by_product_symbol, $discount_from_original_price, $po_id,
         $variationSums = [],$expenses = [], $customer_types,$total_amount_dollar,$dollar_remaining,$dinar_remaining,$units;
-        
+
 
     public function mount(){
 
@@ -389,6 +389,18 @@ class Create extends Component
                         $Variation_price->dollar_sell_price = $this->num_uf($price['dollar_sell_price']) ?? null;
                         $Variation_price->percent = $price['percent'] ?? null;
                         $Variation_price->save();
+                        $add_variation_stock_data = [
+                            'variation_price_id' => $Variation_price->id,
+                            'stock_line_id' => $stock_line->id,
+                            'purchase_price' => ($item['used_currency'] != 2) ? $this->num_uf($item['purchase_price']) : null,
+                            'sell_price' => ($item['used_currency'] != 2) ? $this->num_uf($price['dinar_sell_price'])  : 0,
+                            'sub_total' => !empty($item['sub_total']) ? $this->num_uf((float)$item['sub_total']) : null,
+                            'dollar_purchase_price' => ($item['used_currency'] == 2) ? $this->num_uf($item['purchase_price'])  : null,
+                            'dollar_sell_price' => ($item['used_currency'] == 2) ? ($this->num_uf($price['dollar_sell_price']))  : 0,
+                            'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total'])  : null,
+                            // 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
+                        ];
+                         VariationStockline::create($add_variation_stock_data);
                     }
                 }
                 $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
@@ -595,6 +607,18 @@ class Create extends Component
                 $Variation_price->dollar_sell_price = $this->num_uf($price['dollar_sell_price']) ?? null;
                 $Variation_price->percent = $price['percent'] ?? null;
                 $Variation_price->save();
+                $add_variation_stock_data = [
+                    'variation_price_id' => $Variation_price->id,
+                    'stock_line_id' => $stock_line->id,
+                    'purchase_price' => ($used_currency != 2) ? $this->num_uf($item['purchase_price']) : null,
+                    'sell_price' => ($used_currency != 2) ? $this->num_uf($price['dinar_sell_price'])  : 0,
+                    'sub_total' => !empty($item['sub_total']) ? $this->num_uf((float)$item['sub_total']) : null,
+                    'dollar_purchase_price' => ($used_currency == 2) ? $this->num_uf($item['purchase_price'])  : null,
+                    'dollar_sell_price' => ($used_currency == 2) ? ($this->num_uf($price['dollar_sell_price']))  : 0,
+                    'dollar_sub_total' => !empty($item['dollar_sub_total']) ? $this->num_uf($item['dollar_sub_total'])  : null,
+                    // 'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
+                ];
+                VariationStockline::create($add_variation_stock_data);
             }
         }
 //        dd($this->items[$index]['stores'.$i]['store_id']);
@@ -1342,7 +1366,7 @@ class Create extends Component
         // dd('test');
         $totalCost = 0;
         if(!empty($this->items)) {
-            
+
             foreach ($this->items as $item) {
                 // dd($item['stores']);
                 // dd($item['total_cost']);
@@ -1355,7 +1379,7 @@ class Create extends Component
                         }
                     }
                 }
-                
+
             }
 
             // foreach($this->items[] as $item){
@@ -1435,7 +1459,7 @@ class Create extends Component
                     }
                 }
             }
-            
+
         }
         // dd( $this->dollar_remaining);
     }
@@ -1481,7 +1505,7 @@ class Create extends Component
             }
         }
     }
-   
+
     public function sum_sub_total(){
         $totalSubTotal = 0;
 
@@ -1568,7 +1592,7 @@ class Create extends Component
                 }else{
                     $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
                 }
-               
+
                 if(isset($this->items[$index]['stores'][$i]['seasonal_discount'])){
                     $final_purchase = round($final_purchase * (1 - $this->num_uf($this->items[$index]['stores'][$i]['seasonal_discount'] )/ 100), 2);
                 }
