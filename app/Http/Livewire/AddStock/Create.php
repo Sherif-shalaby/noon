@@ -986,8 +986,8 @@ class Create extends Component
         if($via == 'stores'){
             $purchase_price =  $this->final_purchase_for_piece($index,'stores',$i);
             $percent = $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['percent']);
-            if (!empty($this->items[$index]['stores'][$i]['used_currency'])) {
-                if ($this->items[$index]['stores'][$i]['used_currency'] != 2) {
+            if (!empty($this->items[$index]['used_currency'])) {
+                if ($this->items[$index]['used_currency'] != 2) {
                     if ($percent == 0 || $percent == null) {
                         $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']) / $this->num_uf($this->exchange_rate), 3);
                         $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']), 3);
@@ -1587,7 +1587,7 @@ class Create extends Component
                 if(isset($this->items[$index]['stores'][$i]['cash_discount'])){
                     $final_purchase -= $this->num_uf($this->items[$index]['stores'][$i]['cash_discount']);
                 }
-                if($this->items[$index]['stores'][$i]['used_currency'] != 2){
+                if($this->items[$index]['used_currency'] != 2){
                     $this->items[$index]['stores'][$i]['total_cost'] = $this->num_uf( $final_purchase);
                 }else{
                     $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
@@ -1624,7 +1624,7 @@ class Create extends Component
                 if(isset($this->items[$index]['stores'][$i]['cash_discount'])){
                     $cash_discount =  $this->num_uf($this->items[$index]['stores'][$i]['cash_discount']);
                 }
-                if($this->items[$index]['stores'][$i]['used_currency'] != 2){
+                if($this->items[$index]['used_currency'] != 2){
                     $this->items[$index]['stores'][$i]['total_cost'] = $this->num_uf( $final_purchase);
                 }else{
                     $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
