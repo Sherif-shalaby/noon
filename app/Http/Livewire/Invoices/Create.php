@@ -831,6 +831,9 @@ class Create extends Component
             if ($variation_stock_line->sell_price == 0) {
                 $this->items[$key]['price'] = $this->num_uf($variation_stock_line->sell_price) * $this->num_uf($this->items[$key]['current_stock']['exchange_rate']);
                 $this->items[$key]['dollar_price'] = 0;
+            }else{
+                $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
+                $this->items[$key]['price'] = number_format($variation_stock_line->sell_price, 3);
             }
         }else{
             $this->items[$key]['dollar_price'] = number_format($variation_stock_line->dollar_sell_price, 3);
