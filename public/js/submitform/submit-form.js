@@ -116,6 +116,8 @@ $(document).on("submit", "form#quick_add_unit_form", function (e) {
 //unit form
 
 //store form
+var  store_key = null;
+var  store_index = null;
 $("#create-store-btn").click(function (e){
     e.preventDefault();
     setTimeout(()=>{
@@ -123,6 +125,15 @@ $("#create-store-btn").click(function (e){
         $("#quick_add_store_form").submit();
     },500)
 });
+
+$(document).on("click", ".createStoreModal", function(e) {
+    store_key = $(this).data('key');
+    store_index = $(this).data('index');
+    console.log('store_key' + store_key);
+    console.log('store_index' + store_index);
+});
+
+
 // ++++++++++++++++++ ajax : products module : quick_add_store ++++++++++++++++++
 $(document).on("submit", "form#quick_add_store_form", function (e) {
     e.preventDefault();
@@ -149,6 +160,14 @@ $(document).on("submit", "form#quick_add_store_form", function (e) {
                         console.log(data_html);
                         $("#store_id").empty().append(data_html[0]);
                         $("#store_id").val(data_html[1]).change();
+                        if(store_key != null){
+                            $(".store_id"+store_index+store_key).empty().append(data_html[0]);
+                            $(".store_id"+store_index+store_key).val(data_html[1]).change();
+                        }else{
+                            $(".store_id"+store_index).empty().append(data_html[0]);
+                            $(".store_id"+store_index).val(data_html[1]).change();
+                        }
+                       
                     },
                 });
             } else {

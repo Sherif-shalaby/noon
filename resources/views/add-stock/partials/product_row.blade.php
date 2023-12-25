@@ -24,12 +24,13 @@
     </td>
     <td>
         <div class="col-md-3">
-            <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
-                <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow({{ $index }})">
-                    <i class="fa fa-plus"></i>
+            <div for="" class="d-flex align-items-center text-nowrap gap-1" >
+                <button type="button" class="btn btn-primary btn-sm ml-2 createStoreModal" data-toggle="modal" data-index="{{$index}}"
+                        data-target="#createStoreModal">
+                        <i class="fas fa-plus"></i>
                 </button>
 
-                 {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control select', 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),  'wire:model' => 'items.' . $index . '.store_id']) !!}
+                 {!! Form::select('store_id', $stores, $store_id, ['class' => ' form-control select store_id'.$index, 'data-live-search' => 'true', 'required', 'placeholder' => __('lang.please_select'),  'wire:model' => 'items.' . $index . '.store_id']) !!}
                  @error('store_id')
                  <span class="error text-danger">{{ $message }}</span>
                  @enderror
@@ -292,7 +293,7 @@
         </div>
     </td>
     <td>
-        <button class="btn btn btn-primary" wire:click="add_product({{$product['product']['id']}},'unit',{{$index}},1)" type="button">
+        <button class="btn btn btn-primary" wire:click="addStoreRow({{ $index }})" type="button">
             <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
         </button>
     </td>
@@ -336,10 +337,11 @@
         <td>
             <div class="col-md-3">
                 <div class="d-flex align-items-center text-nowrap gap-1">
-                    <button type="button" class="btn btn-sm btn-primary" wire:click="addStoreRow({{ $index }})">
-                        <i class="fa fa-plus"></i>
+                    <button type="button" class="btn btn-primary btn-sm ml-2 createStoreModal"  data-toggle="modal" data-key="{{$i}}" data-index="{{$index}}"
+                            data-target="#createStoreModal">
+                            <i class="fas fa-plus"></i>
                     </button>
-                    {!! Form::select('stores.' . $i . '.store_id', $stores, $store_id, ['class' => 'form-control select', 'data-live-search' => 'true',
+                    {!! Form::select('stores.' . $i . '.store_id', $stores, $store_id, ['class' => 'form-control select store_id'.$index.$i, 'data-live-search' => 'true',
                           'required', 'placeholder' => __('lang.please_select'),
                           'wire:model' => 'items.' . $index . '.stores.' . $i . '.store_id']) !!}
                     @error('items.' . $index . '.stores'. $i .'.store_id')
@@ -482,9 +484,9 @@
             </div>
         </td>
         <td>
-{{--            <button class="btn btn btn-primary" wire:click="add_product({{$store['product']['id']}},'unit',{{$index}},1)" type="button">--}}
-{{--                <i class="fa fa-plus"></i> @lang('lang.add_new_unit')--}}
-{{--            </button>--}}
+            <button class="btn btn btn-primary" wire:click="addStoreRow({{ $index }})" type="button">
+                <i class="fa fa-plus"></i> @lang('lang.add_new_unit')
+            </button>
         </td>
     </tr>
     <tr>
