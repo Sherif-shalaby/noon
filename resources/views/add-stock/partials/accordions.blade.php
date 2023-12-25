@@ -2,12 +2,11 @@
     style="width: 100%">
 
 
-    <div style="width: 100%;" class="accordion m-1 " id="accordionPanelsStayOpenExample">
+    <div style="width: 100%;" class="accordion m-1 " id="accordionPanelsStayOpenExampleDiscount{{ $index }}">
         <div class="accordion-item" style="border: none">
             <h2 class="accordion-header">
-                <button class="accordion-button dis-button collapsed" style="padding: 5px 15px;margin-bottom: 15px"
-                    type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapse{{ $index }}discount"
+                <button class="accordion-button collapsed" style="padding: 5px 15px;margin-bottom: 15px" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}discount"
                     data-index="{{ $index }}" aria-expanded="true"
                     aria-controls="panelsStayOpen-collapse{{ $index }}discount"
                     wire:click="stayShowDiscount({{ $index }})">
@@ -228,10 +227,10 @@
         </div>
     </div>
 
-    <div style="width: 100%;" class="accordion_test m-1" id="accordion_testPanelsStayOpenExample">
-        <div class="accordion_test-item" style="border: none">
-            <h2 class="accordion_test-header">
-                <button class="accordion_test-button dis-button collapsed" style="padding: 5px 15px" type="button"
+    <div style="width: 100%;" class="accordion m-1" id="accordionPanelsStayOpenExampleValidity{{ $index }}">
+        <div class="accordion-item" style="border: none">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" style="padding: 5px 15px" type="button"
                     data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ $index }}validity"
                     data-index="{{ $index }}" aria-expanded="true"
                     aria-controls="panelsStayOpen-collapse{{ $index }}validity"
@@ -239,7 +238,7 @@
                     <h6>
                         @lang('lang.validity')
                     </h6>
-                    <span class="accordion_test-arrow">
+                    <span class="accordion-arrow">
                         @if ($product['show_validity'])
                             <i class="fas fa-arrow-up" style="font-size: 0.8rem"></i>
                         @else
@@ -249,9 +248,8 @@
                 </button>
             </h2>
             <div id="panelsStayOpen-collapse{{ $index }}validity"
-                class="accordion_test-collapse collapse @if ($product['show_validity']) show @endif">
-                <div
-                    class="accordion_test-body @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif p-0">
+                class="accordion-collapse collapse @if ($product['show_validity']) show @endif">
+                <div class="accordion-body @if ($index % 2 == 0) bg-white @else bg-dark-gray @endif p-0">
 
                     <div class="p-0 mt-2 d-flex flex-wrap justify-content-between align-items-center rounded-3 text-center"
                         style="width: 100%;

@@ -10,6 +10,10 @@
             width: 95% !important
         }
 
+        .categories_drop_down .select2-dropdown {
+            left: 43px;
+        }
+
         .form-select {
             height: 100%;
             padding-bottom: 0;

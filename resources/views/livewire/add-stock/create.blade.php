@@ -338,7 +338,8 @@
                                     style="height: 100vh;overflow: scroll;animation-delay: 1.8s">
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                         الأقسام الرئيسيه
-                                        <div class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
+                                        <div class="d-flex align-items-center text-nowrap categories_drop_down gap-1"
+                                            wire:ignore>
                                             <div class="row">
                                                 {{-- الاقسام --}}
                                                 <select class="form-control depart1 select2"
