@@ -748,26 +748,26 @@ class Create extends Component
     }
     public function ChangeBillToDinar(){
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        if($this->final_total==0){
-            $this->final_total= $this->dollar_final_total * $exchange_rate;
+        // if($this->final_total==0){
+            $this->final_total+= $this->dollar_final_total * $exchange_rate;
             $this->dollar_final_total=0;
-        }
-        if($this->total==0){
-            $this->total= $this->total_dollar * $exchange_rate;
+        // }
+        // if($this->total==0){
+            $this->total+= $this->total_dollar * $exchange_rate;
             $this->total_dollar=0;
-        }
-        if($this->discount==0){
-            $this->discount= $this->discount_dollar * $exchange_rate;
+        // }
+        // if($this->discount==0){
+            $this->discount+= $this->discount_dollar * $exchange_rate;
             $this->discount_dollar=0;
-        }
-        if($this->amount==0){
-            $this->amount= $this->dollar_amount * $exchange_rate;
+        // }
+        // if($this->amount==0){
+            $this->amount+= $this->dollar_amount * $exchange_rate;
             $this->dollar_amount=0;
-        }
-        if($this->dinar_remaining==0){
-            $this->dinar_remaining= $this->dollar_remaining * $exchange_rate;
+        // }
+        // if($this->dinar_remaining==0){
+            $this->dinar_remaining+= $this->dollar_remaining * $exchange_rate;
             $this->dollar_remaining=0;
-        }
+        // }
     }
     public function increment($key)
     {
