@@ -65,7 +65,7 @@
                         'route' => 'products.store',
                         'method' => 'post',
                         'enctype' => 'multipart/form-data',
-                        'id' => 'add_product_form',
+                        'id' => 'add_product_form1',
                     ]) !!}
                     <div class="row">
                         {{-- ++++++++++++++++ stores ++++++++++++++++ --}}
@@ -142,7 +142,7 @@
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-multi-image.js') }}"></script>
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\ProductRequest', '#add_product_form') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\ProductRequest', '#add_product_form1') !!}
     <script>
         $(document).ready(function() {
             // Counter to keep track of the number of rows

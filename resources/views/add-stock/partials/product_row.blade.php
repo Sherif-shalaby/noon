@@ -180,8 +180,8 @@
                             {{-- Iterate through units and display each unit name and value as a span --}}
 
                             <label
-                                class= "mb-0 @if (app()->isLocale('ar')) d-block text-center width-full @else text-center width-full @endif"
-                                style='font-weight:500;font-size:12px!important;color:#888'>{{ $unitValue }}</label>
+                                class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                                style='font-weight:500;font-size:10px;color:#888'>{{ $unitValue }}</label>
 
                             <input type="text" class="form-control quantity initial-balance-input width-full"
                                 value="{{ $unitName }}" readonly>
@@ -208,15 +208,15 @@
         </div>
 
         @if (!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
-            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-start @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 90px;min-height: 60px">
+            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+                style="width: 150px;min-height: 60px">
                 <label for="sub_total"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.sub_total') }}</label>
-                <span class="sub_total_span mr-2">
+                <span style="font-weight: 500" class="text-center sub_total_span">
                     {{ $this->sub_total($index) }}
                 </span>
-                <span class="sub_total_span dollar-cell mr-2">
+                <span style="font-weight: 500" class="text-center sub_total_span dollar-cell">
                     {{ $this->dollar_sub_total($index) }}$
                 </span>
             </div>
@@ -322,25 +322,33 @@
         </div>
 
         @if (!empty($product['quantity']) && !empty($product['purchase_price']))
-            <div class=" animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 120px;">
-                <span class="final_total_span" aria-placeholder="final purchase">
+            <div class=" animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+                style="width: 150px;min-height: 60px">
+                <label for="final purchase"
+                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase') }}</label>
+                <span style="font-weight: 500" class="final_total_span" aria-placeholder="final purchase">
                     {{ $this->purchase_final($index) }}
                 </span>
-                <span class="final_total_span" aria-placeholder="final purchase">
+                <span style="font-weight: 500" class="final_total_span" aria-placeholder="final purchase">
                     {{ $this->purchase_final_dollar($index) }} $
                 </span>
             </div>
         @endif
 
         @if (!empty($product['quantity']) && !empty($product['purchase_price']))
-            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 120px;">
-                <span class="final_total_span" aria-placeholder="final purchase for piece">
+            <div class="  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+                style="width: 150px;min-height: 60px">
+                <label for="final purchase for piece"
+                    class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2 @else mx-2 @endif"
+                    style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
+                <span style="font-weight: 500" class="final_total_span" aria-placeholder="final purchase for piece">
                     {{ $this->final_purchase_for_piece($index) }}
                 </span>
-                <span class="final_total_span" aria-placeholder="final purchase for piece">
+                <span style="font-weight: 500" class="final_total_span dollar-cell"
+                    aria-placeholder="final purchase for piece">
                     {{ $this->dollar_final_purchase_for_piece($index) }} $
+
                 </span>
             </div>
         @endif
@@ -535,15 +543,15 @@
             </div>
 
             @if (!empty($product['quantity']) && (!empty($product['purchase_price']) || !empty($product['dollar_purchase_price'])))
-                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1  mt-1"
-                    style="width: 90px;min-height: 60px">
+                <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+                    style="width: 150px;min-height: 60px">
                     <label for="sub_total"
                         class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                         style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.sub_total') }}</label>
-                    <span class="sub_total_span">
+                    <span style="font-weight: 500" class="sub_total_span">
                         {{ $this->sub_total($index, 'stores', $i) }}
                     </span>
-                    <span class="sub_total_span">
+                    <span style="font-weight: 500" class="sub_total_span dollar-cell">
                         {{ $this->dollar_sub_total($index, 'stores', $i) }}$
                     </span>
                 </div>
@@ -602,7 +610,7 @@
             </div>
 
             <div class=" animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
-                style="width: 100px;min-height: 60px">
+                style="width: 105px;min-height: 60px">
                 <label for="discount amount"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>seasonal discount</label>
@@ -624,24 +632,32 @@
             </div>
 
             @if (!empty($store['quantity']) && !empty($store['purchase_price']))
-                <div class=" animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1  mt-1"
-                    style="width: 120px;">
-                    <span class="final_total_span" aria-placeholder="final purchase">
+                <div class=" animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+                    style="width: 155px;min-height: 60px">
+                    <label for="final purchase"
+                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase') }}</label>
+                    <span style="font-weight: 500" class="final_total_span" aria-placeholder="final purchase">
                         {{ $this->purchase_final($index, 'stores', $i) }}
                     </span>
-                    <span class="final_total_span" aria-placeholder="final purchase">
+                    <span style="font-weight: 500" class="final_total_span dollar-cell"
+                        aria-placeholder="final purchase">
                         {{ $this->purchase_final_dollar($index, 'stores', $i) }} $
                     </span>
                 </div>
             @endif
 
             @if (!empty($store['quantity']) && !empty($store['purchase_price']))
-                <div class="animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1  mt-1"
-                    style="width: 120px;">
-                    <span class="final_total_span" aria-placeholder="final purchase for piece">
+                <div class="animate__animated  animate__bounceInLeft d-flex flex-column align-items-center mr-1"
+                    style="width: 150px;min-height: 60px"> <label for="final purchase for piece"
+                        class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
+                        style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.final purchase for piece') }}</label>
+                    <span style="font-weight: 500" class="final_total_span dollar-cell"
+                        aria-placeholder="final purchase for piece">
                         {{ $this->final_purchase_for_piece($index, 'stores', $i) }}
                     </span>
-                    <span class="final_total_span" aria-placeholder="final purchase for piece">
+                    <span style="font-weight: 500" class="final_total_span dollar-cell"
+                        aria-placeholder="final purchase for piece">
                         {{ $this->dollar_final_purchase_for_piece($index, 'stores', $i) }} $
                     </span>
                 </div>
