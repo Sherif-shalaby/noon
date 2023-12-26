@@ -11,7 +11,7 @@
             </div>
             {!! Form::open(['url' => route('branches.store'), 'method' => 'post']) !!}
             <div class="modal-body">
-                <div class="row">
+                <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label style='font-size: 12px;font-weight: 500;' for="job_title">@lang('lang.branch_name')</label>
@@ -19,7 +19,7 @@
                                 required>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    {{-- <div class="col-md-12">
                         <div class="form-group">
                             {!! Form::label('store', __('lang.stores'), ['class' => 'pt-3', 'style' => 'font-size: 12px;font-weight: 500;']) !!}
                             {!! Form::select('stores[]', $stores, null, [
@@ -29,7 +29,7 @@
                                 'id' => 'store_id',
                             ]) !!}
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="modal-footer">

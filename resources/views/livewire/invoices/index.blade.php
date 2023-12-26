@@ -272,6 +272,7 @@
                                     </button>
                                 </div>
                             </div>
+
                             <div class="wrapper1 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div1"></div>
                             </div>

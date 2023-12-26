@@ -37,7 +37,7 @@
                     ]) !!}
                     <div class="input-wrapper" style="width: 60%;margin: 0;">
                         {!! Form::select('branch_id', $branches, null, [
-                            'class' => 'form-control select2',
+                            'class' => 'form-select',
                             'placeholder' => __('lang.branch'),
                         ]) !!}
                     </div>

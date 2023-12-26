@@ -150,9 +150,9 @@
         <div class="col-md-8 d-flex flex-column">
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.customer_type')</span> :
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.customer_type')</span> :
                     <span class="mx-1"
-                        style="font-weight: 500;">{{ $customer_data->customer_type->name ?? '' }}</span>
+                        style="font-weight: 500;font-size:12px;">{{ $customer_data->customer_type->name ?? '' }}</span>
                 </div>
                 @php
                     if (!empty($customer_data->state_id)) {
@@ -160,8 +160,9 @@
                     }
                 @endphp
                 <div class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.city') </span> :
-                    <span class="mx-1" style="font-weight: 500;">{{ !empty($city) ? $city->name : '' }}</span>
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.city') </span> :
+                    <span class="mx-1"
+                        style="font-weight: 500;font-size:12px;">{{ !empty($city) ? $city->name : '' }}</span>
                 </div>
                 @php
                     if (!empty($customer_data->city_id)) {
@@ -169,15 +170,15 @@
                     }
                 @endphp
                 <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.phone_number') </span> :
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.phone_number') </span> :
                     <span class="mx-1"
-                        style="font-weight: 500;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
+                        style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
 
                 </div>
                 <div class="col-md-5 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.notes') </span> :
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.notes') </span> :
                     <span class="mx-1"
-                        style="font-weight: 500;">{{ !empty($customer_data->notes) ? $customer_data->notes : '' }}</span>
+                        style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->notes) ? $customer_data->notes : '' }}</span>
 
                 </div>
             </div>
@@ -185,8 +186,9 @@
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div
                     class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.state') </span> :
-                    <span class="mx-1" style="font-weight: 500;"> {{ !empty($state) ? $state->name : '' }}</span>
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.state') </span> :
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;">
+                        {{ !empty($state) ? $state->name : '' }}</span>
                 </div>
                 @php
                     if (!empty($customer_data->quarter_id)) {
@@ -195,16 +197,16 @@
                 @endphp
                 <div
                     class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.quarter')</span> :
-                    <span class="mx-1" style="font-weight: 500;">
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.quarter')</span> :
+                    <span class="mx-1" style="font-weight: 500;font-size:12px;">
                         {{ !empty($quarter) ? $quarter->name : '' }}</span>
 
                 </div>
                 <div
                     class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                    <span class="mx-1" style="font-weight: 500;"> @lang('lang.email') </span> :
+                    <span class="mx-1" style="font-size:12px;font-weight: 500;"> @lang('lang.email') </span> :
                     <span class="mx-1"
-                        style="font-weight: 500;">{{ !empty($customer_data->email) ? $customer_data->email : '' }}</span>
+                        style="font-size:12px;font-weight: 500;">{{ !empty($customer_data->email) ? $customer_data->email : '' }}</span>
 
                 </div>
             </div>
@@ -415,8 +417,9 @@
                                                         <i style="font-size: 10px;width: 50px;font-weight: 600"
                                                             class="fa-solid fa-plus"></i>
                                                     </div>
-                                                    <input class="form-control p-1 text-center"
-                                                        style="width: 50px font-size: 12px;font-weight: 700;"
+                                                    <input
+                                                        class="form-control p-1 text-center initial-balance-input mb-0"
+                                                        style="width: 50px font-size: 12px;font-weight: 700;border:2px solid #cecece"
                                                         type="text" min="1"
                                                         wire:model="items.{{ $key }}.quantity"
                                                         Wire:change="subtotal({{ $key }})">
@@ -442,51 +445,57 @@
 
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <select class="form-control" style="width:50px;"
-                                                    wire:model="items.{{ $key }}.unit_id"
-                                                    wire:change="changeUnit({{ $key }})">
-                                                    <option value="0.00">select</option>
-                                                    @if (!empty($item['variation']))
-                                                        @foreach ($item['variation'] as $i => $var)
-                                                            @if (!empty($var['unit_id']))
-                                                                <option value="{{ $var['id'] }}"
-                                                                    {{ $i == 0 ? 'selected' : '' }}>
-                                                                    {{ $var['unit']['name'] ?? '' }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                </select>
+                                                <div class="input-wrapper width-full">
+                                                    <select class="form-control select2"
+                                                        style="width:50px;font-size: 10px!important"
+                                                        wire:model="items.{{ $key }}.unit_id"
+                                                        wire:change="changeUnit({{ $key }})">
+                                                        <option value="0.00">select</option>
+                                                        @if (!empty($item['variation']))
+                                                            @foreach ($item['variation'] as $i => $var)
+                                                                @if (!empty($var['unit_id']))
+                                                                    <option value="{{ $var['id'] }}"
+                                                                        {{ $i == 0 ? 'selected' : '' }}>
+                                                                        {{ $var['unit']['name'] ?? '' }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
                                             </td>
 
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <select class="form-control"
-                                                    style="height:30% !important;width:100px;"
-                                                    wire:model="items.{{ $key }}.customer_type_id"
-                                                    wire:change="changeCustomerType({{ $key }})">
-                                                    <option value="0">select</option>
-                                                    @if (!empty($item['customer_types']))
-                                                        @foreach ($item['customer_types'] as $x => $var)
-                                                            @if (!empty($var['id']))
-                                                                <option value="{{ $var['id'] }}"
-                                                                    {{ $x == 0 ? 'selected' : '' }}>
-                                                                    {{ $var['name'] ?? '' }}
-                                                                </option>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                </select>
+                                                <div class="input-wrapper width-full">
+
+                                                    <select class="form-control select2"
+                                                        style="height:30% !important;width:100px;font-size: 10px!important"
+                                                        wire:model="items.{{ $key }}.customer_type_id"
+                                                        wire:change="changeCustomerType({{ $key }})">
+                                                        <option value="0">select</option>
+                                                        @if (!empty($item['customer_types']))
+                                                            @foreach ($item['customer_types'] as $x => $var)
+                                                                @if (!empty($var['id']))
+                                                                    <option value="{{ $var['id'] }}"
+                                                                        {{ $x == 0 ? 'selected' : '' }}>
+                                                                        {{ $var['name'] ?? '' }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
                                             </td>
 
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input class="form-control dinarPrice"
+                                                    <input class="form-control initial-balance-input dinarPrice"
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.price"
-                                                        style="font-weight: 700;font-size: 10px;width: 65px" />
+                                                        style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" />
                                                     {{-- {{ $item['price'] ?? '' }} --}}
                                                 </div>
                                             </td>
@@ -495,10 +504,10 @@
                                                 class="px-1 border-right dollar-cell">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input class="form-control dollarPrice"
+                                                    <input class="form-control initial-balance-input dollarPrice"
                                                         data-key="{{ $key }}" type="text"
                                                         wire:model="items.{{ $key }}.dollar_price"
-                                                        style="font-weight: 700;font-size: 10px;width: 65px" />
+                                                        style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece" />
                                                     {{-- {{ number_format($item['dollar_price'] ?? 0, 2) }} --}}
                                                 </div>
                                             </td>
@@ -507,15 +516,17 @@
                                                 class="px-1 border-right ">
                                                 <div style="height: 100%;max-width: 100%;"
                                                     class="d-flex flex-wrap justify-content-center align-items-center text-center">
-                                                    <input style="font-weight: 700;font-size: 10px;width: 65px"
-                                                        class="form-control p-1 text-center ex-rate-cell"
+                                                    <input
+                                                        style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece"
+                                                        class="form-control p-1 initial-balance-input text-center ex-rate-cell"
                                                         type="text" min="1"
                                                         wire:model="items.{{ $key }}.exchange_rate">
                                                     @php
                                                         $dollar_exchange = App\Models\System::where('key', '=', 'dollar_exchange')->get('value');
                                                     @endphp
-                                                    <input style="font-weight: 700;font-size: 10px;width: 65px;"
-                                                        class="form-control p-1 text-center my-ex-rate-cell"
+                                                    <input
+                                                        style="font-weight: 700;font-size: 10px;width: 65px;border: 2px solid #cecece"
+                                                        class="form-control initial-balance-input p-1 text-center my-ex-rate-cell"
                                                         type="text" min="1"
                                                         value="{{ $dollar_exchange[0]['value'] }}">
                                                 </div>
@@ -523,39 +534,42 @@
 
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right">
-                                                <input class="form-control p-1 text-center" style="width:60px"
-                                                    type="text" min="1" readonly
+                                                <input class="form-control initial-balance-input p-1 text-center"
+                                                    style="width:60px;border: 2px solid #cecece" type="text"
+                                                    min="1" readonly
                                                     wire:model="items.{{ $key }}.discount_price">
                                             </td>
 
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">
-                                                <select class="form-control discount_category "
-                                                    style="width:50px;font-size:14px;"
-                                                    wire:model="items.{{ $key }}.discount"
-                                                    wire:change="subtotal({{ $key }},'discount')">
-                                                    <option selected value="0">select</option>
-                                                    @if (!empty($item['discount_categories']))
-                                                        @if (!empty($client_id))
-                                                            @foreach ($item['discount_categories'] as $discount)
-                                                                @if ($discount['price_category'] !== null)
-                                                                    {{--                                                                        @if (in_array($client_id, $discount['price_customer_types'])) --}}
+                                                <div class="input-wrapper" style="width: 50px">
+                                                    <select class="form-control select2 discount_category "
+                                                        style="width:100%;font-size:14px;"
+                                                        wire:model="items.{{ $key }}.discount"
+                                                        wire:change="subtotal({{ $key }},'discount')">
+                                                        <option selected value="0">select</option>
+                                                        @if (!empty($item['discount_categories']))
+                                                            @if (!empty($client_id))
+                                                                @foreach ($item['discount_categories'] as $discount)
+                                                                    @if ($discount['price_category'] !== null)
+                                                                        {{--                                                                        @if (in_array($client_id, $discount['price_customer_types'])) --}}
+                                                                        <option value="{{ $discount['id'] }}">
+                                                                            {{ $discount['price_category'] }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            @else
+                                                                @foreach ($item['discount_categories'] as $discount)
+                                                                    {{-- @if ($discount['price_category'] !== null) --}}
                                                                     <option value="{{ $discount['id'] }}">
-                                                                        {{ $discount['price_category'] }}
+                                                                        {{ $discount['price_category'] ?? '' }}
                                                                     </option>
-                                                                @endif
-                                                            @endforeach
-                                                        @else
-                                                            @foreach ($item['discount_categories'] as $discount)
-                                                                {{-- @if ($discount['price_category'] !== null) --}}
-                                                                <option value="{{ $discount['id'] }}">
-                                                                    {{ $discount['price_category'] ?? '' }}
-                                                                </option>
-                                                                {{-- @endif --}}
-                                                            @endforeach
+                                                                    {{-- @endif --}}
+                                                                @endforeach
+                                                            @endif
                                                         @endif
-                                                    @endif
-                                                </select>
+                                                    </select>
+                                                </div>
                                             </td>
                                             <td style="font-weight: 700;font-size: 10px;height: 50px;"
                                                 class="px-1 border-right ">

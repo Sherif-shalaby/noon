@@ -152,7 +152,7 @@
                         <input type="text" class="form-control initial-balance-input dinar_sell_price"
                             style="width:100%;margin:0 !important;border:2px solid #ccc;font-size: 12px;font-weight: 500;"
                             wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
-                            placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] }}"
+                            placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                             wire:change="changeIncrease({{ $index }},{{ $key }})">
                         <span class="dollar-cell"
                             style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_increase'] }}

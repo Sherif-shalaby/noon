@@ -388,7 +388,7 @@
 </div>
 
 
-<div class="mb-2 pr-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+<div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
     style="overflow-x: auto;margin-top: -9px">
 
 

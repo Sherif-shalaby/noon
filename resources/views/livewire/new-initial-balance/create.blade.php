@@ -157,7 +157,6 @@
                                         {!! Form::select('store_id', $stores, $item[0]['store_id'], [
                                             'class' => ' form-control select2 store_id',
                                             'data-name' => 'store_id',
-                                            // 'multiple' => 'multiple',
                                             'required',
                                             'placeholder' => __('lang.store'),
                                             'wire:model' => 'item.0.store_id',

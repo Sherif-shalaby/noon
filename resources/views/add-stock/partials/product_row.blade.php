@@ -241,13 +241,15 @@
                 wire:model="items.{{ $index }}.discount" wire:change="purchase_final({{ $index }})"
                 placeholder="discount amount">
             <div class="custom-control custom-switch d-flex justify-content-center align-items-center">
-                <input type="checkbox" class="custom-control-input" id="discount_on_bonus_quantity"
+                <input type="checkbox" class="custom-control-input"
+                    name="discount_on_bonus_quantity{{ $index }}"
+                    id="discount_on_bonus_quantity_{{ $index }}"
                     wire:model="items.{{ $index }}.discount_on_bonus_quantity"
                     wire:change="purchase_final({{ $index }})" style="font-size: 0.75rem" value="true">
                 {{-- wire:change="changePrice({{ $index }}, {{ $key }})"> --}}
                 <label class="custom-control-label"
                     style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
-                    for="discount_on_bonus_quantity">@lang('lang.discount_on_bonus_quantity')</label>
+                    for="discount_on_bonus_quantity_{{ $index }}">@lang('lang.discount_on_bonus_quantity')</label>
             </div>
         </div>
 
@@ -287,14 +289,16 @@
                         wire:model="items.{{ $index }}.cash_discount"
                         wire:change="purchase_final({{ $index }})" placeholder="cash discount">
                     <div class="custom-control custom-switch d-flex justify-content-center align-items-center">
-                        <input type="checkbox" class="custom-control-input" id="discount_dependency"
+                        <input type="checkbox" class="custom-control-input"
+                            name="discount_dependency{{ $index }}"
+                            id="discount_dependency_{{ $index }}"
                             wire:model="items.{{ $index }}.discount_dependency"
                             wire:change="purchase_final({{ $index }})" style="font-size: 0.75rem"
                             value="true">
                         {{-- wire:change="changePrice({{ $index }}, {{ $key }})"> --}}
                         <label class="custom-control-label"
                             style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
-                            for="discount_dependency">@lang('lang.discount_dependency')</label>
+                            for="discount_dependency_{{ $index }}">@lang('lang.discount_dependency')</label>
                     </div>
                 </div>
 
@@ -579,13 +583,14 @@
                     placeholder="discount amount">
                 <div class="custom-control custom-switch  d-flex justify-content-center align-items-center">
                     <input type="checkbox" class="custom-control-input"
+                        name="discount_on_bonus_quantity{{ $index }}{{ $i }}"
                         id="discount_on_bonus_quantity{{ $i }}"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount_on_bonus_quantity"
                         wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                         style="font-size: 0.75rem" value="true">
                     <label class="custom-control-label"
                         style='font-weight:500;font-size:9px !important;color:#888;max-width: 70px'
-                        for="discount_on_bonus_quantity">@lang('lang.discount_on_bonus_quantity')</label>
+                        for="discount_on_bonus_quantity{{ $i }}">@lang('lang.discount_on_bonus_quantity')</label>
                 </div>
             </div>
 
@@ -599,7 +604,9 @@
                     wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                     placeholder="cash discount">
                 <div class="custom-control custom-switch d-flex justify-content-center align-items-center">
-                    <input type="checkbox" class="custom-control-input" id="discount_dependency{{ $i }}"
+                    <input type="checkbox" class="custom-control-input"
+                        name="discount_dependency{{ $index }}{{ $i }}"
+                        id="discount_dependency{{ $i }}"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.discount_dependency"
                         wire:change="purchase_final({{ $index }},'stores',{{ $i }})"
                         style="font-size: 0.75rem" value="true">

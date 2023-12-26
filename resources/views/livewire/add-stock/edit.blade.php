@@ -239,6 +239,9 @@
                                     </thead>
                                     <tbody>
                                         @if (!empty($items))
+                                            @php
+                                                $i = 0;
+                                            @endphp
                                             @foreach ($items as $index => $product)
                                                 @include('add-stock.partials.product_row')
                                             @endforeach

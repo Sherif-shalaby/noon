@@ -1,6 +1,6 @@
 <td colspan="15">
 
-    <div class="col-md-8 p-0 mb-2 row animate__animated animate__bounceInLeft" style="animation-delay: 1.2s">
+    <div class="col-md-8 p-0 mb-2 row animate__animated animate__bounceInLeft">
 
         <div class="col-md-4">
             <div class="search-box input-group ">

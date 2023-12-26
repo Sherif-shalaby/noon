@@ -48,7 +48,7 @@ class Create extends Component
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0;
+        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0, $back_to_dollar;
 
 
     protected $rules = [
@@ -126,25 +126,29 @@ class Create extends Component
         }
 
         $this->store_pos_id = array_key_first($this->store_pos);
-        // dd(Auth::user()->id);
         $store_pos = StorePos::find($this->store_pos_id);
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('NoUserPos');
         }
         if (auth()->user()->is_superadmin == 1 || auth()->user()->is_admin == 1) {
-            $this->stores = Store::latest()->pluck('name', 'id')->toArray();
+            $this->stores = Store::whereHas('branch', function ($query) {
+                $query->where('type', 'branch');
+            })->with('branch')->get()->map(function ($store) {
+                return [
+                    'id' => $store->id,
+                    'full_name' => $store->name . ' - ' . $store->branch->name,
+                ];
+            })->pluck('full_name', 'id')->toArray();
             if (!empty($store_pos)) {
                 $user_stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
                 $branch = $store_pos->user->employee->branch;
                 $this->store_id = array_key_first($user_stores);
-                $this->changeAllProducts();
             }
         } else {
             if (!empty($store_pos)) {
                 $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
                 $branch = $store_pos->user->employee->branch;
                 $this->store_id = array_key_first($this->stores);
-                $this->changeAllProducts();
             }
         }
         /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -158,7 +162,6 @@ class Create extends Component
             $this->store_id = $last_sell_trans->store_id;
         } else {
             $this->store_id = array_key_first($this->stores);
-            $this->changeAllProducts();
         }
 
         if (!empty($branch)) {
@@ -166,6 +169,7 @@ class Create extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
+        $this->changeAllProducts();
         $this->client_id = 1;
         $this->getCustomerData($this->client_id);
         $this->payment_status = 'paid';
@@ -278,6 +282,7 @@ class Create extends Component
                 $this->delete_item($key);
             }
         }
+        //        dd($products_store);
         $this->dispatchBrowserEvent('componentRefreshed');
     }
 
@@ -760,26 +765,43 @@ class Create extends Component
     public function ChangeBillToDinar()
     {
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        // if($this->final_total==0){
-        $this->final_total += $this->dollar_final_total * $exchange_rate;
-        $this->dollar_final_total = 0;
-        // }
-        // if($this->total==0){
-        $this->total += $this->total_dollar * $exchange_rate;
-        $this->total_dollar = 0;
-        // }
-        // if($this->discount==0){
-        $this->discount += $this->discount_dollar * $exchange_rate;
-        $this->discount_dollar = 0;
-        // }
-        // if($this->amount==0){
-        $this->amount += $this->dollar_amount * $exchange_rate;
-        $this->dollar_amount = 0;
-        // }
-        // if($this->dinar_remaining==0){
-        $this->dinar_remaining += $this->dollar_remaining * $exchange_rate;
-        $this->dollar_remaining = 0;
-        // }
+        if ($this->back_to_dollar == 0) {
+            $final_total = round_250($this->dollar_final_total * $exchange_rate);
+            $this->final_total += ($final_total > 0 ? $final_total : 0);
+            $this->dollar_final_total = 0;
+            $total = round_250($this->total_dollar * $exchange_rate);
+            $this->total += ($total > 0 ? $total : 0);
+            $this->total_dollar = 0;
+
+            $discount = round_250($this->discount_dollar * $exchange_rate);
+            $this->discount += ($discount > 0 ? $discount : 0);
+            $this->discount_dollar = 0;
+
+            $amount = round_250($this->dollar_amount * $exchange_rate);
+            $this->amount += ($amount > 0 ? $amount : 0);
+            $this->dollar_amount = 0;
+
+            $dinar_remaining = round_250($this->dollar_remaining * $exchange_rate);
+            $this->dinar_remaining += ($dinar_remaining > 0 ? $dinar_remaining : 0);
+            $this->dollar_remaining = 0;
+            $this->back_to_dollar = 2;
+        } else {
+            $this->dollar_final_total += $this->final_total / $exchange_rate;
+            $this->final_total = 0;
+
+            $this->total_dollar += $this->total / $exchange_rate;
+            $this->total = 0;
+
+            $this->discount_dollar += $this->discount / $exchange_rate;
+            $this->discount = 0;
+
+            $this->dollar_amount += $this->amount / $exchange_rate;
+            $this->amount = 0;
+
+            $this->dollar_remaining += $this->dinar_remaining * $exchange_rate;
+            $this->dinar_remaining = 0;
+            $this->back_to_dollar = 0;
+        }
     }
     public function increment($key)
     {
@@ -1244,7 +1266,7 @@ class Create extends Component
             $register = CashRegister::create([
                 'user_id' => $user_id,
                 'status' => 'open',
-                'store_id' => !empty($store_pos) ? $store_pos->store_id : null,
+                'store_id' => $this->store_id,
                 'store_pos_id' => !empty($store_pos) ? $store_pos->id : null
             ]);
         }

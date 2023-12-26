@@ -767,4 +767,7 @@ return array(
     'check_in_time' => 'تحقق في الوقت المناسب',
     'check_out_time' => 'تحقق من الوقت',
     'add_expenses' => 'اضافة مصروفات',
+    'change_bill_to' => 'تحويل الفاتورة الى',
+    'dinar_c' => 'دينار',
+    'dollar_c' => 'دولار',
 );

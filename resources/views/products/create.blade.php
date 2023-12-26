@@ -3,6 +3,25 @@
 @push('css')
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/product.css') }}">
+    <style>
+        .form-select {
+            height: 100%;
+            padding-bottom: 0;
+            padding-top: 0;
+            background-color: #dedede !important;
+            border-radius: 16px;
+            border: 2px solid #cececf;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .form-select:focus {
+            border-color: #cececf !important;
+            outline: 0;
+            box-shadow: 0 0 0 0 !important;
+            background-color: white !important;
+        }
+    </style>
 @endpush
 @section('breadcrumbbar')
     <div class="animate-in-page">
@@ -44,11 +63,9 @@
 
             <!-- Start col -->
             <div class="col-lg-12">
-                <div class="card mb-0 p-2">
+                <div class="card pt-0 mb-0 p-2">
                     <div class="row ">
-                        <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
-                            <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>
-                        </div>
+
                         <div class="col-md-3 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
                             <div class="i-checks">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"

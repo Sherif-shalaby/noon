@@ -685,7 +685,7 @@ return [
     'expenses_currency' => 'Expenses currency',
     'recent_transactions' => 'Recent Transactions',
     'change_remaining_to_dinar' => 'Change Remaining To Dinar',
-    'change_bill_to_dinar' => 'Change Bill To Dinar',
+    'change_bill_to' => 'Change Bill To',
     'attendance_added' => 'Attendance Added',
     'attendance_updated' => 'Attendance Updated',
     'attendance_deleted' => 'Attendance Deleted',
@@ -698,5 +698,7 @@ return [
     'leave_details' => 'Leave Details',
     'number_of_days' => 'Number of Days',
     'add_expenses' => 'Add Expenses',
+    'dinar_c' => 'dinar',
+    'dollar_c' => 'dollar',
 
 ];

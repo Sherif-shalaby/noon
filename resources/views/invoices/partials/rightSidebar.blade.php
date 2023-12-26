@@ -10,9 +10,18 @@
                 الاجماليات
             </div>
             <div class="row">
-                <div class="col-md-9 {{ $dollar_final_total != 0 && $total_dollar != 0 ? '' : 'd-none' }}">
-                    <button type="button" class="btn btn-success"
-                        wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button>
+                <div
+                    class="col-md-9 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) || $back_to_dollar == 2
+                        ? ''
+                        : 'd-none' }}">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                        <label class="custom-control-label" for="customSwitch1" wire:click="ChangeBillToDinar()"
+                            {{ $back_to_dollar == 1 ? 'checked' : '' }}>{{ __('lang.change_bill_to') }}
+                            {{ $back_to_dollar == 0 ? __('lang.dinar_c') : __('lang.dollar_c') }}</label>
+                    </div>
+                    {{-- <button type="button" class="btn btn-success"
+                        wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button> --}}
                 </div>
             </div>
             <div class="d-flex justify-content-between align-items-center flex-wrap col-md-10">
