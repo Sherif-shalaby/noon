@@ -215,7 +215,7 @@
 
         <div class="col-md-4 d-flex">
             {{-- +++++++++++ from_a_to_z , from_z_to_a filter +++++++++++ --}}
-            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+            <div class="px-1 col-md-3 mb-2 d-flex align-items-center flex-column">
                 {!! Form::label('alphabetical_order_id', __('lang.alphabetical_order') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                     'style' => 'font-size: 12px;font-weight: 500;',
@@ -242,7 +242,7 @@
             </div>
 
             {{-- +++++++++++ lowest_price , highest_price filter +++++++++++ --}}
-            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+            <div class="px-1 col-md-3 mb-2 d-flex align-items-center flex-column">
 
                 {!! Form::label('price_order_id', __('lang.price') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
@@ -264,7 +264,7 @@
                 </div>
             </div>
             {{-- +++++++++++ dollar_lowest_price , dollar_highest_price filter +++++++++++ --}}
-            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column dollar-cell">
+            <div class="px-1 col-md-3 mb-2 d-flex align-items-center flex-column dollar-cell">
 
                 {!! Form::label('dollar_price_order_id', __('lang.dollar_price') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
@@ -292,7 +292,7 @@
             </div>
 
             {{-- +++++++++++ nearest_expiry , longest_expiry filter +++++++++++ --}}
-            <div class=" col-md-3 mb-2 d-flex align-items-center flex-column">
+            <div class="px-1 col-md-3 mb-2 d-flex align-items-center flex-column">
                 {!! Form::label('expiry_order_id', __('lang.expiry_order') . '*', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
                     'style' => 'font-size: 12px;font-weight: 500;',

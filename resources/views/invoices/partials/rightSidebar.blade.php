@@ -9,33 +9,17 @@
                         font-weight: 500;">
                 الاجماليات
             </div>
-            <div class="row">
-                <div
-                    class="col-md-9 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) || $back_to_dollar == 2
-                        ? ''
-                        : 'd-none' }}">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                        <label class="custom-control-label" for="customSwitch1" wire:click="ChangeBillToDinar()"
-                            {{ $back_to_dollar == 1 ? 'checked' : '' }}>{{ __('lang.change_bill_to') }}
-                            {{ $back_to_dollar == 0 ? __('lang.dinar_c') : __('lang.dollar_c') }}</label>
-                    </div>
-                    {{-- <button type="button" class="btn btn-success"
-                        wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button> --}}
-                </div>
-            </div>
             <div class="d-flex justify-content-between align-items-center flex-wrap col-md-10">
                 @if ($this->checkRepresentativeUser() && $reprsenative_sell_car)
-                    <div class="col-md-2">
-                        <button data-method="cash" style="width: 100%" type="button"
-                            class="btn btn-success payment-btn" wire:click="submit" id="cash-btn"><i
-                                class="fa-solid fa-money-bill"></i>
+                    <div class="col-md-2 p-0">
+                        <button data-method="cash" style="width: 100%" type="button" class="btn btn-success payment-btn"
+                            wire:click="submit" id="cash-btn"><i class="fa-solid fa-money-bill"></i>
                             @lang('lang.pay')</button>
                         {{--                            @include('invoices.partials.payment') --}}
                     </div>
                 @endif
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-2 ">
+                    <div class=" col-md-2 p-0 ">
                         <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                             class="btn btn-success payment-btn px-0" wire:click="submit" id="cash-btn"><i
                                 class="fa-solid fa-money-bill"></i>
@@ -44,7 +28,7 @@
                     </div>
                 @endif
 
-                <div class=" col-md-2 ">
+                <div class=" col-md-2 p-0 ">
                     <button style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-primary payment-btn px-0" data-toggle="modal" data-target="#draftTransaction"
                         {{--                                     wire:click="getDraftTransactions" --}} id="cash-btn"><i class="fa-solid fa-flag"></i>
@@ -52,7 +36,7 @@
                     {{-- @include('invoices.partials.draft_transaction') --}}
 
                 </div>
-                <div class=" col-md-2">
+                <div class=" col-md-2 p-0">
                     <button data-method="cash" style="width: 100%;font-size: 12px;font-weight: 600" type="button"
                         class="btn btn-warning payment-btn " wire:click="changeStatus" id="cash-btn"><i
                             class="fa-solid fa-flag"></i>
@@ -60,7 +44,7 @@
                 </div>
 
                 @if (!$this->checkRepresentativeUser())
-                    <div class=" col-md-2">
+                    <div class=" col-md-2 p-0">
                         <button style="width: 100%;font-size: 12px;font-weight: 600; background: #5b808f" type="button"
                             class="btn btn-primary payment-btn " onclick="openDueDateModal()" id="pay-later-btn"><i
                                 class="fa fa-hourglass-start"></i>
@@ -68,11 +52,25 @@
                     </div>
                 @endif
 
-                <div class="col-md-3">
+                <div class="col-md- 2 p-0">
                     <a href="{{ route('recent_transactions') }}"
                         target="_blank"style="width: 100%;font-size: 12px;font-weight: 600;background-color: #ffc107;"
                         type="button" class="btn btn-custom" id="recent-transactionbtn"><i class="dripicons-clock"></i>
                         @lang('lang.recent_transactions')</a>
+                </div>
+
+                <div
+                    class="col-md-2 p-0 {{ ($dollar_final_total != 0 && $total_dollar != 0 && $back_to_dollar == 0) || $back_to_dollar == 2
+                        ? ''
+                        : 'd-none' }}">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                        <label class="custom-control-label mb-0" for="customSwitch1" wire:click="ChangeBillToDinar()"
+                            {{ $back_to_dollar == 1 ? 'checked' : '' }}>{{ __('lang.change_bill_to') }}
+                            {{ $back_to_dollar == 0 ? __('lang.dinar_c') : __('lang.dollar_c') }}</label>
+                    </div>
+                    {{-- <button type="button" class="btn btn-success"
+                        wire:click="ChangeBillToDinar()">{{ __('lang.change_bill_to_dinar') }}</button> --}}
                 </div>
             </div>
         </div>
