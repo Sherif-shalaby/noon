@@ -141,14 +141,12 @@ class Create extends Component
                 $user_stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
                 $branch = $store_pos->user->employee->branch;
                 $this->store_id = array_key_first($user_stores);
-                $this->changeAllProducts();
             }
         }else{
             if (!empty($store_pos)) {
                 $this->stores = !empty($store_pos->user) ? $store_pos->user->employee->stores()->pluck('name', 'id')->toArray() : [];
                 $branch = $store_pos->user->employee->branch;
                 $this->store_id = array_key_first($this->stores);
-                $this->changeAllProducts();
             }
         }
         /*  ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -160,11 +158,8 @@ class Create extends Component
         $last_sell_trans = TransactionSellLine::where('employee_id', auth()->user()->id)->latest()->first();
         if (!empty($last_sell_trans->store_id)) {
             $this->store_id = $last_sell_trans->store_id;
-//            dd($this->store_id);
-            $this->changeAllProducts();
         } else {
             $this->store_id = array_key_first($this->stores);
-            $this->changeAllProducts();
         }
 
         if (!empty($branch)) {
@@ -172,6 +167,7 @@ class Create extends Component
                 $this->reprsenative_sell_car = true;
             }
         }
+        $this->changeAllProducts();
         $this->client_id = 1;
         $this->getCustomerData($this->client_id);
         $this->payment_status = 'paid';
