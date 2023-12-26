@@ -427,17 +427,17 @@
                         <label class="custom-control-label"  for="discount_dependency{{$i}}" >@lang('lang.discount_dependency')</label>
                     </div>
                 </div>
-        
+
                 <div class="input-group-prepend">
                     <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.seasonal_discount" wire:change="purchase_final({{$index}},'stores',{{$i}})" style="width: 100px;" placeholder="seasonal discount">
                 </div>
-        
+
                 <div class="input-group-prepend">
                     <input type="text" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.annual_discount" wire:change="purchase_final({{$index}},'stores',{{$i}})"  style="width: 100px;" placeholder="Annual discount">
                 </div>
             </div>
         </td>
-        
+
 
         <td title="{{__('lang.final_total')}}">
             @if(!empty($store['quantity']) && (!empty($store['purchase_price'])))
@@ -565,12 +565,21 @@
                 'wire:change' => 'changePrice(' .$index.','.$key.')',
             ]) !!}
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" name="discount_from_original_price" id="discount_from_original_price{{$key}}" style="font-size: 0.75rem"
-                        @if( !empty($discount_from_original_price) && $discount_from_original_price == '1' ) checked @endif
-                        wire:change="change_discount_from_original_price({{ $index }})">
-                <label class="custom-control-label" for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+                <input type="checkbox" class="custom-control-input" name="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price" id="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price" style="font-size: 0.75rem"
+                       @if ($items[$index]['prices'][$key]['discount_from_original_price'] ) checked @endif
+                        wire:change="change_discount_from_original_price({{ $index }}, {{ $key }})">
+                <label class="custom-control-label" for="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price">@lang('lang.discount_from_original_price')</label>
             </div>
-            @error('items.'.$index.'.prices.'.$key.'.price_type')
+{{--            <div class="custom-control custom-switch">--}}
+{{--                <input type="checkbox" class="custom-control-input"--}}
+{{--                       name="discount_from_original_price" id="discount_from_original_price"--}}
+{{--                       style="font-size: 0.75rem"--}}
+{{--                       @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif--}}
+{{--                       wire:change="change_discount_from_original_price({{ $key }})">--}}
+{{--                <label class="custom-control-label"--}}
+{{--                       for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>--}}
+{{--            </div>--}}
+            @error('items.'.$index.'.prices.'.$key.'.discount_from_original_price')
             <br>
             <label class="text-danger error-msg">{{ $message }}</label>
             @enderror

@@ -112,7 +112,6 @@ class Create extends Component
             }
         }
         $this->exchange_rate = $this->changeExchangeRate();
-        $this->discount_from_original_price = 1;
         $this->customer_types = CustomerType::orderBy('name', 'asc')->get();
 
         $this->dispatchBrowserEvent('initialize-select2');
@@ -288,7 +287,7 @@ class Create extends Component
             })->when($name == 'department_id2', function ($query) {
                 $query->where('subcategory_id1', $this->department_id2);
             })
-    
+
                 ->when($name == 'department_id3', function ($query) {
                     $query->where('subcategory_id2', $this->department_id3);
                 })
@@ -300,7 +299,7 @@ class Create extends Component
             // $products_store = ProductStore::pluck('product_id');
             $this->allproducts = Product::get();
         }
-       
+
     }
 
     public function addExpense()
@@ -861,6 +860,7 @@ class Create extends Component
                     'dinar_total_price' =>null,
                     'piece_price' => null,
                     'dinar_piece_price' => null,
+                    'discount_from_original_price' => true,
                 ],
 
             ],
@@ -945,6 +945,7 @@ class Create extends Component
               'total_price' => null,
               'piece_price' => null,
               'dinar_piece_price' => null,
+              'discount_from_original_price' => true,
           ];
         array_unshift($this->items[$index]['prices'], $new_price);
     }
@@ -1002,24 +1003,6 @@ class Create extends Component
             'used_currency' => null,
             'store_id' => null,
             'customer_prices' => $customer_prices,
-            'prices' => [
-                [
-                    'price_type' => null,
-                    'price_category' => null,
-                    'price' => null,
-                    'dinar_price' => null,
-                    'discount_quantity' => null,
-                    'bonus_quantity' => null,
-                    'price_customer_types' => null,
-                    'price_after_desc' => null,
-                    'dinar_price_after_desc' => null,
-                    'total_price' => null,
-                    'dinar_total_price' =>null,
-                    'piece_price' => null,
-                    'dinar_piece_price' => null,
-                ],
-
-            ],
         ];
 //        dd($new_store);
         array_unshift($this->items[$index]['stores'], $new_store);
@@ -1114,11 +1097,14 @@ class Create extends Component
   }
     public function change_discount_from_original_price($index,$key)
     {
-        $this->discount_from_original_price = 0;
-        $this->changePrice($index,$key);
+        if($this->items[$index]['prices'][$key]['discount_from_original_price']){
+            $this->items[$index]['prices'][$key]['discount_from_original_price'] = !$this->items[$index]['prices'][$key]['discount_from_original_price'];
+        }
+//        $this->changePrice($index,$key);
     }
     public function changePrice($index,$key)
     {
+        $discount_from_original_price = $this->items[$index]['prices'][$key]['discount_from_original_price'];
        $customer_type = $this->items[$index]['prices'][$key]['price_customer_types'];
        $customers_price = [];
         if(!empty($customer_type)){
@@ -1143,7 +1129,7 @@ class Create extends Component
                 if(!empty($sell_price)){
                     $total_quantity = (float)$this->items[$index]['prices'][$key]['discount_quantity'] +(float)$this->items[$index]['prices'][$key]['bonus_quantity'];
                     if(!empty($this->items[$index]['prices'][$key]['price'])){
-                        if (empty($this->discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
+                        if (empty($discount_from_original_price) && !empty($this->items[$index]['prices'][$key]['discount_quantity'])){
                             $total_sell_price = $sell_price * $this->items[$index]['prices'][$key]['discount_quantity'];
                             $sell_price = $total_sell_price / $total_quantity ;
                         }
@@ -1156,7 +1142,7 @@ class Create extends Component
                         }
                     }
                     $price = !empty($this->items[$index]['prices'][$key]['price_after_desc']) ? (float)$this->items[$index]['prices'][$key]['price_after_desc'] : $sell_price;
-                    if(empty($this->discount_from_original_price)){
+                    if(empty($discount_from_original_price)){
                         $this->items[$index]['prices'][$key]['total_price'] = number_format((float)$price * (!empty($this->items[$index]['prices'][$key]['discount_quantity']) ? $this->items[$index]['prices'][$key]['discount_quantity'] : 1),3) ;
                         $this->items[$index]['prices'][$key]['piece_price'] = number_format($this->num_uf($this->items[$index]['prices'][$key]['total_price'])/(!empty($total_quantity) ? $total_quantity : 1),3) ;
                     }
