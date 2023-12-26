@@ -75,7 +75,7 @@
                                         <div class="input-wrapper" style="width: 100%">
 
                                             {!! Form::select('purchase_type', ['import' => __('lang.import'), 'local' => __('lang.local')], $purchase_type, [
-                                                'class' => 'form-control select',
+                                                'class' => 'form-select',
                                                 'required',
                                                 'style' => 'width:100%;height:100%',
                                                 'placeholder' => __('lang.please_select'),
@@ -338,63 +338,61 @@
                                     style="height: 100vh;overflow: scroll;animation-delay: 1.8s">
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
                                         الأقسام الرئيسيه
-                                        <div class="d-flex align-items-center text-nowrap categories_drop_down gap-1"
+                                        <div class="d-flex flex-column align-items-center text-nowrap categories_drop_down gap-1"
                                             wire:ignore>
-                                            <div class="row">
-                                                {{-- الاقسام --}}
-                                                <select class="form-control depart1 select2"
-                                                    wire:model="department_id1" data-name="department_id1">
-                                                    <option value="0 " readonly selected>اختر </option>
-                                                    @foreach ($departments as $depart)
-                                                        @if ($depart->parent_id === 1)
-                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                            </option>
-                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                            {{-- @endif --}}
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                                <select class="form-control depart select2"
-                                                    wire:model="department_id2" data-name="department_id2">
-                                                    <option value="0 " readonly selected>اختر </option>
-                                                    @foreach ($departments as $depart)
-                                                        @if ($depart->parent_id === 2)
-                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                            </option>
-                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                            {{-- @endif --}}
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                                <select class="form-control depart select2"
-                                                    wire:model="department_id3" data-name="department_id3">
-                                                    <option value="0 " readonly selected>اختر </option>
-                                                    @foreach ($departments as $depart)
-                                                        @if ($depart->parent_id === 3)
-                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                            </option>
-                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                            {{-- @endif --}}
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                                <select class="form-control depart select2"
-                                                    wire:model="department_id4" data-name="department_id4">
-                                                    <option value="0 " readonly selected>اختر </option>
-                                                    @foreach ($departments as $depart)
-                                                        @if ($depart->parent_id === 4)
-                                                            <option value="{{ $depart->id }}">{{ $depart->name }}
-                                                            </option>
-                                                            {{-- @if ($depart->subCategories->count() > 0) --}}
-                                                            {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
-                                                            {{-- @endif --}}
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                            {{-- الاقسام --}}
+                                            <select class="form-control depart1 select2" wire:model="department_id1"
+                                                data-name="department_id1">
+                                                <option value="0 " readonly selected>اختر </option>
+                                                @foreach ($departments as $depart)
+                                                    @if ($depart->parent_id === 1)
+                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                        </option>
+                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                        {{-- @endif --}}
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            <select class="form-control depart select2" wire:model="department_id2"
+                                                data-name="department_id2">
+                                                <option value="0 " readonly selected>اختر </option>
+                                                @foreach ($departments as $depart)
+                                                    @if ($depart->parent_id === 2)
+                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                        </option>
+                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                        {{-- @endif --}}
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            <select class="form-control depart select2" wire:model="department_id3"
+                                                data-name="department_id3">
+                                                <option value="0 " readonly selected>اختر </option>
+                                                @foreach ($departments as $depart)
+                                                    @if ($depart->parent_id === 3)
+                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                        </option>
+                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                        {{-- @endif --}}
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            <select class="form-control depart select2" wire:model="department_id4"
+                                                data-name="department_id4">
+                                                <option value="0 " readonly selected>اختر </option>
+                                                @foreach ($departments as $depart)
+                                                    @if ($depart->parent_id === 4)
+                                                        <option value="{{ $depart->id }}">{{ $depart->name }}
+                                                        </option>
+                                                        {{-- @if ($depart->subCategories->count() > 0) --}}
+                                                        {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                                        {{-- @endif --}}
+                                                    @endif
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="p-2">
@@ -546,7 +544,7 @@
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    <div class="input-wrapper" style="width: 100%">
+                                    <div class="input-wrapper">
 
                                         {!! Form::text('invoice_no', $invoice_no, [
                                             'class' => 'form-control initial-balance-input m-0 width-full',
@@ -562,7 +560,7 @@
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    <div class="input-wrapper" style="width: 100%">
+                                    <div class="input-wrapper">
 
                                         {!! Form::text('discount_amount', $discount_amount, [
                                             'class' => 'form-control m-0 initial-balance-input width-full',

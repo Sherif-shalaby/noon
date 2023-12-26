@@ -112,17 +112,17 @@
                                 </div>
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input"
-                                        name="discount_from_original_price"
-                                        id="discount_from_original_price{{ $key }}"
+                                        name="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price"
+                                        id="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price"
                                         style="font-size: 0.75rem;border-radius: 12px;height: 30px;"
-                                        @if (!empty($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
-                                        wire:change="change_discount_from_original_price({{ $index }})">
+                                        @if ($items[$index]['prices'][$key]['discount_from_original_price']) checked @endif
+                                        wire:change="change_discount_from_original_price({{ $index }}, {{ $key }})">
                                     <label class="custom-control-label" style="font-size: 8px"
-                                        for="discount_from_original_price">
+                                        for="items.{{ $index }}.prices.{{ $key }}.discount_from_original_price">
                                         @lang('lang.discount_from_original_price')
                                     </label>
                                 </div>
-                                @error('items.' . $index . '.prices.' . $key . '.price_type')
+                                @error('items.' . $index . '.prices.' . $key . '.discount_from_original_price')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>

@@ -16,15 +16,18 @@
     @enderror
 </div>
 
-<div class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide"
+<div class="col-md-3 mb-2 d-flex align-items-center dollar-cell  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif payment_fields hide"
     style="animation-delay: 2.25s">
     {!! Form::label('amount', __('lang.amount'), [
         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
         'style' => 'font-size: 12px;font-weight: 500;',
-    ]) !!} $
-    <input type="number" placeholder="{{ __('lang.amount') }}$"
-        class="form-control initial-balance-input width-full mx-0" wire:model="total_amount_dollar"
-        wire:change="changeReceivedDollar()">
+    ]) !!}
+    <div class="input-wrapper">
+
+        <input type="number" placeholder="{{ __('lang.amount') }}$"
+            class="form-control initial-balance-input width-full mx-0" wire:model="total_amount_dollar"
+            wire:change="changeReceivedDollar()">
+    </div>
     @if ($dollar_remaining > 0)
         <span wire:model="dollar_remaining">Change: {{ $dollar_remaining }}</span>
         <button wire:click= "convertRemainingDollar()"><i class="fa-solid fa-retweet"></i></button>

@@ -6,12 +6,26 @@
 @endpush
 @section('breadcrumbbar')
     <style>
-        .store_drop_down .select2-container {
-            width: 95% !important
+        .select2-selection__rendered {
+            width: 100px;
         }
 
-        .categories_drop_down .select2-dropdown {
-            left: 43px;
+        .extra_store_accordion .select2-selection__rendered {
+            width: 100%;
+        }
+
+        .categories_drop_down .select2-container--open {
+            left: -85px !important;
+            font-size: 12px !important
+        }
+
+        .categories_drop_down .select2-selection__rendered {
+            font-size: 12px !important;
+            display: flex !important
+        }
+
+        .store_drop_down .select2-container {
+            width: 95% !important
         }
 
         .form-select {
