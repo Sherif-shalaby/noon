@@ -64,6 +64,10 @@ class ProductController extends Controller
 
   public function index(Request $request)
   {
+    $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
+    $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
+    $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
+    $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
     $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
     $products=Product::
         when(\request()->dont_show_zero_stocks =="on", function ($query) {
@@ -110,7 +114,7 @@ class ProductController extends Controller
     $branches = Branch::orderBy('created_at', 'desc')->pluck('name','id');
     $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
-      return view('products.index',compact('products','categories','branches','suppliers','brands','units','stores','users','subcategories'));
+    return view('products.index',compact('products','categories','branches','suppliers','brands','units','stores','users','subcategories','categories1','categories2','categories3','categories4'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
@@ -261,25 +265,25 @@ class ProductController extends Controller
 
         return $discount_customers;
     }
-    // ============================= Products Categories : Real-Time Filters =============================
-    // ++++++ fetch_sub_categories1() : Get Sub_Categories1 According to "selected main_categories" selectbox ++++++
-    public function fetch_sub_categories1(Request $request)
-    {
-        $data['subcategory_id1'] = Category::where('parent_id', $request->subcategories1_id)->get(['id','name']);
-        return response()->json($data);
-    }
-    // ++++++ fetch_sub_categories2() : Get Sub_Categories2 According to "selected sub_category1" selectbox ++++++
-    public function fetch_sub_categories2(Request $request)
-    {
-        $data['subcategory_id2'] = Category::where('parent_id', $request->subcategories2_id)->get(['id','name']);
-        return response()->json($data);
-    }
-    // ++++++ fetch_sub_categories3() : Get Sub_Categories3 According to "selected sub_category2" selectbox ++++++
-    public function fetch_sub_categories3(Request $request)
-    {
-        $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
-        return response()->json($data);
-    }
+    // // ============================= Products Categories : Real-Time Filters =============================
+    // // ++++++ fetch_sub_categories1() : Get Sub_Categories1 According to "selected main_categories" selectbox ++++++
+    // public function fetch_sub_categories1(Request $request)
+    // {
+    //     $data['subcategory_id1'] = Category::where('parent_id', $request->subcategories1_id)->get(['id','name']);
+    //     return response()->json($data);
+    // }
+    // // ++++++ fetch_sub_categories2() : Get Sub_Categories2 According to "selected sub_category1" selectbox ++++++
+    // public function fetch_sub_categories2(Request $request)
+    // {
+    //     $data['subcategory_id2'] = Category::where('parent_id', $request->subcategories2_id)->get(['id','name']);
+    //     return response()->json($data);
+    // }
+    // // ++++++ fetch_sub_categories3() : Get Sub_Categories3 According to "selected sub_category2" selectbox ++++++
+    // public function fetch_sub_categories3(Request $request)
+    // {
+    //     $data['subcategory_id3'] = Category::where('parent_id', $request->subcategories3_id)->get(['id','name']);
+    //     return response()->json($data);
+    // }
     /* ++++++++++++++++++++++ add_store() ++++++++++++++++++++++ */
     public function add_store(Request $request)
     {
