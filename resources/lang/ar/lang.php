@@ -758,6 +758,9 @@ return array(
     'check_out_time' => 'تحقق من الوقت',
     'recent_transactions'=>'المعاملات الاخيرة',
     'change_remaining_to_dinar'=>'تحويل الباقى الى دينار',
-    'change_bill_to_dinar'=>'تحويل الفاتورة الى دينار',
+    'change_bill_to'=>'تحويل الفاتورة الى',
+    'dinar_c'=>'دينار',
+    'dollar_c'=>'دولار',
+
 );
 
