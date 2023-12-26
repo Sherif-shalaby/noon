@@ -61,6 +61,7 @@ class ProductController extends Controller
    *
    * @return Application|Factory|View
    */
+
   public function index(Request $request)
   {
     $stock_transaction_ids=StockTransaction::where('supplier_id',request()->supplier_id)->pluck('id');
@@ -106,9 +107,10 @@ class ProductController extends Controller
     $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
     $users=User::orderBy('created_at', 'desc')->pluck('name','id');
     $suppliers=Supplier::orderBy('created_at', 'desc')->pluck('name','id');
+    $branches = Branch::orderBy('created_at', 'desc')->pluck('name','id');
     $subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
-      return view('products.index',compact('products','categories','suppliers','brands','units','stores','users','subcategories'));
+      return view('products.index',compact('products','categories','branches','suppliers','brands','units','stores','users','subcategories'));
   }
   /* ++++++++++++++++++++++ create() ++++++++++++++++++++++ */
   public function create()
@@ -121,162 +123,131 @@ class ProductController extends Controller
      }
 //     dd(isset($recent_product));
     $units=Unit::orderBy('created_at', 'desc')->get();
-    $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
-    $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
+    $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
+    $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
+    $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
+    $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
     $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
-    $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+    $stores=Store::orderBy('created_at', 'desc')->get();
     // product_tax
     $product_tax = Tax::where('status','active')->get();
     $quick_add = 1;
     $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+    $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
 
       return view('products.create',
-    compact('categories','brands','units','stores','branches',
-        'product_tax','quick_add','unitArray','subcategories',
+    compact('categories1','categories2','categories3','categories4','brands','units','stores','branches',
+        'product_tax','quick_add','unitArray',
         'clear_all_input_form','recent_product'));
   }
-  /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
-  public function store(ProductRequest $request)
-  {
-    try
+    /* ++++++++++++++++++++++ store() ++++++++++++++++++++++ */
+    public function store(ProductRequest $request)
     {
-        $product_data = [
-            'name' => $request->name,
-            'translations' => !empty($request->translations) ? $request->translations : [],
-            'category_id' => $request->category_id,
-            'subcategory_id1' => $request->subcategory_id1,
-            'subcategory_id2' => $request->subcategory_id2,
-            'subcategory_id3' => $request->subcategory_id3,
-            'brand_id' => $request->brand_id,
-            'sku' => !empty($request->product_sku) ? $request->product_sku : $this->generateSku($request->name),
-            'details' => $request->details,
-            'details_translations' => !empty($request->details_translations) ? $request->details_translations : [],
-            'active' => !empty($request->active) ? 1 : 0,
-            'created_by' => Auth::user()->id,
-            'method' => !empty($request->method) ? $request->method :null,
-            'product_symbol'=>!empty($request->product_symbol) ? $request->product_symbol :null,
-            'balance_return_request' => !empty($request->balance_return_request) ?$request->balance_return_request:null,
-        ];
-        $product = Product::create($product_data);
+        try {
+                DB::beginTransaction();
+                foreach ($request->products as $re_product) {
+                    if ($re_product['name'] != null) {
+                        $product_data = [
+                            'name' => $re_product['name'],
+                            'translations' => !empty($re_product['translations']) ? $re_product['translations'] : [],
+                            'category_id' => $re_product['category_id'],
+                            'subcategory_id1' => $re_product['subcategory_id1'] ?? null,
+                            'subcategory_id2' => $re_product['subcategory_id2'] ?? null,
+                            'subcategory_id3' => $re_product['subcategory_id3'] ?? null,
+                            'brand_id' => $re_product['brand_id'],
+                            'sku' => !empty($re_product['product_sku']) ? $re_product['product_sku'] : $this->generateSku(),
+                            'details' => !empty($re_product['details']) ? $re_product['details'] : null,
+                            'details_translations' => !empty($re_product['details_translations']) ? $re_product['details_translations'] : [],
+                            'active' => !empty($re_product['active']) ? 1 : 0,
+                            'created_by' => Auth::user()->id,
+                            'method' => !empty($re_product['method']) ? $re_product['method'] : null,
+                            'product_symbol' => !empty($re_product['product_symbol']) ? $re_product['product_symbol'] : null,
+                            'balance_return_request' => !empty($re_product['balance_return_request']) ? $re_product['balance_return_request'] : null,
+                        ];
+                        $product = Product::create($product_data);
+                        // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
+                        if (!empty($re_product['product_tax_id'])) {
+                            ProductTax::create([
+                                'product_tax_id' => $re_product['product_tax_id'],
+                                'product_id' => $product->id,
+                            ]);
+                        }
+                        if (!empty($request->store_id)) {
+                            $product->stores()->attach($request->store_id);
+                        }
+                        if (isset($re_product['image']) && !is_null($re_product['image'])) {
+                            $imageData = $this->getCroppedImage($re_product['image']);
+                            $extention = explode(";", explode("/", $imageData)[1])[0];
+                            $image = rand(1, 1500) . "_image." . $extention;
+                            $filePath = public_path('uploads/products/' . $image);
+                            $image = $image;
+                            $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
+                            $product->image = $image;
+                            $product->save();
+                        }
+                        if (!empty($re_product['variations'])) {
+                            $variations = $re_product['variations'];
+                            if (!empty($variations)) {
+                                foreach ($variations as $key => $variant) {
+                                    if (isset($variant['new_unit_id'])) {
+                                        $var_data = [
+                                            'product_id' => $product->id,
+                                            'unit_id' => $variant['new_unit_id'],
+                                            'basic_unit_id' => !empty($variations[$key + 1]) ? $variations[$key + 1]['new_unit_id'] : null,
+                                            'equal' => !empty($variations[$key + 1]) ? $variations[$key + 1]['equal'] : null,
+                                            'sku' => !empty($variant['sku']) ? $variant['sku'] : $this->generateSku(),
+                                            'created_by' => Auth::user()->id
+                                        ];
+                                        Variation::create($var_data);
+                                    }
+                                }
+                            }
+                        }
+                        if ($re_product['height'] == ('' || 0) && $re_product['length'] == ('' || 0) && $re_product['width'] == ('' || 0)
+                            || $re_product['size'] == ('' || 0) && $re_product['weight'] == ('' || 0)) {
+                        } else {
+                            $product_dimensions = [
+                                'product_id' => $product->id ?? null,
+                                'variation_id' => Variation::where('product_id', $product->id)->where('unit_id', $re_product['variation_id'])->first()->id ?? null,
+                                'height' => $re_product['height'],
+                                'length' => $re_product['length'],
+                                'width' => $re_product['width'],
+                                'size' => $re_product['size'],
+                                'weight' => $re_product['weight']
+                            ];
+                            ProductDimension::create($product_dimensions);
 
-        // ++++++++++ Store "product_id" And "product_tax_id" in "product_tax_pivot" table ++++++++++
-        if(!empty($request->product_tax_id))
-        {
-            ProductTax::create([
-                'product_tax_id' => $request->product_tax_id,
-                'product_id' => $product->id,
-            ]);
-            // $product->product_taxes()->attach($request->product_tax_id) ;
-        }
+                        }
+                    }
 
-        if(!empty($request->store_id)){
-            $product->stores()->attach($request->store_id);
-        }
+                }
+                DB::commit();
 
-        if ($request->has('image') && !is_null('image'))
-        {
-            $imageData = $this->getCroppedImage($request->image);
-            $extention = explode(";", explode("/", $imageData)[1])[0];
-            $image = rand(1, 1500) . "_image." . $extention;
-            $filePath = public_path('uploads/products/' . $image);
-            $image = $image;
-            $fp = file_put_contents($filePath, base64_decode(explode(",", $imageData)[1]));
-            $product->image=$image;
-            $product->save();
-        }
-
-        $index_units=[];
-        if($request->has('new_unit_id'))
-        {
-            if(count($request->new_unit_id)>0){
-                $index_units=array_keys($request->new_unit_id);
-            }
-        }
-        foreach ($index_units as $index)
-        {
-            if(isset($request->new_unit_id[$index])){
-                $var_data=[
-                    'product_id'=>$product->id,
-                    'unit_id'=>$request->new_unit_id[$index],
-                    'basic_unit_id'=>$request->basic_unit_id[$index],
-                    'equal'=>$request->equal[$index],
-                    'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-                    'created_by'=>Auth::user()->id
+                $output = [
+                    'success' => true,
+                    'msg' => __('lang.success')
                 ];
-                Variation::create($var_data);
-            }
-        }
-        if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
-        || $request->size ==(''||0) && $request->weight ==(''||0))
-        {
-        }
-        else
-        {
-            $product_dimensions=[
-                'product_id'=>$product->id??null,
-                'variation_id'=>Variation::where('product_id',$product->id)->where('unit_id',$request->variation_id)->first()->id??null,
-                'height' => $request->height,
-                'length' => $request->length,
-                'width' => $request->width,
-                'size' => $request->size,
-                'weight' => $request->weight
+        } catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
             ];
-            ProductDimension::create($product_dimensions);
+        }
 
+        // +++++++++++++++ Start : Notification ++++++++++++++++++++++
+        // Fetch the user
+        $users = User::where('id', '!=', auth()->user()->id)->get();
+        $product_name = $product->name;
+        // Get the name of the user creating the employee
+        $userCreateEmp = auth()->user()->name;
+        $type = "create_product";
+        // Send notification to All users Except "auth()->user()"
+        foreach ($users as $user) {
+            Notification::send($user, new AddProductNotification($product->id, $userCreateEmp, $product_name, $type));
         }
-        $index_prices=[];
-        if($request->has('price_category'))
-        {
-            if(count($request->price_category)>0){
-                $index_prices=array_keys($request->price_category);
-            }
-        }
-        foreach ($index_prices as $index_price)
-        {
-            $data_des=[
-                'product_id' => $product->id,
-                'price_type' => $request->price_type[$index_price],
-                'price' => $request->price[$index_price],
-                'quantity' => $request->quantity[$index_price],
-                'bonus_quantity' => $request->bonus_quantity[$index_price],
-                'price_category' => $request->price_category[$index_price],
-                'is_price_permenant'=>!empty($request->is_price_permenant[$index_price])? 1 : 0,
-                'price_customer_types' => $request->get('price_customer_types'.$index_price),
-                'price_start_date' => !empty($request->price_start_date[$index_price]) ? $this->uf_date($request->price_start_date[$index_price]) : null,
-                'price_end_date' => !empty($request->price_end_date[$index_price]) ? $this->uf_date($request->price_end_date[$index_price]) : null,
-                'created_by' => Auth::user()->id,
-            ];
-            ProductPrice::create($data_des);
-        }
-        $output = [
-            'success' => true,
-            'msg' => __('lang.success')
-        ];
+        return redirect()->back()->with('status', $output);
     }
-    catch (\Exception $e)
-    {
-        Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-        $output = [
-            'success' => false,
-            'msg' => __('lang.something_went_wrong')
-        ];
-    }
-    // +++++++++++++++ Start : Notification ++++++++++++++++++++++
-    // Fetch the user
-    $users = User::where('id','!=',auth()->user()->id)->get();
-    $product_name = $product->name;
-    // Get the name of the user creating the employee
-    $userCreateEmp = auth()->user()->name;
-    $type = "create_product";
-    // Send notification to All users Except "auth()->user()"
-    foreach ($users as $user)
-    {
-        Notification::send($user, new AddProductNotification($product->id ,$userCreateEmp,$product_name,$type));
-    }
-    // +++++++++++++++ End : Notification ++++++++++++++++++++++
-    return redirect()->back()->with('status', $output);
-  }
     public function getPriceCustomerFromType($customer_types)
     {
 
@@ -290,26 +261,80 @@ class ProductController extends Controller
 
         return $discount_customers;
     }
-  public function generateSku($name, $number = 1)
+    /* ++++++++++++++++++++++ add_store() ++++++++++++++++++++++ */
+    public function add_store(Request $request)
+    {
+        // dd($request);
+        try
+        {
+            $store = new Store();
+            $store->branch_id               = $request->branch_id;
+            $store->name                    = $request->name;
+            $store->phone_number            = $request->phone_number;
+            $store->email                   = $request->email;
+            $store->manager_name            = $request->manager_name;
+            $store->manager_mobile_number   = $request->manager_mobile_number;
+            $store->created_by              = auth()->user()->id;
+            $store->save();
+            $output = [
+                'success'  => true,
+                'store_id' => $store->id,
+                'msg' => __('lang.success')
+            ];
+        }
+        catch (\Exception $e) {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return $output;
+    }
+    /* ++++++++++++++++++++++ get store Dropdown() ++++++++++++++++++++++ */
+    public function getStoresDropdown()
+    {
+        $stores = Store::orderBy('created_at', 'asc')->pluck('name', 'id')->toArray();
+        $stores_dp = $this->Util->createDropdownHtml($stores, __('lang.please_select'));
+        $output = [$stores_dp , array_key_last($stores)];
+        return $output;
+    }
+    // +++++++++++++++ Get Dropdown List ++++++++++++++++++
+    public function createDropdownHtml($array, $append_text = null)
+    {
+        $html = '';
+        if (!empty($append_text)) {
+            $html = '<option value="">' . $append_text . '</option>';
+        }
+        foreach ($array as $key => $value) {
+            $html .= '<option value="' . $key . '">' . $value . '</option>';
+        }
+        return $html;
+    }
+  public function generateSku()
   {
-      $name_array = explode(" ", $name);
-      $sku = '';
-      foreach ($name_array as $w) {
-          if (!empty($w)) {
-              if (!preg_match('/[^A-Za-z0-9]/', $w)) {
-                  $sku .= $w[0];
-              }
-          }
-      }
-      // $sku = $sku . '-' . $number;
-      $sku = $sku . $number;
-      $sku_exist = Product::where('sku', $sku)->exists();
 
-      if ($sku_exist) {
-          return $this->generateSku($name, $number + 1);
-      } else {
-          return $sku;
-      }
+//      $name_array = explode(" ", $name);
+//      $sku = '';
+//      foreach ($name_array as $w) {
+//          if (!empty($w)) {
+//              if (!preg_match('/[^A-Za-z0-9]/', $w)) {
+//                  $sku .= $w[0];
+//              }
+//          }
+//      }
+//      // $sku = $sku . '-' . $number;
+//      $sku = $sku . $number;
+//      $sku_exist = Product::where('sku', $sku)->exists();
+
+//      if ($sku_exist) {
+//          return $this->generateSku($name, $number + 1);
+//      } else {
+//      }
+      $start = System::getProperty('product_sku_start');
+      $number = Product::count();
+      $sku = $start . $number;
+      return $sku;
   }
   /**
    * Display the specified resource.
@@ -317,17 +342,16 @@ class ProductController extends Controller
    * @param  int  $id
    * @return Application|Factory|View
    */
-  public function show($id)
-  {
-      $product = Product::find($id);
-      $stock_detials = ProductStore::where('product_id', $id)->get();
-      return view('products.show')->with(compact(
-          'product',
-          'stock_detials',
-//          'add_stocks',
-      ));
+    public function show($id)
+    {
+        $product = Product::find($id);
+        $stock_detials = ProductStore::where('product_id', $id)->get();
+        return view('products.show')->with(compact(
+            'product',
+            'stock_detials',
+        ));
 
-  }
+    }
 
   /**
    * Show the form for editing the specified resource.
@@ -337,21 +361,25 @@ class ProductController extends Controller
    */
   public function edit($id)
   {
-      $units=Unit::orderBy('created_at', 'desc')->get();
-      $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
-      $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
-      $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
-      $quick_add=1;
-      $product=Product::findOrFail($id);
-      $product_tax_id=ProductTax::where('product_id',$product->id)->first()->product_tax_id??null;
-      $customer_types = CustomerType::pluck('name', 'id');
-      $product_tax = Tax::all();
-      $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
-      $variation_units=Variation::where('product_id',$id)->pluck('unit_id');
-      $basic_units=Unit::whereIn('id',$variation_units)->pluck('name','id');
-      $branches = Branch::where('type','branch')->pluck('name','id');
-      return view('products.edit',compact('unitArray','categories','brands'
-      ,'units','stores','quick_add','product','customer_types','product_tax','product_tax_id','basic_units','branches'));
+        $units=Unit::orderBy('created_at', 'desc')->get();
+    //   $categories=Category::orderBy('created_at', 'desc')->pluck('name','id');
+        $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
+        $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
+        $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
+        $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
+        $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+        $quick_add=1;
+        $product=Product::findOrFail($id);
+        $product_tax_id=ProductTax::where('product_id',$product->id)->first()->product_tax_id??null;
+        $customer_types = CustomerType::pluck('name', 'id');
+        $product_tax = Tax::all();
+        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        $variation_units=Variation::where('product_id',$id)->pluck('unit_id');
+        $basic_units=Unit::whereIn('id',$variation_units)->pluck('name','id');
+        $branches = Branch::where('type','branch')->pluck('name','id');
+        return view('products.edit',compact('unitArray','categories1','categories2','categories3','categories4','brands'
+        ,'units','stores','quick_add','product','customer_types','product_tax','product_tax_id','basic_units','branches'));
   }
 
   /**
@@ -367,6 +395,7 @@ class ProductController extends Controller
     //     'product_symbol' => 'required|string|max:255|unique:products,product_symbol,'.$id.',id,deleted_at,NULL',
     //    ]);
     try{
+//        dd($request);
       $product_data = [
         'name' => $request->name,
         'translations' => !empty($request->translations) ? $request->translations : [],
@@ -417,32 +446,28 @@ class ProductController extends Controller
         $product->save();
     }
 
-
-    $index_units=[];
-
-    if($request->has('new_unit_id')){
-        if(count($request->new_unit_id)>0){
-            $index_units=array_keys($request->new_unit_id);
+    $variations = $request->products[0]['variations'];
+    if (!empty($variations)){
+        foreach ($variations as $key => $variant){
+            if(!empty($variant['new_unit_id'])){
+                $var_data=[
+                    'product_id' => $product->id,
+                    'unit_id' => $variant['new_unit_id'],
+                    'basic_unit_id' => !empty($variations[ $key+1 ]) ? $variations[ $key+1 ]['new_unit_id'] : null,
+                    'equal' => !empty($variations[$key+1]) ? $variations[$key+1]['equal'] : null,
+                    'sku' => !empty($variant['sku']) ? $variant['sku'] : $this->generateSku(),
+                    'edited_by' => Auth::user()->id
+                ];
+                if(!empty($variant['variation_id'])){
+                    $variation = Variation::find($variant['variation_id']);
+                    $variation->update($var_data);
+                }
+                else{
+                    Variation::create($var_data);
+                }
+            }
         }
     }
-    foreach ($index_units as $index){
-        $var_data=[
-            'product_id'=>$product->id,
-            'unit_id'=>$request->new_unit_id[$index],
-            'basic_unit_id'=>$request->basic_unit_id[$index],
-            'equal'=>$request->equal[$index],
-            'sku' => !empty($request->sku[$index]) ? $request->sku[$index] : $this->generateSku($request->name),
-            'edited_by'=>Auth::user()->id
-        ];
-        if(!empty($request->variation_ids[$index])){
-            $variation = Variation::find($request->variation_ids[$index]);
-            $variation->update($var_data);
-        }
-        else{
-        Variation::create($var_data);
-        }
-    }
-
 
     if ($request->height ==(''||0) && $request->length ==(''||0) && $request->width ==(''||0)
     || $request->size ==(''||0) && $request->weight ==(''||0)) {
@@ -466,13 +491,13 @@ class ProductController extends Controller
     ];
      } catch (\Exception $e) {
             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            dd($e);
-            $output = [
+        $output = [
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
+        dd($e);
     }
-    return redirect()->back()->with('status', $output);
+      return redirect()->back()->with('status', $output);
   }
 
   /**
@@ -570,13 +595,36 @@ class ProductController extends Controller
   public function getRawUnit()
     {
         $index = request()->row_id ?? 0;
+        $key = request()->key ?? 0;
         $units = Unit::orderBy('created_at','desc')->get();
 
         return view('products.product_unit_raw',compact(
             'index',
-            'units',
+            'units','key'
         ));
     }
+    public function addProductRow()
+    {
+        $key = request()->row_id ?? 0;
+//        dd($key);
+        $units=Unit::orderBy('created_at', 'desc')->get();
+//        $categories = Category::orderBy('name', 'asc')->where('parent_id',null)->pluck('name', 'id')->toArray();
+//        $subcategories = Category::orderBy('name', 'asc')->where('parent_id','!=',null)->pluck('name', 'id')->toArray();
+        $categories1 = Category::orderBy('name', 'asc')->where('parent_id',1)->pluck('name', 'id')->toArray();
+        $categories2 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id')->toArray();
+        $categories3 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id')->toArray();
+        $categories4 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id')->toArray();
+        $brands=Brand::orderBy('created_at', 'desc')->pluck('name','id');
+        $stores=Store::orderBy('created_at', 'desc')->pluck('name','id');
+        // product_tax
+        $product_tax = Tax::where('status','active')->get();
+        $unitArray = Unit::orderBy('created_at','desc')->pluck('name', 'id');
+        $branches = Branch::where('type', 'branch')->orderBy('created_by','desc')->pluck('name','id');
+        return view('products.partials.product_row',compact(
+            'key','units','categories1','categories2','categories3','categories4','branches','brands','stores','product_tax','unitArray'
+        ));
+    }
+    // +++++++++++++++++++ delete multiple products ++++++++++++++++
     public function multiDeleteRow(Request $request){
         try {
             DB::beginTransaction();

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Utils\NotificationUtil;
 use App\Http\Controllers\Controller;
+use App\Models\ProductStore;
 use Illuminate\Support\Facades\Cache;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\ValidationException;
@@ -40,7 +41,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
         $this->notificationUtil = $notificationUtil;
     }
-    // +++++++++++++++++++++++ validateLogin() +++++++++++++++++
+    // +++++++++++++++++++++++ validateLogin() +++++++++++++++++++++++
     protected function validateLogin(Request $request)
     {
         // Get the user details from database and check if user is exist and active.
@@ -68,7 +69,24 @@ class LoginController extends Controller
             // Store the current date as the last execution date
             Cache::put('last_execution_date', $currentDate, 1440); // 1440 minutes = 1 day
         }
-
+        // +++++++++++++ Customer_Offer_Price : Block_For_Days ++++++++++++++
+        // Find products where blocking has expired
+        $expiredProducts = ProductStore::where('blocked_until', '<=', now())->where('block_quantity', '>', 0)->get();
+        // dd($expiredProducts);
+        // Restore blocked quantity to regular stock
+        if($expiredProducts)
+        {
+            foreach ($expiredProducts as $product)
+            {
+                // add "blocke_quantity" to "product quantity_available" in "product_store" table
+                $product->quantity_available += $product->block_quantity;
+                // set "blocke_quantity" to "0"
+                $product->block_quantity = 0;
+                // set "blocked_until" to "null"
+                $product->blocked_until = null;
+                $product->save();
+            }
+        }
     }
 
 }

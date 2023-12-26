@@ -40,6 +40,11 @@
                 <img src="{{asset('images/topbar/cash-machine.png')}}" class="img-fluid" alt="notifications" width="45px" height="45px">
             </a>
         </div>
+        <div class="profilename ">
+            <a>
+                <button class="btn-danger btn-sm" id="power_off_btn"><i class="fa fa-power-off"></i></button>
+            </a>
+        </div>
         {{--                    <div class="notifybar">--}}
         {{--                        <a href="javascript:void(0)" id="infobar-notifications-open" class="infobar-icon">--}}
         {{--                            <img src="{{asset('images/svg-icon/notifications.svg')}}" class="img-fluid" alt="notifications">--}}

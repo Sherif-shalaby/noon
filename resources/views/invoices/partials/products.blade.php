@@ -3,18 +3,53 @@
         <div class="title-card-app">
             الاقسام
             <div for="" class="d-flex align-items-center text-nowrap gap-1" wire:ignore>
-                {{-- الاقسام --}}
-                <select class="form-control depart select2" wire:model="department_id" data-name="department_id">
-                    <option  value="0 " readonly selected >اختر </option>
-                    @foreach ($departments as $depart)
-                        @if ($depart->parent_id === null)
-                            <option value="{{ $depart->id }}">{{ $depart->name }}</option>
-                            @if ($depart->subCategories->count() > 0)
-                                @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-'])
+                <div class="row">
+                    {{-- الاقسام --}}
+                    <select class="form-control depart1 select2" wire:model="department_id1" data-name="department_id1">
+                        <option  value="0 " readonly selected >اختر </option>
+                        @foreach ($departments as $depart)
+                            @if ($depart->parent_id === 1)
+                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                {{-- @if ($depart->subCategories->count() > 0) --}}
+                                    {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                {{-- @endif --}}
                             @endif
-                        @endif
-                    @endforeach
-                </select>
+                        @endforeach
+                    </select>
+                    <select class="form-control depart select2" wire:model="department_id2" data-name="department_id2">
+                        <option  value="0 " readonly selected >اختر </option>
+                        @foreach ($departments as $depart)
+                            @if ($depart->parent_id === 2)
+                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                {{-- @if ($depart->subCategories->count() > 0) --}}
+                                    {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                {{-- @endif --}}
+                            @endif
+                        @endforeach
+                    </select>
+                    <select class="form-control depart select2" wire:model="department_id3" data-name="department_id3">
+                        <option  value="0 " readonly selected >اختر </option>
+                        @foreach ($departments as $depart)
+                            @if ($depart->parent_id === 3)
+                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                {{-- @if ($depart->subCategories->count() > 0) --}}
+                                    {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                {{-- @endif --}}
+                            @endif
+                        @endforeach
+                    </select>
+                    <select class="form-control depart select2" wire:model="department_id4" data-name="department_id4">
+                        <option  value="0 " readonly selected >اختر </option>
+                        @foreach ($departments as $depart)
+                            @if ($depart->parent_id === 4)
+                                <option value="{{ $depart->id }}">{{ $depart->name }}</option>
+                                {{-- @if ($depart->subCategories->count() > 0) --}}
+                                    {{-- @include('categories.category-select', ['categories' => $depart->subCategories, 'prefix' => '-']) --}}
+                                {{-- @endif --}}
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         <div class="body-card-app">
@@ -34,9 +69,9 @@
                                 <div>
                                     <span>{{ $product->sku }} </span>
                                     <span>{{ $product->name }}</span>
-                                    {{--                                            <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
-                                    {{--                                                {{ $product->store?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
-                                    {{--                                            </span>--}}
+{{--                                    <span class="badge badge-{{ $product->productdetails?->quantity_available < 1 ? 'danger': 'success' }}">--}}
+{{--                                        {{ $product->store?->quantity_available < 1 ? __('out_of_stock'): __('available') }}--}}
+{{--                                    </span>--}}
                                 </div>
                             </div>
                         @empty

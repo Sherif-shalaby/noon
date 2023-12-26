@@ -41,7 +41,7 @@ return [
     'digits'               => 'يجب أن يحتوي حقل :attribute على :digits رقمًا/أرقام.',
     'digits_between'       => 'يجب أن يحتوي حقل :attribute بين :min و :max رقمًا/أرقام .',
     'dimensions'           => 'الحقل:attribute يحتوي على أبعاد صورة غير صالحة.',
-    'distinct'             => 'للحقل :attribute قيمة مُكرّرة.',
+    'distinct'             => 'للحقل  قيمة مُكرّرة.',
     'email'                => 'يجب أن يكون حقل :attribute عنوان بريد إلكتروني صحيح البُنية.',
     'ends_with'            => 'يجب أن ينتهي حقل :attribute بأحد القيم التالية: :values',
     'enum'                 => 'حقل :attribute المختار غير صالح.',

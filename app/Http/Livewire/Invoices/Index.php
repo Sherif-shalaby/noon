@@ -3,8 +3,13 @@
 namespace App\Http\Livewire\Invoices;
 
 use App\Models\Invoice;
-use App\Models\TransactionSellLine;
+use App\Models\Product;
 use Livewire\Component;
+use App\Models\Variation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\TransactionSellLine;
+use Illuminate\Support\Facades\Log;
 
 class Index extends Component
 {
@@ -31,6 +36,34 @@ class Index extends Component
         $invoice->delete();
         $this->dispatchBrowserEvent('swal:modal', ['type' => 'error','message' => 'تم حذف الفاتورة بنجاح']);
     }
+    // ++++++++++++++++++++++ multiDeleteRow ++++++++++++++++++++++
+    public function multiDeleteRow(Request $request)
+    {
+        try
+        {
+            DB::beginTransaction();
+            foreach ($request->ids as $id)
+            {
+                $invoice = Invoice::find($id);
+                $invoice->forceDelete();
+            }
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+            DB::commit();
+        }
+        catch (\Exception $e)
+        {
+            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+            $output = [
+                'success' => false,
+                'msg' => __('lang.something_went_wrong')
+            ];
+        }
+        return $output;
+    }
+
     public function render()
     {
         $sell_lines = TransactionSellLine::OrderBy('created_at','desc')->paginate(10);

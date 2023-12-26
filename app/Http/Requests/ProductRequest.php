@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class ProductRequest extends FormRequest
 {
@@ -23,21 +25,25 @@ class ProductRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required|max:255|unique:products',
-            'product_sku' => 'nullable|max:255|unique:products,sku',
-            'height'=>'nullable|numeric|between:0,99999999999.99',
-            'length'=>'nullable|numeric|between:0,99999999999.99',
-            'width'=>'nullable|numeric|between:0,99999999999.99',
-            'size'=>'nullable|numeric|between:0,99999999999.99',
-            'weight'=>'nullable|numeric|between:0,99999999999.99',
-            'category_id'=>'required',
-            'store_id'=>'required|array',
-            'sku.*' => 'required|unique:variations,sku,NULL,id,deleted_at,NULL',
-            'product_symbol' => 'nullable|unique:products,product_symbol',
+        $rules =  [
+            'products.*.name' => 'max:255|unique:products,name',
+            'products.*.product_sku' => 'nullable|max:255|unique:products,sku',
+            'products.*.height' => 'nullable|numeric|between:0,99999999999.99',
+            'products.*.length' => 'nullable|numeric|between:0,99999999999.99',
+            'products.*.width' => 'nullable|numeric|between:0,99999999999.99',
+            'products.*.size' => 'nullable|numeric|between:0,99999999999.99',
+            'products.*.weight' => 'nullable|numeric|between:0,99999999999.99',
+            'products.*.category_id' => '',
+            'store_id' => 'required|array',
+            'products.*.sku' => 'nullable|unique:variations,sku,NULL,id,deleted_at,NULL',
+            'products.*.product_symbol' => 'nullable|unique:products,product_symbol',
+            'products.*.variations.*.sku' => 'nullable|unique:variations,sku|distinct'
 
         ];
+        return $rules;
     }
+
+
     public function messages()
     {
         return [

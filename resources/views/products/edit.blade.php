@@ -29,6 +29,7 @@
                     'route' => ['products.update', $product->id],
                     'method' => 'put',
                     'enctype' => 'multipart/form-data',
+                    'id' => 'edit_product_form'
                 ]) !!}
                 <div class="row">
                     <div class="col-md-3">
@@ -41,7 +42,6 @@
                             ]) !!}
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
                                 data-target="#createBrandModal"><i class="fas fa-plus"></i></button>
-
                         </div>
                     </div>
 
@@ -57,7 +57,6 @@
                             <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
                                 data-target=".add-store" href="{{ route('store.create') }}"><i
                                     class="fas fa-plus"></i></button>
-
                         </div>
                     </div>
 
@@ -99,77 +98,14 @@
                             'class' => 'form-control',
                         ]) !!}
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                {!! Form::label('category', __('lang.category'), ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('category_id', $categories, $product->category_id, [
-                                        'class' => 'form-control select2 category',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'categoryId',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="0"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id1', $categories, $product->subcategory_id1, [
-                                        'class' => 'form-control select2 subcategory',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId1',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="1"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('category_id')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id2', $categories, $product->subcategory_id2, [
-                                        'class' => 'form-control select2 subcategory2',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId2',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}" data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="2"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('subcategory_id2')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-3">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 pt-3']) !!}
-                                <div class="d-flex justify-content-center">
-                                    {!! Form::select('subcategory_id3', $categories, $product->subcategory_id3, [
-                                        'class' => 'form-control select2 subcategory3',
-                                        'placeholder' => __('lang.please_select'),
-                                        'id' => 'subCategoryId3',
-                                    ]) !!}
-                                    <a data-href="{{ route('categories.sub_category_modal') }}"
-                                        data-container=".view_modal"
-                                        class="btn btn-primary text-white btn-sm ml-2 openCategoryModal" data-toggle="modal"
-                                        data-select_category="3"><i class="fas fa-plus"></i></a>
-                                </div>
-                                @error('subcategory_id3')
-                                    <label class="text-danger error-msg">{{ $message }}</label>
-                                @enderror
-                            </div>
-                        </div>
+                    {{-- +++++++++++++++++++++++ "categories" selectbox +++++++++++++++++++++++ --}}
+                    <div class="col-md-12 product_raws">
+                        @for ($i = 0; $i < 3; $i++)
+                            @include('products.partials.product_row',['key' => $i])
+                        @endfor
+                        <input type="hidden" id="raw_product_index" value="2" />
                     </div>
+
                     {{-- +++++++++++++++++++++++ "tax_method" selectbox +++++++++++++++++++++++ --}}
                     <div class="col-md-3">
                         <label for="method" class="h5 pt-3">{{ __('lang.tax_method') . ':*' }}</label>
@@ -208,28 +144,89 @@
                         {!! Form::text('balance_return_request',  isset($product->balance_return_request)?$product->balance_return_request:null, [
                             'class' => 'form-control',
                         ]) !!}
-                    </div> 
-                  
-                    <div class="col-md-12 pt-5">
-                        <div class="col-md-3">
-                            <button class="btn btn btn-primary add_unit_row" type="button">
-                                <i class="fa fa-plus"></i> @lang('lang.add')
-                            </button>
-                        </div>
                     </div>
-                    <div class="col-md-12 product_unit_raws ">
+                    <div class="col-md-12 product_unit_raws[0]">
                         @php
                             $index = 0;
                         @endphp
-                        @if (!empty($product->variations))
+
+                        @if (count($product->variations) > 0)
+
                             @foreach ($product->variations as $index => $variation)
-                                @include('products.product_unit_raw', [
-                                    'index' => $index,
-                                    'variation' => $variation,
-                                ])
+                                <div class="row">
+
+                                    @if($index == 0 )
+                                        <div class="col-md-2 pl-5">
+                                            {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
+                                            {!! Form::text('products[0][variations][0][sku]',$variation->sku ?? null, [
+                                                'class' => 'form-control'
+                                            ]) !!}
+                                            <br>
+                                            @error('sku.0')
+                                            <label class="text-danger error-msg">{{ $message }}</label>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-2">
+                                            {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
+                                            <div class="d-flex justify-content-center">
+                                                <select name="products[0][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="0">
+                                                    <option value="">{{__('lang.please_select')}}</option>
+                                                    @foreach($units as $unit)
+                                                        <option @if( isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 pt-4">
+                                            <button class="btn btn btn-warning add_small_unit" type="button" data-key="0">
+                                                <i class="fa fa-equals"></i>
+                                            </button>
+                                        </div>
+                                        <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{$index ?? 0 }}][variation_id]" value="{{$variation->id ?? null}}">
+                                    @else
+                                            @include('products.product_unit_raw', [
+                                                'index' => $index,
+                                                'variation' => $variation,
+                                                'key'=> 0,
+                                            ])
+                                    @endif
+                                 </div>
                             @endforeach
                         @else
-                            @include('products.product_unit_raw', ['index' => 0])
+                            <div class="row">
+                                <div class="col-md-2 pl-5">
+                                    {!! Form::label('sku', __('lang.product_code'),['class'=>'h5 pt-3']) !!}
+                                    {!! Form::text('products[0][variations][0][sku]',$variation->sku ?? null, [
+                                        'class' => 'form-control'
+                                    ]) !!}
+                                    <br>
+                                    @error('sku.0')
+                                    <label class="text-danger error-msg">{{ $message }}</label>
+                                    @enderror
+                                </div>
+                                <div class="col-md-2">
+                                    {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
+                                    <div class="d-flex justify-content-center">
+                                        <select name="products[0][variations][0][new_unit_id]"  data-name='unit_id' data-index="0"  class="form-control unit_select select2 unit_id0" style="width: 100px;" data-key="0">
+                                            <option value="">{{__('lang.please_select')}}</option>
+                                            @foreach($units as $unit)
+                                                <option @if( isset($variation->unit_id) &&($variation->unit_id == $unit->id)) selected @endif  value="{{$unit->id}}">{{$unit->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        <button type="button" class="btn btn-primary btn-sm ml-2 add_unit_raw" data-toggle="modal" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 pt-4">
+                                    <button class="btn btn btn-warning add_small_unit" type="button" data-key="0">
+                                        <i class="fa fa-equals"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" name="products[{{ $key ?? 0 }}][variations][{{$index ?? 0 }}][variation_id]" value="{{$variation->id ?? null}}">
+
+                            </div>
+
+                            {{--                            @include('products.product_unit_raw', ['index' => 0])--}}
                         @endif
                         @php
                             if (count($product->variations) > 0) {
@@ -238,7 +235,7 @@
                                 $index = 0;
                             }
                         @endphp
-                        <input type="hidden" id="raw_unit_index" value="{{ $index }}" />
+                        <input type="hidden" id="raw_unit_index[0]" value="{{ $index }}" data-key="0" />
                     </div>
                     {{-- sizes --}}
                     <div class="col-md-12">
@@ -249,20 +246,17 @@
                             <div class="col-md-2">
                                 {!! Form::label('height', __('lang.height'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('height', isset($product->product_dimensions->height) ? $product->product_dimensions->height : 0, [
-                                    'class' => 'form-control height',
+                                    'class' => 'form-control height','id' => 'height0', 'data-key' => '0'
                                 ]) !!}
                                 <br>
                                 @error('height')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
                             </div>
-
-
-
                             <div class="col-md-2">
                                 {!! Form::label('length', __('lang.length'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('length', isset($product->product_dimensions->length) ? $product->product_dimensions->length : 0, [
-                                    'class' => 'form-control length',
+                                    'class' => 'form-control length','id' => 'length0', 'data-key' => '0'
                                 ]) !!}
                                 <br>
                                 @error('length')
@@ -273,7 +267,7 @@
                             <div class="col-md-2">
                                 {!! Form::label('width', __('lang.width'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('width', isset($product->product_dimensions->width) ? $product->product_dimensions->width : 0, [
-                                    'class' => 'form-control width',
+                                    'class' => 'form-control width','id' => 'width0', 'data-key' => '0'
                                 ]) !!}
                                 <br>
                                 @error('width')
@@ -283,7 +277,7 @@
                             <div class="col-md-2">
                                 {!! Form::label('size', __('lang.size'), ['class' => 'h5 pt-3']) !!}
                                 {!! Form::text('size', isset($product->product_dimensions->size) ? $product->product_dimensions->size : 0, [
-                                    'class' => 'form-control size',
+                                    'class' => 'form-control size','id' => 'size0', 'data-key' => '0'
                                 ]) !!}
                                 <br>
                                 @error('size')
@@ -305,7 +299,7 @@
                                 {!! Form::select('variation_id',$basic_units, isset($product->product_dimensions->variations->unit->id) ? $product->product_dimensions->variations->unit->id : 0, [
                                     'class' => 'form-control select2',
                                     'placeholder' => __('lang.please_select'),
-                                    'id' => 'variation_id',
+                                    'id' => 'products[0][variation_id]',
                                 ]) !!}
                             </div>
                         </div>
@@ -403,7 +397,6 @@
         </div>
     </div>
     </div>
-    </div>
     @include('store.create', ['quick_add' => $quick_add])
     @include('units.create', ['quick_add' => $quick_add])
     @include('brands.create', ['quick_add' => $quick_add])
@@ -416,6 +409,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-image.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    {!! JsValidator::formRequest('App\Http\Requests\UpdateProductRequest','#edit_product_form'); !!}
     <script>
         // edit Case
         @if (!empty($product->image) && isset($product->image))

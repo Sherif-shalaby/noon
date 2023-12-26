@@ -149,7 +149,7 @@
                                 <input type="text" class="form-control" name="balance_in_dinar" id="balance_in_dinar" />
                             </div>
                         </div>
-                        {{-- ++++++++++++++++ countries selectbox +++++++++++++++++ --}}
+                        {{-- ++++++++++++++++ countries selectbox : الدولة : (countries table) +++++++++++++++++ --}}
                         <div class="col-md-4 mb-3">
                             <label for="country-dd">@lang('lang.country')</label>
                             <select id="country-dd" name="country" class="form-control" disabled>
@@ -158,11 +158,11 @@
                                 </option>
                             </select>
                         </div>
-                        {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
+                        {{-- ++++++++++++++++ state selectbox : المحافظة : (states table) +++++++++++++++++ --}}
                         <div class="col-md-4 mb-3">
                             <div class="form-group">
                                 <label for="state-dd">@lang('lang.state')</label>
-                                <select id="state-dd" name="state_id" class="form-control">
+                                <select id="state-dd" name="state_id" class="form-control select2">
                                     @php
                                         $states = \App\Models\State::where('country_id', $countryId)->get(['id','name']);
                                     @endphp
@@ -174,30 +174,27 @@
                                 </select>
                             </div>
                         </div>
-                        {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <label for="city-dd">@lang('lang.city')</label>
-                                <select id="city-dd" name="city_id" class="form-control"></select>
-                            </div>
-                        </div>
+                        {{-- ++++++++++++++++ regions selectbox : المناطق : (cities table) +++++++++++++++++ --}}
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="regions_id">@lang('lang.regions')</label>
+                                <label for="city-dd">@lang('lang.regions')</label>
                                 <div class="d-flex justify-content-center">
-                                    <select class="form-control select2" name="regions_id" id="regions_id"></select>
-{{--                                    {!! Form::select(--}}
-{{--                                        'store_id[]',--}}
-{{--                                        $stores,null,--}}
-{{--                                       [--}}
-{{--                                        'class' => 'form-control selectpicker',--}}
-{{--                                        'placeholder' => __('lang.please_select'),--}}
-{{--                                        'id' => 'store_id',--}}
-{{--                                       ],--}}
-{{--                                    ) !!}--}}
-                                    <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal"
-                                            data-target=".add-store"><i
-                                            class="fas fa-plus"></i></button>
+                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- ++++++++++++++++ quarter selectbox : الاحياء +++++++++++++++++ --}}
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="quarters_id">@lang('lang.quarters')</label>
+                                <div class="d-flex justify-content-center">
+                                    <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -305,11 +302,128 @@
                 {!! Form::close() !!}
             </div>
             <!-- End col -->
+
+            {{-- //////////////////////////////////////////// Models //////////////////////////////////////////// --}}
+            <!-- ================== Modal 1 : createCustomerTypesModal ================== -->
+            {{-- <div class="modal fade" id="createCustomerTypesModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog  rollIn  animated" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_customer_type')}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {!! Form::open(['route' => 'customertypes.store', 'method' => 'post', 'files' => true,'id' =>'customer-type-form' ]) !!}
+                        <div class="modal-body">
+                            <div class="form-group ">
+                                <label for="name">@lang('lang.name')</label>
+                                <div class="select_body d-flex justify-content-between align-items-center" >
+                                    <input type="text" required
+                                        class="form-control"
+                                        placeholder="@lang('lang.name')"
+                                        name="name"
+                                        value="{{ old('name') }}" >
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    <button  class="btn btn-primary btn-sm ml-2" type="button"
+                                        data-toggle="collapse" data-target="#translation_table_customertype"
+                                        aria-expanded="false" aria-controls="collapseExample">
+                                        <i class="fas fa-globe"></i>
+                                    </button>
+                                </div>
+
+                                @include('layouts.translation_inputs', [
+                                    'attribute' => 'name',
+                                    'translations' => [],
+                                    'type' => 'customertype',
+                                ])
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
+                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div> --}}
+            <!-- ================== Modal 2 : createRegionModal ================== -->
+            {{-- <div class="modal fade" id="createRegionModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog  rollIn  animated" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_region')}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {!! Form::open(['route' => 'customers.storeRegion', 'method' => 'post', 'files' => true,'id' =>'customer-region-form' ]) !!}
+                        <div class="modal-body">
+                            <div class="form-group ">
+                                <input type="hidden" name="state_id" id="stateId" />
+                                <label for="name">@lang('lang.name')</label>
+                                <div class="select_body d-flex justify-content-between align-items-center" >
+                                    <input type="text" required
+                                        class="form-control"
+                                        placeholder="@lang('lang.name')"
+                                        name="name"
+                                        value="{{ old('name') }}" >
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
+                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div> --}}
+            <!-- ================== Modal 3 : createQuarterModal ================== -->
+            {{-- <div class="modal fade" id="createQuarterModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog  rollIn  animated" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_quarter')}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        {!! Form::open(['route' => 'customers.storeQuarter', 'method' => 'post', 'files' => true,'id' =>'customer-region-form' ]) !!}
+                        <div class="modal-body">
+                            <div class="form-group ">
+                                <input type="hidden" name="city_id" id="cityId" />
+                                <label for="name">@lang('lang.name')</label>
+                                <div class="select_body d-flex justify-content-between align-items-center" >
+                                    <input type="text" required
+                                        class="form-control"
+                                        placeholder="@lang('lang.name')"
+                                        name="name"
+                                        value="{{ old('name') }}" >
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
+                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
+                        </div>
+                        {!! Form::close() !!}
+                    </div>
+                </div>
+            </div> --}}
             <!-- ++++++++++++ Crop_Image Modal ++++++++++++ -->
             {{-- @include('categories.modalCrop')  --}}
             {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
             @include('customer_types.create')
-
         </div>
     </div>
 @endsection
@@ -317,65 +431,101 @@
 <script src="{{asset('js/product/customer.js')}}" ></script>
 {{-- +++++++++++++++++++++++++++++++ Add New Row in phone ++++++++++++++++++++++++ --}}
 <script>
-    $('.phone_tbody').on('click','.addRow', function(){
-        console.log('new phone inputField was added');
-        var tr = `<tr>
-                    <td>
-                        <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
-                    </td>
+    $(document).ready(function(){
+        $('.phone_tbody').on('click','.addRow', function(){
+            console.log('new phone inputField was added');
+            var tr = `<tr>
+                        <td>
+                            <input type="text" name="phone[]" class="form-control" placeholder="Enter phone number" />
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow">-</a>
+                        </td>
 
-                </td>
-            </tr>`;
-        $('.phone_tbody').append(tr);
-    } );
-    $('.phone_tbody').on('click','.deleteRow',function(){
-        $(this).parent().parent().remove();
-    });
-    // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
-    $('.email_tbody').on('click','.addRow_email', function(){
-        console.log('new Email inputField was added');
-        var tr = `<tr>
-                    <td>
-                        <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
-                                value="" required >
-                                @error('email')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
                     </td>
-                    <td>
-                        <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
-                    </td>
+                </tr>`;
+            $('.phone_tbody').append(tr);
+        } );
+        $('.phone_tbody').on('click','.deleteRow',function(){
+            $(this).parent().parent().remove();
+        });
+        // +++++++++++++++++++++++++++++++ Add New Row in email ++++++++++++++++++++++++
+        $('.email_tbody').on('click','.addRow_email', function(){
+            console.log('new Email inputField was added');
+            var tr = `<tr>
+                        <td>
+                            <input  type="text" class="form-control" placeholder="@lang('lang.email')" name="email[]"
+                                    value="" required >
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                        </td>
+                        <td>
+                            <a href="javascript:void(0)" class="btn btn-xs btn-danger deleteRow_email">-</a>
+                        </td>
 
-                </td>
-            </tr>`;
-        $('.email_tbody').append(tr);
-    } );
-    $('.email_tbody').on('click','.deleteRow_email',function(){
-        $(this).parent().parent().remove();
-    });
-    // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
-    // ================ state selectbox ================
-    $('#state-dd').change(function(event) {
-        var idState = this.value;
-        $('#city-dd').html('');
-        $.ajax({
-        url: "/api/fetch-cities",
-        type: 'POST',
-        dataType: 'json',
-        data: {state_id: idState,_token:"{{ csrf_token() }}"},
-        success:function(response)
-        {
-            $('#city-dd').html('<option value="">Select State</option>');
-            console.log(response);
-            $.each(response.cities,function(index, val)
+                    </td>
+                </tr>`;
+            $('.email_tbody').append(tr);
+        } );
+        $('.email_tbody').on('click','.deleteRow_email',function(){
+            $(this).parent().parent().remove();
+        });
+        // ++++++++++++++++++++++ Countries , State , Cities Selectbox ++++++++++++++++
+        // ================ state selectbox ================
+        $('#state-dd').change(function(event) {
+            // Capture the selected state value
+            var idState = this.value;
+            $('#city-dd').html('');
+            $.ajax({
+                url: "/api/customers/fetch-cities",
+                type: 'POST',
+                dataType: 'json',
+                data: {state_id: idState,_token:"{{ csrf_token() }}"},
+                success:function(response)
                 {
-                    $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
-                });
-        }
-        })
+                    $('#city-dd').html('<option value="">Select State</option>');
+                    $.each(response.cities,function(index, val)
+                    {
+                        $('#city-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+        // ================ city selectbox ================
+        // ++++++++++++ store "state_id" in hidden inputField in "cities modal" ++++++++++
+        $("#cities_id").on('click', function(){
+            var state_id = $("#state-dd").val();
+            $("#stateId").val(state_id);
+            console.log("+++++++++++++++++++++++++++ "+state_id+" +++++++++++++++++++++++++++");
+        });
+        // ================ quarter selectbox ================
+        $('#city-dd').change(function(event) {
+            // Capture the selected city value
+            var idCity = this.value;
+            $('#quarter-dd').html('');
+            $.ajax({
+                url: "/api/customers/fetch-quarters",
+                type: 'POST',
+                dataType: 'json',
+                data: {city_id: idCity,_token:"{{ csrf_token() }}"},
+                success:function(response)
+                {
+                    console.log("Quarter = "+response.quarters);
+                    $('#quarter-dd').html('<option value="">Select Quarter</option>');
+                    $.each(response.quarters,function(index, val)
+                    {
+                        $('#quarter-dd').append('<option value="'+val.id+'">'+val.name+'</option>')
+                    });
+                }
+            })
+        });
+        // ++++++++++++ store "cities_id" in hidden inputField in "quarter modal" ++++++++++
+        $("#add_quarters_btn_id").on('click', function(){
+            var city_id = $("#city-dd").val();
+            $("#cityId").val(city_id);
+            console.log("+++++++++++++++++++++++++++ "+city_id+" +++++++++++++++++++++++++++");
+        });
     });
 </script>
 @endpush
