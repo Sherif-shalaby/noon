@@ -443,7 +443,7 @@
                                                 <span style="font-weight:700;font-size: 16px;">
                                                     {{ $this->sum_sub_total() }} </span>
                                             </div>
-
+                                            {{--
                                             <div>
                                                 <span style="font-weight:700;font-size: 14px;">@lang('lang.total_size')</span>
                                                 <span
@@ -468,7 +468,7 @@
                                                     style="font-weight:700;font-size: 14px;">@lang('lang.total_cost')</span>
                                                 <span
                                                     style="font-weight:700;font-size: 16px;">{{ $this->sum_total_cost() ?? 0 }}</span>
-                                            </div>
+                                            </div> --}}
                                         </div>
 
 
@@ -502,7 +502,7 @@
                                 </h4>
                                 <h4 class="mx-5"> @lang('lang.total') :
                                     {{-- @if ($paying_currency == 2) --}}
-                                    {{ $this->sum_dollar_total_cost() ?? 0.0 }}
+                                    {{-- {{ $this->sum_dollar_total_cost() ?? 0.0 }} --}}
                                     {{-- @else --}}
                                     {{ $this->sum_total_cost() ?? 0.0 }}
                                     {{-- @endif --}}

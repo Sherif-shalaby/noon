@@ -306,12 +306,14 @@ class Create extends Component
     public function addExpense()
     {
         $this->expenses[] = ['details' => '', 'amount' => 0];
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function removeExpense($index)
     {
         unset($this->expenses[$index]);
         $this->expenses = array_values($this->expenses);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function reset_change()
     {
@@ -794,6 +796,7 @@ class Create extends Component
                 $this->addNewProduct($variations, $product, $show_product_data, $index, $stock);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function addNewProduct($variations, $product, $show_product_data, $index = null, $stock)
@@ -1045,6 +1048,7 @@ class Create extends Component
         ];
         //        dd($new_store);
         array_unshift($this->items[$index]['stores'], $new_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changePercent($index, $key, $via = null, $i = null)
     {
@@ -1892,6 +1896,7 @@ class Create extends Component
         } else {
             unset($this->items[$index]);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function countItems()
