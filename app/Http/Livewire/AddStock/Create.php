@@ -352,7 +352,7 @@ class Create extends Component
             ];
         }
 
-        $this->validate();
+//        $this->validate();
 
         try {
             if(!empty($this->po_id)){
@@ -447,8 +447,8 @@ class Create extends Component
                     'cash_discount' =>!empty($item['cash_discount']) ? ($item['cash_discount']): null,
                     'seasonal_discount' =>!empty($item['seasonal_discount']) ? ($item['seasonal_discount']): null,
                     'annual_discount' =>!empty($item['annual_discount']) ? ($item['annual_discount']): null,
-                    'discount_on_bonus_quantity' =>!empty($item['discount_on_bonus_quantity']) ? ($item['discount_on_bonus_quantity']): null,
-                    'discount_dependency' =>!empty($item['discount_dependency']) ? ($item['discount_dependency']): null,
+                    'discount_on_bonus_quantity' =>!empty($item['discount_on_bonus_quantity']) ? 1 : 0,
+                    'discount_dependency' => !empty($item['discount_dependency']) ? 1 : 0,
 //                    'bonus_quantity' =>!empty($item['bonus_quantity']) ? ($item['bonus_quantity']): null,
                     'notes' =>!empty($item['notes']) ? ($item['notes']): null,
                     'used_currency ' => !empty($item['used_currency']) ? $item['used_currency'] :null,
@@ -479,7 +479,8 @@ class Create extends Component
                          VariationStockline::create($add_variation_stock_data);
                     }
                 }
-                $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $transaction->store_id, $item['quantity']);
+//                dd($this->items[$index]);
+                $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $item['store_id'], $item['quantity']);
                 if(!empty($item['stores'])){
                     foreach ($item['stores'] as $key => $item_store){
                         $this->addStockData($item_store,$transaction->id,$stock_line->used_currency,$index,$key);
@@ -697,7 +698,6 @@ class Create extends Component
                 VariationStockline::create($add_variation_stock_data);
             }
         }
-//        dd($this->items[$index]['stores'.$i]['store_id']);
         $this->updateProductQuantityStore($item['product']['id'],$item['variation_id'], $this->items[$index]['stores'.$i]['store_id'], $item['quantity']);
 
         if(!empty($item['prices'])){
@@ -1040,7 +1040,7 @@ class Create extends Component
                     $this->items[$index]['customer_prices'][$key]['dollar_increase'] = ($dollar_purchase_price * $percent) / 100;
                     $this->items[$index]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
                     $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($dollar_purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
-                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($dollar_purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($this->num_uf($dollar_purchase_price) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
                 }
             }
         }
@@ -2087,6 +2087,7 @@ class Create extends Component
 
     public function updateProductQuantityStore($product_id,$variation_id, $store_id, $new_quantity)
     {
+//        dd($store_id);
         $product_store = ProductStore::where('product_id', $product_id)
             ->where('store_id', $store_id)
             ->first();
