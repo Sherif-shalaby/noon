@@ -1106,10 +1106,10 @@ class Create extends Component
   {
       unset($this->items[$index]['prices'][$key]);
   }
-    public function change_discount_from_original_price($index)
+    public function change_discount_from_original_price($index,$key)
     {
         $this->discount_from_original_price = 0;
-        $this->changePrice($index);
+        $this->changePrice($index,$key);
     }
     public function changePrice($index,$key)
     {
