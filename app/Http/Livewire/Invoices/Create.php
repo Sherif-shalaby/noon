@@ -628,8 +628,13 @@ class Create extends Component
                 $get_Variation_price = VariationPrice::where('variation_id', $product->variations()->first()->id??0);
                 $customer_types_variations = $get_Variation_price->pluck('customer_type_id')->toArray();
                 $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
+                if(empty($get_Variation_price->first()->id)){
+                $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id??0)->first()->sell_price ?? 0), 3) : 0;
+                $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id??0)->first()->dollar_sell_price ?? 0), 3) : 0;
+                }else{
                 $price = !empty($current_stock) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id??0)->where('variation_price_id', $get_Variation_price->first()->id??0)->first()->sell_price ?? 0), 3) : 0;
-                $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id??0)->where('variation_price_id', $get_Variation_price->first()->id??0)->first()->dollar_sell_price ?? 0), 3) : 0;
+                $dollar_price =  !empty($current_stock->id) ? number_format((VariationStockline::where('stock_line_id', $current_stock->id??0)->where('variation_price_id', $get_Variation_price->first()->id)->first()->dollar_sell_price ?? 0), 3) : 0;
+                }
                 $dollar_exchange = System::getProperty('dollar_exchange');
                 if ($this->num_uf($dollar_exchange) > $this->num_uf($exchange_rate)) {
                     if ($price == 0) {
