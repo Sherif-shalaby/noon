@@ -163,7 +163,23 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $branch=Branch::find($id);
+            $branch->deleted_by=Auth::user()->id;
+            $branch->save();
+            $branch->delete();
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+          } catch (\Exception $e) {
+              Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+              $output = [
+                  'success' => false,
+                  'msg' => __('lang.something_went_wrong')
+              ];
+          }
+          return $output;
     }
     public function getBranchStores($id){
         $stores = Store::where('branch_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
