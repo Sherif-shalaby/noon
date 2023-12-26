@@ -785,7 +785,7 @@ class Create extends Component
         }else{
             $this->dollar_final_total+= $this->final_total / $exchange_rate;
             $this->final_total=0;
-   
+
             $this->total_dollar+= $this->total / $exchange_rate;
             $this->total=0;
 
@@ -1262,7 +1262,7 @@ class Create extends Component
             $register = CashRegister::create([
                 'user_id' => $user_id,
                 'status' => 'open',
-                'store_id' => !empty($store_pos) ? $store_pos->store_id : null,
+                'store_id' => $this->store_id,
                 'store_pos_id' => !empty($store_pos) ? $store_pos->id : null
             ]);
         }
