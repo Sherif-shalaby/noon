@@ -1218,8 +1218,8 @@ class Create extends Component
             if ($row_index >= 0) {
                 $customer_type = $this->prices[$key]['price_customer_types'];
                 $price_key = $this->getCustomerType($row_index, $customer_type);
-                $percent = ($this->num_uf($this->prices[$key]['dinar_price']) / $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price']));
-                $dollar_percent = ($this->num_uf($this->prices[$key]['price']) / $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price']));
+                $percent = ($this->num_uf($this->prices[$key]['dinar_price'] ?? 1) / $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dinar_sell_price'] ?? 1));
+                $dollar_percent = ($this->num_uf($this->prices[$key]['price'] ?? 1) / $this->num_uf($this->rows[$row_index]['prices'][$price_key]['dollar_sell_price'] ?? 1));
                 if ($price_key >= 0) {
                     foreach ($this->rows[$row_index]['prices'] as $index => $price) {
                         if ($price['customer_type_id'] != $this->prices[$key]['price_customer_types']) {
