@@ -497,12 +497,12 @@
                                         </div>
                                         <div class="custom-control custom-switch">
                                             <input type="checkbox" class="custom-control-input"
-                                                name="discount_from_original_price" id="discount_from_original_price"
+                                                name="discount_from_original_price" id="discount_from_original_price{{ $key }}"
                                                 style="font-size: 0.75rem"
                                                 @if (isset($discount_from_original_price) && $discount_from_original_price == '1') checked @endif
                                                 wire:change="change_discount_from_original_price({{ $key }})">
                                             <label class="custom-control-label"
-                                                for="discount_from_original_price">@lang('lang.discount_from_original_price')</label>
+                                                for="discount_from_original_price{{ $key }}">@lang('lang.discount_from_original_price')</label>
                                         </div>
                                         @error('prices.' . $key . '.price_type')
                                             <br>
