@@ -124,7 +124,6 @@ class Create extends Component
         }
 
         $this->store_pos_id = array_key_first($this->store_pos);
-        // dd(Auth::user()->id);
         $store_pos = StorePos::find($this->store_pos_id);
         if (empty($store_pos)) {
             $this->dispatchBrowserEvent('NoUserPos');
@@ -161,6 +160,8 @@ class Create extends Component
         $last_sell_trans = TransactionSellLine::where('employee_id', auth()->user()->id)->latest()->first();
         if (!empty($last_sell_trans->store_id)) {
             $this->store_id = $last_sell_trans->store_id;
+//            dd($this->store_id);
+            $this->changeAllProducts();
         } else {
             $this->store_id = array_key_first($this->stores);
             $this->changeAllProducts();
@@ -283,6 +284,7 @@ class Create extends Component
                 $this->delete_item($key);
             }
         }
+//        dd($products_store);
     }
 
     // ++++++++++++ submit() : save "cachier data" in "TransactionSellLine" Table ++++++++++++
