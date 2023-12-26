@@ -171,18 +171,18 @@ class Create extends Component
             } else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
-                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'subcategory_id1') {
-                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
-                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'subcategory_id2') {
-                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
-                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'subcategory_id3') {
-                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'transaction_currency') {
                     //                    dd($data['var2']);
@@ -208,15 +208,15 @@ class Create extends Component
                 $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
                 $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
                 if (!empty($this->item[0]['category_id'])) {
-                    $this->subcategories1 = Category::where('parent_id', $this->item[0]['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                     $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
                 }
                 if (!empty($this->item[0]['subcategory_id1'] && count($this->subcategories1) > 0)) {
-                    $this->subcategories2 = Category::where('parent_id', $this->item[0]['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                     $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
                 }
                 if (!empty($this->item[0]['subcategory_id2']) && count($this->subcategories2) > 0) {
-                    $this->subcategories3 = Category::where('parent_id', $this->item[0]['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
                     $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
                 }
                 $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
@@ -241,7 +241,7 @@ class Create extends Component
         $selected_currencies = Currency::whereIn('id', $currenciesId)->orderBy('id', 'desc')->pluck('currency', 'id');
         $this->discount_from_original_price = 1;
         $suppliers = Supplier::orderBy('name', 'asc')->pluck('name', 'id', 'exchange_rate')->toArray();
-        $categories = Category::orderBy('name', 'asc')->where('parent_id', null)->pluck('name', 'id')->toArray();
+        $categories = Category::orderBy('name', 'asc')->where('parent_id', 1)->pluck('name', 'id')->toArray();
         $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
         $products = Product::all();
         $stores = Store::whereHas('branch', function ($query) {
@@ -657,9 +657,9 @@ class Create extends Component
     }
     public function create()
     {
-        $this->subcategories1 = Category::where('parent_id', $this->edit_product['category_id'])->orderBy('name', 'asc')->pluck('name', 'id');
-        $this->subcategories2 = Category::where('parent_id', $this->edit_product['subcategory_id1'])->orderBy('name', 'asc')->pluck('name', 'id');
-        $this->subcategories3 = Category::where('parent_id', $this->edit_product['subcategory_id2'])->orderBy('name', 'asc')->pluck('name', 'id');
+        $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+        $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+        $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
         $this->item[0] =
             [
                 'isExist' => 1,
@@ -669,64 +669,58 @@ class Create extends Component
                 'subcategory_id1' => $this->edit_product['subcategory_id1'],
                 'subcategory_id2' => $this->edit_product['subcategory_id2'],
                 'subcategory_id3' => $this->edit_product['subcategory_id3'],
-                'weight' => $this->edit_product['product_dimensions']['weight'],
-                'width' => $this->edit_product['product_dimensions']['width'],
-                'height' => $this->edit_product['product_dimensions']['height'],
-                'length' => $this->edit_product['product_dimensions']['length'],
-                'size' => $this->edit_product['product_dimensions']['size'],
-                'basic_unit_variation_id' => $this->edit_product['product_dimensions']['variation_id'],
+                'weight' => $this->edit_product['product_dimensions']['weight'] ?? null,
+                'width' => $this->edit_product['product_dimensions']['width'] ?? null,
+                'height' => $this->edit_product['product_dimensions']['height'] ?? null,
+                'length' => $this->edit_product['product_dimensions']['length'] ?? null,
+                'size' => $this->edit_product['product_dimensions']['size'] ?? null,
+                'basic_unit_variation_id' => $this->edit_product['product_dimensions']['variation_id']??null,
                 'method' => '',
                 'status' => '',
                 'change_current_stock' => 0,
                 'exchange_rate' => $this->exchange_rate,
                 'store_id' => '',
                 'supplier_id' => '', 'product_tax_id' => '',
-                'balance_return_request' => $this->edit_product['balance_return_request'],
-                'product_symbol' => $this->edit_product['product_symbol'],
+                'balance_return_request' => $this->edit_product['balance_return_request']??null,
+                'product_symbol' => $this->edit_product['product_symbol']??null,
             ];
         //        dd($this->item[0]);
 
 
 
         $variations = Variation::where('product_id', $this->edit_product['id'])->get();
-        if (!empty($variations)) {
+        if (count($variations)>=1) {
             $this->rows = [];
             foreach ($variations as $variation) {
                 $newRow = [
                     'id' => $variation->id,
                     'sku' => $variation->sku,
                     'quantity' => '',
-                    'fill_quantity' => '',
-                    'fill_type' => 'fixed',
                     'purchase_price' => '',
-                    'selling_price' => '',
-                    'dollar_purchase_price' => '',
-                    'dollar_selling_price' => '',
                     'unit_id' => $variation->unit_id,
-                    'basic_unit_id' => $variation->basic_unit_id,
-                    'change_price_stock' => '',
-                    'equal' => $variation->equal,
-                    'prices' => [
-                        [
-                            'price_type' => null,
-                            'price_currency' => null,
-                            'price_category' => null,
-                            'price' => null,
-                            'dinar_price' => null,
-                            'discount_quantity' => null,
-                            'bonus_quantity' => null,
-                            'price_customer_types' => null,
-                            'price_after_desc' => null,
-                            'dinar_price_after_desc' => null,
-                            'dinar_total_price' => null,
-                            'total_price' => null,
-                            'dinar_piece_price' => null,
-                            'piece_price' => null,
-                        ],
-                    ],
+                    'fill' => $variation->equal,
+                    'prices' => [],
                 ];
                 $this->rows[] = $newRow;
+                $index = count($this->rows) - 1;
+
+                foreach ($this->customer_types as $customer_type) {
+                    $new_price = [
+                        'customer_type_id' => $customer_type->id,
+                        'customer_name' => $customer_type->name,
+                        'percent' => null,
+                        'dollar_increase' => 0,
+                        'dinar_increase' => null,
+                        'dollar_sell_price' => 0,
+                        'dinar_sell_price' => null,
+                        'quantity' => null,
+                    ];
+                    array_unshift($this->rows[$index]['prices'], $new_price);
+                }
             }
+        }else{
+            $this->rows = [];
+            $this->addPrices();
         }
     }
     public function cancelCreateProduct()

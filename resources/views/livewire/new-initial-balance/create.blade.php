@@ -254,9 +254,8 @@
                                 {!! Form::label('store_id', __('lang.store') . ':*', []) !!}
                                 <div class="d-flex justify-content-center">
                                     {!! Form::select('store_id', $stores, $item[0]['store_id'], [
-                                        'class' => ' form-control select2 store_id',
+                                        'class' => 'form-control select2 store_id',
                                         'data-name' => 'store_id',
-                                        // 'multiple' => 'multiple',
                                         'required',
                                         'placeholder' => __('lang.please_select'),
                                         'wire:model' => 'item.0.store_id',

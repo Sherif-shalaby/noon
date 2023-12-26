@@ -156,7 +156,7 @@ class Create extends Component
             //     $this->updatedDepartmentId($data['var2'], 'department_id4');
             // }
         }
-       
+
 
     }
 
@@ -1026,9 +1026,11 @@ class Create extends Component
     }
     public function changePercent($index, $key, $via = null, $i = null)
     {
-        $purchase_price = $this->final_purchase_for_piece($index);
+
         if (!empty($this->items[$index]['used_currency'])) {
             if($via == 'stores'){
+                $purchase_price = $this->final_purchase_for_piece($index,'stores',$i);
+                $dollar_purchase_price =  $this->dollar_final_purchase_for_piece($index,'stores',$i);
                 $percent = $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['percent']);
                 if ($this->items[$index]['used_currency'] != 2) {
                     $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
@@ -1036,13 +1038,15 @@ class Create extends Component
                     $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']), 3);
                     $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase']), 3);
                 } else {
-                    $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] = ($purchase_price * $percent) / 100;
+                    $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] = ($dollar_purchase_price * $percent) / 100;
                     $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
-                    $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']), 3);
-                    $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase']), 3);
+                    $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_sell_price'] = number_format(($dollar_purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']), 3);
+                    $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] = number_format($dollar_purchase_price + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase']), 3);
                 }
             }
             else{
+                $purchase_price = $this->final_purchase_for_piece($index);
+                $dollar_purchase_price =  $this->dollar_final_purchase_for_piece($index);
                 $percent = $this->num_uf($this->items[$index]['customer_prices'][$key]['percent']);
                 if ($this->items[$index]['used_currency'] != 2) {
                     $this->items[$index]['customer_prices'][$key]['dinar_increase'] = ($purchase_price * $percent) / 100;
@@ -1050,10 +1054,10 @@ class Create extends Component
                     $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
                     $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format(($purchase_price / $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
                 } else {
-                    $this->items[$index]['customer_prices'][$key]['dollar_increase'] = ($purchase_price * $percent) / 100;
+                    $this->items[$index]['customer_prices'][$key]['dollar_increase'] = ($dollar_purchase_price * $percent) / 100;
                     $this->items[$index]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase'])  * $this->num_uf($this->exchange_rate), 3);
-                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
-                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($dollar_purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                    $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($dollar_purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
                 }
             }
         }
@@ -1062,6 +1066,7 @@ class Create extends Component
     {
         if($via == 'stores'){
             $purchase_price =  $this->final_purchase_for_piece($index,'stores',$i);
+            $dollar_purchase_price =  $this->dollar_final_purchase_for_piece($index,'stores',$i);
             $percent = $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['percent']);
             if (!empty($this->items[$index]['used_currency'])) {
                 if ($this->items[$index]['used_currency'] != 2) {
@@ -1074,14 +1079,15 @@ class Create extends Component
                     if ($percent == 0 || $percent == null) {
                         $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']));
                         $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']) * $this->num_uf($this->exchange_rate));
-                        $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']), 3);
-                        $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase']), 3);
+                        $this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_sell_price'] = number_format(($dollar_purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dinar_increase']), 3);
+                        $this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_sell_price'] = number_format($dollar_purchase_price + $this->num_uf($this->items[$index]['stores'][$i]['customer_prices'][$key]['dollar_increase']), 3);
                     }
                 }
             }
         }
         else{
             $purchase_price =  $this->final_purchase_for_piece($index);
+            $dollar_purchase_price =  $this->dollar_final_purchase_for_piece($index);
             $percent = $this->num_uf($this->items[$index]['customer_prices'][$key]['percent']);
             if (!empty($this->items[$index]['used_currency'])) {
                 if ($this->items[$index]['used_currency'] != 2) {
@@ -1094,8 +1100,8 @@ class Create extends Component
                     if ($percent == 0 || $percent == null) {
                         $this->items[$index]['customer_prices'][$key]['dollar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']));
                         $this->items[$index]['customer_prices'][$key]['dinar_increase'] = number_format($this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']) * $this->num_uf($this->exchange_rate));
-                        $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
-                        $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
+                        $this->items[$index]['customer_prices'][$key]['dinar_sell_price'] = number_format(($dollar_purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->items[$index]['customer_prices'][$key]['dinar_increase']), 3);
+                        $this->items[$index]['customer_prices'][$key]['dollar_sell_price'] = number_format($dollar_purchase_price + $this->num_uf($this->items[$index]['customer_prices'][$key]['dollar_increase']), 3);
                     }
                 }
             }
