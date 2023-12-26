@@ -127,7 +127,7 @@
     <script src="{{ asset('js/product/product.js') }}"></script>
     <script src="{{ asset('css/crop/crop-multi-image.js') }}"></script>
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\ProductRequest','#add_product_form'); !!}
+    {{-- {!! JsValidator::formRequest('App\Http\Requests\ProductRequest','#add_product_form'); !!} --}}
     <script>
         $(document).ready(function () {
             // Counter to keep track of the number of rows
