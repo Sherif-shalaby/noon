@@ -35,7 +35,7 @@
             <div class="card m-b-30 p-2">
                 <div class="row ">
                     <div class="col-md-9">
-                        <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>
+{{--                        <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info') </small></p>--}}
                     </div>
                     <div class="col-md-3">
                         <div class="i-checks">
