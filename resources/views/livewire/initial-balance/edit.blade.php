@@ -156,7 +156,7 @@
                             <div class="col-md-3">
                                 <div
                                     class="subcategory_id1 {{ ($show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0)  ? (empty($item[0]['subcategory_id1'])?'d-none':'') : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 1', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 1', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id1', $subcategories1, $item[0]['subcategory_id1'], [
                                             'class' => 'form-control select2 subcategory1',
@@ -181,7 +181,7 @@
                             <div class="col-md-3">
                                 <div
                                     class="subcategory2 {{ $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id2'])?'d-none':'') : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 2', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 2', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id2', $subcategories2, $item[0]['subcategory_id2'], [
                                             'class' => 'form-control select2 subcategory2',
@@ -209,7 +209,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="subcategory3 {{ $show_category3 == 0 ? (empty($item[0]['subcategory_id3'])?'d-none':'') : '' }}">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 3', ['class' => 'h5 ']) !!}
+                                    {!! Form::label('subcategory', __('lang.category') . ' 3', ['class' => 'h5 ']) !!}
                                     <div class="d-flex justify-content-center">
                                         {!! Form::select('subcategory_id3', $subcategories3, $item[0]['subcategory_id3'], [
                                             'class' => 'form-control select2 subcategory3',
