@@ -342,7 +342,7 @@
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
-                                                    <a href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
+                                                    <a target="_blank" href="{{route('sell.return',$line->id)}}" class="btn"><i class="fa fa-undo"></i>@lang('lang.return') </a>
                                                 </li>
                                                 <li class="divider"></li>
                                                 <li>
@@ -354,7 +354,7 @@
                                                 <li class="divider"></li>
                                                 {{-- +++++++++ edit button +++++++++++ --}}
                                                 <li>
-                                                    <a href="{{ route('invoices.edit', $line->id) }}" class="btn">
+                                                    <a target="_blank" href="{{ route('invoices.edit', $line->id) }}" class="btn">
                                                         <i class="dripicons-document-edit"></i> {{ __('lang.edit') }}
                                                     </a>
                                                 </li>
