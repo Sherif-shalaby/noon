@@ -162,7 +162,7 @@
                                 @enderror
 
                             </div>
-
+                            {{-- =========== تعبئة =========== --}}
                             <div
                                 class="pl-1 animate__animated  animate__bounceInRight d-flex flex-column justify-content-center @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif">
                                 {!! Form::label('unit', __('lang.large_filling'), [
@@ -180,9 +180,8 @@
                                     <select name="products[{{ $key }}][variations][0][new_unit_id]"
                                         data-name='unit_id' data-index="0"
                                         class="form-control unit_select select2 unit_id0{{ $key ?? '' }}"
-                                        style="width: 100px;" data-key="{{ $key }}"
-                                        id="{{ $key }}>
-                                          <option value="">{{ __('lang.large_filling') }}
+                                        style="width: 100px;" data-key="{{ $key }}" id="{{ $key }}">
+                                        <option value="">{{ __('lang.large_filling') }}
                                         </option>
                                         @foreach ($units as $unit)
                                             <option @if ($key == 0 && isset($variation->unit_id) && $variation->unit_id == $unit->id) selected @endif
@@ -196,7 +195,7 @@
                                             class="fas fa-plus"></i></button>
                                 </div>
                             </div>
-
+                            {{-- +++++++ Equal Button +++++++ --}}
                             <button
                                 class="btn btn-sm d-flex justify-content-center align-items-center btn-primary add_small_unit animate__animated  animate__bounceInRight h-50"
                                 style="margin-top:11px " type="button" data-key="{{ $key }}"
@@ -236,7 +235,7 @@
                         <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                             <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 data-key="{{ $key }}" style="min-width: 135px;height: fit-content;">
-                                {!! Form::label('category', __('lang.category'), [
+                                {!! Form::label('category', __('lang.category') . ' 1', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
@@ -274,7 +273,7 @@
 
                             <div class=" px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="min-width: 135px;height: fit-content;">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
+                                {!! Form::label('subcategory', __('lang.category') . ' 2', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
@@ -310,7 +309,7 @@
 
                             <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="min-width: 135px;height: fit-content;">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
+                                {!! Form::label('subcategory', __('lang.category') . ' 3', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
@@ -346,7 +345,7 @@
 
                             <div class="px-1 animate__animated  animate__bounceInRight d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                 style="min-width: 135px;height: fit-content;">
-                                {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
+                                {!! Form::label('subcategory', __('lang.category') . ' 4', [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                 ]) !!}
@@ -388,7 +387,7 @@
 </div>
 
 
-<div class="mb-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+<div class="mb-2 mt-1 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
     style="overflow-x: auto;margin-top: -9px">
 
 
@@ -538,6 +537,22 @@
             </div>
         </div>
     </div>
+    <div class="accordion animate__animated  animate__bounceInLeft px-1">
+        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+            style="border: none">
+            <h2 class="accordion-header   d-flex justify-content-end align-items-center">
+                <div class="accordion-button"
+                    style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500;margin-top: 15px"
+                    onclick="toggleProductAccordion(`productTax{{ $key }}`)">
+                    <span class="productTax{{ $key }} mx-2">
+                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
+                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
+                    </span>
+                    {{ __('lang.product_tax') }}
+                </div>
+            </h2>
+        </div>
+    </div>
 
     <div id="productTax{{ $key }}" class="accordion-content">
         <div class="accordion-body d-flex flex-row p-0">
@@ -597,22 +612,7 @@
             </div>
         </div>
     </div>
-    <div class="accordion animate__animated  animate__bounceInLeft px-1">
-        <div class="accordion-item d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-            style="border: none">
-            <h2 class="accordion-header   d-flex justify-content-end align-items-center">
-                <div class="accordion-button"
-                    style="padding: 5px !important;background-color: #596fd7 !important;color: white !important;border-radius: 6px !important;cursor: pointer;justify-content: space-between;max-width: 190px;font-size: 14px;font-weight: 500;margin-top: 15px"
-                    onclick="toggleProductAccordion(`productTax{{ $key }}`)">
-                    <span class="productTax{{ $key }} mx-2">
-                        <i class="fas fa-arrow-left d-flex justify-content-center align-items-center"
-                            style="font-size: 0.8rem;color:black;background-color: white;width: 20px;height: 20px;border-radius: 50%"></i>
-                    </span>
-                    {{ __('lang.product_tax') }}
-                </div>
-            </h2>
-        </div>
-    </div>
+
 
 
     {{-- crop image --}}

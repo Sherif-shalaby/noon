@@ -53,12 +53,12 @@
             </div>
             <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.3s">
-                {!! Form::label('subcategory_id1', __('lang.subcategory') . ' 1', [
+                {!! Form::label('subcategory_id1', __('lang.category') . ' 1', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select('subcategory_id1', $subcategories, request()->subcategory_id1, [
+                    {!! Form::select('subcategory_id1', $subcategories1, request()->subcategory_id1, [
                         'class' => 'form-control select2 subcategory',
                         'placeholder' => __('lang.please_select'),
                         'id' => 'subcategory_id1',
@@ -67,12 +67,12 @@
             </div>
             <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.35s">
-                {!! Form::label('subcategory_id2', __('lang.subcategory') . ' 2', [
+                {!! Form::label('subcategory_id2', __('lang.category') . ' 2', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select('subcategory_id2', $subcategories, request()->subcategory_id2, [
+                    {!! Form::select('subcategory_id2', $subcategories2, request()->subcategory_id2, [
                         'class' => 'form-control select2 subcategory2',
                         'placeholder' => __('lang.please_select'),
                         'id' => 'subCategoryId2',
@@ -81,12 +81,12 @@
             </div>
             <div class="col-4 col-md-2 mb-2 d-flex align-items-end animate__animated animate__bounceInLeft flex-column"
                 style="animation-delay: 1.4s">
-                {!! Form::label('subcategory_id3', __('lang.subcategory') . ' 3', [
+                {!! Form::label('subcategory_id3', __('lang.category') . ' 3', [
                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                     'style' => 'font-size: 12px;font-weight: 500;',
                 ]) !!}
                 <div class="input-wrapper">
-                    {!! Form::select('subcategory_id3', $subcategories, request()->subcategory_id3, [
+                    {!! Form::select('subcategory_id3', $subcategories3, request()->subcategory_id3, [
                         'class' => 'form-control select2 subcategory3',
                         'placeholder' => __('lang.please_select'),
                         'id' => 'subCategoryId3',

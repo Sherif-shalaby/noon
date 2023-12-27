@@ -8,9 +8,9 @@
                         <h4>@lang('lang.customer_price_offer')</h4>
                     </div>
                     <div class="row align-items-center mb-2">
-                        <div class="col-md-9">
+                        {{-- <div class="col-md-9">
                             <p class="italic pl-3 mb-0"><small>@lang('lang.required_fields_info') </small></p>
-                        </div>
+                        </div> --}}
                         <div class="col-md-3">
                             <div class="i-checks">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"

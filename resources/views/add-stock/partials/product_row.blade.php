@@ -173,8 +173,8 @@
             <div
                 class="accordion-body p-0 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                @if (isset($units))
-                    @foreach ($units as $unitName => $unitValue)
+                @if (isset($items[$index]['units']))
+                    @foreach ($items[$index]['units'] as $unitName => $unitValue)
                         <div class="  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                             style="width: 80px;min-height: 60px">
                             {{-- Iterate through units and display each unit name and value as a span --}}
@@ -368,8 +368,10 @@
         @foreach ($product['customer_prices'] as $key => $price)
             <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
                 style="width: 60px;min-height: 40px;">
-                <input type="text" class="form-control initial-balance-input width-full mx-0 percent"
-                    name="percent" wire:change="changePercent({{ $index }},{{ $key }})"
+                <input type="text"
+                    class="form-control initial-balance-input width-full mx-0 percent{{ $index }} {{ $key }}"
+                    name="items.{{ $index }}.customer_prices.{{ $key }}.percent"
+                    wire:change="changePercent({{ $index }},{{ $key }})"
                     wire:model="items.{{ $index }}.customer_prices.{{ $key }}.percent"
                     maxlength="6" placeholder="%">
             </div>
@@ -516,8 +518,8 @@
                 @enderror
             </div>
 
-            @if (isset($units))
-                @foreach ($units as $unitName => $unitValue)
+            @if (isset($items[$index]['stores'][$i]['units']))
+                @foreach ($items[$index]['stores'][$i]['units'] as $unitName => $unitValue)
                     <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1 "
                         style="width: 80px;min-height: 60px">
                         {{-- Iterate through units and display each unit name and value as a span --}}
@@ -537,7 +539,7 @@
                 <label for="purchase_price"
                     class= "mb-0 @if (app()->isLocale('ar')) d-block text-end  mx-2  @else mx-2 @endif"
                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.purchase_price') }}</label>
-                <input type="number" class="form-control initial-balance-input width-full mb-0"
+                <input type="number" class="form-control purchase_price initial-balance-input width-full mb-0"
                     wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price" required>
                 <span class="d-block width-full dollar-cell"
                     style='font-weight:500;font-size:10px;color:#888;text-align: center'>{{ $items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
@@ -695,8 +697,10 @@
             @foreach ($store['customer_prices'] as $key => $price)
                 <div class=" mb-2 animate__animated  animate__bounceInLeft d-flex flex-column @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif mr-1"
                     style="width: 60px;min-height: 40px;">
-                    <input type="text" class="form-control initial-balance-input width-full mx-0 percent"
-                        name="percent"
+                    <input type="text"
+                        class="form-control initial-balance-input width-full mx-0 percent{{ $index }}{{ $key }}{{ $i }}"
+                        id="percent{{ $i }}"
+                        name="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent"
                         wire:change="changePercent({{ $index }},{{ $key }},'stores',{{ $i }})"
                         wire:model="items.{{ $index }}.stores.{{ $i }}.customer_prices.{{ $key }}.percent"
                         maxlength="6" placeholder="%">

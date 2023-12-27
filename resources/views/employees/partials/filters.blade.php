@@ -16,9 +16,9 @@
             <div
                 class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div class="input-wrapper">
-                    {!! Form::select('subcategory_id1', [], null, [
+                    {!! Form::select('subcategory_id1', $subcategories1, null, [
                         'class' => 'form-control select2 subcategory1',
-                        'placeholder' => __('lang.subcategory') . ' 1',
+                        'placeholder' => __('lang.category') . ' 1',
                         'id' => 'subcategory_id1',
                     ]) !!}
                 </div>
@@ -27,9 +27,9 @@
             <div
                 class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div class="input-wrapper">
-                    {!! Form::select('subcategory_id2', [], null, [
+                    {!! Form::select('subcategory_id2', $subcategories2, null, [
                         'class' => 'form-control select2 subcategory2',
-                        'placeholder' => __('lang.subcategory') . ' 2',
+                        'placeholder' => __('lang.category') . ' 2',
                         'id' => 'subcategory_id2',
                     ]) !!}
                 </div>
@@ -38,9 +38,9 @@
             <div
                 class="col-6 col-md-2 p-1 mb-2 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <div class="input-wrapper">
-                    {!! Form::select('subcategory_id3', [], null, [
+                    {!! Form::select('subcategory_id3', $subcategories3, null, [
                         'class' => 'form-control select2 subcategory3',
-                        'placeholder' => __('lang.subcategory') . ' 3',
+                        'placeholder' => __('lang.category') . ' 3',
                         'id' => 'subcategory_id3',
                     ]) !!}
                 </div>

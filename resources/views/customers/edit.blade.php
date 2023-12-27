@@ -165,7 +165,7 @@
                                     style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
                                 <div class="input-wrapper">
                                     <select id="country-dd" name="country"
-                                        class="form-control initial-balance-input m-auto width-full selectpicker" disabled>
+                                        class="form-control initial-balance-input m-auto width-full select2" disabled>
                                         <option value="{{ $countryId }}">
                                             {{ $countryName }}
                                         </option>
@@ -173,9 +173,7 @@
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ state selectbox +++++++++++++++++ --}}
-                            @php
-                                $states = \App\Models\State::where('country_id', $countryId)->pluck('name', 'id');
-                            @endphp
+
                             <div class="col-md-3 mb-2 d-flex align-items-center
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                 style="animation-delay: 1.55s;position: relative;z-index: 2;">
@@ -183,61 +181,51 @@
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
                                 <div class="input-wrapper">
-                                    {!! Form::select('state_id', $states, 1730, [
-                                        'class' => 'form-control selectpicker initial-balance-input m-auto width-full',
-                                        'id' => 'state-dd',
-                                        'placeholder' => __('lang.please_select'),
-                                    ]) !!}
+                                    <select id="state-dd" name="state_id" class="form-control select2">
+                                        @php
+                                            $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
+                                        @endphp
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state->id }}">
+                                                {{ $state->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             {{-- ++++++++++++++++ city selectbox +++++++++++++++++ --}}
-                            @php
-                                if (!empty($customer->state_id)) {
-                                    $cities = \App\Models\City::where('state_id', $customer->state_id)->get(['id', 'name']);
-                                    //                                dd($cities,$customer->state_id );
-                                }
-                            @endphp
                             <div class="col-md-3 mb-2 d-flex align-items-center
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
                                 style="animation-delay: 1.6s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.city')</label>
+                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.regions')</label>
                                 <div class="input-wrapper">
-                                    <select id="city-dd" name="city_id"
-                                        class="form-control selectpicker initial-balance-input m-auto width-full">
-                                        <option @if (empty($customer->city_id)) selected @endif> @lang('lang.please_select')
-                                        </option>
-                                        @if (!empty($cities))
-                                            @foreach ($cities as $city)
-                                                <option value="{{ $city->id }}"
-                                                    @if (!empty($customer->city_id)) {{ $customer->city_id == $city->id ? 'selected' : '' }} @endif>
-                                                    {{ $city->name }} </option>
-                                            @endforeach
-                                        @endif
-                                    </select>
+                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
+                                    <button type="button"
+                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none"
+                                        data-toggle="modal" id="cities_id" data-target="#createRegionModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
 
                                 </div>
                             </div>
-                            {{-- ++++++++++++ images ++++++++++++ --}}
                             <div class="col-md-3 mb-2 d-flex align-items-center
                                 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
-                                style="animation-delay: 1.65s">
+                                style="animation-delay: 1.6s;position: relative;z-index: 2;">
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
-                                    style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
+                                    style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.quarters')</label>
                                 <div class="input-wrapper">
-                                    <input class="form-control img" name="image" type="file" accept="image/*"
-                                        id="image">
-                                    {{-- Crop Image : cropper.js --}}
-                                    {{-- <div class="dropzone" id="my-dropzone2" required>
-                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
-                                </div> --}}
-                                    @error('cover')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <select id="quarter-dd" class="form-control select2" name="quarter_id"></select>
+                                    <button type="button"
+                                        class="add-button d-flex justify-content-center align-items-center mb-0 text-decoration-none"
+                                        data-toggle="modal" id="add_quarters_btn_id" data-target="#createQuarterModal">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </div>
                             </div>
+
 
                             {{-- +++++++++++++++++++++++++++++++ email array ++++++++++++++++++++++++ --}}
                             <div class=" col-md-6 px-5 mb-2 d-flex align-items-center @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
@@ -411,6 +399,25 @@
                                 @error('address')
                                     <label class="text-danger error-msg">{{ $message }}</label>
                                 @enderror
+                            </div>
+                            {{-- ++++++++++++ images ++++++++++++ --}}
+                            <div class="col-md-3 mb-2 d-flex align-items-center
+                                @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif animate__animated animate__bounceInLeft"
+                                style="animation-delay: 1.65s">
+                                <label
+                                    class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
+                                    style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
+                                <div class="input-wrapper">
+                                    <input class="form-control initial-balance-input width-full img" name="image"
+                                        type="file" accept="image/*" id="image">
+                                    {{-- Crop Image : cropper.js --}}
+                                    {{-- <div class="dropzone" id="my-dropzone2" required>
+                                    <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
+                                </div> --}}
+                                    @error('cover')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                             {{-- ++++++++++++++++++ important_dates ++++++++++++++++ --}}
                             <div class="row pt-4 pb-5 animate__animated animate__bounceInLeft"

@@ -60,7 +60,7 @@ class Edit extends Component
     //     $selling_price, $dollar_selling_price, $deleted_ids = [], $alphabetical_order_id, $price_order_id, $dollar_price_order_id,
     //     $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $dollar_final_total, $total_dollar, $final_total, $dollar_remaining, $dinar_remaining,
     //     $search_by_product_symbol,$draft_transactions,$created_by, $countryId, $countryName, $country, $net_dollar_remaining = 0, $reprsenative_sell_car, $discount = 0.00, $discount_dollar,$total,$rest;
-    public $products = [], $variations = [], $transaction_sell_line,$total_cost,  $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null, $items = [],$deleted_items_key=[], $price, $total, $client_phone,
+    public $products = [], $variations = [], $transaction_sell_line, $total_cost,  $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null, $items = [], $deleted_items_key = [], $price, $total, $client_phone,
         $client_id, $client, $cash = 0, $rest, $invoice, $invoice_id, $date, $payment_status, $data = [], $payments = [],
         $invoice_lang, $transaction_currency, $store_id, $store_pos_id, $showColumn = false, $anotherPayment = false, $sale_note,
         $payment_note, $staff_note, $payment_types, $discount = 0.00, $total_dollar, $add_customer = [], $customers = [], $discount_dollar,
@@ -69,7 +69,7 @@ class Edit extends Component
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0;
+        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0, $back_to_dollar;
 
     protected $rules =
     [
@@ -114,6 +114,7 @@ class Edit extends Component
         if (isset($data['var1']) && $data['var1'] == "brand_id") {
             $this->updatedDepartmentId($data['var2'], 'brand_id');
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     // Get "customers" and "stores"
@@ -312,14 +313,12 @@ class Edit extends Component
     public function sum_dollar_total_cost()
     {
         $totalDollarCost = 0;
-        if(!empty($this->items))
-        {
-            foreach ($this->items as $item)
-            {
+        if (!empty($this->items)) {
+            foreach ($this->items as $item) {
                 $totalDollarCost += $item['dollar_sub_total'];
             }
         }
-        return number_format($totalDollarCost,2);
+        return number_format($totalDollarCost, 2);
     }
     public function submit(): Redirector|Application|RedirectResponse
     {
@@ -359,7 +358,7 @@ class Edit extends Component
                     'tax_method' => !empty($this->tax_method) ? $this->tax_method : null,
                     // discount_type , discount_value
                     'discount_type' => !empty($this->discount_type) ? $this->discount_type : null,
-                    'discount_value' => !empty($this->discount_value) ? $this->discount_value :0,
+                    'discount_value' => !empty($this->discount_value) ? $this->discount_value : 0,
                     // created_by
                     'created_by' => $this->transaction_sell_line->created_by,
                     // 'updated_by' => Auth::user()->id,
@@ -372,10 +371,10 @@ class Edit extends Component
             // dd($customer_offer_price);
             $transaction_sell_line->update($transaction_data);
             foreach ($this->items as $index => $item) {
-                if(isset($item['id'])){
-                    $sell_line=SellLine::find($item['id']);
-                }else{
-                    $sell_line=new SellLine();
+                if (isset($item['id'])) {
+                    $sell_line = SellLine::find($item['id']);
+                } else {
+                    $sell_line = new SellLine();
                 }
                 $sell_line->transaction_id = $transaction_sell_line->id;
                 $sell_line->product_id = $item['product']['id'];
@@ -397,7 +396,7 @@ class Edit extends Component
                 $sell_line->stock_line_id  = !empty($item['current_stock']['id']) ? $item['current_stock']['id'] : null;
                 $sell_line->save();
             }
-            SellLine::whereIn('id',$this->deleted_items_key)->delete();
+            SellLine::whereIn('id', $this->deleted_items_key)->delete();
             // ++++++++++++++++++++++ "Customer Offer Price" table : "Update" And "Insert" ++++++++++++++++++++++
             $keep_line_ids = [];
             // dd($this->deleted_ids);
@@ -407,11 +406,11 @@ class Edit extends Component
                     $prdouct_customer_offer = CustomerOfferPrice::find($item['customer_offer_id']);
                     // Set values for the new array
                     // dd($prdouct_customer_offer);
-                    if(!empty($prdouct_customer_offer)){
+                    if (!empty($prdouct_customer_offer)) {
                         $prdouct_customer_offer->product_id = $item['product']['id'];
                         $prdouct_customer_offer->quantity = $item['quantity'];
-                        $prdouct_customer_offer->sell_price = $item['price']??0;
-                        $prdouct_customer_offer->dollar_sell_price = $item['dollar_price']??0;
+                        $prdouct_customer_offer->sell_price = $item['price'] ?? 0;
+                        $prdouct_customer_offer->dollar_sell_price = $item['dollar_price'] ?? 0;
                         // created_by
                         $prdouct_customer_offer->created_by = null;
                         // updated_by
@@ -479,7 +478,7 @@ class Edit extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs']);
             dd($e);
         }
-        return redirect()->route('invoices.edit',$this->transaction_sell_line->id);
+        return redirect()->route('invoices.edit', $this->transaction_sell_line->id);
     }
 
     // +++++++++++++++++++++++++ addLineProduct($line) : Add line product information +++++++++++++++++++++++++
@@ -494,7 +493,7 @@ class Edit extends Component
         $customerTypes = CustomerType::whereIn('id', $customer_types_variations)->get();
         $current_stock = AddStockLine::find($line->stock_line_id);
         $this->items[] = [
-            'id'=>$line->id,
+            'id' => $line->id,
             'variation' => $product->variations,
             'product' => $product,
             'customer_types' => $customerTypes,
@@ -551,6 +550,7 @@ class Edit extends Component
                 $this->delete_item($key);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeStatus()
@@ -664,6 +664,7 @@ class Edit extends Component
 
     public function redirectToCustomerDetails($clientId)
     {
+        $this->dispatchBrowserEvent('componentRefreshed');
         return redirect()->route('customers.show', $clientId);
     }
 
@@ -855,25 +856,42 @@ class Edit extends Component
     public function ChangeBillToDinar()
     {
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        if ($this->final_total == 0) {
-            $this->final_total = $this->dollar_final_total * $exchange_rate;
+        if ($this->back_to_dollar == 0) {
+            $final_total = round_250($this->dollar_final_total * $exchange_rate);
+            $this->final_total += ($final_total > 0 ? $final_total : 0);
             $this->dollar_final_total = 0;
-        }
-        if ($this->total == 0) {
-            $this->total = $this->total_dollar * $exchange_rate;
+            $total = round_250($this->total_dollar * $exchange_rate);
+            $this->total += ($total > 0 ? $total : 0);
             $this->total_dollar = 0;
-        }
-        if ($this->discount == 0) {
-            $this->discount = $this->discount_dollar * $exchange_rate;
+
+            $discount = round_250($this->discount_dollar * $exchange_rate);
+            $this->discount += ($discount > 0 ? $discount : 0);
             $this->discount_dollar = 0;
-        }
-        if ($this->amount == 0) {
-            $this->amount = $this->dollar_amount * $exchange_rate;
+
+            $amount = round_250($this->dollar_amount * $exchange_rate);
+            $this->amount += ($amount > 0 ? $amount : 0);
             $this->dollar_amount = 0;
-        }
-        if ($this->dinar_remaining == 0) {
-            $this->dinar_remaining = $this->dollar_remaining * $exchange_rate;
+
+            $dinar_remaining = round_250($this->dollar_remaining * $exchange_rate);
+            $this->dinar_remaining += ($dinar_remaining > 0 ? $dinar_remaining : 0);
             $this->dollar_remaining = 0;
+            $this->back_to_dollar = 2;
+        } else {
+            $this->dollar_final_total += $this->final_total / $exchange_rate;
+            $this->final_total = 0;
+
+            $this->total_dollar += $this->total / $exchange_rate;
+            $this->total = 0;
+
+            $this->discount_dollar += $this->discount / $exchange_rate;
+            $this->discount = 0;
+
+            $this->dollar_amount += $this->amount / $exchange_rate;
+            $this->amount = 0;
+
+            $this->dollar_remaining += $this->dinar_remaining * $exchange_rate;
+            $this->dinar_remaining = 0;
+            $this->back_to_dollar = 0;
         }
     }
     public function increment($key)
@@ -888,6 +906,7 @@ class Edit extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'الكمية غير كافية',]);
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function decrement($key)
@@ -897,12 +916,13 @@ class Edit extends Component
             $this->subtotal($key);
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function delete_item($key)
     {
-        if(isset($this->items[$key]['id'])){
-            $this->deleted_items_key[]=$this->items[$key]['id'];
+        if (isset($this->items[$key]['id'])) {
+            $this->deleted_items_key[] = $this->items[$key]['id'];
         }
         unset($this->items[$key]);
         $this->computeForAll();
@@ -1008,11 +1028,11 @@ class Edit extends Component
     public function changeReceivedDollar()
     {
         if ($this->dollar_amount !== null && $this->dollar_amount !== 0) {
-            if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0) {
+            if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - ($this->num_uf($this->dollar_amount) + ($this->num_uf($this->amount) / System::getProperty('dollar_exchange')));
-            } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0  && $this->amount != 0) {
+            } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dinar_remaining = $this->num_uf($this->final_total) - ($this->num_uf($this->amount) + ($this->num_uf($this->dollar_amount) * System::getProperty('dollar_exchange')));
@@ -1031,7 +1051,7 @@ class Edit extends Component
                 // Handle the case where total is in dollar and both dollar and dinar amounts are 0
                 elseif ($this->dollar_final_total != 0) {
                     // Calculate remaining dollar amount directly
-                    $this->dollar_remaining = $this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_amount);
+                    $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
                     if ($this->final_total != 0) {
                         $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
                         if ($this->dinar_remaining < 0 &&  $this->dollar_remaining > 0) {

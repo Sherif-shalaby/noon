@@ -62,7 +62,7 @@
                                 @lang('lang.add_supplier')</h5>
                         </div>
                         <div class="card-body">
-                            <p class="italic"><small>@lang('lang.required_fields_info')</small></p>
+                            {{-- <p class="italic"><small>@lang('lang.required_fields_info')</small></p> --}}
                             <form class="form ajaxform" action="{{ route('suppliers.store') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf

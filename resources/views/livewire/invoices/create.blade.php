@@ -3,7 +3,6 @@
     {!! Form::open(['route' => 'pos.store', 'method' => 'post']) !!}
 
     <div class="row justify-content-start @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-
         <div
             class="col-md-6 row justify-content-between  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
             {{-- ++++++++++++++++++++++ مخزن ++++++++++++++++++++++ --}}
@@ -136,11 +135,7 @@
                     style='width:100%;font-weight: 700;font-size: 12px'>{{ $customer_data->balance_in_dollar ?? 0 }}</span>
             </div>
         </div>
-
-
-
         <button></button>
-
         {{-- </div> --}}
     </div>
 
@@ -149,8 +144,7 @@
         style="animation-delay: 1.1s">
         <div class="col-md-8 d-flex flex-column">
             <div class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                <div
-                    class="col-md-2 p-1 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.customer_type')</span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ $customer_data->customer_type->name ?? '' }}</span>
@@ -160,8 +154,7 @@
                         $state = \App\Models\State::find($customer_data->state_id);
                     }
                 @endphp
-                <div
-                    class="col-md-2 d-flex p-1 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-2 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.city') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($city) ? $city->name : '' }}</span>
@@ -171,15 +164,13 @@
                         $city = \App\Models\City::find($customer_data->city_id);
                     }
                 @endphp
-                <div
-                    class="col-md-3 d-flex p-1 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-3 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.phone_number') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->phone) ? $customer_data->phone : '' }}</span>
 
                 </div>
-                <div
-                    class="col-md-5 d-flex p-1 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+                <div class="col-md-5 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <span class="mx-1" style="font-weight: 500;font-size:12px;"> @lang('lang.notes') </span> :
                     <span class="mx-1"
                         style="font-weight: 500;font-size:12px;">{{ !empty($customer_data->notes) ? $customer_data->notes : '' }}</span>

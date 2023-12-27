@@ -155,7 +155,7 @@
                             placeholder = "{{ $rows[$index]['prices'][$key]['customer_name'] ?? '' }}"
                             wire:change="changeIncrease({{ $index }},{{ $key }})">
                         <span class="dollar-cell"
-                            style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_increase'] }}
+                            style='font-weight:500;font-size:12px;color:#888'>{{ $rows[$index]['prices'][$key]['dollar_increase'] ?? 0 }}
                             $</span>
                         @error('rows.' . $index . 'prices' . $key . '.dinar_increase')
                             <label class="text-danger error-msg">{{ $message }}</label>

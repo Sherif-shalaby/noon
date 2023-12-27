@@ -299,10 +299,14 @@
                                                     <th class="col8">@lang('lang.payment_status')</th>
                                                     <th class="col9">@lang('lang.payment_type')</th>
                                                     <th class="col10">@lang('lang.ref_number')</th>
-                                                    <th class="col11 currencies">@lang('lang.received_currency')</th>
-                                                    <th class="col12 sum">@lang('lang.grand_total')</th>
-                                                    <th class="col13 sum">@lang('lang.paid')</th>
-                                                    <th class="col14 sum">@lang('lang.due_sale_list')</th>
+                                                    {{-- <th class="col11 currencies">@lang('lang.received_currency')</th> --}}
+                                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dinar_c')</th>
+                                                    <th class="col13 sum">@lang('lang.paid') @lang('lang.dinar_c')</th>
+                                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dinar_c')</th>
+
+                                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dollar_c')</th>
+                                                    <th class="col13 sum">@lang('lang.paid') @lang('lang.dollar_c')</th>
+                                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dollar_c')</th>
                                                     <th class="col15">@lang('lang.due_date')</th>
                                                     <th class="col16">@lang('lang.payment_date')</th>
                                                     <th class="col17">@lang('lang.cashier_man')</th>
@@ -406,7 +410,7 @@
                                                                 @endforeach
                                                             </span>
                                                         </td>
-                                                        <td class="col11">
+                                                        {{-- <td class="col11">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -415,30 +419,55 @@
                                                                     {{ $payment->received_currency_relation->symbol ?? '' }}<br>
                                                                 @endforeach
                                                             </span>
-                                                        </td>
+                                                        </td> --}}
                                                         <td class="col12">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.grand_total')">
-
-                                                                {{ number_format($line->final_total, 2) }}
+                                                                data-tooltip="@lang('lang.grand_total') @lang('lang.dinar_c')">
+                                                                {{ number_format($line->final_total, 2) }} د.ع
                                                             </span>
                                                         </td>
                                                         <td class="col13">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.paid')">
-                                                                {{ $line->transaction_payments->sum('amount') }}
+                                                                data-tooltip="@lang('lang.paid') @lang('lang.dinar_c')">
+                                                                {{ $line->transaction_payments->sum('amount') }} د.ع
                                                             </span>
                                                         </td>
                                                         <td class="col14">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
-                                                                data-tooltip="@lang('lang.due_sale_list')">
-                                                                {{ $line->final_total - $line->transaction_payments->sum('amount') }}
+                                                                data-tooltip="@lang('lang.due_sale_list') @lang('lang.dinar_c')">
+                                                                {{ $line->dinar_remaining }} د.ع
+                                                            </span>
+                                                        </td>
+                                                        <td class="col12 dollar-cell">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.grand_total') @lang('lang.dollar_c')">
+                                                                {{ number_format($line->dollar_final_total, 2) }} $
+                                                            </span>
+                                                        </td>
+                                                        <td class="col13 dollar-cell">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.paid') @lang('lang.dollar_c')">
+                                                                {{ $line->transaction_payments->sum('dollar_amount') }}
+                                                                $
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="col14 dollar-cell">
+                                                            <span
+                                                                class="custom-tooltip d-flex justify-content-center align-items-center"
+                                                                style="font-size: 12px;font-weight: 600"
+                                                                data-tooltip="@lang('lang.due_sale_list') @lang('lang.dollar_c')">
+                                                                {{ $line->dollar_remaining }} $
                                                             </span>
                                                         </td>
                                                         <td class="col15">
@@ -534,6 +563,7 @@
 
                                                                 <li>
                                                                     <a href="{{ route('sell.return', $line->id) }}"
+                                                                        target="_blank"
                                                                         class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"><i
                                                                             class="fa fa-undo"></i>@lang('lang.return')
                                                                     </a>
@@ -551,6 +581,7 @@
                                                                 {{-- +++++++++ edit button +++++++++++ --}}
                                                                 <li>
                                                                     <a href="{{ route('invoices.edit', $line->id) }}"
+                                                                        target="_blank"
                                                                         class="btn drop_down_item @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                                                                         <i class="dripicons-document-edit"></i>
                                                                         {{ __('lang.edit') }}

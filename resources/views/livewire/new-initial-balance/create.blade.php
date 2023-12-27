@@ -336,7 +336,7 @@
                                 <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft  d-flex flex-column  px-1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
                                     style="width:200px">
 
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
+                                    {!! Form::label('subcategory', __('lang.category') . ' 1', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
@@ -376,7 +376,7 @@
 
                                 <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1  {{ $show_category3 == 0 && $show_category2 == 0 ? 'd-none' : '' }}"
                                     style="width:200px">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
+                                    {!! Form::label('subcategory', __('lang.category') . ' 2', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
@@ -421,7 +421,7 @@
 
                                 <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1 {{ $show_category3 == 0 ? 'd-none' : '' }}"
                                     style="width:200px">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
+                                    {!! Form::label('subcategory', __('lang.category') . ' 3', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}

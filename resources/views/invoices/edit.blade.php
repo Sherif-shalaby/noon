@@ -8,6 +8,11 @@
     {{-- <link rel="stylesheet" href="{{ asset('salescreen/css/all.min.css')}}" /> --}}
     <!-- Main Faile Css  -->
     <link rel="stylesheet" href="{{ asset('salescreen/css/main.css') }}" />
+    <style>
+        .customer_drop_down .select2-container {
+            width: 75% !important
+        }
+    </style>
 @endpush
 @section('content')
     {{--    {{dd($id)}} --}}

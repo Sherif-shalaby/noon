@@ -318,7 +318,7 @@
 
                                 <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft  d-flex flex-column  px-1 subcategory_id1 {{ $show_category1 == 0 && $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id1']) ? 'd-none' : '') : '' }}"
                                     style="width:200px">
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 1', [
+                                    {!! Form::label('subcategory', __('lang.category') . ' 1', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
@@ -361,7 +361,7 @@
                                 <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1  subcategory2 {{ $show_category3 == 0 && $show_category2 == 0 ? (empty($item[0]['subcategory_id2']) ? 'd-none' : '') : '' }}"
                                     style="width:200px">
 
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 2', [
+                                    {!! Form::label('subcategory', __('lang.category') . ' 2', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
@@ -405,7 +405,7 @@
                                 <div class="mb-2 mx-2 align-items-end animate__animated animate__bounceInLeft d-flex  flex-column  pl-1 subcategory3 {{ $show_category3 == 0 ? (empty($item[0]['subcategory_id3']) ? 'd-none' : '') : '' }}"
                                     style="width:200px">
 
-                                    {!! Form::label('subcategory', __('lang.subcategory') . ' 3', [
+                                    {!! Form::label('subcategory', __('lang.category') . ' 3', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-weight:500;font-size:10px;color:#888',
                                     ]) !!}
@@ -945,7 +945,7 @@
                                     </button>
                                     @forelse ($fill_stores as $i => $store)
                                         <div
-                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif {{ $show_store == 0 ? (empty($fill_stores[$i]['extra_store_id']) ? 'd-none' : '') : '' }}">
+                                            class="d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif ">
                                             <div class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif px-1 extra_store_accordion"
                                                 style="width: 160px">
                                                 <label for="extra_store_id"

@@ -128,6 +128,7 @@ $(document).on("click", ".add_small_unit", function () {
         },
     });
 });
+// +++++++++++++ delete "unit_row" +++++++++++++
 $(document).on("click", ".remove_row", function () {
     let key = $(this).data('key');
     $(this).closest(".unit-row\\[" + key + "\\]").remove();

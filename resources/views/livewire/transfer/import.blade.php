@@ -7,9 +7,9 @@
                         <h4>@lang('lang.add_transfer') {{ $receiver_store_name }}</h4>
                     </div>
                     <div class="row ">
-                        <div class="col-md-7">
+                        {{-- <div class="col-md-7">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
-                        </div>
+                        </div> --}}
                         {{--                        <div class="col-md-3"> --}}
                         {{--                            <div class="i-checks"> --}}
                         {{--                                <input id="clear_all_input_form" name="clear_all_input_form" --}}

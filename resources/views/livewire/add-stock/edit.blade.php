@@ -7,9 +7,9 @@
                         <h4>@lang('lang.add-stock')</h4>
                     </div>
                     <div class="row ">
-                        <div class="col-md-9">
+                        {{-- <div class="col-md-9">
                             <p class="italic pt-3 pl-3"><small>@lang('lang.required_fields_info')</small></p>
-                        </div>
+                        </div> --}}
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>

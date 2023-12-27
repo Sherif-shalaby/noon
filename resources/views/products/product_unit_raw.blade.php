@@ -67,12 +67,20 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                 @enderror
             </div>
-
+            {{-- +++++++ Add "unit_row" Button +++++++ --}}
             <button style="margin-top:17px"
                 class="btn btn-sm btn-primary d-flex justify-content-center align-items-center add_small_unit h-50"
                 type="button" onclick="disableButton(event)" data-key="{{ $key }}">
                 <i class="fa fa-equals"></i>
             </button>
+            {{-- +++++++ Delete "unit_row" Button +++++++ --}}
+
+            <button type="button" style="margin-top:17px"
+                class="btn btn-sm mx-1 h-50 btn-danger d-flex justify-content-center align-items-center  remove_row"
+                data-key="{{ $key }}">
+                <i class="fas fa-close"></i>
+            </button>
+
 
 
 

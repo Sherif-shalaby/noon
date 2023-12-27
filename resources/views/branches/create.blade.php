@@ -9,7 +9,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {!! Form::open(['url' => route('branches.store'), 'method' => 'post']) !!}
+            {!! Form::open(['url' => route('branches.store'), 'method' => 'post', 'id' => 'branch-form']) !!}
             <div class="modal-body">
                 <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                     <div class="col-md-12">
@@ -40,6 +40,9 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
+{!! JsValidator::formRequest('App\Http\Requests\BranchRequest', '#branch-form') !!}
+{!! JsValidator::formRequest('App\Http\Requests\BranchRequest', '#quick_add_branch_form') !!}
 @push('javascripts')
     {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script> --}}
 @endpush

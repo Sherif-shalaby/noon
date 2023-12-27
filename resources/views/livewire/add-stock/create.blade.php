@@ -862,5 +862,11 @@
                 }
             }
         });
+        document.addEventListener("livewire:load", function() {
+            Livewire.hook('afterDomUpdate', () => {
+                // Your custom logic here
+                console.log('DOM updated');
+            });
+        });
     </script>
 @endpush

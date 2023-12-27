@@ -18,12 +18,12 @@
                         $index = 0;
                     @endphp
                     <div class="row mt-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
-                        <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
+                        {{-- <div class="col-md-9 animate__animated animate__bounceInRight" style="animation-delay: 1.1s">
                             <p
                                 class="italic mb-0 pl-3 @if (app()->isLocale('ar')) text-end mr-2 @else text-start @endif">
                                 <small>@lang('lang.required_fields_info')</small>
                             </p>
-                        </div>
+                        </div> --}}
                         <div class="col-md-3 animate__animated animate__bounceInLeft" style="animation-delay: 1.1s">
                             <div class="i-checks @if (app()->isLocale('ar')) ml-2 @endif">
                                 <input id="clear_all_input_form" name="clear_all_input_form" type="checkbox"

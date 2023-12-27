@@ -191,7 +191,7 @@
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="country-dd">@lang('lang.country')</label>
                                 <div class="input-wrapper">
-                                    <select id="country-dd" name="country" class="form-control selectpicker" disabled>
+                                    <select id="country-dd" name="country" class="form-control select2" disabled>
                                         <option value="{{ $countryId }}">
                                             {{ $countryName }}
                                         </option>
@@ -206,7 +206,7 @@
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;' for="state-dd">@lang('lang.state')</label>
                                 <div class="input-wrapper">
-                                    <select id="state-dd" name="state_id" class="form-control selectpicker">
+                                    <select id="state-dd" name="state_id" class="form-control select2">
                                         @php
                                             $states = \App\Models\State::where('country_id', $countryId)->get(['id', 'name']);
                                         @endphp
@@ -225,7 +225,7 @@
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter",
                                     style='font-size: 12px;font-weight: 500;' for="city-dd">@lang('lang.regions')</label>
                                 <div class="input-wrapper">
-                                    <select id="city-dd" name="city_id" class="form-control selectpicker"></select>
+                                    <select id="city-dd" name="city_id" class="form-control select2"></select>
                                     <button type="button"
                                         class="add-button d-flex justify-content-center align-items-end align-items-md-center"
                                         data-toggle="modal" id="cities_id" data-target="#createRegionModal">
@@ -371,8 +371,8 @@
                                 <label
                                     class="@if (app()->isLocale('ar')) d-block text-end @endif mx-2 mb-0 width-quarter"
                                     style='font-size: 12px;font-weight: 500;'>@lang('lang.upload_image')</label>
-                                <input class="form-control img" name="image" type="file" accept="image/*"
-                                    id="image">
+                                <input class="form-control initial-balance-input width-full img" name="image"
+                                    type="file" accept="image/*" id="image">
                                 {{-- Crop Image : cropper.js --}}
                                 {{-- <div class="dropzone" id="my-dropzone2" required>
                                     <div class="dz-message" data-dz-message><span>@lang('categories.drop_file_here_to_upload')</span></div>
@@ -420,125 +420,6 @@
                 </div>
                 <!-- End col -->
 
-                {{-- //////////////////////////////////////////// Models //////////////////////////////////////////// --}}
-                <!-- ================== Modal 1 : createCustomerTypesModal ================== -->
-                {{-- <div class="modal fade" id="createCustomerTypesModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog  rollIn  animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_customer_type')}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        {!! Form::open(['route' => 'customertypes.store', 'method' => 'post', 'files' => true,'id' =>'customer-type-form' ]) !!}
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <label for="name">@lang('lang.name')</label>
-                                <div class="select_body d-flex justify-content-between align-items-center" >
-                                    <input type="text" required
-                                        class="form-control"
-                                        placeholder="@lang('lang.name')"
-                                        name="name"
-                                        value="{{ old('name') }}" >
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                    <button  class="btn btn-primary btn-sm ml-2" type="button"
-                                        data-toggle="collapse" data-target="#translation_table_customertype"
-                                        aria-expanded="false" aria-controls="collapseExample">
-                                        <i class="fas fa-globe"></i>
-                                    </button>
-                                </div>
-
-                                @include('layouts.translation_inputs', [
-                                    'attribute' => 'name',
-                                    'translations' => [],
-                                    'type' => 'customertype',
-                                ])
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div> --}}
-                <!-- ================== Modal 2 : createRegionModal ================== -->
-                {{-- <div class="modal fade" id="createRegionModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog  rollIn  animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_region')}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        {!! Form::open(['route' => 'customers.storeRegion', 'method' => 'post', 'files' => true,'id' =>'customer-region-form' ]) !!}
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <input type="hidden" name="state_id" id="stateId" />
-                                <label for="name">@lang('lang.name')</label>
-                                <div class="select_body d-flex justify-content-between align-items-center" >
-                                    <input type="text" required
-                                        class="form-control"
-                                        placeholder="@lang('lang.name')"
-                                        name="name"
-                                        value="{{ old('name') }}" >
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div> --}}
-                <!-- ================== Modal 3 : createQuarterModal ================== -->
-                {{-- <div class="modal fade" id="createQuarterModal" tabindex="-1" role="dialog" aria-labelledby="exampleStandardModalLabel" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog  rollIn  animated" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleStandardModalLabel">{{__('lang.add_quarter')}}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        {!! Form::open(['route' => 'customers.storeQuarter', 'method' => 'post', 'files' => true,'id' =>'customer-region-form' ]) !!}
-                        <div class="modal-body">
-                            <div class="form-group ">
-                                <input type="hidden" name="city_id" id="cityId" />
-                                <label for="name">@lang('lang.name')</label>
-                                <div class="select_body d-flex justify-content-between align-items-center" >
-                                    <input type="text" required
-                                        class="form-control"
-                                        placeholder="@lang('lang.name')"
-                                        name="name"
-                                        value="{{ old('name') }}" >
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('lang.close')</button>
-                            <button  type="submit" class="btn btn-primary">{{__('lang.save')}}</button>
-                        </div>
-                        {!! Form::close() !!}
-                    </div>
-                </div>
-            </div> --}}
-                <!-- ++++++++++++ Crop_Image Modal ++++++++++++ -->
-                {{-- @include('categories.modalCrop')  --}}
                 {{-- ++++++++++++ customer_types Model ++++++++++++ --}}
                 @include('customer_types.create')
             </div>

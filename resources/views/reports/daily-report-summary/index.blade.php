@@ -55,11 +55,11 @@
                                 <tbody>
                                     @php
                                         // ///////////////////// التدفقات النقدية الخارجة /////////////////////
-                                        $purchase_final_total_dinar = !empty($transactions_stock_lines->sum('final_total')) ? $transactions_stock_lines->sum('final_total') : '';
-                                        $purchase_final_total_dollar = !empty($transactions_stock_lines->sum('dollar_final_total')) ? $transactions_stock_lines->sum('dollar_final_total') : '';
+                                        $purchase_final_total_dinar = !empty($transactions_stock_lines->sum('final_total')) ? $transactions_stock_lines->sum('final_total') : 0;
+                                        $purchase_final_total_dollar = !empty($transactions_stock_lines->sum('dollar_final_total')) ? $transactions_stock_lines->sum('dollar_final_total') : 0;
                                         // ///////////////////// التدفقات النقدية الداخلة /////////////////////
                                         $sell_final_total_dinar = !empty($transactions_sell_lines->sum('final_total')) ? $transactions_sell_lines->sum('final_total') : '';
-                                        $sell_final_total_dollar = !empty($transactions_sell_lines->sum('dollar_final_total')) ? $transactions_sell_lines->sum('dollar_final_total') : '';
+                                        $sell_final_total_dollar = !empty($transactions_sell_lines->sum('dollar_final_total')) ? $transactions_sell_lines->sum('dollar_final_total') : 0;
                                         // ///////////////////// مرتبات الموظفين /////////////////////
                                         $wages_employees_total = $employees_wage->sum('final_total');
                                     @endphp

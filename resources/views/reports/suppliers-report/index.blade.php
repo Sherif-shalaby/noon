@@ -117,7 +117,7 @@
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.date')">
-                                                                    {{ @format_date($add_stock->transaction->transaction_date) }}
+                                                                    {{ @format_date($add_stock->transaction->transaction_date ?? null) }}
                                                                 </span>
                                                             </td>
                                                             <td>
@@ -125,7 +125,7 @@
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.reference_no')">
-                                                                    {{ $add_stock->transaction->invoice_no }}
+                                                                    {{ $add_stock->transaction->invoice_no ?? '' }}
                                                                 </span>
                                                             </td>
                                                             <td>
@@ -134,8 +134,8 @@
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.supplier')">
 
-                                                                    @if (!empty($add_stock->transaction->supplier))
-                                                                        {{ $add_stock->transaction->supplier->name }}
+                                                                    @if (!empty($add_stock->transaction->supplier ?? ''))
+                                                                        {{ $add_stock->transaction->supplier->name ?? '' }}
                                                                     @endif
                                                                 </span>
                                                             </td>
@@ -156,9 +156,9 @@
                                                                     style="font-size: 12px;font-weight: 600"
                                                                     data-tooltip="@lang('lang.grand_total')">
 
-                                                                    {{ @num_format($add_stock->transaction->final_total) }}
+                                                                    {{ @num_format($add_stock->transaction->final_total ?? '') }}
+                                                                </span>
                                                             </td>
-                                                            </span>
                                                             <td>
                                                                 <span
                                                                     class="custom-tooltip d-flex justify-content-center align-items-center"
