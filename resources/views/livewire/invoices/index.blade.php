@@ -220,7 +220,7 @@
                                     </th>
                                     <th class="col5">@lang('lang.customer')</th>
                                     <th class="col6">@lang('lang.phone')</th>
-                                    <th class="col7">@lang('lang.sale_status')</th>
+                                    {{-- <th class="col7">@lang('lang.sale_status')</th> --}}
                                     <th class="col8">@lang('lang.payment_status')</th>
                                     <th class="col9">@lang('lang.payment_type')</th>
                                     <th class="col10">@lang('lang.ref_number')</th>
@@ -252,6 +252,10 @@
                                         </td>
                                         <td class="col2">
                                             {{$line->invoice_no ?? '' }}
+
+                                            @if (!empty($line->return_parent_id)) 
+                                              <a data-href="{{ route('sell_return.show', $line->id) }}" data-container=".view_modal" class="btn btn-modal" data-toggle="modal" style="color: #007bff;">R</a>
+                                            @endif
                                         </td>
                                         <td class="col3">
                                             {{$line->store->name ?? '' }}
@@ -266,9 +270,9 @@
                                         <td class="col6">
                                             {{$line->customer->phone ?? '' }}
                                         </td>
-                                        <td class="col7">
+                                        {{-- <td class="col7">
                                             <span class="badge badge-success">{{$line->status ?? '' }}</span>
-                                        </td>
+                                        </td> --}}
                                         <td class="col8">{{$line->payment_status}}</td>
                                         <td class="col9">
                                             @foreach($line->transaction_payments as $payment)
@@ -433,6 +437,7 @@
         </div>
     </div>
     <!-- End Contentbar -->
+    {{-- @include() --}}
     <div class="view_modal no-print" ></div>
     <section class="invoice print_section print-only" id="receipt_section"> </section>
 
