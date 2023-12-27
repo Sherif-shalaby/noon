@@ -1232,12 +1232,13 @@ class Create extends Component
     public function sub_total($index, $via = null, $i = null)
     {
         if($via == 'stores'){
-            $this->convertPurchasePrice($index,$via,$i);
+            // dd($via);
+            // $this->convertPurchasePrice($index,$via,$i);
             if(isset($this->items[$index]['stores'][$i]['quantity']) && (isset($this->items[$index]['stores'][$i]['purchase_price']) ||isset($this->items[$index]['stores'][$i]['dollar_purchase_price']) )){
                 // convert purchase price from Dollar To Dinar
                 $purchase_price = $this->convertDollarPrice($index, $via ,$i);
 
-                $this->items[$index]['stores'][$i]['sub_total'] = (int)$this->items[$index]['stores'][$i]['quantity'] * (float)$purchase_price ;
+                $this->items[$index]['stores'][$i]['sub_total'] = (int)$this->items[$index]['stores'][$i]['quantity'] * $this->num_uf($this->items[$index]['stores'][$i]['purchase_price'])  ;
                 return number_format($this->items[$index]['stores'][$i]['sub_total'], 3);
             }
             else{
@@ -1247,9 +1248,9 @@ class Create extends Component
         else {
             if(isset($this->items[$index]['quantity']) && (isset($this->items[$index]['purchase_price']) ||isset($this->items[$index]['dollar_purchase_price']) )){
                 // convert purchase price from Dollar To Dinar
-                $purchase_price = $this->convertDollarPrice($index);
+                // $purchase_price = $this->convertDollarPrice($index);
 
-                $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price ;
+                $this->items[$index]['sub_total'] = (int)$this->items[$index]['quantity'] * $this->num_uf($this->items[$index]['purchase_price']) ;
 
                 return number_format($this->items[$index]['sub_total'], 3);
             }
@@ -1269,9 +1270,9 @@ class Create extends Component
         if($via == 'stores') {
             if(isset($this->items[$index]['stores'][$i]['quantity']) && isset($this->items[$index]['stores'][$i]['dollar_purchase_price']) || isset($this->items[$index]['stores'][$i]['purchase_price'])){
                 // convert purchase price from Dinar To Dollar
-                $purchase_price = $this->convertDinarPrice($index, $via, $i);
+                // $purchase_price = $this->convertDinarPrice($index, $via, $i);
 
-                $this->items[$index]['stores'][$i]['dollar_sub_total'] = (int)$this->items[$index]['stores'][$i]['quantity'] * (float)$purchase_price;
+                $this->items[$index]['stores'][$i]['dollar_sub_total'] = (int)$this->items[$index]['stores'][$i]['quantity'] * $this->num_uf( $this->items[$index]['stores'][$i]['dollar_purchase_price']);
 
                 return number_format($this->items[$index]['stores'][$i]['dollar_sub_total'], 3);
             }
@@ -1282,9 +1283,9 @@ class Create extends Component
         else{
             if(isset($this->items[$index]['quantity']) && isset($this->items[$index]['dollar_purchase_price']) || isset($this->items[$index]['purchase_price'])){
                 // convert purchase price from Dinar To Dollar
-                $purchase_price = $this->convertDinarPrice($index);
+                // $purchase_price = $this->convertDinarPrice($index);
 
-                $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * (float)$purchase_price;
+                $this->items[$index]['dollar_sub_total'] = (int)$this->items[$index]['quantity'] * $this->num_uf( $this->items[$index]['dollar_purchase_price']);
 
                 return number_format($this->items[$index]['dollar_sub_total'], 3);
             }
@@ -1442,8 +1443,10 @@ class Create extends Component
                 $totalCost += (float)$item['total_cost'];
                 if(isset($item['stores']) && is_array($item['stores'])){
                     foreach ($item['stores'] as $store) {
+                        // dd($store);
                         // Assuming 'total_cost' is the key for the total cost in each store
                         if(isset($store['total_cost'])){
+                            // dd($store['total_cost']);
                             $totalCost += (float)$store['total_cost'];
                         }
                     }
@@ -1471,14 +1474,16 @@ class Create extends Component
                     foreach ($item['stores'] as $store) {
                         // Assuming 'total_cost' is the key for the total cost in each store
                         if(isset($store['dollar_total_cost'])){
+                            // dd($store['dollar_total_cost']);
                             $totalDollarCost += (float)$store['dollar_total_cost'];
+                            // dd($totalDollarCost );
                         }
                     }
                 }
             }
         }
         $this->changeAmount(number_format($totalDollarCost,2));
-//        dd($totalDollarCost);
+    //    dd($totalDollarCost);
         return number_format($this->num_uf($totalDollarCost),2);
     }
 
@@ -1660,9 +1665,9 @@ class Create extends Component
                 }
                 if($this->items[$index]['used_currency'] != 2){
                     $this->items[$index]['stores'][$i]['total_cost'] = $this->num_uf( $final_purchase);
-                    $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] = 0;
+                    $this->items[$index]['stores'][$i]['dollar_total_cost'] = 0;
                 }else{
-                    $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
+                    $this->items[$index]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
                     $this->items[$index]['stores'][$i]['total_cost'] = 0;
                 }
 
@@ -1699,10 +1704,10 @@ class Create extends Component
                 }
                 if($this->items[$index]['used_currency'] != 2){
                     $this->items[$index]['stores'][$i]['total_cost'] = $this->num_uf( $final_purchase);
-                    $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] = 0;
+                    $this->items[$index]['stores'][$i]['dollar_total_cost'] = 0;
                 }else{
                     $this->items[$index]['stores'][$i]['total_cost'] = 0;
-                    $this->items[$index]['stores'][$i]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
+                    $this->items[$index]['stores'][$i]['dollar_total_cost'] =  $this->num_uf($final_purchase )/ $this->num_uf($this->exchange_rate);
                 }
 
                 if(isset($this->items[$index]['stores'][$i]['seasonal_discount'])){
@@ -2011,14 +2016,16 @@ class Create extends Component
     }
 
     public function convertPurchasePrice($index,$var=null,$i=null){
-//         dd('test',$var,$i);
+        // dd($i);
         if($var == 'stores'){
-            $actual_purchase_price =$this->num_uf(  $this->items[$index]['stores'][$i]['purchase_price']);
+            $actual_purchase_price =$this->num_uf( $this->items[$index]['stores'][$i]['purchase_price']);
+            // dd($actual_purchase_price);
             if(!empty($this->items[$index]['used_currency'])){
                 $currency = $this->num_uf( $this->items[$index]['used_currency']);
                 if( $currency == 2 ){
                     $this->items[$index]['stores'][$i]['dollar_purchase_price'] = $this->num_uf( $actual_purchase_price );
                     $this->items[$index]['stores'][$i]['purchase_price'] = $this->num_uf( $actual_purchase_price )*$this->num_uf( $this->exchange_rate) ?? 0;
+                    // dd($actual_purchase_price);
 
                 }else{
                     $this->items[$index]['stores'][$i]['dollar_purchase_price']=$this->num_uf(  $actual_purchase_price )/  $this->num_uf( $this->exchange_rate);

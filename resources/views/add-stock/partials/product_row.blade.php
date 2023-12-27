@@ -384,7 +384,7 @@
             @enderror
         </td>
         <td title="{{__('lang.purchase_price')}}">
-            <input type="number" class="form-control" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price"
+            <input type="number" class="form-control purchase_price" wire:model="items.{{ $index }}.stores.{{ $i }}.purchase_price" wire:change="convertPurchasePrice({{$index}},'stores',{{$i}})" 
                    style="width: 61px;"  required>
             <span>{{$items[$index]['stores'][$i]['dollar_purchase_price'] ?? 0 }}$</span>
             @error('items.'.$index.'.stores'. $i .'.purchase_price')
