@@ -11,7 +11,7 @@
             {{-- ++++++++++++++++++ "sub1_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id1', [],null,
+                    {!! Form::select( 'subcategory_id1', $subcategories1,null,
                         ['class' => 'form-control select2 subcategory1','placeholder'=>__('lang.subcategory')." 1",'id' => 'subcategory_id1']
                     ) !!}
                 </div>
@@ -19,7 +19,7 @@
             {{-- ++++++++++++++++++ "sub2_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select( 'subcategory_id2', [] ,null,
+                    {!! Form::select( 'subcategory_id2', $subcategories2,null,
                             ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.subcategory')." 2",'id' => 'subcategory_id2' ]
                     ) !!}
                 </div>
@@ -27,7 +27,7 @@
             {{-- ++++++++++++++++++ "sub3_category" filter ++++++++++++++++++ --}}
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::select('subcategory_id3', [] ,null,
+                    {!! Form::select('subcategory_id3',$subcategories3 ,null,
                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.subcategory')." 3" ,'id' => 'subcategory_id3']
                     ) !!}
                 </div>

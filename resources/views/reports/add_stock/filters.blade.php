@@ -43,7 +43,7 @@
                     {!! Form::label('subcategory_id1', __('lang.subcategory')." 1")  !!}
                     {!! Form::select(
                         'subcategory_id1',
-                        $subcategories,request()->subcategory_id1,
+                        $subcategories1,request()->subcategory_id1,
                         ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.please_select'),'id' => 'subcategory_id1']
                     ) !!}
                 </div>
@@ -53,7 +53,7 @@
                     {!! Form::label('subcategory_id2', __('lang.subcategory')." 2")  !!}
                     {!! Form::select(
                         'subcategory_id2',
-                        $subcategories,request()->subcategory_id2,
+                        $subcategories2,request()->subcategory_id2,
                         ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.please_select'),'id' => 'subCategoryId2' ]
                     ) !!}
                 </div>
@@ -63,7 +63,7 @@
                     {!! Form::label('subcategory_id3', __('lang.subcategory')." 3")  !!}
                     {!! Form::select(
                         'subcategory_id3',
-                        $subcategories,request()->subcategory_id3,
+                        $subcategories3,request()->subcategory_id3,
                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.please_select') ,'id' => 'subCategoryId3']
                     ) !!}
                 </div>
