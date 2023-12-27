@@ -561,10 +561,7 @@ class Create extends Component
                         'dollar_sell_price' =>  null,
                         'dollar_sub_total' =>  null,
                         'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
-                        // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
-                        // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
-                        // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-                        // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+         
                     ];
                     $stockLine = AddStockLine::create($add_stock_data);
                     if (!empty($this->prices)) {

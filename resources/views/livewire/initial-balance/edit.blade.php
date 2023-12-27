@@ -593,7 +593,7 @@
                                         class="fas {{ $show_store == 0 ? 'fa-arrow-right' : 'fa-arrow-left' }}"></i></button>
                             </div>
                             @forelse ($fill_stores as $i => $store)
-                                <div class="row {{ $show_store == 0 ? (empty($fill_stores[$i]['extra_store_id'])?'d-none':'') : '' }}">
+                                <div class="row">
                                     <div class="col-md-1">
                                         <button type="button" class="btn btn-sm btn-primary"
                                         wire:click="addStoreRow()">

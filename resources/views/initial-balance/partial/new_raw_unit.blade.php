@@ -67,7 +67,7 @@
             <input type="text" class="form-control dinar_sell_price"
                 wire:model="rows.{{ $index }}.prices.{{ $key }}.dinar_increase"
                 placeholder = "{{ $rows[$index]['prices'][$key]['customer_name']??'' }}" wire:change="changeIncrease({{$index}},{{$key}})">
-            <span>{{$rows[$index]['prices'][$key]['dollar_increase']}} $</span>
+            <span>{{$rows[$index]['prices'][$key]['dollar_increase']??0}} $</span>
             @error('rows.' . $index.'prices'. $key . '.dinar_increase')
                 <br>
                 <label class="text-danger error-msg">{{ $message }}</label>
