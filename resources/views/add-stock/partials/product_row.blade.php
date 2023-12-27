@@ -47,8 +47,8 @@
             </div>
             <div>
                 {{-- Iterate through units and display each unit name and value as a span --}}
-                @if(isset($units))
-                @foreach ($units as $unitName => $unitValue)
+                @if(isset($items[$index]['units']))
+                @foreach ($items[$index]['units'] as $unitName => $unitValue)
                     <span>{{ $unitName }}: {{ $unitValue }}</span>
                 @endforeach
                 @endif
@@ -264,8 +264,8 @@
                 </div>
                 <div>
                     {{-- Iterate through units and display each unit name and value as a span --}}
-                    @if(isset($units))
-                    @foreach ($units as $unitName => $unitValue)
+                    @if(isset($items[$index]['stores'][$i]['units']))
+                    @foreach ($items[$index]['stores'][$i]['units'] as $unitName => $unitValue)
                         <span>{{ $unitName }}: {{ $unitValue }}</span>
                     @endforeach
                     @endif

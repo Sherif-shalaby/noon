@@ -851,6 +851,7 @@ class Create extends Component
             'stores' => [],
             'store_id'=>null,
             'customer_prices' => $customer_prices,
+            'units' => [],
             'prices' => [
                 [
                     'price_type' => null,
@@ -1009,13 +1010,13 @@ class Create extends Component
             'used_currency' => null,
             'store_id' => null,
             'customer_prices' => $customer_prices,
+            'units' => [],
         ];
 //        dd($new_store);
         array_unshift($this->items[$index]['stores'], $new_store);
     }
     public function changePercent($index, $key, $via = null, $i = null)
     {
-//        dd($index,$i);
         if (!empty($this->items[$index]['used_currency'])) {
             if($via == 'stores'){
                 $purchase_price = $this->final_purchase_for_piece($index,'stores',$i);
@@ -2242,7 +2243,11 @@ class Create extends Component
                 }
             }
         }
-        $this->units = $units;
-        // dd($this->units);
+        if($via == 'stores'){
+            $this->items[$index]['stores'][$i]['units'] = $units;
+        }
+        else{
+            $this->items[$index]['units'] = $units;
+        }
     }
 }
