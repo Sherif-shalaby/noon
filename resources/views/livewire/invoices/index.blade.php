@@ -224,10 +224,14 @@
                                     <th class="col8">@lang('lang.payment_status')</th>
                                     <th class="col9">@lang('lang.payment_type')</th>
                                     <th class="col10">@lang('lang.ref_number')</th>
-                                    <th class="col11 currencies">@lang('lang.received_currency')</th>
-                                    <th class="col12 sum">@lang('lang.grand_total')</th>
-                                    <th class="col13 sum">@lang('lang.paid')</th>
-                                    <th class="col14 sum">@lang('lang.due_sale_list')</th>
+                                    {{-- <th class="col11 currencies">@lang('lang.received_currency')</th> --}}
+                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dinar_c')</th>
+                                    <th class="col13 sum">@lang('lang.paid')  @lang('lang.dinar_c')</th>
+                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dinar_c')</th>
+                                    
+                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dollar_c')</th>
+                                    <th class="col13 sum">@lang('lang.paid') @lang('lang.dollar_c')</th>
+                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dollar_c')</th>
                                     <th class="col15">@lang('lang.due_date')</th>
                                     <th class="col16">@lang('lang.payment_date')</th>
                                     <th class="col17">@lang('lang.cashier_man')</th>
@@ -276,19 +280,30 @@
                                                 {{$payment->ref_no ?? ''}}<br>
                                             @endforeach
                                         </td>
-                                        <td class="col11">
+                                        {{-- <td class="col11">
                                             @foreach($line->transaction_payments as $payment)
                                                 {{$payment->received_currency_relation->symbol ?? ''}}<br>
                                             @endforeach
-                                        </td>
+                                        </td> --}}
+                                      
                                         <td class="col12">
-                                            {{number_format($line->final_total,2)}}
+                                            {{number_format($line->final_total,2)}} د.ع
                                         </td>
                                         <td class="col13">
-                                            {{$line->transaction_payments->sum('amount')}}
+                                            {{$line->transaction_payments->sum('amount')}} د.ع
                                         </td>
                                         <td class="col14">
-                                            {{$line->final_total - $line->transaction_payments->sum('amount')}}
+                                            {{$line->dinar_remaining}} د.ع
+                                        </td>
+                                        <td class="col12">
+                                            {{number_format($line->dollar_final_total,2)}} $
+                                        </td>
+                                        <td class="col13">
+                                            {{$line->transaction_payments->sum('dollar_amount')}} $
+                                        </td>
+                                        
+                                        <td class="col14">
+                                            {{$line->dollar_remaining}}  $
                                         </td>
                                         <td class="col15">
                                             {{$line->transaction_payments->last()->due_date ?? ''}}
