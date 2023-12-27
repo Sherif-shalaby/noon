@@ -285,7 +285,7 @@
                                             <div class="col-md-12">
                                                 <span>عفوا لايوجد منتجات فى هذا القسم</span>
                                             </div>
-                                        
+
                                         @endforelse
                                     @endif
                                 </div>
@@ -612,6 +612,12 @@
 
         });
     });
+     document.addEventListener("livewire:load", function () {
+         Livewire.hook('afterDomUpdate', () => {
+             // Your custom logic here
+             console.log('DOM updated');
+         });
+     });
 
 </script>
 @endpush
