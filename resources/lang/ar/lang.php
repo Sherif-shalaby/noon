@@ -107,7 +107,7 @@ return array(
     'saturday' => 'السبت',
     'add_products'=>'اضافة منتج',
     'class'=>'فئة',
-    'category'=>'قسم رئيسى',
+    'category'=>'تصنيف',
     'subcategory'=>'قسم فرعى',
     'brand'=>'علامة تجارية',
     'product_name'=>'اسم المادة',

@@ -98,11 +98,11 @@
                                             @foreach ( $add_stocks as $add_stock )
                                                 <tr>
                                                 {{-- @foreach ($add_stocks->transaction as $line) --}}
-                                                        <td>{{ @format_date($add_stock->transaction->transaction_date) }}</td>
-                                                        <td>{{$add_stock->transaction->invoice_no}}</td>
-                                                        <td>@if(!empty($add_stock->transaction->supplier)){{$add_stock->transaction->supplier->name}}@endif</td>
+                                                        <td>{{ @format_date($add_stock->transaction->transaction_date??null) }}</td>
+                                                        <td>{{$add_stock->transaction->invoice_no??''}}</td>
+                                                        <td>@if(!empty($add_stock->transaction->supplier??'')){{$add_stock->transaction->supplier->name??''}}@endif</td>
                                                         <td>@if(!empty($add_stock->product)){{$add_stock->product->name}}@endif</td>
-                                                        <td>{{@num_format($add_stock->transaction->final_total)}}</td>
+                                                        <td>{{@num_format($add_stock->transaction->final_total??'')}}</td>
                                                         <td>{{@num_format($add_stock->transaction->transaction_payments->sum('amount'))}}</td>
                                                         <td>{{@num_format($add_stock->transaction->final_total - $add_stock->transaction->transaction_payments->sum('amount'))}}</td>
                                                         <td>{{ $add_stock->transaction->payment_status }}</td>

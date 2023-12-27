@@ -171,25 +171,25 @@ class Create extends Component
             } else {
                 $this->item[0][$data['var1']] = $data['var2'];
                 if ($data['var1'] == 'category_id') {
-                    $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories1 = Category::where('parent_id',2)->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'subcategory_id1') {
-                    $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
-                    $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories1 = Category::where('parent_id',2)->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::where('parent_id',3)->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'subcategory_id2') {
-                    $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
-                    $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::where('parent_id',3)->orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::where('parent_id',4)->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'subcategory_id3') {
-                    $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::where('parent_id',4)->orderBy('name', 'asc')->pluck('name', 'id');
                 }
                 if ($data['var1'] == 'transaction_currency') {
                     //                    dd($data['var2']);
                     $this->transaction_currency = (int)$data['var2'];
                 }
             }
-            $this->subcategories = Category::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
+            $this->subcategories = Category::where('parent_id',1)->orderBy('name', 'asc')->pluck('name', 'id')->toArray();
             $this->exchange_rate = $this->changeExchangeRate();
             // $this->changeExchangeRateBasedPrices();
         }
@@ -208,15 +208,15 @@ class Create extends Component
                 $this->item[0]['exchange_rate'] = $recent_stock->exchange_rate;
                 $this->item[0]['category_id'] = $recent_stock->add_stock_lines->first()->product->category_id ?? null;
                 if (!empty($this->item[0]['category_id'])) {
-                    $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories1 = Category::where('parent_id',2)->orderBy('name', 'asc')->pluck('name', 'id');
                     $this->item[0]['subcategory_id1'] = $recent_stock->add_stock_lines->first()->product->subcategory_id1 ?? null;
                 }
                 if (!empty($this->item[0]['subcategory_id1'] && count($this->subcategories1) > 0)) {
-                    $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories2 = Category::where('parent_id',3)->orderBy('name', 'asc')->pluck('name', 'id');
                     $this->item[0]['subcategory_id2'] = $recent_stock->add_stock_lines->first()->product->subcategory_id2 ?? null;
                 }
                 if (!empty($this->item[0]['subcategory_id2']) && count($this->subcategories2) > 0) {
-                    $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+                    $this->subcategories3 = Category::where('parent_id',4)->orderBy('name', 'asc')->pluck('name', 'id');
                     $this->item[0]['subcategory_id3'] = $recent_stock->add_stock_lines->first()->product->subcategory_id3 ?? null;
                 }
                 $this->item[0]['height'] = $recent_stock->add_stock_lines->first()->product->product_dimensions->height ?? null;
@@ -561,10 +561,7 @@ class Create extends Component
                         'dollar_sell_price' =>  null,
                         'dollar_sub_total' =>  null,
                         'exchange_rate' => !empty($this->exchange_rate) ? $this->num_uf($this->exchange_rate)  : null,
-                        // 'dollar_final_cost' => !empty($this->dollar_total_cost[$index]) ? $this->dollar_total_cost[$index] : null,
-                        // 'cost' => !empty($this->rows[$index]['cost']) ?  $this->rows[$index]['cost'] : null,
-                        // 'dollar_cost' => !empty($this->rows[$index]['dollar_cost']) ? $this->rows[$index]['dollar_cost'] : null,
-                        // 'final_cost' => !empty($this->total_cost[$index]) ? $this->total_cost[$index] : null,
+         
                     ];
                     $stockLine = AddStockLine::create($add_stock_data);
                     if (!empty($this->prices)) {
@@ -657,9 +654,9 @@ class Create extends Component
     }
     public function create()
     {
-        $this->subcategories1 = Category::orderBy('name', 'asc')->pluck('name', 'id');
-        $this->subcategories2 = Category::orderBy('name', 'asc')->pluck('name', 'id');
-        $this->subcategories3 = Category::orderBy('name', 'asc')->pluck('name', 'id');
+        $this->subcategories1 = Category::orderBy('name', 'asc')->where('parent_id',2)->pluck('name', 'id');
+        $this->subcategories2 = Category::orderBy('name', 'asc')->where('parent_id',3)->pluck('name', 'id');
+        $this->subcategories3 = Category::orderBy('name', 'asc')->where('parent_id',4)->pluck('name', 'id');
         $this->item[0] =
             [
                 'isExist' => 1,

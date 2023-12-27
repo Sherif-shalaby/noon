@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BranchRequest;
 use App\Models\Branch;
 use App\Models\Store;
 use App\Utils\Util;
@@ -50,7 +51,7 @@ class BranchController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(BranchRequest $request)
     {
         try {
 //            dd($request);
