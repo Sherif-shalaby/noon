@@ -52,8 +52,10 @@ class PurchaseOrderLineController extends Controller
     {
         // ---------- filters ------------------
         $stores = Store::pluck('name', 'id')->toArray();
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name', 'id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name', 'id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name', 'id');
         $products = Product::orderBy('name', 'asc')->pluck('name', 'id')->toArray();
 
         // ++++++++++++++++++++++++++++ start: for "employee's products" Filters +++++++++++++++++++++++++++++
@@ -131,7 +133,7 @@ class PurchaseOrderLineController extends Controller
             $purchaseOrders = $purchaseOrders->orderBy("created_at", "asc")->get();
         }
 
-        return view('purchase_order.index', compact('purchaseOrders', 'stores', 'categories', 'subcategories', 'products'));
+        return view('purchase_order.index', compact('purchaseOrders', 'stores', 'categories', 'subcategories1','subcategories2','subcategories3', 'products'));
     }
 
     /* +++++++++++++++ create() +++++++++++++++ */

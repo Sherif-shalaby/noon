@@ -30,7 +30,7 @@
             </div>
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('category_id', __('lang.category'))  !!}
+                    {!! Form::label('category_id', __('lang.category').'1')  !!}
                     {!! Form::select(
                         'category_id',
                         $categories,request()->category_id,
@@ -40,30 +40,30 @@
             </div>
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('subcategory_id1', __('lang.subcategory')." 1")  !!}
+                    {!! Form::label('subcategory_id1', __('lang.category')." 2")  !!}
                     {!! Form::select(
                         'subcategory_id1',
-                        $subcategories,request()->subcategory_id1,
+                        $subcategories1,request()->subcategory_id1,
                         ['class' => 'form-control select2 subcategory','placeholder'=>__('lang.please_select'),'id' => 'subcategory_id1']
                     ) !!}
                 </div>
             </div>
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('subcategory_id2', __('lang.subcategory')." 2")  !!}
+                    {!! Form::label('subcategory_id2', __('lang.category')." 3")  !!}
                     {!! Form::select(
                         'subcategory_id2',
-                        $subcategories,request()->subcategory_id2,
+                        $subcategories2,request()->subcategory_id2,
                         ['class' => 'form-control select2 subcategory2','placeholder'=>__('lang.please_select'),'id' => 'subCategoryId2' ]
                     ) !!}
                 </div>
             </div>
             <div class="col-2">
                 <div class="form-group">
-                    {!! Form::label('subcategory_id3', __('lang.subcategory')." 3")  !!}
+                    {!! Form::label('subcategory_id3', __('lang.category')." 4")  !!}
                     {!! Form::select(
                         'subcategory_id3',
-                        $subcategories,request()->subcategory_id3,
+                        $subcategories3,request()->subcategory_id3,
                         ['class' => 'form-control select2 subcategory3','placeholder'=>__('lang.please_select') ,'id' => 'subCategoryId3']
                     ) !!}
                 </div>
