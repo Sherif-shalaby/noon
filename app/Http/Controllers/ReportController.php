@@ -133,15 +133,17 @@ class ReportController extends Controller
     public function getProductReport(){
         $products = $this->reportsFilters->productFilters();
         $units = Unit::orderBy('created_at', 'desc')->pluck('name','id');
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         return view('reports.products.index',compact('products','categories','suppliers','brands',
-            'units','stores','users','subcategories','branches'));
+            'units','stores','users','subcategories1','subcategories2','subcategories3','branches'));
 
     }
 
@@ -179,11 +181,13 @@ class ReportController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $stocks  = $this->reportsFilters->initialBalanceFilters();
         return view('reports.initial_balance.index',compact('suppliers','brands','users',
-            'stocks','categories','subcategories'));
+            'stocks','categories','subcategories1','subcategories2','subcategories3'));
     }
 
     public function addStock(){
@@ -203,8 +207,10 @@ class ReportController extends Controller
     public function bestSellerReport(){
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $best_selling = $this->reportsFilters->bestSellerFilter();
@@ -219,7 +225,7 @@ class ReportController extends Controller
 
             }
         }
-        return view('reports.best_seller.index',compact('product','sold_qty','subcategories','categories',
+        return view('reports.best_seller.index',compact('product','sold_qty','subcategories1','subcategories2','subcategories3','categories',
             'suppliers','brands','branches','stores'));
 
     }

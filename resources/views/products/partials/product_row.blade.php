@@ -186,6 +186,7 @@
                     <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
                 </div>
+                {{-- =========== تعبئة =========== --}}
                 <div class="col-md-2">
                     {!! Form::label('unit', __('lang.large_filling'), ['class'=>'h5 pt-3']) !!}
                     <div class="d-flex justify-content-center">
@@ -198,11 +199,13 @@
                         <button type="button" class="btn btn-primary btn-add-modal btn-sm ml-2 add_unit_raw" data-toggle="modal" data-key="{{$key}}" data-index="0" data-target=".add-unit" href="{{route('units.create')}}"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
-                <div class="col-md-2 pt-4">
+                {{-- +++++++ Equal Button +++++++ --}}
+                <div class="col-md-2 pt-4 mt-3">
                     <button class="btn btn btn-warning add_small_unit" type="button" data-key="{{ $key }}">
                         <i class="fa fa-equals"></i>
                     </button>
                 </div>
+
                 @include('products.product_unit_raw')
                 <input type="hidden" id="raw_unit_index[{{ $key }}]" value="0" />
             </div>
