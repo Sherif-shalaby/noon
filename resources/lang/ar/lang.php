@@ -770,4 +770,7 @@ return array(
     'change_bill_to' => 'تحويل الفاتورة الى',
     'dinar_c' => 'دينار',
     'dollar_c' => 'دولار',
+    'download_invoice' => 'رفع صورة الفاتورة',
+    'upload_payment_docs' => 'رفع مستندات الدفع',
+
 );

@@ -86,7 +86,7 @@
         <label for="upload_documents" style="width: 100%;height: 100%;"
             class="d-flex justify-content-evenly align-items-center">
             <i class="fas fa-cloud-upload-alt"></i>
-            {{ __('lang.upload_image') }}
+            {{ __('lang.upload_payment_docs') }}
         </label>
         <input style="opacity: 0;" type="file" name="upload_documents[]" id="upload_documents"
             wire:model="upload_documents">

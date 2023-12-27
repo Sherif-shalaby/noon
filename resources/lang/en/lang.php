@@ -700,5 +700,7 @@ return [
     'add_expenses' => 'Add Expenses',
     'dinar_c' => 'dinar',
     'dollar_c' => 'dollar',
+    'download_invoice' => 'Upload invoice',
+    'upload_payment_docs' => 'Upload payment documents',
 
 ];
