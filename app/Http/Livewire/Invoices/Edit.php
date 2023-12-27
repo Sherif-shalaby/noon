@@ -69,7 +69,7 @@ class Edit extends Component
         $dollar_amount = 0, $amount = 0, $redirectToHome = false, $status = 'final', $draft_transactions, $show_modal = false,
 
         $search_by_product_symbol, $highest_price, $lowest_price, $from_a_to_z, $from_z_to_a, $nearest_expiry_filter, $longest_expiry_filter,
-        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0;
+        $alphabetical_order_id, $price_order_id, $dollar_price_order_id, $expiry_order_id, $dollar_highest_price, $dollar_lowest_price, $due_date, $created_by, $customer_id, $countryId, $countryName, $country, $net_dollar_remaining = 0,$back_to_dollar;
 
     protected $rules =
     [
@@ -852,28 +852,44 @@ class Edit extends Component
         $this->dollar_remaining = 0;
         // task : الباقي دينار
     }
-    public function ChangeBillToDinar()
-    {
+    public function ChangeBillToDinar(){
         $exchange_rate = System::getProperty('dollar_exchange') ?? 1;
-        if ($this->final_total == 0) {
-            $this->final_total = $this->dollar_final_total * $exchange_rate;
-            $this->dollar_final_total = 0;
-        }
-        if ($this->total == 0) {
-            $this->total = $this->total_dollar * $exchange_rate;
-            $this->total_dollar = 0;
-        }
-        if ($this->discount == 0) {
-            $this->discount = $this->discount_dollar * $exchange_rate;
-            $this->discount_dollar = 0;
-        }
-        if ($this->amount == 0) {
-            $this->amount = $this->dollar_amount * $exchange_rate;
-            $this->dollar_amount = 0;
-        }
-        if ($this->dinar_remaining == 0) {
-            $this->dinar_remaining = $this->dollar_remaining * $exchange_rate;
-            $this->dollar_remaining = 0;
+        if($this->back_to_dollar==0){
+            $final_total= round_250($this->dollar_final_total * $exchange_rate);
+            $this->final_total+= ($final_total>0?$final_total:0);
+            $this->dollar_final_total=0;
+            $total=round_250($this->total_dollar * $exchange_rate);
+            $this->total+= ($total>0?$total:0);
+            $this->total_dollar=0;
+
+            $discount=round_250($this->discount_dollar * $exchange_rate);
+            $this->discount+= ($discount>0?$discount:0);
+            $this->discount_dollar=0;
+
+            $amount=round_250($this->dollar_amount * $exchange_rate);
+            $this->amount+= ($amount>0?$amount:0);
+            $this->dollar_amount=0;
+
+            $dinar_remaining=round_250($this->dollar_remaining * $exchange_rate);
+            $this->dinar_remaining+= ($dinar_remaining>0?$dinar_remaining:0);
+            $this->dollar_remaining=0;
+            $this->back_to_dollar=2;
+        }else{
+            $this->dollar_final_total+= $this->final_total / $exchange_rate;
+            $this->final_total=0;
+
+            $this->total_dollar+= $this->total / $exchange_rate;
+            $this->total=0;
+
+            $this->discount_dollar+= $this->discount / $exchange_rate;
+            $this->discount=0;
+
+            $this->dollar_amount+= $this->amount / $exchange_rate;
+            $this->amount=0;
+
+            $this->dollar_remaining+= $this->dinar_remaining * $exchange_rate;
+            $this->dinar_remaining=0;
+            $this->back_to_dollar=0;
         }
     }
     public function increment($key)
@@ -1008,11 +1024,11 @@ class Edit extends Component
     public function changeReceivedDollar()
     {
         if ($this->dollar_amount !== null && $this->dollar_amount !== 0) {
-            if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0) {
+            if ($this->final_total == 0 && $this->dollar_final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - ($this->num_uf($this->dollar_amount) + ($this->num_uf($this->amount) / System::getProperty('dollar_exchange')));
-            } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0  && $this->amount != 0) {
+            } elseif ($this->dollar_final_total == 0 && $this->final_total !== 0 && $this->dollar_amount !== 0 && $this->amount != 0) {
                 // $diff_dollar = $this->dollar_amount -  $this->dollar_final_total;
                 // $this->dinar_remaining = round_250($this->dinar_remaining - ( $diff_dollar * System::getProperty('dollar_exchange')));
                 $this->dinar_remaining = $this->num_uf($this->final_total) - ($this->num_uf($this->amount) + ($this->num_uf($this->dollar_amount) * System::getProperty('dollar_exchange')));
@@ -1031,7 +1047,7 @@ class Edit extends Component
                 // Handle the case where total is in dollar and both dollar and dinar amounts are 0
                 elseif ($this->dollar_final_total != 0) {
                     // Calculate remaining dollar amount directly
-                    $this->dollar_remaining = $this->num_uf($this->dollar_amount) - $this->num_uf($this->dollar_amount);
+                    $this->dollar_remaining = $this->num_uf($this->dollar_final_total) - $this->num_uf($this->dollar_amount);
                     if ($this->final_total != 0) {
                         $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
                         if ($this->dinar_remaining < 0 &&  $this->dollar_remaining > 0) {
