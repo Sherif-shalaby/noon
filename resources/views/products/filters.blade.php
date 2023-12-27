@@ -71,7 +71,7 @@
                 <div class="d-flex justify-content-center">
                     {!! Form::select('category_id', $categories1, isset($recent_product->category_id) ? $recent_product->category_id : null, [
                         'class' => 'form-control select2 category',
-                        'placeholder' => __('lang.category'),
+                        'placeholder' => __('lang.category'). ' 1',
                         'id' => 'categoryId',
 
                     ]) !!}
@@ -82,7 +82,7 @@
                 <div class="d-flex justify-content-center">
                     {!! Form::select('subcategory_id1', $categories2, isset($recent_product->subcategory_id1) ? $recent_product->subcategory_id1 : null, [
                         'class' => 'form-control select2 subcategory',
-                        'placeholder' =>  __('lang.subcategory') . ' 1',
+                        'placeholder' =>  __('lang.category') . ' 2',
                         'id' => 'subcategory_id1'
                     ]) !!}
                 </div>
@@ -92,7 +92,7 @@
                 <div class="d-flex justify-content-center">
                     {!! Form::select('subcategory_id2', $categories3, isset($recent_product->subcategory_id2) ? $recent_product->subcategory_id2 : null, [
                         'class' => 'form-control select2 subcategory2',
-                        'placeholder' =>  __('lang.subcategory') . ' 2',
+                        'placeholder' =>  __('lang.category') . ' 3',
                         'id' => 'subcategory_id2'
                     ]) !!}
                 </div>
@@ -102,7 +102,7 @@
                 <div class="d-flex justify-content-center">
                     {!! Form::select('subcategory_id3', $categories4, isset($recent_product->subcategory_id3) ? $recent_product->subcategory_id3 : null, [
                         'class' => 'form-control select2 subcategory3',
-                        'placeholder' => __('lang.subcategory') . ' 3',
+                        'placeholder' => __('lang.category') . ' 4',
                         'id' => 'subcategory_id3'
                     ]) !!}
                 </div>
