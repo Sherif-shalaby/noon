@@ -190,12 +190,14 @@ class ReportController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $payment_status_array = $this->common_util->getPaymentStatusArray();
         $stocks  = $this->reportsFilters->addStockFilter();
         return view('reports.add_stock.index',compact('suppliers','brands','users',
-            'stocks','categories','subcategories','payment_status_array'));
+            'stocks','categories','subcategories1','subcategories2','subcategories3','payment_status_array'));
     }
 
     public function bestSellerReport(){
