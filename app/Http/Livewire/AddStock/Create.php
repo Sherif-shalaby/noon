@@ -41,6 +41,10 @@ use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithPagination;
 use function Symfony\Component\String\s;
+use Illuminate\Support\Arr;
+use Illuminate\Contracts\Support\Arrayable;
+
+
 
 class Create extends Component
 {
@@ -320,6 +324,8 @@ class Create extends Component
     public function convertRemainingDollar(){
         $this->total_amount = $this->num_uf( $this->total_amount) +($this->num_uf($this->dollar_remaining )*$this->num_uf( $this->exchange_rate)) ;
     }
+
+
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
@@ -1009,7 +1015,7 @@ class Create extends Component
     }
     public function changePercent($index, $key, $via = null, $i = null)
     {
-
+//        dd($index,$i);
         if (!empty($this->items[$index]['used_currency'])) {
             if($via == 'stores'){
                 $purchase_price = $this->final_purchase_for_piece($index,'stores',$i);
