@@ -151,3 +151,15 @@
   .table-scroll-wrapper {
       width: fit-content;
   }
+
+  .select2-selection__rendered {
+      display: flex !important;
+  }
+
+  .select2-selection__rendered li {
+      display: block !important;
+  }
+
+  .select2-selection__choice {
+      color: black !important;
+  }

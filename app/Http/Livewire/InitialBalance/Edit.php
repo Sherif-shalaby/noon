@@ -248,7 +248,8 @@ class Edit extends Component
     public function addPrices()
     {
         $newRow = [
-            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' => ''
+            'id' => '', 'stock_line_id' => '', 'sku' => '', 'quantity' => '', 'unit_id' => '', 'purchase_price' => '', 'prices' => [], 'fill' =>
+            '', 'show_prices' => false,
         ];
         $this->rows[] = $newRow;
         $index = count($this->rows) - 1;

@@ -89,7 +89,7 @@
                         <div class="col-12 d-flex @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                             style="position: relative;z-index: 2;">
 
-                            <div class="col-md-3 mb-2 p-0">
+                            <div class=" mb-2 p-0">
                                 {!! Form::label('store', __('lang.store'), [
                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                     'style' => 'font-weight:500;font-size:10px;color:#888',
@@ -103,8 +103,8 @@
                                         width: 100%;
                                         height: 30px;
                                         flex-wrap: nowrap;">
-                                    <select id="store_id" name="store_id[]" id = 'store_id'
-                                        class="form-control selectpicker" multiple="multiple">
+                                    <select id="store_id" name="store_id[]" id = 'store_id' class="form-control select2"
+                                        multiple="multiple">
                                         <option value="">@lang('lang.please_select')</option>
                                         @foreach ($stores as $store)
                                             <option value="{{ $store->id }}">
