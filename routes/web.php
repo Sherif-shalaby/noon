@@ -169,11 +169,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product/get-dropdown-store/', [ProductController::class,'getStoresDropdown']);
     // +++++++++++++++++++++ products filters +++++++++++++++++++++++++++
     // fetch "sub_categories1" of selected "main_category" selectbox
-    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_product_sub_categories1']);
+    Route::post('api/products/fetch_product_sub_categories1',[ProductController::class,'fetch_sub_categories1']);
     // fetch "sub_categories2" of selected "sub_categories1" selectbox
-    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_product_sub_categories2']);
+    Route::post('api/products/fetch_product_sub_categories2',[ProductController::class,'fetch_sub_categories2']);
     // fetch "sub_categories3" of selected "sub_categories2" selectbox
-    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_product_sub_categories3']);
+    Route::post('api/products/fetch_product_sub_categories3',[ProductController::class,'fetch_sub_categories3']);
     Route::get('product/add_product_raw', [ProductController::class,'addProductRow']);
 
     Route::resource('products', ProductController::class);

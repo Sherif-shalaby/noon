@@ -160,7 +160,7 @@ return array(
     // ++++++++++++ customers +++++++++++++++
     'customer_types'=>'أنواع العملاء',
     'customer_type'=>'نوع العميل',
-    'quarters'=>'الاحياء',
+    'quarters'=>'الحي',
     'add_quarter'=>'اضافة حي',
     'add_region'=>'اضافة منطقة',
     'add_customer_type'=>'اضافة نوع عميل',
@@ -652,7 +652,7 @@ return array(
     'order_discount' => 'خصم',
     'view_payments' => 'عرض المدفوعات',
     'cities' => 'المدن',
-    'regions' => 'المناطق',
+    'regions' => 'المنطقة',
     'show_invoices' => 'عرض الفواتير',
     'view_plan' => 'تفاصيل الخطه',
     'upload_receipt' => 'رفع وصل استلام',
