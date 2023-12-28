@@ -295,7 +295,7 @@
                                                     </th>
                                                     <th class="col5">@lang('lang.customer')</th>
                                                     <th class="col6">@lang('lang.phone')</th>
-                                                    <th class="col7">@lang('lang.sale_status')</th>
+                                                    {{-- <th class="col7">@lang('lang.sale_status')</th> --}}
                                                     <th class="col8">@lang('lang.payment_status')</th>
                                                     <th class="col9">@lang('lang.payment_type')</th>
                                                     <th class="col10">@lang('lang.ref_number')</th>
@@ -337,6 +337,12 @@
                                                                 style="font-size: 12px;font-weight: 600"
                                                                 data-tooltip="@lang('lang.reference')">
                                                                 {{ $line->invoice_no ?? '' }}
+                                                                @if (!empty($line->return_parent_id))
+                                                                    <a data-href="{{ route('sell_return.show', $line->id) }}"
+                                                                        data-container=".view_modal"
+                                                                        class="btn btn-modal" data-toggle="modal"
+                                                                        style="color: #007bff;">R</a>
+                                                                @endif
                                                             </span>
                                                         </td>
                                                         <td class="col3">
@@ -373,7 +379,7 @@
                                                                 {{ $line->customer->phone ?? '' }}
                                                             </span>
                                                         </td>
-                                                        <td class="col7">
+                                                        {{-- <td class="col7">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
                                                                 style="font-size: 12px;font-weight: 600"
@@ -381,7 +387,7 @@
                                                                 <span
                                                                     class="badge badge-success">{{ $line->status ?? '' }}</span>
                                                             </span>
-                                                        </td>
+                                                        </td> --}}
                                                         <td class="col8">
                                                             <span
                                                                 class="custom-tooltip d-flex justify-content-center align-items-center"
