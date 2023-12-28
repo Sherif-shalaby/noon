@@ -54,17 +54,17 @@
                         <div class="col-md-12">
                             <div class="col-md-12" style="margin-top: 20px ">
                                 <div class="table-responsive @if (app()->isLocale('ar')) dir-rtl @endif">
-                                    <table id="product_table" style="width: 100% " class="table table-striped">
+                                    <table id="product_table" class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th style="width: 30%">{{ __('lang.product') }}</th>
-                                                <th style="width: 20%">{{ __('lang.product_code') }}</th>
-                                                <th style="width: 15%">{{ __('lang.quantity') }}</th>
-                                                <th style="width: 15%">{{ __('lang.returned_quantity') }}</th>
-                                                <th style="width: 15%">{{ __('lang.price') }}</th>
-                                                <th style="width: 15%">{{ __('lang.discount') }}</th>
-                                                <th style="width: 10%">{{ __('lang.sub_total') }}</th>
-                                                <th style="width: 20%"></th>
+                                                <th>{{ __('lang.product') }}</th>
+                                                <th>{{ __('lang.product_code') }}</th>
+                                                <th>{{ __('lang.quantity') }}</th>
+                                                <th>{{ __('lang.returned_quantity') }}</th>
+                                                <th>{{ __('lang.price') }}</th>
+                                                <th>{{ __('lang.discount') }}</th>
+                                                <th>{{ __('lang.sub_total') }}</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -108,35 +108,10 @@
 
                         </div>
                     </div>
-                    {{--                        <div class="row"> --}}
-                    {{--                            <div class="col-md-4 @if ($sale->delivery_cost_given_to_deliveryman) d-none @endif"> --}}
-                    {{--                                {!! Form::label('delivery_cost_actual', __('lang.The_actual_delivery_cost'), []) !!} --}}
-                    {{--                                {!! Form::text('delivery_cost_actual', @num_format($sale->delivery_cost), ['class' => 'form-control', 'readonly']) !!} --}}
-                    {{--                            </div> --}}
-                    {{--                            <div class="col-md-5 @if ($sale->delivery_cost_given_to_deliveryman) d-none  @endif"> --}}
-                    {{--                                {!! Form::label('delivery_cost', __('lang.Discount_from_the_cost_of_delivery'), []) !!} --}}
-                    {{--                                {!! Form::text('delivery_cost', @num_format($returns->delivery_cost??0), ['class' => 'form-control','max'=>@num_format($sale->delivery_cost)]) !!} --}}
-                    {{--                            </div> --}}
-                    {{--                            <div class="@if ($sale->delivery_cost_given_to_deliveryman) col-md-6 @else col-md-2 @endif"> --}}
-                    {{--                                {!! Form::hidden('discount_type', $sale->discount_type, ['class' => 'form-control', 'id' => 'discount_type']) !!} --}}
-                    {{--                                {!! Form::hidden('discount_value', $sale->discount_value, ['class' => 'form-control', 'id' => 'discount_value']) !!} --}}
 
-                    {{--                                {!! Form::label('discount_amount', __('lang.discount'), []) !!} --}}
-                    {{--                                {!! Form::text('discount_amount', !empty($returns->discount_amount) ? @num_format($returns->discount_amount) : @num_format($sale->discount_amount), ['class' => 'form-control']) !!} --}}
-                    {{--                            </div> --}}
-                    {{--                            <div class="@if ($sale->delivery_cost_given_to_deliveryman) col-md-6 @else col-md-1 @endif"> --}}
-                    {{--                                {!! Form::label('total_tax', __('lang.tax'), []) !!} --}}
-                    {{--                                {!! Form::text('total_tax', !empty($returns->total_tax) ? @num_format($returns->total_tax) : @num_format($sale->total_tax), ['class' => 'form-control']) !!} --}}
-                    {{--                                <input type="hidden" name="tax_method" id="tax_method" --}}
-                    {{--                                       value="{{ $sale->tax_method }}"> --}}
-                    {{--                                <input type="hidden" name="tax_rate" id="tax_rate" value="{{ $sale->tax_rate }}"> --}}
-                    {{--                                <input type="hidden" name="tax_type" id="tax_type" value="{{ $sale->tax_type }}"> --}}
-                    {{--                            </div> --}}
-                    {{--                        </div> --}}
-                    <br>
                     <input type="hidden" name="total_amount_paid" id="total_amount_paid"
                         value="{{ $sale->transaction_payments->sum('amount') }}">
-                    <div class="row">
+                    <div class="row" style="position:relative;z-index:999999">
                         <div class="col-md-12">
                             @if (!empty($sell_return))
                                 @if ($sell_return->transaction_payments->count() > 0)

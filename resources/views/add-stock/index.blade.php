@@ -31,6 +31,24 @@
         .select2-selection__choice {
             color: black !important;
         }
+
+        .form-select {
+            height: 100%;
+            padding-bottom: 0;
+            padding-top: 0;
+            background-color: #dedede !important;
+            border-radius: 16px;
+            border: 2px solid #cececf;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .form-select:focus {
+            border-color: #cececf !important;
+            outline: 0;
+            box-shadow: 0 0 0 0 !important;
+            background-color: white !important;
+        }
     </style>
     <div class="breadcrumbbar m-0 px-3 py-0">
         <div

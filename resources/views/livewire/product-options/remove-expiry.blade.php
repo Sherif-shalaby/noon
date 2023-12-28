@@ -71,7 +71,7 @@
             </div>
         </div>
         <input hidden value="" name="total_shortage_value" id="total_shortage_value">
-        <button style="margin-left: 25px" class="btn btn-primary check_pass" wire:click="save">Save</button>
-        <a style="margin-left: 25px" id="cancel_btn" class="btn btn-danger text-white ">Cancel</a>
+        <button class="btn mx-2 my-1 btn-primary check_pass" wire:click="save">Save</button>
+        <a id="cancel_btn" class="btn mx-2 my-1 btn-danger text-white ">Cancel</a>
     </div>
 </div>

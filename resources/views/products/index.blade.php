@@ -565,7 +565,7 @@
                                                                 </button>
                                                                 <ul class="dropdown-menu edit-options dropdown-menu-right dropdown-default"
                                                                     user="menu" x-placement="bottom-end"
-                                                                    style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                                    style="position: absolute; transform: translate3d(73px, 31px, 0px); top: 0px; left: 0px; will-change: transform;min-width: 200px !important;">
                                                                     <li>
                                                                         <a data-href="{{ route('products.show', $product->id) }}"
                                                                             data-container=".view_modal"

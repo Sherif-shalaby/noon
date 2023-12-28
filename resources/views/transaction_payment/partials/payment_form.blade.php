@@ -20,8 +20,8 @@
         </div>
     </div>
 
-    <div
-        class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
+    <div class="col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+        style="position:relative;z-index:5">
         {!! Form::label('method', __('lang.payment_type') . '*', [
             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
             'style' => 'font-size: 12px;font-weight: 500;',
