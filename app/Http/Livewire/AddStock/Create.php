@@ -323,10 +323,12 @@ class Create extends Component
         // dd('test');
         $this->dinar_remaining = 0;
         $this->dollar_remaining = 0;
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function convertRemainingDollar()
     {
         $this->total_amount = $this->num_uf($this->total_amount) + ($this->num_uf($this->dollar_remaining) * $this->num_uf($this->exchange_rate));
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
 
@@ -636,6 +638,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
         return redirect('/add-stock/create');
     }
 
@@ -1519,6 +1522,7 @@ class Create extends Component
         // }else{
         $this->total_amount = $this->sum_total_cost() - $this->calcPayment();
         // }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeReceivedDollar()
     {
@@ -1559,6 +1563,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
         // dd( $this->dollar_remaining);
     }
 
@@ -1602,6 +1607,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function sum_sub_total()

@@ -453,17 +453,20 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeStatus()
     {
         $this->status = 'draft';
         $this->submit();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function pendingStatus()
     {
         $this->payment_status = 'pending';
         $this->submit();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getClient()
     {
@@ -680,12 +683,14 @@ class Create extends Component
             }
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
         //        $this->sumSubTotal();
     }
     public function cancel()
     {
         foreach ($this->items as $index => $item) {
             $this->delete_item($index);
+            $this->dispatchBrowserEvent('componentRefreshed');
         }
     }
 
@@ -766,6 +771,7 @@ class Create extends Component
         $this->dollar_remaining = 0;
         // task : الباقي دينار
         $this->dinar_remaining = round_250($this->num_uf($this->final_total) - $this->num_uf($this->amount));
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function ChangeBillToDinar()
     {
@@ -807,6 +813,7 @@ class Create extends Component
             $this->dinar_remaining = 0;
             $this->back_to_dollar = 0;
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function increment($key)
     {
@@ -837,6 +844,7 @@ class Create extends Component
     {
         unset($this->items[$key]);
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changePrice($key)
@@ -853,6 +861,7 @@ class Create extends Component
             $this->items[$key]['dollar_price'] = 0;
         }
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeCustomerType($key)
     {
@@ -876,6 +885,7 @@ class Create extends Component
         }
         $this->subtotal($key);
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function resetAll()
     {
@@ -913,6 +923,7 @@ class Create extends Component
         $this->items[$key]['dollar_sub_total']  =  ((float)$this->num_uf($this->items[$key]['dollar_price']) * $this->items[$key]['quantity']) -
             ($this->items[$key]['quantity'] * (float)$this->num_uf($this->items[$key]['discount_price']));
         $this->computeForAll();
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeDiscount($key)
@@ -937,6 +948,7 @@ class Create extends Component
         $this->dollar_final_total = $this->total_dollar - $this->discount_dollar;
         // Task : dollar_remaining : الباقي دولار
         $this->dollar_remaining = ($this->dollar_amount - $this->dollar_final_total);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeReceivedDollar()
@@ -977,6 +989,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function changeReceivedDinar()
@@ -1019,6 +1032,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     // calculate final_total : "النهائي دينار"
@@ -1028,6 +1042,7 @@ class Create extends Component
         $this->final_total = round_250($this->total - $this->discount);
         // Task : dollar_remaining : الباقي دينار
         $this->dinar_remaining = round_250($this->amount - $this->final_total);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function ShowDollarCol()
@@ -1523,6 +1538,7 @@ class Create extends Component
                 $this->items[$key]['quantity_available'] = $qty;
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function getNewSellPrice($stock_variation, $product_variations, $unit, $variation_id)
@@ -1669,6 +1685,7 @@ class Create extends Component
             $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
             dd($e);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeDinarPrice($key)
     {

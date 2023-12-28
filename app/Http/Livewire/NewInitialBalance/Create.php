@@ -139,6 +139,7 @@ class Create extends Component
         $length = $this->item[0]['length'] ?? 0;
         $width = $this->item[0]['width'] ?? 0;
         $this->item[0]['size'] = (float)$height * (float)$length * (float)$width;
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     protected $listeners = ['listenerReferenceHere', 'create', 'cancelCreateProduct'];
 
@@ -298,6 +299,7 @@ class Create extends Component
     {
         $this->change_discount_from_original_price = 0;
         $this->changePrice($index);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addRaw()
     {
@@ -510,6 +512,7 @@ class Create extends Component
                 $this->saveTransaction($product->id,);
                 DB::commit();
                 $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => __('lang.success'),]);
+                $this->dispatchBrowserEvent('componentRefreshed');
                 return redirect('/new-initial-balance/create');
             }
         } catch (\Exception $e) {
@@ -652,6 +655,7 @@ class Create extends Component
         if ($product_exist) {
             $this->dispatchBrowserEvent('showCreateProductConfirmation');
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function create()
     {
@@ -967,6 +971,7 @@ class Create extends Component
             'parent_price' => 0,
         ];
         array_unshift($this->prices, $new_price);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addStoreRow()
     {
@@ -980,6 +985,7 @@ class Create extends Component
             ]
         ];
         array_unshift($this->fill_stores, $new_store);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addStoreDataRow($index)
     {
@@ -988,6 +994,7 @@ class Create extends Component
             'quantity' => '',
         ];
         array_unshift($this->fill_stores[$index]['data'], $new_store_data);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function addPrices()
     {
@@ -1033,6 +1040,7 @@ class Create extends Component
             $this->rows[$index]['prices'][$key]['dinar_sell_price'] = number_format(($purchase_price * $this->num_uf($this->exchange_rate)) + $this->num_uf($this->rows[$index]['prices'][$key]['dinar_increase']), 3);
             $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function changeIncrease($index, $key)
     {
@@ -1052,6 +1060,7 @@ class Create extends Component
                 $this->rows[$index]['prices'][$key]['dollar_sell_price'] = number_format($purchase_price + $this->num_uf($this->rows[$index]['prices'][$key]['dollar_increase']), 3);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function  changeFill($index)
     {
@@ -1069,6 +1078,7 @@ class Create extends Component
                 $this->changeIncrease($index, $key);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function showDiscount()
     {
@@ -1123,10 +1133,12 @@ class Create extends Component
             }
         }
         unset($this->prices[$key]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_store_raw($key)
     {
         unset($this->fill_stores[$key]);
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function delete_store_data_raw($index, $key)
     {
@@ -1205,6 +1217,7 @@ class Create extends Component
                 $this->prices[$index]['piece_price'] = number_format($this->num_uf($this->prices[$index]['total_price']) / (!empty($total_quantity) ? $this->num_uf($total_quantity) : 1), 3);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function applyOnAllCustomers($key)
     {
@@ -1255,6 +1268,7 @@ class Create extends Component
                 }
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getKey($fill_id)
     {
