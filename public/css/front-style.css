@@ -69,7 +69,7 @@ label {
 
 .initial-balance-input {
     background-color: #dedede;
-    border: none;
+    border: 2px solid #cececf;
     border-radius: 16px;
     color: #373737;
     box-shadow: 0 8px 6px -5px #bbb;

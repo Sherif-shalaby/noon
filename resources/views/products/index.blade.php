@@ -16,7 +16,7 @@
         }
 
         .table-top-head {
-            top: 200px !important;
+            top: 205px !important;
         }
 
         .table-scroll-wrapper {
@@ -31,19 +31,19 @@
 
         @media(max-width:991px) {
             .table-top-head {
-                top: 200px !important
+                top: 205px !important
             }
         }
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 250px !important
+                top: 388px !important
             }
         }
 
         @media(max-width:575px) {
             .table-top-head {
-                top: 385px !important
+                top: 415px !important
             }
         }
 

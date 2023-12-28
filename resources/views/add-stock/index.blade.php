@@ -3,7 +3,7 @@
 @section('breadcrumbbar')
     <style>
         .table-top-head {
-            top: 270px;
+            top: 260px;
         }
 
         .wrapper1 {
@@ -12,12 +12,24 @@
 
         @media(max-width:768px) {
             .table-top-head {
-                top: 650px !important
+                top: 620px !important
             }
 
             .wrapper1 {
                 margin-top: 110px !important;
             }
+        }
+
+        .select2-selection__rendered {
+            display: flex !important;
+        }
+
+        .select2-selection__rendered li {
+            display: block !important;
+        }
+
+        .select2-selection__choice {
+            color: black !important;
         }
     </style>
     <div class="breadcrumbbar m-0 px-3 py-0">
