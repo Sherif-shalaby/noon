@@ -279,7 +279,7 @@
                             <div class="wrapper2 @if (app()->isLocale('ar')) dir-rtl @endif">
                                 <div class="div2 table-scroll-wrapper">
                                     <!-- content goes here -->
-                                    <div style="min-width: 1800px;max-height: 90vh;overflow: auto;">
+                                    <div style="min-width: 2000px;min-height:50vh;max-height: 90vh;overflow: auto;">
                                         {{-- ++++++++++++++++++ Table Columns ++++++++++++++++++ --}}
                                         <table id="datatable-buttons" class="table table-striped table-bordered">
                                             <thead>
@@ -304,9 +304,12 @@
                                                     <th class="col13 sum">@lang('lang.paid') @lang('lang.dinar_c')</th>
                                                     <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dinar_c')</th>
 
-                                                    <th class="col12 sum">@lang('lang.grand_total') @lang('lang.dollar_c')</th>
-                                                    <th class="col13 sum">@lang('lang.paid') @lang('lang.dollar_c')</th>
-                                                    <th class="col14 sum">@lang('lang.due_sale_list') @lang('lang.dollar_c')</th>
+                                                    <th class="col12 dollar-cell sum">@lang('lang.grand_total')
+                                                        @lang('lang.dollar_c')</th>
+                                                    <th class="col13 dollar-cell sum">@lang('lang.paid')
+                                                        @lang('lang.dollar_c')</th>
+                                                    <th class="col14 dollar-cell sum">@lang('lang.due_sale_list')
+                                                        @lang('lang.dollar_c')</th>
                                                     <th class="col15">@lang('lang.due_date')</th>
                                                     <th class="col16">@lang('lang.payment_date')</th>
                                                     <th class="col17">@lang('lang.cashier_man')</th>

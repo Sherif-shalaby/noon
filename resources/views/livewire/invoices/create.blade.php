@@ -618,10 +618,10 @@
     </div>
     @include('invoices.partials.draft_transaction')
 
+    @include('customers.quick_add', ['quick_add' => 1])
     {!! Form::close() !!}
 
 </section>
-@include('customers.quick_add', ['quick_add' => 1])
 
 
 {{-- <!-- This will be printed --> --}}
