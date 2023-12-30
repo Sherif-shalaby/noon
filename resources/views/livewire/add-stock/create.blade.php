@@ -37,10 +37,10 @@
                         <div class="col-md-12">
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.15s">
                                     {!! Form::label('invoice_no', __('lang.invoice_no'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
                                     <div class="input-wrapper width-full">
@@ -65,7 +65,7 @@
                                         class="form-control initial-balance-input width-full m-0">
                                 </div>
 
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.25s">
                                     {!! Form::label('purchase_type', __('lang.purchase_type') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
@@ -102,13 +102,16 @@
                                             'placeholder' => __('lang.please_select'),
                                             'data-name' => 'supplier',
                                             'wire:model' => 'supplier',
+                                        
                                             'wire:change' => 'changeExchangeRate()',
                                         ]) !!}
+
 
                                         <button type="button"
                                             class="add-button d-flex justify-content-center align-items-center"
                                             data-toggle="modal" data-target=".add-supplier"><i
                                                 class="fas fa-plus"></i></button>
+
                                     </div>
                                     @error('supplier')
                                         <span style="font-size: 10px;font-weight: 700;"
@@ -117,7 +120,7 @@
                                 </div>
 
 
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.35s">
                                     {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 width-quarter',
@@ -129,7 +132,7 @@
                                 </div>
 
                                 @if (!empty($change_exchange_rate_to_supplier))
-                                    <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column p-0 mx-1  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                    <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column p-0 mx-1  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                         style="animation-delay: 1.35s">
                                         {!! Form::label('exchange_rate', __('lang.end_date'), [
                                             'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
@@ -140,7 +143,7 @@
                                     </div>
                                 @endif
 
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.4s">
                                     {!! Form::label('purchase_type', __('lang.po_no'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
@@ -160,7 +163,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                <div class="mb-2 col-md-1 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.45s">
                                     {!! Form::label('divide_costs', __('lang.divide_costs'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',

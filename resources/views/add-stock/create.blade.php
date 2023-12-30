@@ -7,9 +7,8 @@
 @section('breadcrumbbar')
     <style>
         /* .select2-selection__rendered {
-                width: 100px;
-            } */
-
+                    width: 100px;
+                } */
         .extra_store_accordion .select2-selection__rendered {
             width: 100%;
         }
