@@ -280,7 +280,7 @@
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        {{-- +++++++++++++++++ customers Dropdown +++++++++++++++++ --}}
+                        {{-- ++++++++++++++++++++++++++++ customers Dropdown ++++++++++++++++++++++++++++ --}}
                         @if(!empty($toggle_customers_dropdown))
                         <div class="col-md-3">
                             {!! Form::label('customer_id', __('lang.customers') . ':*', []) !!}
