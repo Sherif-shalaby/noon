@@ -38,6 +38,57 @@
                             <div class="row @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
 
                                 <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="animation-delay: 1.5s">
+                                    {!! Form::label('invoice_no', __('lang.invoice_no'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                    ]) !!}
+                                    <div class="input-wrapper width-full">
+
+                                        {!! Form::text('invoice_no', $invoice_no, [
+                                            'class' => 'form-control initial-balance-input m-0 width-full',
+                                            'placeholder' => __('lang.invoice_no'),
+                                            'wire:model' => 'invoice_no',
+                                        ]) !!}
+                                    </div>
+                                </div>
+
+                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="animation-delay: 1.45s">
+                                    {!! Form::label('transaction_date', __('lang.date_and_time'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                    ]) !!}
+
+                                    <input type="datetime-local" wire:model="transaction_date"
+                                        value="{{ date('Y-m-d\TH:i') }}"
+                                        class="form-control initial-balance-input width-full m-0">
+                                </div>
+
+                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
+                                    style="animation-delay: 1.3s">
+                                    {!! Form::label('purchase_type', __('lang.purchase_type') . '*', [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                                        'style' => 'font-size: 12px;font-weight: 500;',
+                                    ]) !!}
+                                    <div class="input-wrapper" style="width: 100%">
+
+                                        {!! Form::select('purchase_type', ['import' => __('lang.import'), 'local' => __('lang.local')], $purchase_type, [
+                                            'class' => 'form-select',
+                                            'required',
+                                            'style' => 'width:100%;height:100%',
+                                            'placeholder' => __('lang.please_select'),
+                                            'data-name' => 'purchase_type',
+                                            'wire:model' => 'purchase_type',
+                                        ]) !!}
+                                    </div>
+                                    @error('purchase_type')
+                                        <span style="font-size: 10px;font-weight: 700;"
+                                            class="error text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.2s">
                                     {!! Form::label('supplier_id', __('lang.supplier') . '*', [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
@@ -65,28 +116,29 @@
                                     @enderror
                                 </div>
 
+
                                 <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                    style="animation-delay: 1.3s">
-                                    {!! Form::label('purchase_type', __('lang.purchase_type') . '*', [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
+                                    style="animation-delay: 1.5s">
+                                    {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
+                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 width-quarter',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    <div class="input-wrapper" style="width: 100%">
-
-                                        {!! Form::select('purchase_type', ['import' => __('lang.import'), 'local' => __('lang.local')], $purchase_type, [
-                                            'class' => 'form-select',
-                                            'required',
-                                            'style' => 'width:100%;height:100%',
-                                            'placeholder' => __('lang.please_select'),
-                                            'data-name' => 'purchase_type',
-                                            'wire:model' => 'purchase_type',
-                                        ]) !!}
-                                    </div>
-                                    @error('purchase_type')
-                                        <span style="font-size: 10px;font-weight: 700;"
-                                            class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <input type="text" class="form-control initial-balance-input width-full m-0"
+                                        id="exchange_rate" name="exchange_rate" wire:model="exchange_rate"
+                                        wire:change="changeExchangeRateBasedPrices()">
                                 </div>
+
+                                @if (!empty($change_exchange_rate_to_supplier))
+                                    <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column p-0 mx-1  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                        style="animation-delay: 1.55s">
+                                        {!! Form::label('exchange_rate', __('lang.end_date'), [
+                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
+                                            'style' => 'font-size: 12px;font-weight: 500;',
+                                        ]) !!}
+                                        <input type="date" class="form-control m-0 width-full initial-balance-input"
+                                            id="end_date" name="end_date" wire:model="end_date">
+                                    </div>
+                                @endif
 
                                 <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.35s">
@@ -136,76 +188,24 @@
                                 </div>
 
                                 <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                    style="animation-delay: 1.45s">
-                                    {!! Form::label('transaction_date', __('lang.date_and_time'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 ',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-
-                                    <input type="datetime-local" wire:model="transaction_date"
-                                        value="{{ date('Y-m-d\TH:i') }}"
-                                        class="form-control initial-balance-input width-full m-0">
-                                </div>
-
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
                                     style="animation-delay: 1.5s">
-                                    {!! Form::label('exchange_rate', __('lang.exchange_rate'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 ' : 'mx-2 mb-0 width-quarter',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <input type="text" class="form-control initial-balance-input width-full m-0"
-                                        id="exchange_rate" name="exchange_rate" wire:model="exchange_rate"
-                                        wire:change="changeExchangeRateBasedPrices()">
-                                </div>
-
-                                @if (!empty($change_exchange_rate_to_supplier))
-                                    <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column p-0 mx-1  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
-                                        style="animation-delay: 1.55s">
-                                        {!! Form::label('exchange_rate', __('lang.end_date'), [
-                                            'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                            'style' => 'font-size: 12px;font-weight: 500;',
-                                        ]) !!}
-                                        <input type="date" class="form-control m-0 width-full initial-balance-input"
-                                            id="end_date" name="end_date" wire:model="end_date">
-                                    </div>
-                                @endif
-
-
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                    style="animation-delay: 1.5s">
-                                    {!! Form::label('files', __('lang.download_invoice'), [
+                                    {{-- {!! Form::label('files', __('lang.download_invoice'), [
                                         'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                         'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <div class="initial-balance-input my-0 mr-0 width-full">
-                                        <label for="files"
-                                            style="width: 100%;height: 100%;font-size: 12px;font-weight: 500;"
-                                            class="d-flex justify-content-evenly align-items-center">
-                                            <i class="fas fa-cloud-upload-alt"></i>
-                                            {{ __('lang.upload_image') }}
-                                        </label>
+                                    ]) !!} --}}
+
+                                    <label for="files"
+                                        class="btn btn-primary d-flex justify-content-center align-items-center"
+                                        style="width: 30px;height: 30px;margin-top: 16px;color:white !important">
+                                        <i class="fas fa-camera"></i>
                                         <input style="opacity: 0;" type="file" name="files[]" id="files"
                                             wire:model="files">
-                                    </div>
+                                    </label>
+
+
+
 
                                 </div>
-
-                                <div class="mb-2 col-md-2 d-flex animate__animated animate__bounceInLeft flex-column py-0 px-1 @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif"
-                                    style="animation-delay: 1.5s">
-                                    {!! Form::label('invoice_no', __('lang.invoice_no'), [
-                                        'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0 width-quarter' : 'mx-2 mb-0 width-quarter',
-                                        'style' => 'font-size: 12px;font-weight: 500;',
-                                    ]) !!}
-                                    <div class="input-wrapper width-full">
-
-                                        {!! Form::text('invoice_no', $invoice_no, [
-                                            'class' => 'form-control initial-balance-input m-0 width-full',
-                                            'placeholder' => __('lang.invoice_no'),
-                                            'wire:model' => 'invoice_no',
-                                        ]) !!}
-                                    </div>
-                                </div>
-
 
                             </div>
 
@@ -553,7 +553,6 @@
 
 
                                 </div>
-
                                 <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 1.95s">
                                     {!! Form::label('discount_amount', __('lang.discount'), [
@@ -594,6 +593,8 @@
                                     <span style="font-size: 10px;font-weight: 700;"
                                         class="error text-danger">{{ $message }}</span>
                                 @enderror
+
+
                                 <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2.1s">
                                     {!! Form::label('source_of_payment', __('lang.source_of_payment') . '*', [
@@ -618,6 +619,7 @@
                                     @enderror
                                 </div>
 
+
                                 <div class="mb-2 col-md-3 d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2.15">
                                     {!! Form::label('payment_status', __('lang.payment_status') . '*', [
@@ -640,6 +642,8 @@
                                             class="error text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+
+
                                 <div class="mb-2 col-md-3 payment_fields hide d-flex align-items-center animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
                                     style="animation-delay: 2.2">
                                     {!! Form::label('method', __('lang.payment_type'), [
@@ -662,10 +666,13 @@
                                     </div>
                                 </div>
 
+
+
                                 @include('add-stock.partials.payment_form')
+
+
                                 @if ($payment_status != 'paid' && isset($payment_status))
                                     @if (!empty($amount))
-
                                         <div
                                             class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
                                             <label for="due_amount"
@@ -680,7 +687,6 @@
                                                 </span>
                                             </label>
                                         </div>
-
                                     @endif
                                     <div
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_amount_div">
@@ -747,11 +753,16 @@
                                             : 'mr-3 mb-0 width-quarter width-full',
                                         'style' => 'font-size: 12px;font-weight: 500;',
                                     ]) !!}
-                                    <div class="input-wrapper" style="width: 90% !important;">
+                                    <div>
                                         {!! Form::textarea(
                                             'notes',
                                             !empty($recent_stock) && !empty($recent_stock->notes) ? $recent_stock->notes : null,
-                                            ['class' => 'form-control width-full initial-balance-input m-0', 'rows' => 3, 'wire:model' => 'notes'],
+                                            [
+                                                'class' => 'form-control width-full initial-balance-input m-0',
+                                                'rows' => 3,
+                                                'wire:model' => 'notes',
+                                                'style' => 'background-color:#dedede',
+                                            ],
                                         ) !!}
                                     </div>
                                 </div>
