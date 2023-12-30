@@ -1268,7 +1268,6 @@ class Create extends Component
                 }
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function getKey($fill_id)
     {

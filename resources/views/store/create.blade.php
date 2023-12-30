@@ -6,13 +6,13 @@
                 'method' => 'post',
                 'id' => isset($quick_add) && $quick_add ? 'quick_add_store_form' : 'add_store',
             ]) !!}
-            <div class="modal-header">
+            <div
+                class="modal-header d-flex justify-content-between py-2 @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif">
                 <h5 class="modal-title" id="exampleLargeModalLabel">@lang('lang.add_store')</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close mx-0" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
             <div class="modal-body">
                 <div
                     class=" d-flex mb-2 align-items-center form-group @if (app()->isLocale('ar')) flex-row-reverse
@@ -24,7 +24,7 @@
                     ]) !!}
                     <div class="input-wrapper" style="width: 60%;margin: auto;">
                         {!! Form::select('branch_id', $branches, null, [
-                            'class' => 'form-control select',
+                            'class' => 'form-select',
                             'placeholder' => __('lang.branch'),
                         ]) !!}
                     </div>

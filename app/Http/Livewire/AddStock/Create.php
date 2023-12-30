@@ -44,10 +44,11 @@ use function Symfony\Component\String\s;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Support\Arrayable;
 
-
+use Livewire\WithFileUploads;
 
 class Create extends Component
 {
+    use WithFileUploads;
     protected $rules = [
         // 'store_id' => 'required',
         'supplier' => 'required',
@@ -1820,6 +1821,9 @@ class Create extends Component
 
                 if (isset($this->items[$index]['discount'])) {
                     $discount = $this->num_uf($this->items[$index]['discount']);
+                    if ($this->items[$index]['used_currency'] == 2) {
+                        $discount = $this->num_uf($discount) * $this->num_uf($this->exchange_rate);
+                    }
                 }
 
                 if (isset($this->items[$index]['cash_discount'])) {
@@ -1834,14 +1838,14 @@ class Create extends Component
                     $this->items[$index]['dollar_total_cost'] =  $this->num_uf($final_purchase) / $this->num_uf($this->exchange_rate);
                 }
                 if (isset($this->items[$index]['seasonal_discount'])) {
-                    $seasonal_discount = $this->num_uf(round($original * ($this->num_uf($this->items[$index]['seasonal_discount']) / 100), 2));
+                    $seasonal_discount = $this->num_uf(number_format($original * ($this->num_uf($this->items[$index]['seasonal_discount']) / 100), 2));
                 }
 
                 if (isset($this->items[$index]['annual_discount'])) {
-                    $annual_discount = round($original * ($this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
+                    $annual_discount = number_format($original * ($this->num_uf($this->items[$index]['annual_discount']) / 100), 2);
                 }
-
-                $final_purchase = $original - ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
+                // dd($discount );
+                $final_purchase = $original - $this->num_uf($this->items[$index]['quantity']) * ($discount_percent + $discount + $cash_discount + $seasonal_discount + $annual_discount);
                 // dd( $final_purchase);
             }
             // dd( $final_purchase);
@@ -1849,19 +1853,20 @@ class Create extends Component
                 $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['bonus_quantity']) * $this->num_uf($this->items[$index]['purchase_price']));
             }
             $this->dispatchBrowserEvent('componentRefreshed');
-            return $final_purchase;
+            return number_format($final_purchase, 3);
             if ($this->purchase_final($index) > 0) {
                 $this->final_purchase_for_piece($index);
             }
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function purchase_final_dollar($index, $var = null, $i = null)
     {
         if ($var == 'stores') {
-            $dollar = $this->num_uf($this->purchase_final($index, $var, $i)) / $this->num_uf($this->exchange_rate);
+            $dollar = number_format($this->num_uf($this->purchase_final($index, $var, $i)) / $this->num_uf($this->exchange_rate), 3);
             return $dollar;
         } else {
-            $dollar = $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate);
+            $dollar = number_format($this->num_uf($this->purchase_final($index)) / $this->num_uf($this->exchange_rate), 3);
             return $dollar;
         }
     }
@@ -1875,8 +1880,7 @@ class Create extends Component
                 } else {
                     $final_purchase_for_piece =   $this->purchase_final($index, $var, $i) / $this->num_uf($this->items[$index]['stores'][$i]['quantity']);
                 }
-                //  dd( $final_purchase_for_piece);
-                return   $final_purchase_for_piece;
+                return   number_format($final_purchase_for_piece, 3);
             }
         } else {
             if ($this->purchase_final($index) > 0) {
@@ -1885,8 +1889,7 @@ class Create extends Component
                 } else {
                     $final_purchase_for_piece =   $this->purchase_final($index) / $this->num_uf($this->items[$index]['quantity']);
                 }
-                //  dd( $final_purchase_for_piece);
-                return   $final_purchase_for_piece;
+                return   number_format($final_purchase_for_piece, 3);
             }
         }
     }
@@ -1895,11 +1898,12 @@ class Create extends Component
     {
         if ($var == 'stores') {
             $dollar =  $this->num_uf($this->final_purchase_for_piece($index, $var, $i))  / $this->num_uf($this->exchange_rate);
-            return $dollar;
+            return number_format($dollar, 3);
         } else {
             $dollar =  $this->num_uf($this->final_purchase_for_piece($index))  / $this->num_uf($this->exchange_rate);
-            return $dollar;
+            return number_format($dollar, 3);
         }
+        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function delete_product($index, $via = null, $i = null)
@@ -1909,7 +1913,6 @@ class Create extends Component
         } else {
             unset($this->items[$index]);
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
 
     public function countItems()

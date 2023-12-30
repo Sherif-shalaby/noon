@@ -667,7 +667,7 @@
                                 <div class="d-flex flex-column  discount {{ $show_discount == 0 ? 'd-none' : '' }}">
 
                                     @foreach ($prices as $key => $price)
-                                        <div class="d-flex  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif"
+                                        <div class="d-flex  @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif  {{ $price['parent_price'] == 1 ? 'd-none' : '' }}"
                                             style="overflow-x: auto">
 
                                             <div
@@ -688,7 +688,7 @@
 
                                             <div class="mb-2 animate__animated animate__bounceInLeft d-flex flex-column
                                             @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                style="width: 160px">
+                                                style="width: 100px">
                                                 <label for="fill_id"
                                                     class= "@if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
                                                     style='font-weight:500;font-size:10px;color:#888'>{{ __('lang.fill') . '*' }}</label>
@@ -698,7 +698,7 @@
                                                     border-radius: 16px;
                                                     color: #373737;
                                                     box-shadow: 0 8px 6px -5px #bbb;
-                                                    width: 90px;
+                                                    width: 100%;
                                                     height: 30px;
                                                     flex-wrap: nowrap;">
                                                     {!! Form::select('fill_id', $basic_unit_variations, $prices[$key]['fill_id'], [
@@ -715,8 +715,8 @@
 
                                             <div
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column
-                                         @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
-                                         pl-1">
+                                                    @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif
+                                                    pl-1">
                                                 {!! Form::label('price', __('lang.quantity'), [
                                                     'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
@@ -808,7 +808,7 @@
                                                         ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')],
                                                         null,
                                                         [
-                                                            'class' => ' form-control price_type',
+                                                            'class' => ' form-select px-2 price_type',
                                                             'placeholder' => __('lang.type'),
                                                             'wire:model' => 'prices.' . $key . '.price_type',
                                                             'wire:change' => 'changePrice(' . $key . ')',
@@ -837,7 +837,6 @@
                                                     <label class="text-danger error-msg">{{ $message }}</label>
                                                 @enderror
                                             </div>
-
                                             <div
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label(
@@ -873,11 +872,11 @@
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" name=""
-                                                    style="width: 150px;border:2px solid #cececf;"
+                                                    style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 price"
                                                     wire:model="prices.{{ $key }}.dinar_price_after_desc"
                                                     placeholder = "{{ __('lang.price') }}">
-                                                <p class="dollar-cel d-flex flex-row-reverse"
+                                                <p class="dollar-cell d-flex flex-row-reverse"
                                                     style="font-weight:500;font-size:10px;">
                                                     <span>
                                                         {{ __('lang.price') . ' $' }}
@@ -896,7 +895,7 @@
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" name="total_price"
-                                                    style="width: 150px;border:2px solid #cececf;"
+                                                    style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 total_price"
                                                     wire:model="prices.{{ $key }}.dinar_total_price"
                                                     placeholder = "{{ __('lang.total_price') }}">
@@ -911,6 +910,7 @@
                                                     </span>
                                                 </p>
                                             </div>
+
                                             <div
                                                 class=" mb-2 animate__animated animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1">
                                                 {!! Form::label('piece_price', __('lang.piece_price'), [
@@ -918,7 +918,7 @@
                                                     'style' => 'font-weight:500;font-size:10px;color:#888',
                                                 ]) !!}
                                                 <input type="text" name="piece_price"
-                                                    style="width: 150px;border:2px solid #cececf;"
+                                                    style="width: 100px;border:2px solid #cececf;"
                                                     class="form-control initial-balance-input m-0 piece_price"
                                                     wire:model="prices.{{ $key }}.dinar_piece_price"
                                                     placeholder = "{{ __('lang.piece_price') }}">
@@ -935,7 +935,7 @@
                                             </div>
 
                                             <div class=" mb-4 animate__animated animate__bounceInLeft d-flex flex-row justify-content-center  align-items-center pl-1"
-                                                style="width: 100px">
+                                                style="width: fit-content">
                                                 <button type="button" class="btn btn-sm mx-1 btn-primary"
                                                     wire:click="addPriceRow()">
                                                     <i class="fa fa-plus"></i>
@@ -947,17 +947,18 @@
                                                     </button>
                                                 @endif
                                             </div>
-                                            <div class="custom-control custom-switch mb-2 animate__animated animate__bounceInLeft d-flex flex-column
-                                            @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-                                                style="width: 160px">
-                                                <input type="checkbox" name="apply_on_all_customers"
-                                                    id="apply_on_all_customers" class="custom-control-input"
+
+
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    name="apply_on_all_customers"
+                                                    id="apply_on_all_customers{{ $key }}"
+                                                    style="font-size: 0.75rem"
                                                     wire:model="prices.{{ $key }}.apply_on_all_customers"
                                                     wire:change="applyOnAllCustomers({{ $key }})">
-                                                <label
-                                                    class= "custom-control-label @if (app()->isLocale('ar')) d-block text-end  mx-2 mb-0 @else mx-2 mb-0 @endif"
-                                                    style='font-weight:500;font-size:10px;color:#888'
-                                                    for="apply_on_all_customers">@lang('lang.apply_on_all_customers')</label>
+
+                                                <label class="custom-control-label"
+                                                    for="apply_on_all_customers{{ $key }}">@lang('lang.apply_on_all_customers')</label>
                                             </div>
                                         </div>
                                     @endforeach
