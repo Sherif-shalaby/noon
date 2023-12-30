@@ -102,7 +102,7 @@
                                             'placeholder' => __('lang.please_select'),
                                             'data-name' => 'supplier',
                                             'wire:model' => 'supplier',
-                                        
+
                                             'wire:change' => 'changeExchangeRate()',
                                         ]) !!}
 
@@ -491,7 +491,7 @@
                                                 'class' => 'form-control select2',
                                                 'placeholder' => __('lang.please_select'),
                                                 'data-live-search' => 'true',
-                                            
+
                                                 'data-name' => 'expenses_currency',
                                                 'wire:model' => 'expenses_currency',
                                             ]) !!}
@@ -748,8 +748,8 @@
 
 
                                 @endif
-                                <div class="col-md-12 d-flex flex-column justify-content-start mt-2  animate__animated animate__bounceInLeft"
-                                    style="animation-delay: 2.2s">
+                                <div
+                                    class="col-md-12 d-flex flex-column justify-content-start mt-2  animate__animated animate__bounceInLeft">
                                     {!! Form::label('notes', __('lang.notes'), [
                                         'class' => app()->isLocale('ar')
                                             ? 'd-block text-end  mx-2 mb-0 width-quarter width-full'
