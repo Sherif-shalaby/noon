@@ -1,98 +1,4 @@
     {{-- +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++ --}}
-    <style>
-        .selectBox {
-            position: relative;
-        }
-
-        /* selectbox style */
-        .selectBox select {
-            width: 100%;
-            padding: 0 !important;
-            padding-left: 4px;
-            padding-right: 4px;
-            color: #000;
-            border: 1px solid #ccc;
-            background-color: #dadada;
-            /* height: 39px !important; */
-        }
-
-        .overSelect {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
-
-        #checkboxes {
-            display: none;
-            border: 1px #dadada solid;
-            height: 125px;
-            overflow: auto;
-            padding-top: 10px;
-            background-color: white
-                /* text-align: end;  */
-        }
-
-        #checkboxes label {
-            display: block;
-            padding: 5px;
-        }
-
-        #checkboxes label:hover {
-            background-color: #ddd;
-        }
-
-        #checkboxes label span {
-            font-weight: normal;
-        }
-
-        .table-top-head {
-            top: 105px !important;
-        }
-
-        .table-scroll-wrapper {
-            width: fit-content;
-        }
-
-        @media(min-width:1900px) {
-            .table-scroll-wrapper {
-                width: 100%;
-            }
-        }
-
-
-
-        @media(max-width:991px) {
-            .table-top-head {
-                top: 105px !important
-            }
-        }
-
-        @media(max-width:768px) {
-            .table-top-head {
-                top: 400px !important
-            }
-        }
-
-        .wrapper1 {
-            margin-top: 35px;
-        }
-
-        .input-wrapper {
-            width: 100% !important;
-        }
-
-        @media(max-width:767px) {
-            .wrapper1 {
-                margin-top: 90px;
-            }
-
-            .input-wrapper {
-                width: 60%
-            }
-        }
-    </style>
     <div class="animate-in-page">
 
 
@@ -122,7 +28,7 @@
                                 <div class="col-md-3 col-lg-3" style="position: relative;z-index: 9;">
                                     <div class="multiselect col-md-12">
                                         <div class="selectBox" onclick="showCheckboxes()">
-                                            <select class="form-select form-control form-control-lg">
+                                            <select class="form-select ">
                                                 <option>@lang('lang.show_hide_columns')</option>
                                             </select>
                                             <div class="overSelect"></div>

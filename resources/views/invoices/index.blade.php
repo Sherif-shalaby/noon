@@ -2,11 +2,115 @@
 @section('title', __('lang.sells'))
 @section('breadcrumbbar')
     <style>
-        @media(max-width:768px) {
+        .selectBox {
+            position: relative;
+        }
 
-            .wrapper1 {
-                margin-top: 125px !important
+        /* selectbox style */
+        .selectBox select {
+            width: 100%;
+            padding: 0 !important;
+            padding-left: 4px;
+            padding-right: 4px;
+            color: #000;
+            border: 1px solid #ccc;
+            background-color: #dadada;
+            /* height: 39px !important; */
+        }
+
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #checkboxes {
+            display: none;
+            border: 1px #dadada solid;
+            height: 125px;
+            overflow: auto;
+            padding-top: 10px;
+            background-color: white
+                /* text-align: end;  */
+        }
+
+        #checkboxes label {
+            display: block;
+            padding: 5px;
+        }
+
+        #checkboxes label:hover {
+            background-color: #ddd;
+        }
+
+        #checkboxes label span {
+            font-weight: normal;
+        }
+
+        .table-top-head {
+            top: 105px !important;
+        }
+
+        .table-scroll-wrapper {
+            width: fit-content;
+        }
+
+        @media(min-width:1900px) {
+            .table-scroll-wrapper {
+                width: 100%;
             }
+        }
+
+
+
+        @media(max-width:991px) {
+            .table-top-head {
+                top: 105px !important
+            }
+        }
+
+        @media(max-width:768px) {
+            .table-top-head {
+                top: 400px !important
+            }
+        }
+
+        .wrapper1 {
+            margin-top: 35px;
+        }
+
+        .input-wrapper {
+            width: 100% !important;
+        }
+
+        @media(max-width:767px) {
+            .wrapper1 {
+                margin-top: 90px;
+            }
+
+            .input-wrapper {
+                width: 60%
+            }
+        }
+
+        .form-select {
+            height: 100%;
+            padding-bottom: 0;
+            padding-top: 0;
+            background-color: #dedede !important;
+            border-radius: 16px;
+            border: 2px solid #cececf;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .form-select:focus {
+            border-color: #cececf !important;
+            outline: 0;
+            box-shadow: 0 0 0 0 !important;
+            background-color: white !important;
         }
     </style>
     <div class="animate-in-page">
