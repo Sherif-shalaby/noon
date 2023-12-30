@@ -509,7 +509,7 @@
 
                                 </div>
 
-                                <div class="col-md-12">
+                                <div class="col-md-12 mb-2">
 
                                     @foreach ($expenses as $index => $expense)
                                         <div class="row flex-row-reverse align-items-center">
