@@ -724,7 +724,7 @@
                                             ],
                                         ) !!}
                                     </div>
-
+                                    {{--  --}}
                                     <div
                                         class="col-md-3 mb-2 d-flex align-items-center  animate__animated animate__bounceInLeft @if (app()->isLocale('ar')) flex-row-reverse @else flex-row @endif due_fields d-none">
                                         {!! Form::label('notify_before_days', __('lang.notify_before_days'), [
