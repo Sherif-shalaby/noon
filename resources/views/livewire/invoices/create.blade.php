@@ -152,6 +152,31 @@
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    {{-- ++++++++++++++++ Toggle Supplier Dropdown ++++++++++++++ --}}
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>
+                                {!! Form::checkbox('toggle_suppliers_dropdown', 1, false,['wire:model' => 'toggle_suppliers_dropdown']) !!}
+                                @lang('lang.toggle_suppliers_dropdown')
+                            </label>
+                        </div>
+                    </div>
+                    {{-- +++++++++++++++++ suppliers Dropdown +++++++++++++++++ --}}
+                    @if(!empty($toggle_suppliers_dropdown))
+                        <div class="col-md-3">
+                            {!! Form::label('supplier_id', __('lang.supplier') . ':*', []) !!}
+                            <div class="d-flex justify-content-center">
+                            {!! Form::select('supplier_id', $suppliers, $supplier_id,
+                                ['class' => 'form-control select2', 'data-live-search' => 'true', 'id' => 'supplier_id', 'placeholder' => __('lang.please_select'),
+                                'data-name' => 'supplier', 'wire:model' => 'supplier_id'
+                                ]) !!}
+                                {{-- <button type="button" class="btn btn-primary btn-sm ml-2" data-toggle="modal" data-target=".add-supplier" ><i class="fas fa-plus"></i></button> --}}
+                            </div>
+                            @error('supplier')
+                            <span class="error text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @endif
                 </div>
 
                 </div>
