@@ -293,7 +293,7 @@
                                 <div class="col-md-1 border border-1 p-0 animate__animated animate__bounceInRight"
                                     style="height: 100vh;overflow: scroll;animation-delay: 1.8s">
                                     <div class="p-3 text-center font-weight-bold " style="background-color: #eee;">
-                                        الأقسام الرئيسيه
+                                        @lang('lang.categories')
                                         <div class="d-flex flex-column align-items-center text-nowrap categories_drop_down gap-1"
                                             wire:ignore>
                                             {{-- الاقسام --}}

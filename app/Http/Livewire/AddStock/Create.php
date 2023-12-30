@@ -1758,6 +1758,7 @@ class Create extends Component
             if (isset($this->items[$index]['stores'][$i]['discount_on_bonus_quantity']) && $this->items[$index]['stores'][$i]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['stores'][$i]['bonus_quantity'])) {
                 $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['stores'][$i]['bonus_quantity']) * $this->num_uf($this->items[$index]['stores'][$i]['purchase_price']));
             }
+            $this->dispatchBrowserEvent('componentRefreshed');
             return $final_purchase;
             if ($this->purchase_final($index, $var, $i) > 0) {
                 $this->final_purchase_for_piece($index, $var, $i);
@@ -1847,12 +1848,12 @@ class Create extends Component
             if (isset($this->items[$index]['discount_on_bonus_quantity']) && $this->items[$index]['discount_on_bonus_quantity'] == false && isset($this->items[$index]['bonus_quantity'])) {
                 $final_purchase = $final_purchase + ($this->num_uf($this->items[$index]['bonus_quantity']) * $this->num_uf($this->items[$index]['purchase_price']));
             }
+            $this->dispatchBrowserEvent('componentRefreshed');
             return $final_purchase;
             if ($this->purchase_final($index) > 0) {
                 $this->final_purchase_for_piece($index);
             }
         }
-        $this->dispatchBrowserEvent('componentRefreshed');
     }
     public function purchase_final_dollar($index, $var = null, $i = null)
     {

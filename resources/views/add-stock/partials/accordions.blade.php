@@ -256,14 +256,14 @@
 
                                                                 border-radius: 6px;">
 
-                        <div class="col-md-3 p-0">
+                        <div class="col-md-3 p-0 d-flex flex-column align-items-end">
                             {!! Form::label('', __('lang.expiry_date'), ['style' => 'font-weight:700;font-size: 10px;', 'class' => 'mb-0']) !!}
                             {!! Form::date('add_stock_lines[' . $index . '][expiry_date]', null, [
                                 'class' => 'form-control datepicker initial-balance-input expiry_date',
                                 'wire:model' => 'items.' . $index . '.expiry_date',
                             ]) !!}
                         </div>
-                        <div class="col-md-3 p-0">
+                        <div class="col-md-3 p-0 d-flex flex-column align-items-end">
                             {!! Form::label('', __('lang.days_before_the_expiry_date'), [
                                 'style' => 'font-weight:700;font-size: 10px;',
                                 'class' => 'mb-0',
@@ -273,7 +273,7 @@
                                 'wire:model' => 'items.' . $index . '.expiry_warning',
                             ]) !!}
                         </div>
-                        <div class="col-md-3 p-0">
+                        <div class="col-md-3 p-0 d-flex flex-column align-items-end">
                             {!! Form::label('', __('lang.convert_status_expire'), [
                                 'style' => 'font-weight:700;font-size: 10px;',
                                 'class' => 'mb-0',

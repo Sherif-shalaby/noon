@@ -48,13 +48,32 @@
         }
 
         .wrapper1 {
-            margin-top: 35px;
+            margin-top: 45px;
         }
 
         @media(max-width:767px) {
             .wrapper1 {
                 margin-top: 115px;
             }
+        }
+
+
+        .form-select {
+            height: 100%;
+            padding-bottom: 0;
+            padding-top: 0;
+            background-color: #dedede !important;
+            border-radius: 16px;
+            border: 2px solid #cececf;
+            font-size: 14px;
+            font-weight: 500
+        }
+
+        .form-select:focus {
+            border-color: #cececf !important;
+            outline: 0;
+            box-shadow: 0 0 0 0 !important;
+            background-color: white !important;
         }
 
         /* +++++++++++++++ Style : checkboxes and labels inside selectbox +++++++++++++++  */
@@ -174,7 +193,7 @@
                             <div class="col-md-3 col-lg-3" style="position: relative;z-index: 9;">
                                 <div class="multiselect col-md-12">
                                     <div class="selectBox" onclick="showCheckboxes()">
-                                        <select class="form-select form-control">
+                                        <select class="form-select">
                                             <option>@lang('lang.show_hide_columns')</option>
                                         </select>
                                         <div class="overSelect"></div>

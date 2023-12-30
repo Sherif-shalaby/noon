@@ -11,7 +11,7 @@ return array(
     'suppliers' => 'الموردين',
     'settings' => 'الاعدادت',
     'reports' => 'التقارير',
-    'categories' => 'الاقسام',
+    'categories' => 'التصنيفات',
     'action' => 'خيارات',
     'save' => 'حفظ',
     'close' => 'الغاء',
@@ -772,5 +772,12 @@ return array(
     'dollar_c' => 'دولار',
     'download_invoice' => 'رفع صورة الفاتورة',
     'upload_payment_docs' => 'رفع مستندات الدفع',
+    'purchase_currency' => 'عملة الشراء',
+    'discount_on_bonus_quantity' => 'خصم من السعر الأصلي',
+    'discount_amount' => 'قيمة الخصم',
+    'discount_dependency' => 'خصم مركب',
+    'cash_discount' => 'الخصم النقدي',
+    'seasonal_discount' => 'الخصم الموسمي',
+    'annual_discount' => 'الخصم السنوي',
 
 );

@@ -37,7 +37,7 @@
         </div>
         {{-- ++++++++++++++++ product name ++++++++++++++++ --}}
         <div class="mb-2  animate__animated  animate__bounceInLeft d-flex flex-column  @if (app()->isLocale('ar')) align-items-end @else align-items-start @endif pl-1"
-            style="width: 200px">
+            style="width: 375px">
             {!! Form::label('name', __('lang.product_name'), [
                 'class' => app()->isLocale('ar') ? 'd-block text-end  mx-2 mb-0' : 'mx-2 mb-0',
                 'style' => 'font-weight:500;font-size:10px;color:#888',
