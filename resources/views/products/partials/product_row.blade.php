@@ -68,6 +68,8 @@
             @error('products.' . $key . '.name')
                 <label class="text-danger error-msg">{{ $message }}</label>
             @enderror
+        </div>
+        <div>
             @include('layouts.translation_inputs', [
                 'attribute' => 'name',
                 'translations' =>
@@ -442,6 +444,8 @@
                             'class' => 'form-control length  initial-balance-input m-0',
                             'style' => 'border:2px solid #ccc;width: 75px',
                             'placeholder' => __('lang.length'),
+                            'id' => 'length' . $key,
+                            'data-key' => $key,
                         ],
                     ) !!}
 
@@ -463,6 +467,8 @@
                             'class' => 'form-control width  initial-balance-input m-0',
                             'style' => 'border:2px solid #ccc;width: 75px',
                             'placeholder' => __('lang.width'),
+                            'id' => 'width' . $key,
+                            'data-key' => $key,
                         ],
                     ) !!}
 
@@ -484,6 +490,8 @@
                             'class' => 'form-control height  initial-balance-input m-0',
                             'style' => 'border:2px solid #ccc;width: 75px',
                             'placeholder' => __('lang.height'),
+                            'id' => 'height' . $key,
+                            'data-key' => $key,
                         ],
                     ) !!}
 
@@ -499,14 +507,15 @@
                     ]) !!}
                     {!! Form::text(
                         'products[' . $key . '][size]',
-                        isset($recent_product->product_dimensions->size) ? $recent_product->product_dimensions->size : '',
+                        isset($recent_product->product_dimensions->size) ? $recent_product->product_dimensions->size : 0,
                         [
                             'class' => 'form-control size  initial-balance-input m-0',
                             'style' => 'border:2px solid #ccc;width: 75px',
                             'placeholder' => __('lang.size'),
+                            'id' => 'size' . $key,
+                            'data-key' => $key,
                         ],
                     ) !!}
-
                     @error('size')
                         <label class="text-danger error-msg">{{ $message }}</label>
                     @enderror
@@ -525,6 +534,7 @@
                             'class' => 'form-control  initial-balance-input m-0 weight',
                             'style' => 'border:2px solid #ccc;width: 75px',
                             'placeholer' => __('lang.weight'),
+                            'data-key' => $key,
                         ],
                     ) !!}
 
