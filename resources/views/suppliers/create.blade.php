@@ -77,35 +77,35 @@
                                     <div class="col-md-4"  style="width: 100%;">
                                         <table class="bordered">
                                             <thead class="phone_thead">
-                                            <tr>
-                                                <th class="text-left" style="font-weight: normal;">
-                                                    <label class="mb-2">
-                                                        <span class="text-danger">*</span>@lang('lang.phone_number')
-                                                    </label>
-                                                </th>
-                                            </tr>
+                                                <tr>
+                                                    <th class="text-left" style="font-weight: normal;">
+                                                        <label class="mb-2">
+                                                            <span class="text-danger">*</span>@lang('lang.phone_number')
+                                                        </label>
+                                                    </th>
+                                                </tr>
                                             </thead>
                                             <tbody class="phone_tbody">
-                                            <tr>
-                                                <td class="col-md-12 p-0">
-                                                    <div class="select_body d-flex justify-content-between align-items-center" >
-                                                        <input type="text"
-                                                               class="form-control"
-                                                               placeholder="@lang('lang.phone_number')"
-                                                               name="mobile_number[]"
-                                                               value="{{ old('mobile_number') }}" required >
-                                                        @error('mobile_number')
-                                                        <div class="alert alert-danger">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                </td>
-                                                <td  class="col-md-6">
-                                                    {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
-                                                    <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow" type="button">
-                                                        <i class="fa fa-plus"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td class="col-md-12 p-0">
+                                                        <div class="select_body d-flex justify-content-between align-items-center" >
+                                                            <input type="text"
+                                                                class="form-control"
+                                                                placeholder="@lang('lang.phone_number')"
+                                                                name="mobile_number[]"
+                                                                value="{{ old('mobile_number') }}" required >
+                                                            @error('mobile_number')
+                                                            <div class="alert alert-danger">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+                                                    </td>
+                                                    <td  class="col-md-6">
+                                                        {{-- +++++++++++++ Add New Phone Number +++++++++ --}}
+                                                        <a href="javascript:void(0)" class="btn btn-xs btn-primary addRow" type="button">
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

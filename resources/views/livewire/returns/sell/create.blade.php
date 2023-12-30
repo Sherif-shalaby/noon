@@ -8,11 +8,30 @@
                 </div>
                 <div class="card-body">
                     {!! Form::open([ 'method' => 'post', 'files' => true, 'class' => 'pos-form', 'id' => 'sell_return_form']) !!}
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            {!! Form::label('store_id', __('lang.store'), []) !!}
-                            {!! Form::select('store_id', $stores, $store, ['class' => 'form-control', 'placeholder' => __('lang.all'), 'data-live-search' => 'true','wire:model' => 'store']) !!}
+                    <div class="row">
+                        {{-- +++++++++++++++++ stores filter +++++++++++++++++ --}}
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {!! Form::label('store_id', __('lang.store'), []) !!}
+                                {!! Form::select('store_id', $stores, $store, ['class' => 'form-control select2', 'placeholder' => __('lang.all'), 'data-live-search' => 'true','wire:model' => 'store']) !!}
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++ branches filter +++++++++++++++++ --}}
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {!! Form::label('branch_id', __('lang.branch'), []) !!}
+                                {!! Form::select('branch_id', $branches, $branch_id, ['class' => 'form-control select2', 'placeholder' => __('lang.all'), 'data-live-search' => 'true','wire:model' => 'branch_id']) !!}
+                            </div>
+                        </div>
+                        {{-- +++++++++++++++++ sale_points filter +++++++++++++++++ --}}
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {!! Form::label('pos_id', __('lang.pos'), []) !!}
+                                {!! Form::select('pos_id', $store_pos,[], [
+                                    'class' => 'form-control select2 sale_filter',
+                                    'placeholder' => __('lang.all'),
+                                ]) !!}
+                            </div>
                         </div>
                     </div>
 

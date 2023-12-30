@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Returns\Sell;
 
 use App\Models\AddStockLine;
+use App\Models\Branch;
 use App\Models\Brand;
 use App\Models\CashRegister;
 use App\Models\CashRegisterTransaction;
@@ -24,8 +25,10 @@ use Livewire\Component;
 
 class Create extends Component
 {
-    public $id, $sellines = [], $quantity = [], $amount, $sell_return, $store, $method, $paid_on, $notes,
-        $sale, $transaction_sell_line_id = [] ,$payment_status,$payment,$final_total ;
+    public $id, $sellines = [], $quantity = [], $amount, $sell_return, $store,
+            $branches,$branch_id,$store_pos,
+            $method, $paid_on, $notes,$sale, $transaction_sell_line_id = [] ,
+            $payment_status,$payment,$final_total ;
 
 
     public function __construct($id)
@@ -37,6 +40,10 @@ class Create extends Component
         $this->sale = TransactionSellLine::find($this->id);
         $this->sellines = $this->sale->transaction_sell_lines;
         $this->store = $this->sale->store_id;
+        $this->branches =  Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
+        // $this->branch_id = Store::where('id', $this->sale->store_id)->pluck('branch_id');
+        $this->branch_id = Store::where('id', $this->sale->store_id)->value('branch_id');
+        $this->store_pos = StorePos::orderBy('name', 'asc')->pluck('name', 'id');
         $this->sell_return = TransactionSellLine::where('type', 'returns')
             ->where('return_parent_id', $this->id)
             ->first();
@@ -359,7 +366,7 @@ class Create extends Component
 
         if ($transaction->type == 'sell_return') {
             $cr_transaction = CashRegisterTransaction::where('transaction_id', $transaction->id)->first();
-            
+
             if (!empty($cr_transaction)) {
                 $cr_transaction->update([
                     'amount' => $this->num_uf($payment['amount']),
@@ -413,7 +420,8 @@ class Create extends Component
             ->where('status', 'open')
             ->first();
 
-        if (empty($register)) {
+        if (empty($register))
+        {
             $store_pos = StorePos::where('user_id', $user_id)->first();
             $register = CashRegister::create([
                 'user_id' => $user_id,
@@ -422,7 +430,6 @@ class Create extends Component
                 'store_pos_id' => !empty($store_pos) ? $store_pos->id : null
             ]);
         }
-
         return $register;
     }
 }
