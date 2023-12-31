@@ -182,8 +182,10 @@ class BranchController extends Controller
           }
           return $output;
     }
-    public function getBranchStores($id){
-        $stores = Store::where('branch_id',$id)->orderBy('name', 'asc')->pluck('name', 'id');
+    public function getBranchStores($ids){
+        $branchIds = explode(',', $ids);
+
+        $stores = Store::whereIn('branch_id',$branchIds)->orderBy('name', 'asc')->pluck('name', 'id');
         $stores_dp = $this->Util->createDropdownHtml($stores, __('lang.please_select'));
         return $stores_dp;
     }
