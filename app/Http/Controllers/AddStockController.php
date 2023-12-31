@@ -60,14 +60,16 @@ class AddStockController extends Controller
         $suppliers = Supplier::orderBy('created_at', 'desc')->pluck('name','id');
         $users = User::orderBy('created_at', 'desc')->pluck('name','id');
         $brands = Brand::pluck('name','id');
-        $categories = Category::whereNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
-        $subcategories = Category::whereNotNull('parent_id')->orderBy('created_at', 'desc')->pluck('name','id');
+        $categories = Category::where('parent_id',1)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories1 = Category::where('parent_id',2)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories2 = Category::where('parent_id',3)->orderBy('created_at', 'desc')->pluck('name','id');
+        $subcategories3 = Category::where('parent_id',4)->orderBy('created_at', 'desc')->pluck('name','id');
         $payment_status_array = $this->commonUtil->getPaymentStatusArray();
         $stores = Store::orderBy('created_at', 'desc')->pluck('name','id');
         $branches = Branch::where('type','branch')->orderBy('created_at', 'desc')->pluck('name','id');
         $stocks  = $this->reportsFilters->addStockFilter();
         return view('add-stock.index')->with(compact('stocks','suppliers','users','brands','categories',
-            'subcategories','payment_status_array','branches','stores'));
+            'subcategories1','subcategories2','subcategories3','payment_status_array','branches','stores'));
     }
 
     public function show($id)
