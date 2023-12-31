@@ -70,7 +70,7 @@ class Create extends Component
 
     use WithPagination;
 
-    public $divide_costs ,$allproducts = [], $other_expenses = 0, $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null, $other_payments = 0, $store_id, $order_date, $purchase_type,
+    public $show_payment=0,$divide_costs ,$allproducts = [], $other_expenses = 0, $department_id1 = null, $department_id2 = null, $department_id3 = null, $department_id4 = null, $other_payments = 0, $store_id, $order_date, $purchase_type,
         $invoice_no, $discount_amount, $source_type, $payment_status, $source_id, $supplier, $exchange_rate, $amount, $method,
         $paid_on, $paying_currency, $transaction_date, $notes, $notify_before_days, $due_date, $showColumn = false,
         $transaction_currency,$expenses_currency ,$current_stock, $clear_all_input_stock_form, $searchProduct, $items = [], $department_id,
@@ -124,8 +124,9 @@ class Create extends Component
         $this->department_id2 = null;
         $this->department_id3 = null;
         $this->department_id4 = null;
+        $this->source_id=Employee::where('user_id',Auth::user()->id)->first()->id;
     }
-    protected $listeners = ['listenerReferenceHere'];
+    protected $listeners = ['listenerReferenceHere','changeExchangerateForSupplier'];
 
     public function listenerReferenceHere($data)
     {
@@ -146,7 +147,11 @@ class Create extends Component
             if($data['var1'] == ('paying_currency' || 'divide_costs')){
                 $this->changeTotalAmount();
             }
-
+            if($data['var1'] == 'payment_status'){
+                if($this->payment_status=='pending'){
+                    $this->show_payment=1;
+                }
+            }
             // if (isset($data['var1']) && $data['var1'] == "department_id1") {
             //     $this->updatedDepartmentId($data['var2'], 'department_id1');
             // }
@@ -163,7 +168,22 @@ class Create extends Component
 
 
     }
-
+    public function changeExchangerateForSupplier($status=''){
+        try{
+            if($status=='ok'){
+                $supplier = Supplier::find($this->supplier);
+                $supplier->exchange_rate =$this->exchange_rate;
+                $supplier->save();
+                $this->changeExchangeRateBasedPrices();
+                $this->dispatchBrowserEvent('swal:modal', ['type' => 'success', 'message' => 'تم بنجاح']);
+            }else{
+                $this->changeExchangeRateBasedPrices();
+            }
+        } catch (\Exception $e) {
+            $this->dispatchBrowserEvent('swal:modal', ['type' => 'error', 'message' => 'lang.something_went_wrongs',]);
+            dd($e);
+        }
+    }
     public function render(): Factory|View|Application
     {
         $status_array = $this->getPurchaseOrderStatusArray();
@@ -876,7 +896,7 @@ class Create extends Component
         if(!empty($index)){
             array_splice($this->items, $index + 1, 0, [$new_item]);
         }else{
-            array_unshift($this->items, $new_item);
+            $this->items[]= $new_item;
         }
     }
 
@@ -1859,7 +1879,7 @@ class Create extends Component
                 if(isset($this->items[$index]['bonus_quantity'])){
                     $final_purchase_for_piece =   $this->purchase_final($index) / ($this->num_uf($this->items[$index]['bonus_quantity']) + $this->num_uf($this->items[$index]['quantity']));
                  }else{
-                     $final_purchase_for_piece =   $this->purchase_final($index) / $this->num_uf($this->items[$index]['quantity']);
+                     $final_purchase_for_piece =   $this->num_uf($this->purchase_final($index)) / $this->num_uf($this->items[$index]['quantity']);
                  }
                  return   number_format($final_purchase_for_piece,3);
             }
